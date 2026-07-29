@@ -1,0 +1,409 @@
+{
+  "date": "20260729",
+  "date_label": "",
+  "generated_at": "2026-07-29 21:00:04 UTC",
+  "recommend_exists": true,
+  "run_count": 1,
+  "papers": [
+    {
+      "paper_id": "2607.19765v1",
+      "route": "202607/29/2607.19765v1-extending-a-large-view-synthesis-model-for-multi-view-panoptic-segmentation",
+      "title": "Extending a Large View Synthesis Model for Multi-view Panoptic Segmentation",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "扩展视图合成到多视图全景分割",
+      "first_seen_at": "2026-07-29 21:00:04 UTC",
+      "updated_at": "2026-07-29 21:00:04 UTC"
+    },
+    {
+      "paper_id": "2607.19942v2",
+      "route": "202607/29/2607.19942v2-g-mad-a-game-based-data-generation-framework-for-multi-view-rgb-t-aerial-object-detection",
+      "title": "G-MAD: A Game-Based Data Generation Framework for Multi-View RGB-T Aerial Object Detection",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "多视图RGB-T航空目标检测数据生成框架",
+      "first_seen_at": "2026-07-29 21:00:04 UTC",
+      "updated_at": "2026-07-29 21:00:04 UTC"
+    },
+    {
+      "paper_id": "2607.20071v1",
+      "route": "202607/29/2607.20071v1-gaussianseed-hierarchical-gaussian-seeding-for-high-resolution-3d-occupancy-prediction",
+      "title": "GaussianSeed: Hierarchical Gaussian Seeding for High-Resolution 3D Occupancy Prediction",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "面向自动驾驶的3D占用预测",
+      "first_seen_at": "2026-07-29 21:00:04 UTC",
+      "updated_at": "2026-07-29 21:00:04 UTC"
+    },
+    {
+      "paper_id": "2607.20326v1",
+      "route": "202607/29/2607.20326v1-toward-reliable-rgb-d-semantic-segmentation-handling-missing-modalities-via-condition-dropout",
+      "title": "Toward Reliable RGB-D Semantic Segmentation: Handling Missing Modalities via Condition Dropout",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "RGB-D语义分割是图像分割技术",
+      "first_seen_at": "2026-07-29 21:00:04 UTC",
+      "updated_at": "2026-07-29 21:00:04 UTC"
+    },
+    {
+      "paper_id": "2607.20705v1",
+      "route": "202607/29/2607.20705v1-u-cfr-uncertainty-guided-cascade-forward-refinement-for-interactive-segmentation",
+      "title": "U-CFR: Uncertainty-Guided Cascade Forward Refinement for Interactive Segmentation",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "不确定性引导的级联前向细化交互式分割",
+      "first_seen_at": "2026-07-29 21:00:04 UTC",
+      "updated_at": "2026-07-29 21:00:04 UTC"
+    },
+    {
+      "paper_id": "2607.21371v1",
+      "route": "202607/29/2607.21371v1-dinode-continuous-vision-text-alignment-for-open-vocabulary-semantic-segmentation",
+      "title": "DINOde: Continuous Vision-Text Alignment for Open-Vocabulary Semantic Segmentation",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "开放词汇语义分割是图像分割技术",
+      "first_seen_at": "2026-07-29 21:00:04 UTC",
+      "updated_at": "2026-07-29 21:00:04 UTC"
+    },
+    {
+      "paper_id": "2607.21576v1",
+      "route": "202607/29/2607.21576v1-self-supervised-learning-of-structured-dynamics-from-videos",
+      "title": "Self-Supervised Learning of Structured Dynamics from Videos",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "从视频中学习运动表示",
+      "first_seen_at": "2026-07-29 21:00:04 UTC",
+      "updated_at": "2026-07-29 21:00:04 UTC"
+    },
+    {
+      "paper_id": "2607.22255v1",
+      "route": "202607/29/2607.22255v1-from-level-set-evolution-to-threshold-optimization-a-grayscale-level-set-framework-for-image-segmentation",
+      "title": "From level set evolution to threshold optimization: A grayscale level set framework for image segmentation",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "灰度水平集框架用于图像分割",
+      "first_seen_at": "2026-07-29 21:00:04 UTC",
+      "updated_at": "2026-07-29 21:00:04 UTC"
+    },
+    {
+      "paper_id": "2607.22714v1",
+      "route": "202607/29/2607.22714v1-real-time-semantic-segmentation-with-optimized-retinanet-architectures-for-embedded-automotive-systems",
+      "title": "Real-Time Semantic Segmentation with Optimized RetinaNet Architectures for Embedded Automotive Systems",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "面向嵌入式系统的语义分割",
+      "first_seen_at": "2026-07-29 21:00:04 UTC",
+      "updated_at": "2026-07-29 21:00:04 UTC"
+    },
+    {
+      "paper_id": "2607.23803v1",
+      "route": "202607/29/2607.23803v1-beyond-appearance-a-multi-cue-framework-and-large-scale-benchmark-for-pedestrian-association-and-tracking-on-mobile-aerial-ground-platforms",
+      "title": "Beyond Appearance: A Multi-cue Framework and Large-scale Benchmark for Pedestrian Association and Tracking on Mobile Aerial-Ground Platforms",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "多视角多目标跟踪框架",
+      "first_seen_at": "2026-07-29 21:00:04 UTC",
+      "updated_at": "2026-07-29 21:00:04 UTC"
+    },
+    {
+      "paper_id": "2607.24098v1",
+      "route": "202607/29/2607.24098v1-reflextrack-a-feedback-driven-agent-for-training-free-referring-video-object-segmentation",
+      "title": "ReflexTrack: A Feedback-Driven Agent for Training-Free Referring Video Object Segmentation",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "引用视频目标分割属于图像分割技术",
+      "first_seen_at": "2026-07-29 21:00:04 UTC",
+      "updated_at": "2026-07-29 21:00:04 UTC"
+    },
+    {
+      "paper_id": "2607.24453v1",
+      "route": "202607/29/2607.24453v1-esrvs-extreme-semi-supervised-retinal-vessel-segmentation-with-a-single-annotated-image",
+      "title": "ESRVS: Extreme Semi-Supervised Retinal Vessel Segmentation with a Single Annotated Image",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "单张标注的极端半监督视网膜血管分割",
+      "first_seen_at": "2026-07-29 21:00:04 UTC",
+      "updated_at": "2026-07-29 21:00:04 UTC"
+    },
+    {
+      "paper_id": "2607.24598v1",
+      "route": "202607/29/2607.24598v1-queenvis-rethinking-image-only-training-for-video-instance-segmentation-via-query-enrichment",
+      "title": "QueenVIS: Rethinking Image-Only Training for Video Instance Segmentation via Query Enrichment",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "视频实例分割图像仅训练",
+      "first_seen_at": "2026-07-29 21:00:04 UTC",
+      "updated_at": "2026-07-29 21:00:04 UTC"
+    },
+    {
+      "paper_id": "2607.25563v1",
+      "route": "202607/29/2607.25563v1-few-shot-open-vocabulary-remote-sensing-segmentation-via-textual-inversion",
+      "title": "Few-Shot Open-Vocabulary Remote Sensing Segmentation via Textual Inversion",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "遥感开放词汇分割",
+      "first_seen_at": "2026-07-29 21:00:04 UTC",
+      "updated_at": "2026-07-29 21:00:04 UTC"
+    },
+    {
+      "paper_id": "2607.03589v2",
+      "route": "202607/29/2607.03589v2-vision-non-causal-trapezoidal-mamba-eliminating-directional-scanning-in-vision-ssms-with-second-order-dynamics",
+      "title": "Vision Non-Causal Trapezoidal Mamba: Eliminating Directional Scanning in Vision SSMs with Second-Order Dynamics",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "非因果视觉状态空间模型，提升视觉表征",
+      "first_seen_at": "2026-07-29 21:00:04 UTC",
+      "updated_at": "2026-07-29 21:00:04 UTC"
+    },
+    {
+      "paper_id": "2607.06560v1",
+      "route": "202607/29/2607.06560v1-vision-as-unified-multimodal-generation",
+      "title": "Vision as Unified Multimodal Generation",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "统一多模态生成用于计算机视觉任务",
+      "first_seen_at": "2026-07-29 21:00:04 UTC",
+      "updated_at": "2026-07-29 21:00:04 UTC"
+    },
+    {
+      "paper_id": "2607.06600v1",
+      "route": "202607/29/2607.06600v1-milsd-a-micro-line-segment-detector-for-resource-constrained-devices",
+      "title": "MiLSD: A Micro Line-Segment Detector for Resource-Constrained Devices",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "线特征检测作为特征提取方法",
+      "first_seen_at": "2026-07-29 21:00:04 UTC",
+      "updated_at": "2026-07-29 21:00:04 UTC"
+    },
+    {
+      "paper_id": "2607.09086v1",
+      "route": "202607/29/2607.09086v1-subtoken-vision-transformer-for-fine-grained-recognition",
+      "title": "Subtoken Vision Transformer for Fine-grained Recognition",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "细粒度视觉识别的子令牌ViT",
+      "first_seen_at": "2026-07-29 21:00:04 UTC",
+      "updated_at": "2026-07-29 21:00:04 UTC"
+    },
+    {
+      "paper_id": "2607.18688v1",
+      "route": "202607/29/2607.18688v1-dual-edged-homogeneous-modality-similarity-towards-visible-infrared-modality-incomplete-person-re-identification-with-modality-adaptive-matching",
+      "title": "Dual-Edged Homogeneous-Modality Similarity: Towards Visible-Infrared Modality-Incomplete Person Re-Identification with Modality Adaptive Matching",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "可见光-红外行人重识别，属于视觉识别任务",
+      "first_seen_at": "2026-07-29 21:00:04 UTC",
+      "updated_at": "2026-07-29 21:00:04 UTC"
+    },
+    {
+      "paper_id": "2607.18770v1",
+      "route": "202607/29/2607.18770v1-glid-gated-local-intrinsic-dimension-repairs-the-blind-spots-of-face-forgery-detectors",
+      "title": "GLID: Gated Local Intrinsic Dimension Repairs the Blind Spots of Face-Forgery Detectors",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "使用局部内在维数检测人脸伪造",
+      "first_seen_at": "2026-07-29 21:00:04 UTC",
+      "updated_at": "2026-07-29 21:00:04 UTC"
+    },
+    {
+      "paper_id": "2607.19100v1",
+      "route": "202607/29/2607.19100v1-flexiavatar-unified-3d-gaussian-human-avatars-under-arbitrary-body-visibility",
+      "title": "FlexiAvatar: Unified 3D Gaussian Human Avatars Under Arbitrary Body Visibility",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "单目视频三维人体虚拟人重建",
+      "first_seen_at": "2026-07-29 21:00:04 UTC",
+      "updated_at": "2026-07-29 21:00:04 UTC"
+    },
+    {
+      "paper_id": "2607.21089v1",
+      "route": "202607/29/2607.21089v1-loss-landscape-topology-reveals-why-simple-baselines-are-competitive-at-3d-point-cloud-segmentation-under-class-imbalance",
+      "title": "Loss Landscape Topology Reveals Why Simple Baselines are Competitive at 3D Point Cloud Segmentation Under Class Imbalance",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "3D点云语义分割中的类别不平衡研究",
+      "first_seen_at": "2026-07-29 21:00:04 UTC",
+      "updated_at": "2026-07-29 21:00:04 UTC"
+    },
+    {
+      "paper_id": "2607.18540v1",
+      "route": "202607/29/2607.18540v1-recti-q-feature-space-rectification-for-out-of-distribution-robust-quantized-perception-in-edge-robotics",
+      "title": "Recti-Q: Feature-Space Rectification for Out-of-Distribution-Robust Quantized Perception in Edge Robotics",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "提升量化视觉骨干在边缘感知中的鲁棒性",
+      "first_seen_at": "2026-07-29 21:00:04 UTC",
+      "updated_at": "2026-07-29 21:00:04 UTC"
+    },
+    {
+      "paper_id": "2607.20284v1",
+      "route": "202607/29/2607.20284v1-multimodal-large-language-models-for-remote-sensing-image-understanding-domain-specific-or-general-purpose",
+      "title": "Multimodal Large Language Models for Remote Sensing Image Understanding: Domain-Specific or General-Purpose?",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "遥感图像理解中的多模态大模型综述，与通用CV-MLLM对比",
+      "first_seen_at": "2026-07-29 21:00:04 UTC",
+      "updated_at": "2026-07-29 21:00:04 UTC"
+    },
+    {
+      "paper_id": "2607.21946v1",
+      "route": "202607/29/2607.21946v1-multi-agent-debate-and-visual-information-extraction-for-seephys-pro-a-1st-place-technical-report-from-icml-2026-ai4math-track-3-challenge",
+      "title": "Multi-Agent Debate and Visual Information Extraction for SeePhys Pro: A 1st-Place Technical Report from ICML 2026 AI4Math Track 3 Challenge",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "从物理问题图像中提取视觉信息",
+      "first_seen_at": "2026-07-29 21:00:04 UTC",
+      "updated_at": "2026-07-29 21:00:04 UTC"
+    }
+  ]
+}

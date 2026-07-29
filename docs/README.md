@@ -41,17 +41,17 @@
 <section class="dpr-home-dashboard-card dpr-home-report-card">
   <div class="dpr-home-dashboard-header">
     <div>
-      <span class="dpr-home-dashboard-kicker">2026-06-30 ~ 2026-07-29</span>
+      <span class="dpr-home-dashboard-kicker">2026-07-29</span>
       <h3 class="dpr-home-dashboard-title">今日汇总</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">共 31 篇</strong>
+    <strong class="dpr-home-dashboard-count">共 25 篇</strong>
   </div>
   <dl class="dpr-home-dashboard-stats">
     <div class="dpr-home-dashboard-stat"><dt>累计更新</dt><dd>1 次</dd></div>
-    <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>20</dd></div>
+    <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>14</dd></div>
     <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>11</dd></div>
   </dl>
-  <p class="dpr-home-dashboard-body">最近更新：2026-07-29 08:51:39 UTC<br>状态：成功</p>
+  <p class="dpr-home-dashboard-body">最近更新：2026-07-29 21:00:04 UTC<br>状态：成功</p>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-brief-card">
   <div class="dpr-home-dashboard-header">
@@ -62,7 +62,9 @@
     <strong class="dpr-home-dashboard-count">AI</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<p>过去一个月精选31篇论文，其中实时无源目标检测和开放词汇目标检测提案校准表现最佳（均9.0分）。建议优先阅读《Real-Time Source-Free Object Detection》与《ProCal》，分别聚焦无源域适应和推理时校准以提升检测性能。下一步可探索将这两项技术结合，同时关注速读列表中基于视觉语言模型的个性化定位与3D高斯语义占用等方向。</p>
+<p>今日对多视图理解与视觉生成两大方向的高分研究进行了深入解析，精读了两篇9分重磅论文。</p>
+<p>最值得关注的是多视图全景分割的扩散模型扩展方法（9.0）与基于游戏的RGB-T航拍目标检测数据生成框架（9.0），分别突破了标注稀缺与视角融合瓶颈。</p>
+<p>建议优先精读这两篇高分论文，其核心思路可迁移至自动驾驶、遥感等实际场景中的多模态数据利用。</p>
   </div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-deep-card">
@@ -71,12 +73,12 @@
       <span class="dpr-home-dashboard-kicker">今日累计</span>
       <h3 class="dpr-home-dashboard-title">精读推荐</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">20 篇</strong>
+    <strong class="dpr-home-dashboard-count">14 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Real-Time Source-Free Object Detection">Real-Time Source-Free Object Detection</span></li><li><span class="dpr-home-dashboard-paper-title" title="ProCal: Inference-Time Proposal Calibration for Open-Vocabulary Object Detection">ProCal: Inference-Time Proposal Calibration for Open-Vocabulary Object Detection</span></li><li><span class="dpr-home-dashboard-paper-title" title="IPDiff: Diffusion-driven ORSI Salient Object Detection with Information Reconstruction and Multi-Prior Guidance">IPDiff: Diffusion-driven ORSI Salient Object Detection with Information Reconstruction and Multi-Prior Guidance</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Extending a Large View Synthesis Model for Multi-view Panoptic Segmentation">Extending a Large View Synthesis Model for Multi-view Panoptic Segmentation</span></li><li><span class="dpr-home-dashboard-paper-title" title="G-MAD: A Game-Based Data Generation Framework for Multi-View RGB-T Aerial Object Detection">G-MAD: A Game-Based Data Generation Framework for Multi-View RGB-T Aerial Object Detection</span></li><li><span class="dpr-home-dashboard-paper-title" title="GaussianSeed: Hierarchical Gaussian Seeding for High-Resolution 3D Occupancy Prediction">GaussianSeed: Hierarchical Gaussian Seeding for High-Resolution 3D Occupancy Prediction</span></li></ul>
   </div>
-  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">cv <strong>20</strong></span></div>
+  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">cv <strong>14</strong></span></div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-skim-card">
   <div class="dpr-home-dashboard-header">
@@ -87,7 +89,7 @@
     <strong class="dpr-home-dashboard-count">11 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Personalized Object Identification and Localization via In-Context Inference with Vision-Language Models">Personalized Object Identification and Localization via In-Context Inference with Vision-Language Models</span></li><li><span class="dpr-home-dashboard-paper-title" title="Rethinking Generic Object Tracking Toward Human-Level Perceptual Intelligence">Rethinking Generic Object Tracking Toward Human-Level Perceptual Intelligence</span></li><li><span class="dpr-home-dashboard-paper-title" title="Bridging 3D Gaussians and Semantic Occupancy for Comprehensive Open-Vocabulary Scene Understanding from Unposed Images">Bridging 3D Gaussians and Semantic Occupancy for Comprehensive Open-Vocabulary Scene Understanding from Unposed Images</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Vision Non-Causal Trapezoidal Mamba: Eliminating Directional Scanning in Vision SSMs with Second-Order Dynamics">Vision Non-Causal Trapezoidal Mamba: Eliminating Directional Scanning in Vision SSMs with Second-Order Dynamics</span></li><li><span class="dpr-home-dashboard-paper-title" title="Vision as Unified Multimodal Generation">Vision as Unified Multimodal Generation</span></li><li><span class="dpr-home-dashboard-paper-title" title="MiLSD: A Micro Line-Segment Detector for Resource-Constrained Devices">MiLSD: A Micro Line-Segment Detector for Resource-Constrained Devices</span></li></ul>
   </div>
   <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">cv <strong>11</strong></span></div>
 </section>
