@@ -1,0 +1,505 @@
+{
+  "date": "20260630-20260729",
+  "date_label": "2026-06-30 ~ 2026-07-29",
+  "generated_at": "2026-07-29 08:51:39 UTC",
+  "recommend_exists": true,
+  "run_count": 1,
+  "papers": [
+    {
+      "paper_id": "2606.31834v1",
+      "route": "20260630-20260729/2606.31834v1-real-time-source-free-object-detection",
+      "title": "Real-Time Source-Free Object Detection",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "基于YOLOv10的无源域目标检测方法",
+      "first_seen_at": "2026-07-29 08:51:39 UTC",
+      "updated_at": "2026-07-29 08:51:39 UTC"
+    },
+    {
+      "paper_id": "2607.01759v1",
+      "route": "20260630-20260729/2607.01759v1-procal-inference-time-proposal-calibration-for-open-vocabulary-object-detection",
+      "title": "ProCal: Inference-Time Proposal Calibration for Open-Vocabulary Object Detection",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "开放词汇目标检测中的提案校准",
+      "first_seen_at": "2026-07-29 08:51:39 UTC",
+      "updated_at": "2026-07-29 08:51:39 UTC"
+    },
+    {
+      "paper_id": "2607.03696v1",
+      "route": "20260630-20260729/2607.03696v1-ipdiff-diffusion-driven-orsi-salient-object-detection-with-information-reconstruction-and-multi-prior-guidance",
+      "title": "IPDiff: Diffusion-driven ORSI Salient Object Detection with Information Reconstruction and Multi-Prior Guidance",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "基于扩散的遥感图像显著目标检测",
+      "first_seen_at": "2026-07-29 08:51:39 UTC",
+      "updated_at": "2026-07-29 08:51:39 UTC"
+    },
+    {
+      "paper_id": "2607.04125v1",
+      "route": "20260630-20260729/2607.04125v1-frfdet-efficient-uav-small-object-detection-with-symmetric-sampling-and-scalable-fusion",
+      "title": "FRFDet: Efficient UAV Small Object Detection with Symmetric Sampling and Scalable Fusion",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "无人机小目标检测，提出了对称采样和可扩展融合模块",
+      "first_seen_at": "2026-07-29 08:51:39 UTC",
+      "updated_at": "2026-07-29 08:51:39 UTC"
+    },
+    {
+      "paper_id": "2607.05148v1",
+      "route": "20260630-20260729/2607.05148v1-fully-rotation-equivariant-spectral-spatial-learning-for-multispectral-object-detection",
+      "title": "Fully Rotation-Equivariant Spectral-Spatial Learning for Multispectral Object Detection",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "多光谱目标检测，引入全旋转等变学习",
+      "first_seen_at": "2026-07-29 08:51:39 UTC",
+      "updated_at": "2026-07-29 08:51:39 UTC"
+    },
+    {
+      "paper_id": "2607.05176v1",
+      "route": "20260630-20260729/2607.05176v1-fsdc-detr-a-frequency-spatial-domain-collaborative-detr-for-small-object-detection",
+      "title": "FSDC-DETR: A Frequency-Spatial Domain Collaborative DETR for Small Object Detection",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "小目标检测，在DETR中引入频率-空间域协同",
+      "first_seen_at": "2026-07-29 08:51:39 UTC",
+      "updated_at": "2026-07-29 08:51:39 UTC"
+    },
+    {
+      "paper_id": "2607.07192v1",
+      "route": "20260630-20260729/2607.07192v1-prototype-anchored-generalized-manifold-regression-for-unknown-domain-object-detection",
+      "title": "Prototype-Anchored Generalized Manifold Regression for Unknown-Domain Object Detection",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "单域泛化目标检测",
+      "first_seen_at": "2026-07-29 08:51:39 UTC",
+      "updated_at": "2026-07-29 08:51:39 UTC"
+    },
+    {
+      "paper_id": "2607.08076v1",
+      "route": "20260630-20260729/2607.08076v1-ldfe-laplacian-decoupled-feature-enhancement-block-for-dual-stream-cnn-based-rgb-ir-object-detection",
+      "title": "LDFE: Laplacian Decoupled Feature Enhancement Block for Dual-Stream CNN-based RGB-IR Object Detection",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "RGB-IR目标检测特征融合",
+      "first_seen_at": "2026-07-29 08:51:39 UTC",
+      "updated_at": "2026-07-29 08:51:39 UTC"
+    },
+    {
+      "paper_id": "2607.08541v1",
+      "route": "20260630-20260729/2607.08541v1-vocadet-sample-driven-open-vocabulary-object-detection-and-segmentation-via-visual-tokenization-and-vector-database-retrieval",
+      "title": "VocaDet: Sample-Driven Open-Vocabulary Object Detection and Segmentation via Visual Tokenization and Vector Database Retrieval",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "基于视觉令牌化的开放词汇目标检测与分割",
+      "first_seen_at": "2026-07-29 08:51:39 UTC",
+      "updated_at": "2026-07-29 08:51:39 UTC"
+    },
+    {
+      "paper_id": "2607.09082v1",
+      "route": "20260630-20260729/2607.09082v1-rebase-reference-background-subspace-elimination-for-training-free-in-context-segmentation",
+      "title": "REBASE: Reference-Background Subspace Elimination for Training-Free In-Context Segmentation",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "无训练上下文分割",
+      "first_seen_at": "2026-07-29 08:51:39 UTC",
+      "updated_at": "2026-07-29 08:51:39 UTC"
+    },
+    {
+      "paper_id": "2607.09103v1",
+      "route": "20260630-20260729/2607.09103v1-equivariant-filter-for-high-performance-image-tracking-using-an-event-camera",
+      "title": "Equivariant Filter for High Performance Image Tracking using an Event Camera",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "基于等变滤波器的事件相机图像跟踪",
+      "first_seen_at": "2026-07-29 08:51:39 UTC",
+      "updated_at": "2026-07-29 08:51:39 UTC"
+    },
+    {
+      "paper_id": "2607.11732v1",
+      "route": "20260630-20260729/2607.11732v1-gfr-sam-training-free-referring-camouflaged-object-segmentation-via-cross-image-prompting",
+      "title": "GFR-SAM: Training-Free Referring Camouflaged Object Segmentation via Cross-Image Prompting",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "使用无训练跨图像提示的参照伪装目标分割",
+      "first_seen_at": "2026-07-29 08:51:39 UTC",
+      "updated_at": "2026-07-29 08:51:39 UTC"
+    },
+    {
+      "paper_id": "2607.13891v1",
+      "route": "20260630-20260729/2607.13891v1-pivot-a-variational-solution-for-real-time-large-scale-multi-object-detection-and-tracking-under-heavy-clutter",
+      "title": "PiVoT: A Variational Solution for Real-time Large-scale Multi-object Detection and Tracking under Heavy Clutter",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "点云多目标检测与跟踪",
+      "first_seen_at": "2026-07-29 08:51:39 UTC",
+      "updated_at": "2026-07-29 08:51:39 UTC"
+    },
+    {
+      "paper_id": "2607.15041v1",
+      "route": "20260630-20260729/2607.15041v1-weakly-supervised-rgb-d-salient-object-detection-via-sam-driven-pseudo-annotation-and-state-space-interaction-based-diffusion",
+      "title": "Weakly-Supervised RGB-D Salient Object Detection via SAM-driven Pseudo Annotation and State Space Interaction-based Diffusion",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "基于弱监督和SAM的显著目标检测",
+      "first_seen_at": "2026-07-29 08:51:39 UTC",
+      "updated_at": "2026-07-29 08:51:39 UTC"
+    },
+    {
+      "paper_id": "2607.18153v1",
+      "route": "20260630-20260729/2607.18153v1-robust-multimodal-dynamic-object-segmentation",
+      "title": "Robust Multimodal Dynamic Object Segmentation",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "动态物体分割框架",
+      "first_seen_at": "2026-07-29 08:51:39 UTC",
+      "updated_at": "2026-07-29 08:51:39 UTC"
+    },
+    {
+      "paper_id": "2607.19669v1",
+      "route": "20260630-20260729/2607.19669v1-a-unified-variational-framework-for-deep-weakly-supervised-image-segmentation",
+      "title": "A Unified Variational Framework for Deep Weakly Supervised Image Segmentation",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "弱监督图像分割",
+      "first_seen_at": "2026-07-29 08:51:39 UTC",
+      "updated_at": "2026-07-29 08:51:39 UTC"
+    },
+    {
+      "paper_id": "2607.22731v1",
+      "route": "20260630-20260729/2607.22731v1-calibration-free-3d-multi-camera-people-tracking-for-indoor-environment",
+      "title": "Calibration-Free 3D Multi-Camera People Tracking for Indoor Environment",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "多摄像机人物跟踪",
+      "first_seen_at": "2026-07-29 08:51:39 UTC",
+      "updated_at": "2026-07-29 08:51:39 UTC"
+    },
+    {
+      "paper_id": "2607.23530v1",
+      "route": "20260630-20260729/2607.23530v1-geometry-meets-semantics-fractional-gradient-stabilization-for-semantic-driven-bounding-box-optimization-in-visual-detection-tasks",
+      "title": "Geometry Meets Semantics: Fractional Gradient Stabilization for Semantic-Driven Bounding Box Optimization in Visual Detection Tasks",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "视觉检测中的语义驱动边界框优化",
+      "first_seen_at": "2026-07-29 08:51:39 UTC",
+      "updated_at": "2026-07-29 08:51:39 UTC"
+    },
+    {
+      "paper_id": "2607.23576v1",
+      "route": "20260630-20260729/2607.23576v1-neuromorphic-object-detection-an-in-depth-study-and-future-directions",
+      "title": "Neuromorphic Object Detection: An In-Depth Study and Future Directions",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "神经形态目标检测的综述与基准",
+      "first_seen_at": "2026-07-29 08:51:39 UTC",
+      "updated_at": "2026-07-29 08:51:39 UTC"
+    },
+    {
+      "paper_id": "2607.23981v1",
+      "route": "20260630-20260729/2607.23981v1-multimodal-semantic-probabilistic-objectness-for-open-world-object-detection",
+      "title": "Multimodal Semantic-Probabilistic Objectness for Open World Object Detection",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "开放世界目标检测与语义校准",
+      "first_seen_at": "2026-07-29 08:51:39 UTC",
+      "updated_at": "2026-07-29 08:51:39 UTC"
+    },
+    {
+      "paper_id": "2607.00357v1",
+      "route": "20260630-20260729/2607.00357v1-personalized-object-identification-and-localization-via-in-context-inference-with-vision-language-models",
+      "title": "Personalized Object Identification and Localization via In-Context Inference with Vision-Language Models",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "少样本目标检测，个性化目标定位",
+      "first_seen_at": "2026-07-29 08:51:39 UTC",
+      "updated_at": "2026-07-29 08:51:39 UTC"
+    },
+    {
+      "paper_id": "2607.01395v1",
+      "route": "20260630-20260729/2607.01395v1-rethinking-generic-object-tracking-toward-human-level-perceptual-intelligence",
+      "title": "Rethinking Generic Object Tracking Toward Human-Level Perceptual Intelligence",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "通用目标跟踪迈向人类水平智能",
+      "first_seen_at": "2026-07-29 08:51:39 UTC",
+      "updated_at": "2026-07-29 08:51:39 UTC"
+    },
+    {
+      "paper_id": "2607.01633v1",
+      "route": "20260630-20260729/2607.01633v1-bridging-3d-gaussians-and-semantic-occupancy-for-comprehensive-open-vocabulary-scene-understanding-from-unposed-images",
+      "title": "Bridging 3D Gaussians and Semantic Occupancy for Comprehensive Open-Vocabulary Scene Understanding from Unposed Images",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "开放词汇视觉识别与语义占据预测",
+      "first_seen_at": "2026-07-29 08:51:39 UTC",
+      "updated_at": "2026-07-29 08:51:39 UTC"
+    },
+    {
+      "paper_id": "2607.01757v1",
+      "route": "20260630-20260729/2607.01757v1-dl-vins-factory-a-modular-framework-for-learned-visual-front-ends-in-visual-inertial-slam",
+      "title": "DL-VINS-Factory: A Modular Framework for Learned Visual Front-Ends in Visual-Inertial SLAM",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "在视觉-惯性SLAM中集成学习型特征提取器",
+      "first_seen_at": "2026-07-29 08:51:39 UTC",
+      "updated_at": "2026-07-29 08:51:39 UTC"
+    },
+    {
+      "paper_id": "2607.00716v1",
+      "route": "20260630-20260729/2607.00716v1-partial-skeleton-visibility-for-action-recognition-a-constrained-field-of-view-approach",
+      "title": "Partial Skeleton Visibility for Action Recognition: A Constrained Field-of-View Approach",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "受限视野下的骨架动作识别",
+      "first_seen_at": "2026-07-29 08:51:39 UTC",
+      "updated_at": "2026-07-29 08:51:39 UTC"
+    },
+    {
+      "paper_id": "2607.01798v2",
+      "route": "20260630-20260729/2607.01798v2-approximate-attention-weighting-for-sustainable-fpga-based-vision-transformer-inference",
+      "title": "Approximate Attention Weighting for Sustainable FPGA-Based Vision Transformer Inference",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "基于FPGA的Vision Transformer推理",
+      "first_seen_at": "2026-07-29 08:51:39 UTC",
+      "updated_at": "2026-07-29 08:51:39 UTC"
+    },
+    {
+      "paper_id": "2607.02718v1",
+      "route": "20260630-20260729/2607.02718v1-diagnosing-aerial-view-object-detectors-with-foundational-image-generative-models",
+      "title": "Diagnosing Aerial-View Object Detectors with Foundational Image Generative Models",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "航拍车辆检测器诊断框架",
+      "first_seen_at": "2026-07-29 08:51:39 UTC",
+      "updated_at": "2026-07-29 08:51:39 UTC"
+    },
+    {
+      "paper_id": "2607.04262v1",
+      "route": "20260630-20260729/2607.04262v1-on-preserving-geometrical-invariance-for-superpixel-image-classification-using-graph-transformer",
+      "title": "On Preserving Geometrical Invariance for Superpixel Image Classification using Graph Transformer",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "基于图Transformer的超像素图像分类，保持几何不变性",
+      "first_seen_at": "2026-07-29 08:51:39 UTC",
+      "updated_at": "2026-07-29 08:51:39 UTC"
+    },
+    {
+      "paper_id": "2607.01100v1",
+      "route": "20260630-20260729/2607.01100v1-cpddnet-color-polarization-denoising-and-demosaicking-network",
+      "title": "CPDDNet: Color-Polarization Denoising and Demosaicking Network",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "彩色偏振图像联合去噪与去马赛克",
+      "first_seen_at": "2026-07-29 08:51:39 UTC",
+      "updated_at": "2026-07-29 08:51:39 UTC"
+    },
+    {
+      "paper_id": "2607.04144v1",
+      "route": "20260630-20260729/2607.04144v1-semantic-guided-progressive-object-removal-with-gaussian-splatting",
+      "title": "Semantic-Guided Progressive Object Removal with Gaussian Splatting",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "基于语义引导和高斯泼溅的3D物体移除",
+      "first_seen_at": "2026-07-29 08:51:39 UTC",
+      "updated_at": "2026-07-29 08:51:39 UTC"
+    },
+    {
+      "paper_id": "2607.05605v1",
+      "route": "20260630-20260729/2607.05605v1-patch-knowledge-transfer-for-efficient-ai-generated-image-quality-assessment",
+      "title": "Patch Knowledge Transfer for Efficient AI-Generated Image Quality Assessment",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "计算机视觉中高效的AI生成图像质量评估",
+      "first_seen_at": "2026-07-29 08:51:39 UTC",
+      "updated_at": "2026-07-29 08:51:39 UTC"
+    }
+  ]
+}
