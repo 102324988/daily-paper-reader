@@ -25,3 +25,60 @@ subscriptions:
     stage: A
     diff_threshold_pct: 15
   keyword_recall_mode: or
+  intent_profiles:
+    - tag: cv
+      description: 计算机视觉相关论文
+      enabled: true
+      paper_sources:
+        - arxiv
+      keywords:
+        - keyword: computer vision
+          keyword_cn: 计算机视觉
+          query: computer vision research papers
+        - keyword: object detection
+          keyword_cn: 目标检测
+          query: object detection methods
+        - keyword: image segmentation
+          keyword_cn: 图像分割
+          query: image segmentation techniques
+        - keyword: visual recognition
+          keyword_cn: 视觉识别
+          query: visual recognition algorithms
+        - keyword: feature extraction
+          keyword_cn: 特征提取
+          query: feature extraction in computer vision
+        - keyword: visual tracking
+          keyword_cn: 视觉跟踪
+          query: visual tracking surveys
+      intent_queries:
+        - query: Find papers on computer vision
+          query_cn: 查找计算机视觉论文
+          enabled: true
+          source: manual
+          note: ''
+        - query: Retrieve computer vision research articles
+          query_cn: 检索计算机视觉研究文章
+          enabled: true
+          source: manual
+          note: ''
+        - query: Search for state of the art in computer vision
+          query_cn: 搜索计算机视觉最新进展
+          enabled: true
+          source: manual
+          note: ''
+      updated_at: '2026-07-29T08:24:15.367Z'
+source_backends:
+  arxiv:
+    papers_table: arxiv_papers
+    use_vector_rpc: true
+    vector_rpc: match_arxiv_papers
+    vector_rpc_exact: match_arxiv_papers_exact
+    use_bm25_rpc: true
+    bm25_rpc: match_arxiv_papers_bm25
+    sync_table: arxiv_sync_status
+    sync_success_value: success
+    schema: public
+    kind: supabase
+    enabled: true
+    url: https://lyucdwgefyfbmaiopjbk.supabase.co
+    anon_key: sb_publishable_lX-oi64Uxyd7SIVv3_w2Uw_MTOojeKq
