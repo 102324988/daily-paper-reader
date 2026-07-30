@@ -1,0 +1,281 @@
+{
+  "date": "20260730",
+  "date_label": "",
+  "generated_at": "2026-07-30 21:40:36 UTC",
+  "recommend_exists": true,
+  "run_count": 1,
+  "papers": [
+    {
+      "paper_id": "2607.20947v1",
+      "route": "202607/30/2607.20947v1-reco-region-aware-compensation-for-extrinsic-perturbations-in-roadside-3d-detection",
+      "title": "RECO: Region-Aware Compensation for Extrinsic Perturbations in Roadside 3D Detection",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "面向路边3D检测的区域感知补偿",
+      "first_seen_at": "2026-07-30 21:40:36 UTC",
+      "updated_at": "2026-07-30 21:40:36 UTC"
+    },
+    {
+      "paper_id": "2607.24424v1",
+      "route": "202607/30/2607.24424v1-mavie-a-multi-scale-adaptive-vision-encoder-for-fine-grained-visual-perception-and-efficient-multimodal-reasoning",
+      "title": "MAViE: A Multi-scale Adaptive Vision Encoder for Fine-grained Visual Perception and Efficient Multimodal Reasoning",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "用于细粒度特征提取的多尺度自适应视觉编码器",
+      "first_seen_at": "2026-07-30 21:40:36 UTC",
+      "updated_at": "2026-07-30 21:40:36 UTC"
+    },
+    {
+      "paper_id": "2607.25392v1",
+      "route": "202607/30/2607.25392v1-rdvsv2-a-large-scale-benchmark-for-rgb-d-video-salient-object-detection",
+      "title": "RDVSv2: A Large-scale Benchmark for RGB-D Video Salient Object Detection",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "大规模RGB-D视频显著目标检测基准",
+      "first_seen_at": "2026-07-30 21:40:36 UTC",
+      "updated_at": "2026-07-30 21:40:36 UTC"
+    },
+    {
+      "paper_id": "2607.25531v1",
+      "route": "202607/30/2607.25531v1-multi-scale-structural-features-for-continual-comprehensible-visual-recognition-in-a-developmental-learning-framework",
+      "title": "Multi-Scale Structural Features for Continual, Comprehensible Visual Recognition in a Developmental Learning Framework",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "持续学习的视觉识别算法",
+      "first_seen_at": "2026-07-30 21:40:36 UTC",
+      "updated_at": "2026-07-30 21:40:36 UTC"
+    },
+    {
+      "paper_id": "2607.26107v1",
+      "route": "202607/30/2607.26107v1-traceclip-recovering-local-semantics-from-patch-to-cls-contributions",
+      "title": "TraceCLIP: Recovering Local Semantics from Patch-to-CLS Contributions",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "使用CLIP进行开放词汇语义分割的方法",
+      "first_seen_at": "2026-07-30 21:40:36 UTC",
+      "updated_at": "2026-07-30 21:40:36 UTC"
+    },
+    {
+      "paper_id": "2607.26565v1",
+      "route": "202607/30/2607.26565v1-representation-trajectories-matters-complementary-evidence-for-ood-detection-and-image-classification",
+      "title": "Representation Trajectories Matters: Complementary Evidence for OOD Detection and Image Classification",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "利用表示轨迹进行OOD检测和图像分类",
+      "first_seen_at": "2026-07-30 21:40:36 UTC",
+      "updated_at": "2026-07-30 21:40:36 UTC"
+    },
+    {
+      "paper_id": "2607.09888v1",
+      "route": "202607/30/2607.09888v1-bridging-the-catalog-to-real-gap-scalable-product-recognition-via-multi-stage-contrastive-learning",
+      "title": "Bridging the Catalog-to-Real Gap: Scalable Product Recognition via Multi-Stage Contrastive Learning",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "基于对比学习的商品视觉识别",
+      "first_seen_at": "2026-07-30 21:40:36 UTC",
+      "updated_at": "2026-07-30 21:40:36 UTC"
+    },
+    {
+      "paper_id": "2607.10749v1",
+      "route": "202607/30/2607.10749v1-water-reflection-detection-using-symmetric-attention",
+      "title": "Water Reflection Detection Using Symmetric Attention",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "通过检测水面反射提升目标检测与分割性能",
+      "first_seen_at": "2026-07-30 21:40:36 UTC",
+      "updated_at": "2026-07-30 21:40:36 UTC"
+    },
+    {
+      "paper_id": "2607.10879v2",
+      "route": "202607/30/2607.10879v2-3d-scene-graph-prediction-generating-hierarchical-models-from-partially-observed-environments",
+      "title": "3D Scene Graph Prediction: Generating Hierarchical Models from Partially Observed Environments",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "部分观测环境下的3D场景图预测",
+      "first_seen_at": "2026-07-30 21:40:36 UTC",
+      "updated_at": "2026-07-30 21:40:36 UTC"
+    },
+    {
+      "paper_id": "2607.16309v1",
+      "route": "202607/30/2607.16309v1-saaf-scene-specific-ambiguity-aware-3d-language-fields-towards-interactive-real-world-object-retrieval",
+      "title": "SaaF: Scene-Specific Ambiguity-Aware 3D Language Fields towards Interactive Real-World Object Retrieval",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "自然语言交互式物体检索",
+      "first_seen_at": "2026-07-30 21:40:36 UTC",
+      "updated_at": "2026-07-30 21:40:36 UTC"
+    },
+    {
+      "paper_id": "2607.22200v1",
+      "route": "202607/30/2607.22200v1-layoutlite-token-level-implicit-layout-analysis-for-efficient-document-ocr",
+      "title": "LayoutLite: Token-Level Implicit Layout Analysis for Efficient Document OCR",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "令牌级隐式布局分析用于高效OCR",
+      "first_seen_at": "2026-07-30 21:40:36 UTC",
+      "updated_at": "2026-07-30 21:40:36 UTC"
+    },
+    {
+      "paper_id": "2607.22212v1",
+      "route": "202607/30/2607.22212v1-deep-convolutional-large-margin-ellp-svdd-for-visual-anomaly-detection",
+      "title": "Deep Convolutional Large-Margin $\\ell_p$-SVDD for Visual Anomaly Detection",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "基于深度大间隔学习的视觉异常检测与新颖性识别",
+      "first_seen_at": "2026-07-30 21:40:36 UTC",
+      "updated_at": "2026-07-30 21:40:36 UTC"
+    },
+    {
+      "paper_id": "2607.22226v1",
+      "route": "202607/30/2607.22226v1-offline-vision-language-navigation-with-geometric-goal-localization-for-outdoor-environments",
+      "title": "Offline Vision-Language Navigation with Geometric Goal Localization for Outdoor Environments",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "视觉语言导航涉及视觉识别以实现目标定位",
+      "first_seen_at": "2026-07-30 21:40:36 UTC",
+      "updated_at": "2026-07-30 21:40:36 UTC"
+    },
+    {
+      "paper_id": "2607.23684v1",
+      "route": "202607/30/2607.23684v1-towards-ultrafast-depth-sensing-via-active-event-based-stereo-vision",
+      "title": "Towards Ultrafast Depth Sensing Via Active Event-based Stereo Vision",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "使用事件相机的新型深度感知范式，属于计算机视觉领域",
+      "first_seen_at": "2026-07-30 21:40:36 UTC",
+      "updated_at": "2026-07-30 21:40:36 UTC"
+    },
+    {
+      "paper_id": "2607.22087v1",
+      "route": "202607/30/2607.22087v1-fair-feature-augmented-implicit-regularization-for-ai-generated-fake-image-detection",
+      "title": "FAIR: Feature-Augmented Implicit Regularization for AI-generated Fake Image Detection",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "利用场景组成结构先验进行特征增强的图像检测",
+      "first_seen_at": "2026-07-30 21:40:36 UTC",
+      "updated_at": "2026-07-30 21:40:36 UTC"
+    },
+    {
+      "paper_id": "2607.24016v2",
+      "route": "202607/30/2607.24016v2-dailybench-a-unified-benchmark-for-ai-generated-and-manipulated-images-from-modern-generative-models",
+      "title": "DailyBench: A Unified Benchmark for AI-Generated and Manipulated Images from Modern Generative Models",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "计算机视觉中AI生成图像检测的基准",
+      "first_seen_at": "2026-07-30 21:40:36 UTC",
+      "updated_at": "2026-07-30 21:40:36 UTC"
+    },
+    {
+      "paper_id": "2607.26426v1",
+      "route": "202607/30/2607.26426v1-decoder-guided-lossy-contour-coding-via-anchor-refinement",
+      "title": "Decoder-Guided Lossy Contour Coding Via Anchor Refinement",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "面向接收端视觉任务的轮廓编码",
+      "first_seen_at": "2026-07-30 21:40:36 UTC",
+      "updated_at": "2026-07-30 21:40:36 UTC"
+    }
+  ]
+}

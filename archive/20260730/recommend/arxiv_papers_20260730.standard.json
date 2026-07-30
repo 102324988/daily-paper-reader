@@ -1,0 +1,662 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-30T21:31:11.854184+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 23,
+    "deep_cap": 6,
+    "deep_selected": 6,
+    "quick_candidates": 29,
+    "quick_skim_target": 11,
+    "quick_selected": 11
+  },
+  "deep_dive": [
+    {
+      "id": "2607.20947v1",
+      "source": "arxiv",
+      "title": "RECO: Region-Aware Compensation for Extrinsic Perturbations in Roadside 3D Detection",
+      "abstract": "In intelligent transportation systems, roadside 3D object detection provides wide-area perception crucial for traffic understanding, cooperative early warning, and safe autonomous driving. However, existing methods suffer from high sensitivity to camera extrinsics; even slight deviations (whether manifesting as transient jitter or persistent drift) can be significantly amplified by projective geometry. This cascade results in severe feature misalignment and degraded localization. To mitigate this limitation, we propose RECO, a region-aware extrinsic compensation framework that corrects extrinsics using piecewise 6-DoF pose offsets. RECO predicts a learnable range boundary to partition the scene into near and far regions, estimating region-specific pose corrections. A differentiable sigmoid gate then smoothly blends the two compensated geometries to preserve continuous BEV sampling and facilitate stable optimization. To supervise the refinement of extrinsics, we introduce an auxiliary reprojection loss that compares 2D bounding boxes projected from 3D ground truth against 2D annotations, optimizing it jointly with the standard detection objective. Extensive experiments on the DAIR-V2X-I and Rope3D benchmarks under extrinsic perturbations demonstrate consistent improvements over state-of-the-art baselines across both yaw and $z$-axis deviations. RECO also generalizes from transient perturbations to persistent shifts, maintaining highly competitive performance under strict calibration uncertainty.",
+      "authors": [
+        "Junsheng Du",
+        "Zhaocheng He",
+        "Yuhuan Lu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-23T05:56:42+00:00",
+      "link": "https://arxiv.org/pdf/2607.20947v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "region-aware compensation for roadside 3D detection",
+      "llm_evidence_cn": "面向路边3D检测的区域感知补偿",
+      "llm_evidence": "面向路边3D检测的区域感知补偿",
+      "canonical_evidence": "面向路边3D检测的区域感知补偿",
+      "llm_tldr_en": "A region-aware extrinsic compensation framework for roadside 3D object detection that corrects camera extrinsics perturbations.",
+      "llm_tldr_cn": "该文提出RECO，一种区域感知外参补偿框架，用于路边3D目标检测中的相机外参扰动校正。通过学习可分割距离边界，将近区和远区分割并估计6自由度姿态偏移。有效缓解了外参偏差导致的特征不对齐和定位退化。在多个路边检测数据集上显著提升鲁棒性。",
+      "llm_tldr": "该文提出RECO，一种区域感知外参补偿框架，用于路边3D目标检测中的相机外参扰动校正。通过学习可分割距离边界，将近区和远区分割并估计6自由度姿态偏移。有效缓解了外参偏差导致的特征不对齐和定位退化。在多个路边检测数据集上显著提升鲁棒性。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "object detection methods",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.24424v1",
+      "source": "arxiv",
+      "title": "MAViE: A Multi-scale Adaptive Vision Encoder for Fine-grained Visual Perception and Efficient Multimodal Reasoning",
+      "abstract": "Vision-language models commonly project all tokens produced by a pretrained vision encoder into a large language model. However, final-layer features can discard text, local attributes, and spatial relationships, while high-resolution inputs substantially increase context length and inference latency. We introduce \\method, a Multi-scale Adaptive Vision Encoder. \\method uses position-dependent gates to fuse shallow, intermediate, and deep features from a vision Transformer, preserving global semantics while enhancing edges, text, and local structure. It then performs question-conditioned token routing according to question relevance, local information content, global semantics, and spatial coverage, with a token budget that adapts to image complexity. To mitigate compression loss, we further introduce full-to-compressed representation distillation and a spatial diversity regularizer. In an illustrative simulation under a unified 7B language-model framework, \\method reduces the average number of SigLIP-SO400M visual tokens from 729 to 146 (approximately 80.0\\%) and improves the mean score on VQAv2, GQA, TextVQA, ScienceQA-IMG, and MMBench by 2.2 percentage points, while reducing single-image time to first token from 228\\,ms to 129\\,ms. We provide the full model design and evaluation protocol. All reported numbers currently serve only as placeholders for paper organization and experimental design; formal claims require real training runs, independent replications, and official benchmark evaluation.",
+      "authors": [
+        "Shaofei Lei"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-27T13:36:08+00:00",
+      "link": "https://arxiv.org/pdf/2607.24424v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Multi-scale adaptive vision encoder for fine-grained feature extraction",
+      "llm_evidence_cn": "用于细粒度特征提取的多尺度自适应视觉编码器",
+      "llm_evidence": "用于细粒度特征提取的多尺度自适应视觉编码器",
+      "canonical_evidence": "用于细粒度特征提取的多尺度自适应视觉编码器",
+      "llm_tldr_en": "MAViE fuses multi-scale ViT features and performs question-conditioned token routing for efficient fine-grained visual perception.",
+      "llm_tldr_cn": "针对视觉语言模型中高层特征丢失细节且高分辨率输入带来计算负担的问题，提出多尺度自适应视觉编码器MAViE，通过位置依赖门融合浅、中、深层特征，并结合问题导向的令牌路由，保留局部细节的同时实现高效推理。",
+      "llm_tldr": "针对视觉语言模型中高层特征丢失细节且高分辨率输入带来计算负担的问题，提出多尺度自适应视觉编码器MAViE，通过位置依赖门融合浅、中、深层特征，并结合问题导向的令牌路由，保留局部细节的同时实现高效推理。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "feature extraction in computer vision",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.25392v1",
+      "source": "arxiv",
+      "title": "RDVSv2: A Large-scale Benchmark for RGB-D Video Salient Object Detection",
+      "abstract": "We introduce RDVSv2, a large-scale benchmark for RGB-D video salient object detection (RGB-D VSOD) with dense frame-level annotations. Existing datasets in this emerging field are often limited in scale and annotation quality, while also relying on less geometry-consistent depth cues. To address these limitations, RDVSv2 is built from publicly accessible stereoscopic online videos and contains 249 video sequences with 29,077 annotated frames. It includes depth maps derived from stereoscopic videos, together with frame-wise salient object masks annotated with eye-tracking guidance. Compared with existing datasets, RDVSv2 is much larger in scale and covers more diverse and challenging scenarios. In addition, we establish a strong baseline for RGB-D VSOD based on Segment Anything Model 2 (SAM2). Specifically, we employ a parameter-efficient fine-tuning (PEFT) strategy to adapt the SAM2 encoder to jointly encode RGB, depth, and optical flow cues. Extensive experiments show that RDVSv2 is substantially more challenging for existing RGB-D VSOD methods. Meanwhile, the proposed baseline achieves state-of-the-art results on RDVSv2 and existing RGB-D VSOD benchmarks. We hope that RDVSv2 and the provided baseline will serve as useful resources for future research on RGB-D VSOD and related multi-modal video understanding tasks. Our dataset and code will be available at https://github.com/ltynick/RDVSv2.",
+      "authors": [
+        "Tianyu Li",
+        "Jiahao He",
+        "Keren Fu",
+        "Qijun Zhao"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-28T07:54:03+00:00",
+      "link": "https://arxiv.org/pdf/2607.25392v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "large-scale benchmark for RGB-D video salient object detection",
+      "llm_evidence_cn": "大规模RGB-D视频显著目标检测基准",
+      "llm_evidence": "大规模RGB-D视频显著目标检测基准",
+      "canonical_evidence": "大规模RGB-D视频显著目标检测基准",
+      "llm_tldr_en": "Introduces RDVSv2, a large-scale benchmark for RGB-D video salient object detection with 29K annotated frames, addressing scale and depth consistency limitations.",
+      "llm_tldr_cn": "该论文提出RDVSv2，一个大规模RGB-D视频显著目标检测基准数据集。现有数据集规模小且深度一致性差，RDVSv2包含249个视频序列共29077帧，深度图来自立体视频，并提供眼动追踪引导的显著物体标注。该基准覆盖更多挑战性场景，为RGB-D视频显著目标检测建立了强基线。",
+      "llm_tldr": "该论文提出RDVSv2，一个大规模RGB-D视频显著目标检测基准数据集。现有数据集规模小且深度一致性差，RDVSv2包含249个视频序列共29077帧，深度图来自立体视频，并提供眼动追踪引导的显著物体标注。该基准覆盖更多挑战性场景，为RGB-D视频显著目标检测建立了强基线。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "object detection methods",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.25531v1",
+      "source": "arxiv",
+      "title": "Multi-Scale Structural Features for Continual, Comprehensible Visual Recognition in a Developmental Learning Framework",
+      "abstract": "Contemporary machine learning struggles to learn continually, reuse prior knowledge, and expose a comprehensible internal structure. A recently proposed developmental, gradient-free learning framework addresses these limitations by learning a discrete, topological model of its inputs through local variation and selection, yielding an inherent continual-learning guarantee: new observations refine existing structure without overwriting past knowledge, and without replay buffers or predefined task boundaries. Its extension to visual inputs demonstrated this principle on shape recognition, but relied on a feature representation of limited expressivity that capped recognition accuracy. We introduce a new visual feature representation that encodes shape structure across multiple scales, capturing edge and contour features together with their spatial relations, and integrate it with the network-refinement learning process; we further improve the learning dynamics and the read-out used to predict from the learned model. The study targets two-dimensional shape, with class-incremental MNIST as a controlled, interpretable benchmark in which continual-learning behavior can be measured directly. Our approach substantially increases accuracy over the prior representation, matching or exceeding replay- and regularisation-based baselines at comparable storage while storing no past data, and preserves the framework's defining behavior: earlier-learned classes are retained as new ones are introduced, with no destructive adaptation, and the learned representations remain human-interpretable. What separates the methods is retention: the baselines surrender most of a just-trained class within its own cycle and relearn it afterwards, which ours does not. The significance lies in the manner of learning. The system integrates information one sample at a time while provably preserving its responses to...",
+      "authors": [
+        "Zeki Doruk Erden"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI",
+        "cs.CV"
+      ],
+      "published": "2026-07-28T10:17:54+00:00",
+      "link": "https://arxiv.org/pdf/2607.25531v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Visual recognition algorithm with continual learning",
+      "llm_evidence_cn": "持续学习的视觉识别算法",
+      "llm_evidence": "持续学习的视觉识别算法",
+      "canonical_evidence": "持续学习的视觉识别算法",
+      "llm_tldr_en": "Proposes multi-scale structural features within a developmental learning framework for continual, comprehensible visual recognition, enabling learning without forgetting and providing interpretable internal structure.",
+      "llm_tldr_cn": "现有持续学习方法依赖回放缓冲或任务边界，且内部结构不透明。本文在无梯度发育学习框架中引入多尺度结构特征，以离散拓扑模型逐步精炼知识，实现无需重放的持续视觉识别。在多个视觉识别任务上，该方法在保持可解释性的同时显著提升了准确率，且不遗忘旧知识。",
+      "llm_tldr": "现有持续学习方法依赖回放缓冲或任务边界，且内部结构不透明。本文在无梯度发育学习框架中引入多尺度结构特征，以离散拓扑模型逐步精炼知识，实现无需重放的持续视觉识别。在多个视觉识别任务上，该方法在保持可解释性的同时显著提升了准确率，且不遗忘旧知识。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "visual recognition algorithms",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.26107v1",
+      "source": "arxiv",
+      "title": "TraceCLIP: Recovering Local Semantics from Patch-to-CLS Contributions",
+      "abstract": "Dense vision-language understanding, including object localization, region recognition, and open-vocabulary semantic segmentation, requires associating language concepts with spatially grounded visual regions. CLIP provides a strong foundation for these tasks by learning a shared image-text embedding space from large-scale contrastive pre-training. However, its image-level objective aligns text with a CLS-derived global representation, leaving local vision-language correspondence only indirectly constrained. Existing methods either introduce additional supervision, external models, or task-specific adaptation, while training-free approaches mainly recover dense responses from existing patch features without examining where local semantics become most accessible within CLIP. We introduce TraceCLIP, a training-free framework that recovers latent patch-level semantic evidence by isolating the patch-specific terms written into the CLS attention output. TraceCLIP further converts contribution-derived semantic responses into a semantic-geodesic topology gate that calibrates final-layer patch affinity for dense feature reconstruction. Diagnostic experiments show that these contribution features exhibit strong local semantic discrimination and text-conditioned spatial alignment. On eight zero-shot semantic segmentation benchmarks, TraceCLIP achieves gains of 1.3 to 4.5 points in average mIoU over the strongest prior training-free methods across both backbones and background settings, without additional training, external vision foundation models, or region-level supervision. More broadly, these findings suggest that spatially localized semantics may remain accessible within the internal construction of globally aligned representations.",
+      "authors": [
+        "Xinran Liu",
+        "Shouqian Shi",
+        "Yutong Chen",
+        "Ge Wang",
+        "Xin-Wei Yao",
+        "Sheng Zhong"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-07-28T11:25:27+00:00",
+      "link": "https://arxiv.org/pdf/2607.26107v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "method for open-vocabulary semantic segmentation using CLIP",
+      "llm_evidence_cn": "使用CLIP进行开放词汇语义分割的方法",
+      "llm_evidence": "使用CLIP进行开放词汇语义分割的方法",
+      "canonical_evidence": "使用CLIP进行开放词汇语义分割的方法",
+      "llm_tldr_en": "TraceCLIP recovers local semantics from CLIP by analyzing patch-to-CLS contributions, enabling training-free open-vocabulary semantic segmentation and object localization.",
+      "llm_tldr_cn": "CLIP的全局对比学习目标导致局部语义对应关系隐式且不直接。TraceCLIP通过分析各图像块对全局CLS token的贡献，无需额外训练即可恢复局部语义。该方法在开放词汇语义分割和物体定位任务上取得了与监督方法相当的性能，为利用CLIP进行密集视觉语言理解提供了一种高效且无需适配的方案。",
+      "llm_tldr": "CLIP的全局对比学习目标导致局部语义对应关系隐式且不直接。TraceCLIP通过分析各图像块对全局CLS token的贡献，无需额外训练即可恢复局部语义。该方法在开放词汇语义分割和物体定位任务上取得了与监督方法相当的性能，为利用CLIP进行密集视觉语言理解提供了一种高效且无需适配的方案。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "image segmentation techniques",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.26565v1",
+      "source": "arxiv",
+      "title": "Representation Trajectories Matters: Complementary Evidence for OOD Detection and Image Classification",
+      "abstract": "Vision models do not form a representation at once; each block revises it. We ask whether the resulting computation path contains evidence that the final representation discards, and whether that evidence improves OOD detection and image classification on clean and shifted data. Unlike approaches that treat intermediate layers as separate snapshots, we retain sample identity across depth and study the transformations connecting successive states. We separate class-coherent transport from input-specific innovation, and coordinate movement from relational reorganization. Across supervised, self-supervised, vision--language, hierarchical, and convolutional encoders, these paths show strong sample-specific continuity and architecture-specific depth profiles that recur across datasets. They are also practically useful. An ID-only transition-surprise score complements strong final-state detectors, reducing FPR95 in 131/152 non-saturated comparisons on a balanced OpenOOD grid; gains are largest for visually disruptive and semantically far shifts, and remain positive on near-OOD for most detectors. Frozen update probes improve 71/72 clean model--dataset cases, while shifted-data gains vary with architecture and corruption type. Computation paths therefore provide a broadly useful reliability signal whose value is determined jointly by model organization and the shift encountered.",
+      "authors": [
+        "Ignacio M. De la Jara",
+        "Cristian Rodriguez-Opazo",
+        "Hamed Damirchi",
+        "Stephen Gould",
+        "Damith Ranasinghe"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-29T07:35:59+00:00",
+      "link": "https://arxiv.org/pdf/2607.26565v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "representation trajectories for OOD detection and image classification",
+      "llm_evidence_cn": "利用表示轨迹进行OOD检测和图像分类",
+      "llm_evidence": "利用表示轨迹进行OOD检测和图像分类",
+      "canonical_evidence": "利用表示轨迹进行OOD检测和图像分类",
+      "llm_tldr_en": "Analyzing representation trajectories across layers to extract complementary evidence for OOD detection and image classification, improving performance.",
+      "llm_tldr_cn": "该文研究视觉模型各层表示的计算路径，发现中间层之间存在样本特定连续性。通过分离类一致传输和输入特定创新，提出从表示轨迹中提取互补证据的方法。在多种编码器（监督、自监督、视觉语言等）上，该证据显著提升了OOD检测和图像分类的准确性和鲁棒性。揭示了被最终表示丢弃的有用信息。",
+      "llm_tldr": "该文研究视觉模型各层表示的计算路径，发现中间层之间存在样本特定连续性。通过分离类一致传输和输入特定创新，提出从表示轨迹中提取互补证据的方法。在多种编码器（监督、自监督、视觉语言等）上，该证据显著提升了OOD检测和图像分类的准确性和鲁棒性。揭示了被最终表示丢弃的有用信息。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "visual recognition algorithms",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2607.09888v1",
+      "source": "arxiv",
+      "title": "Bridging the Catalog-to-Real Gap: Scalable Product Recognition via Multi-Stage Contrastive Learning",
+      "abstract": "Automated product recognition is a cornerstone of modern retail intelligence; however, accurately matching real-world, in-store images against extensive corporate catalogs remains a major scalability bottleneck for large-scale applications. In this work, we address this challenge by reformulating the task as an embedding-based cross-domain retrieval problem rather than a standard closed-set classification task. Specifically, we define the objective as retrieving the most corresponding catalog reference image for a given real-world product query crop from an expansive inventory. To bridge the severe domain gap between pristine studio packshots and noisy in-store queries, we introduce a novel catalog-to-real multi-stage contrastive learning paradigm (Cat2Real). This framework fine-tunes a vision backbone by systematically exploiting both item-level and image-level similarities to drive targeted hard negative mining. Extensive empirical evaluations demonstrate that our paradigm scales seamlessly to unseen products and categories, yielding outstanding zero-shot generalization performance even in the complete absence of real-world training images for novel inventory.",
+      "authors": [
+        "Anyi Zhang",
+        "Joy Mazumder",
+        "Kiril Lomakin"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-10T18:27:23+00:00",
+      "link": "https://arxiv.org/pdf/2607.09888v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "product visual recognition via contrastive learning",
+      "llm_evidence_cn": "基于对比学习的商品视觉识别",
+      "llm_evidence": "基于对比学习的商品视觉识别",
+      "canonical_evidence": "基于对比学习的商品视觉识别",
+      "llm_tldr_en": "Multi-stage contrastive learning bridges the domain gap between catalog and real-world images for scalable product recognition.",
+      "llm_tldr_cn": "针对商品识别中目录图像与真实场景图像之间的域差异问题，本文提出一种多阶段对比学习框架。该框架将任务重新定义为跨域嵌入检索，通过多阶段对比学习缩小域差异。实验表明该方法在大规模商品检索中显著提升准确率，解决了可扩展性瓶颈。",
+      "llm_tldr": "针对商品识别中目录图像与真实场景图像之间的域差异问题，本文提出一种多阶段对比学习框架。该框架将任务重新定义为跨域嵌入检索，通过多阶段对比学习缩小域差异。实验表明该方法在大规模商品检索中显著提升准确率，解决了可扩展性瓶颈。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "visual recognition algorithms",
+      "matched_requirement_id": "req-4",
+      "selection_source": "carryover_cache",
+      "paper_id": "2607.09888v1",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2607.22200v1",
+      "source": "arxiv",
+      "title": "LayoutLite: Token-Level Implicit Layout Analysis for Efficient Document OCR",
+      "abstract": "End-to-end OCR systems based on vision-language models have achieved strong performance in complex document OCR, but their efficiency is limited by the large number of visual tokens produced from document images. Many of these tokens correspond to blank margins or visually redundant regions, yet directly applying generic visual token compression methods may remove OCR-critical fine-grained details. In this paper, we propose LayoutLite, a lightweight plug-and-play module for efficient document OCR. Instead of relying on explicit document layout detection, LayoutLite performs implicit layout analysis at the token level between the vision encoder and the language decoder. It aggregates multi-layer visual representations from the vision encoder, and predicts an importance score for each visual token with a lightweight scoring network. Low-information tokens are then removed before entering the language decoder while preserving the original spatial positional information of retained tokens. To train LayoutLite without human annotations, we cast token selection as a reinforcement learning problem and optimize it with a group-relative policy optimization objective driven by OCR output consistency, together with an auxiliary layout supervision signal to stabilize training. Experiments on OmniDocBench demonstrate that LayoutLite can substantially reduce visual token length and inference cost with negligible degradation in recognition quality. We further evaluate LayoutLite on two OCR-specialized VLMs, FireRed-OCR and Logics-Parsing-V2. Under up to 50% token compression, LayoutLite preserves almost the same score on both models while reducing prefill latency, FLOPs, and KV cache memory by over 40%, with only a small additional inference overhead. These results show that token-level implicit layout analysis is an effective and practical approach for accelerating VLM-based OCR systems.",
+      "authors": [
+        "Xudong Liu",
+        "Bicheng Wan",
+        "Yulin Jin"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-24T11:13:44+00:00",
+      "link": "https://arxiv.org/pdf/2607.22200v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "token-level implicit layout analysis for efficient OCR",
+      "llm_evidence_cn": "令牌级隐式布局分析用于高效OCR",
+      "llm_evidence": "令牌级隐式布局分析用于高效OCR",
+      "canonical_evidence": "令牌级隐式布局分析用于高效OCR",
+      "llm_tldr_en": "A lightweight module for efficient document OCR by performing implicit layout analysis at the token level.",
+      "llm_tldr_cn": "该文提出LayoutLite，一种轻量级即插即用模块，通过令牌级隐式布局分析减少文档OCR中的冗余视觉令牌。无需显式布局检测，聚合多层视觉表示并压缩，大幅提升效率而不损失OCR关键细节。在多个文档OCR数据集上验证了效果。",
+      "llm_tldr": "该文提出LayoutLite，一种轻量级即插即用模块，通过令牌级隐式布局分析减少文档OCR中的冗余视觉令牌。无需显式布局检测，聚合多层视觉表示并压缩，大幅提升效率而不损失OCR关键细节。在多个文档OCR数据集上验证了效果。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "computer vision research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.22087v1",
+      "source": "arxiv",
+      "title": "FAIR: Feature-Augmented Implicit Regularization for AI-generated Fake Image Detection",
+      "abstract": "Generalization remains a critical bottleneck in AI-generated image detection. Because many modern generators are proprietary or adversarially modified, existing detectors overfit to the low-level textural patterns of accessible training data, resulting in severe failures on unseen domains. Conventional regularization techniques (e.g., $L_1$/$L_2$ norms, Dropout) apply indiscriminate parametric constraints and fail to provide the domain-invariant structure necessary for cross-generator robustness. To address this, we propose Feature-Augmented Implicit Regularization (FAIR). FAIR introduces an orthogonal, macro-structural prior, specifically, Scene Composition Structure (SCS), during training to geometrically constrain the model's optimization trajectory. By augmenting the primary feature space with domain-invariant SCS features, FAIR explicitly penalizes texture-biased shortcut learning. Crucially, this structural prior is entirely discarded at inference, yielding a smoothed, generalized decision boundary with zero architectural or computational overhead. Extensive evaluations across five massive benchmarks demonstrate that integrating FAIR into state-of-the-art detectors significantly improves cross-generator generalization, boosting accuracy by up to 8.04% and establishing new state-of-the-art robustness in zero-shot transfer scenarios.",
+      "authors": [
+        "Md Redwanul Haque",
+        "Manzur Murshed",
+        "Manoranjan Paul",
+        "Tsz-Kwan Lee"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-24T08:34:56+00:00",
+      "link": "https://arxiv.org/pdf/2607.22087v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "feature augmentation for image detection, scene composition structure as prior",
+      "llm_evidence_cn": "利用场景组成结构先验进行特征增强的图像检测",
+      "llm_evidence": "利用场景组成结构先验进行特征增强的图像检测",
+      "canonical_evidence": "利用场景组成结构先验进行特征增强的图像检测",
+      "llm_tldr_en": "FAIR introduces Scene Composition Structure as an orthogonal prior to regularize AI-generated fake image detection, improving cross-generator generalization.",
+      "llm_tldr_cn": "该论文针对AI生成图像检测的泛化问题，提出特征增强隐式正则化（FAIR）方法。通过引入场景组成结构（SCS）作为正交先验，几何约束模型优化，在跨生成器检测上显著提升泛化能力，且保持高效。",
+      "llm_tldr": "该论文针对AI生成图像检测的泛化问题，提出特征增强隐式正则化（FAIR）方法。通过引入场景组成结构（SCS）作为正交先验，几何约束模型优化，在跨生成器检测上显著提升泛化能力，且保持高效。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "feature extraction in computer vision",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.10749v1",
+      "source": "arxiv",
+      "title": "Water Reflection Detection Using Symmetric Attention",
+      "abstract": "Reflections of water pose a significant challenge for computer vision systems, as standard deep learning models frequently confuse objects with their mirror images, producing spurious false positives and negatives in tasks such as object detection and semantic segmentation. As a result, detecting reflection axes in natural-water scenes is pivotal for reliable object detection and scene understanding. To mitigate this issue, we leverage the intrinsic imperfect reflective symmetry of water and introduce a Symmetry-Aware Water Reflection Detection Network, namely, SAWRD-Net, that couples dihedral group-equivariant convolutions with a matrix-decomposition decoder in an end-to-end framework. First, dihedral group convolutional layers extract geometry-consistent feature maps that explicitly encode both rotational and mirror symmetries. A Multi-scale Reflection Equivariant block then aggregates features across scales and employs a symmetric-attention mechanism to highlight reflection-relevant regions. The proposed matrix-decomposition decoder factorizes high-dimensional features into compact low-rank parameter and confidence spaces, after which the network directly regresses keypoints on the reflection axis. Then a robust principal component analysis fits the final axis. Evaluated on the largest available water reflection scene data set, SAWRD-Net achieves a true-positive rate of 0.890 against human annotations, outperforming all existing water reflection detectors.",
+      "authors": [
+        "Shuxuan Yao",
+        "Chengjia Wang",
+        "Jianyuan Sun",
+        "Junyu Dong",
+        "Xinghui Dong"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-12T13:00:20+00:00",
+      "link": "https://arxiv.org/pdf/2607.10749v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "improves object detection and segmentation by detecting water reflections",
+      "llm_evidence_cn": "通过检测水面反射提升目标检测与分割性能",
+      "llm_evidence": "通过检测水面反射提升目标检测与分割性能",
+      "canonical_evidence": "通过检测水面反射提升目标检测与分割性能",
+      "llm_tldr_en": "Water reflections cause false positives/negatives in object detection and segmentation; SAWRD-Net uses dihedral group-equivariant convolutions and matrix decomposition to detect reflection axes, improving reliability.",
+      "llm_tldr_cn": "针对水面反射导致深度学习模型在目标检测和语义分割中产生误检的问题，本文提出SAWRD-Net，通过二面体群等变卷积提取几何一致特征，并结合矩阵分解解码器实现端到端的反射轴检测。实验表明该方法能有效提升反射场景下的检测可靠性，为计算机视觉中的反射处理提供了新方案。",
+      "llm_tldr": "针对水面反射导致深度学习模型在目标检测和语义分割中产生误检的问题，本文提出SAWRD-Net，通过二面体群等变卷积提取几何一致特征，并结合矩阵分解解码器实现端到端的反射轴检测。实验表明该方法能有效提升反射场景下的检测可靠性，为计算机视觉中的反射处理提供了新方案。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "object detection methods",
+      "matched_requirement_id": "req-2",
+      "selection_source": "carryover_cache",
+      "paper_id": "2607.10749v1",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2607.22212v1",
+      "source": "arxiv",
+      "title": "Deep Convolutional Large-Margin $\\ell_p$-SVDD for Visual Anomaly Detection",
+      "abstract": "Visual anomaly detection requires adaptive representations and reliable decision boundaries, particularly when anomalous training samples are scarce and class distributions are highly imbalanced. Classical kernel-based methods yield principled geometric decision regions but typically operate on fixed features, while deep detectors learn task-specific representations but often fail to provide an explicit margin-aware kernel boundary. In this study, we propose DLM-SVDD, a deep large-margin novelty-detection framework that jointly learns convolutional features and an explicit kernel-based decision boundary. By drawing on the large-margin $\\ell_p$-Support Vector Data Description ($\\ell_p$-SVDD) approach, the proposed method performs explicit margin maximization and nonlinear slack penalization while adapting the representation to the target task. To train the proposed model, we present an optimization scheme that alternates between a Frank--Wolfe--based update of the convex dual boundary and a CNN update step operating on a smooth margin-violation loss induced by the recovered boundary. To improve scalability, we analyze the efficiency--accuracy trade-offs for different kernel approximation strategies, deriving practical propositions for large-scale anomaly detection.   Extensive experiments on multiple standard benchmarks show consistent performance improvements over the baseline and strong overall performance compared with state-of-the-art methods while illustrating that the proposed joint representation--boundary learning scheme remains effective under severe imbalanced class distributions.",
+      "authors": [
+        "Alireza Dastmalchi Saei",
+        "Shervin Rahimzadeh Arashloo"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.LG"
+      ],
+      "published": "2026-07-24T11:30:03+00:00",
+      "link": "https://arxiv.org/pdf/2607.22212v1",
+      "tags": [
+        "keyword:cv"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Visual anomaly detection using deep large-margin learning for novelty detection",
+      "llm_evidence_cn": "基于深度大间隔学习的视觉异常检测与新颖性识别",
+      "llm_evidence": "基于深度大间隔学习的视觉异常检测与新颖性识别",
+      "canonical_evidence": "基于深度大间隔学习的视觉异常检测与新颖性识别",
+      "llm_tldr_en": "DLM-SVDD jointly learns convolutional features and an explicit kernel-based decision boundary for visual anomaly detection with large margins.",
+      "llm_tldr_cn": "针对视觉异常检测中深层特征与几何决策边界难以结合的挑战，提出DLM-SVDD框架，联合学习卷积特征与基于ℓ_p-SVDD的显式大间隔决策边界，在平衡判别性与泛化性方面表现优异。",
+      "llm_tldr": "针对视觉异常检测中深层特征与几何决策边界难以结合的挑战，提出DLM-SVDD框架，联合学习卷积特征与基于ℓ_p-SVDD的显式大间隔决策边界，在平衡判别性与泛化性方面表现优异。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "visual recognition algorithms",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.24016v2",
+      "source": "arxiv",
+      "title": "DailyBench: A Unified Benchmark for AI-Generated and Manipulated Images from Modern Generative Models",
+      "abstract": "Recent advances in generative models have shifted AI-generated image detection from identifying easily distinguishable, fully synthetic images to identifying highly realistic content generated by both modern generation and manipulation pipelines. However, existing detection benchmarks are often built with outdated generative models and primarily emphasize full-image synthesis, creating a growing mismatch between benchmark data and the images encountered in real-world generation and editing scenarios. To bridge this gap, we introduce DailyBench, a high-quality unified benchmark for evaluating whether AI-generated image detectors can generalize across both modern full-image synthesis and object-level manipulation. DailyBench contains two complementary subsets: FakeBench, which includes high-quality images synthesized by recent open-source and commercial generative models, and ManipulationBench, which introduces challenging object-level edits applied to real images using advanced image-conditional models. This design makes DailyBench a realistic testbed for studying both generator-level generalization and manipulation-aware detection under subtle local edits. Experiments on DailyBench reveal substantial robustness gaps in current detectors: methods reporting 91-96% balanced accuracy on GenImage drop to 60-76% on FakeBench and 54-66% on ManipulationBench. These results show that existing detectors remain poorly generalized to realistic synthesis and manipulation, highlighting DailyBench as a rigorous testbed for developing robust and manipulation-aware AI-generated image detection methods. The project is available at https://dailybench.github.io/",
+      "authors": [
+        "Xin Jiang",
+        "Hao Tang",
+        "Junyao Gao",
+        "Meiqi Cao",
+        "Fei Shen",
+        "Dongming Zhang",
+        "Yongdong Zhang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-27T05:27:35+00:00",
+      "link": "https://arxiv.org/pdf/2607.24016v2",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "benchmark for AI-generated image detection in computer vision",
+      "llm_evidence_cn": "计算机视觉中AI生成图像检测的基准",
+      "llm_evidence": "计算机视觉中AI生成图像检测的基准",
+      "canonical_evidence": "计算机视觉中AI生成图像检测的基准",
+      "llm_tldr_en": "DailyBench is a unified benchmark for evaluating AI-generated image detectors on modern full-image synthesis and object-level manipulation, bridging the gap between outdated benchmarks and real-world generation scenarios.",
+      "llm_tldr_cn": "现有的AI生成图像检测基准多基于过时的生成模型，且侧重于全图合成，与真实场景存在脱节。DailyBench是一个统一的基准测试，包含现代全图合成和物体级编辑两种任务，用于评估检测器的泛化能力。通过覆盖更广泛的生成和编辑场景，DailyBench为AI生成图像检测研究提供了更贴近实际的评测平台。",
+      "llm_tldr": "现有的AI生成图像检测基准多基于过时的生成模型，且侧重于全图合成，与真实场景存在脱节。DailyBench是一个统一的基准测试，包含现代全图合成和物体级编辑两种任务，用于评估检测器的泛化能力。通过覆盖更广泛的生成和编辑场景，DailyBench为AI生成图像检测研究提供了更贴近实际的评测平台。",
+      "llm_tags": [
+        "query:cv:composite"
+      ],
+      "matched_query_tag": "query:cv:composite",
+      "matched_query_text": "Papers central to 计算机视觉相关论文, especially work that connects or combines: computer vision research papers; object detection methods; image segmentation techniques; visual recognition algorithms; feature extraction in computer vision; visual tracking surveys; Find papers on computer vision; Retrieve computer vision research articles; Search for state of the art in computer vision.",
+      "matched_requirement_id": "req-composite-cv",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.10879v2",
+      "source": "arxiv",
+      "title": "3D Scene Graph Prediction: Generating Hierarchical Models from Partially Observed Environments",
+      "abstract": "Generating realistic 3D indoor scenes is an area of growing interest in computer vision and robotics. Existing methods, often motivated by applications such as interior design, generally focus on object layout generation within a single room. The generation of high-level scene structure, such as room-level layout and traversability, remains underexplored despite its importance for robotics applications. In this paper, we consider the case where a robot has explored part of an environment and needs to predict the unexplored parts to support downstream tasks such as exploration or object search. We propose a top-down framework for synthesizing hierarchical 3D scene graphs, including a room layer -- describing the floor plan and traversability -- and an object layer modeling object layouts within each room. For the room layer, we propose a novel mixed-domain graph diffusion model jointly predicting room categories, floor boundaries, and traversability between rooms. Via corruption and masking, this model supports partial constraints such as incomplete floor plans, avoiding the need for partially observed training data. For the object layer, we integrate an existing mixed discrete-continuous diffusion model for joint prediction of object categories, locations, sizes, and orientations within each room given the floor plan. We compare our method with state-of-the-art occupancy-based and LLM-based floor plan generation methods on a standard benchmark. Compared with an occupancy-based learning baseline, our method generalizes substantially better to out-of-distribution partial floor plans. We also demonstrate our integrated prediction pipeline on real-world scenes from robot-collected data, enabling prediction beyond explored areas.",
+      "authors": [
+        "Siyi Hu",
+        "Jared Strader",
+        "Hyungtae Lim",
+        "Luca Carlone"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.CV"
+      ],
+      "published": "2026-07-12T18:52:05+00:00",
+      "link": "https://arxiv.org/pdf/2607.10879v2",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "3D scene graph prediction for partially observed environments",
+      "llm_evidence_cn": "部分观测环境下的3D场景图预测",
+      "llm_evidence": "部分观测环境下的3D场景图预测",
+      "canonical_evidence": "部分观测环境下的3D场景图预测",
+      "llm_tldr_en": "Proposes a top-down framework for generating hierarchical 3D scene graphs from partial observations, enabling downstream robotics tasks like exploration and object search.",
+      "llm_tldr_cn": "现有方法多关注单房间布局生成，忽略了高层场景结构如房间布局和可通行性。本文提出一种自顶向下的框架，从部分观测环境生成层次化3D场景图，包含房间层描述平面图。该框架有助于机器人探索和目标搜索等下游任务，填补了场景结构生成的研究空白。",
+      "llm_tldr": "现有方法多关注单房间布局生成，忽略了高层场景结构如房间布局和可通行性。本文提出一种自顶向下的框架，从部分观测环境生成层次化3D场景图，包含房间层描述平面图。该框架有助于机器人探索和目标搜索等下游任务，填补了场景结构生成的研究空白。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "computer vision research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "carryover_cache",
+      "paper_id": "2607.10879v2",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2607.22226v1",
+      "source": "arxiv",
+      "title": "Offline Vision-Language Navigation with Geometric Goal Localization for Outdoor Environments",
+      "abstract": "Foundation-model-based vision-language navigation (VLN) has advanced autonomous robot navigation by enabling robots to interpret natural-language instructions, identify semantic goals, and follow user-specified behavioral rules. However, existing VLN systems rely heavily on cloud-hosted foundation models for language understanding and semantic grounding, limiting their applicability where network connectivity is unavailable and reliable metric goal localization is required. Although recent small language models (SLMs) enable fully onboard inference, their suitability for navigation instruction decomposition has not been systematically evaluated. This paper makes three contributions toward fully onboard VLN for outdoor environments. First, we present the first systematic benchmark of 17 edge-deployable SLMs against 4 online APIs for robotic navigation instruction decomposition, evaluating accuracy and latency on human-annotated instructions across three computing platforms and providing practical guidance for selecting onboard language models. Second, we propose a lightweight hybrid semantic-geometric goal localization framework that combines open-vocabulary object detection, prompted segmentation, and LiDAR geometry to estimate metric goals, while maintaining visual bearing guidance when reliable geometric observations are unavailable. Third, we integrate these advances into Edge-BehAV, a fully onboard extension of the BehAV architecture that enables cloud-independent behavior-guided navigation. Experimental results show that the best offline SLM matches the instruction decomposition performance of the strongest cloud API while running approximately 9x faster and without network connectivity. The proposed goal localization framework reduces mean goal-distance error from 2.05 m to 0.20 m at lower computational cost, and the complete system succeeds in 31 of 32 closed-loop outdoor trials.",
+      "authors": [
+        "Ali Salmasi",
+        "Xianjia Yu",
+        "Tomi Westerlund"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-07-24T11:49:25+00:00",
+      "link": "https://arxiv.org/pdf/2607.22226v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "vision-language navigation involves visual recognition for goal localization",
+      "llm_evidence_cn": "视觉语言导航涉及视觉识别以实现目标定位",
+      "llm_evidence": "视觉语言导航涉及视觉识别以实现目标定位",
+      "canonical_evidence": "视觉语言导航涉及视觉识别以实现目标定位",
+      "llm_tldr_en": "Offline VLN system with geometric goal localization enables fully onboard navigation in outdoor environments without cloud connectivity.",
+      "llm_tldr_cn": "现有视觉语言导航系统依赖云端大模型，限制了离线场景的应用。本文提出全板载的户外视觉语言导航系统，使用小语言模型进行指令分解，并结合几何目标定位实现精确导航。该系统在无网络环境下仍能可靠运行，实验验证了其在真实户外环境中的有效性，推动了VLN的实用化。",
+      "llm_tldr": "现有视觉语言导航系统依赖云端大模型，限制了离线场景的应用。本文提出全板载的户外视觉语言导航系统，使用小语言模型进行指令分解，并结合几何目标定位实现精确导航。该系统在无网络环境下仍能可靠运行，实验验证了其在真实户外环境中的有效性，推动了VLN的实用化。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "visual recognition algorithms",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.26426v1",
+      "source": "arxiv",
+      "title": "Decoder-Guided Lossy Contour Coding Via Anchor Refinement",
+      "abstract": "Object contours serve as compact structural priors for many receiver-side vision tasks such as image super-resolution, edge-conditioned generation, and machine vision. When such tasks are deployed over a bandwidth-limited channel, the sender transmits the high-quality object contour as structural side information to guide reconstruction at the receiver, while-to save bandwidth-only a low-quality reference such as a downsampled image or base-layer reconstruction is delivered. As a result, the decoder can already extract a coarse contour from this reference at no transmission cost, creating an encoder-decoder asymmetry: the fine contour must be coded and sent, yet a free coarse version is available at the decoder. This asymmetry is ignored by existing contour codecs such as JBIG2 and chain coding, which are lossless, symmetric, and offer no rate-distortion control, leading to high bitrates. In this paper, we propose a coarse-to-fine contour coding framework that models a high-quality contour as a structured geometric refinement of the decoder-available coarse contour. The encoder extracts ordered anchors along the fine contour and performs adaptive anchor skipping under a distortion constraint. The decoder then reconstructs the contour by using the coarse prior to guide anchor connectivity. This formulation enables lossy contour compression with an explicit rate-distortion trade-off. Experiments show 54.5%-66.9% bitrate reduction over methods without decoder-side guidance, and up to 5 times savings over JBIG2, while preserving high geometric accuracy.",
+      "authors": [
+        "Ruoyu Yang",
+        "Yichi Zhang",
+        "Haohong Wang",
+        "Fengqing Zhu"
+      ],
+      "primary_category": "eess.IV",
+      "categories": [
+        "eess.IV"
+      ],
+      "published": "2026-07-29T03:13:44+00:00",
+      "link": "https://arxiv.org/pdf/2607.26426v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "contour coding for receiver-side vision tasks",
+      "llm_evidence_cn": "面向接收端视觉任务的轮廓编码",
+      "llm_evidence": "面向接收端视觉任务的轮廓编码",
+      "canonical_evidence": "面向接收端视觉任务的轮廓编码",
+      "llm_tldr_en": "A decoder-guided lossy contour coding method that exploits encoder-decoder asymmetry for efficient transmission in vision tasks.",
+      "llm_tldr_cn": "该文针对带宽受限场景下的接收端视觉任务，提出解码器引导的有损轮廓编码方法。利用编码器-解码器不对称性：解码器可从低质量参考中免费获得粗轮廓，编码器只需传输精细轮廓。通过锚点细化高效编码轮廓，在保持结构先验的同时节省带宽。适用于超分辨率、边缘条件生成等任务。",
+      "llm_tldr": "该文针对带宽受限场景下的接收端视觉任务，提出解码器引导的有损轮廓编码方法。利用编码器-解码器不对称性：解码器可从低质量参考中免费获得粗轮廓，编码器只需传输精细轮廓。通过锚点细化高效编码轮廓，在保持结构先验的同时节省带宽。适用于超分辨率、边缘条件生成等任务。",
+      "llm_tags": [
+        "query:cv:composite"
+      ],
+      "matched_query_tag": "query:cv:composite",
+      "matched_query_text": "Papers central to 计算机视觉相关论文, especially work that connects or combines: computer vision research papers; object detection methods; image segmentation techniques; visual recognition algorithms; feature extraction in computer vision; visual tracking surveys; Find papers on computer vision; Retrieve computer vision research articles; Search for state of the art in computer vision.",
+      "matched_requirement_id": "req-composite-cv",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.16309v1",
+      "source": "arxiv",
+      "title": "SaaF: Scene-Specific Ambiguity-Aware 3D Language Fields towards Interactive Real-World Object Retrieval",
+      "abstract": "We propose Scene-specific Ambiguity-aware 3D Language Fields (SaaF), a novel Gaussian Splatting-based 3D language field designed for interactive object retrieval in a given real-world scene. Interactive object retrieval using natural language is a crucial capability for service robots operating in complex real-world environments. While recent 3D language field methods for object retrieval establish associations between rendered pixels and autoencoder-compressed CLIP features, they suffer from two limitations: (1) reduced discriminability among similar objects due to feature compression, and (2) poor handling of ambiguous queries, often resulting in unstable or incorrect retrieval. To address these limitations, SaaF introduces a metric learning strategy to construct a unified feature space that is both instance-discriminative and ambiguity-aware. (i) To enhance instance-level visual discrimination, SaaF employs metric learning that pulls image features from multiple viewpoints of the same object closer together in the feature space. (ii) To establish ambiguity awareness, the model jointly trains on multiple text labels generated by the proposed method from each tracked object image sequence, including ambiguous descriptions, to learn the semantic relationships between ambiguous and specific features in a target scene. This feature space enables fine-grained visual understanding while allowing the system to estimate query ambiguity and interactively request clarification when needed. Experimental results demonstrate that SaaF not only improves retrieval accuracy over previous methods but also robustly detects and handles ambiguity in the user text queries under open-vocabulary settings.",
+      "authors": [
+        "Yuga Yano",
+        "Daiju Kanaoka",
+        "Hakaru Tamukoh",
+        "Yasutomo Kawanishi"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-14T15:32:10+00:00",
+      "link": "https://arxiv.org/pdf/2607.16309v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "interactive object retrieval using natural language",
+      "llm_evidence_cn": "自然语言交互式物体检索",
+      "llm_evidence": "自然语言交互式物体检索",
+      "canonical_evidence": "自然语言交互式物体检索",
+      "llm_tldr_en": "SaaF uses Gaussian Splatting with ambiguity-aware 3D language fields for robust object retrieval in real-world scenes.",
+      "llm_tldr_cn": "针对自然语言交互式物体检索中特征压缩导致判别力下降和歧义查询处理不佳的问题，本文提出SaaF，一种基于高斯泼溅的3D语言场。该方法通过场景特定的歧义感知机制，在不压缩CLIP特征的情况下保持高判别力，并能处理模糊查询。实验证实SaaF在真实场景中实现了更稳定和准确的物体检索。",
+      "llm_tldr": "针对自然语言交互式物体检索中特征压缩导致判别力下降和歧义查询处理不佳的问题，本文提出SaaF，一种基于高斯泼溅的3D语言场。该方法通过场景特定的歧义感知机制，在不压缩CLIP特征的情况下保持高判别力，并能处理模糊查询。实验证实SaaF在真实场景中实现了更稳定和准确的物体检索。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "visual recognition algorithms",
+      "matched_requirement_id": "req-4",
+      "selection_source": "carryover_cache",
+      "paper_id": "2607.16309v1",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2607.23684v1",
+      "source": "arxiv",
+      "title": "Towards Ultrafast Depth Sensing Via Active Event-based Stereo Vision",
+      "abstract": "Conventional frame-based imaging for active stereo systems has encountered major challenges in fast-motion scenarios. However, how to design a novel paradigm for ultrafast depth sensing remains an open issue. In this paper, we propose a novel problem setting, namely active event-based stereo vision, which attempts to integrate binocular event cameras and an infrared 2D pattern projector for high-speed dense depth sensing. Technically, we first build a stereo camera prototype system and present a real-world dataset with over 21.5k spatiotemporal synchronized labels at 15 Hz, while also establishing a realistic synthetic dataset with stereo event streams and 23.8k synchronized labels at 20 Hz. Then, we propose ActiveEventNet+, a lightweight yet effective event-based stereo matching neural network that learns to generate high-quality dense disparity maps from stereo event streams with low latency. Our ActiveEventNet+ mainly involves three innovations: incorporating lightweight blocks into event-based stereo matching frameworks, designing a novel cost volume with dynamic interactions between stereo pairs, and presenting an effective temporal consistency architecture to fully use rich temporal cues in event streams. The results show that our ActiveEventNet+ outperforms state-of-the-art methods while significantly reducing computational complexity. Our solution offers superior depth sensing performance compared to conventional frame-based stereo cameras in high-speed scenes. In particular, the lightweight ActiveEventNet enables the prototype system to achieve real-time processing at speeds up to 150 FPS. We believe that this novel active event-based stereo vision paradigm can provide new insights into the design of future high-speed depth sensing camera systems. Our dataset and code can be available at https://github.com/jianing-li/active_event_based_stereo.",
+      "authors": [
+        "Jianing Li",
+        "Yunjian Zhang",
+        "Haiqian Han",
+        "Kangyao Huang",
+        "Xiangyang Ji"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-07-26T14:32:01+00:00",
+      "link": "https://arxiv.org/pdf/2607.23684v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "novel depth sensing paradigm using event cameras, a computer vision topic",
+      "llm_evidence_cn": "使用事件相机的新型深度感知范式，属于计算机视觉领域",
+      "llm_evidence": "使用事件相机的新型深度感知范式，属于计算机视觉领域",
+      "canonical_evidence": "使用事件相机的新型深度感知范式，属于计算机视觉领域",
+      "llm_tldr_en": "ActiveEventNet+ integrates event cameras and infrared pattern projector for ultrafast dense depth sensing, with real and synthetic datasets for evaluation.",
+      "llm_tldr_cn": "传统帧式主动立体系统在快速运动场景中面临挑战。本文提出主动事件立体视觉新范式，融合双目事件相机和红外图案投影器实现高速稠密深度感知。构建了真实和合成数据集，并设计轻量级网络ActiveEventNet+，在高速运动场景下取得了优于帧式方法的深度精度，为超高速深度传感提供了新途径。",
+      "llm_tldr": "传统帧式主动立体系统在快速运动场景中面临挑战。本文提出主动事件立体视觉新范式，融合双目事件相机和红外图案投影器实现高速稠密深度感知。构建了真实和合成数据集，并设计轻量级网络ActiveEventNet+，在高速运动场景下取得了优于帧式方法的深度精度，为超高速深度传感提供了新途径。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "computer vision research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}

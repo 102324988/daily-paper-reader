@@ -41,17 +41,17 @@
 <section class="dpr-home-dashboard-card dpr-home-report-card">
   <div class="dpr-home-dashboard-header">
     <div>
-      <span class="dpr-home-dashboard-kicker">2026-07-29</span>
+      <span class="dpr-home-dashboard-kicker">2026-07-30</span>
       <h3 class="dpr-home-dashboard-title">今日汇总</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">共 25 篇</strong>
+    <strong class="dpr-home-dashboard-count">共 17 篇</strong>
   </div>
   <dl class="dpr-home-dashboard-stats">
     <div class="dpr-home-dashboard-stat"><dt>累计更新</dt><dd>1 次</dd></div>
-    <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>14</dd></div>
+    <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>6</dd></div>
     <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>11</dd></div>
   </dl>
-  <p class="dpr-home-dashboard-body">最近更新：2026-07-29 21:00:04 UTC<br>状态：成功</p>
+  <p class="dpr-home-dashboard-body">最近更新：2026-07-30 21:40:36 UTC<br>状态：成功</p>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-brief-card">
   <div class="dpr-home-dashboard-header">
@@ -62,9 +62,9 @@
     <strong class="dpr-home-dashboard-count">AI</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<p>今日对多视图理解与视觉生成两大方向的高分研究进行了深入解析，精读了两篇9分重磅论文。</p>
-<p>最值得关注的是多视图全景分割的扩散模型扩展方法（9.0）与基于游戏的RGB-T航拍目标检测数据生成框架（9.0），分别突破了标注稀缺与视角融合瓶颈。</p>
-<p>建议优先精读这两篇高分论文，其核心思路可迁移至自动驾驶、遥感等实际场景中的多模态数据利用。</p>
+<p>今日发布17篇论文日报（精读6篇、速读11篇），聚焦智能感知与3D场景理解领域。</p>
+<p>最值得关注的两篇精读论文：路侧3D检测的区域感知补偿方法（RECO 9.0分）和多尺度自适应视觉编码器（MAViE 9.0分），分别提升鲁棒性与多模态推理效率。</p>
+<p>建议普通读者进一步探索多模态融合在细粒度视觉感知中的应用，尤其是路侧场景下的实际部署方案。</p>
   </div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-deep-card">
@@ -73,12 +73,12 @@
       <span class="dpr-home-dashboard-kicker">今日累计</span>
       <h3 class="dpr-home-dashboard-title">精读推荐</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">14 篇</strong>
+    <strong class="dpr-home-dashboard-count">6 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Extending a Large View Synthesis Model for Multi-view Panoptic Segmentation">Extending a Large View Synthesis Model for Multi-view Panoptic Segmentation</span></li><li><span class="dpr-home-dashboard-paper-title" title="G-MAD: A Game-Based Data Generation Framework for Multi-View RGB-T Aerial Object Detection">G-MAD: A Game-Based Data Generation Framework for Multi-View RGB-T Aerial Object Detection</span></li><li><span class="dpr-home-dashboard-paper-title" title="GaussianSeed: Hierarchical Gaussian Seeding for High-Resolution 3D Occupancy Prediction">GaussianSeed: Hierarchical Gaussian Seeding for High-Resolution 3D Occupancy Prediction</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="RECO: Region-Aware Compensation for Extrinsic Perturbations in Roadside 3D Detection">RECO: Region-Aware Compensation for Extrinsic Perturbations in Roadside 3D Detection</span></li><li><span class="dpr-home-dashboard-paper-title" title="MAViE: A Multi-scale Adaptive Vision Encoder for Fine-grained Visual Perception and Efficient Multimodal Reasoning">MAViE: A Multi-scale Adaptive Vision Encoder for Fine-grained Visual Perception and Efficient Multimodal Reasoning</span></li><li><span class="dpr-home-dashboard-paper-title" title="RDVSv2: A Large-scale Benchmark for RGB-D Video Salient Object Detection">RDVSv2: A Large-scale Benchmark for RGB-D Video Salient Object Detection</span></li></ul>
   </div>
-  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">cv <strong>14</strong></span></div>
+  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">cv <strong>6</strong></span></div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-skim-card">
   <div class="dpr-home-dashboard-header">
@@ -89,7 +89,7 @@
     <strong class="dpr-home-dashboard-count">11 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Vision Non-Causal Trapezoidal Mamba: Eliminating Directional Scanning in Vision SSMs with Second-Order Dynamics">Vision Non-Causal Trapezoidal Mamba: Eliminating Directional Scanning in Vision SSMs with Second-Order Dynamics</span></li><li><span class="dpr-home-dashboard-paper-title" title="Vision as Unified Multimodal Generation">Vision as Unified Multimodal Generation</span></li><li><span class="dpr-home-dashboard-paper-title" title="MiLSD: A Micro Line-Segment Detector for Resource-Constrained Devices">MiLSD: A Micro Line-Segment Detector for Resource-Constrained Devices</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Bridging the Catalog-to-Real Gap: Scalable Product Recognition via Multi-Stage Contrastive Learning">Bridging the Catalog-to-Real Gap: Scalable Product Recognition via Multi-Stage Contrastive Learning</span></li><li><span class="dpr-home-dashboard-paper-title" title="Water Reflection Detection Using Symmetric Attention">Water Reflection Detection Using Symmetric Attention</span></li><li><span class="dpr-home-dashboard-paper-title" title="3D Scene Graph Prediction: Generating Hierarchical Models from Partially Observed Environments">3D Scene Graph Prediction: Generating Hierarchical Models from Partially Observed Environments</span></li></ul>
   </div>
   <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">cv <strong>11</strong></span></div>
 </section>
