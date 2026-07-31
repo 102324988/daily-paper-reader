@@ -1,0 +1,297 @@
+{
+  "date": "20260731",
+  "date_label": "",
+  "generated_at": "2026-07-31 21:51:53 UTC",
+  "recommend_exists": true,
+  "run_count": 1,
+  "papers": [
+    {
+      "paper_id": "2607.23371v1",
+      "route": "202607/31/2607.23371v1-investigating-the-visual-cues-of-cnns-for-vascular-segmentation-a-case-study-in-microscopy-and-fundus-imaging",
+      "title": "Investigating the Visual Cues of CNNs for Vascular Segmentation: A Case Study in Microscopy and Fundus Imaging",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "直接研究图像分割，分析CNN在血管分割中使用的视觉线索。",
+      "first_seen_at": "2026-07-31 21:51:53 UTC",
+      "updated_at": "2026-07-31 21:51:53 UTC"
+    },
+    {
+      "paper_id": "2607.23979v1",
+      "route": "202607/31/2607.23979v1-mutual-modality-trust-with-lightweight-reconstruction-regularization-for-fine-grained-tire-pattern-recognition",
+      "title": "Mutual Modality Trust with Lightweight Reconstruction Regularization for Fine-grained Tire Pattern Recognition",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "使用双分支特征融合的细粒度轮胎花纹识别",
+      "first_seen_at": "2026-07-31 21:51:53 UTC",
+      "updated_at": "2026-07-31 21:51:53 UTC"
+    },
+    {
+      "paper_id": "2607.25239v1",
+      "route": "202607/31/2607.25239v1-cd-rmot-bench-benchmarking-the-cross-domain-referring-multi-object-tracking",
+      "title": "CD-RMOT-Bench: Benchmarking the Cross-Domain Referring Multi-Object Tracking",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "跨域指代多目标跟踪基准",
+      "first_seen_at": "2026-07-31 21:51:53 UTC",
+      "updated_at": "2026-07-31 21:51:53 UTC"
+    },
+    {
+      "paper_id": "2607.25389v1",
+      "route": "202607/31/2607.25389v1-home-robust-hough-space-matching-method-for-structured-and-textureless-videos",
+      "title": "HOME: Robust Hough-space Matching Method for Structured and Textureless Videos",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "面向结构化和无纹理视频的 Hough 空间特征匹配方法",
+      "first_seen_at": "2026-07-31 21:51:53 UTC",
+      "updated_at": "2026-07-31 21:51:53 UTC"
+    },
+    {
+      "paper_id": "2607.26835v2",
+      "route": "202607/31/2607.26835v2-a-low-power-sparse-convolution-accelerator-with-idle-first-task-assignment-for-edge-vision",
+      "title": "A Low-Power Sparse Convolution Accelerator with Idle-First-Task-Assignment for Edge Vision",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "面向边缘视觉的稀疏卷积加速器，属于计算机视觉研究",
+      "first_seen_at": "2026-07-31 21:51:53 UTC",
+      "updated_at": "2026-07-31 21:51:53 UTC"
+    },
+    {
+      "paper_id": "2607.27843v1",
+      "route": "202607/31/2607.27843v1-vcp-dcn-beyond-visual-concealed-property-via-depth-collaborative-network-for-camouflaged-object-detection",
+      "title": "VCP-DCN: Beyond Visual Concealed Property via Depth Collaborative Network for Camouflaged Object Detection",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "深度协同的伪装目标检测网络",
+      "first_seen_at": "2026-07-31 21:51:53 UTC",
+      "updated_at": "2026-07-31 21:51:53 UTC"
+    },
+    {
+      "paper_id": "2607.27856v1",
+      "route": "202607/31/2607.27856v1-benchmarking-foundation-and-large-language-models-for-few-shot-medical-image-segmentation",
+      "title": "Benchmarking Foundation and Large Language Models for Few-Shot Medical Image Segmentation",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "少样本医学图像分割方法的统一基准评测",
+      "first_seen_at": "2026-07-31 21:51:53 UTC",
+      "updated_at": "2026-07-31 21:51:53 UTC"
+    },
+    {
+      "paper_id": "2607.16671v1",
+      "route": "202607/31/2607.16671v1-foundation-assisted-active-learning-for-object-detection-annotation",
+      "title": "Foundation-Assisted Active Learning for Object Detection Annotation",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "面向目标检测的主动学习标注",
+      "first_seen_at": "2026-07-31 21:51:53 UTC",
+      "updated_at": "2026-07-31 21:51:53 UTC"
+    },
+    {
+      "paper_id": "2607.18625v1",
+      "route": "202607/31/2607.18625v1-norm-or-direction-decoding-vision-mambas-for-high-resolution-vision",
+      "title": "Norm or Direction? Decoding Vision Mambas for High-Resolution Vision",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "分析Vision Mamba用于视觉识别的表示差异",
+      "first_seen_at": "2026-07-31 21:51:53 UTC",
+      "updated_at": "2026-07-31 21:51:53 UTC"
+    },
+    {
+      "paper_id": "2607.19711v1",
+      "route": "202607/31/2607.19711v1-point-selection-fine-tuning-framework-for-robust-point-cloud-classification",
+      "title": "Point-Selection Fine-Tuning Framework for Robust Point Cloud Classification",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "点云分类，3D数据视觉识别",
+      "first_seen_at": "2026-07-31 21:51:53 UTC",
+      "updated_at": "2026-07-31 21:51:53 UTC"
+    },
+    {
+      "paper_id": "2607.19857v1",
+      "route": "202607/31/2607.19857v1-memory-augmented-multimodal-large-language-models-for-small-object-understanding-in-streaming-aerial-videos",
+      "title": "Memory-Augmented Multimodal Large Language Models for Small Object Understanding in Streaming Aerial Videos",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "流式航拍视频中的小目标检测与跟踪",
+      "first_seen_at": "2026-07-31 21:51:53 UTC",
+      "updated_at": "2026-07-31 21:51:53 UTC"
+    },
+    {
+      "paper_id": "2607.22745v1",
+      "route": "202607/31/2607.22745v1-ai-generated-images-challenge-visual-trust-in-high-risk-scenarios",
+      "title": "AI-generated Images Challenge Visual Trust in High-risk Scenarios",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "面向安全场景的 AI 生成图像检测的计算机视觉基准",
+      "first_seen_at": "2026-07-31 21:51:53 UTC",
+      "updated_at": "2026-07-31 21:51:53 UTC"
+    },
+    {
+      "paper_id": "2607.24140v1",
+      "route": "202607/31/2607.24140v1-image-inpainting-via-stochastic-dynamics",
+      "title": "Image Inpainting via Stochastic Dynamics",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "提出非参数随机动力学方法进行图像修复，属于计算机视觉任务。",
+      "first_seen_at": "2026-07-31 21:51:53 UTC",
+      "updated_at": "2026-07-31 21:51:53 UTC"
+    },
+    {
+      "paper_id": "2607.25106v1",
+      "route": "202607/31/2607.25106v1-imprint-image-conditioned-query-enrichment-for-long-tail-object-goal-navigation",
+      "title": "IMPRINT: Image-Conditioned Query Enrichment for Long-Tail Object Goal Navigation",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "利用图像条件查询增强语义图中的物体接地与定位，与物体检测方法相关。",
+      "first_seen_at": "2026-07-31 21:51:53 UTC",
+      "updated_at": "2026-07-31 21:51:53 UTC"
+    },
+    {
+      "paper_id": "2607.25390v1",
+      "route": "202607/31/2607.25390v1-noise-free-one-step-lora-for-task-driven-image-restoration-with-diffusion-priors",
+      "title": "Noise-Free One-Step LoRA for Task-Driven Image Restoration with Diffusion Priors",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "直接面向图像复原与下游视觉任务的计算机视觉研究",
+      "first_seen_at": "2026-07-31 21:51:53 UTC",
+      "updated_at": "2026-07-31 21:51:53 UTC"
+    },
+    {
+      "paper_id": "2607.23321v1",
+      "route": "202607/31/2607.23321v1-a-reference-free-framework-for-evaluating-single-frame-isp-pipelines",
+      "title": "A Reference-Free Framework for Evaluating Single-Frame ISP Pipelines",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "面向ISP管线的无参考评估方法",
+      "first_seen_at": "2026-07-31 21:51:53 UTC",
+      "updated_at": "2026-07-31 21:51:53 UTC"
+    },
+    {
+      "paper_id": "2607.23687v1",
+      "route": "202607/31/2607.23687v1-gnm-head-a-generative-anthropometric-model-of-the-human-head",
+      "title": "GNM Head: A Generative aNthropometric Model of the human head",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "计算机视觉研究与生成模型的空间控制",
+      "first_seen_at": "2026-07-31 21:51:53 UTC",
+      "updated_at": "2026-07-31 21:51:53 UTC"
+    },
+    {
+      "paper_id": "2607.24024v1",
+      "route": "202607/31/2607.24024v1-a-unified-stereo-geometry-estimation-framework-for-disparity-and-surface-normal",
+      "title": "A Unified Stereo Geometry Estimation Framework for Disparity and Surface Normal",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "面向3D几何估计的计算机视觉研究",
+      "first_seen_at": "2026-07-31 21:51:53 UTC",
+      "updated_at": "2026-07-31 21:51:53 UTC"
+    }
+  ]
+}
