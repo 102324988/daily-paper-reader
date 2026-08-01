@@ -41,7 +41,7 @@
 <section class="dpr-home-dashboard-card dpr-home-report-card">
   <div class="dpr-home-dashboard-header">
     <div>
-      <span class="dpr-home-dashboard-kicker">2026-07-31</span>
+      <span class="dpr-home-dashboard-kicker">2026-08-01</span>
       <h3 class="dpr-home-dashboard-title">今日汇总</h3>
     </div>
     <strong class="dpr-home-dashboard-count">共 18 篇</strong>
@@ -51,7 +51,7 @@
     <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>7</dd></div>
     <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>11</dd></div>
   </dl>
-  <p class="dpr-home-dashboard-body">最近更新：2026-07-31 21:51:53 UTC<br>状态：成功</p>
+  <p class="dpr-home-dashboard-body">最近更新：2026-08-01 21:25:32 UTC<br>状态：成功</p>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-brief-card">
   <div class="dpr-home-dashboard-header">
@@ -62,7 +62,9 @@
     <strong class="dpr-home-dashboard-count">AI</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<p>今日共读18篇，精读7篇，最高分9.0两项。最值得关注：CNN血管分割的可视化线索，以及多模态轮胎纹识别的轻量重建正则化。建议优先复现9.0分工作，并留意视觉Mamba与点云微调的新思路。</p>
+<p>今日精读2篇、速读11篇，共18篇论文，重点覆盖视觉基础模型适配与高效编码器。</p>
+<p>最值得关注两项9分工作：层间信息分配优化视觉适配，以及移动端延迟优化的UltraViT视觉编码器。</p>
+<p>下一步建议优先学习视觉模型的高效适配策略与端侧部署优化思路。</p>
   </div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-deep-card">
@@ -74,7 +76,7 @@
     <strong class="dpr-home-dashboard-count">7 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Investigating the Visual Cues of CNNs for Vascular Segmentation: A Case Study in Microscopy and Fundus Imaging">Investigating the Visual Cues of CNNs for Vascular Segmentation: A Case Study in Microscopy and Fundus Imaging</span></li><li><span class="dpr-home-dashboard-paper-title" title="Mutual Modality Trust with Lightweight Reconstruction Regularization for Fine-grained Tire Pattern Recognition">Mutual Modality Trust with Lightweight Reconstruction Regularization for Fine-grained Tire Pattern Recognition</span></li><li><span class="dpr-home-dashboard-paper-title" title="CD-RMOT-Bench: Benchmarking the Cross-Domain Referring Multi-Object Tracking">CD-RMOT-Bench: Benchmarking the Cross-Domain Referring Multi-Object Tracking</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Rethinking Layer-Wise Information Allocation for Vision Foundation Model Adaptation">Rethinking Layer-Wise Information Allocation for Vision Foundation Model Adaptation</span></li><li><span class="dpr-home-dashboard-paper-title" title="UltraViT: Latency-Optimized On-device Vision Encoder for Large Vision-Language Models">UltraViT: Latency-Optimized On-device Vision Encoder for Large Vision-Language Models</span></li><li><span class="dpr-home-dashboard-paper-title" title="Enabling Fully Integer-Only Inference for Lightweight Detection Transformers">Enabling Fully Integer-Only Inference for Lightweight Detection Transformers</span></li></ul>
   </div>
   <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">cv <strong>7</strong></span></div>
 </section>
@@ -87,7 +89,7 @@
     <strong class="dpr-home-dashboard-count">11 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Foundation-Assisted Active Learning for Object Detection Annotation">Foundation-Assisted Active Learning for Object Detection Annotation</span></li><li><span class="dpr-home-dashboard-paper-title" title="Norm or Direction? Decoding Vision Mambas for High-Resolution Vision">Norm or Direction? Decoding Vision Mambas for High-Resolution Vision</span></li><li><span class="dpr-home-dashboard-paper-title" title="Point-Selection Fine-Tuning Framework for Robust Point Cloud Classification">Point-Selection Fine-Tuning Framework for Robust Point Cloud Classification</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Spectral-Spatial Synergistic Guided Network for Hyperspectral Salient Object Detection">Spectral-Spatial Synergistic Guided Network for Hyperspectral Salient Object Detection</span></li><li><span class="dpr-home-dashboard-paper-title" title="Unified Video Dense Prediction from Disjoint Data">Unified Video Dense Prediction from Disjoint Data</span></li><li><span class="dpr-home-dashboard-paper-title" title="Visual Information Extraction from Documents via Classification-Guided Large Vision-Language Models">Visual Information Extraction from Documents via Classification-Guided Large Vision-Language Models</span></li></ul>
   </div>
   <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">cv <strong>11</strong></span></div>
 </section>

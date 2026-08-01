@@ -1,0 +1,724 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-08-01T21:13:49.748392+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 12,
+    "deep_cap": 6,
+    "deep_selected": 7,
+    "quick_candidates": 16,
+    "quick_skim_target": 11,
+    "quick_selected": 11
+  },
+  "deep_dive": [
+    {
+      "id": "2607.21973v1",
+      "source": "arxiv",
+      "title": "Rethinking Layer-Wise Information Allocation for Vision Foundation Model Adaptation",
+      "abstract": "Vision foundation models are increasingly reused as frozen backbones for downstream visual recognition, making parameter-efficient adaptation a central problem. Prompt-based adaptation, including Visual Prompt Tuning (VPT), provides a lightweight way to specialize these models, but its layer-wise behavior remains poorly understood: performance is sensitive to prompt depth, placement, and task distribution, and gains on standard in-domain benchmarks do not always translate into robust generalization. We argue that this limitation is not solely an optimization issue, but a layer-wise information allocation issue: existing prompt-based methods lack principled control over what prompt-conditioned representations should preserve, suppress, and propagate across depth. Inspired by the Information Bottleneck principle, we introduce Prompted Information Bottlenecks (PIB), a framework that regularizes layer-wise compression-sufficiency trade-offs and promotes a more coherent cross-layer information path. The key idea is that effective adaptation should be minimal yet sufficient, retaining task-relevant local evidence in earlier layers while progressively discarding nuisance factors and redundant details in deeper layers. Extensive experiments show that PIB achieves strong performance across 34 datasets, reaching 92.1% on FGVC, 93.01% on HTA, and 77.33% on VTAB-1k, while tuning only 0.35% parameters on average across the main settings. Beyond benchmark accuracy, PIB helps explain the non-monotonic behavior of prompt capacity scaling, reduces shortcut reliance, and improves robustness under distribution shift and fine-grained recognition settings. These results position PIB as both a practical method and an information-allocation perspective for adapting frozen vision foundation models. Our code is available at https://github.com/itsnotacie/MM-26-PIB",
+      "authors": [
+        "Yuqi Li",
+        "Xi Xiao",
+        "Yunbei Zhang",
+        "Lin Zhao",
+        "Yu Li",
+        "Aiden Zhao",
+        "Tianyang Wang",
+        "Hao Xu",
+        "Yingli Tian"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-24T04:39:55+00:00",
+      "link": "https://arxiv.org/pdf/2607.21973v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Method for adapting vision foundation models to downstream visual recognition tasks via layer-wise information allocation",
+      "llm_evidence_cn": "基于逐层信息分配适配视觉基础模型以服务于视觉识别任务",
+      "llm_evidence": "基于逐层信息分配适配视觉基础模型以服务于视觉识别任务",
+      "canonical_evidence": "基于逐层信息分配适配视觉基础模型以服务于视觉识别任务",
+      "llm_tldr_en": "Rethinks prompt-based adaptation of vision foundation models from a layer-wise information allocation perspective, addressing sensitivity to prompt depth and generalization gaps with principled control over representations.",
+      "llm_tldr_cn": "视觉基础模型适配下游识别任务时，提示调优方法对层深、位置和任务分布敏感，且泛化性不足。本文主张从逐层信息分配角度理解该问题，而非仅视为优化问题，提出对提示条件表示应保留、抑制和重建哪些信息进行原则性控制。通过层内/层间信息分配分析，为视觉基础模型适配提供了新视角并提升了泛化能力。该工作对参数高效迁移学习具有重要指导意义。",
+      "llm_tldr": "视觉基础模型适配下游识别任务时，提示调优方法对层深、位置和任务分布敏感，且泛化性不足。本文主张从逐层信息分配角度理解该问题，而非仅视为优化问题，提出对提示条件表示应保留、抑制和重建哪些信息进行原则性控制。通过层内/层间信息分配分析，为视觉基础模型适配提供了新视角并提升了泛化能力。该工作对参数高效迁移学习具有重要指导意义。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "visual recognition algorithms",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.23373v1",
+      "source": "arxiv",
+      "title": "UltraViT: Latency-Optimized On-device Vision Encoder for Large Vision-Language Models",
+      "abstract": "Large Vision-Language Models (LVLMs) remain bottlenecked by massive computational footprints, precluding their deployment on resource-constrained edge devices. While efforts to compress LVLMs focus heavily on vision token reduction or smaller language models, the vision encoder is largely overlooked, typically deployed as a monolithic, computationally heavy feature extractor. Moreover, there is no previous effort that designs a vision encoder for LVLMs directly optimized for on-device latency. In this paper, we present UltraViT, a vision encoder for LVLMs, explicitly designed and optimized for on-device performance. Specifically, by taking into account real on-device latencies, we systematically design a pyramidal architecture that strategically integrates and adapts heterogeneous spatial mixers at the macro-block level. Furthermore, to pre-train UltraViT, we propose a novel two-stage generative pre-training strategy: cultivating rich spatial features via dense distillation, followed by direct generative supervision from a capacity-mixed frozen LLM. Compared to standard contrastive and SSL, we show that our pre-training is much more effective for achieving high-level semantic grounding for UltraViT needed for the subsequent generative multimodal alignment of LVLM training. Extensive experiments demonstrate that our on-device latency-informed design combined with our tailored training strategy establishes a new state-of-the-art for efficient LVLM encoding, significantly outperforming existing encoder-centric baselines while operating on-device at nearly 1.7xthe speed.",
+      "authors": [
+        "Ioannis Maniadis Metaxas",
+        "Adrian Bulat",
+        "Alberto Baldrati",
+        "Anestis Zaganidis",
+        "Yassine Ouali",
+        "Hyeonuk Kim",
+        "Georgios Tzimiropoulos"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-25T21:31:40+00:00",
+      "link": "https://arxiv.org/pdf/2607.23373v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Latency-optimized vision encoder for feature extraction",
+      "llm_evidence_cn": "面向特征提取的延迟优化视觉编码器",
+      "llm_evidence": "面向特征提取的延迟优化视觉编码器",
+      "canonical_evidence": "面向特征提取的延迟优化视觉编码器",
+      "llm_tldr_en": "UltraViT designs a pyramidal vision encoder for large vision-language models explicitly optimized for on-device latency, addressing the overlooked vision encoder bottleneck in deployment on resource-constrained devices.",
+      "llm_tldr_cn": "针对大视觉-语言模型在边缘设备部署时视觉编码器计算开销大且未被充分优化的问题，本文提出UltraViT，一种面向设备端延迟的视觉编码器。通过考虑真实设备延迟，系统设计金字塔架构并对特征提取进行逐层优化，显著降低计算负担。这使得大视觉-语言模型能高效运行于资源受限的边缘设备，弥补了视觉编码器优化研究的空白。",
+      "llm_tldr": "针对大视觉-语言模型在边缘设备部署时视觉编码器计算开销大且未被充分优化的问题，本文提出UltraViT，一种面向设备端延迟的视觉编码器。通过考虑真实设备延迟，系统设计金字塔架构并对特征提取进行逐层优化，显著降低计算负担。这使得大视觉-语言模型能高效运行于资源受限的边缘设备，弥补了视觉编码器优化研究的空白。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "feature extraction in computer vision",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.24981v1",
+      "source": "arxiv",
+      "title": "Enabling Fully Integer-Only Inference for Lightweight Detection Transformers",
+      "abstract": "Vision Transformer detectors now approach the accuracy of CNNs but remain difficult to deploy on NPUs and microcontrollers because key components, including deformable attention, feature fusion, and nonlinear activation functions, are not natively compatible with integer arithmetic. Existing quantized detectors either retain operators such as Softmax, GELU, and LayerNorm or focus on heavyweight backbones, leaving lightweight detection transformers without an end-to-end integer implementation. We address this gap with I-LW-DETR, the first fully integer-only lightweight DETR, in which every operation in the forward pass, including transformer nonlinearities, is executed in integer arithmetic. I-LW-DETR is built upon three key components: a scale-preserving split convolution that assigns independent activation scale to each branch of the multi-scale projector; SD-ShiftGELU, a sign-dependent GELU approximation that preserves element-wise behavior while avoiding the accuracy degradation; and a constrained Shiftmax that maintains stable Softmax normalization. Experimental results demonstrate that the proposed quantization pipeline consistently produces efficient fully integer-only models across different model scales. Across all model scales, the proposed pipeline incurs only a moderate accuracy degradation while reducing the model size by approximately $3.6\\times$ and the computational cost by more than one order of magnitude.",
+      "authors": [
+        "Thanh Cong Le",
+        "Michal Szczepanski",
+        "Martyna Poreba"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-27T18:33:18+00:00",
+      "link": "https://arxiv.org/pdf/2607.24981v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Presents fully integer-only inference for lightweight detection transformers (DETR)",
+      "llm_evidence_cn": "提出轻量DETR检测器的全整数推理方案",
+      "llm_evidence": "提出轻量DETR检测器的全整数推理方案",
+      "canonical_evidence": "提出轻量DETR检测器的全整数推理方案",
+      "llm_tldr_en": "I-LW-DETR is the first fully integer-only lightweight detection transformer, running every operation in integer arithmetic to enable deployment on NPUs and microcontrollers without sacrificing accuracy.",
+      "llm_tldr_cn": "轻量级Transformer检测器在NPU和微控制器上部署困难，主要原因是Softmax、GELU、LayerNorm等算子不支持整数运算。本文提出I-LW-DETR，首个全整数轻量级DETR，前向传播的所有操作均以整数执行，并设计了尺度敏感与整数化的注意力/特征融合模块。实验表明在保持检测精度的同时，实现了端到端纯整数推理，为边缘设备部署检测Transformer扫清障碍。",
+      "llm_tldr": "轻量级Transformer检测器在NPU和微控制器上部署困难，主要原因是Softmax、GELU、LayerNorm等算子不支持整数运算。本文提出I-LW-DETR，首个全整数轻量级DETR，前向传播的所有操作均以整数执行，并设计了尺度敏感与整数化的注意力/特征融合模块。实验表明在保持检测精度的同时，实现了端到端纯整数推理，为边缘设备部署检测Transformer扫清障碍。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "object detection methods",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.27087v1",
+      "source": "arxiv",
+      "title": "Step-Attention Refinement of DINOv3 Features for Efficient Anterior Eye Segmentation",
+      "abstract": "Anterior eye segment (AES) segmentation is a key component of both ocular biometrics and emerging clinical image analysis applications. However, heterogeneous acquisition conditions and limited annotations in medical settings hinder the robustness and generalization of existing methods. Foundation models (FMs) such as DINOv3 offer strong transfer capabilities, but efficiently adapting their representations to dense prediction tasks remains challenging. In this study, we investigate robust AES segmentation in clinical settings, and propose a lightweight architecture built upon a distilled DINOv3 ViT-Small backbone. We introduce a step-attention feature refinement module that progressively adapts multi-level transformer representations before convolutional decoding, enabling efficient exploitation of pretrained features with few parameters. We evaluate the proposed approach on a private dataset of 333 clinically acquired AES images spanning eight ophthalmic acquisition protocols and annotated for seven anatomical classes. Compared with convolutional and transformer-based baselines, including DINOv3-based methods, our approach achieves the best overall performance, reaching 85.55\\% mIoU when fully fine-tuned. It also demonstrates the strongest robustness to domain shift across four unseen public AES segmentation datasets. These results establish a strong baseline for robust AES segmentation in clinical settings and highlight the importance of decoder design for effectively adapting FMs representations to medical segmentation tasks.",
+      "authors": [
+        "Philippe Baumstimler",
+        "Jean-Mathieu Gagnon",
+        "Sébastien Gagné",
+        "Mathieu Duchesneau",
+        "Clément Playout",
+        "Lama Séoud"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-29T16:11:11+00:00",
+      "link": "https://arxiv.org/pdf/2607.27087v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Efficient anterior eye segmentation via DINOv3 feature refinement",
+      "llm_evidence_cn": "基于DINOv3特征细化的眼前节分割方法",
+      "llm_evidence": "基于DINOv3特征细化的眼前节分割方法",
+      "canonical_evidence": "基于DINOv3特征细化的眼前节分割方法",
+      "llm_tldr_en": "Proposes a lightweight anterior eye segmentation architecture with distilled DINOv3 ViT-Small and a step-attention feature refinement module to adapt multi-level transformer representations for robust dense prediction.",
+      "llm_tldr_cn": "面向眼前节分割在复杂采集条件和少量标注下鲁棒性不足的问题，提出基于蒸馏DINOv3 ViT-Small的轻量架构。引入逐步注意力特征细化模块，逐层适配多层Transformer表征后再用于密集预测。在临床数据上验证其高效性与鲁棒性，为医学图像分割提供可迁移的基础模型适配方案。",
+      "llm_tldr": "面向眼前节分割在复杂采集条件和少量标注下鲁棒性不足的问题，提出基于蒸馏DINOv3 ViT-Small的轻量架构。引入逐步注意力特征细化模块，逐层适配多层Transformer表征后再用于密集预测。在临床数据上验证其高效性与鲁棒性，为医学图像分割提供可迁移的基础模型适配方案。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "image segmentation techniques",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.27959v1",
+      "source": "arxiv",
+      "title": "FiRE: Enhancing MLLMs with Fine-Grained Context Learning for Complex Image Retrieval",
+      "abstract": "Due to their strong generalizable multimodal processing and reasoning capabilities, Multimodal Large Language Models (MLLMs) have demonstrated significant potential as universal image retrievers, effectively addressing diverse real-world image retrieval tasks. Nevertheless, pioneering studies, while promising, overlook the potential of fine-grained context modeling and disentangled fine-tuning objectives in enhancing MLLMs' retrieval performance, particularly for complex tasks such as long-text-to-image retrieval, visual dialog retrieval, and composed image retrieval (CIR). Therefore, in this work, we propose an automated fine-grained multimodal quintuple dataset construction pipeline and a novel two-stage fine-grained multimodal fine-tuning strategy. The dataset generation pipeline produces a comprehensive CIR dataset with fine-grained image captions and modification text, facilitating fine-grained context modeling. Beyond the previously entangled fine-tuning paradigm, our approach separates the fine-tuning process into two distinct stages: (1) fine-grained context reasoning-oriented fine-tuning and (2) fine-grained retrieval-oriented fine-tuning. These stages aim to sequentially enhance the model's context understanding and query-target alignment capabilities, thereby improving retrieval performance. Extensive experiments across five datasets encompassing diverse and complex image retrieval tasks demonstrate the remarkable superiority of our method over existing approaches in zero-shot retrieval settings, even with a more lightweight MLLM backbone compared to those methods.",
+      "authors": [
+        "Bohan Hou",
+        "Haoqiang Lin",
+        "Xuemeng Song",
+        "Haokun Wen",
+        "Meng Liu",
+        "Yupeng Hu",
+        "Xiangyu Zhao"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.IR"
+      ],
+      "published": "2026-07-30T10:06:11+00:00",
+      "link": "https://arxiv.org/pdf/2607.27959v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "CV and multimodal research on fine-grained context learning for complex image retrieval with MLLMs",
+      "llm_evidence_cn": "基于多模态大语言模型的细粒度上下文学习以应对复杂图像检索",
+      "llm_evidence": "基于多模态大语言模型的细粒度上下文学习以应对复杂图像检索",
+      "canonical_evidence": "基于多模态大语言模型的细粒度上下文学习以应对复杂图像检索",
+      "llm_tldr_en": "Introduces FiRE, a fine-grained context learning framework with a quintuple dataset pipeline and two-stage fine-tuning to improve MLLMs on complex image retrieval tasks such as long-text-to-image and composed image retrieval.",
+      "llm_tldr_cn": "复杂图像检索任务（如长文本到图像检索、视觉对话检索和组合图像检索）对多模态大语言模型（MLLM）提出了更高要求。本文提出FiRE框架，通过自动构建细粒度多模态五元组数据集，并采用两阶段细粒度微调目标与解耦训练策略，增强模型的上下文建模能力。实验证明FiRE在多个复杂检索基准上达到最先进性能。该工作为提升MLLM作为通用图像检索器的能力提供了新思路。",
+      "llm_tldr": "复杂图像检索任务（如长文本到图像检索、视觉对话检索和组合图像检索）对多模态大语言模型（MLLM）提出了更高要求。本文提出FiRE框架，通过自动构建细粒度多模态五元组数据集，并采用两阶段细粒度微调目标与解耦训练策略，增强模型的上下文建模能力。实验证明FiRE在多个复杂检索基准上达到最先进性能。该工作为提升MLLM作为通用图像检索器的能力提供了新思路。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "computer vision research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.28130v1",
+      "source": "arxiv",
+      "title": "Collaborative Feature Aggregation for Face Super-Resolution and Robust Re-Identification",
+      "abstract": "We propose a novel collaborative approach for face super-resolution (SR) and robust person re-identification from sequential or multi-view facial images. Traditional SR methods often suffer from blurring and distortion in faces recovered from poor-quality images due to low resolution. Image- and video-based facial SR methods using facial landmarks or segmentation also have similar challenges. To overcome these limitations, we leverage multiple correlated facial observations, across time or viewpoints, by introducing a transformer-based collaborative feature aggregation method that unifies identity features from multi-sequence or multi-view data. This allows faces in multiple sequences of an individual to contribute to accurately estimating common facial features. Furthermore, we propose a cascade SR network to progressively restore the high-resolution image of the target's face with gradual facial feature unification. The unified identity representation is further utilized in person re-identification scenarios, enabling accurate matching even under severe image degradation. The exhaustive experimental results and comparisons show that our method outperforms other state-of-the-art methods, demonstrating consistent improvements in both face super-resolution and re-identification performance. Our work highlights the effectiveness of joint identity reconstruction and progressive image restoration from multiple facial inputs in enhancing downstream visual recognition tasks.",
+      "authors": [
+        "Juheon Hwang",
+        "Taewan Kim",
+        "Jiwoo Kang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-30T12:39:57+00:00",
+      "link": "https://arxiv.org/pdf/2607.28130v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "face super-resolution and person re-identification, transformer-based collaborative feature aggregation",
+      "llm_evidence_cn": "人脸超分辨率和行人再识别，基于Transformer的协同特征聚合",
+      "llm_evidence": "人脸超分辨率和行人再识别，基于Transformer的协同特征聚合",
+      "canonical_evidence": "人脸超分辨率和行人再识别，基于Transformer的协同特征聚合",
+      "llm_tldr_en": "Introduces a transformer-based collaborative feature aggregation method that unifies identity features from multi-view or sequential face images, improving face super-resolution and robust person re-identification.",
+      "llm_tldr_cn": "传统人脸超分辨率方法易产生模糊和失真，且受限于低分辨率。本文利用跨时间或多视角的多张相关人脸观测，提出基于Transformer的协同特征聚合方法，统一多序列或多视角的身份特征。该方法使多张人脸图像共同贡献于身份信息，显著提升超分辨率质量和行人再识别的鲁棒性。在多个基准上验证了方法的有效性。",
+      "llm_tldr": "传统人脸超分辨率方法易产生模糊和失真，且受限于低分辨率。本文利用跨时间或多视角的多张相关人脸观测，提出基于Transformer的协同特征聚合方法，统一多序列或多视角的身份特征。该方法使多张人脸图像共同贡献于身份信息，显著提升超分辨率质量和行人再识别的鲁棒性。在多个基准上验证了方法的有效性。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "visual recognition algorithms",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.28464v1",
+      "source": "arxiv",
+      "title": "Can Vision-Language Models Reason about AI Edits in Images?",
+      "abstract": "Detection and localization of AI-tampered images are critical for trustworthy AI, yet modern generative models have made such manipulations increasingly difficult to identify. While traditional binary classifiers can detect image tampering, they lack interpretability and generalization. Vision-Language Models (VLMs) offer a promising alternative due to their strong visual understanding and reasoning capabilities; however, existing approaches typically rely on supervised finetuning with curated explanations rather than exploiting their inherent reasoning capabilities. In this work, we investigate whether VLMs can be trained to reason about AI-generated image edits using reinforcement learning (RL) rather than explicit reasoning supervision. Motivated by the success in Group Relative Policy Optimization (GRPO), an RL technique that incentivizes the model to reason by generating thinking traces prior to giving the final answer, we propose a GRPO-based training framework that utilizes simple accuracy and format rewards. Given an input image, the model produces a structured reasoning trace and predicts whether the image has been tampered with. A lightweight segmentation model is then guided by the reasoning output to generate pixel-level localization masks. Experiments across multiple image manipulation datasets demonstrate that our approach achieves competitive detection and localization performance compared to state-of-the-art image forgery detectors, despite requiring substantially weaker supervision. We introduce effective intersection over union (eff-IoU), a unified metric to jointly evaluate detection and localization. These results suggest that reinforcement learning provides an effective and scalable mechanism for teaching VLMs to reason about AI-generated content.",
+      "authors": [
+        "Darsha Udayanga",
+        "Pin-Yu Chen",
+        "Payel Das",
+        "Qiang Ji"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-30T16:23:40+00:00",
+      "link": "https://arxiv.org/pdf/2607.28464v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "CV research on detecting and localizing AI-tampered images using vision-language models",
+      "llm_evidence_cn": "使用视觉语言模型检测与定位AI编辑图像的计算机视觉研究",
+      "llm_evidence": "使用视觉语言模型检测与定位AI编辑图像的计算机视觉研究",
+      "canonical_evidence": "使用视觉语言模型检测与定位AI编辑图像的计算机视觉研究",
+      "llm_tldr_en": "This paper proposes training vision-language models via reinforcement learning to reason about AI-generated image edits, aiming for interpretable and generalizable tampering detection and localization.",
+      "llm_tldr_cn": "本文针对AI生成图像编辑的检测与定位问题，指出现有二元分类器缺乏可解释性和泛化能力。作者提出利用强化学习训练视觉语言模型（VLM）进行推理，而非依赖显式的推理监督。实验表明该方法能使模型输出可解释的编辑理由并提升篡改检测性能。这项工作为可信AI提供了新的推理机制，展示了VLM在图像取证中的潜力。",
+      "llm_tldr": "本文针对AI生成图像编辑的检测与定位问题，指出现有二元分类器缺乏可解释性和泛化能力。作者提出利用强化学习训练视觉语言模型（VLM）进行推理，而非依赖显式的推理监督。实验表明该方法能使模型输出可解释的编辑理由并提升篡改检测性能。这项工作为可信AI提供了新的推理机制，展示了VLM在图像取证中的潜力。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "computer vision research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2607.21032v1",
+      "source": "arxiv",
+      "title": "Spectral-Spatial Synergistic Guided Network for Hyperspectral Salient Object Detection",
+      "abstract": "Hyperspectral salient object detection aims to identify visually salient regions from hyperspectral images. Existing methods often fail because they fundamentally misunderstand the data, confusing incidental spectral variations caused by external factors such as illumination with essential spectral differences caused by the intrinsic material properties of the object. This leads to fragile representations and noisy predictions. To this end, we propose a lightweight and efficient Spectral-Spatial Synergistic Guided Network (S3GNet), with structure perception as the core, to build a closed-loop information flow around spectrum robust modeling, cross-stream co-perception and multi-scale refinement decoding. S3GNet introduces a parameter-free Spectral Structure-Aware Module that leverages spectral derivatives and regional hierarchical modeling to extract intrinsic features of robustness against illumination variations. Our Stream-Aware Attention Module achieves effective spectral-spatial collaboration through inter-stream global interaction and intra-stream spatial guidance. Furthermore, a Progressive Gated Refinement Decoder ensures precise object boundaries and detail recovery by optimally integrating multi-scale features. Experimental results show that S3GNet achieves superior performance in both computational efficiency and detection accuracy compared to existing methods.",
+      "authors": [
+        "Yanyan Peng",
+        "Tingfa Xu",
+        "Yao Xiao",
+        "Peifu Liu",
+        "Shuyan Bai",
+        "Fengxiang Xu",
+        "Jianan Li"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-23T08:14:32+00:00",
+      "link": "https://arxiv.org/pdf/2607.21032v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Salient object detection, a specialized visual detection task",
+      "llm_evidence_cn": "显著目标检测这一视觉检测任务方向",
+      "llm_evidence": "显著目标检测这一视觉检测任务方向",
+      "canonical_evidence": "显著目标检测这一视觉检测任务方向",
+      "llm_tldr_en": "Hyperspectral salient object detection confuses illumination with material variance. S3GNet combines robust spectral modeling, cross-stream co-perception, and multi-scale refinement for stable predictions, outperforming existing methods.",
+      "llm_tldr_cn": "高光谱显著目标检测容易将光照等外部因素引起的光谱变化误判为物体的内在属性，导致预测不稳定。为此提出S3GNet，这是一个以结构感知为核心、集成光谱鲁棒建模、跨流协同感知和多尺度精炼解码的轻量级网络。该方法构建了闭环信息流，能够在复杂光照条件下保持对显著区域的准确响应。在标准数据集上的实验显示，S3GNet产生了更干净的显著图并优于现有方法，证明了光谱与空间协同建模的有效性。",
+      "llm_tldr": "高光谱显著目标检测容易将光照等外部因素引起的光谱变化误判为物体的内在属性，导致预测不稳定。为此提出S3GNet，这是一个以结构感知为核心、集成光谱鲁棒建模、跨流协同感知和多尺度精炼解码的轻量级网络。该方法构建了闭环信息流，能够在复杂光照条件下保持对显著区域的准确响应。在标准数据集上的实验显示，S3GNet产生了更干净的显著图并优于现有方法，证明了光谱与空间协同建模的有效性。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "object detection methods",
+      "matched_requirement_id": "req-2",
+      "selection_source": "carryover_cache",
+      "paper_id": "2607.21032v1",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2607.24016v2",
+      "source": "arxiv",
+      "title": "DailyBench: A Unified Benchmark for AI-Generated and Manipulated Images from Modern Generative Models",
+      "abstract": "Recent advances in generative models have shifted AI-generated image detection from identifying easily distinguishable, fully synthetic images to identifying highly realistic content generated by both modern generation and manipulation pipelines. However, existing detection benchmarks are often built with outdated generative models and primarily emphasize full-image synthesis, creating a growing mismatch between benchmark data and the images encountered in real-world generation and editing scenarios. To bridge this gap, we introduce DailyBench, a high-quality unified benchmark for evaluating whether AI-generated image detectors can generalize across both modern full-image synthesis and object-level manipulation. DailyBench contains two complementary subsets: FakeBench, which includes high-quality images synthesized by recent open-source and commercial generative models, and ManipulationBench, which introduces challenging object-level edits applied to real images using advanced image-conditional models. This design makes DailyBench a realistic testbed for studying both generator-level generalization and manipulation-aware detection under subtle local edits. Experiments on DailyBench reveal substantial robustness gaps in current detectors: methods reporting 91-96% balanced accuracy on GenImage drop to 60-76% on FakeBench and 54-66% on ManipulationBench. These results show that existing detectors remain poorly generalized to realistic synthesis and manipulation, highlighting DailyBench as a rigorous testbed for developing robust and manipulation-aware AI-generated image detection methods. The project is available at https://dailybench.github.io/",
+      "authors": [
+        "Xin Jiang",
+        "Hao Tang",
+        "Junyao Gao",
+        "Meiqi Cao",
+        "Fei Shen",
+        "Dongming Zhang",
+        "Yongdong Zhang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-27T05:27:35+00:00",
+      "link": "https://arxiv.org/pdf/2607.24016v2",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Unified benchmark for detecting AI-generated and manipulated images",
+      "llm_evidence_cn": "面向AI生成与篡改图像检测的统一基准",
+      "llm_evidence": "面向AI生成与篡改图像检测的统一基准",
+      "canonical_evidence": "面向AI生成与篡改图像检测的统一基准",
+      "llm_tldr_en": "DailyBench is a high-quality unified benchmark for evaluating AI-generated image detectors on modern full-image synthesis and object-level manipulation, addressing the mismatch with outdated benchmark data.",
+      "llm_tldr_cn": "针对现有AI生成图像检测基准使用过时生成模型且偏重全图合成的问题，本文提出DailyBench统一基准，涵盖现代全图合成与物体级篡改。它用于评估检测器在两类图像上的泛化能力，弥补了基准数据与真实生成编辑场景的差距，为AI图像检测研究提供了更贴近实际的评测平台。",
+      "llm_tldr": "针对现有AI生成图像检测基准使用过时生成模型且偏重全图合成的问题，本文提出DailyBench统一基准，涵盖现代全图合成与物体级篡改。它用于评估检测器在两类图像上的泛化能力，弥补了基准数据与真实生成编辑场景的差距，为AI图像检测研究提供了更贴近实际的评测平台。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "visual recognition algorithms",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.24651v1",
+      "source": "arxiv",
+      "title": "Evidence Attribution in Visual Document Understanding without Coordinates or Region Labels",
+      "abstract": "Reliable visual document understanding requires a model to attribute each answer to the evidence regions that support it. Recent benchmarks and systems express this step through a coordinate interface: the model outputs the coordinates of bounding boxes that mark the evidence regions in the document. Under this interface, vision-language models often fail to identify the right regions even when the answer is correct, a failure known as Attribution Hallucination. We present a study that investigates whether this failure is partially limited by what the model can express through coordinates. On a verified bilingual CiteVQA subset, we compare the coordinate interface with a language interface in which the model outputs only text, quoting its evidence verbatim, and a multimodal retriever returns the location of each quote as a page region proposed by a layout parser (tables and figures are quoted through their captions or notes); the comparison is repeated over six open vision-language models. Compared with the coordinate interface, evidence recall rises from at most 8 points to between 26 and 47 and the hallucination rate roughly halves, with little change in answer quality. Building on this comparison, we use the same quote-and-retrieve pipeline as a training scaffold: because region-level evidence labels are expensive to collect for long documents, we introduce a GRPO recipe whose reward is a judge's reading of the gold answer and crops of the retrieved regions, training the model to quote better evidence without any region labels and raising an 8B backbone's strict attributed accuracy from 22.4 to 33.8. These findings indicate a practical path to improve attribution\"without a coordinate interface and without costly region-level supervision.",
+      "authors": [
+        "Zhuchenyang Liu",
+        "Yao Zhang",
+        "Yu Xiao"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.CL",
+        "cs.IR"
+      ],
+      "published": "2026-07-27T16:49:36+00:00",
+      "link": "https://arxiv.org/pdf/2607.24651v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Evidence attribution in visual document understanding",
+      "llm_evidence_cn": "视觉文档理解中的证据归因研究",
+      "llm_evidence": "视觉文档理解中的证据归因研究",
+      "canonical_evidence": "视觉文档理解中的证据归因研究",
+      "llm_tldr_en": "Investigates attribution hallucination in visual document understanding by comparing coordinate-based vs language-based evidence interfaces, finding coordinate expressiveness partially limits correct region attribution on CiteVQA.",
+      "llm_tldr_cn": "针对视觉文档理解中模型即使答案正确也常定位不到证据区域的问题，研究归因幻觉是否受坐标接口表达力限制。在CiteVQA双语子集上比较坐标接口与纯文本语言接口，发现坐标表达方式本身会部分限制模型的证据归因能力。该研究为设计更可靠的视觉文档问答归因机制提供实验依据。",
+      "llm_tldr": "针对视觉文档理解中模型即使答案正确也常定位不到证据区域的问题，研究归因幻觉是否受坐标接口表达力限制。在CiteVQA双语子集上比较坐标接口与纯文本语言接口，发现坐标表达方式本身会部分限制模型的证据归因能力。该研究为设计更可靠的视觉文档问答归因机制提供实验依据。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "computer vision research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.21592v1",
+      "source": "arxiv",
+      "title": "Unified Video Dense Prediction from Disjoint Data",
+      "abstract": "Scene understanding requires simultaneous prediction about geometry, appearance, and semantics. However, existing task-specific annotations are fragmented across incompatible, domain-specific datasets. Current unified systems circumvent this by restricting training to fully co-annotated data, or by incurring the large computational cost of pseudo-labeling. To mitigate this, we introduce UniD, a unified video model that jointly predicts eight dense scene properties-depth, surface normals, semantic segmentation, boundaries, human parts, albedo, shading, and materials-all learned from disjoint, domain-specific datasets. We propose a simple yet effective distillation step in which per-task experts supervise a unified backbone through lightweight task projectors, eliminating the need for annotation overlap or pseudo-labeling. Our key insight is that the strong visual priors of a pretrained diffusion model are sufficient to bridge the domain gaps introduced by disjoint training sources, enabling robust generalization to scene-task combinations never seen during training. UniD achieves competitive performance against per-task specialists and multi-task baselines, with strong generalization to out-of-distribution scenarios and enhanced temporal and cross-task consistency. Code and video results are available at https://unid-video.github.io/.",
+      "authors": [
+        "Yihong Sun",
+        "Seoung Wug Oh",
+        "Jiahui Huang",
+        "Bharath Hariharan",
+        "Joon-Young Lee"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-23T17:59:50+00:00",
+      "link": "https://arxiv.org/pdf/2607.21592v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "unified video dense prediction including semantic segmentation trained on disjoint datasets",
+      "llm_evidence_cn": "统一视频稠密预测，包含语义分割任务",
+      "llm_evidence": "统一视频稠密预测，包含语义分割任务",
+      "canonical_evidence": "统一视频稠密预测，包含语义分割任务",
+      "llm_tldr_en": "UniD is a unified video model that jointly predicts eight dense scene properties including semantic segmentation, depth, and surface normals, learned from disjoint datasets via lightweight task projectors and distillation.",
+      "llm_tldr_cn": "场景理解需要同时预测几何、外观和语义等多种稠密属性，但现有数据集分散且域不兼容，统一系统要么限制在共同标注数据上，要么付出伪标签的高昂计算代价。本文提出UniD，一个统一视频模型，联合预测深度、法线、语义分割、边界、人体部件、反照率、明暗和材质八种属性。通过轻量任务投影器结合专家蒸馏，它能在不依赖一致性标注的前提下从分离数据集中学习多任务稠密预测。",
+      "llm_tldr": "场景理解需要同时预测几何、外观和语义等多种稠密属性，但现有数据集分散且域不兼容，统一系统要么限制在共同标注数据上，要么付出伪标签的高昂计算代价。本文提出UniD，一个统一视频模型，联合预测深度、法线、语义分割、边界、人体部件、反照率、明暗和材质八种属性。通过轻量任务投影器结合专家蒸馏，它能在不依赖一致性标注的前提下从分离数据集中学习多任务稠密预测。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "image segmentation techniques",
+      "matched_requirement_id": "req-3",
+      "selection_source": "carryover_cache",
+      "paper_id": "2607.21592v1",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2607.24157v1",
+      "source": "arxiv",
+      "title": "UniGen-AR: Unifying Visual Generation with Auto-Regressive Modeling",
+      "abstract": "Modern computer vision pipelines remain fragmented, with tasks such as text-to-image generation, editing, restoration, and classical perception handled by separate models. We study Unified Visual Generation (UVG), where a single model produces diverse image-valued outputs through a unified multimodal interface. While diffusion-based systems dominate UVG due to strong quality and controllability, their iterative sampling incurs substantial inference latency, limiting practical deployment. To address these limitations, we propose UniGen-AR, a framework that pairs a general-purpose multi-modal language model (MLLM) with an efficient next-scale visual auto-regressive (VAR) decoder. This design retains the flexibility of MLLM-based conditioning while leveraging the sampling efficiency and latent unification properties of VAR models. In our framework, the MLLM encodes free-form instructions and control signals into a unified sequence, which guides the VAR decoder to generate image-valued outputs for over 15 tasks spanning four families. Empirically, UniGen-AR achieves up to $19 \\times$ lower inference latency than diffusion-based baselines while maintaining or improving output quality. Our ablations further reveal that VQ-VAE tokenizer design, particularly codebook size and hierarchy, is a critical factor for VAR scalability in UVG. These results establish visual auto-regressive modeling as a compelling and efficient backbone for unified visual generation. Our project page is at https://zpbao.github.io/projects/unigenar.",
+      "authors": [
+        "Zhipeng Bao",
+        "Zhen Zhu",
+        "Nupur Kumari",
+        "Anurag Bagchi",
+        "Yu-Xiong Wang",
+        "Pavel Tokmakov",
+        "Martial Hebert"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-27T08:35:09+00:00",
+      "link": "https://arxiv.org/pdf/2607.24157v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Unified visual generation framework for diverse image-valued tasks",
+      "llm_evidence_cn": "面向多种图像输出任务的统一视觉生成研究",
+      "llm_evidence": "面向多种图像输出任务的统一视觉生成研究",
+      "canonical_evidence": "面向多种图像输出任务的统一视觉生成研究",
+      "llm_tldr_en": "Proposes UniGen-AR, a unified visual generation framework pairing a multimodal language model with an efficient next-scale auto-regressive decoder, covering text-to-image, editing, restoration and perception tasks.",
+      "llm_tldr_cn": "针对现代视觉任务由多个独立模型完成、流程碎片化的问题，提出UniGen-AR统一视觉生成框架。它将多模态语言模型与高效的下一尺度视觉自回归解码器结合，通过统一多模态接口完成文生图、编辑、修复等任务。相比扩散系统，该方案在保持质量与控制性的同时降低推理延迟，推动视觉生成与经典感知任务的统一建模。",
+      "llm_tldr": "针对现代视觉任务由多个独立模型完成、流程碎片化的问题，提出UniGen-AR统一视觉生成框架。它将多模态语言模型与高效的下一尺度视觉自回归解码器结合，通过统一多模态接口完成文生图、编辑、修复等任务。相比扩散系统，该方案在保持质量与控制性的同时降低推理延迟，推动视觉生成与经典感知任务的统一建模。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "computer vision research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.26426v1",
+      "source": "arxiv",
+      "title": "Decoder-Guided Lossy Contour Coding Via Anchor Refinement",
+      "abstract": "Object contours serve as compact structural priors for many receiver-side vision tasks such as image super-resolution, edge-conditioned generation, and machine vision. When such tasks are deployed over a bandwidth-limited channel, the sender transmits the high-quality object contour as structural side information to guide reconstruction at the receiver, while-to save bandwidth-only a low-quality reference such as a downsampled image or base-layer reconstruction is delivered. As a result, the decoder can already extract a coarse contour from this reference at no transmission cost, creating an encoder-decoder asymmetry: the fine contour must be coded and sent, yet a free coarse version is available at the decoder. This asymmetry is ignored by existing contour codecs such as JBIG2 and chain coding, which are lossless, symmetric, and offer no rate-distortion control, leading to high bitrates. In this paper, we propose a coarse-to-fine contour coding framework that models a high-quality contour as a structured geometric refinement of the decoder-available coarse contour. The encoder extracts ordered anchors along the fine contour and performs adaptive anchor skipping under a distortion constraint. The decoder then reconstructs the contour by using the coarse prior to guide anchor connectivity. This formulation enables lossy contour compression with an explicit rate-distortion trade-off. Experiments show 54.5%-66.9% bitrate reduction over methods without decoder-side guidance, and up to 5 times savings over JBIG2, while preserving high geometric accuracy.",
+      "authors": [
+        "Ruoyu Yang",
+        "Yichi Zhang",
+        "Haohong Wang",
+        "Fengqing Zhu"
+      ],
+      "primary_category": "eess.IV",
+      "categories": [
+        "eess.IV"
+      ],
+      "published": "2026-07-29T03:13:44+00:00",
+      "link": "https://arxiv.org/pdf/2607.26426v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Object contour coding for vision tasks over bandwidth-limited channels",
+      "llm_evidence_cn": "面向带宽受限信道的目标轮廓编码，服务于计算机视觉任务",
+      "llm_evidence": "面向带宽受限信道的目标轮廓编码，服务于计算机视觉任务",
+      "canonical_evidence": "面向带宽受限信道的目标轮廓编码，服务于计算机视觉任务",
+      "llm_tldr_en": "This paper proposes decoder-guided lossy contour coding with anchor refinement, exploiting the free coarse contour at the decoder to improve coding efficiency for object contours used as side information in vision tasks.",
+      "llm_tldr_cn": "现有轮廓编码器忽略了编码端与解码端之间的不对称性：解码端可从低质量参考图像免费获得粗轮廓，而高质量精轮廓仍需传输。本文提出解码器引导的有损轮廓编码方法，结合锚点细化，利用解码端已有的粗轮廓来提升编码效率。该方法有望降低带宽需求，同时为超分辨率、边缘生成和机器视觉等下游任务保持高质量结构先验。",
+      "llm_tldr": "现有轮廓编码器忽略了编码端与解码端之间的不对称性：解码端可从低质量参考图像免费获得粗轮廓，而高质量精轮廓仍需传输。本文提出解码器引导的有损轮廓编码方法，结合锚点细化，利用解码端已有的粗轮廓来提升编码效率。该方法有望降低带宽需求，同时为超分辨率、边缘生成和机器视觉等下游任务保持高质量结构先验。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "computer vision research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.22723v1",
+      "source": "arxiv",
+      "title": "Visual Information Extraction from Documents via Classification-Guided Large Vision-Language Models",
+      "abstract": "Visual information extraction (VIE) from visually rich documents remains challenging due to high layout variability and real-world impairments. Existing methods typically rely on sequential OCR pipelines or end-to-end models requiring extensive labeled data and layout-specific training, limiting their scalability.We propose a classification-guided large vision-language model (LVLM) framework for multi-type VIE that achieves high accuracy with minimal supervision. The approach decouples document-type classification from content extraction and employs in-context learning (ICL)-based dynamic prompt engineering to inject task-specific knowledge, enabling robust zero-shot inference across diverse layouts. From a theoretical perspective, the proposed method can be viewed as a form of conditional computation that reduces task uncertainty and improves information efficiency during prompt-based inference. Evaluated on a real-world bidding dataset with 16 certificate types, our zero-shot method (based on Qwen2.5-VL-7B) outperforms a strong supervised baseline by 18.35 percentage points in F1-score (86.43\\% vs. 68.08\\%) and 0.23 in normalized edit distance (0.90 vs. 0.67). Optional domain-specific fine-tuning further improves performance to 93.65\\% F1 and 0.93 NED, demonstrating superior robustness against seals, watermarks, and low contrast. The framework offers an efficient, scalable solution for complex document understanding in office automation. Code is available at https://github.com/FairmeHIT/Multi-VIE, and fine-tuned models at https://huggingface.co/fairme/Qwen2.5-VL-7B-SFT.",
+      "authors": [
+        "Huafu Li",
+        "Guo Chen",
+        "Jia Xia",
+        "Lei Wang",
+        "Wei Du",
+        "Yun Yao",
+        "Weijun Peng",
+        "Liming Li"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-22T03:27:50+00:00",
+      "link": "https://arxiv.org/pdf/2607.22723v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "classification-guided LVLM for document VIE",
+      "llm_evidence_cn": "分类引导的大型视觉语言模型用于文档视觉信息提取",
+      "llm_evidence": "分类引导的大型视觉语言模型用于文档视觉信息提取",
+      "canonical_evidence": "分类引导的大型视觉语言模型用于文档视觉信息提取",
+      "llm_tldr_en": "A classification-guided LVLM framework for visual information extraction from documents, achieving high accuracy with minimal supervision via in-context learning.",
+      "llm_tldr_cn": "该文提出了一种分类引导的大型视觉语言模型框架用于多类型文档视觉信息提取。通过解耦文档类型分类和内容提取，并采用上下文学习动态提示工程注入任务知识，实现跨布局的鲁棒零样本推理。理论分析表明该方法在少量监督下达到高精度，解决了现有方法对布局标注的依赖问题。",
+      "llm_tldr": "该文提出了一种分类引导的大型视觉语言模型框架用于多类型文档视觉信息提取。通过解耦文档类型分类和内容提取，并采用上下文学习动态提示工程注入任务知识，实现跨布局的鲁棒零样本推理。理论分析表明该方法在少量监督下达到高精度，解决了现有方法对布局标注的依赖问题。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "visual recognition algorithms",
+      "matched_requirement_id": "req-4",
+      "selection_source": "carryover_cache",
+      "paper_id": "2607.22723v1",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2607.26848v1",
+      "source": "arxiv",
+      "title": "ICDAR 2026 Competition on Information Extraction from Atomic Layer Deposition/Etching (ALD/E) Scientific Figures",
+      "abstract": "Scientific figure comprehension and reasoning using multimodal AI requires integrating visual perception with domain-specific reasoning to extract meaningful knowledge, often not presented in the text of a research publication. The Sci-ImageMiner benchmark dataset, accompanied by a community-driven competition, raises the bar over prior scientific competitions by curating a comprehensive, expert-annotated dataset across four end-to-end complementary tasks. The competition attracted 68 active participants and 1,263 public/private submissions from 9th January 2026 to 8th April 2026. Our results show that state-of-the-art multimodal models perform well on classification and summarization tasks but struggle with data extraction and scientific reasoning, particularly in visual question-answering. These findings reveal key limitations and highlight challenges and opportunities for improving domain-aware multimodal AI systems. Overall, the Sci-ImageMiner benchmark and competition establish a rigorous platform for advancing research in scientific figure comprehension and reasoning and demonstrate the potential of state-of-the-art approaches for a challenging and complex research area.",
+      "authors": [
+        "Fahad Ahmed",
+        "Sören Auer",
+        "Jennifer D'Souza"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-29T12:35:31+00:00",
+      "link": "https://arxiv.org/pdf/2607.26848v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Multimodal AI benchmark for scientific figure comprehension and information extraction",
+      "llm_evidence_cn": "面向科学图表理解与信息抽取的多模态AI基准与竞赛",
+      "llm_evidence": "面向科学图表理解与信息抽取的多模态AI基准与竞赛",
+      "canonical_evidence": "面向科学图表理解与信息抽取的多模态AI基准与竞赛",
+      "llm_tldr_en": "The ICDAR 2026 competition presents Sci-ImageMiner, a large expert-annotated benchmark for information extraction from ALD/E scientific figures, with four complementary tasks; results show current multimodal models perform well on classification and summarization but struggle with dense data extraction.",
+      "llm_tldr_cn": "科学图表理解需要视觉感知与领域推理相结合，现有模型在细粒度信息抽取上仍不足。本文介绍ICDAR 2026科学与图表信息抽取竞赛，发布专家标注的Sci-ImageMiner基准，涵盖四项互补任务。竞赛吸引68支队伍和1263份提交。结果表明当前多模态大模型在分类和摘要任务上表现较好，但在密集数据抽取上存在明显短板，为后续研究指明方向。",
+      "llm_tldr": "科学图表理解需要视觉感知与领域推理相结合，现有模型在细粒度信息抽取上仍不足。本文介绍ICDAR 2026科学与图表信息抽取竞赛，发布专家标注的Sci-ImageMiner基准，涵盖四项互补任务。竞赛吸引68支队伍和1263份提交。结果表明当前多模态大模型在分类和摘要任务上表现较好，但在密集数据抽取上存在明显短板，为后续研究指明方向。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "computer vision research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.23924v1",
+      "source": "arxiv",
+      "title": "DuoAD: Leveraging [CLS] Dual Characteristics for Training-Free Few-Shot Anomaly Detection",
+      "abstract": "Vision foundation models have enabled strong training-free anomaly detection (AD). However, most existing approaches rely primarily on independent local patch features, leaving the global contextual information encoded by Vision Transformers (ViTs) underexploited. In this work, we identify the dual characteristics of the ViT [CLS] token: its embedding provides anomaly-invariant global semantic representation, while its attention maps implicitly highlight spatially abnormal regions. Building on this observation, we propose a fully automated AD framework leveraging global context to remove manual tunings. Our framework introduces (1) an automatic augmentation selection strategy driven by [CLS]-level semantic consistency, and (2) an attention-guided feature reweighting mechanism that dynamically adjusts patch contributions according to [CLS] attention saliency. By integrating these components over multi-level features, our method achieves stable anomaly scoring and precise localization without training or parameter tuning. Under the one-shot setting, it achieves Image-AUC scores of 97.7%, 93.2%, and 84.5% on MVTec-AD, VisA, and Real-IAD. Using a single fixed configuration across categories, backbones, and datasets, the method establishes a new state-of-the-art for plug-and-play, training-free anomaly detection while maintaining strong robustness and practical scalability.",
+      "authors": [
+        "Jyun-Ze Tang",
+        "Po-Han Huang",
+        "Ming-Ching Chang",
+        "Chih-Fan Hsu",
+        "Jeng-Lin Li"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-07-27T01:31:48+00:00",
+      "link": "https://arxiv.org/pdf/2607.23924v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "training-free few-shot anomaly detection using global [CLS] features from vision transformers",
+      "llm_evidence_cn": "利用ViT [CLS]全局特征实现无需训练的小样本异常检测",
+      "llm_evidence": "利用ViT [CLS]全局特征实现无需训练的小样本异常检测",
+      "canonical_evidence": "利用ViT [CLS]全局特征实现无需训练的小样本异常检测",
+      "llm_tldr_en": "DuoAD is a fully automated training-free few-shot anomaly detection framework that exploits both [CLS] embedding semantics and attention maps for automatic augmentation selection and global context.",
+      "llm_tldr_cn": "现有基于视觉基础模型的无训练异常检测主要依赖局部块特征，忽略ViT的全局上下文。DuoAD发现[CLS]令牌具有双重特性：嵌入提供异常不变的全局语义表示，注意力图突出空间异常区域。基于此，框架自动选择增强并利用全局注意力信息，完全免训练和免手动调参。该方法提升了小样本异常检测的自动化程度和准确性。",
+      "llm_tldr": "现有基于视觉基础模型的无训练异常检测主要依赖局部块特征，忽略ViT的全局上下文。DuoAD发现[CLS]令牌具有双重特性：嵌入提供异常不变的全局语义表示，注意力图突出空间异常区域。基于此，框架自动选择增强并利用全局注意力信息，完全免训练和免手动调参。该方法提升了小样本异常检测的自动化程度和准确性。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "visual recognition algorithms",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2607.27194v1",
+      "source": "arxiv",
+      "title": "VidMap: Exploiting Temporal Structure for Video-Based Structure-from-Motion",
+      "abstract": "Accurately recovering the camera's calibration and metric poses for any unconstrained video would unlock large-scale training data for navigation and scene understanding. The dominant approaches to this problem are severely limited: Simultaneous Localization and Mapping (SLAM) is sensitive to initialization and transient failures due to its causal, incremental nature; it is often over-optimized for real-time operation and generally requires known camera calibration; while Structure-from-Motion (SfM) typically forgoes any image ordering, enabling optimal initialization and global optimization, but lacks robustness to visual symmetries and extreme motions. To bridge this gap, we introduce a system that combines the strong sequential constraints of SLAM with the flexibility and global optimization of offline SfM, enabling the metric reconstruction of arbitrary, long, uncalibrated videos. This system leverages recent advances in wide-baseline dense image matching, treats temporal ordering as a first-class citizen for reliable loop closure, and augments global optimization with metric monocular depth priors. As a result, thorough evaluations on diverse, challenging datasets that exhibit extreme motion and visual symmetries reveal that our approach is significantly more robust and accurate than both state-of-the-art SLAM and SfM, classical or learned, with given or unknown camera calibration. The code is publicly available at https://github.com/cvg/vidmap.",
+      "authors": [
+        "Zador Pataki",
+        "Paul-Edouard Sarlin",
+        "Marc Pollefeys"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.RO"
+      ],
+      "published": "2026-07-29T17:58:04+00:00",
+      "link": "https://arxiv.org/pdf/2607.27194v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "video structure-from-motion, camera pose recovery, temporal constraints",
+      "llm_evidence_cn": "视频运动恢复结构，相机位姿恢复，时序约束",
+      "llm_evidence": "视频运动恢复结构，相机位姿恢复，时序约束",
+      "canonical_evidence": "视频运动恢复结构，相机位姿恢复，时序约束",
+      "llm_tldr_en": "VidMap combines sequential constraints of SLAM with global optimization of SfM to robustly recover camera calibration and metric poses from unconstrained videos.",
+      "llm_tldr_cn": "从任意视频中恢复相机参数和度量位姿对导航和场景理解具有重要意义。SLAM因果递增的优化方式对初始化和瞬时故障敏感，且通常需已知内参；SfM虽能全局优化但不善处理视觉对称和大运动。VidMap结合SLAM的强时序约束与SfM的全局优化优势，实现在无约束视频上的鲁棒相机标定与位姿恢复。该方法为大规模视频训练数据生成提供了更可靠的工具。",
+      "llm_tldr": "从任意视频中恢复相机参数和度量位姿对导航和场景理解具有重要意义。SLAM因果递增的优化方式对初始化和瞬时故障敏感，且通常需已知内参；SfM虽能全局优化但不善处理视觉对称和大运动。VidMap结合SLAM的强时序约束与SfM的全局优化优势，实现在无约束视频上的鲁棒相机标定与位姿恢复。该方法为大规模视频训练数据生成提供了更可靠的工具。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "computer vision research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.26600v1",
+      "source": "arxiv",
+      "title": "JEPADepth: Masked Predictive Representation Learning for Self-Supervised Monocular Depth Estimation",
+      "abstract": "Self-supervised monocular depth estimation typically relies on photometric reconstruction losses that couple depth, pose, and appearance assumptions. In this paper, we propose JEPADepth, a self-supervised monocular depth framework that incorporates a complementary training objective inspired by Image Joint-Embedding Predictive Architectures (I-JEPA) for self-supervised depth learning. Our method augments a standard photometric pipeline with a masked prediction loss computed in the representation space of a pretrained DINOv3 Vision Transformer encoder. A predictor infers target-region embeddings from visible context-region embeddings under structured masking, and is discarded along with the target encoder at inference time, adding no deployment cost. On KITTI, adding the JEPA objective consistently improves performance over the same DINOv3-based photometric baseline, without changing the inference-time architecture. Compared to prior monocular self-supervised methods, JEPADepth is competitive with state-of-the-art transformer-based approaches and outperforms strong CNN-based baselines on the standard benchmark. In zero-shot transfer (trained on KITTI and evaluated without fine-tuning), JEPADepth achieves the best or near-best performance among the compared methods on both Make3D and Cityscapes across multiple metrics.",
+      "authors": [
+        "Ionuţ Grigore",
+        "Călin-Adrian Popa"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-29T08:23:46+00:00",
+      "link": "https://arxiv.org/pdf/2607.26600v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "self-supervised monocular depth estimation; masked predictive representation learning with vision transformer",
+      "llm_evidence_cn": "自监督单目深度估计；基于Vision Transformer的掩码预测表征学习",
+      "llm_evidence": "自监督单目深度估计；基于Vision Transformer的掩码预测表征学习",
+      "canonical_evidence": "自监督单目深度估计；基于Vision Transformer的掩码预测表征学习",
+      "llm_tldr_en": "Proposes JEPADepth, a self-supervised monocular depth framework that adds a masked prediction loss in the representation space of a pretrained DINOv3 ViT encoder, improving depth estimation beyond photometric-only training.",
+      "llm_tldr_cn": "自监督单目深度估计通常依赖光度重建损失，但易受深度、位姿和外观假设耦合的影响。本文提出JEPADepth，借鉴图像联合嵌入预测架构，在预训练DINOv3视觉Transformer的特征空间中计算掩码预测损失，作为光度管道的补充训练目标。推理时丢弃预测器和目标编码器，保持标准单目深度输出。实验表明该辅助任务能显著提升单目深度估计的精度和泛化能力。",
+      "llm_tldr": "自监督单目深度估计通常依赖光度重建损失，但易受深度、位姿和外观假设耦合的影响。本文提出JEPADepth，借鉴图像联合嵌入预测架构，在预训练DINOv3视觉Transformer的特征空间中计算掩码预测损失，作为光度管道的补充训练目标。推理时丢弃预测器和目标编码器，保持标准单目深度输出。实验表明该辅助任务能显著提升单目深度估计的精度和泛化能力。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "computer vision research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    }
+  ]
+}
