@@ -1,0 +1,454 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-08-02T21:12:47.801399+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 2,
+    "deep_cap": 6,
+    "deep_selected": 2,
+    "quick_candidates": 9,
+    "quick_skim_target": 11,
+    "quick_selected": 9
+  },
+  "deep_dive": [
+    {
+      "id": "2607.25432v1",
+      "source": "arxiv",
+      "title": "Bi-Level Collaborative Learning for Few-Shot Scribble-Supervised Medical Image Segmentation",
+      "abstract": "Scribble annotations offer an efficient alternative to costly pixel-wise labeling for medical image segmentation, yet in real clinical scenarios, scribble-annotated samples are often still limited, imposing the dual challenges of sparse supervision and annotated sample scarcity. These compounded constraints severely deprive models of the structural evidence needed for complete region recovery and precise boundary delineation. To break this bottleneck, we propose a bi-level collaborative learning framework for few-shot scribble-supervised medical image segmentation. Specifically, an upper-level learnable superpixel model is introduced to provide region-structural priors for lower-level segmentation, while superpixel-based region-wise pseudo-label propagation and a spatial-prior-guided filtering strategy are performed to generate reliable dense pseudo-labels for segmentation learning. Meanwhile, the anatomical semantics learned by the lower-level segmentation model under the guidance of the current superpixels are fed back to the upper level, further driving it to learn region-structural representations better aligned with the segmentation task. Through bidirectional interaction and collaborative learning between the upper and lower levels, the proposed framework significantly outperforms existing state-of-the-art scribble-supervised methods on the ACDC and Prostate datasets under the few-shot scribble-supervised setting.",
+      "authors": [
+        "Xiang-Xiang Su",
+        "Yufan Ye",
+        "Yihang Zheng",
+        "Min Gan",
+        "Guang-Yong Chen"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-28T08:26:40+00:00",
+      "link": "https://arxiv.org/pdf/2607.25432v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "proposes a bi-level collaborative learning framework for few-shot scribble-supervised medical image segmentation",
+      "llm_evidence_cn": "提出少样本涂鸦监督医学图像分割的双层协作学习框架",
+      "llm_evidence": "提出少样本涂鸦监督医学图像分割的双层协作学习框架",
+      "canonical_evidence": "提出少样本涂鸦监督医学图像分割的双层协作学习框架",
+      "llm_tldr_en": "Proposes a bi-level collaborative learning framework for few-shot scribble-supervised medical image segmentation. An upper-level learnable superpixel model provides region-structural priors for lower-level segmentation, tackling sparse supervision and scarce annotated samples.",
+      "llm_tldr_cn": "真实临床中涂鸦标注的医学图像样本往往很少，稀疏监督与样本稀缺共同限制模型恢复完整区域和精确边界。为此本文提出双层协作学习框架，上层用可学习超像素模型提供区域结构先验，下层进行精细分割。超像素区域约束与分割网络协同训练，缓解了标注不足问题。实验表明该方法能有效提升少样本涂鸦监督下的医学图像分割性能。",
+      "llm_tldr": "真实临床中涂鸦标注的医学图像样本往往很少，稀疏监督与样本稀缺共同限制模型恢复完整区域和精确边界。为此本文提出双层协作学习框架，上层用可学习超像素模型提供区域结构先验，下层进行精细分割。超像素区域约束与分割网络协同训练，缓解了标注不足问题。实验表明该方法能有效提升少样本涂鸦监督下的医学图像分割性能。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "image segmentation techniques",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.28300v1",
+      "source": "arxiv",
+      "title": "MonoVoc: Decoupling Geometry and Semantics for Lightweight Monocular Open-Vocabulary 3D Gaussians",
+      "abstract": "Open vocabulary 3D scene understanding is essential for next-generation interactive systems, empowering users to intuitively query and navigate reconstructed environments using natural language. However, current 3D Gaussian frameworks are often bottlenecked by restrictive multiview capture requirements, costly scene-specific optimization, and the massive memory overhead of storing dense language features. We present a novel, training-free pipeline that fundamentally reimagines this paradigm by explicitly decoupling 3D geometric reconstruction from semantic integration. Given a standard monocular video sequence as input, our method efficiently outputs a compact, highly interpretable, and fully searchable object-level semantic Gaussian map. Rather than entangling heavy language embeddings within the mapping loop, we extract geometry independently and ground semantics through a lightweight, modular post-processing framework. Extensive evaluations on the Replica dataset demonstrate that this decoupled architecture preserves strong rendering fidelity and competitive segmentation accuracy. Crucially, by replacing dense per-Gaussian storage with modular, object-level semantic embeddings, our approach delivers an order-of-magnitude reduction in memory usage compared to SOTA baselines. This provides a highly efficient, scalable, and practical solution for open-vocabulary 3D retrieval and question answering directly from everyday monocular video.",
+      "authors": [
+        "Pouya Ardekhani",
+        "Zahra Dehghanian",
+        "Morteza Abolghasemi",
+        "Hamid R. Rabiee"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-07-30T14:41:02+00:00",
+      "link": "https://arxiv.org/pdf/2607.28300v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Open-vocabulary 3D scene understanding and segmentation with decoupled geometry and semantics",
+      "llm_evidence_cn": "开放词汇3D场景理解与分割，解耦几何与语义",
+      "llm_evidence": "开放词汇3D场景理解与分割，解耦几何与语义",
+      "canonical_evidence": "开放词汇3D场景理解与分割，解耦几何与语义",
+      "llm_tldr_en": "Presents MonoVoc, a training-free pipeline that decouples 3D geometric reconstruction from semantic integration, enabling lightweight open-vocabulary 3D scene understanding from monocular video with compact object-level semantic maps.",
+      "llm_tldr_cn": "当前3D高斯框架受限于多视角采集、高成本场景优化以及密集语言特征的大内存开销。本文提出MonoVoc，从标准单目视频输入出发，将三维几何重建与语义整合显式解耦，输出紧凑、可解释且可搜索的对象级语义表示。该流水线无需训练，显著降低内存和计算需求，为开放词汇3D场景理解提供了一种轻量高效的解决方案。",
+      "llm_tldr": "当前3D高斯框架受限于多视角采集、高成本场景优化以及密集语言特征的大内存开销。本文提出MonoVoc，从标准单目视频输入出发，将三维几何重建与语义整合显式解耦，输出紧凑、可解释且可搜索的对象级语义表示。该流水线无需训练，显著降低内存和计算需求，为开放词汇3D场景理解提供了一种轻量高效的解决方案。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "image segmentation techniques",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2607.23347v1",
+      "source": "arxiv",
+      "title": "Trainable Nonexpansive Denoisers for Contractive Image Reconstruction",
+      "abstract": "Trainable denoisers with Lipschitz control have become central to convergent image reconstruction. However, training neural networks that simultaneously offer strong denoising performance and global Lipschitz guarantees is challenging. Existing approaches enforce Lipschitz control only empirically, providing no guarantees beyond the training data. In this work, we show that by exploiting the action of permutations on the image lattice, we can constrain a neural architecture that is globally nonexpansive (Lipschitz bound $\\leqslant 1$). We integrate the proposed denoiser with forward imaging operators to develop a reconstruction mechanism that is provably contractive and therefore globally convergent. Experiments on standard inverse problems, such as superresolution and deblurring, demonstrate that our reconstruction performance is competitive with softly constrained baselines while providing Lipschitz guarantees.",
+      "authors": [
+        "Arghya Sinha",
+        "Aditya Banerjee",
+        "Trishit Mukherjee",
+        "Kunal N. Chaudhury"
+      ],
+      "primary_category": "eess.IV",
+      "categories": [
+        "eess.IV",
+        "cs.CV"
+      ],
+      "published": "2026-07-25T19:54:42+00:00",
+      "link": "https://arxiv.org/pdf/2607.23347v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Image reconstruction and denoising in low-level computer vision",
+      "llm_evidence_cn": "低层计算机视觉中的图像重建与去噪",
+      "llm_evidence": "低层计算机视觉中的图像重建与去噪",
+      "canonical_evidence": "低层计算机视觉中的图像重建与去噪",
+      "llm_tldr_en": "Proposes trainable nonexpansive denoisers with global Lipschitz guarantees for contractive image reconstruction, integrating permutation-based architecture with forward imaging operators to achieve provable global convergence.",
+      "llm_tldr_cn": "针对现有训练去噪器难以同时保证去噪性能与全局Lipschitz约束的问题，本文利用图像格上的置换作用设计了一种全局非扩张的神经网络结构，并使其Lipschitz界严格不超过1。将该去噪器与正向成像算子结合，构造出可证明收缩且全局收敛的重建机制。在标准逆问题上的实验表明该方法在保证收敛性的同时具有竞争力的去噪效果，为可收敛图像重建提供了新思路。",
+      "llm_tldr": "针对现有训练去噪器难以同时保证去噪性能与全局Lipschitz约束的问题，本文利用图像格上的置换作用设计了一种全局非扩张的神经网络结构，并使其Lipschitz界严格不超过1。将该去噪器与正向成像算子结合，构造出可证明收缩且全局收敛的重建机制。在标准逆问题上的实验表明该方法在保证收敛性的同时具有竞争力的去噪效果，为可收敛图像重建提供了新思路。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "computer vision research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.23384v1",
+      "source": "arxiv",
+      "title": "Semantic Semi-Incremental Data-Association-Free Object SLAM",
+      "abstract": "Data association between landmark measurements and landmark variables has long been a central challenge in SLAM, as estimation accuracy depends critically on associating measurements with the correct landmark variables. Recent advances in deep learning have created new opportunities for the problem; data association can now leverage not only positional measurements but also semantic information about object landmarks, such as class labels from neural object detectors and feature vectors from visual foundation models. In this paper, we present a generalized data-association-free SLAM framework that jointly estimates data associations, robot poses, landmark positions, and landmark semantics from odometry, and positional and semantic measurements of landmarks. The proposed framework (i) creates a synergy between data association and landmark semantics estimation; (ii) adopts a semi-incremental estimation scheme for improved accuracy and computational efficiency; and (iii) provides a principled justification, guidelines, and heuristics for landmark-number estimation, improving the interpretability and practical usability of the framework. The proposed framework and algorithms are evaluated on synthetic and real-world datasets with two types of semantic information, class labels and real-valued feature vectors, and demonstrate superior performance compared to strong baselines.",
+      "authors": [
+        "Yihao Zhang",
+        "Jungseok Hong",
+        "John J. Leonard"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.AI",
+        "cs.CV"
+      ],
+      "published": "2026-07-25T22:31:31+00:00",
+      "link": "https://arxiv.org/pdf/2607.23384v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "uses class labels from neural object detectors and feature vectors from visual foundation models",
+      "llm_evidence_cn": "使用神经目标检测器类别标签和视觉基础模型特征向量",
+      "llm_evidence": "使用神经目标检测器类别标签和视觉基础模型特征向量",
+      "canonical_evidence": "使用神经目标检测器类别标签和视觉基础模型特征向量",
+      "llm_tldr_en": "This work presents a generalized data-association-free SLAM framework that jointly estimates data associations, robot poses, landmark positions, and semantics, leveraging semantic measurements from object detectors and visual foundation model features.",
+      "llm_tldr_cn": "SLAM中数据关联是长期难题，传统方法仅依靠位置量测。本文提出通用免数据关联SLAM框架，将神经目标检测器提供的类别标签与视觉基础模型生成的特征向量作为语义量测，与里程计和位置量测联合估计数据关联、机器人位姿、地标位置与语义。该框架消除了对显式数据关联的依赖，并能在语义目标环境中实现更准确的联合估计，展示了语义信息在提升SLAM鲁棒性与自动化方面的潜力。",
+      "llm_tldr": "SLAM中数据关联是长期难题，传统方法仅依靠位置量测。本文提出通用免数据关联SLAM框架，将神经目标检测器提供的类别标签与视觉基础模型生成的特征向量作为语义量测，与里程计和位置量测联合估计数据关联、机器人位姿、地标位置与语义。该框架消除了对显式数据关联的依赖，并能在语义目标环境中实现更准确的联合估计，展示了语义信息在提升SLAM鲁棒性与自动化方面的潜力。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "feature extraction in computer vision",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.23789v1",
+      "source": "arxiv",
+      "title": "ISAC and Vision Fusion for Fine-Grained Low-Altitude Target Recognition",
+      "abstract": "In this paper, we propose an integrated sensing and communications (ISAC) and vision fusion framework for fine-grained low-altitude target recognition. Specifically, we first utilize ISAC system to estimate the position of the low-altitude target. Then we adjust the working parameters of the Pan-TiltZoom (PTZ) camera based on the estimated target position, such that the camera can capture the image of tiny low-altitude target from several hundred meters away. After obtaining the wireless echo signal and visual image of low-altitude target, we employ the short-time Fourier transform (STFT) to obtain the micro-Doppler (mD) spectrum of the target from wireless echo signal, and design a conditional generative adversarial network (cGAN)-based denoising network to optimize the quality of the mD spectrum. Meanwhile, we employ YOLOv11 to detect the low-altitude target from visual image, and then crop the smallsized feature image of the target from the original image. Next, we design a fine-grained low-altitude target recognition network with MobileViT, which can fuse the optimized mD spectrum and the cropped feature image to distinguish the subcategory of low-altitude target. Moreover, we generate a joint ISAC and vision dataset (JIVD) for low-altitude target monitoring based on AirSim and Wireless InSite, which includes diverse target subcategories, scenarios, and weather conditions. The effectiveness and superiority of the proposed scheme have been demonstrated by simulation results.",
+      "authors": [
+        "Zhonghua Chu",
+        "Hongliang Luo",
+        "Boxuan Sun",
+        "Shengjie Quan",
+        "Chuanbin Zhao",
+        "Feifei Gao"
+      ],
+      "primary_category": "eess.SP",
+      "categories": [
+        "eess.SP"
+      ],
+      "published": "2026-07-26T18:10:16+00:00",
+      "link": "https://arxiv.org/pdf/2607.23789v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "ISAC and vision fusion for fine-grained low-altitude target recognition",
+      "llm_evidence_cn": "ISAC与视觉融合的低空目标识别",
+      "llm_evidence": "ISAC与视觉融合的低空目标识别",
+      "canonical_evidence": "ISAC与视觉融合的低空目标识别",
+      "llm_tldr_en": "Proposes an ISAC-vision fusion framework for low-altitude target recognition, using radar position estimates to steer a PTZ camera and combining micro-Doppler spectra with visual images via cGAN denoising and a recognition network.",
+      "llm_tldr_cn": "低空小目标因距离远、成像模糊难以细粒度识别。论文提出ISAC与视觉融合框架，先由ISAC估计目标位置并引导PTZ相机采集远距离图像，再对无线回波做STFT得到微多普勒谱，并用cGAN去噪后与视觉图像融合。该融合方法能提升低空目标识别精度，为无人机预警等场景提供多模态感知手段。",
+      "llm_tldr": "低空小目标因距离远、成像模糊难以细粒度识别。论文提出ISAC与视觉融合框架，先由ISAC估计目标位置并引导PTZ相机采集远距离图像，再对无线回波做STFT得到微多普勒谱，并用cGAN去噪后与视觉图像融合。该融合方法能提升低空目标识别精度，为无人机预警等场景提供多模态感知手段。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "visual recognition algorithms",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.28463v1",
+      "source": "arxiv",
+      "title": "VisualRouter: Query-Grounded Visual Sampling for Long Video Understanding",
+      "abstract": "Large vision-language models (LVLMs) have achieved significant progress in video understanding, yet understanding long videos remains challenging due to the large number of visual tokens and limited context windows. Visual sampling provides a practical solution by selecting an informative subset of frames. However, existing methods typically either rely on relevance-aware sampling, leading to redundant frame selection and insufficient temporal coverage, or adopt a fixed sampling strategy regardless of query type. In this paper, we propose VisualRouter, a training-free and plug-and-play framework for query-grounded visual sampling. VisualRouter first classifies each query as either global or local and then applies the corresponding sampling strategy. For global queries, it employs a relevance-coverage hybrid strategy that preserves temporal coverage while retaining query-relevant visual evidence. For local queries, it adopts an event-aware frame selection strategy that performs event partitioning, segment-level frame allocation, and intra-event frame selection, jointly balancing relevance, coverage, and diversity with a limited number of input frames. Experiments show that VisualRouter consistently improves multiple LVLMs over uniform sampling, achieving gains of 5.2%, 7.7%, and 11.6% on Video-MME, LongVideoBench, and MLVU with Qwen2.5-VL-7B, and outperforming existing training-free visual sampling methods under the same setting.",
+      "authors": [
+        "Haiyue Zhang",
+        "Yi Bin",
+        "Xun Jiang",
+        "Zeyu Ma",
+        "Duo Peng",
+        "Guoqing Wang",
+        "Yang Yang",
+        "Heng Tao Shen"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-30T16:23:10+00:00",
+      "link": "https://arxiv.org/pdf/2607.28463v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Efficient visual sampling for long video understanding with vision-language models",
+      "llm_evidence_cn": "面向长视频理解的视觉采样，结合视觉语言模型",
+      "llm_evidence": "面向长视频理解的视觉采样，结合视觉语言模型",
+      "canonical_evidence": "面向长视频理解的视觉采样，结合视觉语言模型",
+      "llm_tldr_en": "Proposes VisualRouter, a training-free and plug-and-play framework for query-grounded visual sampling in long video understanding, classifying queries as global or local and applying corresponding sampling strategies to improve coverage and reduce redundancy.",
+      "llm_tldr_cn": "大视觉语言模型理解长视频时面临视觉token过多和上下文窗口有限的挑战，现有采样方法要么冗余、要么固定策略。本文提出VisualRouter，一个免训练、即插即用的查询引导视觉采样框架，先将查询分类为全局或局部，再应用相应采样策略。该方法在长视频理解任务中有效提升了信息覆盖和效率，为长视频问答提供了一种轻量解决方案。",
+      "llm_tldr": "大视觉语言模型理解长视频时面临视觉token过多和上下文窗口有限的挑战，现有采样方法要么冗余、要么固定策略。本文提出VisualRouter，一个免训练、即插即用的查询引导视觉采样框架，先将查询分类为全局或局部，再应用相应采样策略。该方法在长视频理解任务中有效提升了信息覆盖和效率，为长视频问答提供了一种轻量解决方案。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "computer vision research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.23921v1",
+      "source": "arxiv",
+      "title": "DDVT: Dynamic Dual-level Vision Transformer Fusion Network for Answer Grounding in Visual Question Answering",
+      "abstract": "Answer grounding in visual question answering aims to locate the region from a given natural language question associated with the visual content of an image, which has garnered significant attention due to its practical applications. In this paper, we introduce the Dynamic Dual-level Vision Transformer Fusion Network (DDVT) for answer grounding in visual question answering. Specifically, we propose a question-guided dynamic regional-level module (QGDR) that combines complementary image context through ROI Align and text content, enabling precise localization of text-related visual content. Moreover, we present a cross-modal multi-scale aggregation module (CMA) that enhances feature fusion between pixel-level and region-level features, facilitating the effective localization of visual content associated with grounded answers. Furthermore, we fuse the located visual content with text features to locate the region and provide answers to questions posed about the image. Experimental results demonstrate that our DDVT outperforms state-of-the-art methods on several widely-used benchmarks.",
+      "authors": [
+        "Yue Zhang",
+        "Xiangyu Li",
+        "Wanshu Fan",
+        "Xin Yang",
+        "Dongsheng Zhou"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-27T01:26:15+00:00",
+      "link": "https://arxiv.org/pdf/2607.23921v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Visual grounding/localization in VQA via region-level and pixel-level fusion",
+      "llm_evidence_cn": "通过区域级与像素级融合实现视觉问答中的定位",
+      "llm_evidence": "通过区域级与像素级融合实现视觉问答中的定位",
+      "canonical_evidence": "通过区域级与像素级融合实现视觉问答中的定位",
+      "llm_tldr_en": "Presents DDVT, a dynamic dual-level vision transformer fusion network for answer grounding in visual question answering, combining question-guided regional module and cross-modal multi-scale aggregation to precisely localize text-related regions.",
+      "llm_tldr_cn": "视觉问答中的答案定位旨在根据问题定位图像中相关区域。本文提出DDVT动态双层级视觉Transformer融合网络，包含问题引导的动态区域级模块和跨模态多尺度聚合模块，通过ROI Align和文本上下文增强特征融合。该方法在答案定位任务上实现了精确的文本相关区域定位，展现了双层级融合对VQA定位的有效性。",
+      "llm_tldr": "视觉问答中的答案定位旨在根据问题定位图像中相关区域。本文提出DDVT动态双层级视觉Transformer融合网络，包含问题引导的动态区域级模块和跨模态多尺度聚合模块，通过ROI Align和文本上下文增强特征融合。该方法在答案定位任务上实现了精确的文本相关区域定位，展现了双层级融合对VQA定位的有效性。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "object detection methods",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.28627v1",
+      "source": "arxiv",
+      "title": "ReToken: One Token to Improve Vision-Language Models for Visual Retrieval",
+      "abstract": "Long visual context poses a challenge for vision-language models: performance degrades as the number of distractors grows, and processing all tokens at once is computationally infeasible under GPU memory constraints. We present ReToken, a single learnable embedding trained as an explicit retrieval target that selects a sparse set of query-relevant visual tokens from a pre-filled visual KV cache. Trained on only a small image-QA dataset, ReToken yields consistent gains across image and video benchmarks: on Visual Haystacks it improves Qwen3VL-8B by 13.4 points and InternVL3.5 by 12.4 points (>20% relative), and on LVBench it transfers zero-shot to long video for an 8.0-point gain with Qwen3VL-8B. Thanks to its lightweight design, both training and long-video inference fit on a single H100. Code is available at: https://github.com/avaxiao/ReToken",
+      "authors": [
+        "Yao Xiao",
+        "Reuben Tan",
+        "Zhen Zhu",
+        "Yuqun Wu",
+        "Jianfeng Gao",
+        "Derek Hoiem"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI",
+        "cs.LG"
+      ],
+      "published": "2026-07-30T17:59:56+00:00",
+      "link": "https://arxiv.org/pdf/2607.28627v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Learnable retrieval token for visual token selection in VLMs",
+      "llm_evidence_cn": "可学习检索token用于视觉模型中的视觉token选择",
+      "llm_evidence": "可学习检索token用于视觉模型中的视觉token选择",
+      "canonical_evidence": "可学习检索token用于视觉模型中的视觉token选择",
+      "llm_tldr_en": "ReToken is a single learnable embedding trained as a retrieval target to select sparse query-relevant visual tokens from a pre-filled KV cache in VLMs. It improves visual retrieval performance and reduces computational load, with gains on long-context benchmarks.",
+      "llm_tldr_cn": "视觉语言模型（VLM）在处理长视觉上下文时，性能会随干扰物数量增加而下降，且GPU显存受限时无法一次性处理全部token。本文提出ReToken，用一个可学习的检索目标嵌入，从预填充的视觉KV缓存中选择与查询最相关的稀疏视觉token，从而降低计算负担并提升检索准确性。仅使用小型图像问答数据集训练，ReToken在Visual Haystacks和LVBench等多个图像与视频基准上均获得显著提升，并能零样本迁移到长视频任务。这一轻量方法为长上下文视觉检索提供了高效简洁的改进方案。",
+      "llm_tldr": "视觉语言模型（VLM）在处理长视觉上下文时，性能会随干扰物数量增加而下降，且GPU显存受限时无法一次性处理全部token。本文提出ReToken，用一个可学习的检索目标嵌入，从预填充的视觉KV缓存中选择与查询最相关的稀疏视觉token，从而降低计算负担并提升检索准确性。仅使用小型图像问答数据集训练，ReToken在Visual Haystacks和LVBench等多个图像与视频基准上均获得显著提升，并能零样本迁移到长视频任务。这一轻量方法为长上下文视觉检索提供了高效简洁的改进方案。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "computer vision research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.25527v1",
+      "source": "arxiv",
+      "title": "Argus-Unified: Towards A Compact and Economical Unified Model for Image Understanding and Generation",
+      "abstract": "Unifying visual understanding and generation in one model holds immense promise, but remains challenging and expensive due to heavy compute and data demands and conflicts between the visual features needed for these two capabilities. To address these challenges, we present Argus-Unified, a compact, effective and unified multimodal model built with low demand on computation and data. Instead of aligning modalities from scratch, Argus-Unified effectively leverages pretrained vision-language models (VLMs) that provide strong multimodal priors. Specifically, we introduce hybrid visual tokens that preserve continuous tokens for understanding while learning discrete tokens for generation from a frozen unified vision encoder. Our training pipeline includes two stages: the first stage learns a quantizer and image decoder on top of the frozen vision encoder, the second stage trains the LLM initialized from a pretrained VLM for the unified multimodal modeling. Using by far the least amount of data (15.6M) and the lowest cost (~$2,000), we demonstrate that unified multimodal models can be trained economically while achieving strong performance in both understanding and generation. Notably, our model attains state-of-the-art multimodal understanding on GQA, POPE, and VQAv2, and competitive generation quality compared to models with dedicated vision encoders (e.g., Janus, Janus-Pro), all at ~10x lower cost and with ~5x less data. We envision Argus-Unified as a useful baseline that lowers the development barrier for unified models.",
+      "authors": [
+        "Weiming Zhuang",
+        "Jiabo Huang",
+        "Jingtao Li",
+        "Zhizhong Li",
+        "Chen Chen",
+        "Sina Sajadmanesh",
+        "Lingjuan Lyu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-07-28T10:12:06+00:00",
+      "link": "https://arxiv.org/pdf/2607.25527v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Unified image understanding and generation model; core computer vision research",
+      "llm_evidence_cn": "统一的图像理解与生成模型，核心计算机视觉研究",
+      "llm_evidence": "统一的图像理解与生成模型，核心计算机视觉研究",
+      "canonical_evidence": "统一的图像理解与生成模型，核心计算机视觉研究",
+      "llm_tldr_en": "Argus-Unified is a compact multimodal model unifying image understanding and generation. It leverages pretrained vision-language models and hybrid visual tokens to reduce compute/data demands, achieving efficient unified visual modeling.",
+      "llm_tldr_cn": "统一图像理解与生成模型虽然前景广阔，但通常需要极高的计算和数据资源，并且理解与生成所需的视觉特征存在冲突。Argus-Unified利用预训练视觉语言模型的多模态先验，提出混合视觉token机制：保留连续token用于理解，同时学习离散token用于生成。这种设计避免从零开始对齐模态，在不牺牲性能的前提下大幅降低训练成本。实验证明，该紧凑模型能以较低资源实现图像理解与生成的统一，为多模态视觉模型的经济化设计提供了新路径。",
+      "llm_tldr": "统一图像理解与生成模型虽然前景广阔，但通常需要极高的计算和数据资源，并且理解与生成所需的视觉特征存在冲突。Argus-Unified利用预训练视觉语言模型的多模态先验，提出混合视觉token机制：保留连续token用于理解，同时学习离散token用于生成。这种设计避免从零开始对齐模态，在不牺牲性能的前提下大幅降低训练成本。实验证明，该紧凑模型能以较低资源实现图像理解与生成的统一，为多模态视觉模型的经济化设计提供了新路径。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "computer vision research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.28132v1",
+      "source": "arxiv",
+      "title": "Convolutional Neural Shading for High-Quality 3D Reconstruction from Multi-View Images",
+      "abstract": "We propose a convolutional neural shading (CNS), a novel pipeline to reconstruct high-quality 3D shapes from multi-view images. Several recent studies have used neural radiance fields and other neural differentiable rendering methods to understand 3D geometry. However, these approaches rely on single-point geometric information, such as positions and normals of the surface, leading to a lack of detailed local geometry. Our approach addresses the inherent limitations of single-point information by leveraging a neural shader to capture variations even in dark and textureless regions with a convolutional neural shader, resulting in far more accurate geometry predictions. Additionally, our method mitigates surface irregularities at image boundaries by introducing a fine-detail displacement network, which utilizes spatial information of surface geometry and learns fine displacement details by correlating neighboring values in the rendering coordinates. Through extensive experiments, our proposed method has demonstrated significant quality improvements in the reconstructed shapes and rendered images over current state-of-the-art methods.",
+      "authors": [
+        "Juheon Hwang",
+        "Taewan Kim",
+        "Heeseok Oh",
+        "Jiwoo Kang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-30T12:41:50+00:00",
+      "link": "https://arxiv.org/pdf/2607.28132v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "3D reconstruction from multi-view images; neural shading technique",
+      "llm_evidence_cn": "基于多视图图像的三维重建，神经着色技术",
+      "llm_evidence": "基于多视图图像的三维重建，神经着色技术",
+      "canonical_evidence": "基于多视图图像的三维重建，神经着色技术",
+      "llm_tldr_en": "Convolutional Neural Shading (CNS) is a novel pipeline for high-quality 3D reconstruction from multi-view images. It uses a convolutional neural shader to capture local geometry variations beyond single-point information, improving accuracy in dark and textureless regions.",
+      "llm_tldr_cn": "近年来，基于神经辐射场等可微渲染的方法已广泛用于多视图三维重建，但往往只利用表面点的位置和法线等单点信息，难以刻画局部几何细节，导致暗部和无纹理区域重建质量不佳。本文提出卷积神经着色（CNS）技术，利用卷积神经着色器整合邻域信息，捕捉单点信息之外的局部光度与几何变化，从而生成更精细的三维几何。实验表明，CNS在暗部与纹理稀疏区域取得了更高的重建精度，同时缓解了图像边界处的表面不规则问题，为高质量多视图重建提供了新的解决思路。",
+      "llm_tldr": "近年来，基于神经辐射场等可微渲染的方法已广泛用于多视图三维重建，但往往只利用表面点的位置和法线等单点信息，难以刻画局部几何细节，导致暗部和无纹理区域重建质量不佳。本文提出卷积神经着色（CNS）技术，利用卷积神经着色器整合邻域信息，捕捉单点信息之外的局部光度与几何变化，从而生成更精细的三维几何。实验表明，CNS在暗部与纹理稀疏区域取得了更高的重建精度，同时缓解了图像边界处的表面不规则问题，为高质量多视图重建提供了新的解决思路。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "computer vision research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.28285v1",
+      "source": "arxiv",
+      "title": "Beyond Visual Ambiguity: Guiding Robust Monocular Depth Estimation in Challenging Scenarios via Detailed Long Captions",
+      "abstract": "Monocular depth estimation (MDE) faces challenges with non-Lambertian surfaces and adverse weather conditions due to the visual ambiguities inherent in single-image limited information. Existing works address them in isolation via image inpainting or augmentation, yielding limited robustness gains. Language, as a powerful complementary modality to vision, is demonstrated to enhance the visual perception capabilities of vision-language models (VLMs) via detailed long captions. However, prior language-integrated MDE methods fail to fully harness this potential due to short text input with limited information, coarse global text feature learning, and limited language guidance during depth decoding. To address these limitations, we propose CapDepth, a novel framework for robust MDE that leverages guidance from detailed long captions to alleviate visual ambiguities in both challenging scenarios. First, we design a detailed long caption input template that explicitly conveys rich spatial relationships among multiple atom sentences. Second, a dynamic caption encoder is introduced to extract fine-grained depth-relevant text features via progressive masked attention. Finally, we propose a text-adaptive decoder that guides enhanced depth decoding with text features via stable adaptive layer normalization. Extensive experiments validate the efficacy of CapDepth, which outperforms state-of-the-art methods, achieving depth error reductions of 25.0% on non-Lambertian surfaces and 22.0% under adverse weather conditions.",
+      "authors": [
+        "Junrui Zhang",
+        "Jiaqi Li",
+        "Yiran Wang",
+        "Liao Shen",
+        "Zhiguo Cao"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-30T14:32:02+00:00",
+      "link": "https://arxiv.org/pdf/2607.28285v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Long-caption-guided monocular depth estimation",
+      "llm_evidence_cn": "长文本引导的单目深度估计",
+      "llm_evidence": "长文本引导的单目深度估计",
+      "canonical_evidence": "长文本引导的单目深度估计",
+      "llm_tldr_en": "This paper improves monocular depth estimation in challenging scenarios by using detailed long captions to guide perception. It addresses short-text limitations by comprehensively integrating language guidance into depth decoding, enhancing robustness.",
+      "llm_tldr_cn": "单目深度估计在非朗伯表面和恶劣天气等挑战场景中，由于单图信息有限而存在严重视觉歧义。现有语言辅助方法往往使用短文本、全局特征，且缺少解码阶段的细粒度引导，未能充分发挥语言模态的潜力。本文提出利用详细长文本描述来引导深度估计，改进文本特征学习，并在深度解码过程中持续注入语言信息。这种方法显著增强了模型在挑战场景下的鲁棒性，优于孤立使用图像增强或修复的方案，也验证了语言先验对于视觉感知的重要补充作用，为鲁棒单目深度估计提供了新方向。",
+      "llm_tldr": "单目深度估计在非朗伯表面和恶劣天气等挑战场景中，由于单图信息有限而存在严重视觉歧义。现有语言辅助方法往往使用短文本、全局特征，且缺少解码阶段的细粒度引导，未能充分发挥语言模态的潜力。本文提出利用详细长文本描述来引导深度估计，改进文本特征学习，并在深度解码过程中持续注入语言信息。这种方法显著增强了模型在挑战场景下的鲁棒性，优于孤立使用图像增强或修复的方案，也验证了语言先验对于视觉感知的重要补充作用，为鲁棒单目深度估计提供了新方向。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "computer vision research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}

@@ -1,0 +1,185 @@
+{
+  "date": "20260802",
+  "date_label": "",
+  "generated_at": "2026-08-02 21:19:05 UTC",
+  "recommend_exists": true,
+  "run_count": 1,
+  "papers": [
+    {
+      "paper_id": "2607.25432v1",
+      "route": "202608/02/2607.25432v1-bi-level-collaborative-learning-for-few-shot-scribble-supervised-medical-image-segmentation",
+      "title": "Bi-Level Collaborative Learning for Few-Shot Scribble-Supervised Medical Image Segmentation",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "提出少样本涂鸦监督医学图像分割的双层协作学习框架",
+      "first_seen_at": "2026-08-02 21:19:05 UTC",
+      "updated_at": "2026-08-02 21:19:05 UTC"
+    },
+    {
+      "paper_id": "2607.28300v1",
+      "route": "202608/02/2607.28300v1-monovoc-decoupling-geometry-and-semantics-for-lightweight-monocular-open-vocabulary-3d-gaussians",
+      "title": "MonoVoc: Decoupling Geometry and Semantics for Lightweight Monocular Open-Vocabulary 3D Gaussians",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "开放词汇3D场景理解与分割，解耦几何与语义",
+      "first_seen_at": "2026-08-02 21:19:05 UTC",
+      "updated_at": "2026-08-02 21:19:05 UTC"
+    },
+    {
+      "paper_id": "2607.23347v1",
+      "route": "202608/02/2607.23347v1-trainable-nonexpansive-denoisers-for-contractive-image-reconstruction",
+      "title": "Trainable Nonexpansive Denoisers for Contractive Image Reconstruction",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "低层计算机视觉中的图像重建与去噪",
+      "first_seen_at": "2026-08-02 21:19:05 UTC",
+      "updated_at": "2026-08-02 21:19:05 UTC"
+    },
+    {
+      "paper_id": "2607.23789v1",
+      "route": "202608/02/2607.23789v1-isac-and-vision-fusion-for-fine-grained-low-altitude-target-recognition",
+      "title": "ISAC and Vision Fusion for Fine-Grained Low-Altitude Target Recognition",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "ISAC与视觉融合的低空目标识别",
+      "first_seen_at": "2026-08-02 21:19:05 UTC",
+      "updated_at": "2026-08-02 21:19:05 UTC"
+    },
+    {
+      "paper_id": "2607.23921v1",
+      "route": "202608/02/2607.23921v1-ddvt-dynamic-dual-level-vision-transformer-fusion-network-for-answer-grounding-in-visual-question-answering",
+      "title": "DDVT: Dynamic Dual-level Vision Transformer Fusion Network for Answer Grounding in Visual Question Answering",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "通过区域级与像素级融合实现视觉问答中的定位",
+      "first_seen_at": "2026-08-02 21:19:05 UTC",
+      "updated_at": "2026-08-02 21:19:05 UTC"
+    },
+    {
+      "paper_id": "2607.25527v1",
+      "route": "202608/02/2607.25527v1-argus-unified-towards-a-compact-and-economical-unified-model-for-image-understanding-and-generation",
+      "title": "Argus-Unified: Towards A Compact and Economical Unified Model for Image Understanding and Generation",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "统一的图像理解与生成模型，核心计算机视觉研究",
+      "first_seen_at": "2026-08-02 21:19:05 UTC",
+      "updated_at": "2026-08-02 21:19:05 UTC"
+    },
+    {
+      "paper_id": "2607.28132v1",
+      "route": "202608/02/2607.28132v1-convolutional-neural-shading-for-high-quality-3d-reconstruction-from-multi-view-images",
+      "title": "Convolutional Neural Shading for High-Quality 3D Reconstruction from Multi-View Images",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "基于多视图图像的三维重建，神经着色技术",
+      "first_seen_at": "2026-08-02 21:19:05 UTC",
+      "updated_at": "2026-08-02 21:19:05 UTC"
+    },
+    {
+      "paper_id": "2607.28285v1",
+      "route": "202608/02/2607.28285v1-beyond-visual-ambiguity-guiding-robust-monocular-depth-estimation-in-challenging-scenarios-via-detailed-long-captions",
+      "title": "Beyond Visual Ambiguity: Guiding Robust Monocular Depth Estimation in Challenging Scenarios via Detailed Long Captions",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "长文本引导的单目深度估计",
+      "first_seen_at": "2026-08-02 21:19:05 UTC",
+      "updated_at": "2026-08-02 21:19:05 UTC"
+    },
+    {
+      "paper_id": "2607.23384v1",
+      "route": "202608/02/2607.23384v1-semantic-semi-incremental-data-association-free-object-slam",
+      "title": "Semantic Semi-Incremental Data-Association-Free Object SLAM",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "使用神经目标检测器类别标签和视觉基础模型特征向量",
+      "first_seen_at": "2026-08-02 21:19:05 UTC",
+      "updated_at": "2026-08-02 21:19:05 UTC"
+    },
+    {
+      "paper_id": "2607.28463v1",
+      "route": "202608/02/2607.28463v1-visualrouter-query-grounded-visual-sampling-for-long-video-understanding",
+      "title": "VisualRouter: Query-Grounded Visual Sampling for Long Video Understanding",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "面向长视频理解的视觉采样，结合视觉语言模型",
+      "first_seen_at": "2026-08-02 21:19:05 UTC",
+      "updated_at": "2026-08-02 21:19:05 UTC"
+    },
+    {
+      "paper_id": "2607.28627v1",
+      "route": "202608/02/2607.28627v1-retoken-one-token-to-improve-vision-language-models-for-visual-retrieval",
+      "title": "ReToken: One Token to Improve Vision-Language Models for Visual Retrieval",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "可学习检索token用于视觉模型中的视觉token选择",
+      "first_seen_at": "2026-08-02 21:19:05 UTC",
+      "updated_at": "2026-08-02 21:19:05 UTC"
+    }
+  ]
+}

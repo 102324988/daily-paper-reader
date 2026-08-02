@@ -41,17 +41,17 @@
 <section class="dpr-home-dashboard-card dpr-home-report-card">
   <div class="dpr-home-dashboard-header">
     <div>
-      <span class="dpr-home-dashboard-kicker">2026-08-01</span>
+      <span class="dpr-home-dashboard-kicker">2026-08-02</span>
       <h3 class="dpr-home-dashboard-title">今日汇总</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">共 18 篇</strong>
+    <strong class="dpr-home-dashboard-count">共 11 篇</strong>
   </div>
   <dl class="dpr-home-dashboard-stats">
     <div class="dpr-home-dashboard-stat"><dt>累计更新</dt><dd>1 次</dd></div>
-    <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>7</dd></div>
-    <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>11</dd></div>
+    <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>2</dd></div>
+    <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>9</dd></div>
   </dl>
-  <p class="dpr-home-dashboard-body">最近更新：2026-08-01 21:25:32 UTC<br>状态：成功</p>
+  <p class="dpr-home-dashboard-body">最近更新：2026-08-02 21:19:05 UTC<br>状态：成功</p>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-brief-card">
   <div class="dpr-home-dashboard-header">
@@ -62,9 +62,7 @@
     <strong class="dpr-home-dashboard-count">AI</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<p>今日精读2篇、速读11篇，共18篇论文，重点覆盖视觉基础模型适配与高效编码器。</p>
-<p>最值得关注两项9分工作：层间信息分配优化视觉适配，以及移动端延迟优化的UltraViT视觉编码器。</p>
-<p>下一步建议优先学习视觉模型的高效适配策略与端侧部署优化思路。</p>
+<p>今日精读2篇、速读9篇，共梳理11篇论文，重点关注少样本医学分割与轻量单目3D高斯两个方向。两篇9分精读分别提出双水平协作学习框架和几何语义解耦方法，值得优先阅读。建议从医学图像分割的标注效率提升切入，再延伸至开放词汇3D场景理解。</p>
   </div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-deep-card">
@@ -73,12 +71,12 @@
       <span class="dpr-home-dashboard-kicker">今日累计</span>
       <h3 class="dpr-home-dashboard-title">精读推荐</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">7 篇</strong>
+    <strong class="dpr-home-dashboard-count">2 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Rethinking Layer-Wise Information Allocation for Vision Foundation Model Adaptation">Rethinking Layer-Wise Information Allocation for Vision Foundation Model Adaptation</span></li><li><span class="dpr-home-dashboard-paper-title" title="UltraViT: Latency-Optimized On-device Vision Encoder for Large Vision-Language Models">UltraViT: Latency-Optimized On-device Vision Encoder for Large Vision-Language Models</span></li><li><span class="dpr-home-dashboard-paper-title" title="Enabling Fully Integer-Only Inference for Lightweight Detection Transformers">Enabling Fully Integer-Only Inference for Lightweight Detection Transformers</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Bi-Level Collaborative Learning for Few-Shot Scribble-Supervised Medical Image Segmentation">Bi-Level Collaborative Learning for Few-Shot Scribble-Supervised Medical Image Segmentation</span></li><li><span class="dpr-home-dashboard-paper-title" title="MonoVoc: Decoupling Geometry and Semantics for Lightweight Monocular Open-Vocabulary 3D Gaussians">MonoVoc: Decoupling Geometry and Semantics for Lightweight Monocular Open-Vocabulary 3D Gaussians</span></li></ul>
   </div>
-  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">cv <strong>7</strong></span></div>
+  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">cv <strong>2</strong></span></div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-skim-card">
   <div class="dpr-home-dashboard-header">
@@ -86,12 +84,12 @@
       <span class="dpr-home-dashboard-kicker">今日累计</span>
       <h3 class="dpr-home-dashboard-title">速读推荐</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">11 篇</strong>
+    <strong class="dpr-home-dashboard-count">9 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Spectral-Spatial Synergistic Guided Network for Hyperspectral Salient Object Detection">Spectral-Spatial Synergistic Guided Network for Hyperspectral Salient Object Detection</span></li><li><span class="dpr-home-dashboard-paper-title" title="Unified Video Dense Prediction from Disjoint Data">Unified Video Dense Prediction from Disjoint Data</span></li><li><span class="dpr-home-dashboard-paper-title" title="Visual Information Extraction from Documents via Classification-Guided Large Vision-Language Models">Visual Information Extraction from Documents via Classification-Guided Large Vision-Language Models</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Trainable Nonexpansive Denoisers for Contractive Image Reconstruction">Trainable Nonexpansive Denoisers for Contractive Image Reconstruction</span></li><li><span class="dpr-home-dashboard-paper-title" title="ISAC and Vision Fusion for Fine-Grained Low-Altitude Target Recognition">ISAC and Vision Fusion for Fine-Grained Low-Altitude Target Recognition</span></li><li><span class="dpr-home-dashboard-paper-title" title="DDVT: Dynamic Dual-level Vision Transformer Fusion Network for Answer Grounding in Visual Question Answering">DDVT: Dynamic Dual-level Vision Transformer Fusion Network for Answer Grounding in Visual Question Answering</span></li></ul>
   </div>
-  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">cv <strong>11</strong></span></div>
+  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">cv <strong>9</strong></span></div>
 </section>
 </div>
 
