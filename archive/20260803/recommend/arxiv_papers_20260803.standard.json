@@ -1,0 +1,362 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-08-03T21:15:27.403056+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 6,
+    "deep_cap": 6,
+    "deep_selected": 6,
+    "quick_candidates": 3,
+    "quick_skim_target": 11,
+    "quick_selected": 3
+  },
+  "deep_dive": [
+    {
+      "id": "2607.23994v2",
+      "source": "arxiv",
+      "title": "Effective Receptive Field Ordering Matters for Infrared Small Target Detection",
+      "abstract": "In this work, we investigate a previously unexplored architectural dimension for infrared small target detection: the organization of effective receptive fields (ERFs) during feature refinement. Unlike existing approaches that primarily improve individual feature operators, we argue that ERF organization constitutes an architectural dimension independent of receptive field design itself, and formulate deep feature transformation as a progressive residual correction process, from which a theoretical framework for ERF scheduling is established. Specifically, we reveal that ERF refinement is governed by two fundamental properties: scale-frequency correspondence, which aligns different ERF scales with distinct residual frequency characteristics, and nonlinear non-commutativity, which makes different ERF orderings produce fundamentally different refinement trajectories. Together, these properties show that ERF organization, rather than ERF scale alone, governs refinement dynamics. Guided by these principles, we propose Receptive Field Ordering Network (RFONet), which realizes hierarchical ERF scheduling through a multigrid-inspired V-cycle strategy using only standard $3\\times3$ convolutions. RFONet achieves state-of-the-art performance on multiple benchmarks with only 1.16M parameters and over 157 FPS inference speed. Beyond empirical performance, our theoretical analysis provides theoretical guarantees for stable residual refinement under perturbations, frequency shifts, and partial occlusions, which are consistently reflected in superior noise robustness and cross-dataset generalization. Finally, our framework reformulates ERF organization as a task-dependent optimization objective, providing a principled foundation for future adaptive receptive field scheduling.",
+      "authors": [
+        "Guoyi Zhang",
+        "Yanjin Du",
+        "Zhengyao Zhao",
+        "Tongsu Zhang",
+        "Guangsheng Xu",
+        "Siyang Chen",
+        "Xiangpeng Xu",
+        "Han Wang",
+        "Xiaohu Zhang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-27T04:40:57+00:00",
+      "link": "https://arxiv.org/pdf/2607.23994v2",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Infrared small target detection with ERF ordering",
+      "llm_evidence_cn": "红外小目标检测中有效感受野排序",
+      "llm_evidence": "红外小目标检测中有效感受野排序",
+      "canonical_evidence": "红外小目标检测中有效感受野排序",
+      "llm_tldr_en": "Investigates effective receptive field organization as a new architectural dimension for infrared small target detection, proposing an ERF scheduling framework based on scale-frequency correspondence and progressive residual correction.",
+      "llm_tldr_cn": "红外小目标检测中，现有研究主要改进特征算子而忽视感受野组织。文章提出有效感受野排序这一独立架构维度，将深度特征变换视为渐进残差修正过程，并建立尺度-频率对应理论框架。所提方法通过合理安排感受野尺度显著提升小目标检测性能，为检测网络设计提供新视角。",
+      "llm_tldr": "红外小目标检测中，现有研究主要改进特征算子而忽视感受野组织。文章提出有效感受野排序这一独立架构维度，将深度特征变换视为渐进残差修正过程，并建立尺度-频率对应理论框架。所提方法通过合理安排感受野尺度显著提升小目标检测性能，为检测网络设计提供新视角。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "object detection methods",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.28996v1",
+      "source": "arxiv",
+      "title": "SULAND v2: A Refined RGB Dataset and Deep Learning Object Detection Benchmark for UAV/UGV-Based SUrface LANDmine Detection Under Domain Shift",
+      "abstract": "RGB imagery offers a practical, low-cost option for Unmanned Aerial/Ground Vehicle (UAV/UGV) survey support in surface-landmine detection, but object detectors remain underexplored in this safety-critical domain. Limited cross-architecture benchmarking and insufficient out-of-distribution (OOD) analysis obscure whether detectors generalize across deployment conditions. This challenge is amplified by the scarcity of public RGB landmine datasets, making SULAND a key benchmark for PFM-1 and PMA-2 detection. However, inspection reveals missing/false annotations, localization errors, inconsistent visibility criteria, visual artifacts, temporal labeling inconsistencies, and an inverted OOD class-ID convention in SULAND. We present SULAND_v2, a refined RGB surface-landmine dataset and benchmark. Preserving original images and splits, we manually revise annotations to ensure completeness, precise localization, label validity, and class consistency. SULAND_v2 contains 33,771 images and 12,433 bounding boxes. We benchmark 35 detector configurations across nine families. Annotation refinement improves YOLOv8 in-distribution (IID) test mAP@50 by 14.6-19.6 percentage points, while fixing the OOD class-ID convention increases mean YOLOv8 OOD mAP@50 by ~25 percentage points. On SULAND_v2, YOLOv12-Small achieves the highest IID mAP@50 (0.908), while RF-DETR-Large yields the strongest OOD performance (0.799 mAP@50, 0.675 recall). Our results demonstrate that high IID accuracy does not guarantee operational readiness. SULAND_v2 provides a reliable benchmark for evaluating domain-shift robustness in RGB-based mine-action survey support.",
+      "authors": [
+        "Sagar Lekhak",
+        "Prasanna Reddy Pulakurthi",
+        "Lalit Joshi",
+        "Ramesh Bhatta",
+        "Emmett J. Ientilucci"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-31T03:51:17+00:00",
+      "link": "https://arxiv.org/pdf/2607.28996v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Object detection benchmark and analysis for landmine detection",
+      "llm_evidence_cn": "地雷检测的目标检测基准与分析",
+      "llm_evidence": "地雷检测的目标检测基准与分析",
+      "canonical_evidence": "地雷检测的目标检测基准与分析",
+      "llm_tldr_en": "Presents SULAND v2, a refined RGB dataset and deep learning object detection benchmark for surface landmine detection, with cross-architecture and out-of-distribution analysis of detector generalization.",
+      "llm_tldr_cn": "RGB图像为无人机/地面车进行地表地雷检测提供低成本方案，但缺乏系统评测。SULAND v2对现有数据集的标注错误进行修正，并建立深度学习目标检测基准，包含多架构对比和域偏移分析。该基准有助于评估检测器在真实部署条件下的泛化能力，推动安全关键目标检测研究。",
+      "llm_tldr": "RGB图像为无人机/地面车进行地表地雷检测提供低成本方案，但缺乏系统评测。SULAND v2对现有数据集的标注错误进行修正，并建立深度学习目标检测基准，包含多架构对比和域偏移分析。该基准有助于评估检测器在真实部署条件下的泛化能力，推动安全关键目标检测研究。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "object detection methods",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.29040v1",
+      "source": "arxiv",
+      "title": "Rethinking Detection Calibration: A Coordinate and Direction Perspective",
+      "abstract": "Deep learning based object detectors require trustworthiness beyond competitive detection performance, but deep neural networks are prone to overconfident predictions, assigning high confidence scores to predictions that are likely to be inaccurate. To improve the alignment between confidence scores and prediction accuracy, existing methods calibrate confidence scores based on box-level localization, such as precision or intersection over union with the ground truth bounding box. However, box-level localization reflects only a measure of agreement between the predicted box and the ground truth, resulting in calibrated confidence scores for box-level accuracy failing to capture the localization accuracy of coordinates of box. To tackle this issue, we propose a novel post-hoc calibration framework, rethinking detection calibration (ReDC), which provides reliable coordinate-level confidence scores, including directional information. The proposed framework defines coordinate-wise alignment and deviation direction between predictions and ground truth. Based on the alignment measure, confidence re-encoding produces reliable coordinate-level confidence scores, while directional displacement estimation predicts coordinate-wise deviation directions. Extensive experiments under in-domain and out-domain scenarios demonstrate that the proposed approach expresses the coordinate-wise localization of detected objects more precisely than existing methods. Furthermore, our method covers the representational scope of prior calibration approaches by aggregating coordinate-level confidence scores into box-level localization.",
+      "authors": [
+        "Juyong Lee",
+        "Seungjin Jung",
+        "Jungmin Lee",
+        "Sunju Lee",
+        "Jongwon Choi"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-31T05:42:02+00:00",
+      "link": "https://arxiv.org/pdf/2607.29040v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Object detection confidence calibration",
+      "llm_evidence_cn": "目标检测置信度校准",
+      "llm_evidence": "目标检测置信度校准",
+      "canonical_evidence": "目标检测置信度校准",
+      "llm_tldr_en": "This paper rethinks calibration for object detectors, proposing coordinate and direction-aware calibration to align confidence scores with localization accuracy beyond box-level IoU.",
+      "llm_tldr_cn": "现有目标检测置信度校准只基于框级IoU等定位度量，无法反映框坐标的定位精度。本文从坐标与方向的角度重新思考校准问题，提出新型校准方法以更好地对齐置信度与预测精度。该方法在检测器上展现出更优的校准效果，增强了深度检测模型的可信度。",
+      "llm_tldr": "现有目标检测置信度校准只基于框级IoU等定位度量，无法反映框坐标的定位精度。本文从坐标与方向的角度重新思考校准问题，提出新型校准方法以更好地对齐置信度与预测精度。该方法在检测器上展现出更优的校准效果，增强了深度检测模型的可信度。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "object detection methods",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.29059v1",
+      "source": "arxiv",
+      "title": "Learning from Adversity: Semantic-Aware Mask Refinement through Adversarial Perturbation",
+      "abstract": "Despite significant advances in image segmentation, even state-of-the-art models produce masks with imperfect boundaries, semantic inconsistencies, and structural errors. Mask refinement addresses these limitations, yet current approaches rely on simplistic synthetic noise that fails to capture the complex error patterns of real segmentation models. We introduce Phoenix, a novel framework that leverages adversarial learning to generate semantically meaningful noise patterns and contrastive learning to model refinement relationships. Our approach consists of two key innovations: (1) Adversarial Mask Perturbation, which employs embedding attacks to create semantic-aware noise that mimics real segmentation errors, and (2) Contrastive Mask Refinement Learning, which establishes a tri-directional framework that ensures feature consistency within semantic regions while maintaining separation between classes. Experiments demonstrate that Phoenix significantly outperforms existing methods across diverse tasks, while consistently enhancing state-of-the-art segmentation models with substantial improvements. Our code and project page are publicly available at https://phoenix-eccv26.github.io.",
+      "authors": [
+        "Beomyoung Kim",
+        "Sung Ju Hwang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-31T06:26:37+00:00",
+      "link": "https://arxiv.org/pdf/2607.29059v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Proposes Phoenix, a mask refinement framework using adversarial mask perturbation and contrastive learning to correct segmentation errors",
+      "llm_evidence_cn": "提出Phoenix，利用对抗掩码扰动与对比学习精化分割掩码，修正边界与语义错误",
+      "llm_evidence": "提出Phoenix，利用对抗掩码扰动与对比学习精化分割掩码，修正边界与语义错误",
+      "canonical_evidence": "提出Phoenix，利用对抗掩码扰动与对比学习精化分割掩码，修正边界与语义错误",
+      "llm_tldr_en": "Phoenix refines segmentation masks via adversarial mask perturbation that creates semantic-aware noise mimicking true errors, and contrastive learning that models refinement relationships, improving boundary and semantic quality beyond synthetic-noise approaches.",
+      "llm_tldr_cn": "图像分割模型即使达到先进水平，其掩码仍常存在边界不完美、语义不一致和结构错误。现有掩码精化方法多依赖简单合成噪声，难以模拟真实分割模型复杂的错误模式。该文提出Phoenix框架，利用嵌入攻击生成语义感知的对抗噪声，并结合对比学习建模分割错误与精化掩码之间的关系，使模型学会纠正真实条件下的误差。在多个分割数据集上，Phoenix显著提升掩码的边界质量与语义一致性，证明了对抗性扰动在掩码精化中的有效性。",
+      "llm_tldr": "图像分割模型即使达到先进水平，其掩码仍常存在边界不完美、语义不一致和结构错误。现有掩码精化方法多依赖简单合成噪声，难以模拟真实分割模型复杂的错误模式。该文提出Phoenix框架，利用嵌入攻击生成语义感知的对抗噪声，并结合对比学习建模分割错误与精化掩码之间的关系，使模型学会纠正真实条件下的误差。在多个分割数据集上，Phoenix显著提升掩码的边界质量与语义一致性，证明了对抗性扰动在掩码精化中的有效性。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "image segmentation techniques",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.28935v1",
+      "source": "arxiv",
+      "title": "Group-wise Supervision with Focal-Dice Loss for Long-Tailed Indoor Semantic Occupancy Prediction",
+      "abstract": "Recently, 3D semantic occupancy prediction has garnered increasing attention for understanding the indoor scene. However, unlike structured outdoor environments, indoor scenes feature a high diversity of object categories that exhibit a severe long-tailed distribution, which has become a core bottleneck limiting the performance of existing models. To tackle this challenge, we propose a novel method, Group-UFD Occ, based on hierarchical semantic supervision and synergistic loss optimization. At the architectural level, we introduce a fine-grained semantic grouping strategy and design multi-scale, parallel ``main-expert'' prediction heads to guide the model in efficiently learning tail-class features through deep regularization. At the optimization level, we introduce the Unified Focal-Dice (UFD) loss. This synergistic loss function dynamically focuses on hard samples at the per-voxel level. Meanwhile, it simultaneously optimizes the geometric integrity of predicted objects from a region-based perspective. We conducted experiments on the large-scale EmbodiedScan dataset. The results demonstrate that our method yields a relative improvement of 11.38\\% over the baseline, with substantial accuracy gains in several critical long-tailed categories.",
+      "authors": [
+        "Qi Zheng",
+        "Zihuang Su",
+        "Xiao Pan"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-31T01:32:45+00:00",
+      "link": "https://arxiv.org/pdf/2607.28935v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "3D semantic occupancy prediction via hierarchical semantic supervision and Focal-Dice loss",
+      "llm_evidence_cn": "通过层次语义监督与Focal-Dice损失进行三维语义占用预测",
+      "llm_evidence": "通过层次语义监督与Focal-Dice损失进行三维语义占用预测",
+      "canonical_evidence": "通过层次语义监督与Focal-Dice损失进行三维语义占用预测",
+      "llm_tldr_en": "Proposes Group-UFD Occ for long-tailed indoor 3D semantic occupancy prediction, using hierarchical semantic supervision and multi-scale main-expert heads with Focal-Dice loss to improve tail-class learning.",
+      "llm_tldr_cn": "室内场景语义占用预测因物体类别长尾分布而性能受限。为此提出Group-UFD Occ方法，在架构上引入细粒度语义分组策略，并设计多尺度并行主专家预测头；在损失上采用Focal-Dice损失进行协同优化。该方法通过深层正则化引导模型高效学习尾类特征，缓解长尾分布带来的瓶颈，提升了室内三维场景理解的准确率。",
+      "llm_tldr": "室内场景语义占用预测因物体类别长尾分布而性能受限。为此提出Group-UFD Occ方法，在架构上引入细粒度语义分组策略，并设计多尺度并行主专家预测头；在损失上采用Focal-Dice损失进行协同优化。该方法通过深层正则化引导模型高效学习尾类特征，缓解长尾分布带来的瓶颈，提升了室内三维场景理解的准确率。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "image segmentation techniques",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.29192v1",
+      "source": "arxiv",
+      "title": "Locally Consistent Transductive Information Maximization for Few-Shot Remote Sensing Scene Classification",
+      "abstract": "Remote sensing scene classification is increasingly relying on foundation models pre-trained on large-scale Earth-observation data. Moreover, transductive inference, which exploits the collective statistical structure of the entire unlabeled query set, appears to naturally match remote sensing pipelines where large images are routinely split into patches and inferred as a batch. In this work, we introduce LC-TIM (Locally Consistent Transductive Information Maximization), which extends the state-of-the-art Transductive Information Maximization for Few-Shot CLIP (TIM++) objective with a local consistency regularizer that enforces prediction agreement between each query sample and its $κ$ nearest feature-space neighbors. The regularizer enters as a single multiplicative factor in the closed-form $q$-update, adding negligible computational overhead. We further propose a multi-source extension that fuses the affinity graph from multiple remote sensing foundation model, further boosting classification accuracy. To assess these methods, we establish the first comprehensive, open-source benchmark for transductive few-shot RS scene classification, evaluating LP++, TransCLIP, TIM++, and LC-TIM across ten diverse datasets, two remote sensing vision-language models, and across various few-shot settings. Our experiments show that transductive methods consistently outperform zero-shot baselines, and that LC-TIM achieves state-of-the-art accuracy, with the largest gains in the low-shot regime where neighborhood cues are most informative. Code is publicly available at: https://github.com/elkhouryk/LC-TIM",
+      "authors": [
+        "Karim El Khoury",
+        "Benoît Gérin",
+        "Benoît Macq",
+        "Christophe De Vleeschouwer"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-31T09:13:25+00:00",
+      "link": "https://arxiv.org/pdf/2607.29192v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Introduces LC-TIM, a transductive information maximization method with a local consistency regularizer for few-shot remote sensing scene classification",
+      "llm_evidence_cn": "提出LC-TIM，在转导信息最大化中加入局部一致性正则化，用于小样本遥感场景分类",
+      "llm_evidence": "提出LC-TIM，在转导信息最大化中加入局部一致性正则化，用于小样本遥感场景分类",
+      "canonical_evidence": "提出LC-TIM，在转导信息最大化中加入局部一致性正则化，用于小样本遥感场景分类",
+      "llm_tldr_en": "LC-TIM adds a local consistency regularizer to transductive info-max for few-shot remote sensing scene classification, enforcing agreement between each query and its k-nearest feature neighbors to boost accuracy.",
+      "llm_tldr_cn": "遥感场景分类常依赖在大型地球观测数据上预训练的基础模型，而转导推理可利用整个无标记查询集的统计结构，与遥感图像批量分块推理的方式天然契合。该文提出LC-TIM，在TIM++目标基础上引入局部一致性正则化项，强制每个查询样本与其特征空间中k个最近邻的预测一致，使分类决策更平滑、更鲁棒。在多个小样本遥感场景分类基准上，LC-TIM显著提升了分类性能，验证了局部一致性约束对转导推断的增益。",
+      "llm_tldr": "遥感场景分类常依赖在大型地球观测数据上预训练的基础模型，而转导推理可利用整个无标记查询集的统计结构，与遥感图像批量分块推理的方式天然契合。该文提出LC-TIM，在TIM++目标基础上引入局部一致性正则化项，强制每个查询样本与其特征空间中k个最近邻的预测一致，使分类决策更平滑、更鲁棒。在多个小样本遥感场景分类基准上，LC-TIM显著提升了分类性能，验证了局部一致性约束对转导推断的增益。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "visual recognition algorithms",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2607.23600v1",
+      "source": "arxiv",
+      "title": "ConFusion: Continuous Fusion Space Learning for Fine-Grained Controllable Infrared and Visible Image Fusion",
+      "abstract": "Controllable infrared-visible image fusion aims to integrate complementary thermal and structural information with flexible region-aware modulation, producing fused images that adapt to diverse user requirements and downstream tasks. However, existing methods typically rely on predefined discrete control conditions, leading to a sparse space that fails to support fine-grained modulation demands. To address this, we propose ConFusion, a novel framework that learns the continuous fusion space via Gaussian-conditioned spatial-aware modulation, enabling instance-level fine-grained controllable infrared and visible image fusion. ConFusion employs a dual-branch architecture to disentangle modality-invariant and modality-specific representations under joint reconstruction and text-guided semantic alignment. Gaussian-conditioned instance modulation variables coupled with Grounded SAM-based instance masks guide instance-level fine-grained modulation through the Mask-Guided Specific Feature Modulator, while the Text-Driven Invariant Feature Enhancer improves semantic consistency and enhances fusion. During inference, the multimodal large language model parses user intents into instance-level modulation variables to guide image fusion. Extensive experiments show that ConFusion achieves state-of-the-art performance across multiple metrics in both fusion quality and downstream tasks, while supporting fine-grained controllable image fusion. Our code is available at https://github.com/HeyufeiAnto/Confusion",
+      "authors": [
+        "Guo Yurong",
+        "He Yufei",
+        "Li Yonghao",
+        "Chang Dongliang",
+        "Zhang Ke",
+        "Ma Zhanyu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-26T11:00:10+00:00",
+      "link": "https://arxiv.org/pdf/2607.23600v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "image fusion research central to computer vision, not fitting narrower object detection/segmentation/tracking requirements",
+      "llm_evidence_cn": "红外-可见光图像融合属于计算机视觉核心研究，与具体检测/分割/跟踪需求不直接对应",
+      "llm_evidence": "红外-可见光图像融合属于计算机视觉核心研究，与具体检测/分割/跟踪需求不直接对应",
+      "canonical_evidence": "红外-可见光图像融合属于计算机视觉核心研究，与具体检测/分割/跟踪需求不直接对应",
+      "llm_tldr_en": "ConFusion learns a continuous fusion space via Gaussian-conditioned spatial-aware modulation for fine-grained controllable infrared and visible image fusion, overcoming sparse discrete control conditions.",
+      "llm_tldr_cn": "可控红外与可见光图像融合需要灵活的区域感知调制，但现有方法依赖预定义的离散控制条件，难以支持细粒度调节。本文提出ConFusion框架，通过高斯条件空间感知调制学习连续融合空间，并采用双分支架构解耦模态不变和模态特定信息，实现实例级的精细可控融合。该方法为图像融合提供了更灵活的控制方式，可适应多样化的用户需求和下游任务。",
+      "llm_tldr": "可控红外与可见光图像融合需要灵活的区域感知调制，但现有方法依赖预定义的离散控制条件，难以支持细粒度调节。本文提出ConFusion框架，通过高斯条件空间感知调制学习连续融合空间，并采用双分支架构解耦模态不变和模态特定信息，实现实例级的精细可控融合。该方法为图像融合提供了更灵活的控制方式，可适应多样化的用户需求和下游任务。",
+      "llm_tags": [
+        "query:cv:composite"
+      ],
+      "matched_query_tag": "query:cv:composite",
+      "matched_query_text": "Papers central to 计算机视觉相关论文, especially work that connects or combines: computer vision research papers; object detection methods; image segmentation techniques; visual recognition algorithms; feature extraction in computer vision; visual tracking surveys; Find papers on computer vision; Retrieve computer vision research articles; Search for state of the art in computer vision.",
+      "matched_requirement_id": "req-composite-cv",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.28386v1",
+      "source": "arxiv",
+      "title": "Explaining Image Similarity with Automatically Extracted Concept Activation Vectors",
+      "abstract": "Image similarity underlies many computer vision applications, yet it is often unclear why two images receive a high or low similarity score. Existing explainability methods often rely on gradient-based attribution maps to provide local justifications for similarity. These approaches struggle to provide global insights into what specifically drives similarity in regions of an embedding space, such as texture, shape, or color. We introduce a model- and metric-agnostic framework that explains image similarity using Concept Activation Vectors (CAVs) extracted automatically via Sparse Autoencoders (SAEs). Given a pair of images, we perturb their embeddings along discovered concept directions and measure the resulting change in a chosen similarity function, yielding concept importances. For image pairs, we provide localization with concept attribution maps. We extend this procedure to group-level settings, explaining what drives similarity across a cluster of images rather than a single pair, and further, we introduce Exemplar Retrieval, aiming to recover samples with similar reasons contributing to similarity. Our experiments show that our latent perturbations are more faithful to the underlying data distribution than pixel-space baselines, and that concept importances linearly recover the true similarity score. Qualitative results further confirm the usefulness of our methods in understanding a model's individual and group similarity judgments.",
+      "authors": [
+        "Isaac Roberts",
+        "Petra Bevandic",
+        "Alexander Schulz",
+        "Barbara Hammer"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-30T15:43:33+00:00",
+      "link": "https://arxiv.org/pdf/2607.28386v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Concept activation vectors for image similarity explanation",
+      "llm_evidence_cn": "用概念激活向量解释图像相似性",
+      "llm_evidence": "用概念激活向量解释图像相似性",
+      "canonical_evidence": "用概念激活向量解释图像相似性",
+      "llm_tldr_en": "Presents a model- and metric-agnostic framework for explaining image similarity by automatically extracting Concept Activation Vectors via Sparse Autoencoders and measuring similarity changes along concept directions.",
+      "llm_tldr_cn": "图像相似性在很多视觉应用中至关重要，但现有解释方法多依赖梯度归因，难以提供全局概念层面的解释。本文提出与模型和度量无关的框架，利用稀疏自编码器自动提取概念激活向量，扰动嵌入并测量相似性变化。该方法能够揭示纹理、形状、颜色等概念对相似性决策的影响，提升可解释性。",
+      "llm_tldr": "图像相似性在很多视觉应用中至关重要，但现有解释方法多依赖梯度归因，难以提供全局概念层面的解释。本文提出与模型和度量无关的框架，利用稀疏自编码器自动提取概念激活向量，扰动嵌入并测量相似性变化。该方法能够揭示纹理、形状、颜色等概念对相似性决策的影响，提升可解释性。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "computer vision research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.29533v1",
+      "source": "arxiv",
+      "title": "OSAGEN: Object-Aware Mask Priors and Multistage Decoupled Diffusion for Industrial Anomaly Generation",
+      "abstract": "Industrial anomaly detection and localization are limited by scarce real anomalies and pixel-level annotations, a bottleneck that synthetic image-mask pairs can alleviate. However, existing few-shot mask-guided generation may over-follow mask geometry, produce weak anomalies, or use condition masks incompatible with the current object instance. We propose OSAGEN, which combines object-aware mask priors with multistage decoupled diffusion. Its three-stage adaptation sequentially learns normal appearance, defect appearance under coarse conditions, and fine-grained mask calibration, improving defect realization and local control. QBG injects object structure from a matched normal image into mask diffusion to produce object-aware priors, while ISC restricts anomaly propagation and preserves normal content during sampling. A lightweight materialization step recovers pixel-level labels aligned with the realized defects. On MVTec AD and VisA, OSAGEN achieves AP-P/F1-P scores of 88.1/82.2 and 68.5/66.1, respectively, under a unified downstream localization protocol. The code will be released upon acceptance.",
+      "authors": [
+        "Jinyi Xu",
+        "Peng Chen",
+        "Yunkang Cao",
+        "Chengliang Liu",
+        "Xinghui Dong",
+        "Chao Huang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-31T15:30:19+00:00",
+      "link": "https://arxiv.org/pdf/2607.29533v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Diffusion-based anomaly generation with object-aware masks",
+      "llm_evidence_cn": "基于扩散的异常生成与物体感知掩膜",
+      "llm_evidence": "基于扩散的异常生成与物体感知掩膜",
+      "canonical_evidence": "基于扩散的异常生成与物体感知掩膜",
+      "llm_tldr_en": "Proposes OSAGEN, a diffusion-based synthetic anomaly generation method using object-aware mask priors and multistage decoupled adaptation to create realistic anomalous image-mask pairs for industrial anomaly detection.",
+      "llm_tldr_cn": "工业异常检测受限于真实异常样本稀缺。OSAGEN结合物体感知掩膜先验与多阶段解耦扩散，三步适应依次学习正常外观、粗略条件下的缺陷外观和细粒度掩膜校准，从而产生更真实的异常图像与掩膜对。该方法提升对异常区域的局部控制，缓解了合成与真实异常分布不匹配的问题。",
+      "llm_tldr": "工业异常检测受限于真实异常样本稀缺。OSAGEN结合物体感知掩膜先验与多阶段解耦扩散，三步适应依次学习正常外观、粗略条件下的缺陷外观和细粒度掩膜校准，从而产生更真实的异常图像与掩膜对。该方法提升对异常区域的局部控制，缓解了合成与真实异常分布不匹配的问题。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "computer vision research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}

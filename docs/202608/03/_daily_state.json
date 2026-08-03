@@ -1,0 +1,153 @@
+{
+  "date": "20260803",
+  "date_label": "",
+  "generated_at": "2026-08-03 21:22:44 UTC",
+  "recommend_exists": true,
+  "run_count": 1,
+  "papers": [
+    {
+      "paper_id": "2607.23994v2",
+      "route": "202608/03/2607.23994v2-effective-receptive-field-ordering-matters-for-infrared-small-target-detection",
+      "title": "Effective Receptive Field Ordering Matters for Infrared Small Target Detection",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "红外小目标检测中有效感受野排序",
+      "first_seen_at": "2026-08-03 21:22:44 UTC",
+      "updated_at": "2026-08-03 21:22:44 UTC"
+    },
+    {
+      "paper_id": "2607.28996v1",
+      "route": "202608/03/2607.28996v1-suland-v2-a-refined-rgb-dataset-and-deep-learning-object-detection-benchmark-for-uavugv-based-surface-landmine-detection-under-domain-shift",
+      "title": "SULAND v2: A Refined RGB Dataset and Deep Learning Object Detection Benchmark for UAV/UGV-Based SUrface LANDmine Detection Under Domain Shift",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "地雷检测的目标检测基准与分析",
+      "first_seen_at": "2026-08-03 21:22:44 UTC",
+      "updated_at": "2026-08-03 21:22:44 UTC"
+    },
+    {
+      "paper_id": "2607.29040v1",
+      "route": "202608/03/2607.29040v1-rethinking-detection-calibration-a-coordinate-and-direction-perspective",
+      "title": "Rethinking Detection Calibration: A Coordinate and Direction Perspective",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "目标检测置信度校准",
+      "first_seen_at": "2026-08-03 21:22:44 UTC",
+      "updated_at": "2026-08-03 21:22:44 UTC"
+    },
+    {
+      "paper_id": "2607.29059v1",
+      "route": "202608/03/2607.29059v1-learning-from-adversity-semantic-aware-mask-refinement-through-adversarial-perturbation",
+      "title": "Learning from Adversity: Semantic-Aware Mask Refinement through Adversarial Perturbation",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "提出Phoenix，利用对抗掩码扰动与对比学习精化分割掩码，修正边界与语义错误",
+      "first_seen_at": "2026-08-03 21:22:44 UTC",
+      "updated_at": "2026-08-03 21:22:44 UTC"
+    },
+    {
+      "paper_id": "2607.28935v1",
+      "route": "202608/03/2607.28935v1-group-wise-supervision-with-focal-dice-loss-for-long-tailed-indoor-semantic-occupancy-prediction",
+      "title": "Group-wise Supervision with Focal-Dice Loss for Long-Tailed Indoor Semantic Occupancy Prediction",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "通过层次语义监督与Focal-Dice损失进行三维语义占用预测",
+      "first_seen_at": "2026-08-03 21:22:44 UTC",
+      "updated_at": "2026-08-03 21:22:44 UTC"
+    },
+    {
+      "paper_id": "2607.29192v1",
+      "route": "202608/03/2607.29192v1-locally-consistent-transductive-information-maximization-for-few-shot-remote-sensing-scene-classification",
+      "title": "Locally Consistent Transductive Information Maximization for Few-Shot Remote Sensing Scene Classification",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "提出LC-TIM，在转导信息最大化中加入局部一致性正则化，用于小样本遥感场景分类",
+      "first_seen_at": "2026-08-03 21:22:44 UTC",
+      "updated_at": "2026-08-03 21:22:44 UTC"
+    },
+    {
+      "paper_id": "2607.23600v1",
+      "route": "202608/03/2607.23600v1-confusion-continuous-fusion-space-learning-for-fine-grained-controllable-infrared-and-visible-image-fusion",
+      "title": "ConFusion: Continuous Fusion Space Learning for Fine-Grained Controllable Infrared and Visible Image Fusion",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "红外-可见光图像融合属于计算机视觉核心研究，与具体检测/分割/跟踪需求不直接对应",
+      "first_seen_at": "2026-08-03 21:22:44 UTC",
+      "updated_at": "2026-08-03 21:22:44 UTC"
+    },
+    {
+      "paper_id": "2607.29533v1",
+      "route": "202608/03/2607.29533v1-osagen-object-aware-mask-priors-and-multistage-decoupled-diffusion-for-industrial-anomaly-generation",
+      "title": "OSAGEN: Object-Aware Mask Priors and Multistage Decoupled Diffusion for Industrial Anomaly Generation",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "基于扩散的异常生成与物体感知掩膜",
+      "first_seen_at": "2026-08-03 21:22:44 UTC",
+      "updated_at": "2026-08-03 21:22:44 UTC"
+    },
+    {
+      "paper_id": "2607.28386v1",
+      "route": "202608/03/2607.28386v1-explaining-image-similarity-with-automatically-extracted-concept-activation-vectors",
+      "title": "Explaining Image Similarity with Automatically Extracted Concept Activation Vectors",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "用概念激活向量解释图像相似性",
+      "first_seen_at": "2026-08-03 21:22:44 UTC",
+      "updated_at": "2026-08-03 21:22:44 UTC"
+    }
+  ]
+}

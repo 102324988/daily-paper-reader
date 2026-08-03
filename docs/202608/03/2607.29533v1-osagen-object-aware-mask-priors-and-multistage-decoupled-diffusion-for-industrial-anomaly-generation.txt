@@ -1,0 +1,381 @@
+Title: OSAGEN: Object-Aware Mask Priors and Multistage Decoupled Diffusion for Industrial Anomaly Generation
+
+URL Source: https://arxiv.org/pdf/2607.29533v1
+
+Published Time: Mon, 03 Aug 2026 01:13:39 GMT
+
+Number of Pages: 9
+
+Markdown Content:
+# OSAGEN: Object-Aware Mask Priors and Multistage Decoupled Diffusion for Industrial Anomaly Generation 
+
+# Jinyi Xu 1, Peng Chen 1, Yunkang Cao 2, Chengliang Liu 3,Xinghui Dong 4, Chao Huang 1∗
+
+> 1
+
+School of Cyber Science and Technology, Shenzhen Campus of Sun Yat-sen University 
+
+> 2
+
+School of Artificial Intelligence and Robotics, Hunan University 
+
+> 3
+
+Department of Computer and Information Science, University of Macau 
+
+> 4
+
+School of Computer Science and Technology, Ocean University of China 
+
+Abstract 
+
+Industrial anomaly detection and localization are limited by scarce real anomalies and pixel-level annotations, a bottleneck that synthetic image–mask pairs can alleviate. However, exist-ing few-shot mask-guided generation may over-follow mask geometry, produce weak anomalies, or use condition masks incompatible with the current object instance. We propose OSAGEN, which combines object-aware mask priors with multistage decoupled diffusion. Its three-stage adaptation se-quentially learns normal appearance, defect appearance under coarse conditions, and fine-grained mask calibration, improv-ing defect realization and local control. Query-Bias-Gen in-jects object structure from a matched normal image into mask diffusion to produce object-aware priors, while ISC restricts anomaly propagation and preserves normal content during sampling. A lightweight materialization step recovers pixel-level labels aligned with the realized defects. On MVTec AD and VisA, OSAGEN achieves AP-P/F1-P scores of 88.1/82.2 and 68.5/66.1, respectively, under a unified downstream local-ization protocol. The code will be released upon acceptance. 
+
+# Introduction 
+
+Industrial visual inspection requires reliable image-level de-tection and pixel-level localization, but real anomalies and their masks are scarce in practical production settings (Jin et al. 2026; Lu et al. 2026; Wang et al. 2025; Chen, Huang, and Huang 2026). Synthetic image–mask pairs can alleviate this bottleneck by providing supervised data for downstream inspection training. Beyond producing visually plausible im-ages, localized anomaly generation must preserve normal object content, realize clear defect semantics, and provide spatially meaningful pixel-level supervision. Recent diffusion-based methods have advanced few-shot industrial anomaly generation through personalized adap-tation, normal–anomaly separation, mask-guided inpaint-ing, joint image–mask modeling, and inference-time guid-ance (Hu et al. 2024b; Dai et al. 2025; Song et al. 2025; Choi, Kim, and Hong 2025; Rao et al. 2026). Nevertheless, two is-sues remain insufficiently addressed in mask-guided few-shot generation. First, single-stage adaptation learns normal ap-pearance, defect semantics, and mask compliance together, 
+
+> ∗
+
+Corresponding author. Email: huangch253@mail.sysu.edu.cn Copyright © 2027, Association for the Advancement of Artificial Intelligence (www.aaai.org). All rights reserved. 
+
+tightly coupling defect learning to the geometry of the con-dition mask. Inference-time condition masks may vary in shape and extent and are intended to guide the editable re-gion rather than prescribe the exact visible anomaly bound-ary. Therefore, forcing the generated defect to strictly follow their geometry can be counterproductive: the model may mechanically inherit the mask shape, realize only a weak or incomplete anomaly, or fail to generate the defect altogether. Second, in many mask-guided pipelines, condition masks are externally supplied or sampled from defect-category-conditioned generators, while mask generation is not directly conditioned on the current object image. As illustrated in Fig-ure 1, the resulting mask is usually misplaced or otherwise incompatible with anomaly synthesis. We address both issues with OSAGEN. Its three-stage curriculum learns normal appearance, defect semantics un-der a coarse condition, and fine-grained mask calibration, thereby reducing dependence on exact condition geometry. Query-Bias-Gen injects structure from a matched normal im-age into mask-diffusion queries to produce object-aware pri-ors. During inference, ISC reinstates the training-time spatial constraints without supervision, keeping anomaly semantics inside the prior and preserving surrounding content, while a materialization step converts the loose condition into a pixel-level label aligned with the visible anomaly without altering the generated image. Our contributions are: 
+
+• We design multistage decoupled defect-conditioned in-painting that sequentially separates normal learning, de-fect learning under a coarse condition, and fine-grained mask calibration. The resulting branches and spatial con-straints further support ISC for localized anomaly real-ization during inference. 
+
+• We propose Query-Bias-Gen, which injects object struc-ture from a structurally matched normal image into mask diffusion to produce object-aware mask priors condi-tioned on the current object instance. 
+
+• OSAGEN constructs effective synthetic image–mask pairs and achieves strong downstream anomaly localiza-tion performance on MVTec AD and VisA. 
+
+# Related Work 
+
+Industrial anomaly inspection and synthetic supervision. 
+
+Synthetic anomaly generation provides a complementary arXiv:2607.29533v1 [cs.CV] 31 Jul 2026 Figure 1: Motivation of OSAGEN. Top: single-stage adaptation jointly learns normal appearance, defect semantics, and mask compliance. Because inference-time condition masks vary in shape and extent and need not coincide with the visible anomaly boundary, coupling defect generation to their exact geometry may produce mask-shaped, weak, incomplete, or failed defects. OSAGEN instead separates normal learning, defect learning under a coarse condition, and fine-grained mask calibration through multistage learning. Bottom: a mask generated without the context of the current object image may be misplaced and impair anomaly synthesis, whereas Query-Bias-Gen provides object-aware guidance for the target image. way to construct supervised image–mask pairs for down-stream inspection (Shi et al. 2026; Li et al. 2026; Qian et al. 2026). Early model-free and GAN-based synthesis spans patch or texture perturbation, feature-space synthesis, and learned defect translation (Li et al. 2021; Zavrtanik, Kris-tan, and Skočaj 2021; Schlüter et al. 2022; Chen et al. 2024; Zhang, Xu, and Zhou 2024; Duan et al. 2023; Niu et al. 2020; Zhang et al. 2021). These methods demonstrate the usefulness of synthetic supervision, while jointly achieving object-compatible mask placement, realistic defect appear-ance, and accurate pixel-level labels remains challenging. 
+
+Diffusion anomaly generation. Diffusion backbones and personalization techniques, including latent diffusion, Tex-tual Inversion, DreamBooth, and LoRA (Rombach et al. 2022; Gal et al. 2023; Ruiz et al. 2023; Hu et al. 2022), have become strong foundations for few-shot anomaly syn-thesis (Lu et al. 2025; Shin, Jeong, and Heo 2025). Re-cent industrial generators span anomaly-embedding or mask-conditioned adaptation, joint image–mask or whole-image generation, local inpainting, and training-free control (Hu et al. 2024b; Ali et al. 2024; Hu et al. 2024a; Gui et al. 2024; Jin et al. 2025; Dai et al. 2025; Song et al. 2025; Choi, Kim, and Hong 2025; Rao et al. 2026; Sun et al. 2025; Yu et al. 2024). Mask-guided approaches provide explicit local control and commonly obtain condition masks from sup-plied annotations or defect-category-conditioned generators, without conditioning on the current object image, and typi-cally couple normal appearance, defect semantics, and mask compliance within a single adaptation stage. In contrast, OS-AGEN combines object-aware mask priors with multistage decoupled inpainting, while ISC exploits the normal and de-fect branches to restrict inference-time anomaly propagation. 
+
+# Method 
+
+Problem Formulation 
+
+Let the training set contain normal images Xn and few anomalous image–mask pairs Danom = {(xa, m gt )} from object category o and defect category a. We generate syn-thetic pairs {(˜ xa, ˜ya)} for downstream inspection without using test anomalies or masks. The condition mask is a spa-tial prior, not the final label; materialization recovers super-vision aligned with the visible defect. The main generator Gθ
+
+is based on Stable Diffusion v1.5 inpainting (Rombach et al. 2022): given a clean latent x0, the forward process samples 
+
+xt = √¯αt x0 + √1 − ¯αt ϵ, ϵ ∼ N (0 , I ), (1) where t is the diffusion timestep and ¯αt its noise-schedule co-efficient; clean-latent estimates below use one-step recovery of x0 from xt and the predicted noise. 
+
+Staged Defect-Conditioned Inpainting 
+
+A single mask-guided stage entangles normal appearance, defect semantics, and mask response. SeaS separates normal-product patterns and anomaly attributes within a shared U-Net (Dai et al. 2025); in our setting, the three-stage curricu-lum assigns normal appearance to <tux> and LoRA-1 and defect semantics to <sks> and LoRA-2 (Figure 2; Table 1). The staged curriculum progressively reduces objective inter-ference across stages and weakens the dependence of defect learning on exact condition geometry throughout adaptation. Stage 1 learns normal appearance from normal images xn
+
+and random masks mr , whose varying extent prevents the normal branch from tying a particular condition geometry to a particular appearance. Only the object token <tux> and Figure 2: OSAGEN overall framework with three components. Staged inpainting (top) learns normal appearance, defect semantics under coarse support, and fine-grained mask calibration. Query-Bias-Gen (bottom left) injects source-image structure into mask diffusion to produce an object-aware mask prior. Inference-time Spatial Control ( ISC ) (bottom right): Spatial-CFG amplifies defects inside the support via the S3-minus-S1 noise-prediction residual; Attn-Gate strengthens target-token attention and suppresses irrelevant tokens; Soft-Normal-Latent-Blend pulls the background latent toward the source image.                       
+
+> s x smscmslPrompt tokens Trainable 1xnmrmr<tux>, obj <tux> , LoRA-1 2xamcoarse mgt <tux>, <sks>, obj <sks> , LoRA-2 3xamgt mgt <tux>, <sks>, obj <sks> , LoRA-2
+
+Table 1: Three-stage inpainting setup. Prompts use the fixed prefix “A photo of”; the table lists the variable prompt tokens. 
+
+mr is a random mask, mcoarse is a coarse condition region, and mgt is the ground-truth anomaly mask. <tux> binds object appearance, while <sks> binds defect semantics. LoRA-1 are updated, producing a normal branch that anchors defect learning and serves as the normal-prediction baseline for Spatial-CFG in ISC . Stage 2 learns defect semantics while decoupling the condition-mask extent from the true anomaly extent. The coarse condition mask mcoarse defines a loose candidate region, whereas the denoising loss and attention constraint are applied only inside mgt . Consequently, <sks> 
+
+and LoRA-2 bind to anomalous appearance rather than the normal content in mcoarse \ mgt . LoRA-1 is frozen, and only 
+
+<sks> and LoRA-2 are updated. As illustrated in Figure 3, this stage teaches the model to treat the coarse condition mask as a candidate region rather than as the boundary of the defect. The grouped-minquad construction, its automatic 
+
+Figure 3: Visual analysis of the staged inpainting curriculum. Without Stage 2, the model tends to spread defects over the coarse region or introduce artifacts, whereas the full model confines the visible anomaly to a more plausible subregion. feasibility fallback, and the Stage 2 preprocessing procedure are detailed in Appendix D of the supplementary material, together with the corresponding pseudocode. Stage 3 sets both the condition mask and the loss mask to mgt , adapting the defect branch to fine-grained mask conditions. During the final adaptation stage, fine-grained masks reduce the editing burden of overly large conditions and narrow the gap between the mask prior and the visible anomaly, thereby aligning the model with the inference-time mask distribution and facili-tating reliable pixel-level labels at materialization. At stage s ∈ { 1, 2, 3}, each training sample is represented as (xs, m sc, m sl , y s), where xs is the target image, msc is the condition mask specifying the inpainting region, msl is the loss mask specifying where defect supervision is applied, and 
+
+ys is the text prompt. The clean latent xs 
+
+> 0
+
+= Enc( xs) is noised into xst , and the SD-inpainting U-Net predicts the noise from the concatenation of the noisy latent, downsampled condition mask, and masked-image latent: 
+
+ˆϵs = ϵsθ ([ xst , Down( msc), Enc( xs ⊙ (1 − msc))] , y s, t ) .
+
+(2) All stages use the same objective: 
+
+Ls 
+
+> stage
+
+= αsLsϵ + βsLs 
+
+> bg
+
++ γsLs
+
+> attn
+
+, (3) where Lϵ learns local appearance inside the loss region, Lbg 
+
+suppresses background drift outside the condition region, and Lattn prevents non-target text tokens from explaining the anomalous region. Before evaluating each term, the masks are resized to the spatial resolution of the corresponding latent or attention map; for brevity, we retain the notation msc
+
+and msl after resizing: 
+
+Lsϵ = Et,ϵ 
+
+ ∥msl ⊙ (ˆ ϵs − ϵ)∥22
+
+|msl | + ξ
+
+
+
+,
+
+Ls 
+
+> bg
+
+= Et,ϵ 
+
+ ∥(1 − msc) ⊙ (ˆ xs 
+
+> 0
+
+− xs
+
+> 0
+
+)∥22
+
+|1 − msc| + ξ
+
+
+
+,
+
+Ls 
+
+> attn
+
+= Et
+
+ 1
+
+|msl | + ξ
+
+X
+
+> i∈msl
+
+X 
+
+> j∈Ts
+> nt
+
+Aij 
+
+ .
+
+(4) Here, ˆxs 
+
+> 0
+
+is recovered from ˆϵs using the one-step denois-ing estimate, Aij is the cross-attention weight from spatial position i to token j, T s 
+
+> nt
+
+denotes the non-target token set, and ξ avoids division by empty masks. The staged genera-tor thus learns to realize defects under coarse-to-fine mask conditions, but inference still requires a mask prior compat-ible with the specific source instance and a plausible defect region. We address this requirement with Query-Bias-Gen. 
+
+Object-aware Mask Generation: Query-Bias-Gen 
+
+The staged inpainting generator requires an inference-time condition mask compatible with the current object instance. Learning a defect-category-conditioned distribution p(m |
+
+a) from real anomaly masks captures defect-area, connec-tivity, and shape statistics, but does not ensure compatibility with the structure of a specific normal source image. We therefore formulate mask generation as an object-aware con-ditional distribution p(m | xn, a ), where xn is the normal source image and a is the defect category. This converts an object-agnostic defect-shape prior into a mask prior condi-tioned on the current object instance. We implement this idea with Query-Bias-Gen on top of an AnomalyDiffusion-style mask latent diffusion model. As shown in Figure 2 (bottom left), the source image xn is encoded by a frozen visual encoder and passed through a lightweight trainable mapping layer to align its object-structure representation with the cross-attention query ten-sors of the mask LDM. The aligned source structure is then injected as an additive query bias: 
+
+q′ 
+
+> l
+
+= ql + ∆ ql(xn), (5) where ql is the original query of the l-th attention block and 
+
+∆ql(xn) denotes the layer-wise query bias computed from the source image. For compactness, ∆q(xn) denotes the col-lection of query biases {∆ql(xn)}l injected into the selected attention blocks. This keeps the backbone unchanged while biasing spatial tokens with source-object context before they interact with the defect condition. During training, each real mask mgt is paired with a structurally matched normal source image xn, and the mask diffusion model is trained with the standard denoising objective: 
+
+LQ = Et,ϵ 
+
+∥ϵϕ(zmt , t, a, ∆q(xn)) − ϵ∥22
+
+, (6) where zmt is the noisy mask latent of mgt and ϵϕ denotes the mask diffusion network with the query-bias injection in Eq. (5). Its trainable parameters include the mapping layer and the LoRA modules inserted into the mask diffusion net-work, while the remaining backbone parameters are frozen. Given a sampled normal source image xn, defect category 
+
+a, and random noise η, Query-Bias-Gen samples the object-aware mask prior as 
+
+m = Dmask (a, ∆q(xn), η ) . (7) At inference, this object-aware mask is used as the spatial support for the staged inpainting generator described above. 
+
+ISC : Inference-Time Spatial Control 
+
+The staged curriculum produces normal and defect branches together with two training-time spatial constraints. At infer-ence, these constraints are no longer available as supervision, while the Query-Bias-Gen mask prior specifies only where a defect may occur, not how anomaly semantics propagate dur-ing denoising or how well content outside the support is pre-served. ISC therefore transfers the learned structure to three sampling-time operations. Attn-Gate acts throughout denois-ing as the inference-time counterpart of Lattn , modulating object and defect tokens that have already been regularized during adaptation. Spatial-CFG contrasts the Stage 3 defect branch with the Stage 1 normal branch at timesteps Tcfg ,while Soft-Normal-Latent-Blend transfers the background-preservation role of Lbg to timesteps Tblend .
+
+Attn-Gate. Let ARij denote the cross-attention weight from position i to token j at attention resolution R, and let Ttarget 
+
+be the target-token set of learned object and defect tokens. Given mask prior m, we project it to the attention grid and obtain a core region Core R(m) and a protected region 
+
+Outer R(m), where Core R(m) ⊆ Outer R(m). We define a spatial gate gRi and re-normalize the target-token attention: 
+
+gRi =
+
+
+
+αR
+
+> in
+
+, i ∈ Core R(m),αR
+
+> out
+
+, i / ∈ Outer R(m),
+
+1, otherwise ,
+
+eARij = ρRij ARij 
+
+P 
+
+> k
+
+ρRik ARik 
+
+.
+
+(8) Here, αR 
+
+> in
+
+> 1, αR 
+
+> out
+
+< 1, and the gate is applied only to target tokens: ρRij = gRi for j ∈ Ttarget , and ρRij = 1 otherwise. This strengthens object and defect tokens inside the anomaly core while suppressing their leakage into the far background. 
+
+Anomaly-Region Spatial-CFG. Spatial-CFG enhances defect semantics at the noise-prediction level. At each timestep t ∈ T cfg , the Stage 3 defect and Stage 1 normal branches produce noise predictions ϵdefect  
+
+> t
+
+and ϵnormal  
+
+> t
+
+, re-spectively. Rather than an unconditional prediction, which describes generation without the defect prompt rather than a normal instance of the current object, we take ϵnormal  
+
+> t
+
+as the baseline and treat the branch difference as a residual: 
+
+ˆϵt = ϵnormal  
+
+> t
+
++ ωtMano (m) ⊙  ϵdefect  
+
+> t
+
+− ϵnormal 
+
+> t
+
+ . (9) Here, ˆϵt is the guided noise prediction used for the denoising update and subsequent clean-latent recovery, Mano (m) is the soft anomaly-support map, and ωt is the time-dependent guidance strength. Since the residual is injected only inside 
+
+Mano (m), Spatial-CFG amplifies defect appearance without globally changing the normal object structure. 
+
+Background Soft-Normal-Latent-Blend. Lbg constrains drift on the predicted clean latent; we transfer this choice to inference by blending clean latents rather than overwriting pixels or mixing noisy latents. At each timestep t ∈ T blend ,we recover the clean-latent estimate ˆx0,t from the current latent xt and the guided noise prediction ˆϵt by rearranging Eq. (1). We then blend the background clean content toward the source-image latent: 
+
+wt = λtMbg (m),
+
+˜x0,t = (1 − wt)ˆ x0,t + wtxsrc 0 . (10) Here, Mbg (m) is the soft background-preservation map, xsrc 0
+
+is the latent of the normal source image, and λt is the blending strength. The blended clean latent is then re-noised to the current timestep using the same guided noise prediction: 
+
+xt ← √¯αt ˜x0,t + √1 − ¯αt ˆϵt. (11) Fixed attention resolutions, timestep schedules, spatial-weight construction, and dataset-level guidance strengths are given in Appendix G; Appendix H reports sensitivity to the joint control strength. 
+
+Label Materialization 
+
+Before inference, the mask sampled by Query-Bias-Gen is further morphologically augmented to form a loose condition region. Together with the candidate-region formulation of Stage 2, this makes the condition mask intentionally broader and morphologically less precise than the realized defect. It therefore cannot serve as the final pixel-level label. We in-stead materialize the label from the source-to-generation dif-ference, encoded both in pixel space and by a frozen DINOv2 backbone, together with the condition mask. A lightweight predictor outputs anomaly probabilities inside the condition region, which are thresholded into the label; the generated image is left unchanged. The per-object predictor is trained for only a few minutes on the permitted training split, using real anomalies and degraded masks that simulate generation-time conditions. It draws only on the same permitted anoma-lies available to every method and adds no external data. Implementation details are provided in Appendix K. 
+
+# Experiments 
+
+Experimental Setup 
+
+Protocol. We evaluate on MVTec AD (Bergmann et al. 2019) and VisA (Zou et al. 2022) following AnomalyDiffusion (Hu 
+
+Figure 4: Qualitative comparison of mask placement with and without query bias. Full Query-Bias-Gen improves ob-ject compatibility; red overlays denote generated masks. et al. 2024b): one third of each anomaly type is used for gen-erator adaptation and the remaining two thirds for testing. For each anomaly type, every method generates 1000 synthetic image–mask pairs to train the same downstream anomaly inspection model with identical scripts, which is evaluated on real test anomalies. The complete dataset split, training hyperparameters, score aggregation, and metric definitions are provided in Appendix A of the supplementary material. 
+
+Metrics. We report AP-I, AUC-P, AP-P, and F1-P, equally averaged across categories. Auxiliary quality is measured by KID (Bińkowski et al. 2018), IC-LPIPS (Ojha et al. 2021), and the classification accuracy (Cls Acc) of a ResNet-34 (He et al. 2016) trained on each method’s synthetic images. 
+
+Baselines. We compare OSAGEN with AnomalyDiffu-sion (Hu et al. 2024b), DualAnoDiff (Jin et al. 2025), SeaS (Dai et al. 2025), and O2MAG (Rao et al. 2026), using official implementations and recommended settings when-ever available. DefectFill (Song et al. 2025) is excluded be-cause its evaluation applies generation to masks from the held-out two-thirds split, violating our protocol that pro-hibits test anomaly masks. Among the compared methods, O2MAG is the most recent and strongest-performing base-line and therefore serves as our primary point of comparison. Since O2MAG lacks an independent mask generator, its full-pair setting combines its images with AnomalyDiffusion-style generated masks following its reported practice, without using real test masks. 
+
+Main Results 
+
+Tables 2 and 3 show that OSAGEN achieves the best AP-P/F1-P on MVTec AD and VisA, reaching 88.1/82.2 and 68.5/66.1, respectively, while remaining competitive in AP-I and AUC-P. Table 4 further reports the lowest KID and high-est Cls Acc, indicating a distribution closer to real anomalies with identifiable defect semantics. We treat IC-LPIPS only as an auxiliary indicator because background corruption can also inflate it (Choi, Kim, and Hong 2025; Rao et al. 2026). Qualitative examples are shown in Figure 5. 
+
+Ablation Study 
+
+We evaluate the components on six categories: cable, cap-sule, grid, and screw from MVTec AD, and fryum and pcb3 from VisA. As shown in Table 5, removing Query-Bias-Gen lowers AP-P by 8.6 points; Figure 4 further shows that query bias improves object-compatible mask placement. Under the same 8k-step budget, removing Stages 1–3 reduces AP-P by 2.1, 5.4, and 1.5 points, respectively, with Stage 2 con-tributing most among the three stages. Disabling ISC low-AnomalyDiffusion (AAAI 2024) DualAnoDiff (CVPR 2025) SeaS (ICCV 2025) O2MAG (CVPR 2026) OSAGEN (Ours) Category AP-I AUC-P AP-P F1-P AP-I AUC-P AP-P F1-P AP-I AUC-P AP-P F1-P AP-I AUC-P AP-P F1-P AP-I AUC-P AP-P F1-P bottle 99.9 99.4 94.1 87.3 100.0 99.5 93.4 85.7 99.9 99.7 95.9 88.8 100.0 99.7 95.4 88.4 100.0 99.8 97.0 90.9 cable 100.0 99.2 90.8 83.5 98.3 98.5 82.6 76.9 98.8 96.0 83.1 77.7 100.0 99.4 91.2 85.0 99.7 98.1 87.0 81.5 capsule 99.9 98.8 57.2 59.8 99.2 99.5 73.2 67.0 99.2 93.7 41.9 47.3 99.8 97.0 60.6 59.0 99.7 98.3 66.6 62.3 carpet 98.8 98.6 81.2 74.6 99.9 99.4 89.1 80.2 99.0 99.3 86.4 78.1 100.0 99.5 88.5 80.0 99.7 99.4 88.6 80.7 grid 99.5 98.3 52.9 54.6 99.7 98.5 57.2 54.9 99.9 99.7 76.3 70.0 100.0 99.6 78.6 71.6 100.0 99.2 73.7 69.0 hazelnut 99.9 99.8 96.5 90.6 100.0 99.8 97.7 92.8 99.8 99.5 92.3 85.6 100.0 99.8 96.2 90.1 100.0 99.8 96.7 92.1 leather 100.0 99.8 79.6 71.0 100.0 99.9 88.8 78.8 100.0 99.8 85.2 77.0 100.0 99.7 88.0 79.7 100.0 99.9 90.8 83.1 metal_nut 100.0 99.8 98.7 94.0 99.9 99.6 98.0 93.0 100.0 99.8 99.2 95.7 100.0 99.8 99.2 95.7 100.0 99.8 99.0 95.9 pill 99.6 99.7 93.9 90.8 99.0 99.6 95.8 89.2 99.6 99.9 97.1 90.7 99.7 99.7 96.1 89.9 99.9 99.9 97.7 92.3 screw 97.9 97.0 51.8 50.9 95.0 98.1 57.1 56.1 98.0 98.5 58.5 57.2 98.2 99.4 68.2 64.4 97.6 98.2 76.9 71.6 tile 100.0 99.2 93.6 86.2 100.0 99.7 97.1 91.0 100.0 99.8 97.9 92.5 100.0 99.9 98.2 92.7 99.9 99.5 95.7 89.0 toothbrush 100.0 99.2 76.5 73.4 99.7 98.2 68.3 68.6 100.0 98.4 70.0 68.1 100.0 96.3 58.6 59.2 100.0 99.0 77.5 73.2 transistor 100.0 99.3 92.6 85.7 93.7 98.0 86.7 79.6 99.5 98.0 87.3 81.9 100.0 99.9 98.2 93.2 100.0 99.6 95.2 89.5 wood 99.4 98.9 84.6 74.5 99.9 99.4 91.6 83.8 99.6 99.0 87.0 79.6 99.8 99.4 89.4 81.1 100.0 99.2 90.3 82.1 zipper 100.0 99.6 86.0 79.2 100.0 99.6 90.7 82.7 100.0 99.7 88.2 81.6 100.0 99.5 88.5 82.0 100.0 99.3 88.3 79.9 Average 99.7 99.1 82.0 77.1 98.9 99.1 84.5 78.7 99.6 98.7 83.1 78.1 99.8 99.2 86.3 80.8 99.8 99.3 88.1 82.2 
+
+Table 2: MVTec AD category-level results. Bold/underline denote the best/second-best Average scores. 
+
+Method AP-I AUC-P AP-P F1-P AnomalyDiffusion 88.9 97.0 42.9 45.8 DualAnoDiff 95.4 98.7 61.3 62.1 SeaS 93.3 98.8 65.1 64.1 O2MAG 94.0 98.9 67.2 64.6 OSAGEN 96.6 98.2 68.5 66.1 
+
+Table 3: Anomaly localization on VisA, averaged over 12 categories. Bold/underline denote best/second-best results. 
+
+Method KID ↓ IC-LPIPS ↑ Cls Acc ↑
+
+AnomalyDiffusion 102.67 0.29 70.25 DualAnoDiff 103.87 0.38 65.55 SeaS 125.67 0.35 56.70 O2MAG 45.55 0.30 82.35 OSAGEN 39.70 0.29 82.51 
+
+Table 4: Generation-quality and classification-based auxil-iary evaluation on MVTec AD. ers AP-P/F1-P by 4.6/3.8 points, confirming complementary inference-time gains. The lower block validates Lattn and 
+
+Lbg ; clean-latent locking with ˆx0 outperforms the noise-space background constraint. 
+
+Diagnostics and Efficiency 
+
+Label-source diagnostic. To disentangle image quality from label construction, we evaluate O2MAG and OSAGEN on the six-category ablation subset using identical normal sources and augmented condition masks. For each generator, we fix the generated images and use either the augmented masks or labels recovered by the same materialization pre-dictor under the same protocol. Thus, between-generator comparisons isolate image quality, while within-generator 
+
+Configuration AP-I AUC-P AP-P F1-P Full OSAGEN 98.9 97.3 65.7 62.8 
+
+Core components 
+
+w/o Query-Bias-Gen 98.0 96.8 57.1 57.5 w/o Stage 1 98.9 97.2 63.6 60.6 w/o Stage 2 98.9 95.4 60.3 58.4 w/o Stage 3 98.5 97.1 64.2 61.8 w/o ISC 98.7 94.9 61.1 59.0 
+
+Staged training objective 
+
+w/o Lattn 98.8 96.9 63.5 60.9 w/o Lbg 98.9 97.0 62.4 60.6 
+
+Lbg on noise 98.6 97.3 62.2 59.6 
+
+Table 5: Ablation results averaged over six categories. Stage-removal variants use the same 8k-step training budget. Top: core components; bottom: staged-training losses. comparisons quantify materialization. Table 6 shows that OSAGEN outperforms O2MAG by 18.1/14.3 AP-P/F1-P points with augmented-mask labels and by 11.6/7.5 points after materialization, showing that the gain does not arise solely from label recovery. Materializa-tion improves O2MAG by 12.9/10.8 AP-P/F1-P points and OSAGEN by 6.4/4.0, indicating a general label-alignment benefit; the smaller gain for OSAGEN suggests better intrin-sic alignment between its visible defects and spatial support. 
+
+Mask over-following diagnostic. To test mask over-following, we compare the full model with the w/o Stage 2 variant under equal training budgets and identical source– mask–seed triplets, using enlarged masks derived from real anomalies. AR-FR measures altered pixels inside the con-dition region, whereas S-FR extracts semantically visible anomalies through materialization. Removing Stage 2 in-creases the mean AR-FR from 45.5 to 47.9 and S-FR from Figure 5: Qualitative comparison on representative MVTec AD categories. Red contours denote anomaly masks, and yel-low boxes show enlarged regions. OSAGEN improves mask alignment, defect realism, and background preservation. 66.0 to 69.8, indicating greater anomaly spread over the con-dition region. Category-level results, threshold robustness, and the complete protocol are provided in Appendix I. 
+
+Object-awareness diagnostic. We fix the mask genera-tor and compare matched-source conditioning with a same-category shuffled source. For each object–anomaly category, normal training images and their SAM3 (Carion et al. 2025) foregrounds are jointly rotated by {0◦, ±45 ◦, ±90 ◦}, yield-ing 500 masks per anomaly category. We quantify mask–object compatibility using the Object Hit Rate (OHR), defined as the fraction of the generated mask area that falls inside the target object foreground: 
+
+OHR( M, R ) = |M ∩ R||M | , (12) where M and R are the generated mask and target fore-ground. We report OHR at 0◦ and its mean over the four nonzero rotations (OHR@rot), equally aggregated across samples and categories. Their difference is computed as 
+
+∆ = OHR@0 ◦ − OHR@rot . The complete source-pairing protocol, rotation construction, sample budget, empty-mask handling, and aggregation order are provided in Appendix J of the supplementary material. Matched-source OHR remains 87 .5% under rotation, com-pared with 50 .1% for shuffled sources, corresponding to drops of 2.1 and 25 .7 points, respectively (Figure 6). Di-rectional categories show the strongest contrast, while the                          
+
+> Generator Label source AP-I AUC-P AP-P F1-P O2MAG Aug. mask 93.9 95.4 41.2 44.5 O2MAG Materialized 95.9 96.1 54.1 55.3 OSAGEN Aug. mask 97.9 96.5 59.3 58.8 OSAGEN Materialized 98.9 97.3 65.7 62.8
+
+Table 6: Controlled label-source diagnostic on six categories. Both generators use identical sources and augmented masks; “Aug. mask” uses them directly, while “Materialized” uses labels recovered by the same predictor. screw capsule toothbrush hazelnut Mean     
+
+> 0
+> 20
+> 40
+> 60
+> 80
+> 100
+> OHR (%)
+> Matched, 0∘
+> Matched, rot
+> Shuffled, 0∘
+> Shuffled, rot
+
+Figure 6: Object-awareness diagnostic on four MVTec AD categories. “rot” denotes the mean OHR over four nonzero rotations. Matched and shuffled sources use the target image and another same-category image, respectively. rotationally symmetric hazelnut acts as a control, confirming source-structure-aware mask placement. 
+
+Cost analysis. On one NVIDIA A100, OSAGEN incurs a one-time cost of 2.39 hours per category and 4.65 seconds per generated pair. It is cheaper than AnomalyDiffusion, Du-alAnoDiff, and O2MAG in both one-time and per-pair costs. Only SeaS is cheaper, but its AP-P is 5.0 points lower. Full accounting is provided in Appendix L. 
+
+# Conclusion 
+
+We present OSAGEN, an object-aware image–mask gen-eration framework for localization, addressing instance-incompatible masks and the coupling between defect learn-ing and spatial control. Query-Bias-Gen conditions mask diffusion on a matched normal image to produce object-aware priors, while the three-stage curriculum learns normal appearance, defect semantics under loose conditions, and fine-grained mask calibration. During sampling, ISC restricts anomaly propagation and preserves normal content, while materialization recovers pixel-level labels aligned with real-ized defects. Experiments on MVTec AD and VisA show that OSAGEN produces synthetic pairs and balances localization, generation quality, and computational efficiency. Future work will reduce category-specific adaptation costs and improve generalization to unseen objects and industrial scenarios. References 
+
+Ali, M.; Fioraio, N.; Salti, S.; and Di Stefano, L. 2024. AnomalyControl: few-shot anomaly generation by controlnet inpainting. IEEE Access , 12: 192903–192914. Bergmann, P.; Fauser, M.; Sattlegger, D.; and Steger, C. 2019. MVTec AD–A comprehensive real-world dataset for unsupervised anomaly detection. In Proceedings of the IEEE/CVF conference on computer vision and pattern recog-nition , 9592–9600. Bińkowski, M.; Sutherland, D. J.; Arbel, M.; and Gretton, A. 2018. Demystifying MMD GANs. In International Confer-ence on Learning Representations .Carion, N.; Gustafson, L.; Hu, Y.-T.; Debnath, S.; Hu, R.; Suris, D.; Ryali, C.; Alwala, K. V.; Khedr, H.; Huang, A.; Lei, J.; Ma, T.; Guo, B.; Kalla, A.; Marks, M.; Greer, J.; Wang, M.; Sun, P.; Rädle, R.; Afouras, T.; Mavroudi, E.; Xu, K.; Wu, T.-H.; Zhou, Y.; Momeni, L.; Hazra, R.; Ding, S.; Vaze, S.; Porcher, F.; Li, F.; Li, S.; Kamath, A.; Cheng, H. K.; Dollár, P.; Ravi, N.; Saenko, K.; Zhang, P.; and Feichtenhofer, C. 2025. SAM 3: Segment Anything with Concepts. arXiv preprint arXiv:2511.16719 .Chen, P.; Huang, F.; and Huang, C. 2026. DyC-CLIP: Dynamic Context-Aware Multi-Modal Prompt Learning for Zero-Shot Anomaly Detection. Pattern Recognition , 113215. Chen, Q.; Luo, H.; Lv, C.; and Zhang, Z. 2024. A Unified Anomaly Synthesis Strategy with Gradient Ascent for In-dustrial Anomaly Detection and Localization. In European Conference on Computer Vision , 37–54. Choi, J.; Kim, M.; and Hong, J. H. 2025. MAGIC: Few-Shot Mask-Guided Anomaly Inpainting with Prompt Perturbation, Spatially Adaptive Guidance, and Context Awareness. arXiv preprint arXiv:2507.02314 .Dai, Z.; Zeng, S.; Liu, H.; Li, X.; Xue, F.; and Zhou, Y. 2025. Seas: Few-shot industrial anomaly image generation with separation and sharing fine-tuning. In Proceedings of the IEEE/CVF International Conference on Computer Vision ,23135–23144. Duan, Y.; Hong, Y.; Niu, L.; and Zhang, L. 2023. Few-Shot Defect Image Generation via Defect-Aware Feature Manip-ulation. In Proceedings of the AAAI Conference on Artificial Intelligence , 571–578. Gal, R.; Alaluf, Y.; Atzmon, Y.; Patashnik, O.; Bermano, A. H.; Chechik, G.; and Cohen-Or, D. 2023. An Image is Worth One Word: Personalizing Text-to-Image Generation Using Textual Inversion. In International Conference on Learning Representations .Gui, G.; Gao, B.-B.; Liu, J.; Wang, C.; and Wu, Y. 2024. Few-Shot Anomaly-Driven Generation for Anomaly Clas-sification and Segmentation. In European Conference on Computer Vision , 210–226. He, K.; Zhang, X.; Ren, S.; and Sun, J. 2016. Deep Residual Learning for Image Recognition. In Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition ,770–778. Hu, E. J.; Shen, Y.; Wallis, P.; Allen-Zhu, Z.; Li, Y.; Wang, S.; Wang, L.; and Chen, W. 2022. LoRA: Low-Rank Adaptation of Large Language Models. In International Conference on Learning Representations .Hu, J.; Huang, Y.; Lu, Y.; Xie, G.; Jiang, G.; Zheng, Y.; and Lu, Z. 2024a. AnomalyXFusion: Multi-Modal Anomaly Synthesis with Diffusion. arXiv preprint arXiv:2404.19444 .Hu, T.; Zhang, J.; Yi, R.; Du, Y.; Chen, X.; Liu, L.; Wang, Y.; and Wang, C. 2024b. AnomalyDiffusion: Few-Shot Anomaly Image Generation with Diffusion Model. In Proceedings of the AAAI Conference on Artificial Intelligence .Jin, Y.; Feng, Y.; Zhang, J.; Wang, P.; Liu, Q.; and Wang, Y. 2026. Reasoning-Driven Anomaly Detection and Local-ization with Image-Level Supervision. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , 43061–43071. Jin, Y.; Peng, J.; He, Q.; Hu, T.; Wu, J.; Chen, H.; Wang, H.; Zhu, W.; Chi, M.; Liu, J.; et al. 2025. Dual-interrelated diffusion model for few-shot anomaly image generation. In 
+
+Proceedings of the IEEE/CVF conference on computer vision and pattern recognition , 30420–30429. Li, C.-L.; Sohn, K.; Yoon, J.; and Pfister, T. 2021. CutPaste: Self-Supervised Learning for Anomaly Detection and Lo-calization. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , 9664–9674. Li, Y.; Yang, X.; Liao, J.; Zhang, J.; and Liu, F. 2026. GPFlow: Gaussian Prototype Probability Flow for Unsuper-vised Multi-Modal Anomaly Detection. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , 43103–43112. Lu, R.; Liu, G.; Li, K.; Tian, L.; and Zhang, J. 2026. MaskAD: Parallel Masked Autoencoder for Multi-class Un-supervised Anomaly Detection. In Proceedings of the AAAI Conference on Artificial Intelligence , 15457–15465. Lu, Y.; Lin, J.; Xie, L.; Zhao, K.; Qu, Y.; Zhang, S.; Cao, L.; and Ji, R. 2025. Generate Aligned Anomaly: Region-Guided Few-Shot Anomaly Image-Mask Pair Synthesis for Industrial Inspection. In Proceedings of the 33rd ACM International Conference on Multimedia , 11259–11268. Niu, S.; Li, B.; Wang, X.; and Lin, H. 2020. Defect Image Sample Generation with GAN for Improving Defect Recog-nition. IEEE Transactions on Automation Science and Engi-neering , 17(3): 1611–1622. Ojha, U.; Li, Y.; Lu, J.; Efros, A. A.; Lee, Y. J.; Shechtman, E.; and Zhang, R. 2021. Few-Shot Image Generation via Cross-Domain Correspondence. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition ,10743–10752. Qian, L.; Zhu, B.; Chen, Y.; Tang, M.; and Wang, J. 2026. Quality-aware language-conditioned local auto-regressive anomaly synthesis and detection. In Proceedings of the AAAI Conference on Artificial Intelligence , 15626–15634. Rao, H.; Wang, Z.; Si, C.; Lyu, Y.; Duan, Y.; Zhao, F.; and Shan, C. 2026. One-to-More: High-Fidelity Training-Free Anomaly Generation with Attention Control. In Proceed-ings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , 28492–28501. Rombach, R.; Blattmann, A.; Lorenz, D.; Esser, P.; and Om-mer, B. 2022. High-Resolution Image Synthesis with La-tent Diffusion Models. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition ,10684–10695. Ruiz, N.; Li, Y.; Jampani, V.; Pritch, Y.; Rubinstein, M.; and Aberman, K. 2023. DreamBooth: Fine Tuning Text-to-Image Diffusion Models for Subject-Driven Generation. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , 22500–22510. Schlüter, H. M.; Tan, J.; Hou, B.; and Kainz, B. 2022. Natural Synthetic Anomalies for Self-Supervised Anomaly Detec-tion and Localization. In European Conference on Computer Vision , 474–489. Shi, D.; He, C.; Zhang, S.; Qian, B.; Quan, X.; Zhang, W.; and Wei, X. 2026. Omni-AD: A Large-scale and Versatile Benchmark for Industrial Anomaly Detection. In Proceed-ings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , 14157–14166. Shin, M.; Jeong, S.; and Heo, Y. S. 2025. Anodapter: a unified framework for generating aligned anomaly images and masks using diffusion models. IEEE Access .Song, J.; Park, D.; Baek, K.; Lee, S.; Choi, J.; Kim, E.; and Yoon, S. 2025. Defectfill: Realistic defect generation with inpainting diffusion model for visual inspection. In 
+
+Proceedings of the Computer Vision and Pattern Recognition Conference , 18718–18727. Sun, H.; Cao, Y.; Dong, H.; and Fink, O. 2025. Unseen Vi-sual Anomaly Generation. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition ,25508–25517. Wang, Y.; Wang, X.; Gong, Y.; and Xiao, J. 2025. Normal-abnormal guided generalist anomaly detection. Advances in Neural Information Processing Systems , 38: 62560–62585. Yu, Q.; Zhu, K.; Cao, Y.; Xia, F.; and Kang, Y. 2024. TF 2:Few-Shot Text-Free Training-Free Defect Image Generation for Industrial Anomaly Inspection. IEEE Transactions on Circuits and Systems for Video Technology , 34(11): 11825– 11837. Zavrtanik, V.; Kristan, M.; and Skočaj, D. 2021. DRAEM– A Discriminatively Trained Reconstruction Embedding for Surface Anomaly Detection. In Proceedings of the IEEE/CVF International Conference on Computer Vision ,8330–8339. Zhang, G.; Cui, K.; Hung, T.-Y.; and Lu, S. 2021. Defect-GAN: High-Fidelity Defect Synthesis for Automated Defect Inspection. In Proceedings of the IEEE/CVF Winter Confer-ence on Applications of Computer Vision , 2524–2534. Zhang, X.; Xu, M.; and Zhou, X. 2024. RealNet: A Fea-ture Selection Network with Realistic Synthetic Anomaly for Anomaly Detection. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition ,16699–16708. Zou, Y.; Jeong, J.; Pemula, L.; Zhang, D.; and Dabeer, O. 2022. Spot-the-difference self-supervised pre-training for anomaly detection and segmentation. In European confer-ence on computer vision , 392–408. Springer.
