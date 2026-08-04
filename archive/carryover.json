@@ -1,12 +1,213 @@
 {
-  "generated_at": "2026-08-03T21:15:27.403989+00:00",
-  "updated_date": "20260803",
+  "generated_at": "2026-08-04T20:50:41.278941+00:00",
+  "updated_date": "20260804",
   "carryover_days": 9,
   "tag_states": {
     "cv": {
-      "updated_date": "20260803",
+      "updated_date": "20260804",
       "carryover_days": 9,
-      "items": []
+      "items": [
+        {
+          "id": "2608.01488v1",
+          "source": "arxiv",
+          "title": "Towards Compact Unified Multimodal Tracking: Synergizing Knowledge Distillation with Structural Pruning",
+          "abstract": "Unified multimodal object tracking has achieved remarkable robustness by leveraging complementary sensor data (e.g., RGB, Thermal, Depth), yet the heavy computational burden of state-of-the-art models hinders their deployment on resource-constrained edge devices. In this work, we identify the prediction head as a critical but often overlooked efficiency bottleneck. By strategically streamlining the decoder architecture, we unlock the potential for real-time inference but simultaneously introduce a capacity gap between the lightweight student and the heavy teacher. To resolve this, we conduct a systematic analysis of 17 distillation strategies and introduce a Dual-Alignment Distillation framework. Our key insight is that effective compression requires decoupling knowledge transfer into two complementary streams: (1) Spatial Representation Alignment, which employs feature distillation to sharpen the student's spatial focus on foreground targets (\"Where to track\"); and (2) Semantic Distribution Alignment, which utilizes logit-based distillation to align decision boundaries and transfer discriminative dark knowledge (\"What to track\"). Extensive experiments across five benchmarks demonstrate that our approach significantly outperforms complex state-of-the-art methods. Notably, our distilled model achieves 91.5% MPR on RGBT234 and operates at 54 FPS on a single RTX 4090, representing a 5x speedup over the teacher model while maintaining superior accuracy.",
+          "authors": [
+            "Yuqi Li",
+            "Yuedong Tan",
+            "Huiran Duan",
+            "Weilun Feng",
+            "Chuanguang Yang",
+            "Zhulin An",
+            "Zongwei Wu",
+            "Shiping Wen",
+            "Tingwen Huang",
+            "Yingli Tian"
+          ],
+          "primary_category": "cs.CV",
+          "categories": [
+            "cs.CV"
+          ],
+          "published": "2026-08-02T20:41:33+00:00",
+          "link": "https://arxiv.org/pdf/2608.01488v1",
+          "tags": [
+            "keyword:cv",
+            "query:cv"
+          ],
+          "llm_score": 8.0,
+          "llm_evidence_en": "unified multimodal object tracking with efficiency optimization",
+          "llm_evidence_cn": "统一多模态目标跟踪及效率优化",
+          "llm_evidence": "统一多模态目标跟踪及效率优化",
+          "canonical_evidence": "统一多模态目标跟踪及效率优化",
+          "llm_tldr_en": "Identifies prediction head as efficiency bottleneck in unified multimodal object tracking, then combines structural pruning with knowledge distillation and a dual-alignment framework to recover capacity and enable real-time edge deployment.",
+          "llm_tldr_cn": "统一多模态目标跟踪虽鲁棒但计算负担大，难以部署在边缘设备。论文发现预测头是效率瓶颈，通过精简解码器并系统分析17种蒸馏策略，提出双对齐蒸馏框架，弥合轻量学生与重型教师之间的能力差距，在保持鲁棒性的同时实现实时推理。",
+          "llm_tldr": "统一多模态目标跟踪虽鲁棒但计算负担大，难以部署在边缘设备。论文发现预测头是效率瓶颈，通过精简解码器并系统分析17种蒸馏策略，提出双对齐蒸馏框架，弥合轻量学生与重型教师之间的能力差距，在保持鲁棒性的同时实现实时推理。",
+          "llm_tags": [
+            "query:cv"
+          ],
+          "matched_query_tag": "query:cv",
+          "matched_query_text": "computer vision research papers",
+          "matched_requirement_id": "req-1",
+          "selection_source": "carryover_cache",
+          "paper_id": "2608.01488v1",
+          "carry_days": 1
+        },
+        {
+          "id": "2608.01495v1",
+          "source": "arxiv",
+          "title": "Probing the 3D Object-Level Understanding of Pre-Trained Detection Transformers",
+          "abstract": "Detection transformer models, including DETR and its extensions, learn to output a set of object-level embeddings that can be simultaneously decoded into 2D bounding boxes and class distributions. In this paper, we investigate what pre-trained 2D detection transformers understand about the 3D properties of objects. Specifically, we investigate the extent to which properties including the depth of objects from the camera and the 3D location of objects relative to the camera can be recovered from object-level embeddings using linear and non-linear probes. Across a range of detection transformer models, our results show a surprisingly strong and previously unknown ability of 2D DETR models to represent useful information about the 3D properties of objects, despite the complete lack of 3D supervision during model pre-training.",
+          "authors": [
+            "Robin Kim",
+            "Colin Samplawski",
+            "Benjamin M. Marlin"
+          ],
+          "primary_category": "cs.CV",
+          "categories": [
+            "cs.CV"
+          ],
+          "published": "2026-08-02T20:56:14+00:00",
+          "link": "https://arxiv.org/pdf/2608.01495v1",
+          "tags": [
+            "keyword:cv",
+            "query:cv"
+          ],
+          "llm_score": 8.0,
+          "llm_evidence_en": "Analyzing object-level embeddings of detection transformers for 3D properties",
+          "llm_evidence_cn": "检测Transformer的对象级表示分析，探知其三维属性编码能力",
+          "llm_evidence": "检测Transformer的对象级表示分析，探知其三维属性编码能力",
+          "canonical_evidence": "检测Transformer的对象级表示分析，探知其三维属性编码能力",
+          "llm_tldr_en": "The paper probes pre-trained 2D detection transformers and shows their object embeddings encode recoverable 3D properties like depth and location, revealing a strong 3D understanding.",
+          "llm_tldr_cn": "针对2D检测Transformer是否理解物体三维属性这一问题，本文使用线性/非线性探针分析其对象级嵌入。结果发现这些嵌入包含可恢复的深度、三维位置等信息，且在不同DETR系列模型上表现稳定。这表明检测Transformer隐式学习到了三维结构知识。该发现可为三维感知任务的表示复用提供依据。",
+          "llm_tldr": "针对2D检测Transformer是否理解物体三维属性这一问题，本文使用线性/非线性探针分析其对象级嵌入。结果发现这些嵌入包含可恢复的深度、三维位置等信息，且在不同DETR系列模型上表现稳定。这表明检测Transformer隐式学习到了三维结构知识。该发现可为三维感知任务的表示复用提供依据。",
+          "llm_tags": [
+            "query:cv"
+          ],
+          "matched_query_tag": "query:cv",
+          "matched_query_text": "object detection methods",
+          "matched_requirement_id": "req-2",
+          "selection_source": "carryover_cache",
+          "paper_id": "2608.01495v1",
+          "carry_days": 1
+        },
+        {
+          "id": "2608.01614v1",
+          "source": "arxiv",
+          "title": "Linear Multi-Timescale Retention as a Memory-Efficient Vision-Language Bridge",
+          "abstract": "Vision-Language Models (VLMs) face a critical computational bottleneck when processing high-resolution imagery due to the $O(N^2)$ memory complexity of Softmax Multi-Head Attention (MHA). While substituting MHA with independent Multi-Layer Perceptrons (MLPs) achieves $O(N)$ scaling, it strips the architecture of spatial sequence routing, severely degrading global scene understanding and object permanence. In this paper, we propose the Linear Multi-Timescale Retention (LIA-MTR) module, a memory-efficient cross-modal bridge. By integrating an ELU-based positive feature mapping with adaptive write-gating and log-linearly distributed recurrent decays, LIA-MTR mathematically compresses continuous visual sequences into bounded memory states. Theoretical analysis proves the architecture operates with strict $O(N)$ sequence-interaction complexity. Empirically, synthetic retrieval evaluations demonstrate that LIA-MTR flawlessly routes context across 16,000 tokens, eliminating the \"Lost in the Middle\" degradation typical of naive linear attention. Hardware benchmarking reveals infinite-context scaling capabilities, natively processing 262,144 visual patches within an 11.2 GB VRAM footprint, whereas standard MHA suffers out-of-memory failure at 16,384 patches. Furthermore, following instruction tuning on 665K conversational samples, LIA-MTR significantly outperforms an industry-standard MLP baseline on the MME benchmark (71.00% vs. 68.11%), driven by a 10% absolute improvement in object permanence and superior global semantic extraction. This work establishes a mathematically rigorous, computationally flat foundation for infinite-context Vision-Language integration.",
+          "authors": [
+            "Ashfak Yeafi",
+            "Mehedi Hasan",
+            "Md Khairul Islam"
+          ],
+          "primary_category": "cs.CV",
+          "categories": [
+            "cs.CV",
+            "cs.AI"
+          ],
+          "published": "2026-08-03T02:43:25+00:00",
+          "link": "https://arxiv.org/pdf/2608.01614v1",
+          "tags": [
+            "keyword:cv",
+            "query:cv"
+          ],
+          "llm_score": 8.0,
+          "llm_evidence_en": "Compresses continuous visual sequences into memory-efficient feature states for vision-language models",
+          "llm_evidence_cn": "将连续视觉序列压缩为内存高效的特征状态，用于视觉-语言模型",
+          "llm_evidence": "将连续视觉序列压缩为内存高效的特征状态，用于视觉-语言模型",
+          "canonical_evidence": "将连续视觉序列压缩为内存高效的特征状态，用于视觉-语言模型",
+          "llm_tldr_en": "VLMs face O(N^2) memory in softmax attention for high-res images; LIA-MTR uses ELU mapping, gating and recurrent decays to compress visual sequences into bounded states, achieving linear complexity while preserving global scene understanding.",
+          "llm_tldr_cn": "视觉-语言模型处理高分辨率图像时，softmax多头注意力的O(N^2)内存复杂度成为关键瓶颈；若直接替换为独立MLP虽达线性复杂度却损失空间序列路由和全局场景理解。本文提出LIA-MTR线性多时间尺度保持模块，通过ELU正特征映射、自适应写门控和对数线性分布的循环衰减，将连续视觉序列压缩为有界记忆状态。理论分析和实验表明，该方法在实现线性内存复杂度的同时保持全局场景理解与目标持久性，为高分辨率视觉-语言推理提供了高效且可扩展的桥接方案。",
+          "llm_tldr": "视觉-语言模型处理高分辨率图像时，softmax多头注意力的O(N^2)内存复杂度成为关键瓶颈；若直接替换为独立MLP虽达线性复杂度却损失空间序列路由和全局场景理解。本文提出LIA-MTR线性多时间尺度保持模块，通过ELU正特征映射、自适应写门控和对数线性分布的循环衰减，将连续视觉序列压缩为有界记忆状态。理论分析和实验表明，该方法在实现线性内存复杂度的同时保持全局场景理解与目标持久性，为高分辨率视觉-语言推理提供了高效且可扩展的桥接方案。",
+          "llm_tags": [
+            "query:cv"
+          ],
+          "matched_query_tag": "query:cv",
+          "matched_query_text": "feature extraction in computer vision",
+          "matched_requirement_id": "req-5",
+          "selection_source": "carryover_cache",
+          "paper_id": "2608.01614v1",
+          "carry_days": 1
+        },
+        {
+          "id": "2608.01343v1",
+          "source": "arxiv",
+          "title": "DeVIT: Low-Power Vision Transformer Acceleration Using Delta Computation",
+          "abstract": "The emergence of transformer-based deep learning models has brought unprecedented performance across various domains, particularly in natural language processing and computer vision. However, deploying these models, especially on resource-constrained devices, poses significant challenges due to their high computational complexity and large memory size and bandwidth requirements. This complexity has led researchers to use low-bit model weights to reduce memory usage and improve efficiency. In addition to reducing processing and memory demands, quantization introduces another useful property: value locality, where the extremely large number of parameters are restricted to a limited range of values. To fully take advantage of this locality, this paper presents DeVIT, an acceleration method for vision transformers that leverages differential computation to enable multiplier-less matrix multiplication.",
+          "authors": [
+            "Reyhaneh Hosseinzadeh",
+            "Parham Zilouchian Moghaddam",
+            "Mehdi Modarressi"
+          ],
+          "primary_category": "cs.CV",
+          "categories": [
+            "cs.CV",
+            "cs.AI",
+            "cs.AR"
+          ],
+          "published": "2026-08-02T16:08:44+00:00",
+          "link": "https://arxiv.org/pdf/2608.01343v1",
+          "tags": [
+            "keyword:cv",
+            "query:cv"
+          ],
+          "llm_score": 8.0,
+          "llm_evidence_en": "efficient vision transformer acceleration for low-power computer vision",
+          "llm_evidence_cn": "面向计算机视觉的低功耗视觉Transformer加速方法",
+          "llm_evidence": "面向计算机视觉的低功耗视觉Transformer加速方法",
+          "canonical_evidence": "面向计算机视觉的低功耗视觉Transformer加速方法",
+          "llm_tldr_en": "DeVIT accelerates vision transformer inference on low-power devices by exploiting value locality from quantization through delta computation, reducing computational and memory overhead while preserving accuracy.",
+          "llm_tldr_cn": "视觉Transformer在资源受限设备上部署面临高计算复杂度和内存带宽压力，量化虽降低占用但未充分利用权重值局部性。作者提出DeVIT加速器，利用量化后的值局部性进行增量计算，跳过冗余运算，从而降低视觉Transformer的功耗和延迟。实验结果表明，DeVIT在保持模型精度的同时显著减少计算与内存访问开销。该方案为低功耗边缘端视觉Transformer应用提供了一条高效可行的加速路径。",
+          "llm_tldr": "视觉Transformer在资源受限设备上部署面临高计算复杂度和内存带宽压力，量化虽降低占用但未充分利用权重值局部性。作者提出DeVIT加速器，利用量化后的值局部性进行增量计算，跳过冗余运算，从而降低视觉Transformer的功耗和延迟。实验结果表明，DeVIT在保持模型精度的同时显著减少计算与内存访问开销。该方案为低功耗边缘端视觉Transformer应用提供了一条高效可行的加速路径。",
+          "llm_tags": [
+            "query:cv"
+          ],
+          "matched_query_tag": "query:cv",
+          "matched_query_text": "computer vision research papers",
+          "matched_requirement_id": "req-1",
+          "selection_source": "carryover_cache",
+          "paper_id": "2608.01343v1",
+          "carry_days": 1
+        },
+        {
+          "id": "2608.01709v1",
+          "source": "arxiv",
+          "title": "SpatialQuery: Benchmarking Geometry-Grounded Multi-Instance Spatial Reasoning in Vision-Language Models",
+          "abstract": "Vision-language models (VLMs) achieve strong semantic understanding but remain unreliable in metric spatial reasoning, particularly when queries require comparing multiple instances of the same object category. We study this problem through the Closest-Instance Distance Query (CIDQ), where a model must identify the nearest visible candidate to a unique reference object and estimate their gravity-aligned floor-plane distance. We introduce SPATIALQUERY, a training- free framework for CIDQ reasoning from a single RGB image, together with SPATIALQUERY-1M, a benchmark containing over one million RGB-only question-answer pairs from 200 indoor scenes. SPATIALQUERY recovers instance-level metric geometry and transforms it into a canonical Bird's-Eye View through Scene Cubifying, which represents objects as uniformly sized, category-coded blocks to emphasize their relative floor- plane locations. We further propose Uncertainty-Aware Chain-of-Thought (UA-CoT) prompting, which incorporates geometry- derived per-instance uncertainty into the VLM reasoning process. Without task-specific fine-tuning or architectural modification, SPATIALQUERY with Qwen3-VL-8B achieves a Floor-MAE of 0.259 m, an Unc-Acc@0.3 m of 90.5%, and a proximity-decision accuracy of 84.18%, outperforming fine-tuned spatial specialists, general-purpose VLMs, and closed-source frontier models. Code, benchmark resources, and an interactive demo are available at https://namhai1810.github.io/SpatialQuery/.",
+          "authors": [
+            "Hai Nguyen",
+            "Tung Vu",
+            "Cong Tran"
+          ],
+          "primary_category": "cs.CV",
+          "categories": [
+            "cs.CV"
+          ],
+          "published": "2026-08-03T05:15:46+00:00",
+          "link": "https://arxiv.org/pdf/2608.01709v1",
+          "tags": [
+            "keyword:cv",
+            "query:cv"
+          ],
+          "llm_score": 8.0,
+          "llm_evidence_en": "vision-language spatial reasoning benchmark, a computer vision research contribution",
+          "llm_evidence_cn": "视觉语言空间推理基准与研究，属于计算机视觉与多模态交叉",
+          "llm_evidence": "视觉语言空间推理基准与研究，属于计算机视觉与多模态交叉",
+          "canonical_evidence": "视觉语言空间推理基准与研究，属于计算机视觉与多模态交叉",
+          "llm_tldr_en": "SPATIALQUERY introduces a training-free framework and a 1M-question benchmark for geometry-grounded multi-instance spatial reasoning in VLMs, exposing gaps in metric spatial reasoning.",
+          "llm_tldr_cn": "视觉语言模型在度量空间推理上不可靠，尤其是比较同类多个实例的距离时误差明显。作者定义最近实例距离查询任务，提出SPATIALQUERY训练无关框架和覆盖百万级问答对的SPATIALQUERY-1M基准。框架可从单张RGB图像恢复实例级度量几何并转换为空间推理结果，实验揭示了现有模型在几何问题上的系统性缺陷。该工作为评估和提升VLM的空间推理能力提供了重要基准与方法。",
+          "llm_tldr": "视觉语言模型在度量空间推理上不可靠，尤其是比较同类多个实例的距离时误差明显。作者定义最近实例距离查询任务，提出SPATIALQUERY训练无关框架和覆盖百万级问答对的SPATIALQUERY-1M基准。框架可从单张RGB图像恢复实例级度量几何并转换为空间推理结果，实验揭示了现有模型在几何问题上的系统性缺陷。该工作为评估和提升VLM的空间推理能力提供了重要基准与方法。",
+          "llm_tags": [
+            "query:cv"
+          ],
+          "matched_query_tag": "query:cv",
+          "matched_query_text": "computer vision research papers",
+          "matched_requirement_id": "req-1",
+          "selection_source": "carryover_cache",
+          "paper_id": "2608.01709v1",
+          "carry_days": 1
+        }
+      ]
     }
   }
 }
