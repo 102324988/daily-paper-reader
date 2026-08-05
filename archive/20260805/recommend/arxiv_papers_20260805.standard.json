@@ -1,0 +1,667 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-08-05T20:43:18.040135+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 10,
+    "deep_cap": 6,
+    "deep_selected": 6,
+    "quick_candidates": 14,
+    "quick_skim_target": 11,
+    "quick_selected": 11
+  },
+  "deep_dive": [
+    {
+      "id": "2608.01495v1",
+      "source": "arxiv",
+      "title": "Probing the 3D Object-Level Understanding of Pre-Trained Detection Transformers",
+      "abstract": "Detection transformer models, including DETR and its extensions, learn to output a set of object-level embeddings that can be simultaneously decoded into 2D bounding boxes and class distributions. In this paper, we investigate what pre-trained 2D detection transformers understand about the 3D properties of objects. Specifically, we investigate the extent to which properties including the depth of objects from the camera and the 3D location of objects relative to the camera can be recovered from object-level embeddings using linear and non-linear probes. Across a range of detection transformer models, our results show a surprisingly strong and previously unknown ability of 2D DETR models to represent useful information about the 3D properties of objects, despite the complete lack of 3D supervision during model pre-training.",
+      "authors": [
+        "Robin Kim",
+        "Colin Samplawski",
+        "Benjamin M. Marlin"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-02T20:56:14+00:00",
+      "link": "https://arxiv.org/pdf/2608.01495v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Probing detection transformer object embeddings",
+      "llm_evidence_cn": "探测检测Transformer物体级嵌入",
+      "llm_evidence": "探测检测Transformer物体级嵌入",
+      "canonical_evidence": "探测检测Transformer物体级嵌入",
+      "llm_tldr_en": "This paper probes pre-trained 2D detection transformers with linear and non-linear probes, showing object-level embeddings strongly encode object depth and 3D location across multiple DETR variants.",
+      "llm_tldr_cn": "检测Transformer通常被用于二维目标检测，但其物体级嵌入是否蕴含三维信息尚未明确。本文使用线性和非线性探针，系统评估了多种预训练二维检测Transformer中深度和三维位置的可恢复性。结果显示，这些二维模型在物体级嵌入中编码了令人惊讶的丰富三维属性，表明检测Transformer具备潜在的三维场景理解能力。该发现为利用现有二维检测器辅助三维任务提供了新证据。",
+      "llm_tldr": "检测Transformer通常被用于二维目标检测，但其物体级嵌入是否蕴含三维信息尚未明确。本文使用线性和非线性探针，系统评估了多种预训练二维检测Transformer中深度和三维位置的可恢复性。结果显示，这些二维模型在物体级嵌入中编码了令人惊讶的丰富三维属性，表明检测Transformer具备潜在的三维场景理解能力。该发现为利用现有二维检测器辅助三维任务提供了新证据。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "object detection methods",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.02792v1",
+      "source": "arxiv",
+      "title": "PixelUp: Zero-Shot Semantic Feature Upsampling for Fine-Grained Vision Tasks",
+      "abstract": "Self-supervised Vision Foundation Models (VFMs) have become essential backbones for downstream tasks due to their strong and transferable visual representations. However, their patch-token-level features are often too coarse for dense prediction tasks such as semantic segmentation and depth estimation when accurate fine-grained predictions are required. Feature upsampling methods have been developed to recover pixel-level detail but still face limitations. Learnable upsamplers are often designed for a specific encoders and must be retrained for different encoders. Image-guided methods that use shallow pixel encoders often introduce textural artifacts and lack the semantic guidance needed for accurate downstream predictions. We introduce PixelUp, a zero-shot VFM-agnostic upsampler achieving semantic awareness through a coarse-to-fine chain of windowed cross-attention architecture guided by multi-scale semantic features. We demonstrate that PixelUp outperforms both VFM-specific and VFM-agnostic upsamplers, achieving state-of-the-art performance on dense prediction tasks with an average improvement of +1.2 mIoU on semantic segmentation and +0.25 $δ_1$, on NYUv2 depth estimation across VFMs. PixelUp further improves training-free open-vocabulary and unsupervised semantic segmentation by an average of +1.3 mIoU and +0.5 mIoU, respectively. Code available at https://pixelup-project.vercel.app/",
+      "authors": [
+        "Deepank Singh",
+        "Anurag Nihal",
+        "Vedhus Hoskere"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-03T18:42:22+00:00",
+      "link": "https://arxiv.org/pdf/2608.02792v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Semantic feature upsampling for dense prediction tasks such as image segmentation",
+      "llm_evidence_cn": "面向图像分割等密集预测任务的语义特征上采样方法",
+      "llm_evidence": "面向图像分割等密集预测任务的语义特征上采样方法",
+      "canonical_evidence": "面向图像分割等密集预测任务的语义特征上采样方法",
+      "llm_tldr_en": "PixelUp proposes zero-shot semantic feature upsampling for vision foundation models to recover fine-grained pixel-level detail for dense prediction tasks like semantic segmentation and depth estimation.",
+      "llm_tldr_cn": "自监督视觉基础模型在密集预测任务中常因patch级特征过粗而难以得到细粒度结果。现有可学习上采样器需要针对不同编码器重训练，图像引导方法又容易引入纹理伪影。PixelUp提出零样本语义特征上采样，在无需重训练的情况下恢复像素级细节，提升语义分割与深度估计等任务的精度。该方法为视觉基础模型提供了一种通用的特征细化工具。",
+      "llm_tldr": "自监督视觉基础模型在密集预测任务中常因patch级特征过粗而难以得到细粒度结果。现有可学习上采样器需要针对不同编码器重训练，图像引导方法又容易引入纹理伪影。PixelUp提出零样本语义特征上采样，在无需重训练的情况下恢复像素级细节，提升语义分割与深度估计等任务的精度。该方法为视觉基础模型提供了一种通用的特征细化工具。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "image segmentation techniques",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.03385v1",
+      "source": "arxiv",
+      "title": "FreqAdapt: Frequency-Adaptive Processing for RAW Object Detection",
+      "abstract": "Existing object detection methods predominantly utilize sRGB inputs, which are compressed from RAW sensor data using Image Signal Processors (ISP) originally designed for visualization purposes. Compared to RGB images, RAW images possess favorable noise characteristics and richer information representation, which are crucial for object detection, particularly under challenging conditions such as adverse weather or low-light environments. In this paper, we propose FreqAdapt, a lightweight module for adaptive RAW data enhancement in the frequency domain. Unlike traditional spatial domain processing methods, FreqAdapt innovatively maps ISP operations to the Fourier frequency domain and performs domain separation based on the physical properties of ISP operations, ensuring each operation is performed in its most suitable domain. Meanwhile, through an adaptive frequency domain encoder that jointly analyzes amplitude spectrum, phase spectrum, and RAW image features, we provide global context for ISP parameter prediction and employ a learnable fusion mechanism to achieve adaptive feature enhancement. Extensive experiments on multiple datasets with diverse lighting and weather conditions demonstrate that FreqAdapt achieves state-of-the-art performance while maintaining lightweight efficiency and good physical interpretability. Furthermore, our module can be seamlessly incorporated into existing object detection frameworks, providing a novel solution for visual perception tasks in the RAW domain.",
+      "authors": [
+        "Hanxi Li",
+        "Huiling Li"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-04T09:33:58+00:00",
+      "link": "https://arxiv.org/pdf/2608.03385v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "RAW object detection with frequency-adaptive module",
+      "llm_evidence_cn": "频率自适应RAW目标检测",
+      "llm_evidence": "频率自适应RAW目标检测",
+      "canonical_evidence": "频率自适应RAW目标检测",
+      "llm_tldr_en": "FreqAdapt proposes a lightweight frequency-domain module that adaptively enhances RAW sensor data to improve object detection in challenging conditions like low light and adverse weather.",
+      "llm_tldr_cn": "目标检测通常使用经过ISP压缩的sRGB图像，但在低光和恶劣天气下这些图像信息不足。FreqAdapt将ISP操作映射到傅里叶频域，对RAW数据进行频率自适应增强，并根据物理特性分离域以保留更丰富的检测线索。该方法作为轻量模块可嵌入检测框架，在保持低开销的同时提升RAW输入下的目标检测效果。这为利用RAW数据克服复杂环境检测困难提供了新方案。",
+      "llm_tldr": "目标检测通常使用经过ISP压缩的sRGB图像，但在低光和恶劣天气下这些图像信息不足。FreqAdapt将ISP操作映射到傅里叶频域，对RAW数据进行频率自适应增强，并根据物理特性分离域以保留更丰富的检测线索。该方法作为轻量模块可嵌入检测框架，在保持低开销的同时提升RAW输入下的目标检测效果。这为利用RAW数据克服复杂环境检测困难提供了新方案。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "object detection methods",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.03895v1",
+      "source": "arxiv",
+      "title": "NCGR: Noise-Conditional Gated Rectification for Camera Extrinsic Perturbations in BEV 3D Object Detection",
+      "abstract": "Camera-based bird's-eye-view (BEV) 3D detection typically assumes accurate and fixed camera extrinsics. In detectors using spatial cross-attention (SCA), extrinsic perturbations displace the image-plane projections of BEV reference points, causing queries to sample features from incorrect regions and degrading detection performance. To address this failure mode, Noise-Conditional Gated Rectification (NCGR) is proposed to compensate for projection errors without explicitly estimating a full six-degree-of-freedom extrinsic correction. For each query-camera pair, a 2D rectification offset is predicted and modulated by a camera-level gate to rectify the base projection before native deformable sampling. During training, the perturbation-derived quantities used to construct the condition and gate are gradually replaced through scheduled interpolation by counterparts generated from an auxiliary scalar predicted from camera features. This transition enables blind inference without perturbation metadata. During training, a weight-shared clean-teacher/perturbed-student pair is used, and the rectification module is supervised by a BEV-consistency objective between the two branches. NCGR is evaluated on nuScenes with simulated dynamic and static extrinsic perturbations. In a five-camera dynamic stress test, NCGR achieves 39.69% NDS, compared with 28.00% for BEVFormer and 33.23% for CAPE. Under clean extrinsics, NCGR maintains performance comparable to that of BEVFormer.",
+      "authors": [
+        "Wenbin Pan",
+        "Wanhao Liu",
+        "Liwei Luo",
+        "Panshuo Li",
+        "Yong Xu",
+        "Renquan Lu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-04T16:26:57+00:00",
+      "link": "https://arxiv.org/pdf/2608.03895v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Robust BEV 3D object detection under camera extrinsic perturbations",
+      "llm_evidence_cn": "应对相机外参扰动的BEV 3D目标检测",
+      "llm_evidence": "应对相机外参扰动的BEV 3D目标检测",
+      "canonical_evidence": "应对相机外参扰动的BEV 3D目标检测",
+      "llm_tldr_en": "Proposes noise-conditional gated rectification to correct projection errors in BEV 3D object detectors caused by camera extrinsic perturbations.",
+      "llm_tldr_cn": "基于相机的BEV 3D检测通常假设外参固定，但外参扰动会使BEV参考点的投影偏移，导致空间交叉注意力采样错误。论文提出噪声条件门控校正（NCGR），为每个查询-相机对预测二维修正偏移，并用相机级门控调节，在无需完整六自由度外参估计的情况下校正投影。训练中模拟外参噪声，检测性能对外参扰动更加鲁棒。",
+      "llm_tldr": "基于相机的BEV 3D检测通常假设外参固定，但外参扰动会使BEV参考点的投影偏移，导致空间交叉注意力采样错误。论文提出噪声条件门控校正（NCGR），为每个查询-相机对预测二维修正偏移，并用相机级门控调节，在无需完整六自由度外参估计的情况下校正投影。训练中模拟外参噪声，检测性能对外参扰动更加鲁棒。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "object detection methods",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.03991v1",
+      "source": "arxiv",
+      "title": "Perceptual Anchoring: Prototype-Guided Text Calibration for Training-free Open-Vocabulary Semantic Segmentation",
+      "abstract": "Training-free open-vocabulary semantic segmentation (OVSS) partitions an image into semantically distinct regions based on arbitrary text descriptions, without learning any additional parameters. However, existing methods typically focus on improving visual representations while treating text embeddings that encode only generic category concepts as fixed classification references. The resulting semantic gap between these generic concepts and the visual representations that capture the specific appearances of target instances often causes incomplete masks and erroneous predictions in non-target regions. Inspired by the symbol-percept correspondence underlying perceptual anchoring, we propose Prototype-Guided Text Calibration (PTC) for training-free OVSS. In the Perceiving stage, PTC selects reliable visual evidence based on initial matching scores to construct category-specific visual prototypes. In the Anchoring stage, PTC uses these prototypes to calibrate their corresponding text embeddings, with the calibration strength adaptively adjusted based on the amount of visual evidence. Consequently, the calibrated text embeddings align more accurately with instance-specific visual representations while preserving generic category semantics and open-vocabulary generalization. Moreover, PTC requires neither additional training nor external models and can serve as a plug-and-play module for existing methods. Extensive experiments across eight benchmarks show that PTC significantly enhances the performance of six representative methods and yields more complete and accurate segmentation results. These results validate PTC as a simple and effective approach to improving visual-text alignment.",
+      "authors": [
+        "Wanli Ma",
+        "Jiangwen Lu",
+        "Qinmu Peng",
+        "Xinge You"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-04T17:52:13+00:00",
+      "link": "https://arxiv.org/pdf/2608.03991v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Training-free open-vocabulary semantic segmentation with prototype-guided text calibration",
+      "llm_evidence_cn": "开放词汇语义分割方法",
+      "llm_evidence": "开放词汇语义分割方法",
+      "canonical_evidence": "开放词汇语义分割方法",
+      "llm_tldr_en": "This paper proposes prototype-guided text calibration for training-free open-vocabulary semantic segmentation, reducing the semantic gap between generic text embeddings and visual representations to produce more complete and accurate masks.",
+      "llm_tldr_cn": "开放词汇语义分割无需训练即可按文本描述划分图像区域，但通用文本嵌入与视觉表示存在语义鸿沟。作者借鉴感知锚定，提出原型引导的文本校准方法，缩小该差距，减少不完整掩码与误检。实验证明在多个分割基准上效果更优。",
+      "llm_tldr": "开放词汇语义分割无需训练即可按文本描述划分图像区域，但通用文本嵌入与视觉表示存在语义鸿沟。作者借鉴感知锚定，提出原型引导的文本校准方法，缩小该差距，减少不完整掩码与误检。实验证明在多个分割基准上效果更优。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "image segmentation techniques",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.01354v1",
+      "source": "arxiv",
+      "title": "PixVL: Self-Supervised Training of Pixel-Level MLLMs via a Unified Mask--Text Consistency Cycle",
+      "abstract": "Recent studies develop pixel-level multimodal large language models (MLLMs) that support both Region Segmentation and Region Understanding, extending multimodal interaction from whole images to specific objects and regions. However, these methods face two fundamental challenges. First, the scarcity of high-quality mask--text pairs leaves abundant mask annotations without corresponding language supervision. Second, discrepancies in supervision formats and learning-signal densities induce optimization interference between Region Segmentation and Region Understanding. To address these challenges, we propose PixVL, a self-supervised post-training framework that introduces a unified Mask--Text Consistency Cycle, enabling pixel-level MLLMs to generate and self-verify regional descriptions and learn from unlabeled data. We found that direct cycle based solely on geometric reconstruction is unreliable because re-segmentation IoU does not faithfully reflect the semantic quality and referring sufficiency. PixVL therefore introduces confuser-aware semantic verification, which uses the model's confidence when it correctly chooses the target among highly similar candidate regions, and assigns zero reward to an incorrect choice. Meanwhile, PixVL performs cross-view verification using temporally separated video frames or geometrically transformed image views, preventing cyclic learning from collapsing to positional and shape shortcuts. Finally, a quality-coupled bidirectional learning strategy uses the highest-reward description to guide Text-to-Mask learning. This strategy transforms Region Understanding and Region Segmentation from competing tasks into mutual generators and verifiers. Experiments demonstrate that PixVL improves both region understanding task and segmentation task.",
+      "authors": [
+        "Yicheng Xiao",
+        "Haoxuan Ma",
+        "Caorui Li",
+        "Yucheng Wu",
+        "Weijie Wang",
+        "Haoxiao Wang",
+        "Shuang Chen",
+        "Fan Yang",
+        "Haiyun Guo",
+        "Jinqiao Wang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-02T16:13:52+00:00",
+      "link": "https://arxiv.org/pdf/2608.01354v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Pixel-level MLLM training unifying region segmentation and region understanding",
+      "llm_evidence_cn": "像素级多模态大模型的区域分割与理解统一训练",
+      "llm_evidence": "像素级多模态大模型的区域分割与理解统一训练",
+      "canonical_evidence": "像素级多模态大模型的区域分割与理解统一训练",
+      "llm_tldr_en": "Introduces a self-supervised post-training framework with mask-text consistency cycle, enabling pixel-level MLLMs to learn region segmentation and understanding without extensive language supervision.",
+      "llm_tldr_cn": "像素级多模态大语言模型同时支持区域分割和区域理解，但掩码-文本对稀缺且两种任务存在优化干扰。论文提出PixVL，设计统一的掩码-文本一致性循环进行自监督后训练，利用未标注掩码与图像自监督信号协调分割和理解学习。该方法缓解了监督不足问题，增强了像素级多模态模型对区域的感知能力。",
+      "llm_tldr": "像素级多模态大语言模型同时支持区域分割和区域理解，但掩码-文本对稀缺且两种任务存在优化干扰。论文提出PixVL，设计统一的掩码-文本一致性循环进行自监督后训练，利用未标注掩码与图像自监督信号协调分割和理解学习。该方法缓解了监督不足问题，增强了像素级多模态模型对区域的感知能力。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "image segmentation techniques",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2608.01343v1",
+      "source": "arxiv",
+      "title": "DeVIT: Low-Power Vision Transformer Acceleration Using Delta Computation",
+      "abstract": "The emergence of transformer-based deep learning models has brought unprecedented performance across various domains, particularly in natural language processing and computer vision. However, deploying these models, especially on resource-constrained devices, poses significant challenges due to their high computational complexity and large memory size and bandwidth requirements. This complexity has led researchers to use low-bit model weights to reduce memory usage and improve efficiency. In addition to reducing processing and memory demands, quantization introduces another useful property: value locality, where the extremely large number of parameters are restricted to a limited range of values. To fully take advantage of this locality, this paper presents DeVIT, an acceleration method for vision transformers that leverages differential computation to enable multiplier-less matrix multiplication.",
+      "authors": [
+        "Reyhaneh Hosseinzadeh",
+        "Parham Zilouchian Moghaddam",
+        "Mehdi Modarressi"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI",
+        "cs.AR"
+      ],
+      "published": "2026-08-02T16:08:44+00:00",
+      "link": "https://arxiv.org/pdf/2608.01343v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "efficient vision transformer acceleration for low-power computer vision",
+      "llm_evidence_cn": "面向计算机视觉的低功耗视觉Transformer加速方法",
+      "llm_evidence": "面向计算机视觉的低功耗视觉Transformer加速方法",
+      "canonical_evidence": "面向计算机视觉的低功耗视觉Transformer加速方法",
+      "llm_tldr_en": "DeVIT accelerates vision transformer inference on low-power devices by exploiting value locality from quantization through delta computation, reducing computational and memory overhead while preserving accuracy.",
+      "llm_tldr_cn": "视觉Transformer在资源受限设备上部署面临高计算复杂度和内存带宽压力，量化虽降低占用但未充分利用权重值局部性。作者提出DeVIT加速器，利用量化后的值局部性进行增量计算，跳过冗余运算，从而降低视觉Transformer的功耗和延迟。实验结果表明，DeVIT在保持模型精度的同时显著减少计算与内存访问开销。该方案为低功耗边缘端视觉Transformer应用提供了一条高效可行的加速路径。",
+      "llm_tldr": "视觉Transformer在资源受限设备上部署面临高计算复杂度和内存带宽压力，量化虽降低占用但未充分利用权重值局部性。作者提出DeVIT加速器，利用量化后的值局部性进行增量计算，跳过冗余运算，从而降低视觉Transformer的功耗和延迟。实验结果表明，DeVIT在保持模型精度的同时显著减少计算与内存访问开销。该方案为低功耗边缘端视觉Transformer应用提供了一条高效可行的加速路径。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "computer vision research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "carryover_cache",
+      "paper_id": "2608.01343v1",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2608.00264v1",
+      "source": "arxiv",
+      "title": "Interpretability-Guided Soft Pruning of Attention Heads in Vision Transformers",
+      "abstract": "Vision foundation models, such as DINOv2, learn highly expressive representations but rely on massive, opaque architectures that demand substantial computational power and memory. To provide an interpretable-guided and efficient solution to this issue, we first propose a spectral analysis and new visualization technique for individual attention heads based on the Laplacian eigenvectors of their attention maps. Building upon recent observations regarding the block structure of Vision Transformers, we perform semantic clustering of attention heads and identify functional redundancies. Leveraging these insights, we introduce SAPER (Soft Attention PrunER), an end-to-end differentiable pruning framework based on the LapSum Soft Top-K approach. Extensive experiments on ImageNet-1K demonstrate that SAPER achieves a highly favorable accuracy-efficiency trade-off, outperforming the competitive RAPTOR baseline in FLOPs reduction while preserving strong classification performance.",
+      "authors": [
+        "Kamil Książek",
+        "Piotr Suszyński",
+        "Michał Jan Włodarczyk",
+        "Jacek Tabor",
+        "Przemysław Biecek"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-07-31T20:14:03+00:00",
+      "link": "https://arxiv.org/pdf/2608.00264v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Interpretability-guided pruning of attention heads in vision transformers",
+      "llm_evidence_cn": "视觉Transformer注意力头的可解释性引导剪枝",
+      "llm_evidence": "视觉Transformer注意力头的可解释性引导剪枝",
+      "canonical_evidence": "视觉Transformer注意力头的可解释性引导剪枝",
+      "llm_tldr_en": "Proposes spectral analysis, visualization and soft pruning of redundant attention heads in vision transformers, improving efficiency while keeping representations.",
+      "llm_tldr_cn": "视觉基础模型表达能力强但计算开销大。论文提出基于拉普拉斯特征向量的注意力头谱分析与可视化，并对注意力头做语义聚类以发现功能冗余。基于此提出SAPER，一种基于LapSum Soft Top-K的全可微软剪枝框架，在保持模型表达能力的同时提升效率。",
+      "llm_tldr": "视觉基础模型表达能力强但计算开销大。论文提出基于拉普拉斯特征向量的注意力头谱分析与可视化，并对注意力头做语义聚类以发现功能冗余。基于此提出SAPER，一种基于LapSum Soft Top-K的全可微软剪枝框架，在保持模型表达能力的同时提升效率。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "computer vision research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2608.01614v1",
+      "source": "arxiv",
+      "title": "Linear Multi-Timescale Retention as a Memory-Efficient Vision-Language Bridge",
+      "abstract": "Vision-Language Models (VLMs) face a critical computational bottleneck when processing high-resolution imagery due to the $O(N^2)$ memory complexity of Softmax Multi-Head Attention (MHA). While substituting MHA with independent Multi-Layer Perceptrons (MLPs) achieves $O(N)$ scaling, it strips the architecture of spatial sequence routing, severely degrading global scene understanding and object permanence. In this paper, we propose the Linear Multi-Timescale Retention (LIA-MTR) module, a memory-efficient cross-modal bridge. By integrating an ELU-based positive feature mapping with adaptive write-gating and log-linearly distributed recurrent decays, LIA-MTR mathematically compresses continuous visual sequences into bounded memory states. Theoretical analysis proves the architecture operates with strict $O(N)$ sequence-interaction complexity. Empirically, synthetic retrieval evaluations demonstrate that LIA-MTR flawlessly routes context across 16,000 tokens, eliminating the \"Lost in the Middle\" degradation typical of naive linear attention. Hardware benchmarking reveals infinite-context scaling capabilities, natively processing 262,144 visual patches within an 11.2 GB VRAM footprint, whereas standard MHA suffers out-of-memory failure at 16,384 patches. Furthermore, following instruction tuning on 665K conversational samples, LIA-MTR significantly outperforms an industry-standard MLP baseline on the MME benchmark (71.00% vs. 68.11%), driven by a 10% absolute improvement in object permanence and superior global semantic extraction. This work establishes a mathematically rigorous, computationally flat foundation for infinite-context Vision-Language integration.",
+      "authors": [
+        "Ashfak Yeafi",
+        "Mehedi Hasan",
+        "Md Khairul Islam"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-08-03T02:43:25+00:00",
+      "link": "https://arxiv.org/pdf/2608.01614v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Memory-efficient vision-language bridge via linear multi-timescale retention",
+      "llm_evidence_cn": "记忆高效的视觉-语言桥接模块",
+      "llm_evidence": "记忆高效的视觉-语言桥接模块",
+      "canonical_evidence": "记忆高效的视觉-语言桥接模块",
+      "llm_tldr_en": "LIA-MTR proposes a linear multi-timescale retention module as a memory-efficient cross-modal bridge, compressing visual sequences into bounded states and reducing O(N^2) attention memory to O(N) while preserving scene understanding.",
+      "llm_tldr_cn": "视觉语言模型处理高分辨率图像时，Softmax注意力的O(N^2)内存复杂度成为瓶颈。作者提出线性多时间尺度保持模块LIA-MTR，通过ELU特征映射、自适应写入门控和对数线性递减循环衰减，将连续视觉序列压缩为有界记忆状态，实现线性内存复杂度并保持全局场景理解与对象恒常性，为高分辨率视觉语言建模提供了高效方案。",
+      "llm_tldr": "视觉语言模型处理高分辨率图像时，Softmax注意力的O(N^2)内存复杂度成为瓶颈。作者提出线性多时间尺度保持模块LIA-MTR，通过ELU特征映射、自适应写入门控和对数线性递减循环衰减，将连续视觉序列压缩为有界记忆状态，实现线性内存复杂度并保持全局场景理解与对象恒常性，为高分辨率视觉语言建模提供了高效方案。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "computer vision research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2608.01988v1",
+      "source": "arxiv",
+      "title": "Grounding and Explaining Visual Evidence for AI-Generated Image Detection in Human-Centric Scenes",
+      "abstract": "Rapid advances in image generation models call for interpretable AI-generated image detection methods that not only determine authenticity but also provide supporting visual evidence. Existing approaches may produce inconsistencies between generated explanations and localized evidence regions, undermining the reliability of explanations for authenticity decisions. Meanwhile, existing benchmarks provide limited coverage of the diverse human-centric scenes prevalent in generated imagery. To address these limitations, we investigate authenticity detection with grounded and explainable visual evidence in human-centric scenes. We present HAVE (Human-centric AI-generated Visual Evidence), a diverse human-centric dataset comprising 40K real and 39K AI-generated images from 10 recent generators, with 106K localized evidence instances across 8 evidence categories, each annotated with a bounding box and a region-aligned explanation. We further propose PAVE, a Perception-Aware Visual Evidence framework that jointly performs authenticity prediction, visual evidence grounding, and region-aligned explanation generation. PAVE employs a judge-guided alignment reward to assess region--explanation consistency and evidence validity, together with perception-aware regularization that contrasts token-level predictions between original and randomly masked images to promote reliance on visual input. Experiments on HAVE and external datasets demonstrate strong performance in authenticity detection, visual evidence grounding, and explanation quality. Code and data will be released upon publication.",
+      "authors": [
+        "Kun Guo",
+        "Yuzhou Yang",
+        "Haoyue Wang",
+        "Qichao Ying",
+        "Sheng Li",
+        "Zhenxing Qian"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-03T09:49:24+00:00",
+      "link": "https://arxiv.org/pdf/2608.01988v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Interpretable AI-generated image authenticity detection with grounded visual evidence",
+      "llm_evidence_cn": "具有视觉证据定位的可解释AI生成图像真实性检测",
+      "llm_evidence": "具有视觉证据定位的可解释AI生成图像真实性检测",
+      "canonical_evidence": "具有视觉证据定位的可解释AI生成图像真实性检测",
+      "llm_tldr_en": "The paper studies interpretable detection of AI-generated images in human-centric scenes, proposing a dataset called HAVE to ensure consistent localization and explanation of visual evidence for authenticity decisions.",
+      "llm_tldr_cn": "图像生成模型的快速发展使可解释的AI生成图像检测变得尤为重要。现有方法常存在解释与定位证据不一致的问题，且缺乏人物场景覆盖。为此作者提出人物中心视觉证据数据集HAVE，并研究了带定位与解释的真实性检测。该工作能够提高AI生成图像检测的可信度和可解释性，并为后续基准评测提供支持。",
+      "llm_tldr": "图像生成模型的快速发展使可解释的AI生成图像检测变得尤为重要。现有方法常存在解释与定位证据不一致的问题，且缺乏人物场景覆盖。为此作者提出人物中心视觉证据数据集HAVE，并研究了带定位与解释的真实性检测。该工作能够提高AI生成图像检测的可信度和可解释性，并为后续基准评测提供支持。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "visual recognition algorithms",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2608.00726v1",
+      "source": "arxiv",
+      "title": "Foveated Probes Recover Localized Binding Information in Vision Foundation Models",
+      "abstract": "Frozen vision foundation models are commonly evaluated through a single global image embedding, but this interface can conflate missing information with information lost at readout time. We study this distinction by keeping a pretrained vision encoder frozen and varying only the readout applied to its final patch tokens. We compare standard global readouts against a lightweight foveated readout, which attention-pools patch tokens using a learned or question-conditioned query, and against an oracle readout with access to the annotated target region. We evaluate these interfaces on three localized binding problems: a controlled synthetic color--shape binding task under clutter, a color-free crowded shape-detection variant, and a GQA-derived natural-image task where paired questions ask for the colors of different same-category objects in the same image. Global readouts perform near perfectly when the synthetic target appears alone, but collapse under clutter and counterfactual target edits, whereas the foveated readout recovers most of the oracle-accessible signal. On the GQA-derived task, question-independent global image vectors improve only modestly over question-only priors, while question-conditioned foveation substantially improves paired localized color accuracy. A counterfactual nuisance-to-signal ratio explains the synthetic failures: global pooling dilutes localized label-changing evidence while exposing the probe to nuisance variation from irrelevant objects. These results indicate that apparent spatial blindness in frozen vision models can arise from the global embedding interface rather than from an absence of spatial information in the frozen patch tokens.",
+      "authors": [
+        "Mateusz Michalkiewicz",
+        "Mahsa Baktashmotlagh",
+        "Guha Balakrishnan"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-01T15:47:52+00:00",
+      "link": "https://arxiv.org/pdf/2608.00726v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "vision foundation models, readout interfaces, foveated probes, localized binding",
+      "llm_evidence_cn": "视觉基础模型、读出接口、中央窝探针、局部绑定",
+      "llm_evidence": "视觉基础模型、读出接口、中央窝探针、局部绑定",
+      "canonical_evidence": "视觉基础模型、读出接口、中央窝探针、局部绑定",
+      "llm_tldr_en": "Studies how readout choices affect localization in frozen vision foundation models, showing foveated probes recover localized binding information.",
+      "llm_tldr_cn": "冻结的视觉基础模型通常用单一全局图像嵌入来评估，但这种方式可能混淆信息缺失与读出损失。论文保持编码器冻结，仅改变作用于patch token的读出方式，对比全局读出、轻量中央窝探针和带标注区域的oracle读出。在合成绑定任务、拥挤形状检测和GQA派生任务上，中央窝探针能恢复更多局部绑定信息，说明读出口对于解锁基础模型能力至关重要。",
+      "llm_tldr": "冻结的视觉基础模型通常用单一全局图像嵌入来评估，但这种方式可能混淆信息缺失与读出损失。论文保持编码器冻结，仅改变作用于patch token的读出方式，对比全局读出、轻量中央窝探针和带标注区域的oracle读出。在合成绑定任务、拥挤形状检测和GQA派生任务上，中央窝探针能恢复更多局部绑定信息，说明读出口对于解锁基础模型能力至关重要。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "computer vision research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2608.01709v1",
+      "source": "arxiv",
+      "title": "SpatialQuery: Benchmarking Geometry-Grounded Multi-Instance Spatial Reasoning in Vision-Language Models",
+      "abstract": "Vision-language models (VLMs) achieve strong semantic understanding but remain unreliable in metric spatial reasoning, particularly when queries require comparing multiple instances of the same object category. We study this problem through the Closest-Instance Distance Query (CIDQ), where a model must identify the nearest visible candidate to a unique reference object and estimate their gravity-aligned floor-plane distance. We introduce SPATIALQUERY, a training- free framework for CIDQ reasoning from a single RGB image, together with SPATIALQUERY-1M, a benchmark containing over one million RGB-only question-answer pairs from 200 indoor scenes. SPATIALQUERY recovers instance-level metric geometry and transforms it into a canonical Bird's-Eye View through Scene Cubifying, which represents objects as uniformly sized, category-coded blocks to emphasize their relative floor- plane locations. We further propose Uncertainty-Aware Chain-of-Thought (UA-CoT) prompting, which incorporates geometry- derived per-instance uncertainty into the VLM reasoning process. Without task-specific fine-tuning or architectural modification, SPATIALQUERY with Qwen3-VL-8B achieves a Floor-MAE of 0.259 m, an Unc-Acc@0.3 m of 90.5%, and a proximity-decision accuracy of 84.18%, outperforming fine-tuned spatial specialists, general-purpose VLMs, and closed-source frontier models. Code, benchmark resources, and an interactive demo are available at https://namhai1810.github.io/SpatialQuery/.",
+      "authors": [
+        "Hai Nguyen",
+        "Tung Vu",
+        "Cong Tran"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-03T05:15:46+00:00",
+      "link": "https://arxiv.org/pdf/2608.01709v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Benchmarking geometry-grounded multi-instance spatial reasoning in vision-language models",
+      "llm_evidence_cn": "视觉语言模型空间推理基准",
+      "llm_evidence": "视觉语言模型空间推理基准",
+      "canonical_evidence": "视觉语言模型空间推理基准",
+      "llm_tldr_en": "SpatialQuery introduces a training-free framework and one-million-pair benchmark for closest-instance distance queries in single RGB images, recovering instance-level metric geometry to test VLM spatial reasoning.",
+      "llm_tldr_cn": "视觉语言模型在度量空间推理上不可靠，特别是同类多实例比较。作者针对最近实例距离查询(CIDQ)提出SpatialQuery训练自由框架，并从200个室内场景生成超百万问答对构成基准。该方法恢复实例级度量几何并转换为空间推理答案，为评估VLM空间理解能力提供了大规模工具。",
+      "llm_tldr": "视觉语言模型在度量空间推理上不可靠，特别是同类多实例比较。作者针对最近实例距离查询(CIDQ)提出SpatialQuery训练自由框架，并从200个室内场景生成超百万问答对构成基准。该方法恢复实例级度量几何并转换为空间推理答案，为评估VLM空间理解能力提供了大规模工具。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "computer vision research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2608.02980v1",
+      "source": "arxiv",
+      "title": "Qwen-3D: A Generalist 3D Vision-Language Model for Spatial Understanding",
+      "abstract": "Large Multimodal Models (LMMs) have achieved remarkable success on images and short videos, yet scaling them to long videos remains challenging due to frame-centric tokenization and limited context windows. 3D geometry provides a natural compression mechanism for visual streams: depth and camera pose enable observations from multiple views and time steps to be fused into a persistent, world-aligned representation. While recent 3D LMMs leverage geometry-aware representations to improve spatial reasoning, they continue to lag behind specialist 3D perception systems on grounding and segmentation tasks. We argue that a key limitation is geometry-aware decoding: existing methods communicate 3D predictions through language tokens, proposal selection, or lightweight grounding queries, creating a bottleneck between language reasoning and dense geometric prediction. Building on these insights, we introduce Qwen-3D, a geometry-aware LMM that compresses visual information within the Qwen backbone using multi-view geometric cues, enabling efficient long-horizon visual reasoning over static scenes. Qwen-3D augments visual tokens with 3D Rotary Positional Embeddings, allowing attention to operate directly in 3D scene space rather than across independent image frames and thereby facilitating scalable cross-view and temporal reasoning. To bridge language and geometry, Qwen-3D incorporates a query-based segmentation decoder that grounds language directly in the underlying 3D scene representation, unifying referential grounding, instance segmentation, and visual question answering across both images and videos. Across a diverse set of benchmarks, Qwen-3D surpasses existing 3D LMMs and outperforms several large proprietary 2D models. Notably, Qwen-3D achieves these improvements while maintaining strong performance on standard 2D vision-language benchmarks by jointly training on 2D and 3D data.",
+      "authors": [
+        "Lucy Lin",
+        "Ayush Jain",
+        "Yifan Liu",
+        "Katerina Fragkiadaki"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-04T00:32:09+00:00",
+      "link": "https://arxiv.org/pdf/2608.02980v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "A generalist 3D vision-language model addressing 3D grounding and segmentation tasks",
+      "llm_evidence_cn": "面向3D定位与分割任务的全能3D视觉语言模型",
+      "llm_evidence": "面向3D定位与分割任务的全能3D视觉语言模型",
+      "canonical_evidence": "面向3D定位与分割任务的全能3D视觉语言模型",
+      "llm_tldr_en": "Qwen-3D is a generalist 3D vision-language model that uses geometry-aware decoding to improve 3D spatial understanding, particularly closing the gap on grounding and segmentation tasks.",
+      "llm_tldr_cn": "大型多模态模型在图像和短视频上表现优异，但在长视频和3D空间理解上存在挑战。Qwen-3D利用深度和相机位姿将视觉流压缩为世界对齐表征，并提出几何感知解码以替代语言令牌或候选框方式传递3D预测。该模型在空间推理上显著提升，并在接地与分割任务上缩小了与专用3D感知系统的差距。这项工作为3D视觉语言模型提供了新的解码范式。",
+      "llm_tldr": "大型多模态模型在图像和短视频上表现优异，但在长视频和3D空间理解上存在挑战。Qwen-3D利用深度和相机位姿将视觉流压缩为世界对齐表征，并提出几何感知解码以替代语言令牌或候选框方式传递3D预测。该模型在空间推理上显著提升，并在接地与分割任务上缩小了与专用3D感知系统的差距。这项工作为3D视觉语言模型提供了新的解码范式。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "image segmentation techniques",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2608.01202v1",
+      "source": "arxiv",
+      "title": "Fruit-HSNet: A Machine Learning Approach for Hyperspectral Image-Based Fruit Ripeness Prediction",
+      "abstract": "Fruit ripeness prediction (FRP) is a classification-based agricultural computer vision task that has attracted much attention, thanks to its wide-ranging advantages in agriculture field for both pre-harvest and post-harvest management. Accurate and timely FRP can be achieved using machine/deep learning-based hyperspectral image classification techniques. However, challenges including the limited availability of labeled data and the lack of robust methods generalizable to various hyperspectral cameras and fruit types can compromise the effectiveness of hyperspectral image-based FRP. Addressing these challenges, this paper introduces Fruit-HSNet, a machine learning architecture specifically designed for hyperspectral classification of fruit ripeness. Fruit-HSNet incorporates a spatio-spectral feature extraction module based on Fourier Transform and central pixel spectral signature followed by learnable feature fusion and a classifier optimized for ripeness classification. The proposed architecture was evaluated using the DeepHS Fruit dataset, the largest publicly available labeled real-world hyperspectral dataset for predicting fruit ripeness, which includes five different types of fruits-avocado, kiwi, mango, kaki, and papaya-captured with three distinct hyperspectral cameras at various stages of ripeness. Experimental results highlight that Fruit-HSNet substantially outperforms existing deep learning methods, from baseline to state-of-the-art models, with improvements of 12%, achieving a new state-of-the-art overall accuracy of 70.73%.",
+      "authors": [
+        "Ahmed Baha Ben Jmaa",
+        "Faten Chaieb",
+        "Anna Fabijańska"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.LG"
+      ],
+      "published": "2026-08-02T12:37:38+00:00",
+      "link": "https://arxiv.org/pdf/2608.01202v1",
+      "tags": [
+        "keyword:cv"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Hyperspectral image classification for recognition",
+      "llm_evidence_cn": "高光谱图像分类实现果实成熟度识别",
+      "llm_evidence": "高光谱图像分类实现果实成熟度识别",
+      "canonical_evidence": "高光谱图像分类实现果实成熟度识别",
+      "llm_tldr_en": "Fruit-HSNet presents a machine learning architecture for hyperspectral fruit ripeness prediction that improves generalization across cameras and fruit types despite limited labeled data.",
+      "llm_tldr_cn": "基于高光谱图像的果实成熟度预测是农业计算机视觉的重要任务，但常受标记数据稀缺和不同设备/果实间泛化性差的制约。本文提出Fruit-HSNet，一种面向高光谱分类的机器学习架构，专门应对这些挑战。实验表明该方法在多种高光谱相机和果实类型上均能提供稳定准确的成熟度预测。这项工作为农产品质检中的高光谱分类提供了一个高泛化性的基础方案。",
+      "llm_tldr": "基于高光谱图像的果实成熟度预测是农业计算机视觉的重要任务，但常受标记数据稀缺和不同设备/果实间泛化性差的制约。本文提出Fruit-HSNet，一种面向高光谱分类的机器学习架构，专门应对这些挑战。实验表明该方法在多种高光谱相机和果实类型上均能提供稳定准确的成熟度预测。这项工作为农产品质检中的高光谱分类提供了一个高泛化性的基础方案。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "visual recognition algorithms",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2608.03136v1",
+      "source": "arxiv",
+      "title": "Frozen High-Resolution Inference for Cross-City Object Detection: An AI City Challenge 2026 Study",
+      "abstract": "Cross-city object detection requires a detector trained in one city to generalize to an unlabeled target city. In AI City Challenge 2026 Track 6, we analyze archived configurations of a single RF-DETR-Large detector inside an air-gapped Training-as-a-Service platform whose server returns only an aggregate COCO-style AP over a hidden mixture of source- and target-city images. Frozen 1120 x 1120 inference of a checkpoint trained at 704 x 704 achieved the highest aggregate AP among the evaluated configurations (0.3272 -> 0.3654, +0.0382) without any parameter update, with the largest relative gain on small objects and the largest absolute gain on medium objects, at 2.53x the input pixels. A warm-start 1120px fine-tuning recipe reached 0.3470 while its in-domain validation AP rose (0.767 -> 0.789), a caution that in-domain validation is an unreliable model-selection signal under aggregate-only cross-city feedback. Because that run's evaluation used a higher confidence threshold than the inference-only runs (0.05 vs. 0.01), we treat its score as a descriptive archived outcome rather than a controlled verdict on fine-tuning. Gray-world normalization did not meaningfully change the frozen-1120 result, and a rectangular run was found by audit to have used an unintended portrait orientation. We release verbatim platform commands, configuration snapshots, and an explicit evidence boundary for every claim. Each configuration was submitted once and the best was selected on the hidden server, so these are exploratory, audited findings about the aggregate mixture; they do not establish target-city-specific improvement.",
+      "authors": [
+        "Jaeuk Kim"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-04T05:03:37+00:00",
+      "link": "https://arxiv.org/pdf/2608.03136v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "cross-city object detection, RF-DETR detector, AI City Challenge",
+      "llm_evidence_cn": "跨城市目标检测，RF-DETR检测器，AI城市挑战赛",
+      "llm_evidence": "跨城市目标检测，RF-DETR检测器，AI城市挑战赛",
+      "canonical_evidence": "跨城市目标检测，RF-DETR检测器，AI城市挑战赛",
+      "llm_tldr_en": "A study of frozen high-resolution inference for cross-city object detection, showing that 1120px inference of a 704px-trained checkpoint improves AP without parameter updates.",
+      "llm_tldr_cn": "跨城市目标检测要求检测器能泛化到未标注的目标城市。该研究在AI City Challenge 2026中分析RF-DETR-Large检测器的不同配置，发现对704分辨率训练的模型直接采用1120分辨率冻结推理，无需任何参数更新即可将聚合AP从0.3272提升到0.3654，小目标相对提升最大。这为高分辨率推理作为跨域检测的轻量手段提供了有力证据。",
+      "llm_tldr": "跨城市目标检测要求检测器能泛化到未标注的目标城市。该研究在AI City Challenge 2026中分析RF-DETR-Large检测器的不同配置，发现对704分辨率训练的模型直接采用1120分辨率冻结推理，无需任何参数更新即可将聚合AP从0.3272提升到0.3654，小目标相对提升最大。这为高分辨率推理作为跨域检测的轻量手段提供了有力证据。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "object detection methods",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2608.01488v1",
+      "source": "arxiv",
+      "title": "Towards Compact Unified Multimodal Tracking: Synergizing Knowledge Distillation with Structural Pruning",
+      "abstract": "Unified multimodal object tracking has achieved remarkable robustness by leveraging complementary sensor data (e.g., RGB, Thermal, Depth), yet the heavy computational burden of state-of-the-art models hinders their deployment on resource-constrained edge devices. In this work, we identify the prediction head as a critical but often overlooked efficiency bottleneck. By strategically streamlining the decoder architecture, we unlock the potential for real-time inference but simultaneously introduce a capacity gap between the lightweight student and the heavy teacher. To resolve this, we conduct a systematic analysis of 17 distillation strategies and introduce a Dual-Alignment Distillation framework. Our key insight is that effective compression requires decoupling knowledge transfer into two complementary streams: (1) Spatial Representation Alignment, which employs feature distillation to sharpen the student's spatial focus on foreground targets (\"Where to track\"); and (2) Semantic Distribution Alignment, which utilizes logit-based distillation to align decision boundaries and transfer discriminative dark knowledge (\"What to track\"). Extensive experiments across five benchmarks demonstrate that our approach significantly outperforms complex state-of-the-art methods. Notably, our distilled model achieves 91.5% MPR on RGBT234 and operates at 54 FPS on a single RTX 4090, representing a 5x speedup over the teacher model while maintaining superior accuracy.",
+      "authors": [
+        "Yuqi Li",
+        "Yuedong Tan",
+        "Huiran Duan",
+        "Weilun Feng",
+        "Chuanguang Yang",
+        "Zhulin An",
+        "Zongwei Wu",
+        "Shiping Wen",
+        "Tingwen Huang",
+        "Yingli Tian"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-02T20:41:33+00:00",
+      "link": "https://arxiv.org/pdf/2608.01488v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "multimodal object tracking, knowledge distillation, structural pruning",
+      "llm_evidence_cn": "多模态目标跟踪、知识蒸馏、结构剪枝",
+      "llm_evidence": "多模态目标跟踪、知识蒸馏、结构剪枝",
+      "canonical_evidence": "多模态目标跟踪、知识蒸馏、结构剪枝",
+      "llm_tldr_en": "Proposes a compact unified multimodal tracker via decoder streamlining, structural pruning, and Dual-Alignment Distillation for efficient real-time inference.",
+      "llm_tldr_cn": "统一多模态目标跟踪（RGB、热成像、深度）虽然鲁棒但计算量巨大，难以部署在边缘设备。论文发现解码器（预测头）是效率瓶颈，通过精简解码器并引入结构剪枝与Dual-Alignment蒸馏框架，弥补轻量学生与重教师之间的能力差距，实现实时推理。系统分析17种蒸馏策略后，所提方法能在保持跟踪精度的同时大幅降低计算开销。",
+      "llm_tldr": "统一多模态目标跟踪（RGB、热成像、深度）虽然鲁棒但计算量巨大，难以部署在边缘设备。论文发现解码器（预测头）是效率瓶颈，通过精简解码器并引入结构剪枝与Dual-Alignment蒸馏框架，弥补轻量学生与重教师之间的能力差距，实现实时推理。系统分析17种蒸馏策略后，所提方法能在保持跟踪精度的同时大幅降低计算开销。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "visual tracking surveys",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2608.01730v1",
+      "source": "arxiv",
+      "title": "Learning Where to Look and How to Judge: Resolution-agnostic Image Quality Assessment with Quality-aware Saliency",
+      "abstract": "No-reference image quality assessment (NR IQA) has recently benefited from deep and multimodal models, yet many SOTA systems still violate at least one basic requirement: they either discard critical quality cues via aggressive resizing, fail to generalize across resolutions, cannot be jointly trained on heterogeneous IQA datasets with mismatched MOS scales, or require prohibitive computation. We present \\textbf{ReLIQS}, a model for \\textbf{Re}solution-agnostic \\textbf{L}earning for \\textbf{I}mage \\textbf{Q}uality with \\textbf{S}aliency, which is resolution-agnostic, preserves original-resolution quality cues, learns from multiple subjective studies, and remains computationally efficient and budget-adaptive. ReLIQS is a CLIP-based multiscale patch-driven architecture that learns both \\emph{where to look} and \\emph{how to judge} quality. Fixed-size patches are sampled across multiple resolutions, including the original resolution, and encoded with a CLIP vision backbone. A lightweight Perceptual Importance Estimator then predicts IQA-specific importance maps to select a small set of informative patches, and a Latent Quality Axis Module aggregates their embeddings into a single image-level score. Across authentic, synthetic, and AIGC benchmarks spanning diverse resolutions and distortions, ReLIQS generalizes better than strong CNN-, CLIP-, and MLLM-based baselines with matching or reduced computational cost.",
+      "authors": [
+        "Hakan Emre Gedik",
+        "Shashank Gupta",
+        "Alan Bovik"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-03T05:54:06+00:00",
+      "link": "https://arxiv.org/pdf/2608.01730v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Resolution-agnostic no-reference image quality assessment with quality-aware saliency",
+      "llm_evidence_cn": "基于质量感知显著性的分辨率无关无参考图像质量评估方法",
+      "llm_evidence": "基于质量感知显著性的分辨率无关无参考图像质量评估方法",
+      "canonical_evidence": "基于质量感知显著性的分辨率无关无参考图像质量评估方法",
+      "llm_tldr_en": "ReLIQS is a resolution-agnostic NR-IQA model that preserves original-resolution quality cues, learns from multiple subjective studies, and uses quality-aware saliency for efficient and budget-adaptive image quality assessment.",
+      "llm_tldr_cn": "无参考图像质量评估常因激进缩放丢失质量线索，难跨分辨率泛化且难以联合训练多组主观评分数据。本文提出ReLIQS，采用分辨率无关设计保留原始分辨率线索，通过质量感知显著性引导模型关注关键区域，并支持在多质量数据库上联合学习。实验表明该方法在保持高效计算的同时，提升了跨分辨率泛化能力并适应不同计算预算。",
+      "llm_tldr": "无参考图像质量评估常因激进缩放丢失质量线索，难跨分辨率泛化且难以联合训练多组主观评分数据。本文提出ReLIQS，采用分辨率无关设计保留原始分辨率线索，通过质量感知显著性引导模型关注关键区域，并支持在多质量数据库上联合学习。实验表明该方法在保持高效计算的同时，提升了跨分辨率泛化能力并适应不同计算预算。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "computer vision research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}

@@ -1,0 +1,281 @@
+{
+  "date": "20260805",
+  "date_label": "",
+  "generated_at": "2026-08-05 20:54:12 UTC",
+  "recommend_exists": true,
+  "run_count": 1,
+  "papers": [
+    {
+      "paper_id": "2608.01495v1",
+      "route": "202608/05/2608.01495v1-probing-the-3d-object-level-understanding-of-pre-trained-detection-transformers",
+      "title": "Probing the 3D Object-Level Understanding of Pre-Trained Detection Transformers",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "探测检测Transformer物体级嵌入",
+      "first_seen_at": "2026-08-05 20:54:12 UTC",
+      "updated_at": "2026-08-05 20:54:12 UTC"
+    },
+    {
+      "paper_id": "2608.02792v1",
+      "route": "202608/05/2608.02792v1-pixelup-zero-shot-semantic-feature-upsampling-for-fine-grained-vision-tasks",
+      "title": "PixelUp: Zero-Shot Semantic Feature Upsampling for Fine-Grained Vision Tasks",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "面向图像分割等密集预测任务的语义特征上采样方法",
+      "first_seen_at": "2026-08-05 20:54:12 UTC",
+      "updated_at": "2026-08-05 20:54:12 UTC"
+    },
+    {
+      "paper_id": "2608.03385v1",
+      "route": "202608/05/2608.03385v1-freqadapt-frequency-adaptive-processing-for-raw-object-detection",
+      "title": "FreqAdapt: Frequency-Adaptive Processing for RAW Object Detection",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "频率自适应RAW目标检测",
+      "first_seen_at": "2026-08-05 20:54:12 UTC",
+      "updated_at": "2026-08-05 20:54:12 UTC"
+    },
+    {
+      "paper_id": "2608.03895v1",
+      "route": "202608/05/2608.03895v1-ncgr-noise-conditional-gated-rectification-for-camera-extrinsic-perturbations-in-bev-3d-object-detection",
+      "title": "NCGR: Noise-Conditional Gated Rectification for Camera Extrinsic Perturbations in BEV 3D Object Detection",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "应对相机外参扰动的BEV 3D目标检测",
+      "first_seen_at": "2026-08-05 20:54:12 UTC",
+      "updated_at": "2026-08-05 20:54:12 UTC"
+    },
+    {
+      "paper_id": "2608.03991v1",
+      "route": "202608/05/2608.03991v1-perceptual-anchoring-prototype-guided-text-calibration-for-training-free-open-vocabulary-semantic-segmentation",
+      "title": "Perceptual Anchoring: Prototype-Guided Text Calibration for Training-free Open-Vocabulary Semantic Segmentation",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "开放词汇语义分割方法",
+      "first_seen_at": "2026-08-05 20:54:12 UTC",
+      "updated_at": "2026-08-05 20:54:12 UTC"
+    },
+    {
+      "paper_id": "2608.01343v1",
+      "route": "202608/05/2608.01343v1-devit-low-power-vision-transformer-acceleration-using-delta-computation",
+      "title": "DeVIT: Low-Power Vision Transformer Acceleration Using Delta Computation",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "面向计算机视觉的低功耗视觉Transformer加速方法",
+      "first_seen_at": "2026-08-05 20:54:12 UTC",
+      "updated_at": "2026-08-05 20:54:12 UTC"
+    },
+    {
+      "paper_id": "2608.01354v1",
+      "route": "202608/05/2608.01354v1-pixvl-self-supervised-training-of-pixel-level-mllms-via-a-unified-mask--text-consistency-cycle",
+      "title": "PixVL: Self-Supervised Training of Pixel-Level MLLMs via a Unified Mask--Text Consistency Cycle",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "像素级多模态大模型的区域分割与理解统一训练",
+      "first_seen_at": "2026-08-05 20:54:12 UTC",
+      "updated_at": "2026-08-05 20:54:12 UTC"
+    },
+    {
+      "paper_id": "2608.01988v1",
+      "route": "202608/05/2608.01988v1-grounding-and-explaining-visual-evidence-for-ai-generated-image-detection-in-human-centric-scenes",
+      "title": "Grounding and Explaining Visual Evidence for AI-Generated Image Detection in Human-Centric Scenes",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "具有视觉证据定位的可解释AI生成图像真实性检测",
+      "first_seen_at": "2026-08-05 20:54:12 UTC",
+      "updated_at": "2026-08-05 20:54:12 UTC"
+    },
+    {
+      "paper_id": "2608.02980v1",
+      "route": "202608/05/2608.02980v1-qwen-3d-a-generalist-3d-vision-language-model-for-spatial-understanding",
+      "title": "Qwen-3D: A Generalist 3D Vision-Language Model for Spatial Understanding",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "面向3D定位与分割任务的全能3D视觉语言模型",
+      "first_seen_at": "2026-08-05 20:54:12 UTC",
+      "updated_at": "2026-08-05 20:54:12 UTC"
+    },
+    {
+      "paper_id": "2608.03136v1",
+      "route": "202608/05/2608.03136v1-frozen-high-resolution-inference-for-cross-city-object-detection-an-ai-city-challenge-2026-study",
+      "title": "Frozen High-Resolution Inference for Cross-City Object Detection: An AI City Challenge 2026 Study",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "跨城市目标检测，RF-DETR检测器，AI城市挑战赛",
+      "first_seen_at": "2026-08-05 20:54:12 UTC",
+      "updated_at": "2026-08-05 20:54:12 UTC"
+    },
+    {
+      "paper_id": "2608.00264v1",
+      "route": "202608/05/2608.00264v1-interpretability-guided-soft-pruning-of-attention-heads-in-vision-transformers",
+      "title": "Interpretability-Guided Soft Pruning of Attention Heads in Vision Transformers",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "视觉Transformer注意力头的可解释性引导剪枝",
+      "first_seen_at": "2026-08-05 20:54:12 UTC",
+      "updated_at": "2026-08-05 20:54:12 UTC"
+    },
+    {
+      "paper_id": "2608.00726v1",
+      "route": "202608/05/2608.00726v1-foveated-probes-recover-localized-binding-information-in-vision-foundation-models",
+      "title": "Foveated Probes Recover Localized Binding Information in Vision Foundation Models",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "视觉基础模型、读出接口、中央窝探针、局部绑定",
+      "first_seen_at": "2026-08-05 20:54:12 UTC",
+      "updated_at": "2026-08-05 20:54:12 UTC"
+    },
+    {
+      "paper_id": "2608.01202v1",
+      "route": "202608/05/2608.01202v1-fruit-hsnet-a-machine-learning-approach-for-hyperspectral-image-based-fruit-ripeness-prediction",
+      "title": "Fruit-HSNet: A Machine Learning Approach for Hyperspectral Image-Based Fruit Ripeness Prediction",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "高光谱图像分类实现果实成熟度识别",
+      "first_seen_at": "2026-08-05 20:54:12 UTC",
+      "updated_at": "2026-08-05 20:54:12 UTC"
+    },
+    {
+      "paper_id": "2608.01488v1",
+      "route": "202608/05/2608.01488v1-towards-compact-unified-multimodal-tracking-synergizing-knowledge-distillation-with-structural-pruning",
+      "title": "Towards Compact Unified Multimodal Tracking: Synergizing Knowledge Distillation with Structural Pruning",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "多模态目标跟踪、知识蒸馏、结构剪枝",
+      "first_seen_at": "2026-08-05 20:54:12 UTC",
+      "updated_at": "2026-08-05 20:54:12 UTC"
+    },
+    {
+      "paper_id": "2608.01730v1",
+      "route": "202608/05/2608.01730v1-learning-where-to-look-and-how-to-judge-resolution-agnostic-image-quality-assessment-with-quality-aware-saliency",
+      "title": "Learning Where to Look and How to Judge: Resolution-agnostic Image Quality Assessment with Quality-aware Saliency",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "基于质量感知显著性的分辨率无关无参考图像质量评估方法",
+      "first_seen_at": "2026-08-05 20:54:12 UTC",
+      "updated_at": "2026-08-05 20:54:12 UTC"
+    },
+    {
+      "paper_id": "2608.01614v1",
+      "route": "202608/05/2608.01614v1-linear-multi-timescale-retention-as-a-memory-efficient-vision-language-bridge",
+      "title": "Linear Multi-Timescale Retention as a Memory-Efficient Vision-Language Bridge",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "记忆高效的视觉-语言桥接模块",
+      "first_seen_at": "2026-08-05 20:54:12 UTC",
+      "updated_at": "2026-08-05 20:54:12 UTC"
+    },
+    {
+      "paper_id": "2608.01709v1",
+      "route": "202608/05/2608.01709v1-spatialquery-benchmarking-geometry-grounded-multi-instance-spatial-reasoning-in-vision-language-models",
+      "title": "SpatialQuery: Benchmarking Geometry-Grounded Multi-Instance Spatial Reasoning in Vision-Language Models",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "视觉语言模型空间推理基准",
+      "first_seen_at": "2026-08-05 20:54:12 UTC",
+      "updated_at": "2026-08-05 20:54:12 UTC"
+    }
+  ]
+}
