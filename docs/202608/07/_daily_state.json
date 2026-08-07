@@ -1,9 +1,9 @@
 {
   "date": "20260807",
   "date_label": "",
-  "generated_at": "2026-08-07 01:44:58 UTC",
+  "generated_at": "2026-08-07 21:07:17 UTC",
   "recommend_exists": true,
-  "run_count": 1,
+  "run_count": 2,
   "papers": [
     {
       "paper_id": "2608.04833v1",
@@ -17,9 +17,137 @@
         }
       ],
       "score": 10.0,
-      "evidence": "RGB-红外目标检测方法",
+      "evidence": "利用寄存器令牌实现可见光与热红外特征融合的目标检测方法",
       "first_seen_at": "2026-08-07 01:44:58 UTC",
-      "updated_at": "2026-08-07 01:44:58 UTC"
+      "updated_at": "2026-08-07 21:07:17 UTC"
+    },
+    {
+      "paper_id": "2608.03666v1",
+      "route": "202608/07/2608.03666v1-xidepth-a-lightweight-and-efficient-network-for-self-supervised-monocular-depth-estimation",
+      "title": "XiDepth: a Lightweight and Efficient Network for Self-supervised Monocular Depth Estimation",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "自监督单目深度估计属于计算机视觉研究领域",
+      "first_seen_at": "2026-08-07 01:44:58 UTC",
+      "updated_at": "2026-08-07 21:07:17 UTC"
+    },
+    {
+      "paper_id": "2608.04429v1",
+      "route": "202608/07/2608.04429v1-ubllie-unified-backlight-and-low-light-image-enhancement",
+      "title": "UBLLIE: Unified Backlight and Low-Light Image Enhancement",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "面向下游视觉任务的统一背光与低光图像增强计算机视觉论文",
+      "first_seen_at": "2026-08-07 01:44:58 UTC",
+      "updated_at": "2026-08-07 21:07:17 UTC"
+    },
+    {
+      "paper_id": "2608.04720v1",
+      "route": "202608/07/2608.04720v1-yolov14unified-cross-domain-real-time-object-detectionwith-adaptive-multi-view-representation",
+      "title": "YOLOv14:Unified Cross-Domain Real-Time Object Detectionwith Adaptive Multi-View Representation",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "实时目标检测，包含跨域自适应与多视图表示",
+      "first_seen_at": "2026-08-07 01:44:58 UTC",
+      "updated_at": "2026-08-07 21:07:17 UTC"
+    },
+    {
+      "paper_id": "2608.05743v1",
+      "route": "202608/07/2608.05743v1-conceptadapt-concept-guided-adaptive-feature-reconstruction-with-dynamic-attention-for-few-shot-industrial-anomaly-detection",
+      "title": "ConceptADapt: Concept-guided Adaptive Feature Reconstruction with Dynamic Attention for Few-Shot Industrial Anomaly Detection",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "提出概念引导的自适应特征重建用于小样本工业异常检测，属于视觉识别任务",
+      "first_seen_at": "2026-08-07 21:07:17 UTC",
+      "updated_at": "2026-08-07 21:07:17 UTC"
+    },
+    {
+      "paper_id": "2608.05858v1",
+      "route": "202608/07/2608.05858v1-shape-aware-oriented-bounding-box-obb-to-horizontal-bounding-box-hbb-conversion",
+      "title": "Shape-Aware Oriented Bounding Box (OBB) to Horizontal Bounding Box (HBB) Conversion",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "面向舰船检测的有向边界框转换方法",
+      "first_seen_at": "2026-08-07 21:07:17 UTC",
+      "updated_at": "2026-08-07 21:07:17 UTC"
+    },
+    {
+      "paper_id": "2608.05878v1",
+      "route": "202608/07/2608.05878v1-maviseg-manifold-propagation-and-visual-prototypes-for-zero-shot-open-vocabulary-segmentation-in-diffusion-transformers",
+      "title": "MAVISEG: Manifold Propagation and Visual Prototypes for Zero-Shot Open-Vocabulary Segmentation in Diffusion Transformers",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "零样本开放词汇语义分割方法",
+      "first_seen_at": "2026-08-07 21:07:17 UTC",
+      "updated_at": "2026-08-07 21:07:17 UTC"
+    },
+    {
+      "paper_id": "2608.06192v1",
+      "route": "202608/07/2608.06192v1-hope-hand-object-pressure-estimation-from-monocular-videos",
+      "title": "HOPE: Hand-Object Pressure Estimation from Monocular Videos",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "从单目视频估计手物交互物理压力的计算机视觉论文",
+      "first_seen_at": "2026-08-07 21:07:17 UTC",
+      "updated_at": "2026-08-07 21:07:17 UTC"
+    },
+    {
+      "paper_id": "2608.06205v1",
+      "route": "202608/07/2608.06205v1-cfgpnet-cross-attention-based-fused-gradient-programmed-network-framework-for-multispectral-object-detection",
+      "title": "CFGPNet: Cross-Attention-Based Fused Gradient Programmed Network Framework for Multispectral Object Detection",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "多光谱目标检测方法，属于目标检测方法",
+      "first_seen_at": "2026-08-07 21:07:17 UTC",
+      "updated_at": "2026-08-07 21:07:17 UTC"
     },
     {
       "paper_id": "2608.00561v1",
@@ -34,22 +162,6 @@
       ],
       "score": 9.0,
       "evidence": "视觉-语言模型表征的局部几何可解释性分析",
-      "first_seen_at": "2026-08-07 01:44:58 UTC",
-      "updated_at": "2026-08-07 01:44:58 UTC"
-    },
-    {
-      "paper_id": "2608.03666v1",
-      "route": "202608/07/2608.03666v1-xidepth-a-lightweight-and-efficient-network-for-self-supervised-monocular-depth-estimation",
-      "title": "XiDepth: a Lightweight and Efficient Network for Self-supervised Monocular Depth Estimation",
-      "section": "deep",
-      "tags": [
-        {
-          "kind": "query",
-          "label": "cv"
-        }
-      ],
-      "score": 9.0,
-      "evidence": "自监督单目深度估计网络",
       "first_seen_at": "2026-08-07 01:44:58 UTC",
       "updated_at": "2026-08-07 01:44:58 UTC"
     },
@@ -70,20 +182,132 @@
       "updated_at": "2026-08-07 01:44:58 UTC"
     },
     {
-      "paper_id": "2608.04720v1",
-      "route": "202608/07/2608.04720v1-yolov14unified-cross-domain-real-time-object-detectionwith-adaptive-multi-view-representation",
-      "title": "YOLOv14:Unified Cross-Domain Real-Time Object Detectionwith Adaptive Multi-View Representation",
-      "section": "deep",
+      "paper_id": "2608.01407v1",
+      "route": "202608/07/2608.01407v1-training-free-out-of-distribution-detection-for-pathology-whole-slide-images",
+      "title": "Training-Free Out-of-Distribution Detection for Pathology Whole-Slide Images",
+      "section": "quick",
       "tags": [
         {
           "kind": "query",
           "label": "cv"
         }
       ],
-      "score": 9.0,
-      "evidence": "跨域实时目标检测与自适应多视角表示",
+      "score": 8.0,
+      "evidence": "病理全切片图像上的免训练分布外检测",
       "first_seen_at": "2026-08-07 01:44:58 UTC",
-      "updated_at": "2026-08-07 01:44:58 UTC"
+      "updated_at": "2026-08-07 21:07:17 UTC"
+    },
+    {
+      "paper_id": "2608.04106v1",
+      "route": "202608/07/2608.04106v1-loretta-a-foundation-model-and-extensive-dataset-for-global-scale-remote-sensing-dense-image-matching",
+      "title": "LoRetta: A Foundation Model and Extensive Dataset for Global-Scale Remote Sensing Dense Image Matching",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "用于全球尺度遥感稠密图像匹配的基础模型与数据集",
+      "first_seen_at": "2026-08-07 01:44:58 UTC",
+      "updated_at": "2026-08-07 21:07:17 UTC"
+    },
+    {
+      "paper_id": "2608.04175v1",
+      "route": "202608/07/2608.04175v1-tricle-tri-modal-vision-language-reasoning-for-edge-deployed-fine-grained-clustering",
+      "title": "TriCLE: Tri-Modal Vision-Language Reasoning for Edge-Deployed Fine-Grained Clustering",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "基于三模态视觉语言推理的飞行器图像识别与聚类",
+      "first_seen_at": "2026-08-07 01:44:58 UTC",
+      "updated_at": "2026-08-07 21:07:17 UTC"
+    },
+    {
+      "paper_id": "2608.05424v1",
+      "route": "202608/07/2608.05424v1-invisible-shortcuts-why-vision-encoders-know-your-camera",
+      "title": "Invisible Shortcuts: Why Vision Encoders Know Your Camera",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "视觉编码器特征捷径分析",
+      "first_seen_at": "2026-08-07 21:07:17 UTC",
+      "updated_at": "2026-08-07 21:07:17 UTC"
+    },
+    {
+      "paper_id": "2608.05840v1",
+      "route": "202608/07/2608.05840v1-accurate-localization-of-road-traffic-objects-on-the-road-plane-using-surveillance-camera-imagery",
+      "title": "Accurate Localization of Road Traffic Objects on the Road Plane Using Surveillance Camera Imagery",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "利用YOLO检测器进行车辆定位，与目标检测方法相关",
+      "first_seen_at": "2026-08-07 21:07:17 UTC",
+      "updated_at": "2026-08-07 21:07:17 UTC"
+    },
+    {
+      "paper_id": "2608.06021v1",
+      "route": "202608/07/2608.06021v1-topometric-autonomous-vehicle-localization-by-combining-visual-embeddings-and-feed-forward-3d-models",
+      "title": "Topometric Autonomous Vehicle Localization by Combining Visual Embeddings and Feed-Forward 3D Models",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "基于图像嵌入的视觉地点识别与定位",
+      "first_seen_at": "2026-08-07 21:07:17 UTC",
+      "updated_at": "2026-08-07 21:07:17 UTC"
+    },
+    {
+      "paper_id": "2608.06150v1",
+      "route": "202608/07/2608.06150v1-cogvis-must-open-vocabulary-change-detection-perceive-the-scene-anew-for-every-query",
+      "title": "CogVis: Must Open-Vocabulary Change Detection Perceive the Scene Anew for Every Query?",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "计算机视觉中的开放词汇变化检测",
+      "first_seen_at": "2026-08-07 21:07:17 UTC",
+      "updated_at": "2026-08-07 21:07:17 UTC"
+    },
+    {
+      "paper_id": "2608.06236v1",
+      "route": "202608/07/2608.06236v1-depth-guided-video-object-counting-in-crowded-scenes",
+      "title": "Depth-Guided Video Object Counting in Crowded Scenes",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "拥挤场景下基于深度引导的检测与计数",
+      "first_seen_at": "2026-08-07 21:07:17 UTC",
+      "updated_at": "2026-08-07 21:07:17 UTC"
     },
     {
       "paper_id": "2608.01910v1",
@@ -118,38 +342,6 @@
       "updated_at": "2026-08-07 01:44:58 UTC"
     },
     {
-      "paper_id": "2608.04106v1",
-      "route": "202608/07/2608.04106v1-loretta-a-foundation-model-and-extensive-dataset-for-global-scale-remote-sensing-dense-image-matching",
-      "title": "LoRetta: A Foundation Model and Extensive Dataset for Global-Scale Remote Sensing Dense Image Matching",
-      "section": "quick",
-      "tags": [
-        {
-          "kind": "query",
-          "label": "cv"
-        }
-      ],
-      "score": 8.0,
-      "evidence": "稠密影像匹配基础模型与数据集，是计算机视觉前沿成果",
-      "first_seen_at": "2026-08-07 01:44:58 UTC",
-      "updated_at": "2026-08-07 01:44:58 UTC"
-    },
-    {
-      "paper_id": "2608.04175v1",
-      "route": "202608/07/2608.04175v1-tricle-tri-modal-vision-language-reasoning-for-edge-deployed-fine-grained-clustering",
-      "title": "TriCLE: Tri-Modal Vision-Language Reasoning for Edge-Deployed Fine-Grained Clustering",
-      "section": "quick",
-      "tags": [
-        {
-          "kind": "query",
-          "label": "cv"
-        }
-      ],
-      "score": 8.0,
-      "evidence": "用于飞行器细粒度聚类与识别的三模态视觉语言系统",
-      "first_seen_at": "2026-08-07 01:44:58 UTC",
-      "updated_at": "2026-08-07 01:44:58 UTC"
-    },
-    {
       "paper_id": "2608.04769v1",
       "route": "202608/07/2608.04769v1-from-transparent-labware-segmentation-to-collision-avoidance-a-real-time-edge-aware-perception-pipeline",
       "title": "From Transparent Labware Segmentation to Collision Avoidance: A Real-Time Edge-Aware Perception Pipeline",
@@ -166,22 +358,6 @@
       "updated_at": "2026-08-07 01:44:58 UTC"
     },
     {
-      "paper_id": "2608.01407v1",
-      "route": "202608/07/2608.01407v1-training-free-out-of-distribution-detection-for-pathology-whole-slide-images",
-      "title": "Training-Free Out-of-Distribution Detection for Pathology Whole-Slide Images",
-      "section": "quick",
-      "tags": [
-        {
-          "kind": "query",
-          "label": "cv"
-        }
-      ],
-      "score": 7.0,
-      "evidence": "利用视觉-语言基础模型进行病理全切片图像的无训练分布外检测",
-      "first_seen_at": "2026-08-07 01:44:58 UTC",
-      "updated_at": "2026-08-07 01:44:58 UTC"
-    },
-    {
       "paper_id": "2608.03516v1",
       "route": "202608/07/2608.03516v1-detecting-pose-estimation-failures-via-keypoint-self-consistency",
       "title": "Detecting Pose Estimation Failures via Keypoint Self-Consistency",
@@ -193,25 +369,9 @@
         }
       ],
       "score": 7.0,
-      "evidence": "基于关键点几何自一致性的姿态估计失败检测",
+      "evidence": "利用关键点空间自一致性检测姿态估计误差，属于视觉识别与特征分析方法",
       "first_seen_at": "2026-08-07 01:44:58 UTC",
-      "updated_at": "2026-08-07 01:44:58 UTC"
-    },
-    {
-      "paper_id": "2608.04429v1",
-      "route": "202608/07/2608.04429v1-ubllie-unified-backlight-and-low-light-image-enhancement",
-      "title": "UBLLIE: Unified Backlight and Low-Light Image Enhancement",
-      "section": "quick",
-      "tags": [
-        {
-          "kind": "query",
-          "label": "cv"
-        }
-      ],
-      "score": 7.0,
-      "evidence": "面向背光与低光条件的无监督图像增强",
-      "first_seen_at": "2026-08-07 01:44:58 UTC",
-      "updated_at": "2026-08-07 01:44:58 UTC"
+      "updated_at": "2026-08-07 21:07:17 UTC"
     },
     {
       "paper_id": "2608.05115v1",

@@ -1,0 +1,1866 @@
+Title: Invisible Shortcuts: Why Vision Encoders Know Your Camera
+
+URL Source: https://arxiv.org/pdf/2608.05424v1
+
+Published Time: Fri, 07 Aug 2026 00:27:05 GMT
+
+Number of Pages: 29
+
+Markdown Content:
+# Invisible Shortcuts: Why Vision Encoders Know Your Camera 
+
+Vladan Stojnić 1, Ryan Ramos 2, Giorgos Kordopatis-Zilos 1,Noa Garcia 2, and Giorgos Tolias 1 
+
+> 1
+
+VRG, FEE, Czech Technical University in Prague  
+
+> 2
+
+The University of Osaka global 
+
+exposure time (LAION) 
+
+> topic 29
+> global
+
+focal length (LAION) 
+
+> topic 456
+> topic 5
+> topic 108
+> global
+
+JPEG quality (ImageNet) 
+
+> topic 17
+> global
+
+aperture (LAION)              
+
+> filago germanica
+> pearly-shelled mussel
+> 1/2000 1/200 1/30 1/4 70 80 90 100
+> 4570 600 7/5 410 27
+> 0
+> 5
+> 10
+> 15
+> 20
+> 0
+> 20
+> 40
+> 60
+> 80
+> 0
+> 10
+> 20
+> 30
+> 40
+> 50
+> 0
+> 5
+> 15
+> 25 topic 67
+> 10
+> 20
+
+Fig. 1: Metadata distribution per semantic category . Different classes (Ima-geNet21k) and topics (Re-LAION-2B) have distinct distributions, indicating correla-tions between metadata and semantics. These correlations create shortcut signals that models exploit during large-scale pretraining. Global: overall dataset distribution. 
+
+Abstract. Deep vision models exploit shortcuts, relying on cues that correlate with supervision signals. Prior work has focused on visible biases, such as object-background or texture correlations. We identify a different source of shortcut learning: invisible metadata traces em-bedded at the pixel level, for metadata such as image processing and photo acquisition. We hypothesize that large-scale semantic supervi-sion, whether through categorical labels (ImageNet) or billion-scale cap-tions (LAION), naturally induces metadata-semantics correlations dur-ing pretraining, leading models to convert low-level signals into predic-tive features. By introducing controlled metadata-semantics correlations, we show that stronger ones produce systematically higher sensitivity to metadata traces and larger performance degradation under metadata distribution shifts. We further explore mitigation strategies applied dur-ing and after pretraining that reduce sensitivity not only to targeted metadata but also to unseen ones, without sacrificing performance on downstream tasks. Metadata sensitivity also has a positive side: it partly explains the strong generated-image detection ability of some encoders, while its mitigation can improve out-of-distribution generalization. Code: 
+
+https://github.com/ryan-caesar-ramos/visual-encoder-traces arXiv:2608.05424v1 [cs.CV] 5 Aug 2026 2 V. Stojnić et al. 
+
+1 Introduction 
+
+Deep neural networks are known to rely on shortcuts [4,14,62,66,72,81]. When a predictive cue is present in training data, models exploit it regardless of whether it aligns with the intended task, since the objective is simply to minimize error. Whether this is harmful depends on the stability of these correlations; when they shift, performance degrades. This phenomenon, studied under shortcut learning [14] and spurious correlations [32, 56], has been extensively analyzed in vision, including object–background dependencies [21,45,64], color–label correla-tions [41], texture versus shape bias [15], watermark artifacts [31], and synthetic benchmarks [2, 56]. These cues are visible and interpretable to humans. We study shortcuts largely invisible to the human eye, namely metadata traces, including processing parameters such as JPEG compression and sharpen-ing, and acquisition parameters such as focal length and camera model. Although imperceptible at a semantic level, they leave low-level signals. Recent work shows that distribution shifts in image metadata affect the pre-dictions of pretrained vision models [52], revealing that representations encode metadata traces, but the origin remains unclear. We argue that metadata sen-sitivity arises from metadata–semantics correlations in pretraining datasets: im-ages from certain semantic categories are often captured or processed under similar conditions, creating systematic associations between labels or captions and metadata attributes such as camera parameters or JPEG quality (Fig. 1). Models trained with semantic supervision exploit these correlations as shortcuts, relying on metadata-derived pixel signals rather than semantic content, as such signals are simpler than high-level concepts and optimization favors them [62]. We test this hypothesis across both regimes of large-scale semantic super-vision: categorical label supervision on ImageNet and caption supervision on LAION, measuring the metadata-semantics correlations in each and introduc-ing controlled ones during training. As correlation strength increases, models become progressively more sensitive to metadata. Motivated by this, we inves-tigate mitigation both during and after pretraining. Interestingly, using a single attribute, e.g . JPEG compression, as the correlation source or mitigation target also changes sensitivity to other metadata, e.g . resizing or camera model, sug-gesting that models exploit a broad class of low-level traces rather than attribute-specific artifacts. Notably, this contradicts prior work [31], where mitigating one type of bias amplified others. Our main contribution is to show that metadata sensitivity is a result of short-cut learning arising from metadata-semantics correlations in training data, man-ifesting at scale across both supervised ImageNet and caption-guided LAION pretraining, rather than being specific to a single supervision paradigm. We fur-ther show it can be mitigated, both during and after pretraining, with mitigation targeting one attribute generalizing to unseen ones. Finally, such sensitivity is not only a disadvantage: since it reflects a model’s tendency to capture pixel-level signal, which is key to separating generated from real images, it partly explains the strong generated-image detection ability of some encoders [46]. Meanwhile its mitigation can improve out-of-distribution generalization. Invisible Shortcuts 3
+
+2 Diagnostic metrics 
+
+We use metrics that quantify (i) the extent to which frozen model representa-tions encode metadata and (ii) the degree to which such encoding interferes with semantic prediction ability. We follow Ramos et al . [52], see original work for de-tails. We consider two metadata categories: (i) image processing attributes : JPEG compression parameters (quality, chroma subsampling), sharpening (strength), resizing (factor), and interpolation (algorithm type), and (ii) acquisition at-tributes : camera make/model, exposure time, aperture, ISO, and focal length. 
+
+Metadata Prediction (MP). We measure the strength of metadata encoding in frozen model representations by training a linear classifier to predict metadata labels. For processing metadata, we use ImageNet1k (IN1k) [55], randomly as-sign processing labels to training and test images, and process them accordingly. For acquisition metadata, we use FlickrExif [52] with predefined train/test splits per acquisition attribute. Accuracy is denoted by MP p and MP a for processing and acquisition metadata, respectively. Accuracy substantially above chance in-dicates that the representation contains linearly separable metadata information, while accuracy close to chance suggests invariance to metadata labels. 
+
+Semantic Prediction (SP) ability is evaluated by the accuracy of a k-NN classifier predicting semantic labels with original IN1k train/val sets. 
+
+Semantic Prediction Distraction – processing (SPD p). To quantify the impact of processing-related metadata on semantic predictions, we use IN1k with a k-NN classifier for semantic labels, where metadata labels of training/exemplar images are modified per test image guided by semantic labels. Images are pro-cessed according to the assigned metadata label. Two evaluation setups: (i) Pos-same : the test image and its semantic positives are assigned to the same process-ing label, while negatives are assigned to a different one. Accuracy in this setup is denoted by Apos-same . (ii) Neg-same : the test image and its semantic negatives are assigned to the same processing label, while positives are assigned to a differ-ent one. Accuracy in this setup is denoted by Aneg-same . We evaluate distraction with ∆p = |Apos-same − Aneg-same | quantifying the extent to which processing metadata impacts semantic recognition. Lower values indicate stronger invari-ance to processing metadata, while higher values indicate stronger sensitivity. 
+
+Semantic Prediction Distraction – acquisition (SPD a). To measure how acquisition metadata interferes with semantic similarity, we use the PairCams [52] dataset. Given a query image from one camera class e.g . smartphones, the task is to retrieve a semantically positive image captured with a different camera class 
+
+e.g . digital cameras. Using recall@1, denoted by R, we evaluate two cases where semantically negative images vary: (i) same : negatives originate from the same camera class as the query; performance denoted by Rsame , and (ii) different :negatives originate from a different camera class than the query; performance denoted by Rdiff . We define the distraction score as ∆a = |Rsame − Rdiff |, quan-tifying the extent to which acquisition metadata impacts semantic recognition. 
+
+Overall. MP quantifies metadata encoding, SPD quantifies metadata interfer-ence with semantic recognition, and SP captures whether training data correla-tions or mitigation strategies degrade semantic prediction performance. 4 V. Stojnić et al. 
+
+3 Why are vision encoders sensitive to image metadata 
+
+The work of Ramos et al . [52] shows that vision encoders are sensitive to image metadata, and that the presence of metadata traces in features of pretrained models has consequences on downstream performance. However, the causes of these traces remain unclear. We hypothesize that they stem from correlations between metadata and semantic labels in pretraining datasets: such correlations let metadata labels and their pixel-level signal act as a shortcut for predicting semantic labels, leading the model to encode metadata information. We cor-roborate our hypothesis in several steps. We first show that these correlations, with both processing and acquisition metadata, exist across standard pretraining datasets, spanning categorical (ImageNet) and caption-based (LAION) supervi-sion. We then use controlled experiments to verify that an encoder’s metadata sensitivity grows as a direct function of correlation strength. 
+
+3.1 Correlations of semantics and processing metadata in ImageNet Measuring existing correlations. We focus on JPEG compression parame-ters, specifically the quality and chroma subsampling, as processing metadata. Each combination of values for these two parameters defines a discrete categori-cal label for each image. We analyze the association between these metadata and semantic labels in ImageNet1k (IN1k) and ImageNet21k (IN21k) using Cramér’s V [7] measure of association between categorical variables. The values are 0.047 and 0.067 in IN1k and IN21k, respectively. Even though the value itself is low and not easily interpretable, we focus on the relative comparison between the two datasets; correlations are stronger in IN21k than in IN1k. 
+
+Impact of correlations. We use models 3 pretrained on IN1k and IN21k to evaluate the impact of correlation strength. In Fig. 2, we present all the diag-nostic metrics, SP, MP, and SPD, for different backbones. We observe that both types of models have a good ability to predict metadata labels (MP), both pro-cessing and acquisition ones, at rates substantially above random chance. While there exist minor differences in training recipes, the models trained on IN21k consistently demonstrate stronger predictive ability. This indicates that features trained on IN21k encode more metadata information than those trained on IN1k. The SPD measurements further show that metadata affects the semantic pre-diction abilities of both models, but more so for IN21k. Together, these results show that IN21k features not only encode more metadata information but also let it interfere more strongly with semantic prediction. Overall, these results suggest that the stronger correlations between metadata and semantic labels in IN21k, relative to IN1k, have a greater impact on both the models’ ability to encode metadata information and the sensitivity of their semantic predictions to metadata.  
+
+> 3We use pretrained models available in the timm library.
+
+Invisible Shortcuts 5  
+
+> ImageNet1k ImageNet21k Random
+> ConvNeXt-L
+> FlexiViT-B
+> Swin-B
+> ViT-B
+> 20
+> 40
+> 60
+> accuracy
+> MPp - JPEG
+> ConvNeXt-L
+> FlexiViT-B
+> Swin-B
+> ViT-B
+> 40
+> 60
+> 80
+> MPp - Resizing
+> ConvNeXt-L
+> FlexiViT-B
+> Swin-B
+> ViT-B
+> 10
+> 20
+> 30
+> 40
+> MPa - Make
+> ConvNeXt-L
+> FlexiViT-B
+> Swin-B
+> ViT-B
+> 5
+> 10
+> 15
+> MPa - Aperture
+> ConvNeXt-L
+> FlexiViT-B
+> Swin-B
+> ViT-B
+> 78
+> 80
+> 82
+> 84
+> accuracy
+> SP
+> ConvNeXt-L
+> FlexiViT-B
+> Swin-B
+> ViT-B
+> 5
+> 10
+> ∆p
+> SPDp - JPEG
+> ConvNeXt-L
+> FlexiViT-B
+> Swin-B
+> ViT-B
+> 5
+> 10
+> SPDp - Resizing
+> ConvNeXt-L
+> FlexiViT-B
+> Swin-B
+> ViT-B
+> 5
+> 10
+> ∆a
+> SPDa - Camera
+
+Fig. 2: IN1k vs . IN21k pretraining: which training set causes higher meta-data sensitivity? Reporting Metadata Prediction ( MP ), Semantic Prediction ( SP ), and Semantic Prediction Distraction ( SPD ) for ConvNeXt [36], FlexiViT [5], Swin [34], and ViT [10] pretrained on IN1k and IN21k. The amount of correlation between JPEG compression parameters and semantic labels is measured to be 0.047 and 0.067 in IN1k and IN21k, respectively, according to Cramér’s V measure. The stronger correlations in IN21k result in consistently more sensitive models. 
+
+3.2 Controlling correlations of semantics and processing metadata 
+
+To further verify that the presence and extent of metadata-semantics correlations impacts model’s sensitivity to metadata, we synthetically introduce correlations into the IN1k training set, train models on these correlated datasets, and eval-uate all diagnostic metrics. 
+
+Creating stronger correlations. We define 22 distinct metadata labels by combining 11 JPEG quality levels with 2 chroma subsampling modes. All im-ages are then recompressed according to one of these labels, creating a correlation between semantic labels and metadata labels. We randomly assign one specific JPEG compression, i.e . metadata label, to each semantic class. We introduce a probability pi that determines whether an image is processed using the meta-data label assigned to its semantic class or using a randomly sampled metadata label. When pi = 100 , correlation is maximal, while when pi = 0 , metadata is independent of semantics. Note that Cramér’s V is roughly equal to the value of 
+
+pi, e.g . 0.1 and 0.8 for pi = 10 and pi = 80 , respectively. 
+
+Impact of correlations. We train ResNet50 [18] 4 on these versions of the IN1k training set created using the mechanism described above, and evaluate the models using the diagnostic metrics. Fig. 3 presents the results, where the larger values of pi mean stronger correlation between metadata and semantics.  
+
+> 4
+
+ViT-S/16 [10], and ViT-B/16 [10] results are presented in the supplementary. 6 V. Stojnić et al. 
+
+> 100
+> 90
+> 80
+> 50
+> 20
+> 10  0
+> none
+> 20
+> 40
+> 60
+> 80
+> pi
+> accuracy
+> MPp - JPEG
+> 100
+> 90
+> 80
+> 50
+> 20
+> 10  0
+> none
+> 40
+> 60
+> 80
+> pi
+> MPp - Resizing
+> 100
+> 90
+> 80
+> 50
+> 20
+> 10  0
+> none
+> 10
+> 20
+> 30
+> pi
+> MPa - Make
+> 100
+> 90
+> 80
+> 50
+> 20
+> 10  0
+> none
+> 6
+> 8
+> 10
+> 12
+> 14
+> pi
+> MPa - Aperture
+> 100
+> 90
+> 80
+> 50
+> 20
+> 10  0
+> none
+> 75
+> 80
+> 85
+> pi
+> accuracy
+> SP
+> none
+> pi
+> 100
+> 90
+> 80
+> 50
+> 20
+> 10  0
+> none
+> 0
+> 20
+> 40
+> 60
+> pi
+> ∆p
+> SPDp - JPEG
+> 100
+> 90
+> 80
+> 50
+> 20
+> 10  0
+> none
+> 0
+> 10
+> 20
+> 30
+> 40
+> pi
+> SPDp - Resizing
+> 100
+> 90
+> 80
+> 50
+> 20
+> 10  0
+> none
+> 2
+> 4
+> 6
+> 8
+> 10
+> pi
+> ∆a
+> SPDa - Camera
+
+Fig. 3: Impact of correlations between semantics and processing metadata on the model’s sensitivity to metadata. ResNet50 trained on different versions of IN1k with manipulated JPEG labels. The larger the pi, the stronger the correla-tion between JPEG labels and semantic labels. None : model trained on original IN1k. Difference between pi = 0 and none : the former has no JPEG-semantics correlations, while the latter has the original IN1k correlations. SP: two types of test sets are used, the original one (none, green color) which is fixed across values of pi, and 7 different versions (purple color) created by manipulating the JPEG labels of the original test set in the same way as the corresponding training set for each value of pi.
+
+We observe that accuracy of predicting JPEG metadata labels (MP) increases noticeably for stronger correlations. For zero correlations it is close to random chance, and lower than for the model trained on the original IN1k, verifying that the original IN1k has some correlations, though weaker than the ones we intro-duce with pi ≥ 20 . Since the model is trained on a set where JPEG compression drives the correlation, its ability to predict JPEG labels is expected. More no-tably, the ability to predict other processing and acquisition attributes (resizing, make, aperture) also increases with the JPEG-semantics correlation, suggesting that the model learns to encode pixel-level signal carrying such metadata. The semantic prediction ability (SP) is affected by the correlation strength (green bars of bottom-left plot). There is no noticeable drop for weak correla-tions compared to zero correlations, but as the correlation becomes stronger, the drop becomes more significant. This suggests that strong correlations make the model capture pixel-level signal related to metadata labels rather than complex semantic-level features. Performance is additionally reported for testing on 7 modified versions (purple bars of bottom-left plot) of the IN1k validation, each processed using the same metadata-to-semantics associations as the training set for the corresponding value of pi. Observe that when evaluating on these trans-formed test sets, the accuracy increases for increased correlations; this is because the test set is transformed identically to the training set. The model uses the same pixel-level signal that it exploited during training, which is not the case when testing on the original set. Invisible Shortcuts 7
+
+Finally, we observe that the distraction of semantic prediction abilities by metadata (SPD) also increases with the increase in correlation, which suggests that the model relies more on the metadata information for semantic prediction when the correlation is stronger, and thus the interference of metadata informa-tion with semantic prediction becomes stronger as well. 
+
+3.3 Correlations of semantics and acquisition metadata in LAION 
+
+We additionally investigate whether correlations exist between semantics and ac-quisition metadata. The subset of Re-LAION-2B [28] carrying Exif tags, about 40M images, provides an image set annotated with acquisition metadata labels. Since Re-LAION-2B contains captions rather than categorical class labels, we apply topic modeling [17] to cluster caption embeddings and assign each caption to one of the resulting 6, 238 topics, which serves as a discrete semantic label per image. Fig. 1 illustrates examples of such correlations, where for a given acquisition attribute, we plot the frequency distribution of its metadata labels within Re-LAION-2B for two topics with clearly distinct distributions. For in-stance, images whose captions fall under the topic of football tend to have longer focal lengths than those under plots of land. Similar distinctions arise between weddings and eyewear for aperture, and between birds and kitchens for exposure time. We presume that such correlations can act as a source of shortcut learning, analogous to the processing metadata case, which we verify in the following. 
+
+3.4 Controlling correlations of semantics and acquisition metadata Creating stronger and weaker correlations. We create three Re-LAION-2B subsets of equal size, i.e . 6.4M images, with varying amounts of correlation between semantic topics and acquisition metadata labels. Metadata labels are defined as tuples comprising the labels for the following attributes: camera man-ufacturer, aperture, exposure, and ISO speed. (i) baseline : we sample uniformly, reflecting the natural correlations present in Re-LAION-2B. (ii) stronger : for each metadata label, we select images belonging to its 40 most frequent top-ics, concentrating each label on a few topics and thus strengthening the topic– metadata association. (iii) weaker : for each metadata label, we identify its least frequent topic and downsample all other topics to that size, equalizing the topic distribution within each metadata label and thus weakening the association. 
+
+Impact of correlations. We train ResNet50 models 5 using CLIP loss [51], with results in Fig. 4. Training on the subset with stronger correlations consistently leads to higher SPD, while training on the weaker one tends to yield lower SPD, indicating that acquisition metadata correlations are also exploited as shortcuts. Furthermore, consistently with Sec. 3.2, models trained on the weaker subset ex-hibit the strongest semantic prediction ability, and those trained on the stronger subset the weakest. The MP results are less conclusive; nevertheless, interfer-ence with semantic predictions reflected by SPD is the key signal of metadata sensitivity.  
+
+> 5ViT-S/16 [10] and ConvNeXt-T [36] results are presented in the supplementary.
+
+8 V. Stojnić et al. 
+
+> stronger
+> baseline
+> weaker
+> 20
+> 40
+> 60
+> accuracy
+> MPp - JPEG
+> stronger
+> baseline
+> weaker
+> 40
+> 60
+> 80
+> MPp - Resizing
+> stronger
+> baseline
+> weaker
+> 10
+> 15
+> 20
+> 25
+> 30
+> MPa - Make
+> stronger
+> baseline
+> weaker
+> 5
+> 10
+> 15
+> MPa - Aperture
+> stronger
+> baseline
+> weaker
+> 50
+> 55
+> 60
+> accuracy
+> SP
+> stronger
+> baseline
+> weaker
+> 22
+> 24
+> 26
+> ∆p
+> SPDp - JPEG
+> stronger
+> baseline
+> weaker
+> 25
+> 26
+> SPDp - Resizing
+> stronger
+> baseline
+> weaker
+> 6
+> 8
+> 10
+> 12
+> ∆a
+> SPDa - Camera
+
+Fig. 4: Impact of correlations between semantics and acquisition metadata on the model’s sensitivity to metadata. ResNet50 trained from scratch using CLIP loss [51] on three Re-LAION-2B subsets with Cramér’s V correlations of 0.396, 0.255, and 0.166, referred to as stronger, baseline, and weaker, respectively. 
+
+4 Analysis of mitigation approaches 
+
+We investigate mitigation in two settings: during training on a standard bench-mark (IN1k), and as post-processing of released, widely used foundational mod-els that already exhibit metadata sensitivity. Unlike Sec. 3, these experiments do not rely on artificially introduced correlations, but instead target sensitivity reduction under naturally occurring ones. 
+
+4.1 Mitigation during training with augmentations Augmentations during training. Ramos et al . [52] argue that strong data augmentations during training reduce metadata sensitivity. We explore this by training and testing ResNet50 on original IN1k. The default training recipe in-cludes RandomAugment (RA) [8], while we remove some or add additional aug-mentations to test their impact. 
+
+Impact of augmentations. Fig. 5 presents the results of this experiment. Re-moving any of the RA augmentations commonly increases the model’s ability to capture metadata and its sensitivity. Adding Gaussian blur noticeably reduces sensitivity to processing metadata, but has little impact on acquisition meta-data; blurring is thus relatively effective at removing the pixel-level signal that metadata leaves, while harming semantic prediction (SP) only slightly. Most notably, the combination of color jittering, blurring, and grayscale conversion consistently reduces sensitivity by a large factor for both metadata types. This is the set of augmentations used by DINOv2 [47], which is reported to be among the least sensitive foundational models [52]. Invisible Shortcuts 9
+
+> RA
+> RA - AutoContrast
+> RA - Posterize
+> RA - Sharpness
+> RA + jitter
+> RA + gray
+> RA + blur
+> RA + all
+> 20
+> 30
+> 40
+> accuracy
+> MPp - JPEG
+> RA
+> RA - AutoContrast
+> RA - Posterize
+> RA - Sharpness
+> RA + jitter
+> RA + gray
+> RA + blur
+> RA + all
+> 40
+> 60
+> MPp - Resizing
+> RA
+> RA - AutoContrast
+> RA - Posterize
+> RA - Sharpness
+> RA + jitter
+> RA + gray
+> RA + blur
+> RA + all
+> 10
+> 15
+> 20
+> 25
+> MPa - Make
+> RA
+> RA - AutoContrast
+> RA - Posterize
+> RA - Sharpness
+> RA + jitter
+> RA + gray
+> RA + blur
+> RA + all
+> 6
+> 8
+> 10
+> 12
+> MPa - Aperture
+> RA
+> RA - AutoContrast
+> RA - Posterize
+> RA - Sharpness
+> RA + jitter
+> RA + gray
+> RA + blur
+> RA + all
+> 75
+> 76
+> 77
+> 78
+> accuracy
+> SP
+> RA
+> RA - AutoContrast
+> RA - Posterize
+> RA - Sharpness
+> RA + jitter
+> RA + gray
+> RA + blur
+> RA + all
+> 1
+> 2
+> 3
+> ∆p
+> SPDp - JPEG
+> RA
+> RA - AutoContrast
+> RA - Posterize
+> RA - Sharpness
+> RA + jitter
+> RA + gray
+> RA + blur
+> RA + all
+> 2
+> 4
+> 6
+> SPDp - Resizing
+> RA
+> RA - AutoContrast
+> RA - Posterize
+> RA - Sharpness
+> RA + jitter
+> RA + gray
+> RA + blur
+> RA + all
+> 1
+> 2
+> 3
+> ∆a
+> SPDa - Camera
+
+Fig. 5: Mitigation during training with augmentations – impact on model sensitivity to metadata . ResNet50 trained on IN1k with a varying set of augmen-tations. The default case is Random Augment (RA) [8], while we remove or add aug-mentations from/to the default. all : color jitter, grayscale, and blur. 
+
+4.2 Post-hoc adversarial mitigation Adversarial mitigation. Given a pretrained model that maps an image to a D-dimensional representation space, we train a linear layer f : RD → RD ,as a mitigation component, to transform the representation space and reduce metadata sensitivity. A linear classifier h : RD → RM , applied to the transformed space, predicts among M metadata labels. Training is adversarial [1]: h tries to predict metadata labels, while f tries to make the predictions of h as bad as possible. It proceeds in two steps. (i) Train the metadata prediction model h while keeping the mitigation component frozen , via cross-entropy loss and supervision from metadata labels. (ii) Train the mitigation component f while keeping the metadata prediction model frozen , using three loss terms: one that keeps the transformed feature f (x) close to the pretrained feature by maximizing their dot product f (x)⊤x; one that pushes apart features f (x) and f (y) of images sharing the same metadata label by minimizing their dot product f (x)⊤f (y);and one that maximizes the entropy of the metadata prediction h(f (x)) for each feature x. These two steps are repeated L times. The process requires access to metadata labels, which we obtain by reprocessing IN1k with different JPEG compression parameters; can be used with other attributes similarly. 
+
+Impact of adversarial mitigation. Fig. 6 presents the results for this mitiga-tion strategy for different contrastive vision language (CLIP [51], ConvNeXt [36], SigLIP [83]), supervised (ViT [10], ConvNeXt [36]), and self-supervised (DINO [6], DINOv2 [47]) models. We observe that such process consistently reduces the sen-sitivity for a variety of models, both in terms of metadata prediction and also in terms of semantic prediction distraction. The most interesting fact is that the mitigation training is guided by the JPEG compression parameters, but it also reduces the sensitivity to other types of metadata. Regarding the overall semantic prediction ability, it is either maintained or even slightly improved. 10 V. Stojnić et al.     
+
+> Contrastive vision language Supervised Self-supervised
+> before mitigation after mitigation Random
+> CLIP-L
+> ConvNeXt-L
+> SigLIP-L
+> ViT-L
+> ConvNeXt-B
+> DINO-B
+> DINOv2-B
+> DINOv2-L
+> 20
+> 40
+> 60
+> 80
+> accuracy
+> MPp - JPEG
+> CLIP-L
+> ConvNeXt-L
+> SigLIP-L
+> ViT-L
+> ConvNeXt-B
+> DINO-B
+> DINOv2-B
+> DINOv2-L
+> 40
+> 60
+> 80
+> MPp - Resizing
+> CLIP-L
+> ConvNeXt-L
+> SigLIP-L
+> ViT-L
+> ConvNeXt-B
+> DINO-B
+> DINOv2-B
+> DINOv2-L
+> 10
+> 20
+> 30
+> 40
+> MPa - Make
+> CLIP-L
+> ConvNeXt-L
+> SigLIP-L
+> ViT-L
+> ConvNeXt-B
+> DINO-B
+> DINOv2-B
+> DINOv2-L
+> 10
+> 15
+> MPa - Aperture
+> CLIP-L
+> ConvNeXt-L
+> SigLIP-L
+> ViT-L
+> ConvNeXt-B
+> DINO-B
+> DINOv2-B
+> DINOv2-L
+> 75
+> 80
+> 85
+> accuracy
+> SP
+> CLIP-L
+> ConvNeXt-L
+> SigLIP-L
+> ViT-L
+> ConvNeXt-B
+> DINO-B
+> DINOv2-B
+> DINOv2-L
+> 0
+> 10
+> 20
+> 30
+> ∆p
+> SPDp - JPEG
+> CLIP-L
+> ConvNeXt-L
+> SigLIP-L
+> ViT-L
+> ConvNeXt-B
+> DINO-B
+> DINOv2-B
+> DINOv2-L
+> 0
+> 20
+> 40
+> SPDp - Resizing
+> CLIP-L
+> ConvNeXt-L
+> SigLIP-L
+> ViT-L
+> ConvNeXt-B
+> DINO-B
+> DINOv2-B
+> DINOv2-L
+> 0
+> 5
+> 10
+> ∆a
+> SPDa - Camera
+
+Fig. 6: Post-hoc adversarial mitigation with a linear layer – impact on model sensitivity to metadata . Performance is reported for the original frozen foundational models and for the models adjusted by an additional linear layer trained to mitigate the metadata sensitivity guided by manipulated JPEG labels on IN1k. 
+
+5 Further analysis 
+
+Do Stable Diffusion-generated images carry metadata traces? We hy-pothesize that images generated by models such as Stable Diffusion [54] may not contain pixel-level metadata traces, since they do not arise from a physical image formation process and the post-processing pipeline can be kept uniform after generation. To test this, we train models on synthetically generated images for IN1k classes [12, 58] compressed with fixed high-quality JPEG parameters. The resulting models still encode and rely on metadata, with MP p – JPEG: 29.91, MP p – Resizing: 61.58, SPD p – JPEG: 2.00, and SPD p – Resizing: 6.06, comparable to training on the original ImageNet ( none ) in Fig. 3. This suggests generative models may implicitly reproduce pixel-level traces correlated with the semantics in their training data. 
+
+Metadata sensitive models are good detectors of generated images. 
+
+Recent work [46,61,65] shows that frozen CLIP features are effective at detecting generated images, which we hypothesize is due to their strong metadata encoding ability. To test this, we apply a k-NN classifier ( k = 1 ) to detect generated images, as in Ojha et al . [46], using features from the models in Sec. 3.2 with varying metadata sensitivity. Tab. 1 shows that more sensitive models, trained on strong JPEG-semantics correlations, i.e . pi = 50 or 100 , detect generated images noticeably better than the one trained on the original IN1k. This validates our hypothesis: metadata-semantics correlations encourage the model to focus on low-level details, a beneficial trait for synthetic image detection. Invisible Shortcuts 11 Model Generative Adversarial Networks Deep fakes Low level vision Perceptual loss Guided LDM Glide DALL-E Avg Pro-GAN Cycle-GAN Big-GAN Style-GAN Gau-GAN Star-GAN SITD SAN CRN IMLE 200 steps 200 w/ CFG 100 steps 100 27 50 27 100 10                                                         
+
+> pi=none 69.1 65.3 49.5 53.5 58.7 55.4 51.1 55.0 49.8 57.3 59.6 51.2 62.2 53.4 62.6 58.3 60.7 58.7 57.4 57.3
+> pi= 50% 71.4 66.4 49.0 58.6 58.1 60.1 56.1 54.7 52.3 64.7 68.2 49.9 61.3 53.7 61.3 59.5 60.4 57.9 57.4 59.0
+> pi= 100% 77.2 67.0 48.4 58.4 51.4 76.0 58.7 58.3 53.9 61.3 61.9 55.0 62.9 56.2 60.3 60.2 62.5 61.1 57.5 60.4
+
+Table 1: Metadata sensitive models are good detectors of generated images. 
+
+Used models are ResNet50 trained on different versions of IN1k with manipulated JPEG labels from Sec. 3.2 (original IN1k/ none , pi = 50 and pi = 100 with low, strong and maximal correlations, respectively). Binary classification accuracy reported. 
+
+1 2 3 4 5
+
+20 
+
+40 
+
+60 
+
+80 
+
+Block accuracy MP p - JPEG 
+
+1 2 3 4 5
+
+40 
+
+60 
+
+80 
+
+Block MP p - Resizing  
+
+> original IN1k
+> original IN1k (extra augm.)
+> pi= 100%
+
+Fig. 7: Ability of internal model layers to predict metadata . Metadata predic-tion (MP) accuracy across blocks of ResNet50 trained on: (i) original IN1k, (ii) original IN1k using extra augmentations (color jitter, grayscale, and blur augmentations), and (iii) modified IN1k with strong JPEG-semantics correlations. In all cases Random Aug-ment is used. 
+
+Layer-wise sensitivity analysis. In Fig. 7, we examine the metadata predic-tion ability across the 5 blocks of ResNet50 models trained in different ways. All models reach a strong metadata prediction ability already after two blocks, since metadata traces are low-level signals easily captured by early layers [82]. The ability further improves after the third block for all models, but then diverges: it starts dropping in deeper layers for the model trained on the original IN1k, while continuing to improve for the model trained on the modified IN1k with strong correlations. This shows that the former learns to ignore metadata in deeper lay-ers, delegating semantic feature extraction to them, whereas the latter learns to rely on metadata and cannot ignore it, suggesting that semantic discrimination is compromised in favor of metadata reliance. The use of mitigation effective augmentations, as identified in Sec. 4.1, reduces the MP accuracy. Interestingly, the model trained on strong JPEG-semantics correlations behaves similarly for resizing: it captures the resizing metadata in early layers and cannot ignore it in deeper ones, even though it was not trained with strong resizing-semantics corre-lations. This is further evidence that the model learns to rely on low-level traces in general, not only on the specific attribute strongly correlated with semantics during training. 12 V. Stojnić et al.               
+
+> pi=none pi= 80% pi= 100%
+> before mitigation after mitigation
+> Fig. 8: t-SNE visualization of features before (top) and after (bottom) post-hoc mitigation for two classes ( •,▲) from IN1k processed by different JPEG pa-rameters ( ■,■). Used models are ResNet50 trained on different versions of IN1k with manipulated JPEG labels from Sec. 3.2 (original IN1k/ none ,pi= 80 and pi= 100
+> with low, strong and maximal correlations, respectively).
+
+Representation space visualization before/after post-hoc mitigation. 
+
+Fig. 8 provides a t-SNE [38] visualization of ResNet50 features for two IN1k classes, where all images are processed twice with two different sets of JPEG parameters. The models are trained on the original IN1k and on modified ver-sions with strong processing metadata-semantics correlations (Sec. 3.2), shown before and after post-hoc mitigation. For the model trained on the original IN1k, the classes are decently separated while points with different JPEG parameters overlap well; the small signs of misalignment are consistent with the quantitative measurements in Fig. 3, indicating mild sensitivity to metadata. The model thus learns semantic features and is only subtly affected by metadata. In contrast, the two classes start to mix for models trained under strong correlations, while points with different JPEG parameters become more separated, showing that the model relies on metadata instead of semantics and that metadata leaves strong traces in the representation space. At pi = 100% , the classes are almost completely mixed, and the features can instead be separated by JPEG process-ing. Finally, post-hoc mitigation improves semantic class separability even for the model trained with pi = 100% correlation. 
+
+Impact of mitigation on OOD tasks. Since metadata traces can be a spuri-ous low-level signal that models exploit as a shortcut, reducing reliance on them should be most beneficial under distribution shift, where such shortcuts no longer hold. We therefore investigate whether reducing the models’ metadata sensitiv-ity improves performance on common out-of-distribution (OOD) ImageNet test Invisible Shortcuts 13    
+
+> Contrastive vision language Supervised Self-supervised
+> before mitigation after mitigation
+> CLIP-L
+> ConvNeXt-L
+> SigLIP-L
+> ViT-L
+> ConvNeXt-B
+> DINO-B
+> DINOv2-B
+> DINOv2-L
+> 50
+> 60
+> 70
+> accuracy
+> ImageNet-C
+> CLIP-L
+> ConvNeXt-L
+> SigLIP-L
+> ViT-L
+> ConvNeXt-B
+> DINO-B
+> DINOv2-B
+> DINOv2-L
+> 40
+> 60
+> 80
+> ImageNet-R
+> CLIP-L
+> ConvNeXt-L
+> SigLIP-L
+> ViT-L
+> ConvNeXt-B
+> DINO-B
+> DINOv2-B
+> DINOv2-L
+> 40
+> 60
+> ImageNet-Sketch
+
+Fig. 9: Post-hoc adversarial mitigation with a linear layer – impact on Im-ageNet OOD test sets . Performance is reported for the original frozen foundational models and for the models adjusted by an additional linear layer trained to mitigate the metadata sensitivity guided by manipulated JPEG labels on IN1k. Accuracy reported on ImageNet-C instead of the commonly reported error. 
+
+sets: ImageNet-C [20], ImageNet-R [19], and ImageNet-Sketch [70]. Fig. 9 reports results without and with the post-hoc mitigation. The mitigation helps in many cases, sometimes considerably, and the gains are largest for the models most sen-sitive to metadata (according to Fig. 6: CVLs and supervised ConvNeXt), while sometimes hurting less sensitive ones like DINOv2. We observe similar trends for ResNet50 trained on the original IN1k (ImageNet-C: 44 .2 → 45 .0, ImageNet-R: 
+
+34 .5 → 37 .7, ImageNet-Sketch: 26 .4 → 30 .0) when mitigating during training with augmentations. 
+
+6 Related work 
+
+6.1 Shortcut learning 
+
+In empirical risk minimization (ERM) settings, neural networks have been shown to rely on simple input features as shortcuts to solve the task being learned, even if the shortcuts are only spuriously correlated with features more relevant to the task [14, 66]. This is because under ERM, the objective is simply to minimize error, meaning that shortcut features will be learned as long as they help with the training objective [42, 57]. Not only are shortcut features learned, but they are even preferred by models due to their simplicity. Even in the presence of features that are more salient and more informative, neural networks will still rely more strongly on the simple spurious features if the salient features are more complex to learn [62]. A frequent origin of shortcuts is dataset bias. Due to data sources and collec-tion methods [35,63], as well as their properties such as confounding factors [81], data scarcity [48], collection location [13], and collection timeframe [53], result-ing datasets may exhibit unique characteristics to the point that it is possible to distinguish them from one another despite having similar design goals [35, 68]. More importantly, among these idiosyncrasies may be correlations that create 14 V. Stojnić et al. 
+
+exploitable shortcuts. While these commonly manifest as object-background cor-relations, as is the case with ImageNet [21,45,64], e.g . the side of freight cars be-ing associated with graffiti, non-object-centric correlations also exist. In LAION, images of cardboard boxes are commonly accompanied by watermarks [31]. Even spatial characteristics, such as object location, and lower-level features, such as color distributions, have been found to be correlated with different semantic concepts [23, 41]. Models trained on these datasets in standard ERM settings typically learn these shortcuts and predict the semantic label even when the image contains only the shortcut feature [21, 31, 45, 64]. In contrast to the aforementioned immediately perceptible cues, we focus on largely imperceptible shortcuts, mainly JPEG compression artifacts. Previous studies that have examined their role in shortcut learning focus on specialized tasks [16] or exist outside the context of their correlation with semantic labels [9], while our work investigates their presence in large general-purpose training datasets and consequent ability to interfere with foundation models. Additionally, neural networks have been shown to rely on frequency-based shortcuts [73, 74], e.g . zebra patterns being easily distinguishable in the spec-trum, and such shortcuts arise even in models trained at ImageNet scale. Al-though some types of metadata could also introduce frequency-related shortcuts, these works do not account for them. 
+
+6.2 Shortcut mitigation 
+
+A diverse range of strategies has been proposed to mitigate shortcut learning. One prominent direction is data-centric , where the training distribution is mod-ified to reduce spurious correlations. These approaches include data augmenta-tion techniques [15, 49, 79], such as image stylization or mixup, which expand the dataset with semantically consistent transformations. Other methods rely on resampling or reweighting strategies [27, 30] to balance class distributions, as well as concept discovery and pseudo-label extraction techniques [44, 60, 76] that incorporate additional supervisory signals. A second line of work mitigates shortcuts directly during training. Some approaches introduce additional clas-sification heads [1, 24] or train parallel models [59, 60, 71] to explicitly capture shortcut-related features, thereby encouraging the main model to ignore them. Post-training approaches have also been explored, typically in a two-stage framework. These methods often leverage biased models to identify potential shortcuts [69, 77, 80], employ ensembles of bias models [3, 25, 29, 43], or focus on misclassified examples using contrastive learning techniques [85]. In addition, optimization-based methods modify the training objective to improve robustness to spurious correlations [32,33,56]. Other approaches fine-tune biased models ei-ther entirely [67] or only at the final layer [11, 22, 26, 50], often using feature reweighting strategies. Recent work has also begun exploring bias mitigation in foundation models, particularly in vision–language systems [69, 78]. Our mitiga-tion strategy draws inspiration from these directions. Our post-hoc contrastive separation term is similar to prior work [1, 85], but unlike prior methods, our approach specifically targets metadata traces in vision encoders. Invisible Shortcuts 15 
+
+7 Discussion and conclusions 
+
+We study why vision encoders become sensitive to image metadata and show that this sensitivity is the result of shortcut learning, emerging when metadata correlates with the semantic supervision used during pretraining. This accounts for its presence under categorical supervision on ImageNet and, as our controlled LAION experiments indicate, under caption supervision in vision-language pre-training. Self-supervised methods such as the DINO family are less sensitive, since they do not optimize for semantic targets, yet not fully invariant, as meta-data still serves as a shortcut for matching views of the same image. More broadly, we establish the image formation and processing pipeline itself as a source of bias, imperceptible to humans yet readily exploited by models. Crucially, metadata sensitivity is not purely a disadvantage. The tendency to capture pixel-level signal that harms robustness is what makes an encoder a strong detector of generated images: models trained under stronger metadata-semantics correlations, and thus more sensitive, detect synthetic images notice-ably better. This reframes recent observations that frozen CLIP features excel at fake-image detection as a direct consequence of metadata encoding, making sensitivity double-edged, a disadvantage for semantic generalization but an as-set for forensics. In our analysis we identify further connections than detection: even images synthesized by Stable Diffusion, which never pass through a physical acquisition pipeline, seem to carry pixel-level metadata traces correlated with se-mantics, suggesting generators implicitly imitate the acquisition and processing signatures of their training data. Since metadata distributions drift across cameras, capture conditions, and processing pipelines, encoders relying on such shortcuts are fragile precisely where deployment demands robustness. We show this sensitivity can be mit-igated both during and after pretraining, generalizing across attributes while preserving semantic utility. Consistently, reducing it improves out-of-distribution generalization on ImageNet-C, ImageNet-R, and ImageNet-Sketch, with larger gains for the more sensitive models, suggesting metadata invariance may need to be a first-class objective when training or adapting foundation encoders. We believe this work opens a new horizon, shifting attention from visible, semantic biases to the invisible traces left by the imaging pipeline. It remains open how strongly metadata sensitivity contaminates downstream tasks and the benchmarks used to evaluate encoders. 
+
+Acknowledgments: This work was supported by the GACR grant GA26-24228S, the Horizon MSCA-PF grant No. 101154126, the Czech Technical Uni-versity in Prague grant No. SGS26/074/OHK3/1T/13, the JSPS KAKENHI No. 23H00497 and No. 22K12091. We acknowledge VSB – Technical University of Ostrava, IT4Innovations National Supercomputing Center, Czech Republic, for awarding this project (OPEN-35-7) access to the LUMI supercomputer, owned by the EuroHPC Joint Undertaking, hosted by CSC (Finland) and the LUMI consortium through the Ministry of Education, Youth and Sports of the Czech Republic through the e-INFRA CZ (grant ID: 90254). 16 V. Stojnić et al. 
+
+References 
+
+1. Alvi, M., Zisserman, A., Nellåker, C.: Turning a blind eye: Explicit removal of biases and variation from deep neural network embeddings. In: ECCV (2018) 2. Arjovsky, M., Bottou, L., Gulrajani, I., Lopez-Paz, D.: Invariant risk minimization. arXiv (2019) 3. Bahng, H., Chun, S., Yun, S., Choo, J., Oh, S.J.: Learning de-biased representations with biased representations. In: ICML (2020) 4. Beery, S., Van Horn, G., Perona, P.: Recognition in terra incognita. In: ECCV (2018) 5. Beyer, L., Izmailov, P., Kolesnikov, A., Caron, M., Kornblith, S., Zhai, X., Min-derer, M., Tschannen, M., Alabdulmohsin, I., Pavetic, F.: FlexiViT: One model for all patch sizes. In: CVPR (2023) 6. Caron, M., Touvron, H., Misra, I., Jégou, H., Mairal, J., Bojanowski, P., Joulin, A.: Emerging properties in self-supervised vision transformers. In: ICCV (2021) 7. Cramér, H.: Mathematical methods of statistics. Princeton university press (1946) 8. Cubuk, E.D., Zoph, B., Shlens, J., Le, Q.V.: RandAugment: Practical automated data augmentation with a reduced search space. In: CVPRW (2020) 9. Doersch, C., Gupta, A., Efros, A.A.: Unsupervised visual representation learning by context prediction. In: ICCV (2015) 10. Dosovitskiy, A., Beyer, L., Kolesnikov, A., Weissenborn, D., Zhai, X., Unterthiner, T., Dehghani, M., Minderer, M., Heigold, G., Gelly, S., et al.: An image is worth 16x16 words: Transformers for image recognition at scale. In: ICLR (2020) 11. Du, M., Mukherjee, S., Wang, G., Tang, R., Awadallah, A., Hu, X.: Fairness via representation neutralization. In: NeurIPS (2021) 12. Fan, L., Chen, K., Krishnan, D., Katabi, D., Isola, P., Tian, Y.: Scaling laws of synthetic images for model training ... for now. In: CVPR (2024) 13. Gaviria Rojas, W., Diamos, S., Kini, K., Kanter, D., Janapa Reddi, V., Coleman, C.: The dollar street dataset: Images representing the geographic and socioeco-nomic diversity of the world. NeurIPS (2022) 14. Geirhos, R., Jacobsen, J.H., Michaelis, C., Zemel, R., Brendel, W., Bethge, M., Wichmann, F.A.: Shortcut learning in deep neural networks. Nature Machine In-telligence (2020) 15. Geirhos, R., Rubisch, P., Michaelis, C., Bethge, M., Wichmann, F.A., Brendel, W.: ImageNet-trained cnns are biased towards texture; increasing shape bias improves accuracy and robustness. In: ICLR (2018) 16. Grommelt, P., Weiss, L., Pfreundt, F.J., Keuper, J.: Fake or jpeg? revealing com-mon biases in generated image detection datasets. In: ECCVW (2024) 17. Grootendorst, M.: BERTopic: Neural topic modeling with a class-based TF-IDF procedure. arXiv preprint arXiv:2203.05794 (2022) 18. He, K., Zhang, X., Ren, S., Sun, J.: Deep residual learning for image recognition. In: CVPR (2016) 19. Hendrycks, D., Basart, S., Mu, N., Kadavath, S., Wang, F., Dorundo, E., Desai, R., Zhu, T., Parajuli, S., Guo, M., et al.: The many faces of robustness: A critical analysis of out-of-distribution generalization. In: CVPR (2021) 20. Hendrycks, D., Dietterich, T.: Benchmarking neural network robustness to common corruptions and perturbations. In: ICLR (2019) 21. Hendrycks, D., Zhao, K., Basart, S., Steinhardt, J., Song, D.: Natural adversarial examples. In: CVPR (2021) Invisible Shortcuts 17 22. Izmailov, P., Kirichenko, P., Gruver, N., Wilson, A.G.: On feature learning in the presence of spurious correlations. In: NeurIPS (2022) 23. Jahanian*, A., Chai*, L., Isola, P.: On the "steerability" of generative adversarial networks. In: ICLR (2020) 24. Kim, B., Kim, H., Kim, K., Kim, S., Kim, J.: Learning not to learn: Training deep neural networks with biased data. In: CVPR (2019) 25. Kim, N., Hwang, S., Ahn, S., Park, J., Kwak, S.: Learning debiased classifier with biased committee. In: NeurIPS (2022) 26. Kirichenko, P., Izmailov, P., Wilson, A.G.: Last layer re-training is sufficient for robustness to spurious correlations. In: ICLR (2022) 27. LaBonte, T., Hill, J., Zhang, X., Muthukumar, V., Kumar, A.: The group robust-ness is in the details: Revisiting finetuning under spurious correlations. In: NeurIPS (2024) 28. LAION: Releasing re-laion-5b: transparent iteration on laion-5b with additional safety fixes. https://laion.ai/blog/relaion-5b/ (2024) 29. Lee, Y., Yao, H., Finn, C.: Diversify and disambiguate: Out-of-distribution robust-ness via disagreement. In: ICLR (2023) 30. Li, Y., Vasconcelos, N.: Repair: Removing representation bias by dataset resam-pling. In: CVPR (2019) 31. Li, Z., Evtimov, I., Gordo, A., Hazirbas, C., Hassner, T., Ferrer, C.C., Xu, C., Ibrahim, M.: A whac-a-mole dilemma: Shortcuts come in multiples where mitigat-ing one amplifies others. In: CVPR (2023) 32. Liu, E.Z., Haghgoo, B., Chen, A.S., Raghunathan, A., Koh, P.W., Sagawa, S., Liang, P., Finn, C.: Just train twice: Improving group robustness without training group information. In: ICML (2021) 33. Liu, S., Zhang, X., Sekhar, N., Wu, Y., Singhal, P., Fernandez-Granda, C.: Avoiding spurious correlations via logit correction. In: ICLR (2022) 34. Liu, Z., Lin, Y., Cao, Y., Hu, H., Wei, Y., Zhang, Z., Lin, S., Guo, B.: Swin trans-former: Hierarchical vision transformer using shifted windows. In: ICCV (2021) 35. Liu, Z., He, K.: A decade’s battle on dataset bias: Are we there yet? In: ICLR (2025) 36. Liu, Z., Mao, H., Wu, C.Y., Feichtenhofer, C., Darrell, T., Xie, S.: A convnet for the 2020s. In: CVPR (2022) 37. Loshchilov, I., Hutter, F.: Decoupled weight decay regularization. In: ICLR (2019) 38. Van der Maaten, L., Hinton, G.: Visualizing data using t-sne. JMLR (2008) 39. McInnes, L., Healy, J., Astels, S.: hdbscan: Hierarchical density based clustering. The Journal of Open Source Software 2(11), 205 (2017) 40. McInnes, L., Healy, J., Melville, J.: UMAP: Uniform Manifold Approximation and Projection for Dimension Reduction. arXiv preprint arXiv:1802.03426 (2018) 41. Meister, N., Zhao, D., Wang, A., Ramaswamy, V.V., Fong, R., Russakovsky, O.: Gender Artifacts in Visual Datasets. In: ICCV (2023) 42. Nagarajan, V., Andreassen, A., Neyshabur, B.: Understanding the failure modes of out-of-distribution generalization. In: ICLR (2021) 43. Nam, J., Cha, H., Ahn, S., Lee, J., Shin, J.: Learning from failure: Training debiased classifier from biased classifier. In: NeurIPS (2020) 44. Nam, J., Kim, J., Lee, J., Shin, J.: Spread spurious attribute: Improving worst-group accuracy with spurious attribute estimation. In: ICLR (2022) 45. Neuhaus, Y., Augustin, M., Boreiko, V., Hein, M.: Spurious features everywhere -large-scale detection of harmful spurious features in ImageNet. In: ICCV (2023) 46. Ojha, U., Li, Y., Lee, Y.J.: Towards universal fake image detectors that generalize across generative models. In: CVPR (2023) 18 V. Stojnić et al. 47. Oquab, M., Darcet, T., Moutakanni, T., Vo, H., Szafraniec, M., Khalidov, V., Fernandez, P., Haziza, D., Massa, F., El-Nouby, A., et al.: DINOv2: Learning robust visual features without supervision. TMLR (2024) 48. Parashar, S., Lin, Z., Liu, T., Dong, X., Li, Y., Ramanan, D., Caverlee, J., Kong, S.: The neglected tails in vision-language models. In: CVPR (2024) 49. Puli, A.M., Joshi, N., Wald, Y., He, H., Ranganath, R.: Nuisances via negativa: Adjusting for spurious correlations via data augmentation. TMLR (2024) 50. Qiu, S., Potapczynski, A., Izmailov, P., Wilson, A.G.: Simple and fast group ro-bustness by automatic feature reweighting. In: ICML (2023) 51. Radford, A., Kim, J.W., Hallacy, C., Ramesh, A., Goh, G., Agarwal, S., Sastry, G., Askell, A., Mishkin, P., Clark, J., et al.: Learning transferable visual models from natural language supervision. In: ICML (2021) 52. Ramos, R., Stojnić, V., Kordopatis-Zilos, G., Nakashima, Y., Tolias, G., Garcia, N.: Processing and acquisition traces in visual encoders: What does clip know about your camera? In: ICCV (2025) 53. Recht, B., Roelofs, R., Schmidt, L., Shankar, V.: Do ImageNet classifiers generalize to ImageNet? In: ICML (2019) 54. Rombach, R., Blattmann, A., Lorenz, D., Esser, P., Ommer, B.: High-resolution image synthesis with latent diffusion models. In: CVPR (2022) 55. Russakovsky, O., Deng, J., Su, H., Krause, J., Satheesh, S., Ma, S., Huang, Z., Karpathy, A., Khosla, A., Bernstein, M.S., Berg, A.C., Fei-Fei, L.: ImageNet large scale visual recognition challenge. IJCV (2015) 56. Sagawa, S., Koh, P.W., Hashimoto, T.B., Liang, P.: Distributionally robust neu-ral networks for group shifts: On the importance of regularization for worst-case generalization. In: ICLR (2020) 57. Sagawa, S., Raghunathan, A., Koh, P.W., Liang, P.: An investigation of why over-parameterization exacerbates spurious correlations. In: ICML (2020) 58. Sariyildiz, M.B., Alahari, K., Larlus, D., Kalantidis, Y.: Fake it till you make it: Learning transferable representations from synthetic ImageNet clones. In: CVPR (2023) 59. Sarridis, I., Koutlis, C., Papadopoulos, S., Diou, C.: Flac: Fairness-aware represen-tation learning by suppressing attribute-class associations. PAMI (2024) 60. Sarridis, I., Koutlis, C., Papadopoulos, S., Diou, C.: MAVias: Mitigate any visual bias. In: ICCV (2025) 61. Sha, Z., Li, Z., Yu, N., Zhang, Y.: De-fake: Detection and attribution of fake images generated by text-to-image generation models. In: SIGSAC (2023) 62. Shah, H., Tamuly, K., Raghunathan, A., Jain, P., Netrapalli, P.: The pitfalls of simplicity bias in neural networks. NeurIPS (2020) 63. Shirali, A., Hardt, M.: What makes ImageNet look unlike LAION. TMLR (2025) 64. Singla, S., Feizi, S.: Salient ImageNet: How to discover spurious features in deep learning? In: ICLR (2022) 65. Smeu, S., Oneata, E., Oneata, D.: Declip: Decoding clip representations for deep-fake localization. In: WACV (2025) 66. Suhail, P., Sethi, A.: Shortcut Learning Susceptibility in Vision Classifiers. In: Workshop on Spurious Correlation and Shortcut Learning: Foundations and Solu-tions (2025) 67. Taghanaki, S.A., Khani, A., Khani, F., Gholami, A., Tran, L., Mahdavi-Amiri, A., Hamarneh, G.: Masktune: mitigating spurious correlations by forcing to explore. In: NeurIPS (2022) 68. Torralba, A., Efros, A.A.: Unbiased look at dataset bias. In: CVPR (2011) Invisible Shortcuts 19 69. Varma, M., Delbrouck, J.B., Chen, Z., Chaudhari, A., Langlotz, C.: Ravl: Discov-ering and mitigating spurious correlations in fine-tuned vision-language models. In: NeurIPS (2024) 70. Wang, H., Ge, S., Lipton, Z.C., Xing, E.P.: Learning robust global representations by penalizing local predictive power. In: NeurIPS (2019) 71. Wang, H., He, Z., Lipton, Z.C., Xing, E.P.: Learning robust representations by projecting superficial statistics out. In: ICLR (2019) 72. Wang, Q., Lin, Y., Chen, Y., Schmidt, L., Han, B., Zhang, T.: A sober look at the robustness of clips to spurious features. NeurIPS (2024) 73. Wang, S., Veldhuis, R.N.J., Brune, C., Strisciuglio, N.: What do neural networks learn in image classification? A frequency shortcut perspective. In: ICCV (2023) 74. Wang, S., Veldhuis, R.N.J., Strisciuglio, N.: Do imagenet-trained models learn shortcuts? the impact of frequency shortcuts on generalization. In: CVPR (2025) 75. Wightman, R., Touvron, H., Jégou, H.: Resnet strikes back: An improved training procedure in timm. arXiv (2021) 76. Wu, S., Yuksekgonul, M., Zhang, L., Zou, J.: Discover and cure: Concept-aware mitigation of spurious correlation. In: ICML (2023) 77. Yang, Y., Gan, E., Dziugaite, G.K., Mirzasoleiman, B.: Identifying spurious biases early in training through the lens of simplicity bias. In: AISTATS (2024) 78. Yang, Y., Nushi, B., Palangi, H., Mirzasoleiman, B.: Mitigating spurious correla-tions in multi-modal models during fine-tuning. In: ICML (2023) 79. Yao, H., Wang, Y., Li, S., Zhang, L., Liang, W., Zou, J., Finn, C.: Improving out-of-distribution robustness via selective augmentation. In: ICML (2022) 80. Yenamandra, S., Ramesh, P., Prabhu, V., Hoffman, J.: Facts: First amplify corre-lations and then slice to discover bias. In: ICCV (2023) 81. Zech, J.R., Badgeley, M.A., Liu, M., Costa, A.B., Titano, J.J., Oermann, E.K.: Variable generalization performance of a deep learning model to detect pneumonia in chest radiographs: a cross-sectional study. PLoS Medicine 15 (11), e1002683 (2018) 82. Zeiler, M.D., Fergus, R.: Visualizing and understanding convolutional networks. In: ECCV (2014) 83. Zhai, X., Mustafa, B., Kolesnikov, A., Beyer, L.: Sigmoid loss for language image pre-training. In: ICCV (2023) 84. Zhang, H., Cissé, M., Dauphin, Y.N., Lopez-Paz, D.: mixup: Beyond empirical risk minimization. In: ICLR (2018) 85. Zhang, M., Sohoni, N.S., Zhang, H.R., Finn, C., Ré, C.: Correct-n-contrast: A contrastive approach for improving robustness to spurious correlations. In: NeurIPS (2022) 20 V. Stojnić et al. 
+
+# Supplementary Material 
+
+> 100
+> 90
+> 80
+> 50
+> 20
+> 10  0
+> none
+> 20
+> 40
+> 60
+> 80
+> pc
+> accuracy
+> MPp - JPEG
+> 100
+> 90
+> 80
+> 50
+> 20
+> 10  0
+> none
+> 40
+> 60
+> 80
+> pc
+> MPp - Resizing
+> 100
+> 90
+> 80
+> 50
+> 20
+> 10  0
+> none
+> 10
+> 20
+> 30
+> pc
+> MPa - Make
+> 100
+> 90
+> 80
+> 50
+> 20
+> 10  0
+> none
+> 6
+> 8
+> 10
+> 12
+> 14
+> pc
+> MPa - Aperture
+> 100
+> 90
+> 80
+> 50
+> 20
+> 10  0
+> none
+> 75
+> 80
+> 85
+> pc
+> accuracy
+> SP
+> none
+> pc
+> 100
+> 90
+> 80
+> 50
+> 20
+> 10  0
+> none
+> 0
+> 20
+> 40
+> 60
+> pc
+> ∆p
+> SPDp - JPEG
+> 100
+> 90
+> 80
+> 50
+> 20
+> 10  0
+> none
+> 0
+> 10
+> 20
+> 30
+> 40
+> pc
+> SPDp - Resizing
+> 100
+> 90
+> 80
+> 50
+> 20
+> 10  0
+> none
+> 2
+> 4
+> 6
+> 8
+> 10
+> pc
+> ∆a
+> SPDa - Camera
+
+Fig. I: Impact of correlations between semantics and processing metadata on the model’s sensitivity to metadata in a class controlled setting. ResNet50 trained on different versions of IN1k with manipulated JPEG labels. We use probability 
+
+pc to control the fraction of classes that exhibit correlations between JPEG labels and semantic labels, instead of using pi shown in Fig. 3. The larger the pc, the stronger the correlation between JPEG labels and semantic labels. None : model trained on original IN1k. Difference between pc = 0 and none : the former has no JPEG-semantics correlations, while the latter has the original IN1k correlations. SP: two types of test sets are used, the original one (none, green color) which is fixed across values of pc,and 7 different versions (purple color) created by manipulating the JPEG labels of the original test set in the same way as the corresponding training set for each value of pc.
+
+A Class controlled correlations of semantics and processing metadata 
+
+In Sec. 3.2, we use probability pi to control the percentage of images of each class that exibit correlations of semantics and processing metadata. We now take a different approach and we randomly assign one specific metadata label only to a fraction pc of classes. Images belonging to the remaining classes are randomly assigned to their metadata label. Thus, pc controls the proportion of classes exhibiting correlations of semantics and processing metadata. Fig. I presents the results of this experiment, where we observe similar trends as in Fig. 3 (Sec. 3.2), that the models trained on data with stronger correlations between metadata and semantic labels are more sensitive to metadata. Additionally, among the two ways ( pi and pc) of creating correlations, the one that controls the number of correlated classes seems to have a stronger effect Invisible Shortcuts 21 
+
+> 100
+> 90
+> 80
+> 50
+> 20
+> 10  0
+> none
+> 20
+> 40
+> 60
+> pi
+> accuracy
+> MPp - JPEG
+> 100
+> 90
+> 80
+> 50
+> 20
+> 10  0
+> none
+> 40
+> 60
+> 80
+> pi
+> MPp - Resizing
+> 100
+> 90
+> 80
+> 50
+> 20
+> 10  0
+> none
+> 10
+> 15
+> 20
+> 25
+> 30
+> pi
+> MPa - Make
+> 100
+> 90
+> 80
+> 50
+> 20
+> 10  0
+> none
+> 6
+> 8
+> 10
+> 12
+> pi
+> MPa - Aperture
+> 100
+> 90
+> 80
+> 50
+> 20
+> 10  0
+> none
+> 76
+> 78
+> 80
+> 82
+> 84
+> pi
+> accuracy
+> SP
+> none
+> pi
+> 100
+> 90
+> 80
+> 50
+> 20
+> 10  0
+> none
+> 5
+> 10
+> pi
+> ∆p
+> SPDp - JPEG
+> 100
+> 90
+> 80
+> 50
+> 20
+> 10  0
+> none
+> 0
+> 20
+> 40
+> 60
+> pi
+> SPDp - Resizing
+> 100
+> 90
+> 80
+> 50
+> 20
+> 10  0
+> none
+> 4
+> 6
+> pi
+> ∆a
+> SPDa - Camera
+
+Fig. II: Impact of correlations between semantics and processing metadata on the model’s sensitivity to metadata. ResNet50 trained on different versions of IN1k with manipulated resize labels instead of JPEG labels in Fig. 3. The larger the pi, the stronger the correlation between resize labels and semantic labels. None :model trained on original IN1k. Difference between pi = 0 and none : the former has no resize-semantics correlations, while the latter has the original IN1k correlations. SP: two types of test sets are used, the original one (none, green color) which is fixed across values of pi, and 7 different versions (purple color) created by manipulating the resize labels of the original test set in the same way as the corresponding training set for each value of pi.
+
+on the model’s ability to encode metadata information and on the sensitivity of semantic prediction abilities to metadata. This suggests that having whole classes exhibiting correlation between metadata and semantics has a stronger effect on the model’s ability to encode metadata information than having only a fraction of images of each class exhibiting such correlation. 
+
+B Controlling correlations of semantics and processing metadata using resize 
+
+In Sec. 3.2, we introduce correlations of semantics and processing metadata by re-compressing images based on their semantic label. To show that our observations are not dependent on the choice of processing metadata, instead of recompress-ing, we resize images based on their semantic label. We define 13 metadata labels that control the amount of upsampling or downsampling of the original image. All images are then resized according to one of these labels, creating a correlation between semantic labels and metadata labels. Fig. II presents the results of this experiment. We observe that models trained on data with stronger correlations between metadata and semantic labels are more sensitive to metadata. 22 V. Stojnić et al. 
+
+> 100
+> 90
+> 80
+> 50
+> 20
+> 10  0
+> none
+> 40
+> 60
+> pi
+> accuracy
+> MPp - Sharpening
+> 100
+> 90
+> 80
+> 50
+> 20
+> 10  0
+> none
+> 25
+> 30
+> 35
+> 40
+> pi
+> MPp - Interpolation
+> 100
+> 90
+> 80
+> 50
+> 20
+> 10  0
+> none
+> 2
+> 4
+> 6
+> pi
+> MPa - Model
+> 100
+> 90
+> 80
+> 50
+> 20
+> 10  0
+> none
+> 6
+> 8
+> 10
+> 12
+> pi
+> MPa - Exposure
+> 100
+> 90
+> 80
+> 50
+> 20
+> 10  0
+> none
+> 5
+> 10
+> 15
+> pi
+> accuracy
+> MPa - ISO Speed
+> 100
+> 90
+> 80
+> 50
+> 20
+> 10  0
+> none
+> 10
+> 20
+> pi
+> MPa - Focal Length
+> 100
+> 90
+> 80
+> 50
+> 20
+> 10  0
+> none
+> 5
+> 10
+> 15
+> pi
+> ∆p
+> SPDp - Sharpening
+> 100
+> 90
+> 80
+> 50
+> 20
+> 10  0
+> none
+> 1
+> 2
+> pi
+> SPDp - Interpolation
+
+Fig. III: Impact of correlations between semantics and processing metadata on the model’s sensitivity to metadata. Diagnostic metrics for additional meta-data attributes compared to Fig. 3 ResNet50 trained on different versions of IN1k with manipulated JPEG labels. The larger the pi, the stronger the correlation between JPEG labels and semantic labels. None : model trained on original IN1k. Difference between pi = 0 and none : the former has no JPEG-semantics correlations, while the latter has the original IN1k correlations. SP: two types of test sets are used, the orig-inal one (none, green color) which is fixed across values of pi, and 7 different versions (purple color) created by manipulating the JPEG labels of the original test set in the same way as the corresponding training set for each value of pi.
+
+C Diagnostic metrics for additional metadata attributes 
+
+In the main paper, we evaluate models on two processing attributes (JPEG and resizing) and two acquisition attributes (make and aperture). Here, we present results for other processing and acquisition attributes from the benchmark by Ramos et al . [52]. Fig. III presents the results for the ResNet50 model trained on the data with correlations between JPEG labels and semantics labels (Sec. 3.2) for additional metadata attributes. We observe that models trained on data with stronger correlations are more sensitive to metadata, showing that our ob-servations are not dependent on the metadata attribute used during evaluation. Additionally, in Fig. IV, we present the results of our post-hoc adversarial miti-gation approach (Sec. 4.2) when applied to these other metadata attributes. We observe that our mitigation approach reduces sensitivity to metadata, demon-strating that it generalizes across metadata attributes. Invisible Shortcuts 23 
+
+Contrastive vision language Supervised Self-supervised 
+
+before mitigation after mitigation Random 
+
+> CLIP-L
+> ConvNeXt-L
+> SigLIP-L
+> ViT-L
+> ConvNeXt-B
+> DINO-B
+> DINOv2-B
+> DINOv2-L
+
+40 
+
+60 
+
+80 
+
+> accuracy
+
+MPp - Sharpening 
+
+> CLIP-L
+> ConvNeXt-L
+> SigLIP-L
+> ViT-L
+> ConvNeXt-B
+> DINO-B
+> DINOv2-B
+> DINOv2-L
+
+40 
+
+60 
+
+MPp - Interpolation 
+
+> CLIP-L
+> ConvNeXt-L
+> SigLIP-L
+> ViT-L
+> ConvNeXt-B
+> DINO-B
+> DINOv2-B
+> DINOv2-L
+
+2
+
+4
+
+6
+
+8
+
+10 
+
+MPa - Model 
+
+> CLIP-L
+> ConvNeXt-L
+> SigLIP-L
+> ViT-L
+> ConvNeXt-B
+> DINO-B
+> DINOv2-B
+> DINOv2-L
+
+6
+
+8
+
+10 
+
+12 
+
+14 
+
+MPa - Exposure 
+
+> CLIP-L
+> ConvNeXt-L
+> SigLIP-L
+> ViT-L
+> ConvNeXt-B
+> DINO-B
+> DINOv2-B
+> DINOv2-L
+
+10 
+
+15 
+
+> accuracy
+
+MPa - ISO Speed 
+
+> CLIP-L
+> ConvNeXt-L
+> SigLIP-L
+> ViT-L
+> ConvNeXt-B
+> DINO-B
+> DINOv2-B
+> DINOv2-L
+
+10 
+
+20 
+
+30 
+
+MPa - Focal Length 
+
+> CLIP-L
+> ConvNeXt-L
+> SigLIP-L
+> ViT-L
+> ConvNeXt-B
+> DINO-B
+> DINOv2-B
+> DINOv2-L
+
+0
+
+5
+
+10 
+
+> ∆p
+
+SPDp - Sharpening 
+
+> CLIP-L
+> ConvNeXt-L
+> SigLIP-L
+> ViT-L
+> ConvNeXt-B
+> DINO-B
+> DINOv2-B
+> DINOv2-L
+
+0
+
+2
+
+4
+
+6
+
+SPDp - Interpolation 
+
+Fig. IV: Post-hoc adversarial mitigation with a linear layer – impact on model sensitivity to metadata . Diagnostic metrics for additional metadata at-tributes compared to Fig. 6. 
+
+D Comparison of mitigation approaches 
+
+The two proposed mitigation approaches are applicable in different settings and assumptions: augmentations during the original model training and post-hoc on pre-trained models. However, the results in Tab. I indicate they complement each other, while performing roughly the same if used separately. 
+
+E Ablation of the post-hoc adversarial mitigation 
+
+Fig. V presents the results of an ablation study of the post-hoc adversarial mitigation loss. We observe that both terms of the loss related to metadata mitigation ( β, γ) contribute to reducing sensitivity to metadata. Interestingly, we observe that the feature preservation term ( α) does not significantly affect the semantic prediction (SP). However, we attribute this to the fact that we use a simple linear layer as the mitigation component. When using a more complex mitigation component such as MLP, we observe that this term becomes crucial for preserving semantic information. 
+
+aug post-hoc MP p - JPEG MP p - Resizing MP a - Make MP a - Aperture SP SPD p - JPEG SPD p - Resizing SPD a - Camera 
+
+✗ ✗ 37.3 63.4 23.8 11.9 78.2 2.7 4.2 3.5 
+
+✓ ✗ 30.7 53.1 21.4 11.1 77.3 1.4 1.8 1.6 
+
+✗ ✓ 31.2 56.1 19.4 11.4 77.2 0.8 2.3 2.3 
+
+✓ ✓ 24.7 46.9 18.9 10.5 76.5 0.3 0.7 1.6 
+
+Table I: Comparison and combination of the mitigation methods. ResNet50 trained on original IN1k. 24 V. Stojnić et al. 
+
+> before
+> after
+> after ( α = 0 )
+> after ( β = 0 )
+> after ( γ = 0 )
+> 20
+> 40
+> 60
+> accuracy
+> MPp - JPEG
+> before
+> after
+> after ( α = 0 )
+> after ( β = 0 )
+> after ( γ = 0 )
+> 40
+> 60
+> 80
+> MPp - Resizing
+> before
+> after
+> after ( α = 0 )
+> after ( β = 0 )
+> after ( γ = 0 )
+> 10
+> 20
+> 30
+> MPa - Make
+> before
+> after
+> after ( α = 0 )
+> after ( β = 0 )
+> after ( γ = 0 )
+> 6
+> 8
+> 10
+> 12
+> 14
+> MPa - Aperture
+> before
+> after
+> after ( α = 0 )
+> after ( β = 0 )
+> after ( γ = 0 )
+> 85
+> 86
+> accuracy
+> SP
+> before
+> after
+> after ( α = 0 )
+> after ( β = 0 )
+> after ( γ = 0 )
+> 2
+> 4
+> 6
+> ∆p
+> SPDp - JPEG
+> before
+> after
+> after ( α = 0 )
+> after ( β = 0 )
+> after ( γ = 0 )
+> 11
+> 12
+> SPDp - Resizing
+> before
+> after
+> after ( α = 0 )
+> after ( β = 0 )
+> after ( γ = 0 )
+> 1
+> 2
+> 3
+> ∆a
+> SPDa - Camera
+
+Fig. V: Impact of loss terms of the post-hoc adversarial mitigation. Mitigation applied on top of pretrained supervised ConvNeXt-B [36]. 
+
+F Implementation details 
+
+F.1 Diagnostic metrics 
+
+For diagnostic metrics, we follow the setup of Ramos et al . [52] for all processing and acquisition attributes. An overview of the used processing and acquisition attributes, along with the number of classes in each case, is given in Tab. II; the full details can be found in the original paper [52]. 
+
+Attribute Type Metric Num. classes Description JPEG processing MP, SPD 6 amount of JPEG compression Resizing processing MP, SPD 3 amount of image resizing Sharpening processing MP, SPD 3 amount of sharpening Interpolation processing MP, SPD 4 type of interpolation during resizing Make acquisition MP 9 manufacturer of the camera Aperture acquisition MP 17 size of the opening in the lens Model acquisition MP 88 specific camera model used Exposure acquisition MP 16 amount of light captured by sensor ISO speed acquisition MP 16 camera sensor’s sensitivity to light Focal length acquisition MP 13 light convergence strength of lens Camera acquisition SPD 2 type of camera used 
+
+Table II: Image processing and acquisition attributes used in diagnostic metrics. Invisible Shortcuts 25 topic 
+
+10 6
+
+10 5
+
+10 4
+
+10 3
+
+10 2
+
+> proportion
+
+identical order 
+
+topic 
+
+10 6
+
+10 5
+
+10 4
+
+10 3
+
+10 2
+
+descending order 
+
+baseline 
+
+stronger 
+
+weaker      
+
+> Fig. VI: Topic proportions within the Re-LAION-2B subsets with baseline, stronger, weaker correlations, discussed in Sec 3.4. Left: the values plotted at the same x-value correspond to the same topic. Topics are sorted in descending order by the proportion in the baseline subset. Right: the values plotted at the same x-value correspond to the same topic rank . Proportions are sorted in descending order.
+
+F.2 Training on IN1k 
+
+We train all of our models for 300 epochs on IN1k. For ResNet50, we follow the A2 recipe of Wightman et al . [75]. ViT-S/16 and ViT-B/16 are trained using the AdamW [37] optimizer with a batch size of 4096 and a cosine-scheduled learning rate of 1e − 3, with a warmup of 40 and 32 epochs, respectively. We additionally utilize 0.1 weight decay, 0.1 dropout, RandomAugment [8], and 0.5 mixup [84]. 
+
+F.3 Training on Re-LAION-2B 
+
+We use BERTopic [17] for topic extraction, where the captions are embedded with a sentence encoder 6, then dimensionality-reduced via UMAP [40] and clus-tered into topics via HDBSCAN [39]. Topic embeddings are then calculated by averaging the embeddings of the assigned captions, which is used to categorize new captions via cosine similarity. By first fitting our topic model on 1M cap-tions, then applying the provided auto topic reduction method, we obtain 6, 238 
+
+topics. The proportions of topic representation are shown in Fig. VI. In general, topics are represented consistently across the three subsets, with topics highly represented in the baseline subset also being among the most represented topics in the other subsets. All of our models are trained for 32 epochs using the AdamW [37] optimizer with a batch size of 320 and a cosine-scheduled learning rate of 5e − 4, with a warmup of 10 , 000 warmup steps. We additionally utilize 0.2 weight decay and automatic mixed precision.   
+
+> 6We use the model available at https://huggingface.co/sentence-transformers/ all-MiniLM-L6-v2
+
+26 V. Stojnić et al. 
+
+F.4 Details about synthesizing correlation between semantics and processing metadata 
+
+We introduce controlled correlation between semantics and processing metadata in IN1k by either JPEG compression or resizing. 
+
+JPEG compression : We consider a set J = Q × C = {(q1, c 1), · · · , (qJ , c J )} of 
+
+J different JPEG metadata labels defined by the quality q ∈ Q and chroma subsampling c ∈ C . We use Q = {75 , 77 , · · · , 95 } and C = {4:2:0 , 4:4:4 }, which yields J = 22 distinct values of JPEG metadata labels. 
+
+Resizing : We consider a set R = {r1, · · · , r R} = { 14 , · · · , 11.5 , 1, 1.5, · · · , 4} where 
+
+ri defines the change in image area while preserving the aspect ratio. 
+
+F.5 Post-hoc adversarial mitigation 
+
+Training of our post-hoc mitigation model proceeds in two steps, with each step optimized for 10 epochs using the AdamW [37] optimizer with 1.0 learning rate. 1. Train the metadata prediction model h while keeping the mitigation compo-nent frozen by optimizing cross-entropy loss with supervision from metadata labels. 2. Train the mitigation component f while keeping the metadata prediction model frozen by optimizing a loss 
+
+L = − αN
+
+> N
+
+X
+
+> i=1
+
+log 
+
+
+
+σ
+
+ f (xi)⊤xi
+
+τ
+
+ | {z }
+
+> keep close to the original feature
+
+− βN 2
+
+> N
+
+X
+
+> i=1
+> N
+
+X
+
+> j=1
+
+I [m(xi) = m(xj ) ∧ i̸ = j] log 
+
+
+
+1 − σ
+
+ f (xi)⊤f (xj )
+
+τ
+
+ | {z }
+
+> push apart features that share the same metadata label
+
++ γN
+
+> N
+
+X
+
+> i=1
+
+KL (1/M ∥ h(f (xi))) 
+
+| {z }
+
+> predict uniform distribution
+
+,
+
+(1) where α, β, and γ are weights, σ is a sigmoid function, τ is a temperature, 
+
+I is an indicator function, m(x) outputs the metadata label associated with 
+
+x, KL is KL-divergence, and 1 is a vector of all ones. We initialize f to an identity, while we initialize h randomly. We fix α = 40 ,
+
+β = 20 , γ = 1 .0, τ = 0 .1, and repeat the steps L = 10 times. Invisible Shortcuts 27 
+
+> 100
+> 90
+> 80
+> 50
+> 20
+> 10  0
+> none
+> 20
+> 40
+> 60
+> pi
+> accuracy
+> MPp - JPEG
+> 100
+> 90
+> 80
+> 50
+> 20
+> 10  0
+> none
+> 40
+> 50
+> 60
+> pi
+> MPp - Resizing
+> 100
+> 90
+> 80
+> 50
+> 20
+> 10  0
+> none
+> 10
+> 15
+> 20
+> 25
+> pi
+> MPa - Make
+> 100
+> 90
+> 80
+> 50
+> 20
+> 10  0
+> none
+> 6
+> 8
+> 10
+> 12
+> pi
+> MPa - Aperture
+> 100
+> 90
+> 80
+> 50
+> 20
+> 10  0
+> none
+> 75
+> 80
+> pi
+> accuracy
+> SP
+> none
+> pi
+> 100
+> 90
+> 80
+> 50
+> 20
+> 10  0
+> none
+> 0
+> 5
+> 10
+> 15
+> pi
+> ∆p
+> SPDp - JPEG
+> 100
+> 90
+> 80
+> 50
+> 20
+> 10  0
+> none
+> 0
+> 2
+> 4
+> 6
+> 8
+> pi
+> SPDp - Resizing
+> 100
+> 90
+> 80
+> 50
+> 20
+> 10  0
+> none
+> 2
+> 4
+> pi
+> ∆a
+> SPDa - Camera
+
+Fig. VII: Impact of correlations between semantics and processing metadata on the model’s sensitivity to metadata. ViT-S/16, instead of ResNet50 (Fig. 3), trained on different versions of IN1k with manipulated JPEG labels. The larger the pi,the stronger the correlation between JPEG labels and semantic labels. None : model trained on original IN1k. Difference between pi = 0 and none : the former has no JPEG-semantics correlations, while the latter has the original IN1k correlations. SP: two types of test sets are used, the original one (none, green color) which is fixed across values of pi, and 7 different versions (purple color) created by manipulating the JPEG labels of the original test set in the same way as the corresponding training set for each value of pi.
+
+G Experiments with other backbones 
+
+In Figs. VII and VIII, we present the results of controlling correlations between semantics and processing metadata, as in Sec. 3.2, but for ViT-S/16 and ViT-B/16, respectively, instead of ResNet50. We observe that the introduction of JPEG-semantics correlation during training makes the model more sensitive to metadata, same as we observed for ResNet50 in Fig. 3. This shows that our observations are not model-dependent and that models of different architectures exhibit the same behaviour. Additionally, Figs. IX and X show results parallel to our experiment in Sec. 3.4, where we train a model using CLIP loss [51] on subsets of Re-LAION-2B with different amount of correlations between semantics and acquisition metadata. This time we use ViT-S/16 and ConvNeXt-T backbones, instead of ResNet50. Results are consistent, as training with stronger correlations between semantics and acquisition metadata leads to worse SPD and SP, with the oppo-site being true for training with weaker correlations. 28 V. Stojnić et al. 
+
+> 100
+> 90
+> 80
+> 50
+> 20
+> 10  0
+> none
+> 20
+> 40
+> 60
+> pi
+> accuracy
+> MPp - JPEG
+> 100
+> 90
+> 80
+> 50
+> 20
+> 10  0
+> none
+> 40
+> 60
+> pi
+> MPp - Resizing
+> 100
+> 90
+> 80
+> 50
+> 20
+> 10  0
+> none
+> 10
+> 15
+> 20
+> 25
+> 30
+> pi
+> MPa - Make
+> 100
+> 90
+> 80
+> 50
+> 20
+> 10  0
+> none
+> 6
+> 8
+> 10
+> 12
+> pi
+> MPa - Aperture
+> 100
+> 90
+> 80
+> 50
+> 20
+> 10  0
+> none
+> 72
+> 74
+> 76
+> 78
+> 80
+> pi
+> accuracy
+> SP
+> none
+> pi
+> 100
+> 90
+> 80
+> 50
+> 20
+> 10  0
+> none
+> 0
+> 5
+> 10
+> pi
+> ∆p
+> SPDp - JPEG
+> 100
+> 90
+> 80
+> 50
+> 20
+> 10  0
+> none
+> 2
+> 4
+> 6
+> 8
+> pi
+> SPDp - Resizing
+> 100
+> 90
+> 80
+> 50
+> 20
+> 10  0
+> none
+> 4
+> 6
+> pi
+> ∆a
+> SPDa - Camera
+
+Fig. VIII: Impact of correlations between semantics and processing meta-data on the model’s sensitivity to metadata. ViT-B/16, instead of ResNet50 (Fig. 3), trained on different versions of IN1k with manipulated JPEG labels. The larger the pi, the stronger the correlation between JPEG labels and semantic labels. 
+
+None : model trained on original IN1k. Difference between pi = 0 and none : the former has no JPEG-semantics correlations, while the latter has the original IN1k correlations. SP: two types of test sets are used, the original one (none, green color) which is fixed across values of pi, and 7 different versions (purple color) created by manipulating the JPEG labels of the original test set in the same way as the corresponding training set for each value of pi.
+
+> stronger
+> baseline
+> weaker
+> 10
+> 20
+> 30
+> 40
+> 50
+> accuracy
+> MPp - JPEG
+> stronger
+> baseline
+> weaker
+> 40
+> 60
+> MPp - Resizing
+> stronger
+> baseline
+> weaker
+> 10
+> 20
+> 30
+> MPa - Make
+> stronger
+> baseline
+> weaker
+> 5
+> 10
+> 15
+> MPa - Aperture
+> stronger
+> baseline
+> weaker
+> 45
+> 50
+> 55
+> accuracy
+> SP
+> stronger
+> baseline
+> weaker
+> 12
+> 14
+> ∆p
+> SPDp - JPEG
+> stronger
+> baseline
+> weaker
+> 16
+> 18
+> SPDp - Resizing
+> stronger
+> baseline
+> weaker
+> 4
+> 5
+> ∆a
+> SPDa - Camera
+
+Fig. IX: Impact of correlations between semantics and acquisition metadata on the model’s sensitivity to metadata. ViT-S/16, instead of ResNet50 (Fig. 4), trained from scratch using CLIP loss [51] on three Re-LAION-2B subsets. Invisible Shortcuts 29 
+
+> stronger
+> baseline
+> weaker
+
+20 
+
+40 
+
+60 
+
+> accuracy
+
+MPp - JPEG 
+
+> stronger
+> baseline
+> weaker
+
+40 
+
+60 
+
+80 
+
+MPp - Resizing 
+
+> stronger
+> baseline
+> weaker
+
+0
+
+10 
+
+20 
+
+30 
+
+MPa - Make 
+
+> stronger
+> baseline
+> weaker
+
+5
+
+10 
+
+15 
+
+MPa - Aperture 
+
+> stronger
+> baseline
+> weaker
+
+40 
+
+50 
+
+60 
+
+> accuracy
+
+SP 
+
+> stronger
+> baseline
+> weaker
+
+15 
+
+20 
+
+25 
+
+> ∆p
+
+SPDp - JPEG 
+
+> stronger
+> baseline
+> weaker
+
+20 
+
+25 
+
+SPDp - Resizing 
+
+> stronger
+> baseline
+> weaker
+
+2
+
+4
+
+6
+
+8
+
+> ∆a
+
+SPDa - Camera 
+
+Fig. X: Impact of correlations between semantics and acquisition meta-data on the model’s sensitivity to metadata. ConvNeXt-T, instead of ResNet50 (Fig. 4), trained from scratch using CLIP loss [51] on three Re-LAION-2B subsets.

@@ -44,14 +44,14 @@
       <span class="dpr-home-dashboard-kicker">2026-08-07</span>
       <h3 class="dpr-home-dashboard-title">今日汇总</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">共 15 篇</strong>
+    <strong class="dpr-home-dashboard-count">共 25 篇</strong>
   </div>
   <dl class="dpr-home-dashboard-stats">
-    <div class="dpr-home-dashboard-stat"><dt>累计更新</dt><dd>1 次</dd></div>
-    <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>6</dd></div>
-    <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>9</dd></div>
+    <div class="dpr-home-dashboard-stat"><dt>累计更新</dt><dd>2 次</dd></div>
+    <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>12</dd></div>
+    <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>13</dd></div>
   </dl>
-  <p class="dpr-home-dashboard-body">最近更新：2026-08-07 01:44:58 UTC<br>状态：成功</p>
+  <p class="dpr-home-dashboard-body">最近更新：2026-08-07 21:07:17 UTC<br>状态：成功</p>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-brief-card">
   <div class="dpr-home-dashboard-header">
@@ -62,9 +62,7 @@
     <strong class="dpr-home-dashboard-count">AI</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<p>今日速览15篇论文，精读6篇、速读9篇，重点聚焦跨模态检测与视觉语言模型。</p>
-<p>最值得精读《RegisterBridgeMM》满分10分，提出RGB-红外注册中心检测框架；《Through the LENS》9分，拆解视觉语言表征的局部几何结构。</p>
-<p>建议优先复现高分框架，速读可留意Fermat主动学习与LoRetta全球遥感匹配数据集的落地潜力。</p>
+<p>今日精读12篇、速读13篇，共处理25篇论文；其中多模态感知与自监督深度估计表现突出。最值得看的是满分论文《RegisterBridgeMM》（RGB-红外目标检测）和9分《XiDepth》（轻量自监督单目深度估计）。建议优先精读这两篇，可考虑复现实验或结合自身场景验证其泛化性。</p>
   </div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-deep-card">
@@ -73,12 +71,12 @@
       <span class="dpr-home-dashboard-kicker">今日累计</span>
       <h3 class="dpr-home-dashboard-title">精读推荐</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">6 篇</strong>
+    <strong class="dpr-home-dashboard-count">12 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="RegisterBridgeMM: A Register-Centric Framework for RGB-Infrared Object Detection">RegisterBridgeMM: A Register-Centric Framework for RGB-Infrared Object Detection</span></li><li><span class="dpr-home-dashboard-paper-title" title="Through the LENS: Local Geometric Decomposition of Vision-Language Model Representations">Through the LENS: Local Geometric Decomposition of Vision-Language Model Representations</span></li><li><span class="dpr-home-dashboard-paper-title" title="XiDepth: a Lightweight and Efficient Network for Self-supervised Monocular Depth Estimation">XiDepth: a Lightweight and Efficient Network for Self-supervised Monocular Depth Estimation</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="RegisterBridgeMM: A Register-Centric Framework for RGB-Infrared Object Detection">RegisterBridgeMM: A Register-Centric Framework for RGB-Infrared Object Detection</span></li><li><span class="dpr-home-dashboard-paper-title" title="XiDepth: a Lightweight and Efficient Network for Self-supervised Monocular Depth Estimation">XiDepth: a Lightweight and Efficient Network for Self-supervised Monocular Depth Estimation</span></li><li><span class="dpr-home-dashboard-paper-title" title="UBLLIE: Unified Backlight and Low-Light Image Enhancement">UBLLIE: Unified Backlight and Low-Light Image Enhancement</span></li></ul>
   </div>
-  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">cv <strong>6</strong></span></div>
+  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">cv <strong>12</strong></span></div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-skim-card">
   <div class="dpr-home-dashboard-header">
@@ -86,12 +84,12 @@
       <span class="dpr-home-dashboard-kicker">今日累计</span>
       <h3 class="dpr-home-dashboard-title">速读推荐</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">9 篇</strong>
+    <strong class="dpr-home-dashboard-count">13 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Fermat Active Laplace Learning for Semi-Supervised Hyperspectral Image Classification">Fermat Active Laplace Learning for Semi-Supervised Hyperspectral Image Classification</span></li><li><span class="dpr-home-dashboard-paper-title" title="LoRetta: A Foundation Model and Extensive Dataset for Global-Scale Remote Sensing Dense Image Matching">LoRetta: A Foundation Model and Extensive Dataset for Global-Scale Remote Sensing Dense Image Matching</span></li><li><span class="dpr-home-dashboard-paper-title" title="TriCLE: Tri-Modal Vision-Language Reasoning for Edge-Deployed Fine-Grained Clustering">TriCLE: Tri-Modal Vision-Language Reasoning for Edge-Deployed Fine-Grained Clustering</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Training-Free Out-of-Distribution Detection for Pathology Whole-Slide Images">Training-Free Out-of-Distribution Detection for Pathology Whole-Slide Images</span></li><li><span class="dpr-home-dashboard-paper-title" title="LoRetta: A Foundation Model and Extensive Dataset for Global-Scale Remote Sensing Dense Image Matching">LoRetta: A Foundation Model and Extensive Dataset for Global-Scale Remote Sensing Dense Image Matching</span></li><li><span class="dpr-home-dashboard-paper-title" title="TriCLE: Tri-Modal Vision-Language Reasoning for Edge-Deployed Fine-Grained Clustering">TriCLE: Tri-Modal Vision-Language Reasoning for Edge-Deployed Fine-Grained Clustering</span></li></ul>
   </div>
-  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">cv <strong>9</strong></span></div>
+  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">cv <strong>13</strong></span></div>
 </section>
 </div>
 
