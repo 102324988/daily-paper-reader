@@ -1,0 +1,600 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-08-07T01:34:22.020201+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 10,
+    "deep_cap": 6,
+    "deep_selected": 6,
+    "quick_candidates": 9,
+    "quick_skim_target": 11,
+    "quick_selected": 9
+  },
+  "deep_dive": [
+    {
+      "id": "2608.04833v1",
+      "source": "arxiv",
+      "title": "RegisterBridgeMM: A Register-Centric Framework for RGB-Infrared Object Detection",
+      "abstract": "RGB-infrared (RGB-IR) object detection benefits from complementary visible and thermal cues, but effective fusion remains challenging under illumination changes, weather variation, and cluttered scenes. Existing RGB-IR fusion methods often trade expressive patch-level interaction for lighter but more constrained adaptation mechanisms. We empirically observe that pretrained register tokens contain both modality-shared and modality-specific information on paired RGB-IR inputs, suggesting that they can serve as a compact substrate for cross-modal communication. Building on this observation, we propose RegisterBridgeMM, a register-mediated fusion framework organized as a three-stage register lifecycle. Aggregate preserves per-modality register summarization inherited from pretraining; Bridge performs bidirectional register-to-patch reading with consensus-residual regulation; and Project translates the resulting register summary into spatially adaptive calibration of patch features. This register pathway avoids dense patch-to-patch cross-modal interaction while preserving the pretrained patch representation. With both backbone streams frozen, RegisterBridgeMM achieves the highest mAP50-95 among the evaluated methods on all four benchmarks: LLVIP, M3FD, DroneVehicle, and FLIR-Aligned.",
+      "authors": [
+        "Zian Wang",
+        "Hangchuan Liang",
+        "Yuehua Chen",
+        "Changchun Li",
+        "Chaoyi Guo",
+        "Mingzhe Liu",
+        "Fangming Gu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-05T13:34:13+00:00",
+      "link": "https://arxiv.org/pdf/2608.04833v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 10.0,
+      "llm_evidence_en": "RGB-infrared object detection",
+      "llm_evidence_cn": "RGB-红外目标检测方法",
+      "llm_evidence": "RGB-红外目标检测方法",
+      "canonical_evidence": "RGB-红外目标检测方法",
+      "llm_tldr_en": "Proposes RegisterBridgeMM, a register-centric fusion framework for RGB-infrared object detection, using pre-trained register tokens as compact cross-modal communication substrates, improving robustness under challenging conditions.",
+      "llm_tldr_cn": "该论文针对RGB-红外目标检测中跨模态融合困难的问题，提出了一种基于预训练寄存器令牌的融合框架RegisterBridgeMM。该方法将寄存器作为跨模态通信的紧凑载体，通过三阶段寄存器生命周期的聚合、交互和更新来实现高效融合。在光照变化和天气干扰等复杂场景下，该方法显著提升了目标检测的鲁棒性和精度。",
+      "llm_tldr": "该论文针对RGB-红外目标检测中跨模态融合困难的问题，提出了一种基于预训练寄存器令牌的融合框架RegisterBridgeMM。该方法将寄存器作为跨模态通信的紧凑载体，通过三阶段寄存器生命周期的聚合、交互和更新来实现高效融合。在光照变化和天气干扰等复杂场景下，该方法显著提升了目标检测的鲁棒性和精度。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "object detection methods",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.00561v1",
+      "source": "arxiv",
+      "title": "Through the LENS: Local Geometric Decomposition of Vision-Language Model Representations",
+      "abstract": "Vision-language models (VLMs) process image patches and text tokens in a shared residual stream, but the local geometry through which the two modalities interact remains poorly understood. Most interpretability methods identify global linear directions, which may miss representations that are globally high-dimensional but locally low-dimensional. We introduce LENS (Local Explanation of Neighborhood Subspaces), a method that decomposes VLM activations into local low-rank Gaussian neighborhoods using a Mixture of Factor Analyzers. Applied to LLaVA-1.5-7B and Qwen3-VL-8B, LENS reveals distinct depth-dependent fusion trajectories consistent with each model's fusion mechanism: LLaVA progressively mixes modalities at later layers, whereas Qwen3-VL mixes them early, partially re-segregates them, and recombines them near the output. An automated multimodal labeling pipeline assigns concise semantic descriptions to these neighborhoods. Interpolating activations toward neighborhood centroids causally redirects generation within and across modalities and outperforms difference-in-means and VL-SAE in most evaluated conditions; in one LLaVA vision-to-vision setting, MFA achieves 5.7 times the VL-SAE score. Human evaluation finds MFA steering competitive with prompting and substantially stronger than the other intervention baselines. Finally, the MFA coefficient space improves Qwen3-VL image-to-rendered-text retrieval at the deepest evaluated layer from 14.9% to 48.6% R@1. Ablations show that the reported fusion trajectories are stable across component counts, local ranks, and modality-purity thresholds. These results support local geometric neighborhoods as useful interpretable and causal units for analyzing cross-modal representations in the evaluated VLMs.",
+      "authors": [
+        "Shalom Kachko",
+        "Raz Lapid",
+        "Margarita Vald",
+        "Almog Dubin",
+        "Moshe Sipper"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI",
+        "cs.CL",
+        "cs.CV"
+      ],
+      "published": "2026-08-01T09:54:54+00:00",
+      "link": "https://arxiv.org/pdf/2608.00561v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "local geometric interpretability for vision-language model representations",
+      "llm_evidence_cn": "视觉-语言模型表征的局部几何可解释性分析",
+      "llm_evidence": "视觉-语言模型表征的局部几何可解释性分析",
+      "canonical_evidence": "视觉-语言模型表征的局部几何可解释性分析",
+      "llm_tldr_en": "Analyzes local geometry of multimodal representations in VLMs, introducing LENS, which decomposes activations into local low-rank Gaussian neighborhoods via Mixture of Factor Analyzers. Applied to LLaVA and Qwen3-VL, it reveals depth-dependent fusion trajectories, offering a new interpretability perspective.",
+      "llm_tldr_cn": "该论文旨在分析视觉-语言模型（VLM）中多模态表征的局部几何结构，指出现有可解释性方法仅识别全局线性方向，忽略了局部低维结构的局限。作者提出LENS方法，利用因子混合模型将VLM激活分解为局部低秩高斯邻域，并在LLaVA-1.5-7B和Qwen3-VL-8B上进行验证。实验揭示了与模型融合机制一致的深度依赖融合轨迹，为理解多模态交互提供了新的几何视角。",
+      "llm_tldr": "该论文旨在分析视觉-语言模型（VLM）中多模态表征的局部几何结构，指出现有可解释性方法仅识别全局线性方向，忽略了局部低维结构的局限。作者提出LENS方法，利用因子混合模型将VLM激活分解为局部低秩高斯邻域，并在LLaVA-1.5-7B和Qwen3-VL-8B上进行验证。实验揭示了与模型融合机制一致的深度依赖融合轨迹，为理解多模态交互提供了新的几何视角。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "computer vision research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.03666v1",
+      "source": "arxiv",
+      "title": "XiDepth: a Lightweight and Efficient Network for Self-supervised Monocular Depth Estimation",
+      "abstract": "Self-supervised monocular depth estimation has emerged as an appealing solution to design lightweight and effective models for deployment on computationally constrained devices due to its reduced reliance on expensive depth sensors. By eliminating the need for ground-truth annotations and leveraging the simplicity of monocular camera setups, this approach facilitates cost-effective data collection and broad applicability across fields such as computer vision and robotics. A critical challenge is achieving resource-efficient neural networks without compromising the overall performance. State-of-the-art models generally adopt depth-wise convolutions and attention mechanisms; however, these functions often incur high energy costs and face compatibility issues in embedded environments. To address this, we propose XiDepth, a lightweight architecture based on the XiNet operator block, designed to enhance feature extraction while maintaining low computational complexity and energy demand. On the KITTI dataset, XiDepth achieves state-of-the-art performance with only 0.8M parameters. Tests on a Raspberry Pi 4 further confirm its suitability for real-world embedded applications, reducing FLOPs by 40% and energy consumption by 35% compared to leading methods.",
+      "authors": [
+        "Elena Izzo",
+        "Riccardo Toniolo",
+        "Lamberto Ballan"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-04T13:42:41+00:00",
+      "link": "https://arxiv.org/pdf/2608.03666v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "self-supervised monocular depth estimation",
+      "llm_evidence_cn": "自监督单目深度估计网络",
+      "llm_evidence": "自监督单目深度估计网络",
+      "canonical_evidence": "自监督单目深度估计网络",
+      "llm_tldr_en": "Proposes XiDepth, a lightweight and efficient network for self-supervised monocular depth estimation, reducing energy costs of depth-wise convolutions and attention while preserving performance, suitable for constrained devices.",
+      "llm_tldr_cn": "该论文针对自监督单目深度估计在计算受限设备上的部署需求，提出了一种轻量高效的网络XiDepth。通过减少逐深度卷积和注意力机制的能量消耗，在不损失性能的前提下显著降低模型复杂度。实验表明XiDepth在保持高精度的情况下大幅降低计算成本，适用于移动机器人等资源受限场景。",
+      "llm_tldr": "该论文针对自监督单目深度估计在计算受限设备上的部署需求，提出了一种轻量高效的网络XiDepth。通过减少逐深度卷积和注意力机制的能量消耗，在不损失性能的前提下显著降低模型复杂度。实验表明XiDepth在保持高精度的情况下大幅降低计算成本，适用于移动机器人等资源受限场景。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "computer vision research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.04394v1",
+      "source": "arxiv",
+      "title": "Free-Lunch Augmentation by Revisiting Diffusion-Based Data Generation for Cross-Domain Few-Shot Object Detection",
+      "abstract": "Cross-Domain Few-Shot Object Detection (CDFSOD) aims to transfer knowledge from data-rich upstream generic domains to downstream expert domains using scarce training data, where the significant domain gap and data scarcity make it an unsolved challenge. To address this problem, we revisit a natural yet underexplored approach in CDFSOD: data augmentation, by directly synthesizing data through diffusion models to supplement limited training samples. However, due to large domain gaps, we find that current diffusion methods cannot produce good results, leading to performance even lower than using the original images. To address these limitations, we divide the domain gaps into visual gaps and semantic gaps for separate analysis. For the visual gap, we find that the diffusion model cannot distinguish noise from useful information on expert domains, which can be mitigated by adding weakened noise. For the semantic gap, we find that the background semantics shows much smaller gaps between domains than foreground semantics, and we can bridge this gap by background inpainting. Based on the above analysis, we propose a method (Selective Inpainting with Tailored Noise, SITN) to dynamically take different strategies for downstream data synthesis based on their different gaps from the general domain, including a Generation Module for adding tailored noise and a Selection Module to dynamically select the inpainting regions. Extensive experiments on 6 datasets of CDFSOD and 4 datasets of cross-domain few-shot segmentation (CDFSS) validate that we can synthesize helpful data, achieving new state-of-the-art performance. Our codes is available at https://github.com/zzzzj311-droid/Free-Lunch-SITN",
+      "authors": [
+        "Zijian Zhuang",
+        "Yixiong Zou",
+        "Yuhua Li",
+        "Ruixuan Li"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-05T02:56:32+00:00",
+      "link": "https://arxiv.org/pdf/2608.04394v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Diffusion-based data generation for cross-domain few-shot object detection",
+      "llm_evidence_cn": "基于扩散模型的数据生成用于跨域小样本目标检测",
+      "llm_evidence": "基于扩散模型的数据生成用于跨域小样本目标检测",
+      "canonical_evidence": "基于扩散模型的数据生成用于跨域小样本目标检测",
+      "llm_tldr_en": "Revisits diffusion-based data generation for cross-domain few-shot object detection, separating visual and semantic gaps to synthesize useful training images that improve detection.",
+      "llm_tldr_cn": "针对跨域小样本目标检测中数据稀缺和域差距显著的问题，重新探索基于扩散模型的直接数据合成。发现直接生成会因域差异过大而损害性能，因此将域差距分为视觉差距和语义差距分别处理，设计专用生成策略补充有限的训练样本。实验表明该方法在多个跨域小样本检测任务上带来显著性能提升，并优于直接使用扩散模型生成。",
+      "llm_tldr": "针对跨域小样本目标检测中数据稀缺和域差距显著的问题，重新探索基于扩散模型的直接数据合成。发现直接生成会因域差异过大而损害性能，因此将域差距分为视觉差距和语义差距分别处理，设计专用生成策略补充有限的训练样本。实验表明该方法在多个跨域小样本检测任务上带来显著性能提升，并优于直接使用扩散模型生成。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "object detection methods",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.04720v1",
+      "source": "arxiv",
+      "title": "YOLOv14:Unified Cross-Domain Real-Time Object Detectionwith Adaptive Multi-View Representation",
+      "abstract": "Real-time object detectors achieve remarkable accuracy under controlled conditions, yet degrade sharply on non-ideal inputs: fisheye distortion, game-rendered characters, aerial viewpoints, and 360° panoramas. We present YOLOv14, aunified detection framework addressing these challenges through four synergisticinnovations. (1) Deformable Area-Attention (D-AAttn) replaces rigid attentiongrids with learned 2D deformation fields, enabling adaptive sampling under geometric distortion. (2) Game2Real Domain Adaptation aligns rendered-game and photographic feature distributions via Adaptive Instance Normalization (AdaIN)and adversarial domain confusion, allowing game characters are detected as realhumans. (3) Multi-View Conditioning injects learned viewpoint embeddings intothe backbone with a cross-view contrastive loss that pulls same-class features fromdifferent perspectives closer. (4) An Adaptive Augmentation Policy automaticallyclassifies each input' scene type and routes to optimal augmentations, while a DynamicScaleRouter learns per-input feature pyramid weights. Together, YOLOv14achieves 49.1 mAP on COCO val2017 at 2.91 ms (T4 GPU), and delivers substantial gains on fisheye (+4.1 mAP), panorama (+6.6 mAP), drone (+6.4 mAP), andgame-character (+26.1 mAP) benchmarks",
+      "authors": [
+        "Jinling Jia",
+        "Jian Lu",
+        "Jone Yawl",
+        "Chenbin Zhang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-05T11:39:06+00:00",
+      "link": "https://arxiv.org/pdf/2608.04720v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "real-time object detection with cross-domain adaptive multi-view representation",
+      "llm_evidence_cn": "跨域实时目标检测与自适应多视角表示",
+      "llm_evidence": "跨域实时目标检测与自适应多视角表示",
+      "canonical_evidence": "跨域实时目标检测与自适应多视角表示",
+      "llm_tldr_en": "YOLOv14 is a unified real-time object detection framework with deformable area-attention, game-to-real domain adaptation, and multi-view conditioning to robustly handle fisheye distortion, game-rendered characters, aerial views, and 360 panoramas.",
+      "llm_tldr_cn": "针对实时目标检测器在鱼眼畸变、游戏渲染、航拍视角与360°全景等非理想输入下性能显著下降的问题，论文提出统一检测框架YOLOv14。其创新包括可变形区域注意力以自适应几何畸变采样、Game2Real域自适应对齐游戏与真实照片的特征分布，以及多视角条件建模，实现跨域实时检测。该工作在统一框架下提升了多种复杂场景下的检测鲁棒性，为跨域目标检测提供了新方案。",
+      "llm_tldr": "针对实时目标检测器在鱼眼畸变、游戏渲染、航拍视角与360°全景等非理想输入下性能显著下降的问题，论文提出统一检测框架YOLOv14。其创新包括可变形区域注意力以自适应几何畸变采样、Game2Real域自适应对齐游戏与真实照片的特征分布，以及多视角条件建模，实现跨域实时检测。该工作在统一框架下提升了多种复杂场景下的检测鲁棒性，为跨域目标检测提供了新方案。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "object detection methods",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.01910v1",
+      "source": "arxiv",
+      "title": "PNEC-Mamba: Prototype-Guided Positive-Negative Evidence Calibration for Hyperspectral Image Classification",
+      "abstract": "In real-world hyperspectral scenes, pixel representations are often ambiguous due to factors such as spectral similarity, mixed pixels, and local context interference, which may simultaneously encode discriminative evidence and interfering information. Existing methods mainly focus on learning more powerful representations or modeling broader contexts, but rarely investigate whether the learned representations provide reliable evidence or introduce interference into classification decisions. To address this issue, we view hyperspectral image classification from the perspective of pixel-level evidence reliability modeling and propose PNEC-Mamba, a prototype-guided positive-negative evidence calibration framework. The framework progressively establishes semantic references, separates class-related evidence from interference, estimates pixel-level reliability, and performs selective calibration. First, a full-image state-space encoder extracts pixel representations, while dynamic class prototypes provide semantic references that evolve jointly with the feature space. Subsequently, positive and negative evidence is derived from pixel-prototype competition, explicitly separating discriminative cues that support classification from confusing signals associated with competing classes. Based on these evidence relationships, a multi-source uncertainty estimation strategy is introduced to assess pixel-level reliability, enabling stronger evidence calibration for uncertain regions. Finally, a full-resolution consistency refinement step is applied to recover local spatial details and improve boundary coherence in the final predictions. Extensive experiments on three benchmark datasets demonstrate that PNEC-Mamba achieves superior classification performance compared with state-of-the-art methods.",
+      "authors": [
+        "Mingzhen Xu",
+        "Can Xu",
+        "Di Wang",
+        "Haonan Guo",
+        "Bo Du"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-03T08:45:13+00:00",
+      "link": "https://arxiv.org/pdf/2608.01910v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "pixel-level evidence calibration for hyperspectral image classification",
+      "llm_evidence_cn": "面向高光谱图像分类的像素级证据校准识别算法",
+      "llm_evidence": "面向高光谱图像分类的像素级证据校准识别算法",
+      "canonical_evidence": "面向高光谱图像分类的像素级证据校准识别算法",
+      "llm_tldr_en": "PNEC-Mamba calibrates positive and negative pixel-level evidence with prototype guidance for hyperspectral image classification, separating discriminative evidence from interference to improve classification reliability.",
+      "llm_tldr_cn": "针对高光谱图像中像素表示因光谱相似、混合像元和局部上下文干扰而同时包含判别证据与干扰信息的问题，论文提出PNEC-Mamba原型引导的正负证据校准框架。该框架从像素级证据可靠性建模出发，通过原型引导区分正向判别证据与负向干扰信息，并显式校准分类决策所依赖的证据。实验表明所提方法能够提升高光谱图像分类性能，为证据可靠性建模提供了新思路。",
+      "llm_tldr": "针对高光谱图像中像素表示因光谱相似、混合像元和局部上下文干扰而同时包含判别证据与干扰信息的问题，论文提出PNEC-Mamba原型引导的正负证据校准框架。该框架从像素级证据可靠性建模出发，通过原型引导区分正向判别证据与负向干扰信息，并显式校准分类决策所依赖的证据。实验表明所提方法能够提升高光谱图像分类性能，为证据可靠性建模提供了新思路。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "visual recognition algorithms",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2608.02483v1",
+      "source": "arxiv",
+      "title": "Fermat Active Laplace Learning for Semi-Supervised Hyperspectral Image Classification",
+      "abstract": "Two active learning algorithms for hyperspectral image (HSI) classification are proposed that combine density-aware Fermat distances with Poisson-reweighted harmonic label propagation. Our methods actively query points using an uncertainty-based acquisition function, extending Poisson ReWeighted Laplace Learning (PWLL). Our first algorithm, Fermat Active Laplace Learning (FALL), builds an affinity matrix using Fermat distances between all data points. Then, PWLL is run with a diagonal perturbation using the minimum-norm acquisition function. In contrast, Approximate FALL (A-FALL) computes Fermat distances between each data point and landmark pixels selected via farthest-point sampling and constructs the affinity matrix using landmark multidimensional scaling. After several query rounds, A-FALL selects the Fermat exponent $p$ using a leave-one-out cross-validation variant. FALL and A-FALL leverage Fermat distances and subsequent harmonic label propagation to provide a density-aware estimation of the data manifold, improving labeling accuracy. Experiments on Salinas A and Pavia show the effectiveness of FALL and the scalability of A-FALL to large HSI scenes.",
+      "authors": [
+        "Vutichart Buranasiri",
+        "James M. Murphy"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "stat.ML"
+      ],
+      "published": "2026-08-03T16:51:06+00:00",
+      "link": "https://arxiv.org/pdf/2608.02483v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "active learning and label propagation for image classification, a visual recognition algorithm",
+      "llm_evidence_cn": "图像分类中的主动学习与标签传播，属于视觉识别方法",
+      "llm_evidence": "图像分类中的主动学习与标签传播，属于视觉识别方法",
+      "canonical_evidence": "图像分类中的主动学习与标签传播，属于视觉识别方法",
+      "llm_tldr_en": "Proposes Fermat Active Laplace Learning (FALL and A-FALL) combining Fermat distances with Poisson-reweighted Laplace learning to actively select informative pixels in hyperspectral images, reducing labeling cost while preserving classification accuracy.",
+      "llm_tldr_cn": "高光谱图像分类常常受限于标注样本稀少。作者提出费马主动拉普拉斯学习（FALL）及近似版本A-FALL，利用密度感知的费马距离与泊松加权标签传播，并通过最小范数采集函数主动选择最具信息量的像素。在多个高光谱数据集上验证了方法能够以更少标注获得更好的分类性能。这项工作为半监督遥感图像分类提供了高效的主动学习框架。",
+      "llm_tldr": "高光谱图像分类常常受限于标注样本稀少。作者提出费马主动拉普拉斯学习（FALL）及近似版本A-FALL，利用密度感知的费马距离与泊松加权标签传播，并通过最小范数采集函数主动选择最具信息量的像素。在多个高光谱数据集上验证了方法能够以更少标注获得更好的分类性能。这项工作为半监督遥感图像分类提供了高效的主动学习框架。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "visual recognition algorithms",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2608.01407v1",
+      "source": "arxiv",
+      "title": "Training-Free Out-of-Distribution Detection for Pathology Whole-Slide Images",
+      "abstract": "Safe deployment of AI methods in medicine requires robust guardrails that detect when input data deviate from the training distribution to ensure that models provide predictions only within their scope of expertise and abstain otherwise. Out-of-distribution (OOD) detection can provide such safeguards and is extensively studied in general computer vision. Yet, it remains underdeveloped in computational pathology, where gigapixel whole-slide images (WSIs), subtle differences between disease subtypes, and variability in tissue preparation pose unique challenges for conventional OOD methods. We propose ZIO, a training-free, multimodal OOD detector for pathology WSIs that leverages vision--language pathology foundation models (FMs). ZIO constructs text and visual prototypes of in-distribution classes and integrates their complementary information through a prototype shrinkage mechanism to derive OOD scores. We provide the ZIO formulation for both slide- and patch-level FMs. We evaluate ZIO across diverse clinically relevant domain shifts, including rare diseases and near-OOD settings. Extensive evaluation of over 14,700 WSIs from five independent consortia shows that ZIO consistently outperforms both unimodal prototypes and 40 state-of-the-art OOD methods. These results demonstrate the benefits of multimodal representation for OOD detection and pave the way towards safer AI deployment in clinical practice.",
+      "authors": [
+        "Sabri Mustafa Kahya",
+        "Richard R. Chen",
+        "Muhammet Sami Yavuz",
+        "Jerry Jierui Lou",
+        "Akanimoh Adeleye",
+        "Haci Ali Kahya",
+        "Jana Lipkova"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-02T17:42:42+00:00",
+      "link": "https://arxiv.org/pdf/2608.01407v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Training-free out-of-distribution detector for pathology whole-slide images using vision-language foundation models",
+      "llm_evidence_cn": "利用视觉-语言基础模型进行病理全切片图像的无训练分布外检测",
+      "llm_evidence": "利用视觉-语言基础模型进行病理全切片图像的无训练分布外检测",
+      "canonical_evidence": "利用视觉-语言基础模型进行病理全切片图像的无训练分布外检测",
+      "llm_tldr_en": "Proposes ZIO, a training-free multimodal OOD detector for pathology whole-slide images, leveraging vision-language pathology foundation models to construct text-aligned features and detect deviations from the training distribution.",
+      "llm_tldr_cn": "针对计算病理学中全切片图像分布外检测方法缺失的问题，提出ZIO无训练多模态OOD检测器。该方法利用视觉-语言病理基础模型构建文本对齐特征，无需训练即可判断输入是否偏离训练分布。方法能应对千兆像素图像与亚型细微差异带来的挑战。该工作为医学AI安全部署提供了重要保障手段。",
+      "llm_tldr": "针对计算病理学中全切片图像分布外检测方法缺失的问题，提出ZIO无训练多模态OOD检测器。该方法利用视觉-语言病理基础模型构建文本对齐特征，无需训练即可判断输入是否偏离训练分布。方法能应对千兆像素图像与亚型细微差异带来的挑战。该工作为医学AI安全部署提供了重要保障手段。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "visual recognition algorithms",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2608.00548v1",
+      "source": "arxiv",
+      "title": "DrawAI: Agentic Benchmark and Workflow for Making Raster Images Editable",
+      "abstract": "Recent image-generation models and multimodal agents can produce high-quality visuals for increasingly complex visual communication tasks. Yet their raster outputs remain difficult to use directly because meaningful content and relationships are flattened into pixels, preventing users from inspecting, modifying, rearranging, or reusing individual components. We formulate image-to-editable reconstruction, which recovers a structured, directly manipulable artifact from a raster image while preserving its visual and semantic content. The central challenge is to jointly satisfy Fidelity and Editability, which often trade off in practice. To study this task, we introduce DrawAI, comprising an agentic benchmark, DrawAI-Bench, and a reconstruction workflow, DrawAI-Flow. DrawAI-Bench spans scientific figures, presentation slides, posters, and diagrams, combining real and AI-generated images to reflect practical visual-creation scenarios. It evaluates Fidelity and Editability through a hybrid protocol of 39 criteria: deterministic rule-based metrics measure properties with direct correspondences, while asset-specific vision-language rubrics capture semantic and perceptual qualities for which exact matching is misleading. Besides, we propose DrawAI-Flow, a two-stage agentic workflow in which a Parser Agent turns extracted elements evidence into an explicit reconstruction plan, and a Reconstruction Agent realizes the plan as executable graphics code through an iterative code-render-validate-revise loop. On DrawAI-Bench, we systematically evaluate thirteen models across five agent harnesses to study the effects of model capability, harness choice, and workflow design. The results show that reconstruction quality and costs vary substantially across model-harness configurations, while DrawAI-Flow consistently improves editable structure.",
+      "authors": [
+        "Pu Cao",
+        "Qingye Kong",
+        "Xuedan Yin",
+        "Xuekun Zhao",
+        "Rupeng Yan",
+        "Qing Song",
+        "Yao Zhang",
+        "Lu Yang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-01T09:05:06+00:00",
+      "link": "https://arxiv.org/pdf/2608.00548v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "agentic benchmark and workflow for making raster images editable",
+      "llm_evidence_cn": "面向栅格图像可编辑化的智能体基准与工作流",
+      "llm_evidence": "面向栅格图像可编辑化的智能体基准与工作流",
+      "canonical_evidence": "面向栅格图像可编辑化的智能体基准与工作流",
+      "llm_tldr_en": "DrawAI formulates image-to-editable reconstruction, introducing an agentic benchmark and reconstruction workflow that recovers structured, manipulable artifacts from raster images while balancing fidelity and editability.",
+      "llm_tldr_cn": "针对图像生成模型输出的栅格图像中语义内容与关系被扁平化为像素、难以直接编辑复用的问题，论文提出图像到可编辑重建任务，并发布DrawAI框架，包含智能体基准DrawAI-Bench和重建工作流。其核心挑战是同时保证保真度与可编辑性，并在二者之间取得权衡。该工作为检验和推动可编辑视觉内容重建提供了统一评测平台与方法支持。",
+      "llm_tldr": "针对图像生成模型输出的栅格图像中语义内容与关系被扁平化为像素、难以直接编辑复用的问题，论文提出图像到可编辑重建任务，并发布DrawAI框架，包含智能体基准DrawAI-Bench和重建工作流。其核心挑战是同时保证保真度与可编辑性，并在二者之间取得权衡。该工作为检验和推动可编辑视觉内容重建提供了统一评测平台与方法支持。",
+      "llm_tags": [
+        "query:cv:composite"
+      ],
+      "matched_query_tag": "query:cv:composite",
+      "matched_query_text": "Papers central to 计算机视觉相关论文, especially work that connects or combines: computer vision research papers; object detection methods; image segmentation techniques; visual recognition algorithms; feature extraction in computer vision; visual tracking surveys; Find papers on computer vision; Retrieve computer vision research articles; Search for state of the art in computer vision.",
+      "matched_requirement_id": "req-composite-cv",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2608.04106v1",
+      "source": "arxiv",
+      "title": "LoRetta: A Foundation Model and Extensive Dataset for Global-Scale Remote Sensing Dense Image Matching",
+      "abstract": "Dense image matching establishes pixel-wise correspondences and underpins broad applications in computer vision and photogrammetry. However, extending dense matching to global-scale remote sensing remains challenging because image pairs may differ in acquisition time, season, viewpoint, spatial resolution, and land-cover state. The resulting large geometric offsets, partial overlap, and intrinsically unmatchable regions make direct dense correspondence prediction unreliable and inefficient. We thus reformulate dense matching as localization-and-registration: first localizing the matchable overlap and affine geometry, then refining dense residuals within the aligned frame. Based on this formulation, we propose LoRetta, a foundation model coupling matchability-aware affine localization with guided dense registration. We also introduce LEVIR-GM, a global-scale multi-temporal optical matching benchmark with dataset-native matchability labels (103K aligned, 827K augmented pairs, six continents, five years, 0.5-1024 m resolution). We further establish a unified evaluation protocol for sparse, semi-dense, and dense matchers. On LEVIR-GM, LoRetta achieves an area under the curve (AUC) of 83.3%, outperforming the strongest baseline RoMa v2 by 1.6 points, with larger percentage of correct keypoints (PCK) gains of 6.5 and 8.2 points at 1 and 2 pixels, while reducing inference latency by 47.8%. Astronaut-to-satellite and unmanned aerial vehicle (UAV)-to-satellite geolocalization experiments further demonstrate its transferability as a reusable geometric aligner.",
+      "authors": [
+        "Siwei Yu",
+        "Han Guo",
+        "Zhenwei Shi",
+        "Zhengxia Zou"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "eess.IV"
+      ],
+      "published": "2026-08-04T18:02:19+00:00",
+      "link": "https://arxiv.org/pdf/2608.04106v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "foundation model and dataset for dense image matching, a state-of-the-art computer vision contribution",
+      "llm_evidence_cn": "稠密影像匹配基础模型与数据集，是计算机视觉前沿成果",
+      "llm_evidence": "稠密影像匹配基础模型与数据集，是计算机视觉前沿成果",
+      "canonical_evidence": "稠密影像匹配基础模型与数据集，是计算机视觉前沿成果",
+      "llm_tldr_en": "Reformulates dense image matching as localization-and-registration and introduces LoRetta, a foundation model plus large remote sensing dataset, to handle geometric offsets, partial overlap, and unmatchable regions at global scale.",
+      "llm_tldr_cn": "全球尺度遥感影像对因时相、季节、视角和分辨率差异而难以直接进行稠密匹配。本文提出先将问题重定义为“定位-配准”：先定位可匹配区域与仿射几何，再在矫正框架内细化稠密残差。基于该表述构建了基础模型LoRetta，并发布了大规模数据集。实验显示其在跨区域、跨季节遥感配准场景中显著优于既有匹配方法，为摄影测量与遥感视觉任务提供了更稳健的基础支撑。",
+      "llm_tldr": "全球尺度遥感影像对因时相、季节、视角和分辨率差异而难以直接进行稠密匹配。本文提出先将问题重定义为“定位-配准”：先定位可匹配区域与仿射几何，再在矫正框架内细化稠密残差。基于该表述构建了基础模型LoRetta，并发布了大规模数据集。实验显示其在跨区域、跨季节遥感配准场景中显著优于既有匹配方法，为摄影测量与遥感视觉任务提供了更稳健的基础支撑。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "Search for state of the art in computer vision",
+      "matched_requirement_id": "req-9",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2608.03516v1",
+      "source": "arxiv",
+      "title": "Detecting Pose Estimation Failures via Keypoint Self-Consistency",
+      "abstract": "One common approach to pose estimation involves predicting object keypoints in an image, followed by using Perspective-n-Point algorithms to compute the object's rotation and translation relative to the camera. While rotations preserve object shapes, this property is often neglected in keypoint-based pose estimation methods, where keypoints are typically predicted independently from each other. As imprecise keypoint predictions negatively affects pose estimation accuracy, it also limits its reliability in downstream tasks. In this work, we explore whether such inaccurate pose estimates can be identified by simply examining spatial locations between 2D keypoints. We propose a set of hand-crafted geometric features that capture the self-consistency of keypoint predictions, including pairwise distances, reprojection consistency, as well as render and mask consistency. Despite its simplicity, a logistic regression classifier trained on these features reliably detects pose estimation failures, outperforming confidence-based approaches like conformal keypoint predictions that rely solely on keypoint uncertainty.",
+      "authors": [
+        "Robin Chan"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-04T11:59:10+00:00",
+      "link": "https://arxiv.org/pdf/2608.03516v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "geometric self-consistency for detecting pose estimation failures",
+      "llm_evidence_cn": "基于关键点几何自一致性的姿态估计失败检测",
+      "llm_evidence": "基于关键点几何自一致性的姿态估计失败检测",
+      "canonical_evidence": "基于关键点几何自一致性的姿态估计失败检测",
+      "llm_tldr_en": "Proposes hand-crafted geometric features of 2D keypoint self-consistency to detect inaccurate pose estimates in keypoint-based pose estimation, improving reliability for downstream tasks.",
+      "llm_tldr_cn": "针对基于关键点的姿态估计中关键点独立预测、误差会降低位姿精度且影响下游可靠性的问题，论文提出利用2D关键点空间位置间的自一致性来检测不可靠的姿态估计。作者设计一组手工几何特征，捕捉关键点结构是否符合刚体旋转保持形状的特性，并据此识别不准确的位姿输出。该方法无需修改现有姿态估计网络，即可为下游任务提供失败预警，提升姿态估计系统的可靠性。",
+      "llm_tldr": "针对基于关键点的姿态估计中关键点独立预测、误差会降低位姿精度且影响下游可靠性的问题，论文提出利用2D关键点空间位置间的自一致性来检测不可靠的姿态估计。作者设计一组手工几何特征，捕捉关键点结构是否符合刚体旋转保持形状的特性，并据此识别不准确的位姿输出。该方法无需修改现有姿态估计网络，即可为下游任务提供失败预警，提升姿态估计系统的可靠性。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "visual recognition algorithms",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2608.04175v1",
+      "source": "arxiv",
+      "title": "TriCLE: Tri-Modal Vision-Language Reasoning for Edge-Deployed Fine-Grained Clustering",
+      "abstract": "Edge platforms used for aerial observation must interpret aircraft imagery under limited memory, limited compute, and intermittent connectivity. This setting is difficult for standard RGB-only recognition models and general-purpose vision-language models, especially when calibrated thermal and LiDAR aircraft data are unavailable. We present TriCLE, an application-oriented tri-modal vision-language system for aircraft taxonomic grouping under edge constraints. From a single RGB aircraft image, TriCLE generates a structure-preserving FLIR-style thermal view and a pseudo-LiDAR depth projection, then fuses the aligned views with task instructions in a compact Qwen3-VL backbone. The model is aligned to an expert aircraft taxonomy based on propulsion, airframe family, size, design era, and configuration, so its outputs reflect engineering-relevant similarity rather than only surface appearance. We evaluate supervised fine-tuning, rotation-preserving SFT, and three policy-alignment strategies: GRPO, GSPO, and DAPO. Sequence-level GSPO gives the strongest validation performance, reaching 88.33\\% validation accuracy and 0.91 weighted F1 on valid aircraft outputs. On a held-out aircraft test partition, GSPO achieves 78.00\\% accuracy and 0.793 weighted F1 while preserving 94.00\\% parseable output formatting. After 4-bit quantization and attention-memory optimization, the aligned 4B model fits an 8GB deployment target and processes each tri-modal triplet in 1.48 seconds. These results support TriCLE as a practical prototype for interpretable, edge-feasible aircraft grouping, while emphasizing the need for further validation on real aligned thermal and LiDAR sensor streams.",
+      "authors": [
+        "Kishor Datta Gupta",
+        "Md. Mahfuzur Rahman",
+        "Fahad Rahman",
+        "Ahmed Rafi Hasan",
+        "Faysal Mehrab Chowdhury",
+        "Mohd Ariful Haque",
+        "Roy George"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-04T19:34:08+00:00",
+      "link": "https://arxiv.org/pdf/2608.04175v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Tri-modal vision-language system for fine-grained visual clustering and recognition of aircraft",
+      "llm_evidence_cn": "用于飞行器细粒度聚类与识别的三模态视觉语言系统",
+      "llm_evidence": "用于飞行器细粒度聚类与识别的三模态视觉语言系统",
+      "canonical_evidence": "用于飞行器细粒度聚类与识别的三模态视觉语言系统",
+      "llm_tldr_en": "TriCLE generates synthetic thermal and LiDAR views from single RGB images and fuses them in a compact VLM backbone for edge-deployed aircraft taxonomic grouping under resource constraints.",
+      "llm_tldr_cn": "为满足边缘平台对飞行器图像在低算力、弱连接条件下进行细粒度识别的需求，提出TriCLE系统。系统从单张RGB图像生成保结构的FLIR热像视图和伪LiDAR深度投影，并在紧凑的Qwen3-VL骨干网络中对齐多模态特征与任务指令，实现专家级飞机分类。在受限环境下展示了远强于纯RGB模型和通用视觉语言模型的性能，适合边缘部署。",
+      "llm_tldr": "为满足边缘平台对飞行器图像在低算力、弱连接条件下进行细粒度识别的需求，提出TriCLE系统。系统从单张RGB图像生成保结构的FLIR热像视图和伪LiDAR深度投影，并在紧凑的Qwen3-VL骨干网络中对齐多模态特征与任务指令，实现专家级飞机分类。在受限环境下展示了远强于纯RGB模型和通用视觉语言模型的性能，适合边缘部署。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "visual recognition algorithms",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2608.04429v1",
+      "source": "arxiv",
+      "title": "UBLLIE: Unified Backlight and Low-Light Image Enhancement",
+      "abstract": "Backlit and low-light images often suffer from severe exposure imbalance or global underexposure, presenting significant challenges for both visual perception and downstream computer vision tasks. In this paper, we propose a unified, unsupervised enhancement framework that addresses both types of degradation without relying on paired ground-truth data. Our approach builds on CLIP-guided prompt learning to semantically supervise enhancement using learned positive and negative textual prompts. To improve the quality of our improvements over prior work, we design a symmetric residual U-Net backbone augmented with an Atrous Spatial Pyramid Pooling module. This architecture captures multi-scale contextual information, enabling adaptive correction under spatially heterogeneous illumination. During training, the enhancement network is guided by CLIP-based semantic similarity losses and refined via an iterative prompt optimization mechanism. Extensive experiments on both paired and unpaired datasets, including BAID, Backlit300, LOL, and VE-LOL-L, demonstrate that our framework consistently outperforms state-of-the-art supervised and unsupervised methods in terms of fidelity, perceptual quality, and generalization. Furthermore, our work emphasizes the need for stronger benchmarking protocols for backlit enhancement, a relatively underexplored area. The proposed framework provides a robust, scalable solution for real-world illumination enhancement across diverse lighting conditions.",
+      "authors": [
+        "Yasmin Yasin",
+        "Muhammad Usman",
+        "Ibrahim Radwan",
+        "Saeed Anwar"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-05T04:17:05+00:00",
+      "link": "https://arxiv.org/pdf/2608.04429v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Unsupervised image enhancement for backlit and low-light conditions",
+      "llm_evidence_cn": "面向背光与低光条件的无监督图像增强",
+      "llm_evidence": "面向背光与低光条件的无监督图像增强",
+      "canonical_evidence": "面向背光与低光条件的无监督图像增强",
+      "llm_tldr_en": "UBLLIE unifies backlit and low-light image enhancement using CLIP-guided prompt learning with a symmetric residual U-Net and ASPP, achieving adaptive correction without paired data.",
+      "llm_tldr_cn": "背光和低光图像常存在曝光不均或欠曝问题，影响视觉感知与下游任务。本文提出统一的无监督增强框架，借助CLIP引导的提示学习进行语义监督，并采用对称残差U-Net结合空洞空间金字塔池化捕捉多尺度上下文信息。实验表明该方法能自适应校正不同退化，改善视觉效果。",
+      "llm_tldr": "背光和低光图像常存在曝光不均或欠曝问题，影响视觉感知与下游任务。本文提出统一的无监督增强框架，借助CLIP引导的提示学习进行语义监督，并采用对称残差U-Net结合空洞空间金字塔池化捕捉多尺度上下文信息。实验表明该方法能自适应校正不同退化，改善视觉效果。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "computer vision research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2608.04769v1",
+      "source": "arxiv",
+      "title": "From Transparent Labware Segmentation to Collision Avoidance: A Real-Time Edge-Aware Perception Pipeline",
+      "abstract": "This paper presents an edge-aware instance segmentation framework that enables real-time robotic collision avoidance with transparent laboratory glassware using purely visual perception. Transparent vessels defy conventional segmentation due to refraction, specular reflection, and the absence of stable interior texture, yet their boundary contours remain comparatively reliable visual cues. Exploiting this observation, we augment a one-stage real-time instance segmentation backbone with a lightweight edge-detection branch, edge-guided attention fusion, and a parameter-free SimAM module, and further construct LabGlass-IS, a 3485-image, 21-category instance segmentation dataset of real laboratory glassware. The enhanced model achieves the highest Boundary F-score of 97.80 among compared methods, outperforming the YOLO-prompted FastSAM framework by 18.93 BF points. Furthermore, it maintains an inference speed of 7.1ms per frame and requires only 2.85% of the parameters of the closest accuracy competitor. Multi-view triangulation of mask centroids further provides 3D positions for conservative bounding-volume collision constraints. Real-robot trials achieve a 93.3% collision avoidance success rate, indicating the feasibility of the proposed perception-to-action pipeline for robot collision avoidance among fragile transparent objects. Our code is available at https://github.com/havishamy/TransYOLO_3D. Our video is available at https://havishamy.github.io/paper-videos/.",
+      "authors": [
+        "Shijun Ding",
+        "Chen Qian",
+        "Weiwei Shang",
+        "Junlin Xiong"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-08-05T12:34:34+00:00",
+      "link": "https://arxiv.org/pdf/2608.04769v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Real-time edge-aware instance segmentation for transparent labware",
+      "llm_evidence_cn": "面向透明实验器皿的实时边缘感知实例分割",
+      "llm_evidence": "面向透明实验器皿的实时边缘感知实例分割",
+      "canonical_evidence": "面向透明实验器皿的实时边缘感知实例分割",
+      "llm_tldr_en": "An edge-aware instance segmentation pipeline augments a one-stage detector with edge detection and attention fusion to reliably segment transparent labware in real time for robotic collision avoidance.",
+      "llm_tldr_cn": "透明器皿因折射、镜面反射和环境纹理缺失难以分割，但其边缘轮廓相对可靠。本文提出边缘感知的实例分割流水线，在单阶段实时分割骨干上增加轻量边缘检测分支、边缘引导注意力融合和SimAM模块，并构建了包含3485张真实实验室器皿图像的数据集。实验证明该方法能实现实时碰撞避免所需的透明器皿分割。",
+      "llm_tldr": "透明器皿因折射、镜面反射和环境纹理缺失难以分割，但其边缘轮廓相对可靠。本文提出边缘感知的实例分割流水线，在单阶段实时分割骨干上增加轻量边缘检测分支、边缘引导注意力融合和SimAM模块，并构建了包含3485张真实实验室器皿图像的数据集。实验证明该方法能实现实时碰撞避免所需的透明器皿分割。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "image segmentation techniques",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2608.05115v1",
+      "source": "arxiv",
+      "title": "Robust and Efficient Motion Reasoning for Privacy-Aware Classroom Incident Recognition",
+      "abstract": "Can computer vision help make classrooms safer? In this pilot study, we investigate privacy-aware and computationally efficient classroom incident recognition from CCTV-style observations. This setting remains underexplored, with limited benchmarks and few methods designed for the privacy, efficiency, and generalization demands of real-world deployment. We introduce a novel hybrid benchmark combining generative CCTV-style videos with real-world classroom pose data, and propose a lightweight, but robust motion-reasoning framework motivated by the observation that many incidents differ more in motion direction, speed, acceleration, and intensity than in pose alone. To that end, our method first constructs hierarchical kinematic representations of human actions. Our method then distills hierarchical, multi-order kinematic reasoning from a large teacher into a much smaller single-order student, enabling efficient per-person inference while preserving expressive motion understanding. Experiments show that our model outperforms substantially larger baselines at less than one-tenth of their computational cost, while also demonstrating stronger out-of-domain motion reasoning and zero-shot synthetic-to-real generalization. We will publicly release the benchmark, codebase, and supporting tools to facilitate further research in privacy-aware classroom safety.",
+      "authors": [
+        "Paritosh Parmar",
+        "Landy Lan",
+        "Hong Yang",
+        "Chen Yi",
+        "Chiat Pin Tay"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI",
+        "cs.ET",
+        "cs.HC",
+        "cs.LG"
+      ],
+      "published": "2026-08-05T17:46:28+00:00",
+      "link": "https://arxiv.org/pdf/2608.05115v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "video-based incident recognition and motion reasoning",
+      "llm_evidence_cn": "视频事件识别与运动推理，强调隐私与效率",
+      "llm_evidence": "视频事件识别与运动推理，强调隐私与效率",
+      "canonical_evidence": "视频事件识别与运动推理，强调隐私与效率",
+      "llm_tldr_en": "Proposes a lightweight hierarchical kinematic motion-reasoning framework and a hybrid benchmark for privacy-aware classroom incident recognition, showing that motion direction, speed, and intensity distinguish incidents better than pose alone.",
+      "llm_tldr_cn": "课堂监控视频中的事件识别面临隐私、算力与泛化挑战，且缺乏公开基准。本文提出构建层级运动表征，利用运动方向、速度、加速度和强度等线索进行推理，并引入结合生成式CCTV视频与真实课堂姿态数据的混合基准。所提出的轻量级框架在事件识别任务上表现出鲁棒性，同时满足隐私与效率需求。该研究为低算力、隐私敏感的视觉监控分析迈出了第一步。",
+      "llm_tldr": "课堂监控视频中的事件识别面临隐私、算力与泛化挑战，且缺乏公开基准。本文提出构建层级运动表征，利用运动方向、速度、加速度和强度等线索进行推理，并引入结合生成式CCTV视频与真实课堂姿态数据的混合基准。所提出的轻量级框架在事件识别任务上表现出鲁棒性，同时满足隐私与效率需求。该研究为低算力、隐私敏感的视觉监控分析迈出了第一步。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "visual recognition algorithms",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}

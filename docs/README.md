@@ -41,17 +41,17 @@
 <section class="dpr-home-dashboard-card dpr-home-report-card">
   <div class="dpr-home-dashboard-header">
     <div>
-      <span class="dpr-home-dashboard-kicker">2026-08-05</span>
+      <span class="dpr-home-dashboard-kicker">2026-08-07</span>
       <h3 class="dpr-home-dashboard-title">今日汇总</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">共 17 篇</strong>
+    <strong class="dpr-home-dashboard-count">共 15 篇</strong>
   </div>
   <dl class="dpr-home-dashboard-stats">
     <div class="dpr-home-dashboard-stat"><dt>累计更新</dt><dd>1 次</dd></div>
     <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>6</dd></div>
-    <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>11</dd></div>
+    <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>9</dd></div>
   </dl>
-  <p class="dpr-home-dashboard-body">最近更新：2026-08-05 20:54:12 UTC<br>状态：成功</p>
+  <p class="dpr-home-dashboard-body">最近更新：2026-08-07 01:44:58 UTC<br>状态：成功</p>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-brief-card">
   <div class="dpr-home-dashboard-header">
@@ -62,7 +62,9 @@
     <strong class="dpr-home-dashboard-count">AI</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<p>今日精读聚焦3D目标检测Transformer与零样本特征上采样，速读覆盖低功耗ViT、AI图像检测及3D视觉语言模型。最值得关注的是9.0分两篇：检测Transformer的3D理解能力剖析，以及PixelUp实现零样本语义上采样以提升细粒度视觉任务。建议下一步可深入验证这些方法在真实场景中的泛化性，并关注Qwen-3D的空间理解潜力。</p>
+<p>今日速览15篇论文，精读6篇、速读9篇，重点聚焦跨模态检测与视觉语言模型。</p>
+<p>最值得精读《RegisterBridgeMM》满分10分，提出RGB-红外注册中心检测框架；《Through the LENS》9分，拆解视觉语言表征的局部几何结构。</p>
+<p>建议优先复现高分框架，速读可留意Fermat主动学习与LoRetta全球遥感匹配数据集的落地潜力。</p>
   </div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-deep-card">
@@ -74,7 +76,7 @@
     <strong class="dpr-home-dashboard-count">6 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Probing the 3D Object-Level Understanding of Pre-Trained Detection Transformers">Probing the 3D Object-Level Understanding of Pre-Trained Detection Transformers</span></li><li><span class="dpr-home-dashboard-paper-title" title="PixelUp: Zero-Shot Semantic Feature Upsampling for Fine-Grained Vision Tasks">PixelUp: Zero-Shot Semantic Feature Upsampling for Fine-Grained Vision Tasks</span></li><li><span class="dpr-home-dashboard-paper-title" title="FreqAdapt: Frequency-Adaptive Processing for RAW Object Detection">FreqAdapt: Frequency-Adaptive Processing for RAW Object Detection</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="RegisterBridgeMM: A Register-Centric Framework for RGB-Infrared Object Detection">RegisterBridgeMM: A Register-Centric Framework for RGB-Infrared Object Detection</span></li><li><span class="dpr-home-dashboard-paper-title" title="Through the LENS: Local Geometric Decomposition of Vision-Language Model Representations">Through the LENS: Local Geometric Decomposition of Vision-Language Model Representations</span></li><li><span class="dpr-home-dashboard-paper-title" title="XiDepth: a Lightweight and Efficient Network for Self-supervised Monocular Depth Estimation">XiDepth: a Lightweight and Efficient Network for Self-supervised Monocular Depth Estimation</span></li></ul>
   </div>
   <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">cv <strong>6</strong></span></div>
 </section>
@@ -84,12 +86,12 @@
       <span class="dpr-home-dashboard-kicker">今日累计</span>
       <h3 class="dpr-home-dashboard-title">速读推荐</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">11 篇</strong>
+    <strong class="dpr-home-dashboard-count">9 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="DeVIT: Low-Power Vision Transformer Acceleration Using Delta Computation">DeVIT: Low-Power Vision Transformer Acceleration Using Delta Computation</span></li><li><span class="dpr-home-dashboard-paper-title" title="Grounding and Explaining Visual Evidence for AI-Generated Image Detection in Human-Centric Scenes">Grounding and Explaining Visual Evidence for AI-Generated Image Detection in Human-Centric Scenes</span></li><li><span class="dpr-home-dashboard-paper-title" title="Qwen-3D: A Generalist 3D Vision-Language Model for Spatial Understanding">Qwen-3D: A Generalist 3D Vision-Language Model for Spatial Understanding</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Fermat Active Laplace Learning for Semi-Supervised Hyperspectral Image Classification">Fermat Active Laplace Learning for Semi-Supervised Hyperspectral Image Classification</span></li><li><span class="dpr-home-dashboard-paper-title" title="LoRetta: A Foundation Model and Extensive Dataset for Global-Scale Remote Sensing Dense Image Matching">LoRetta: A Foundation Model and Extensive Dataset for Global-Scale Remote Sensing Dense Image Matching</span></li><li><span class="dpr-home-dashboard-paper-title" title="TriCLE: Tri-Modal Vision-Language Reasoning for Edge-Deployed Fine-Grained Clustering">TriCLE: Tri-Modal Vision-Language Reasoning for Edge-Deployed Fine-Grained Clustering</span></li></ul>
   </div>
-  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">cv <strong>11</strong></span></div>
+  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">cv <strong>9</strong></span></div>
 </section>
 </div>
 

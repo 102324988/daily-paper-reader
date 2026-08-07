@@ -1,0 +1,541 @@
+Title: Detecting Pose Estimation Failures via Keypoint Self-Consistency
+
+URL Source: https://arxiv.org/pdf/2608.03516v1
+
+Published Time: Wed, 05 Aug 2026 01:11:10 GMT
+
+Number of Pages: 13
+
+Markdown Content:
+# Detecting Pose Estimation Failures via Keypoint Self-Consistency 
+
+Robin Chan ∗
+
+Mathematical Modeling of Industrial Life Cycles Institute of Mathematics, Technische Universit¨ at Berlin 
+
+Email: chan@math.tu-berlin.de 
+
+Fig. 1: Pose estimation failure detection results on LINEMOD Occluded [1]. The objects are rendered with their estimated poses. The corresponding bounding boxes are color-coded by rotation error: green indicates a correct pose and red an incorrect pose. The predicted failure probability from our failure detection model is annotated on each bounding box. 
+
+Abstract —One common approach to pose estimation involves predicting object keypoints in an image, followed by using Perspective-n-Point algorithms to compute the object’s rotation and translation relative to the camera. While rotations preserve object shapes, this property is often neglected in keypoint-based pose estimation methods, where keypoints are typically predicted independently from each other. As imprecise keypoint predictions negatively affects pose estimation accuracy, it also limits its relia-bility in downstream tasks. In this work, we explore whether such inaccurate pose estimates can be identified by simply examining spatial locations between 2D keypoints. We propose a set of hand-crafted geometric features that capture the self-consistency of keypoint predictions, including pairwise distances, reprojection consistency, as well as render and mask consistency. Despite its simplicity, a logistic regression classifier trained on these features reliably detects pose estimation failures, outperforming confidence-based approaches like conformal keypoint predictions that rely solely on keypoint uncertainty. Code available: https://github.com/robin-chan/meta-pose 
+
+Index Terms —keypoint-based pose estimation, failure detec-tion, uncertainty quantification, self-consistent predictions 
+
+> ∗
+
+Work done while visiting researcher in CVLab at EPFL in Lausanne. 
+
+I. I NTRODUCTION 
+
+6D object pose estimation is the computer vision task that deals with determining the orientation and translation of an ob-ject displayed in an image relative to the camera capturing the image. Recent advancements have shown impressive success [2–4]. In general, the 6D pose of an object can be described by means of a 3 × 3 rotation matrix and a 3 dimensional translation vector, representing the regression targets. Although these parameters can be regressed directly [5, 6], more recent approaches favor two-stage methods for better accuracy. Such two-stage approaches first localize predefined object keypoints in the image and then solve a Perspective-n-Point (PnP) problem [7–11] to obtain the 6D pose. Typically, only the detection of these 2D keypoints in the image involves deep learning. Their locations can be predicted via intermedi-ate probabilistic heatmaps [7, 10–12]. In most of these 2D keypoint prediction variants, however, the keypoints are treated independently. They do not account for their spatial correlation of the keypoints in the image, arXiv:2608.03516v1 [cs.CV] 4 Aug 2026 which naturally exist since they represent parts of an object with a fixed geometric relationship. While the relative po-sitions of keypoints of a rigid 3D object remain consistent under rotation in 3D space, this is not the case after projecting them to 2D plane. The correlation still persists but the relative positions change depending on the rotation. In this work, we investigate whether pose estimation failures can be detected purely from predicted 2D keypoint locations, without requiring additional sensors beyond the monocular camera input available in the standard pose estimation pipeline, or computationally expensive learning based components. To this end, we design hand-crafted geometric features that encode the self-consistency of predicted keypoints with respect to the known 3D structure of the object. Concretely, we construct features from pairwise keypoint distances, including keypoint predictions from the input image, reprojections under the estimated pose, or predictions on the rendered object. We demonstrate that a lightweight logistic regression classifier trained on these features reliably detects pose estimation failures, requiring only a small calibration set drawn from the target domain. Thereby, our approach improves the robustness of the 6D pose estimation pipeline and subsequent downstream tasks. Our contributions are summarized as follows:  
+
+> •
+
+We propose Meta Pose , a lightweight failure detection framework for keypoint-based 6D pose estimation that requires no additional sensors or costly learning-based components beyond a standard pose estimation pipeline.  
+
+> •
+
+We introduce a set of hand-crafted geometric features encoding the self-consistency of keypoint predictions across complementary sources, including pairwise dis-tances, reprojection, as well as render and mask consis-tency. Combined with a logistic regression, these features provide reliable and well-calibrated failure probabilities.  
+
+> •
+
+We demonstrate on the challenging LINEMOD Occluded dataset that our approach consistently outperforms estab-lished baselines, such as conformal keypoint prediction, across multiple evaluation metrics despite its simplicity, which highlights the value of geometric self-consistency as a signal for pose estimation reliability.  
+
+> •
+
+We show that a lightweight, render-free subset of our hand-crafted features is sufficient to match the perfor-mance of the full feature set at a fraction of the compu-tational cost, indicating that reliable failure detection does not require access to rendering or segmentation beyond the standard pose estimation pipeline. The remainder of this paper is organized as follows. In Section II, we review related work. In Section III, we detail the proposed geometric consistency features and the pose estimation failure detection framework. In Section IV, we describe the experimental setup, including the dataset, eval-uation protocol, and baselines. In Section V, we present both qualitative and quantitative results. Finally, Section VI concludes with an ablation study. II. R ELATED WORK 
+
+6D Pose Estimation from Images. Early approaches to 6D pose estimation regress rotation and translation in a single forward pass [5, 6, 13], enabling real-time inference. However, the non-Euclidean structure of the rotation space makes direct regression problematic, for which alternative rotation repre-sentations have been proposed to mitigate the issues [14, 15]. These methods rely primarily on image features and lack geometric reasoning, which is why they tend to struggle under occlusion and clutter. More favorable are two-stage approaches that first establish 2D–3D correspondences between image and 3D object to then recover the pose by solving a Perspective-n-Point (PnP) problem [16, 17]. Classical methods derive these correspondences from hand-crafted features [18, 19]. Learning-based methods instead predict the 2D locations of predefined 3D object keypoints via direct regression [20–22], pixel-wise voting [8, 23], or probabilistic heatmaps [7, 10–12]. In all of these variants, keypoints are typically predicted independently, without explicitly enforcing the geometric constraints that arise from the rigid 3D structure of the object. Consequently, localization errors in individual keypoints may propagate directly to the pose recovered by the PnP solver. Inconsistent keypoint predictions can therefore lead to significant pose estimation failures. This motivates the need for reliable failure detection as a component of the two-stage pipeline. 
+
+Failure Detection in 6D Pose Estimation. The problem of detecting when a model’s prediction is incorrect has been studied in computer vision and can be tied naturally to the problem of uncertainty quantification. One established early baseline in image classification thresholds the neural network’s maximum softmax confidence [24]. Subsequent work has refined this idea by learning confidence predictors [25, 26], applying input preprocessing to sharpen the confidence gap [27], or exploiting feature-based statistics [28]. These ideas have been extended to more complex computer vision tasks such as semantic segmentation by aggregating statistics over softmax distributions in ensemble like fashion [29, 30]. Here in this work we use ensembles of features to predict whether a pose is correct or incorrect. In the specific context of 6D pose estimation, failure detec-tion remains relatively understudied. Richter-Klug and Frese [31] introduced the idea of including uncertainty from an image encoding CNN directly in the PnP solver to predict the model’s own failures. Shi et al. [32] and Wursthorn et al. [33] explore ensemble-based uncertainty quantification, applying deep ensembles to multi-stage pose estimators and propos-ing metrics to quantify the quality of pose estimates. Other methods explicitly model orientation uncertainty by learning distributions over orientations [34] or by predicting dense correspondence distributions [35]. Another line of strategies selects a pose among a set of pose hypotheses based on depth or visual feature consistency [36–38]. 2Closer to our goal of detecting incorrect pose estimates without ground truth is the work by Quentin and Goehring [39]. They propose a render-based uncertainty score that com-pares the estimated pose against the corresponding instance segmentation mask, operating at the level of silhouettes rather than keypoints. Failure detection has also been tackled in the work by Schneider et al. [40], where pose estimation pipeline is decomposed into failure detection, error source attribution, and targeted mitigation. A small classifier can be trained to distinguish between error types for ICP-based pose estimation. An emerging line of work addresses the gap of missing statistical guarantees via conformal prediction [41, 42]. Yang and Pavone [11] apply inductive conformal prediction to construct keypoint prediction sets with coverage guarantees and propagate these geometrically to obtain worst-case pose error bounds. Shaikewitz et al. [43] extend this direction to visual pose uncertainty bounds around objects. While these methods provide coverage guarantees on individual keypoints, such guarantees do not transfer directly to the final pose, which depends jointly on all keypoint predictions. Furthermore, their practical utility for binary failure detection, i.e. predicting whether a pose estimate exceeds a specific rotation error threshold, has not been explicitly investigated. Our work addresses this gap by training a lightweight logistic regression model on hand-crafted geometric features encoding self-consistency of keypoints, directly targeting failure detection of pose estimation without additional sensors beyond the standard monocular camera input. III. M ETHODOLOGY 
+
+We consider the task of keypoint-based 6D pose estimation, where the pose is defined by the rotation matrix R ∈ SO(3) 
+
+and the translation vector t ∈ R3. Given a set of predefined 3D object keypoints V ⊂ R3 and camera intrinsics K, the corresponding 2D projections are obtained as 
+
+X = {π(K, R, t, v) | v ∈ V} ⊂ R2, (1) where π(·) denotes the projection function. Keypoint-based methods first predict the 2D locations ˆX im of the keypoints 
+
+X in the image, from which the rotation and translation is recovered deterministically via a PnP algorithm given 2D–3D point correspondences between ˆX im and V.
+
+A. Rotation Error 
+
+Let ˆR and R denote two rotation matrices corresponding to the estimated rotation and ground truth rotation, respectively. The geodesic distance between them is measured by the rotation angle (in degrees) 
+
+θ = arccos tr( ˆRR ⊤) − 12
+
+!
+
+· 180 
+
+π ∈ [0 , 180] , (2) where ˆRR ⊤ ∈ SO(3) is the relative rotation. A pose estimate is called correct if θ( ˆR, R) ≤ τ for a given threshold τ ∈
+
+[0 , 180] , and incorrect otherwise. 
+
+B. Feature Construction 
+
+We construct a feature vector for each pose estimate. With these feature vectors, we aim at capturing geometric consistency of predicted keypoints, without requiring ground truth annotations at test time. Since all keypoints are typically predicted independently, deviations from the expected object structure serves as indicator for inaccurate predictions and, consequently, incorrect pose estimates. All features are constructed solely from keypoint locations, making the approach computationally lightweight without requiring processing steps beyond the pose estimation pipeline itself. In what follows, we discuss the feature construction for only one object in one image for simplicity. 
+
+Relative Distances. Let ˆxim  
+
+> k
+
+∈ ˆX im ⊂ N2 denote the 2D location of the k-th keypoint obtained by the keypoint detector given an original input image. To capture the geometric structure of the predicted keypoints, we compute pairwise distances between all predicted image keypoints, 
+
+drel = ˆ tz ·  ∥ˆxim  
+
+> i
+
+− ˆxim  
+
+> j
+
+∥2
+
+|V|  
+
+> i,j =1 ,i ̸=j
+
+∈ R|V| 2−|V| , (3) where the estimated distance ˆtz ∈ R+ of the object from the camera is used for scaling. Deviations in pairwise keypoint distances from those expected under a correct pose indicate inconsistent keypoint predictions. 
+
+Reprojection Consistency. Let ˆxrepr  
+
+> k
+
+∈ ˆX repr ⊂ R2 denote the 2D location of the k-th keypoint obtained by projecting the 3D keypoints V back to the image plane using the estimated rotation ˆR and translation ˆt after solving the PnP problem, i.e. 
+
+ˆX repr = {π(K, ˆR, ˆt, v) | v ∈ V} . We measure the consistency between predicted and reprojected keypoints as 
+
+drepr = ˆ tz ·  ∥ˆxim  
+
+> i
+
+− ˆxrepr  
+
+> i
+
+∥2
+
+|V|  
+
+> i=1
+
+∈ R|V| . (4) A consistent pose estimate should yield small reprojection distances from all predicted keypoints. 
+
+Render Consistency. Since the 3D asset is available in keypoint-based pose estimation, we can render the object at the estimated pose and predict keypoint locations on the rendered image, yielding ˆX render . Let ˆxrender  
+
+> k
+
+∈ ˆX render ⊂ N2 denote the 2D location of the k-th keypoint obtained by the keypoint detector given the rendered image. As the render is generated under controlled conditions without occlusion or motion blur, and as the keypoint detector is typically trained on rendered data, it is expected to perform more reliably on it. We measure the consistency between image and rendered image keypoint predictions as 
+
+drender = ˆ tz ·  ∥ˆxim  
+
+> i
+
+− ˆxrender  
+
+> i
+
+∥2
+
+|V|  
+
+> i=1
+
+∈ R|V| . (5) Discrepancies indicate that the estimated pose given the original image is inconsistent with the estimated pose given the rendered image. 3θ = 0 .98 ◦, ¯d2 = 1 .49 
+
+θ = 9 .48 ◦, ¯d2 = 14 .35 
+
+Fig. 2: Examples showing keypoint consistency features. From left to right: keypoint predictions on original image (pink), reprojected keypoints given pose estimate (brown), keypoint prediction on rendered image given pose estimate (orange). In each image the ground truth points are green with its cor-responding prediction indicated by the white line. Moreover, 
+
+¯d2 quantifies the average spread of all keypoints from their respective centroids. 
+
+Centroid Distance. We compute the centroids for each keypoint across different keypoint predictions. The centroid for the k-th keypoint is obtained by 
+
+ˆck = 13
+
+ ˆxim  
+
+> k
+
++ ˆ xrepr  
+
+> k
+
++ ˆ xrender 
+
+> k
+
+ ∈ R2. (6) The distance to the centroid across the keypoints from the different sources 
+
+dcenter = ˆ tz · 13
+
+X
+
+> x∈K k
+
+∥x − ˆck∥2
+
+!|V| 
+
+> k=1
+
+∈ R|V| , (7) where Kk = {ˆxim  
+
+> k
+
+, ˆxrepr  
+
+> k
+
+, ˆxrender  
+
+> k
+
+}, summarizes the spread of the different keypoint types ˆX im , ˆX repr , ˆX render . A consistent pose estimate is expected to cluster all keypoints close to their respective centroids. 
+
+Keypoint Confidence. A natural measure for the reliability of keypoint predictions is the confidence of the keypoint localization method. Given normalized confidence scores s ∈
+
+[0 , 1] |V| , the per-keypoint uncertainty is the inverse confidence 
+
+u = (1 − s)s∈s ∈ [0 , 1] |V| . (8) High uncertainty predictions are expected to correlate to incorrect pose estimates. 
+
+Render Mask Consistency. Similar to [39], we also exploit the segmentation masks to detect pose failures. Let Mrender ⊂
+
+Z2 denote the segmentation mask of the rendered object at 
+
+dcham = 0 .61 , rcov  
+
+> δ=2
+
+= 0 .97 
+
+dcham = 1 .86 , rcov  
+
+> δ=2
+
+= 0 .75 
+
+Fig. 3: Examples showing mask consistency features. From left to right: the segmentation of the object in the original image obtained with SAM [44] (blue), the rendered object at its estimated pose with its corresponding segmentation (orange), and the overlay of both masks, where agreement is highlighted in green. Below each example we report the Chamfer distance 
+
+dcham and coverage ratio rcov  
+
+> δ
+
+with tolerance δ = 2 .its estimated pose and ∂Mrender its boundary points. As a prediction of the object’s silhouette in the original image, we prompt the Segment Anything Model (SAM) [44] with the 2D bounding box used for pose estimation to obtain the segmentation mask and its boundary points ∂Mseg . A pose estimate is expected to be consistent if the rendered silhouette aligns well with the predicted segmentation. We quantify this alignment using two metrics. First, the one directional Chamfer distance between the render and segmentation boundaries is given by 
+
+dcham = ˆtz
+
+|∂Mseg |
+
+X
+
+> p∈∂Mseg
+
+min 
+
+> q∈∂Mrender
+
+∥p − q∥2 ∈ R+ (9) where a smaller values for dcham indicates closer agreement between the two silhouettes. This choice is motivated by better robustness to occlusion since it puts emphasis on visible contour points. Second, we compute a coverage ratio defined by the fraction of observed segmentation boundary points that lie within a tolerance pixel distance δ > 0 of the render boundary 
+
+rcov  
+
+> δ
+
+= 1
+
+|∂Mseg |
+
+X
+
+> p∈∂Mseg
+
+1{min q∈∂Mrender ∥p−q∥2≤δ} ∈ [0 , 1] (10) where low values indicate complete inconsistency, and high values that the rendered silhouette mostly matches the seg-mentation boundary. See Figure 3 for illustration. 
+
+C. Pose Estimation Failure Detector 
+
+The above features are computed for each test sample independently. For each test object, this yields an aggregated 4single full feature vector 
+
+f = concat  drel , drepr , drender 
+
+, dcenter 
+
+, u, d cham , r cov 
+
+> δ
+
+ ∈ RN (11) where N = 2 + P 
+
+> k
+
+dim dk, dk ∈ { drel , drepr , drender , dcenter , u}.Then, f serves as input to a logistic regression model, which classifies whether the corresponding pose estimate is correct or incorrect, i.e. whether θ ≤ τ or θ > τ , cf. Equation (2). Note that other combinations of the presented features are possible as well. We evaluate different combinations in the main experiments in Section V and ablation study in Section VI. IV. E XPERIMENT SETUP 
+
+In this work, we focus on rotation error. The translation accuracy is largely determined by the quality of the pre-liminary object localization rather than the pose estimator itself. A sufficiently accurate detection typically yields low translation error. Therefore, pose estimation failure resulting from inaccurate translation is more appropriately addressed at the object detection stage, which is a separate line of research outside the scope of this work. All evaluated method use the same underlying pose estimation pipeline by [10], which localize keypoints from heatmap predictions. Moreover, we use the RANSAC-based implementation by OpenCV [45] to solve the Perspective-n-Points (PnP) problems. 
+
+A. Evaluation Metrics 
+
+The pose error rate is defined as the fraction of incorrect estimates over the dataset I,
+
+ετ = 1
+
+|I| 
+
+X
+
+> i∈I
+
+1{θi>τ } . (12) For increasing error threshold, the pose error rate decreases, i.e. it holds ετ1 ≥ ετ2 if τ1 ≤ τ2, τ1, τ 2 ∈ [0 , 180] . For the detection of pose estimation failures, this means that the number of positive and negative examples are affected by the chosen error threshold, which in return impact the performance of the failure detection model. Failure detection is formulated as a binary classification problem, where the positive class corresponds to incorrect pose estimates ( θ > τ ) and the negative class to correct ones (θ ≤ τ ). We evaluate failure detection performance using four metrics. 
+
+Accuracy measures the overall fraction of correctly classi-fied samples but is sensitive to class imbalance. The F1 score, as the harmonic mean of precision and recall, puts emphasis on the detection of failures and is more informative than accuracy under class imbalance. Both metrics depend on the choice of a decision threshold. We report results at the threshold which jointly maximizes training accuracy and training F 1 score, i.e. 
+
+t∗ = arg max t∈R(Accuracy (t) + F1(t)) .For threshold-agnostic evaluation of discriminative perfor-mance, we report the AUROC , which measures the ability of the classifier to rank pose estimation failures above correct estimates across different decision thresholds. Additionally, 
+
+Fig. 4: Examples showing different methods. From left to right: keypoint confidence heatmaps, conformal keypoint sets, keypoint consistency features. we report the AUPRC which is both threshold-agnostic and failure-oriented, making it suited in imbalanced class settings. 
+
+B. Evaluation Protocol 
+
+We evaluate the proposed failure detector using a reverse cross-validation protocol. To this end, we partition the 1214 test images of the LINEMOD Occluded dataset [1] into 5
+
+folds of (approximately) equal size. The folds are independent, as the images provide uniformly distributed views of objects [11, 46]. In each run, one fold ( 20% of the data) is used to train the logistic regression classifier for failure detection, while the remaining four folds ( 80% ) serve as test set. This is repeated for each fold, yielding 5 independent evaluation runs in which every sample is used for training once and evaluated four times in the remaining runs. This protocol is a common evaluation in uncertainty quantification where only a small labeled subset of the target domain is required to calibrate the classifier, while the majority of the data serves as an independent test set [42]. We additionally report the mean and standard deviation across all 5 runs to assess the sensitivity of the failure detector to the choice of the data split. 
+
+C. Evaluated Methods 
+
+Meta Pose Variants. We consider two variants of our pro-posed approach, cf. Section III. Here, Meta Pose aggregates only the non-render features, namely drel , drepr , and u. It re-quires no rendering or additional segmentation model beyond the pose estimation pipeline. Meta Pose–Full additionally includes the render-based features drender , dcenter , dcham , and 
+
+rcov 
+
+> δ=2
+
+, which require rendering the object at the estimated pose and, for the mask consistency features, an additional seg-mentation step. As we observe that the render-based features contribute only marginal gains in failure detection performance while considerably increasing runtime, we adopt the render-free variant as our main approach. Unless stated otherwise, 5Meta Pose therefore refers to this render-free variant through-out the remainder of the paper. For completeness, we report results for both variants in our numerical results in Section V, with accompanying feature ablation in Section VI. 
+
+Maximum Keypoint Confidence Thresholding. Motivated by the established baseline for failure detection in computer vision introduced by Hendrycks and Gimpel [24], we evaluate failure detection performance using the keypoint confidence scores produced by the keypoint localization model. The intuition is that correctly estimated poses are expected to arise from accurately localized keypoints, which in turn correspond to high keypoint confidence scores. On the contrary, incorrectly estimated poses are expected to result from poorly localized keypoints with lower keypoint confidences. Following this reasoning, the baseline method aggregates the per-keypoint uncertainties u, as defined in Equation (8) as the inverse of the keypoint confidence scores, by taking their maximum value. The scalar quantity used for thresholding is thus given by u∗ = max u, where a high value indicates low overall keypoint confidence and therefore signals a pose estimation failure. This baseline method relies solely on the per-keypoint uncertainty of the keypoint detector. It requires no additional computation beyond the keypoint localization model of the standard pose estimation pipeline or calibration, making it the most efficient baseline method for comparison. 
+
+Conformal Keypoint Prediction. Yang and Pavone [11] proposed a conformal keypoint detection framework that pre-dicts sets of possible keypoint locations for each keypoint with statistical guarantees. Specifically, inductive conformal predic-tion is applied to construct circular regions in the image space based on keypoint localization confidences, each guaranteed to contain the ground truth keypoint location with a chosen coverage probability. Pose uncertainty is then quantified by sampling keypoint locations within the spatial constraints given by the conformal sets, followed by solving a Perspective-n-Point problem for each sample, yielding a distribution over possible poses. From these distribution rotation errors can be estimated by means of statistics of the pose distribution. The intuition is that larger conformal keypoint sets correspond to greater keypoint localization uncertainty and, consequently, higher pose uncertainty. While the method has shown to provide reliable keypoint coverage and worst-case error bounds, its use for failure detection has not been explicitly evaluated. We therefore adopt conformal keypoint prediction as our baseline, assuming that pose uncertainty is indicative of incorrect pose estimates. We train a logistic regression classifier on three scalar statistics derived from the distribution of sampled poses, which are the mean, variance, and maximum rotation error between the es-timated pose and each sampled pose. This makes the baseline directly comparable to our proposed approach, differing only in the features provided to the logistic regression model as input.                 
+
+> θ= 2 .16 ◦
+> ˆp= 29 .4%
+> θ= 0 .98 ◦
+> ˆp= 4 .0%
+> θ= 7 .92 ◦
+> ˆp= 75 .3%
+> θ= 19 .04 ◦
+> ˆp= 92 .4%
+> θ= 8 .40 ◦
+> ˆp= 92 .6%
+> θ= 3 .66 ◦
+> ˆp= 41 .2%
+> θ= 9 .92 ◦
+> ˆp= 76 .6%
+> θ= 9 .48 ◦
+> ˆp= 93 .3%
+
+Fig. 5: Examples showing estimated and ground truth poses for the different LINEMOD objects [1] in the scene shown in Figure 1. The object contours and solid axes correspond to the estimated pose, transparent axes to the ground truth. Moreover, θ denotes the rotation error and ˆp the our model’s probability for a pose estimation failure, i.e. θ > 5◦.V. N UMERICAL RESULTS 
+
+Per-Object Failure Detection. Table I reports the per-object failure detection performance across all eight LINEMOD Occluded objects [1] for both rotation error thresh-olds τ = 5 ◦ and τ = 10 ◦, comparing maximum keypoint confidence thresholding [24], conformal keypoint prediction [11], and our proposed Meta Pose approaches. For θ > 5◦ Meta Pose achieves the highest average AUROC of 83.04 and AUPRC of 81.83, outperforming con-formal keypoint prediction (71.18 and 75.08) and confidence thresholding (66.26 and 70.00) by a substantial margin. The gains are particularly pronounced for the symmetric objects 
+
+eggbox and glue , reaching AUROC values of 91.38 and 86.64 respectively, and AUPRC values of 95.46 and 92.24. The result for the object duck is similar high, achieving an AUPRC of 92.76. Objects with low pose error rates such as driller (210 failures out of 1214 samples) present a harder failure detection problem due to severe class imbalance, which can be observed by the lower F 1 scores across all methods. For θ > 10 ◦ class imbalance becomes even more pro-nounced, e.g. the object driller has only 43 failures. Still, Meta Pose maintains strong AUROC performance, reaching an average of 90.50 compared to 81.93 for conformal key-point prediction and 79.62 for maximum keypoint confidence thresholding. Notably, for the objects ape , can , cat , eggbox 
+
+and glue , Meta Pose achieves AUROC values over 90 percent points, respectively, demonstrating that the proposed con-sistency features become increasingly discriminative despite failures becoming rarer. This indicates object specific failure modes which can be detected more reliably. Furthermore, the consistently small standard deviations across all metrics and objects indicate that the failure detector 6Fig. 6: Pose estimation failure detection θ > 5◦ with our Meta Pose approach. The objects are rendered with their estimated poses. The corresponding bounding boxes are color-coded by rotation error: green indicates a correct pose and red an incorrect pose. The predicted failure probability from our failure detection model is annotated on each bounding box. 7Object Ape Can Cat Driller Duck Eggbox ∗ Glue ∗ Holepunch Classification rotation angle θ > 5◦
+
+ετ =5 542 / 1169 381 / 1206 662 / 1184 210 / 1214 823 / 1143 752 / 1166 596 / 900 730 / 1210 Avg Maximum Keypoint Confidence Thresholding Accuracy 64.33 ±0.00 64.43 ±0.00 62.16 ±0.00 82.62 ±0.00 72.00 ±0.00 65.09 ±0.00 66.11 ±0.00 60.33 ±0.00 67.13 F1 score 59.79 ±0.00 39.66 ±0.00 69.40 ±0.00 37.76 ±0.00 83.71 ±0.00 78.45 ±0.00 79.60 ±0.00 75.21 ±0.00 65.45 AUROC 67.96 ±0.00 57.05 ±0.00 70.78 ±0.00 69.27 ±0.00 62.26 ±0.00 71.79 ±0.00 70.97 ±0.00 60.01 ±0.00 66.26 AUPRC 69.67 ±0.00 47.10 ±0.00 79.55 ±0.00 40.41 ±0.00 82.53 ±0.00 84.60 ±0.00 85.06 ±0.00 71.08 ±0.00 70.00 Conformal Keypoint Prediction Accuracy 74.68 ±0.53 67.68 ±1.62 70.54 ±0.88 85.95 ±0.85 71.39 ±0.00 70.09 ±0.03 75.33 ±0.97 61.70 ±0.40 72.17 F1 score 71.34 ±0.80 44.53 ±2.60 73.86 ±0.72 62.98 ±1.38 83.31 ±0.00 82.41 ±0.02 83.23 ±0.05 73.45 ±0.57 71.89 AUROC 78.98 ±0.33 62.48 ±0.91 76.98 ±0.13 87.30 ±0.47 54.09 ±1.00 68.60 ±0.76 77.01 ±1.60 63.97 ±0.58 71.18 AUPRC 81.06 ±0.22 54.57 ±0.90 85.14 ±0.16 57.96 ±1.57 77.74 ±0.44 85.54 ±0.41 87.01 ±0.91 71.58 ±0.60 75.08 Ours: Meta Pose – Full Accuracy 76.03 ±1.93 73.57 ±2.10 72.83 ±0.94 83.42 ±1.04 78.61 ±1.21 87.39 ±0.73 79.44 ±1.08 71.03 ±1.13 77.79 F1 score 72.69 ±1.88 56.10 ±1.44 75.07 ±0.64 56.85 ±1.60 85.21 ±1.21 89.96 ±0.65 84.70 ±1.33 76.74 ±1.80 74.66 AUROC 82.03 ±0.91 75.44 ±2.21 81.05 ±0.29 84.41 ±1.38 83.38 ±0.71 92.36 ±0.25 86.32 ±0.72 76.38 ±0.82 82.67 AUPRC 83.06 ±1.38 64.23 ±2.38 86.85 ±0.55 57.79 ±3.07 92.31 ±0.60 96.07 ±0.33 92.23 ±0.77 81.73 ±0.90 81.78 Ours: Meta Pose – Render-free Accuracy 76.52 ±1.51 73.94 ±1.91 73.25 ±1.85 84.62 ±0.88 79.62 ±1.13 85.98 ±1.03 80.42 ±1.73 71.65 ±1.22 78.25 F1 score 72.22 ±0.85 58.74 ±2.73 76.26 ±0.76 59.23 ±1.54 86.36 ±1.05 88.95 ±0.80 85.32 ±1.79 77.76 ±1.20 75.61 AUROC 81.94 ±1.37 77.30 ±3.24 81.71 ±0.77 85.87 ±0.45 84.10 ±0.49 91.38 ±0.57 86.64 ±1.03 75.39 ±0.91 83.04 AUPRC 83.07 ±1.82 66.45 ±3.13 87.37 ±0.70 57.18 ±1.49 92.76 ±0.59 95.46 ±0.45 92.24 ±0.76 80.12 ±1.04 81.83 Classification rotation angle θ > 10 ◦
+
+ετ =10 227 / 1169 70 / 1206 335 / 1184 43 / 1214 338 / 1143 400 / 1166 329 / 900 94 / 1210 Avg Maximum Keypoint Confidence Thresholding Accuracy 85.54 ±0.00 95.52 ±0.00 84.71 ±0.00 96.29 ±0.00 74.02 ±0.00 81.48 ±0.00 79.00 ±0.00 91.49 ±0.00 86.01 F1 score 51.85 ±0.00 55.74 ±0.00 67.96 ±0.00 32.84 ±0.00 47.25 ±0.00 71.05 ±0.00 71.15 ±0.00 28.97 ±0.00 53.35 AUROC 79.28 ±0.00 83.67 ±0.00 84.30 ±0.00 79.56 ±0.00 70.05 ±0.00 84.57 ±0.00 84.66 ±0.00 70.90 ±0.00 79.62 AUPRC 61.93 ±0.00 57.90 ±0.00 78.04 ±0.00 30.69 ±0.00 59.67 ±0.00 81.89 ±0.00 80.61 ±0.00 29.12 ±0.00 59.98 Conformal Keypoint Prediction Accuracy 86.09 ±0.34 97.05 ±0.17 86.47 ±0.74 94.96 ±0.72 75.77 ±0.79 72.86 ±0.59 75.64 ±1.01 91.31 ±1.42 85.02 F1 score 63.68 ±0.46 66.05 ±1.36 76.04 ±0.74 31.49 ±2.00 43.27 ±0.98 50.86 ±0.62 65.89 ±2.58 44.46 ±2.04 55.22 AUROC 88.53 ±0.46 91.69 ±0.35 91.88 ±0.25 91.46 ±0.37 63.19 ±1.10 63.44 ±0.45 82.27 ±1.81 82.98 ±0.84 81.93 AUPRC 71.87 ±0.47 70.60 ±1.37 84.35 ±0.41 31.18 ±1.07 56.73 ±0.72 59.01 ±0.15 74.01 ±1.44 41.99 ±1.57 61.22 Ours: Meta Pose – Full Accuracy 92.45 ±0.83 96.97 ±0.34 87.90 ±1.37 95.12 ±0.77 76.20 ±2.13 88.74 ±0.79 84.94 ±0.56 89.79 ±2.68 89.02 F1 score 81.16 ±1.31 74.91 ±3.46 78.86 ±2.11 45.34 ±1.79 60.28 ±2.98 83.25 ±1.67 79.97 ±1.97 45.75 ±7.47 68.69 AUROC 95.96 ±0.68 98.11 ±0.32 94.59 ±0.65 87.78 ±5.20 80.78 ±2.83 95.80 ±0.24 93.32 ±0.62 81.74 ±3.57 91.01 AUPRC 88.85 ±0.96 84.60 ±1.66 88.90 ±1.20 40.83 ±4.30 68.74 ±2.38 92.98 ±0.29 88.97 ±0.67 48.06 ±8.44 75.24 Ours: Meta Pose – Render-free Accuracy 92.58 ±0.79 96.89 ±0.58 87.69 ±1.44 96.17 ±0.54 75.83 ±0.81 87.39 ±0.66 84.86 ±0.91 91.22 ±1.54 89.08 F1 score 81.60 ±1.35 71.67 ±8.07 78.37 ±2.55 49.43 ±3.11 59.77 ±4.94 81.02 ±1.25 79.55 ±2.32 45.11 ±7.25 68.31 AUROC 95.99 ±0.64 94.34 ±7.88 94.81 ±0.59 89.74 ±4.61 80.11 ±2.33 94.76 ±0.60 93.24 ±0.46 81.02 ±4.23 90.50 AUPRC 88.91 ±0.78 80.29 ±9.11 89.16 ±1.01 46.09 ±1.32 68.18 ±2.10 91.19 ±0.53 88.78 ±0.75 45.98 ±8.29 74.82 
+
+TABLE I: Class-wise detection performance of pose estimation failures on LINEMOD Occluded [1]. We compare maximum keypoint confidence and conformal keypoint to our approach Meta Pose. Here, ∗ denotes symmetric objects, and ετ the pose error rate at threshold angle τ with the underlying keypoint localization model by Schmeckpeper et al. [10]. 8ape can cat driller duck eggbox glue holepuncher        
+
+> 0.0
+> 0.2
+> 0.4
+> 0.6
+> 0.8
+> 1.0
+> Failure probability
+> 5
+> > 5 ape can cat driller duck eggbox glue holepuncher
+> 0.0
+> 0.2
+> 0.4
+> 0.6
+> 0.8
+> 1.0
+> Failure probability
+> 10
+> > 10
+
+Fig. 7: Violin plots for our Meta Pose failure detection model in LINEMOD Occluded test [1]. From left to right: failure detection for error threshold at τ = 5 ◦ and τ = 10 ◦
+
+is robust to the choice of calibration fold in the reverse cross-validation protocol, suggesting that even a small labeled subset from the target domain is sufficient to train a stable and reliable failure detection model. Comparing Meta Pose–Full and its render-free variant Meta Pose, we observe similar performance on any metric. This indicates that the additional render- and mask-based features provide no clear benefit. For θ > 10 ◦, Meta Pose–Full reaches an average AUROC of 91.01 and AUPRC of 75.24, compared to 90.50 AUROC and 74.82 AUPRC for render-free variant, which is the only marginal gain across metrics. We consider the render-free variant as preferred choice in practice due to its lower computational costs, cf. Section VI. Both variants consistently and substantially outperform conformal keypoint prediction and confidence thresholding across nearly all objects and both thresholds, confirming that spatial self-consistency of keypoint predictions provides a reliable signal for failure detection independent of render-based features. 
+
+Failure Probability Distributions. The violin plots in Figure 7 support the claim that incorrect pose estimates tend to receive higher predicted failure probabilities, though the degree of separation varies across objects but is consistent with the per-object AUROC values reported in Table I. 
+
+Eggbox and glue exhibit the clearest separation, with correct poses ( θ ≤ τ ) concentrated at low failure probabilities and incorrect poses ( θ > τ ) massed near one, indicating confident and accurate classifier predictions. For driller and duck ,the predicted probabilities are more spread across the full range for one class, yet the opposing class remains tightly concentrated, which preserves good overall separability. Ape 
+
+and cat follow a similar pattern, though with generally higher predicted probabilities across both classes and correspondingly shorter distribution tails, suggesting a systematic tendency of the classifier to predict failures for these objects. For can 0.0 0.2 0.4 0.6 0.8 1.0      
+
+> Predicted failure probability
+> 0.0
+> 0.2
+> 0.4
+> 0.6
+> 0.8
+> 1.0
+> Fraction of failures  > 5
+> Meta Pose
+> Perfect Calibration 0.0 0.2 0.4 0.6 0.8 1.0
+> Predicted failure probability
+> 0.0
+> 0.2
+> 0.4
+> 0.6
+> 0.8
+> 1.0
+> Fraction of failures  > 10
+> Meta Pose
+> Perfect Calibration
+
+Fig. 8: Calibration curves for both rotation error thresholds 
+
+τ = 5 ◦ and τ = 10 ◦ of the logistic regression model within our Meta Pose approach. 10% 
+
+> 11%
+> 12%
+> 14%
+> 17%
+> 20%
+> 25%
+> 33%
+> 50%
+> calibration set size
+> 70
+> 75
+> 80
+> 85
+> 90
+> Performance (%),  > 5
+> Accuracy
+> F1 Score
+> AUROC
+> AUPRC 10%
+> 11%
+> 12%
+> 14%
+> 17%
+> 20%
+> 25%
+> 33%
+> 50%
+> calibration set size
+> 70
+> 75
+> 80
+> 85
+> 90
+> Performance (%),  > 10
+> Accuracy
+> F1 Score
+> AUROC
+> AUPRC
+
+Fig. 9: Sample efficiency of our proposed Meta Pose failure detection model. The evaluation metrics are reported as a function of the calibration set size. and holepuncher , incorrect poses still receive higher failure probabilities than correct ones, as evidenced by the relative positions of the distribution modes, though the substantial overlap between the two distributions leads to a higher rate of false positives or false negatives depending on the chosen decision threshold. Across all objects, the consistent shift of the incorrect pose distribution towards higher predicted probabilities confirms that the geometric consistency features capture meaningful information about pose estimation failures. 
+
+Calibration. Figure 8 shows the calibration curves of our failure detection model for both rotation error thresholds. A perfectly calibrated model follows the diagonal line, meaning that a predicted failure probability ˆp corresponds to an empiri-cal failure frequency. A well calibrated failure detection model is particularly important in our setting, as it ensures that ˆp can be interpreted as a meaningful confidence score for a failure, which is essential for reliable downstream decisions such as triggering pose re-estimation or flagging samples. For τ = 5 ◦, the logistic regression model is well calibrated across the full probability range with only a slight tendency towards overconfidence. For τ = 10 ◦, the calibration is even stronger with the calibration curve closely following the diagonal. Both curves remain close to the diagonal overall, demonstrating that the logistic regression model produces well-calibrated failure probabilities across both rotation error thresholds. 9keypoints render mask θ > 5◦                                                                                                                                                                                                            
+
+> drel drepr udrender dcenter dcham rcov
+> δ=2 Acc F1AUROC AUPRC
+> ✓------74.73 71.70 78.61 77.91 -✓-----75.22 71.54 78.45 79.14 --✓----75.34 73.01 79.81 80.03 -✓✓----76.32 73.21 80.40 80.46
+> ✓✓✓----78.25 75.61 83.04 81.83
+> ---✓✓--71.19 68.75 73.22 73.27 -----✓✓74.54 71.97 77.65 77.53 ---✓✓✓✓74.66 71.74 77.83 77.84
+> ✓✓✓✓✓✓✓77.79 74.66 82.67 81.78 keypoints render mask θ > 10 ◦
+> drel drepr udrender dcenter dcham rcov
+> δ=2 Acc F1AUROC AUPRC
+> ✓------85.17 53.97 79.84 59.28 -✓-----88.29 66.95 88.76 73.43 --✓----87.26 62.33 88.47 69.35 -✓✓----88.56 67.66 89.77 73.98
+> ✓✓✓----89.08 68.31 90.50 74.82 ---✓✓--83.77 52.81 79.67 55.51 -----✓✓85.55 56.64 86.19 63.79 ---✓✓✓✓85.65 59.72 85.99 65.45
+> ✓✓✓✓✓✓✓89.02 68.69 91.01 75.24
+
+TABLE II: Failure detection performance of different combi-nations of features for θ > 5◦ (top) and θ > 10 ◦ (bottom). Render-free refers to {drel , drepr , u}. Full additionally includes 
+
+{drender , dcenter , d cham , r cov 
+
+> δ=2
+
+}.VI. A BLATION STUDY 
+
+Sample Efficiency. Figure 9 shows the failure detection performance as a function of the calibration set size, ranging from 50% down to 10% of the available data. For error threshold τ = 5 ◦, all four metrics remain stable across the full range of calibration set sizes. The overall performance drop from 50% down to 10% is small, demonstrating that the classifier is not sensitive to the amount of calibration data in this setting. For error threshold τ = 10 ◦, AUPRC and F 1 score show a more noticeable decline as the calibration set shrinks, which can be attributed to the more severe class imbalance at this threshold, cf. pose error rates in Table I which for instance for the objects can , driller , holepuncher are less than 10%. The number of failures per object drops substantially the smaller the calibration set size, making it more difficult to learn a reliable failure detector from fewer labeled samples. Nevertheless, even in this more challenging setting the degradation remains moderate, with AUPRC and F 1 losing 
+
+∼ 5 percent points, indicating that the failure detection has meaningful discriminative power. All together, both plots confirm that only a small calibration set drawn from the target domain is sufficient to train a reliable failure detector. 
+
+Feature Ablation. In Table II, we report the performance of failure detection for different combinations of features,           
+
+> Method Runtime (ms / image) Relative Max Keypoint Confidence 330 1.0×
+> Conformal Keypoint 2030 6.2×
+> Ours: Meta Pose – Full 1220 3.7×
+> Ours: Meta Pose (render-free) 374 1.1×
+
+TABLE III: Runtime comparison of the different failure de-tection methods. Relative runtime is given with respect to the Maximum Keypoint Confidence baseline, cf. Section IV. evaluated separately for θ > 5◦ and θ > 10 ◦. Across both thresholds, we observe that aggregating features consistently improves discriminative performance over any individual fea-ture, suggesting that pose estimation failures result from mul-tiple sources of geometric inconsistency rather than a single dominant signal. Moreover, we observe that combining all non-render features yields the strongest performance among individual and paired feature combinations. Render-based and mask-based features in isolation, and also combined with each other, are consistently outperformed by the non-render combination. For θ > 5◦, the combination of all features does not improve over Meta Pose (which only uses the render-free features) on any metric. For θ > 10 ◦, the combination of all features yields marginal improvements in F1, AUROC, and AUPRC of at most 0.51 percent points across all three metrics, while Meta Pose remains best in accuracy. Given the additional runtime cost of rendering and segmentation required for the render- and mask-based features, cf. Table III, we conclude that these marginal gains do not to outweigh the added computational overhead, and therefore adopt the render-free Meta Pose as our main approach of this work. 
+
+Runtime Comparison. Table III reports the runtime per image for each method. Meta Pose (render-free) adds only little overhead compared to the maximum keypoint confidence with 374 ms per image. The geometric consistency features are computationally lightweight by design. They require only pairwise distance computations between different keypoint combinations, and reprojections between 2D and 3D are simple matrix multiplications that can be done efficiently. Conformal keypoint prediction, by contrast, is roughly six times slower at 2030 ms per image. This overhead stems from two sources. First, computing inductive conformal pre-diction scores requires processing the full keypoint localization heatmaps rather than simply collecting statistics from key-points obtained from a single forward pass of the pose estima-tion pipeline. Second, uncertainty propagation is performed by sampling a set of possible poses from the conformal keypoint sets, which in our experiments uses a sample size of 50 poses. Meta Pose–Full, which additionally includes the render-and mask-based features, requires 1220 ms per image, roughly 3.7× the baseline. Given that Meta Pose–Full offers only marginal performance gains over the render-free variant, cf. Table II, this runtime cost further supports our choice of the render-free Meta Pose variant as the main approach. 10 [0%, 20%) 
+
+> [20%, 40%)
+> [40%, 60%)
+> [60%, 80%)
+> [80%, 100%]
+> Occlusion Level
+> 50
+> 60
+> 70
+> 80
+> 90
+> 100
+> Performance (%),  > 5
+> Accuracy
+> F1 Score
+> AUROC
+> AUPRC [0%, 20%)
+> [20%, 40%)
+> [40%, 60%)
+> [60%, 80%)
+> [80%, 100%]
+> Occlusion Level
+> 50
+> 60
+> 70
+> 80
+> 90
+> 100
+> Performance (%),  > 10
+> Accuracy
+> F1 Score
+> AUROC
+> AUPRC
+
+Fig. 10: Failure detection performance of our Meta Pose failure detection model at different occlusion levels of objects.                            
+
+> Occlusion [0 ,20) [20 ,40) [40 ,60) [60 ,80) [80 ,100]
+> # samples 5478 1658 1017 620 419
+> ετ=5 0.42 0.43 0.70 0.87 0.98
+> ετ=10 0.09 0.13 0.32 0.63 0.91
+
+TABLE IV: Pose error rates, cf. Equation (12), at different occlusion levels of objects. Together, these results demonstrate that Meta Pose achieves reliable failure detection performance at low computational cost, making it well suited for integration into real-time or resource-constrained pose estimation pipelines. 
+
+Failure Detection vs. Occlusion Level. Figure 10 reports the failure detection performance as a function of occlusion levels for both rotation error thresholds. Since pose estima-tion becomes increasingly challenging as occlusion increases, reliable failure detection is particularly important in highly occluded scenes. Both plots show a consistent trend. Fail-ure detection performance improves with occlusion level in AUPRC and F1 score, reaching near-perfect performance at occlusion levels above 80% . This is an encouraging result, as it demonstrates that the proposed method is most reliable in scenarios where pose estimation is most likely to fail. For τ = 5 ◦, accuracy, F1 score and AUPRC even show monotonic improvement with increasing occlusion, while AU-ROC remains stable but still with best performance at highest occlusion. This suggests that the failure detector becomes more decisive as occlusion increases. For τ = 10 ◦, a more pronounced improvement is observed across all metrics, with F1 score increasing from 50% at low occlusion to above 95% at high occlusion. The low F1 score at low occlusion for τ = 10 ◦ can be explained by the severe class imbalance, cf. Table IV. When occlusion is low, pose estimation rarely fails for τ = 10 ◦, leaving very few samples with failures for the classifier to detect. Moreover, class imbalance drives the metrics accuracy and AUROC. So the dip in accuracy and AUROC rather reflects the dis-appearance of the severe class imbalance rather than a deteri-oration of the failure detection model. Importantly, all metrics remain clearly above their respective no-skill baselines, i.e. 
+
+(1 − εt) for accuracy and 50% for AUROC, confirming that the classifier has meaningful discriminative capabilities across all occlusion levels. For a complete assessment of failure detection performance, all metrics must be taken into account. Since F1 score and AUPRC measure failure detection performance independently of the class distribution, their consistent improvement with occlusion level supports that the proposed failure detection model becomes more reliable as occlusion increases. VII. C ONCLUSION AND OUTLOOK 
+
+In this work, we presented Meta Pose, a lightweight frame-work for detecting pose estimation failures in keypoint-based 6D pose estimation. Our approach exploits the geometric self-consistency of predicted 2D keypoints across complementary sources, including the input image, reprojections under the estimated pose, and keypoint and mask predictions on the rendered object. We construct a set of hand-crafted features that serve as input to a logistic regression classifier. Despite its simplicity, Meta Pose consistently outperforms baselines, including maximum keypoint confidence thresholding and conformal keypoint prediction, across all eight objects of the LINEMOD Occluded dataset and at multiple rotation error thresholds. We additionally introduced Meta Pose-Full, which augments our render-free feature set with render- and mask-based consistency features, and showed through an ablation study that these additional features yield only marginal per-formance gains at substantially higher computational cost. We therefore adopt the render-free Meta Pose as our main approach, which runs at low computational overhead relative to the standard pose estimation pipeline, requires only a small labeled calibration set from the target domain, and produces well-calibrated failure probabilities. There are directions which remain open for future work. Meta Pose–Full relies on the Segment Anything Model for its mask consistency features, so its performance is coupled to the quality of this external segmentation model. Improving the segmentation quality, e.g. through better prompting, would likely benefit not only failure detection performance but could also be used directly to improve the accuracy of pose estima-tion pipeline. Moreover, while we focused on rotation error as the primary failure criterion, extending the framework to jointly detect translation failures, e.g. uncertainty quantifica-tion for bounding box regression, could further improve its utility in downstream tasks such as robotic manipulation. Ad-ditionally, the current evaluation is limited to the LINEMOD Occluded dataset. Validating the approach on a broader set of benchmarks, object categories, and pose estimation backbones remains an open direction and would strengthen the generality of our findings. Finally, the predicted failure probabilities could be integrated into the pose estimation pipeline itself, for instance by triggering re-estimation if a failure is likely, thereby closing the loop between failure detection and pose estimation. 11 REFERENCES 
+
+[1] T. Hodaˇ n, F. Michel, E. Brachmann, W. Kehl, A. Glent Buch, D. Kraft, B. Drost, J. Vidal, S. Ihrke, X. Zabulis, C. Sahin, F. Manhardt, F. Tombari, T.-K. Kim, J. Matas, and C. Rother, “BOP: Benchmark for 6D object pose estimation,” European Conference on Computer Vision (ECCV) , 2018. 1, 5, 6, 8, 9 [2] Y. Labb´ e, L. Manuelli, A. Mousavian, S. Tyree, S. Birchfield, J. Tremblay, J. Carpentier, M. Aubry, D. Fox, and J. Sivic, “Megapose: 6d pose estimation of novel objects via render & compare,” in Proceedings of the 6th Conference on Robot Learning (CoRL) ,vol. 205, 2023, pp. 355–366. [Online]. Available: https://proceedings.mlr.press/v205/labbe23a.html 1 [3] B. Wen, W. Yang, J. Kautz, and S. Birchfield, “Foun-dationPose: Unified 6D pose estimation and tracking of novel objects,” in IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) , 2024. [4] T. Lee et al. , “Any6d: Model-free 6d pose estimation of novel objects,” in Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) , 2025, pp. 11 633–11 643. 1 [5] A. Kendall, M. Grimes, and R. Cipolla, “Posenet: A convolutional network for real-time 6-dof camera re-localization,” in Proceedings of the IEEE international conference on computer vision , 2015, pp. 2938–2946. 1, 2[6] Y. Xiang, T. Schmidt, V. Narayanan, and D. Fox, “Posecnn: A convolutional neural network for 6d ob-ject pose estimation in cluttered scenes,” arXiv preprint arXiv:1711.00199 , 2017. 1, 2 [7] G. Pavlakos, X. Zhou, A. Chan, K. G. Derpanis, and K. Daniilidis, “6-dof object pose from semantic keypoints,” in 2017 IEEE international conference on robotics and automation (ICRA) . IEEE, 2017, pp. 2011– 2018. 1, 2 [8] S. Peng, Y. Liu, Q. Huang, X. Zhou, and H. Bao, “Pvnet: Pixel-wise voting network for 6dof pose estimation,” in 
+
+Proceedings of the IEEE/CVF conference on computer vision and pattern recognition , 2019, pp. 4561–4570. 2 [9] B. Chen, A. Parra, J. Cao, N. Li, and T.-J. Chin, “End-to-end learnable geometric vision by backpropagating pnp optimization,” in Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) , June 2020. [10] K. Schmeckpeper, P. R. Osteen, Y. Wang, G. Pavlakos, K. Chaney, W. Jordan, X. Zhou, K. G. Derpa-nis, and K. Daniilidis, “Semantic keypoint-based pose estimation from single rgb frames,” arXiv preprint arXiv:2204.05864 , 2022. 1, 2, 5, 8 [11] H. Yang and M. Pavone, “Object pose estimation with statistical guarantees: Conformal keypoint detection and geometric uncertainty propagation,” in Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , 2023, pp. 8947–8958. 1, 3, 5, 6 [12] M. Oberweger, M. Rad, and V. Lepetit, “Making deep heatmaps robust to partial occlusions for 3d object pose estimation,” in Proceedings of the European conference on computer vision (ECCV) , 2018, pp. 119–134. 1, 2 [13] G. Wang, F. Manhardt, F. Tombari, and X. Ji, “GDR-Net: Geometry-guided direct regression network for monocu-lar 6d object pose estimation,” in IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) ,June 2021, pp. 16 611–16 621. 2 [14] Y. Zhou, C. Barnes, J. Lu, J. Yang, and H. Li, “On the continuity of rotation representations in neural networks,” in IEEE/CVF Conference on Computer Vision and Pat-tern Recognition (CVPR) , 2019. 2 [15] Y. Labb´ e, J. Carpentier, M. Aubry, and J. Sivic, “Cosy-pose: Consistent multi-view multi-object 6d pose esti-mation,” in European Conference on Computer Vision (ECCV) , 2020. 2 [16] X. X. Lu, “A review of solutions for perspective-n-point problem in camera pose estimation,” in Journal of Physics: Conference Series , vol. 1087. IOP Publishing, 2018, p. 052009. 2 [17] V. Lepetit, F. Moreno-Noguer, and P. Fua, “Epnp: An accurate o(n) solution to the pnp problem,” 
+
+International Journal of Computer Vision , vol. 81, no. 2, p. 155–166, feb 2009. [Online]. Available: https://doi.org/10.1007/s11263-008-0152-6 2 [18] D. G. Lowe, “Object recognition from local scale-invariant features,” in Proceedings of the seventh IEEE international conference on computer vision , vol. 2. IEEE, 1999, pp. 1150–1157. 2 [19] F. Rothganger, S. Lazebnik, C. Schmid, and J. Ponce, “3d object modeling and recognition using local affine-invariant image descriptors and multi-view spatial con-straints,” International Journal of Computer Vision ,vol. 66, no. 3, pp. 231–259, 2006. 2 [20] M. Rad and V. Lepetit, “Bb8: A scalable, accurate, robust to partial occlusion method for predicting the 3d poses of challenging objects without using depth,” in Proceedings of the IEEE international conference on computer vision ,2017, pp. 3828–3836. 2 [21] W. Kehl, F. Manhardt, F. Tombari, S. Ilic, and N. Navab, “Ssd-6d: Making rgb-based 3d detection and 6d pose estimation great again,” in Proceedings of the IEEE international conference on computer vision , 2017, pp. 1521–1529. [22] B. Tekin, S. N. Sinha, and P. Fua, “Real-time seamless single shot 6d object pose prediction,” in Proceedings of the IEEE conference on computer vision and pattern recognition , 2018, pp. 292–301. 2 [23] Y. Hu, J. Hugonot, P. Fua, and M. Salzmann, “Segmentation-driven 6d object pose estimation,” in Pro-ceedings of the IEEE/CVF conference on computer vision and pattern recognition , 2019, pp. 3385–3394. 2 [24] D. Hendrycks and K. Gimpel, “A baseline for detecting misclassified and out-of-distribution examples in neural networks,” in International Conference on Learning Rep-
+
+12 resentations (ICLR) , 2017. 2, 6 [25] C. Corbi` ere, N. Thome, A. Bar-Hen, M. Cord, and P. P´ erez, “Addressing failure prediction by learning model confidence,” Advances in neural information pro-cessing systems , vol. 32, 2019. 2 [26] T. DeVries and G. W. Taylor, “Learning confidence for out-of-distribution detection in neural networks,” arXiv preprint arXiv:1802.04865 , 2018. 2 [27] S. Liang, Y. Li, and R. Srikant, “Enhancing the reli-ability of out-of-distribution image detection in neural networks,” arXiv preprint arXiv:1706.02690 , 2017. 2 [28] K. Lee, K. Lee, H. Lee, and J. Shin, “A simple unified framework for detecting out-of-distribution samples and adversarial attacks,” Advances in neural information pro-cessing systems , vol. 31, 2018. 2 [29] M. Rottmann, P. Colling, T. P. Hack, R. Chan, F. H¨ uger, P. Schlicht, and H. Gottschalk, “Prediction error meta classification in semantic segmentation: Detection via aggregated dispersion measures of softmax probabilities,” in 2020 International Joint Conference on Neural Net-works (IJCNN) . IEEE, 2020, pp. 1–9. 2 [30] R. Chan, M. Rottmann, and H. Gottschalk, “En-tropy maximization and meta classification for out-of-distribution detection in semantic segmentation,” in 
+
+Proceedings of the ieee/cvf international conference on computer vision , 2021, pp. 5128–5137. 2 [31] J. Richter-Klug and U. Frese, “Towards meaningful un-certainty information for cnn based 6d pose estimates,” in International Conference on Computer Vision Systems .Springer, 2019, pp. 408–422. 2 [32] G. Shi, Y. Zhu, J. Tremblay, S. Birchfield, F. Ramos, A. Anandkumar, and Y. Zhu, “Fast uncertainty quantifi-cation for deep object pose estimation,” in 2021 IEEE International Conference on Robotics and Automation (ICRA) . IEEE, 2021, pp. 5200–5207. 2 [33] K. Wursthorn, M. Hillemann, and U. Markus, “Uncer-tainty quantification with deep ensembles for 6d object pose estimation,” in The Role of Photogrammetry for a Sustainable World , 2024. 2 [34] B. Okorn, M. Xu, M. Hebert, and D. Held, “Learning orientation distributions for object pose estimation,” in 
+
+2020 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS) . IEEE, 2020, pp. 1799– 1806. 2 [35] R. L. Haugaard and A. G. Buch, “Surfemb: Dense and continuous correspondence distributions for object pose estimation with learnt surface embeddings,” in Proceed-ings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) , 2022, pp. 6708–6717. 2[36] M. Tian, L. Pan, M. H. Ang, and G. H. Lee, “Robust 6d object pose estimation by learning rgb-d features,” in 
+
+2020 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS) , 2020, pp. 6811–6818. 2 [37] E. Brachmann, F. Michel, A. Krull, M. Y. Yang, S. Gumhold, and C. Rother, “Uncertainty-driven 6d pose estimation of objects and scenes from a single rgb image,” in Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition (CVPR) , June 2016, pp. 3364–3372. [38] Y. Lin, J. Tremblay, S. Tyree, P. A. Vela, and S. Birchfield, “Keypoint-based category-level object pose tracking from an rgb sequence with uncertainty estimation,” in 2022 International Conference on Robotics and Automation (ICRA) . IEEE Press, 2022, p. 1258–1264. [Online]. Available: https://doi.org/10.1109/ ICRA46639.2022.9811720 2 [39] P. Quentin and D. Goehring, “Maskval: Simple but effec-tive uncertainty quantification for 6d pose estimation,” in 
+
+2024 IEEE 20th International Conference on Automation Science and Engineering (CASE) , 2024, pp. 1928–1934. 3, 4 [40] L. Schneider, Y. Shi, R. Wolf, C. Brenner, R. Triebel, and R. Rayyes, “Tracing back error sources to explain and mitigate pose estimation failures,” arXiv preprint arXiv:2603.02881 , 2026. 3 [41] V. Vovk, A. Gammerman, and G. Shafer, Algorithmic learning in a random world . Springer, 2005. 3 [42] H. Papadopoulos, K. Proedrou, V. Vovk, and A. Gammer-man, “Inductive confidence machines for regression,” in 
+
+European conference on machine learning . Springer, 2002, pp. 345–356. 3, 5 [43] L. Shaikewitz, C. Georgiou, and L. Carlone, “Uncertainty quantification for visual object pose estimation,” 2025. [Online]. Available: https://arxiv.org/abs/2511.21666 3 [44] A. Kirillov, E. Mintun, N. Ravi, H. Mao, C. Rolland, L. Gustafson, T. Xiao, S. Whitehead, A. C. Berg, W.-Y. Lo et al. , “Segment anything,” in Proceedings of the IEEE/CVF International Conference on Computer Vision (ICCV) , 2023, pp. 4015–4026. 4 [45] OpenCV Development Team, “Perspective-n-point (PnP) pose computation — OpenCV 4.13.0,” https://docs. opencv.org/4.13.0/d5/d1f/calib3d solvePnP.html, 2024. 5 [46] S. Hinterstoisser, V. Lepetit, S. Ilic, S. Holzer, G. Bradski, K. Konolige, and N. Navab, “Model based training, detection and pose estimation of texture-less 3d objects in heavily cluttered scenes,” in Asian conference on computer vision . Springer, 2012, pp. 548–562. 5 13

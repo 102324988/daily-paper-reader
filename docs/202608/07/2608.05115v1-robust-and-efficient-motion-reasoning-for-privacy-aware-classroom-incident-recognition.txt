@@ -1,0 +1,409 @@
+Title: Robust and Efficient Motion Reasoning for Privacy-Aware Classroom Incident Recognition
+
+URL Source: https://arxiv.org/pdf/2608.05115v1
+
+Published Time: Thu, 06 Aug 2026 01:19:19 GMT
+
+Number of Pages: 13
+
+Markdown Content:
+# Robust and Efficient Motion Reasoning for Privacy-Aware Classroom Incident Recognition 
+
+# Paritosh Parmar Landy Lan Hong Yang Chen Yi Chiat Pin Tay 
+
+Institute of High Performance Computing, Agency for Science, Technology and Research, Singapore 
+
+# Abstract 
+
+Can computer vision help make classrooms safer? In this pilot study, we investigate privacy-aware and computation-ally efficient classroom incident recognition from CCTV-style observations. This setting remains underexplored, with limited benchmarks and few methods designed for the privacy, efficiency, and generalization demands of real-world deployment. We introduce a novel hybrid benchmark combining generative CCTV-style videos with real-world classroom pose data, and propose a lightweight, but ro-bust motion-reasoning framework motivated by the obser-vation that many incidents differ more in motion direction, speed, acceleration, and intensity than in pose alone. To that end, our method first constructs hierarchical kinematic representations of human actions. Our method then distills hierarchical, multi-order kinematic reasoning from a large teacher into a much smaller single-order student, enabling efficient per-person inference while preserving expressive motion understanding. Experiments show that our model outperforms substantially larger baselines at less than one-tenth of their computational cost, while also demonstrat-ing stronger out-of-domain motion reasoning and zero-shot synthetic-to-real generalization. We will publicly release the benchmark, codebase, and supporting tools to facilitate further research in privacy-aware classroom safety. 
+
+# 1. Introduction 
+
+Schools and classrooms are environments intended to sup-port the learning, development, and well-being of children. They are generally expected to be safe spaces in which stu-dents are protected from physical and psychological harm. However, this expectation can be violated in unfortunate cir-cumstances. For example, students may engage in physical altercations; children may run inside classrooms, collide with furniture, and injure themselves; or, in more severe cases, students may experience physical abuse by adults (examples in Figure 1). Such incidents may go unnoticed or may be reported only after a delay, resulting in the loss of important con-
+
+Figure 1. Examples of classroom incidents. 
+
+textual information and the sequence of events surrounding them. Timely access to this information can support inci-dent review, accountability, and efforts to prevent similar events in the future. CCTV cameras are increasingly being deployed in schools and classrooms, creating visual records of activities within these environments. However, manually monitoring continuous video streams requires sustained human atten-tion and is inherently error-prone, making it possible for im-portant incidents to be overlooked. Computer vision there-fore has the potential to assist in automatically monitoring classroom camera feeds and identifying safety-related inci-dents. Despite this potential, classroom incident recognition re-mains underexplored in both academic research and prac-tical deployment. As a result, there is a lack of datasets, benchmarks, and tailored methodologies for this task. Although action recognition has been widely studied in generic settings, classroom incident recognition presents several distinct challenges. These include unusual camera viewpoints, since CCTV cameras are often mounted near classroom ceilings; the presence of both adults and young children, who are 1arXiv:2608.05115v1 [cs.CV] 5 Aug 2026 6.90         
+
+> 1.22
+> 1.40
+> 1.46
+> 66
+> 67
+> 68
+> 69
+> 70
+> 71
+> 72
+> 0.5 11.5 22.5 3.0 25 ...
+> Performance
+> GFLOPs
+> 0.66
+> 1.55
+> PoseC3D
+> MSG3D
+> STGCN++
+> Ours
+> Model
+> CTRGCN
+> AAGCN Figure 2. Performance vs. Efficiency for various models on our synthetic dataset. Performance & GFLOPs are along Y & X-axes, respectively; while circle diameter indicates the model size in million parameters (shorter diameter, smaller model size).
+
+typically underrepresented in standard action recognition datasets; and domain-specific action categories, such as kicking, punching, and other safety-relevant behaviors, which may be absent from conventional benchmarks. These challenges are further compounded by privacy consider-ations, since classroom monitoring involves children and other identifiable individuals. This motivates recognition methods that avoid direct use of raw visual data whenever possible. In this pilot work, we aim to address these gaps. Our contributions are as follows: • We introduce a CCTV-view classroom incident recog-nition benchmark covering safety-relevant interactions and accident scenarios involving pre-school-aged stu-dents and adult teachers. The benchmark contains syn-thetic videos generated using AI-based generative models along with real-world recordings. • We propose a lightweight, privacy-preserving recognition framework that operates on skeletal pose features rather than raw images or video, reducing reliance on identifi-able visual information. • We show that the proposed method outperforms existing pose-based action-recognition baselines while requiring fewer computational resources (Figure 2). • We demonstrate that models trained on our synthetic data generalize effectively to real-world classroom footage. 
+
+# 2. Related Work 
+
+Computer Vision in Education. Computer vision has in-creasingly been adopted in educational settings for class-room observation, engagement analysis, attendance track-ing, and assessment [12, 27]. Prior work has explored vi-sual cues such as face, gaze, head pose, posture, gesture, and classroom activity to infer student attention, engage-ment, and instructional dynamics. Early studies and re-views examined engagement detection in online and class-room learning, emphasizing facial expression, gaze, head pose, and posture as non-intrusive indicators of learner state [8, 15]. More recently, Lee and Zhai [25] discuss the broader role of computer vision and vision-language models in STEM education research, including assess-ment, classroom behavior analysis, laboratory scenarios, and student-generated drawings. A recent work on hand-written answer-script evaluation combines OCR, NLP, ma-chine learning, and deep learning to reduce examiner work-load, detect marking omissions, and improve the efficiency of assessment workflows [1]. In STEM and active-learning contexts, researchers have proposed AI-enhanced observa-tion systems that can automatically document student ques-tioning, instructor lecturing, and student-led discussion, aiming to complement manual protocols such as COPUS and reduce the labor and subjectivity of human classroom observation [2]. In parallel, recent work has moved to-ward scalable multimodal classroom analytics: Bueno et al . [5] study instructional activity and discourse recogni-tion from classroom videos and transcripts, while Tran et al . [42] introduce an ordinal-aware multimodal framework for engagement recognition in collaborative learning. These works suggest that vision-based systems can support fine-grained educational analytics and teacher feedback. Despite this progress, deploying computer vision in real educational environments remains challenging. Classroom scenes are unconstrained, with occlusion, lighting variation, changing camera viewpoints, diverse seating layouts, and context-dependent behaviors. Moreover, educational vision systems often infer sensitive states such as attention, engagement, or emotion, raising concerns about privacy, consent, surveil-lance, bias, and pedagogical validity. As a result, com-puter vision can complement classroom observation and assessment, but robust, transparent, and privacy-aware de-signs are necessary for responsible deployment. Existing work has largely focused on engagement, participation, dis-course, assessment, or general classroom observation, leav-ing the identification of classroom incidents comparatively underexplored. To address this gap, we propose an effi-cient, privacy-preserving method for identifying classroom incidents. Specifically, we develop a first-of-its-kind dataset and a method. 
+
+Knowledge Distillation. The idea of transferring predictive behavior from a large model or ensemble to a smaller model predates modern knowledge distillation (KD), appearing in early work on model compression by Bucilu˘ a et al . [4] and later in shallow mimic models by Ba and Caruana [3]. Hin-ton et al . [17] subsequently popularized this paradigm as KD, introducing temperature-scaled soft targets to transfer “dark knowledge” from a teacher model to a student model. 2SOTA AI Video   
+
+> Generator
+> Manual
+> Quality
+> Checking
+> Classroom
+> Scenario
+> Prompt Library
+> Asset Library
+> SOTA AI
+> Image
+> Generator Final
+> Dataset
+> Discard
+> Selected Assets
+> Selected Prompt
+> Generated Video
+> Iterative,
+> human -in -the -loop
+> refinement Figure 3. Our synthetic dataset generation pipeline.
+
+We capitalize on these advances to design an efficient stu-dent model. 
+
+Privacy-Preserving Skeleton-Based Action Recognition. 
+
+Skeleton-based action recognition has emerged as aprivacy-conscious alternative to RGB-based video analy-sis, as pose sequences encode human motion while reduc-ing reliance on the appearance, background, and identity cues present in raw video. Representative methods model skeletons as temporal sequences or spatio-temporal graphs, with graph convolutional networks such as ST-GCN learn-ing dependencies among body joints over time [49]. Sub-sequent methods extend this formulation through adaptive graph learning and stronger temporal modeling [34, 38], while PoseC3D represents poses as 3D heatmap volumes to improve robustness to pose-estimation noise and cross-dataset generalization [11]. Collectively, these approaches demonstrate that skeleton representations can support accu-rate action recognition without requiring direct use of raw video frames. However, existing privacy-aware skeleton-based methods have primarily been evaluated on general hu-man action benchmarks, leaving their applicability to real-world educational settings comparatively underexplored. Our work addresses this gap by applying skeleton-based recognition to classroom incident identification, where pri-vacy considerations are especially important due to the pres-ence of minors and the sensitivity of learning environments. 
+
+Video Generative AI. Video generative AI [6, 18, 19, 40, 43, 46, 47, 50] aims to synthesize temporally coherent video from inputs such as text, images, audio, or existing video. Compared with SMPL-based synthesis pipelines [21, 24, 29, 33], video generative models can produce more vi-sually realistic videos through stronger appearance-motion blending [44, 45]. The field has since shifted toward large-scale text-to-video and multimodal foundation models sup-porting image-to-video generation, reference-guided syn-thesis, motion control, video editing, and synchronized au-dio. Recent systems include Sora [30, 31], Kling [23], Seedance [13], WAN [41], and LTX [16]. These models improve controllability through reference images, start–end frame control, video continuation, audio-video generation, and instruction-based editing. However, they still face chal-lenges in temporal consistency, object permanence, human motion realism, physical reasoning, provenance, copyright, and misuse. In our setting, video generative AI is relevant as a tool for data augmentation and scenario simulation, but generated classroom videos must be used carefully to avoid unrealistic behavior, privacy leakage, and biased incident representations. 
+
+Action recognition & classroom activity understanding datasets. Existing classroom behavior datasets [9, 14, 48, 51] mainly target learning-related activities such as listen-ing, raising hands, reading, writing, fatigue, or dozing, while general skeleton-action datasets are not tailored to classroom safety scenarios. In contrast, our dataset fo-cuses on privacy-preserving skeleton-based classroom ac-tivity understanding with emphasis on incident-related ac-tions such as falling, hitting, kicking, and throwing. Unlike mainstream action recognition datasets [22, 26, 36] built from web videos, movies, crowdsourced recordings, or con-trolled captures, the proposed dataset targets rare, safety-critical incidents in preschool classroom CCTV footage. It captures classroom-specific factors such as ceiling-mounted viewpoints, small human scales, teacher-child interactions, school uniforms, and incident categories including falls, fights, running, throwing, and distress-related behaviors. For further details, please see Appendix. These differences motivate a dedicated benchmark with generation and valida-tion procedures tailored to realistic, privacy-sensitive class-room scenarios. 33. Classroom Incident Recognition Dataset Construction 
+
+Datasets are a crucial component of machine-learning-based systems. However, obtaining suitable data for class-room incident recognition presents several challenges, in-cluding copyright restrictions, human-subject safety, lim-ited availability of relevant action classes, and collecting data from the target domain. For example, videos scraped from platforms such as YouTube may not be freely usable for commercial or downstream applications. Moreover, vio-lent or safety-critical classroom actions are scarce in public data, while collecting such data through staged enactments may pose injury risks to participants. To address these challenges, we use generative AI to pro-duce realistic synthetic videos depicting the desired action classes in classroom settings. Although video generation has been studied for many years, recent advances in large-scale generative models have made it possible to generate high-quality and realistic videos through careful prompt de-sign, workflow construction, and quality control. In the following, we present our dataset generation pipeline for creating realistic classroom videos. Whole dataset generation pipeline has been visualized in Figure 3. We will release the resulting dataset to support research in classroom incident recognition. Beyond the dataset itself, the proposed pipeline provides a blueprint that researchers and practitioners can adapt to generate synthetic data for classroom understanding and related applications. 
+
+## 3.1. Video Generation 
+
+Selection of Action Classes. We collaborated with teach-ers from several pre-schools in Singapore to identify dan-gerous classroom incidents that commonly occur and may lead to physical harm. Based on these consultations, we selected seven action classes {fall, punch, jump, kick, throw, run, sit } for this pilot study on classroom incident recognition. To enable models to distinguish incident classes from ordinary classroom activities, we additionally include a background class. This class serves as a meta-class compris-ing diverse classroom actions that do not fall within the selected incident categories. We hypothesize that the inclusion of a back-ground class improves the robustness of the recognition system by reducing false positives on non-incident activities, although it also increases the difficulty of the classification task. 
+
+Preliminary Study on Video Generators. Recent ad-vances in video generation have led to a diverse set of genera-tive models, each with different strengths and intended use cases. Some models are better suited for cinematic video generation, while others are optimized for stylized, animated, or short-form video content. We therefore conducted a preliminary study of sev-eral video generators, including Kling, Seedance, Sora, Veo, Wan, and LTX, to identify models suitable for generating realistic class-room videos. We evaluate these models based on visual realism, temporal consistency, controllability, action fidelity, and their abil-ity to preserve classroom-specific visual properties. Based on this study, we selected the generators—Kling and Seedance—that best satisfied these criteria for constructing the final dataset. 
+
+School Uniform Asset Generation and Verification. Un-like many non-classroom settings, classroom videos in Singapore often involve students wearing school uniforms. To reflect this characteristic, we construct an asset library of school uniforms, with a focus on Singaporean schools. We generate school uniform and related assets using state-of-the-art generative image models in a human-in-the-loop process, where outputs are iteratively re-viewed and refined to improve visual fidelity and diversity. The resulting assets cover a diverse range of school uniform styles. To ensure realism, each generated uniform asset is manually verified against the corresponding real-world uniform, and only assets that pass this verification step are included in the final library. Al-though our implementation focuses on Singaporean schools, our method is applicable to other schools and domains. 
+
+Prompt Design for Realistic Preschool CCTV Videos. 
+
+Classrooms are typically monitored using multiple closed-circuit television (CCTV) cameras mounted near the ceiling. We worked with partner preschools and studied sample CCTV footage from their campuses to identify the desired properties of the generated videos, including typical camera placement, viewing angle, cov-ered area, visible classroom objects, and the apparent size of stu-dents and teachers. The goal is to generate videos that resemble real CCTV footage, with students in uniforms and one or more students performing the target action. We do not limit to uniforms, and additionally generate videos with students in non-uniform clothing as well. The prompts also specify constraints such as camera distance and subject scale to ensure that human subjects appear at sizes consistent with real classroom CCTV footage. 
+
+Guided Video Generation & Manual Quality Inspection. 
+
+We provide the generated prompts and uniform assets to the video generator to conditionally synthesize classroom videos. Each gen-erated video is then independently reviewed by three authors. A video is retained only if all reviewers agree that it satisfies the spec-ified requirements. Specifically, reviewers assess: 1) the visual realism of human subjects and objects, including their temporal consistency; 2) camera-related properties, such as viewpoint, an-gle, and subject scale; 3) motion realism; and 4) action semantics. 
+
+## 3.2. Annotation and Quality Check Process 
+
+Annotation Tool Development. We developed an integrated annotation toolbox for efficiently annotating human poses, action classes, and temporal boundaries for multiple human subjects in each scene. The tool improves annotation efficiency by providing a unified interface for different annotation types. It also preloads time-consuming annotations, such as skeletal poses, allowing an-notators to correct inaccurate labels rather than annotating each video from scratch. This reduces the manual annotation burden and improves consistency across samples. We will release the an-notation toolbox for use by other researchers. 
+
+4Figure 4. Generated dataset samples. Our synthetic dataset contains diverse viewpoints, lighting conditions, subjects, objects, classroom settings, clothing, etc. Please zoom in for better view. 
+
+Annotations. After generating all videos, we annotated the ac-tion classes and their temporal boundaries using the proposed an-notation toolbox. 
+
+Quality Checks by Preschool Teachers. After annotation, all videos and labels were validated by preschool teachers, who served as domain experts. Samples rejected by the teachers were discarded from the dataset. This validation step is important be-cause preschool teachers have direct experience observing class-room behavior and safety-related incidents in real educational set-tings. Their review helps ensure that the generated videos are vi-sually plausible, that the depicted incidents are realistic, and that the action labels and temporal annotations accurately reflect the intended motion and action semantics. In total, we collect 1296 synthetic dataset samples. Examples from our final dataset are vi-sualized in Figure 4. 
+
+Ethics and Privacy Considerations. Since this work in-volves classroom environments and visual data of children, all data collection and handling procedures followed the approved institu-tional ethics protocol. All authors involved in data collection, han-dling, and annotation completed the required IRB/human-subjects research training before accessing any human-subject data. Real student images were anonymized and used only as references for generating non-identifiable uniform assets. The released dataset will contain only synthetic videos and approved real-world pre-dicted skeleton keypoints, with no personally identifiable or link-able student or teacher information. 
+
+## 3.3. Realworld Dataset 
+
+In addition to creating synthetic videos, we also collected real-world data from actual preschools. Pose data belonging to each person in the classroom is extracted from anonymized video data. Action labels from previously mentioned selected action classes are annotated. We follow the same verification procedure as with synthetic dataset. Only verified annotations and anonymous pose data are retained and used for subsequent usage. In total, we col-lect 574 realworld samples. 
+
+# 4. Approach 
+
+## 4.1. Overview 
+
+Our approach is designed to recognize classroom safety-related incidents from pose sequences alone, reducing reliance on raw vi-sual data. We assume that the recognition system has access only to human pose trajectories, rather than the underlying RGB video. In deployment, these trajectories may be extracted from classroom footage by the data-holding institution before being provided to the recognition model. Given pose trajectories, we first apply temporal preprocessing to mitigate pose-estimation noise. We then construct a hierarchy of kinematic representations, including joint positions, velocities, 
+
+5Pose -based 
+
+Classroom Incident 
+
+Recognition Model 
+
+CCTV Footage 
+
+of Classroom  Extracted Pose 
+
+No Access to raw videos 
+
+> Kicking,
+> Throwing,
+> Running,
+> …
+> Background
+> Cls
+> Action Categories
+
+Figure 5. Privacy-preserving pose-based classroom incident recognition approach. 
+
+and accelerations. Each kinematic order is processed by a ded-icated action-recognition backbone, and the resulting representa-tions are fused to form a stronger hierarchical multi-order teacher model. To reduce inference cost, we distill this fused teacher into a lightweight single-stream student model that operates only on zeroth-order joint-position features while retaining much of the teacher’s predictive strength. Our full approach has been visual-ized in Figure 7. 
+
+## 4.2. Pose-Based Incident Recognition 
+
+Human action recognition can be performed directly from RGB video or from structured human representations such as skeleton and pose sequences. Compared with raw video, pose-based recog-nition reduces reliance on identifiable appearance information, in-cluding facial and other visual cues, making it a more privacy-conscious choice for classroom monitoring. Motivated by this consideration, we adopt pose-based incident recognition as the foundation of our framework. Figure 5 shows the overall pose-based privacy-preserving classroom incident recognition system. 
+
+## 4.3. Hierarchical Kinematic Representations 
+
+Joint trajectories are widely used in pose-based action recognition and have shown strong performance. However, position trajecto-ries alone may not fully capture the dynamics of an action. Higher-order kinematic quantities, such as joint velocity and acceleration, can encode motion direction, speed, and changes in movement in-tensity that are not explicit in joint positions. These signals may be particularly useful for distinguishing classroom incidents in-volving rapid or forceful motion, such as punching, kicking, and throwing. Motivated by this, we introduce a hierarchical kinematic repre-sentation that combines multiple motion orders. Specifically, we represent motion using joint positions, velocities, and accelera-tions, which are later encoded by dedicated order-specific back-bones. Representations from later stages of these backbones are then fused to obtain a robust joint representation of human actions. 
+
+Computing higher-order kinematic features. We formal-ize the kinematic representations derived from pose sequences. Let jta ∈ RC denote the coordinate vector of joint a at time step t,where C is the coordinate dimension. We treat joint positions as zeroth-order kinematic information. The corresponding first-order kinematic feature, i.e., velocity, is computed as 
+
+vta = jta − jt−δa
+
+δ , (1) where δ denotes the temporal interval over which the displace-ment is measured. Similarly, the second-order kinematic feature, i.e., acceleration, is defined as 
+
+ata = vta − vt−δa
+
+δ . (2) 
+
+General form. More generally, the n-th-order kinematic quan-tity can be defined recursively as 
+
+dt, (n) 
+
+> a
+
+= dt, (n−1)  
+
+> a
+
+− dt−δ, (n−1) 
+
+> a
+
+δ , (3) where dt, (0)  
+
+> a
+
+= jta denotes the zeroth-order joint-position fea-ture. In practice, higher-order kinematic features can therefore be constructed recursively from the pose sequence. Since these fea-tures can be precomputed once before training or inference, the associated computational overhead is minimal. 
+
+Pre-processing. Higher-order kinematic features amplify er-rors present in lower-order pose estimates as shown in Figure 6. We therefore apply temporal preprocessing before computing derivatives. Missing joint coordinates are filled using linear inter-polation over neighboring valid frames. To reduce frame-to-frame jitter and sudden pose-estimation artifacts, each joint trajectory is temporally smoothed using a Savitzky–Golay filter. Higher-order kinematic features, including velocities and accelerations, are then computed from the denoised trajectories. 
+
+## 4.4. Unified Kinematic Action Recognition Model 
+
+We define a unified action recognition model that can operate on any of the kinematic representations introduced above. For each person, frame-level joint features are aggregated over a temporal window to form a sequence of kinematic trajectories. These tra-jectories are then processed by an encoder backbone and a classi-fication head to predict the corresponding action class. Given an input sequence x ∈ RT ×A×C , where T denotes the number of time steps, A the number of joints, and C the feature dimension, the encoder backbone extracts a latent representation 
+
+ϕ = θBB (x). (4) 
+
+6Amplified 
+
+noise 
+
+Amplified 
+
+noise 
+
+Noise Removed 
+
+Noise 
+
+> Kinematic order
+
+Without Preprocessing 
+
+After Preprocessing 
+
+> Kinematic order
+
+Noise Amplification Reduced in Higher Orders Figure 6. Example Noise amplification when naively deriving higher order features. Trajectories of three orders of kinematic data for all joints is plotted (different colors). The backbone is architecture-agnostic and may be instantiated using, for example, spatiotemporal graph convolutional networks, transformer-based models, or temporal convolutional networks. The resulting representation ϕ is passed to a classification head to produce the predicted action class: 
+
+ˆy = θH (ϕ), (5) where θH denotes the classification head. During training, both the encoder parameters θBB and classifier parameters θH are op-timized jointly. For notational simplicity, we do not specify the particular kine-matic order used as input. The same model formulation applies to joint positions, velocities, accelerations, and other derived kine-matic features, since they share the same overall trajectory struc-ture, up to minor temporal padding differences introduced by derivative computation. 
+
+Order-specific backbones. We instantiate the previously de-scribed recognition model separately for each order of kinematic features. All backbones share the same architecture but main-tain independent parameters. Each order-specific backbone is trained on its corresponding input representation. Specifically, the zeroth-order backbone is trained on joint-position trajectories, the first-order backbone on preprocessed velocity trajectories, and the second-order backbone on preprocessed acceleration trajectories. These backbones are pretrained independently, then frozen and fused as described next. 
+
+## 4.5. Multi-Order Kinematic Fusion Approach 
+
+We combine representations from different kinematic orders to obtain a unified multi-order action representation. As described above, each order-specific backbone is pretrained independently and then frozen. Given the latent representation ϕm produced by the backbone associated with kinematic order m, we fuse the order-specific features using weighted averaging: 
+
+ϕmulti-order =
+
+PMm=0 wmϕm
+
+PMm=0 wm
+
+, (6) where M is the number of kinematic orders, ϕm denotes the representation corresponding to order m, and wm is its as-sociated fusion weight. Before fusion, representations from all order-specific backbones are projected into a common dimen-sional space. In our implementation, the weights wm are set man-ually. The resulting fused representation ϕmulti-order serves as the final multi-order kinematic representation. It is then passed to a classification head to produce teacher predictions, which are sub-sequently used for distillation. 
+
+## 4.6. Multi-Objective Knowledge Distillation Ap-proach 
+
+Multi-order kinematic representations are expected to provide stronger and more robust action features. However, obtaining them requires running multiple order-specific backbones in parallel, which increases memory usage and computational cost. This lim-its their suitability for edge devices or other resource-constrained deployment settings. To address these bottlenecks, we introduce a distillation-based approach. 
+
+7Teacher -FO -0
+
+Student -
+
+FO -0
+
+Teacher -FO -1
+
+Teacher -FO -2
+
+> Hierarchical
+> Representation
+> DO -0
+> DO -1
+> DO -2
+
+KD Loss 
+
+Cls Loss 
+
+> True Labels
+> Student only takes in
+> Zeroth -order data
+
+Figure 7. Our full approach. DO represents order of the input kinematic data; FO represents teacher feature’s order. Specifically, we propose a multi-objective knowledge distilla-tion (KD) framework that transfers information from the multi-order fused model into a substantially smaller zeroth-order student model. The student is trained to match the teacher’s softened class-probability distribution while operating only on a single zeroth-order feature stream. Thus, our framework performs compression along two axes: 1) from a teacher that leverages multi-order kine-matic inputs to a student that uses only zeroth-order joint-position inputs; and 2) from a larger teacher network to a substantially smaller student network. We detail these two aspects below. 
+
+Distilling across feature orders. We distill knowledge from the multi-order kinematic model, which serves as the teacher, into a lighter zeroth-order student model. Since the student operates on only one kinematic input stream, it requires substantially less memory and computation than the multi-order teacher. During training, the student is optimized using two comple-mentary objectives. First, it is encouraged to match the softened class-probability distribution produced by the teacher, thereby transferring information about the teacher’s class preferences and inter-class relationships. Second, it is trained with the ground-truth action labels to preserve direct supervision for the target recogni-tion task. Let zt and zs denote the teacher and student logits, respec-tively. Their temperature-scaled class-probability distributions are defined as 
+
+ptj (τ ) = exp( ztj /τ )
+
+P 
+
+> k
+
+exp( ztk /τ ) , psj (τ ) = exp( zsj /τ )
+
+P 
+
+> k
+
+exp( zsk /τ ) , (7) where τ is the distillation temperature. The distillation loss is computed using the Kullback–Leibler divergence between the teacher and student output distributions: 
+
+LKD (ps(τ ), p t(τ )) = τ 2 X
+
+> j
+
+ptj (τ ) log ptj (τ )
+
+psj (τ ) . (8) In addition, the student is trained using a standard classification loss with the ground-truth action label y:
+
+LCls (ps(1) , y ) = X
+
+> j
+
+−yj log psj (1) . (9) The final multi-objective training loss is 
+
+LM T L = λKD LKD + λCls LCls , (10) where λKD and λCls control the relative contributions of dis-tillation and supervised classification. To summarize, the teacher learns richer motion cues from posi-tions, velocities, and accelerations, but the final student keeps only a lightweight joint-position stream at inference. This gives the stu-dent some benefit of multi-order motion reasoning without paying the full computational cost. 
+
+Distilling into a smaller model. To further improve deploy-ment efficiency, we not only compress the multi-order teacher into a zeroth-order student, but also design the student network to be substantially smaller than the teacher. Formally, we require 
+
+|θt| ≫ | θs|, (11) where |θt| and |θs| denote the numbers of trainable parameters in the teacher and student networks, respectively. 
+
+# 5. Experiments 
+
+Implementation details. We use PyTorch [32] to implement all the models. Furthermore, we use PySKL toolbox [10] in our work. We extract human pose from videos using YOLO pose estimator [20, 35]. We base our models on STGCN++ model [10], but our approach is not limited any particular model, and can be applied to various models. For our individual, order-specific teacher models, we adopt STGCN++ model with 64 base channels. For our student model, we adopt STGCN++, but with only 32 channels, reducing the parameters by half. For 
+
+8Model Performance (%) 
+
+AAGCN [39] 66.39 STGCN++ [10] 68.05 CTRGCN [7] 65.56 MSG3D [28] 68.88 PoseC3D [11] 70.54 Ours 71.78 
+
+Table 1. Performance comparison of various methods on our synthetic dataset in terms of accuracy (%). 
+
+training our model, we use typical distillation temperature of 4; set 
+
+{w0, w 1, w 2} to {1.0, 0.8, 0.2 } and {λKD , λ Cls } to {0.3, 1.0 }.For all models, we follow their recommended training criteria and pretrain models using NTURGBD large scale dataset [26]. For all models, we use 80% of our synthetic dataset for training, while the remaining 20% of the dataset serves as the test set. 
+
+Performance metrics. Following the prior literature, we use ac-curacy to measure and compare the performance of all the models. 
+
+## 5.1. Comparison with Representative Methods on Synthetic Dataset 
+
+We compare our method with various representative skeleton-based action recognition models, including AA-GCN [39], STGCN++ [10], CTRGCN [7], MSG3D [28] and PoseC3D [11]. The results on our synthetic classroom incident dataset are re-ported in Table 1. Our method achieves the highest accuracy of 71.78%, outperforming all compared baselines. In particular, it improves over PoseC3D, the strongest baseline on this dataset, by 1.24 percentage points, and over MSG3D by 2.90 percentage points. These results show that our framework is effective for rec-ognizing classroom safety-related actions in the synthetic domain. Notably, our model is computationally efficient: it uses only one-tenth as many parameters as PoseC3D, yet achieves superior per-formance (Figure 2). The performance gain is consistent with our proposed multi-order motion reasoning strategy. While the compared skeleton-based baselines primarily learn from a single pose-based repre-sentation, our teacher model learns richer motion cues from mul-tiple kinematic orders, including joint positions, velocities, and accelerations. Joint positions capture spatial pose configurations, velocities capture motion direction and speed, and accelerations capture changes in movement intensity. These cues are especially useful for recognizing rapid or forceful classroom incidents such as punching and kicking. One possible explanation for the im-proved student performance is that distillation encourages the stu-dent to internalize motion-sensitive representations learned by the multi-order teacher. Although the deployed student uses only a lightweight zeroth-order joint-position stream at inference, joint-position trajectories still contain temporal structure from which velocity- and acceleration-like cues can be implicitly inferred. By matching the softened predictions of the fused multi-order teacher, the student may learn decision patterns that approximate the teacher’s multi-order kinematic reasoning, even without ex-plicitly computing or processing multiple kinematic streams at in-
+
+Model Performance (%) 
+
+AAGCN [39] 54.70 STGCN++ [10] 57.32 CTRGCN [7] 53.83 MSG3D [28] 59.23 PoseC3D [11] 54.36 Ours 63.41 
+
+Table 2. Performance comparison of various methods trained on our synthetic dataset and tested zero-shot on our real-world dataset. 
+
+ference. Thus, the improvement over representative baselines can be explained by the combination of denoised hierarchical kine-matic representations, fused multi-order teacher learning, and ef-ficient teacher-student distillation. This design allows the student to benefit from richer multi-order motion reasoning during train-ing while retaining the low computational cost of a single-stream pose-based model during deployment. Unlike many existing pose-based action recognition bench-marks, our dataset naturally combines challenges associated with both cross-subject and cross-view recognition. Therefore, al-though it contains fewer action classes than large-scale datasets, the performance of all evaluated methods remains compara-tively lower. For instance, PoseC3D [11] has been reported to achieve over 94% accuracy on established benchmarks such as NTURGBD [26] and FineGym [37], but reaches only 70.54% ac-curacy on our classroom incident dataset. This performance gap suggests that classroom incident recognition presents distinct chal-lenges, including viewpoint variation, subject diversity, noisy pose trajectories, and fine-grained differences between safety-related actions. While our method achieves the best performance among the compared approaches, the overall accuracy shows that the task remains far from solved. This leaves substantial room for future work on more robust pose-based models for privacy-preserving classroom safety monitoring. 
+
+## 5.2. Zero-Shot Synthetic-to-Real Transfer 
+
+To evaluate whether models trained on synthetic classroom inci-dent videos can generalize to real-world classroom footage, we conduct a zero-shot synthetic-to-real transfer experiment. In this setting, models are trained only on the synthetic set and evalu-ated directly on the real-world test set, without fine-tuning on real-world samples. This protocol assesses the transferability of different representations under the domain shift between gener-ated videos and real classroom recordings. Zero-shot transfer is more challenging than few-shot or multi-shot transfer as no target-domain training examples are used. Table 2 reports the zero-shot transfer results on the real-world dataset. All methods experience a performance drop when mov-ing from synthetic to real-world data, confirming the presence of a domain gap. However, our method obtains the best real-world accuracy of 63.41%, outperforming MSG3D, the strongest base-line in this setting, by 4.18 percentage points. Compared with the other baselines, the improvement is larger: 6.09 percentage points over STGCN++, 9.05 percentage points over PoseC3D, and 9.58 
+
+9Accuracy Surface at   
+
+> 𝑤 2= 0.2
+> -Best accuracy
+
+# 𝑤 0
+
+# 𝑤 1      
+
+> Accuracy
+> 0
+> 10
+> 20
+> 30
+> 40
+> 50
+> 60
+> 70
+> 80
+> 0.2 0.25 0.3 0.35 0.4
+> Distillation Loss Weight
+> Performance (%)
+> 66
+> 67
+> 68
+> 69
+> 70
+> 71
+> 72
+> 73
+> Multi -Order
+> Hierarchical
+> Teacher
+> Distilled w/o
+> Condition Eq. 11
+> Distilled with
+> Condition Eq. 11
+> Zeroth
+> Order
+> Teacher
+> Performance (%)
+
+Figure 8. Ablation study results. (1) accuracy surface across a range of w0 & w1; keeping w2 constant at its optimal value of 0.2. (2) plot of accuracy across a range of distillation loss weight, λKD . (3) effect of multiorder hierarchical kinematic representation and distillation. percentage points over CTRGCN. The strong transfer performance of our method is likely due to its combination of pose-based abstraction, learned multi-order motion modeling, and multi-objective distillation. Pose features reduce dependence on synthetic visual appearance, while veloc-ity and acceleration cues provide additional information about ac-tion dynamics. During training, the compact student model learns from both ground-truth labels and the richer soft predictions of the multi-order teacher, encouraging it to capture more informa-tive and robust action representations. This helps the model pre-serve action-relevant motion patterns across the synthetic-to-real domain gap, explaining why it achieves the best zero-shot real-world accuracy while also requiring the fewest parameters and FLOPs at inference. These results suggest that synthetic-domain accuracy alone is not sufficient to assess real-world usefulness. Although models such as PoseC3D perform strongly on the synthetic dataset, their accuracy decreases more substantially under zero-shot real-world evaluation. In contrast, our method achieves the best performance in both settings, indicating stronger cross-domain generalization under the synthetic-to-real shift. At the same time, the decrease from 71.78% on synthetic data to 63.41% on real-world data shows that a synthetic-to-real do-main gap remains. Therefore, these results should not be inter-preted as showing that synthetic data fully replaces real-world data. Rather, they demonstrate that synthetic classroom incident videos can provide a useful training signal, and that the proposed method is comparatively more robust than existing baselines under zero-shot synthetic-to-real transfer. 
+
+## 5.3. Ablation Study 
+
+Ablating weights in multi-order kinematics fusion. We study the effect of the contribution weights assigned to different kinematic orders in the hierarchical multi-order representation, as defined in Equation 6. The results are shown in Figure 8 (1). We sweep each weight w from 0 to 1 with a step size of 0.1 and record the resulting accuracy. The best performance is obtained with 
+
+w0, w 1, w 2 = 1 .0, 0.8, 0.2, indicating that all kinematic orders provide unique and complementary information. 
+
+Ablating loss weights in multitask loss. We study the ef-fect of the distillation loss weight λKD in the multitask objec-tive defined in Equation 10. Specifically, we train the model with different values of λKD while keeping λCls = 1 .0. The results are shown in Figure 8 (2). The best performance is obtained at 
+
+λKD = 0.3, suggesting that the classification and distillation losses provide complementary supervision. 
+
+Ablating multiobjective distillation. We further study the effects of hierarchical kinematic features and distillation condi-tions, with results shown in Figure 8 (3). First, hierarchical kine-matic features improve over zeroth-order features, confirming the benefit of multi-order motion modeling. Second, we observe that distilling a multi-order hierarchical teacher into a single zeroth-order student allows the student to outperform the teacher. Third, imposing the condition in Equation 11 further enables the student to outperform the much larger hierarchical teacher. We hypothe-size that the student internalizes the teacher’s multi-order motion reasoning while its smaller size (one sixth of the teacher size) en-courages more effective and transferable representations. Further-more, compared with the base model, STGCN++ [10], the pro-posed method improves accuracy by 4.1 percentage points and macro-F1 by 5.2 percentage points. As shown in the Appendix, these gains are mainly driven by better recognition of kick, sit, and run, as well as reduced confusion of kick and sit with the other class. 
+
+# 6. Conclusion 
+
+Classrooms are supposed to be safe places to learning and devel-opment. However, sometimes incidents take place that jeopardize the safety of children and teachers such as running, falling, vio-lent activities such as punching or kicking. Advances in computer vision create strong potential for improving the safety of students and teachers in classroom environments via automated monitor-ing and incident recognition. However, this application has re-ceived comparatively little attention, resulting in limited study and a lack of resources to support both research and practical deploy-ment. Thus, in this pilot study, we took a step toward bridging this gap. Firstly, we constructed a CCTV-based classroom incident recognition dataset using generative video AI, complemented by 
+
+10 real-world data collection. Secondly, we developed a lightweight, privacy-preserving approach for recognizing classroom incidents. Our results show that this approach outperforms existing baselines while requiring fewer computational resources. We also conducted a novel zero-shot synthetic-to-real-world evaluation, in which our model outperformed all baselines. To encourage further progress in this area, we will publicly release our dataset, codebase, and supporting tools to the research community. 
+
+Acknowledgement. This research/project is supported by Grant# IHPC/SCC/G24-016. 
+
+# References 
+
+[1] A Sheik Abdullah, S Geetha, AB Abdul Aziz, and Utkarsh Mishra. Design of automated model for inspecting and eval-uating handwritten answer scripts: A pedagogical approach with nlp and deep learning. Alexandria engineering journal ,108:764–788, 2024. 2 [2] Blessing Isoyiza Adeika, Pelumi Olaitan Abiodun, and Olu-dare Adegbola Owolabi. Transforming pedagogical assess-ment: Ai and computer vision-enhanced classroom observa-tions for experiment-centric learning environments. In 2024 ASEE Annual Conference & Exposition , 2024. 2 [3] Lei J Ba and Rich Caruana. Do deep nets really need to be deep? Advances in neural information processing systems ,27, 2014. 2 [4] Cristian Buciluˇ a, Rich Caruana, and Alexandru Niculescu-Mizil. Model compression. In Proceedings of the 12th ACM SIGKDD international conference on Knowledge discovery and data mining , pages 535–541, 2006. 2 [5] Ivo Bueno, Ruikun Hou, Babette B¨ uhler, Tim F¨ utterer, James Drimalla, Jonathan K Foster, Peter Youngs, Peter Gerjets, Ulrich Trautwein, and Enkelejda Kasneci. Exploring au-tomated recognition of instructional activity and discourse from multimodal classroom data. In Proceedings of the IEEE/CVF Winter Conference on Applications of Computer Vision , pages 6806–6817, 2026. 2 [6] Haoxin Chen, Menghan Xia, Yingqing He, Yong Zhang, Xiaodong Cun, Shaoshu Yang, Jinbo Xing, Yaofang Liu, Qifeng Chen, Xintao Wang, Chao Weng, and Ying Shan. VideoCrafter1: Open diffusion models for high-quality video generation. arXiv preprint arXiv:2310.19512 , 2023. 3[7] Yuxin Chen, Ziqi Zhang, Chunfeng Yuan, Bing Li, Ying Deng, and Weiming Hu. Channel-wise topology refinement graph convolution for skeleton-based action recognition. In 
+
+Proceedings of the IEEE/CVF International Conference on Computer Vision , pages 13359–13368, 2021. 9 [8] M Dewan, Mahbub Murshed, and Fuhua Lin. Engagement detection in online learning: a review. Smart Learning Envi-ronments , 6(1):1–20, 2019. 2 [9] Yiting Dong, Yang Li, Dongcheng Zhao, Guobin Shen, and Yi Zeng. Bullying10k: A large-scale neuromorphic dataset towards privacy-preserving bullying recognition. Advances in Neural Information Processing Systems , 36:1923–1937, 2023. 3 [10] Haodong Duan, Jiaqi Wang, Kai Chen, and Dahua Lin. Pyskl: Towards good practices for skeleton action recogni-tion. In Proceedings of the 30th ACM International Confer-ence on Multimedia , pages 7351–7354, 2022. 8, 9, 10 [11] Haodong Duan, Yue Zhao, Kai Chen, Dahua Lin, and Bo Dai. Revisiting skeleton-based action recognition. In Pro-ceedings of the IEEE/CVF conference on computer vision and pattern recognition , pages 2969–2978, 2022. 3, 9 [12] Tim F¨ utterer, Patricia Goldberg, Babette B¨ uhler, Vlasta Sikimi´ c, Ulrich Trautwein, Peter Gerjets, Kathleen St¨ urmer, and Enkelejda Kasneci. Artificial intelligence in classroom management: A systematic review on educational purposes, technical implementations, and ethical considerations. Com-puters and Education: Artificial Intelligence , page 100483, 2025. 2 [13] Yu Gao, Haoyuan Guo, Tuyen Hoang, Weilin Huang, Lu Jiang, Fangyuan Kong, Huixia Li, Jiashi Li, Liang Li, Xi-aojie Li, et al. Seedance 1.0: Exploring the boundaries of video generation models. arXiv preprint arXiv:2506.09113 ,2025. 3 [14] Nguyen Van Giang, Nguyen Gia Chan, Nguyen Tuan Hung, Quang Dich, and Trinh Cong Dong. Bk-sad: A large scale dataset for student activity recognition. JST: Smart Systems and Devices , 2023. 3 [15] Patricia Goldberg, ¨Omer S¨ umer, Kathleen St¨ urmer, Wolf-gang Wagner, Richard G¨ ollner, Peter Gerjets, Enkelejda Kas-neci, and Ulrich Trautwein. Attentive or not? toward a machine learning approach to assessing students’ visible en-gagement in classroom instruction. Educational Psychology Review , 33(1):27–49, 2021. 2 [16] Yoav HaCohen, Nisan Chiprut, Benny Brazowski, Daniel Shalem, Dudu Moshe, Eitan Richardson, Eran Levin, Guy Shiran, Nir Zabari, Ori Gordon, Poriya Panet, Sapir Weiss-buch, Victor Kulikov, Yaki Bitterman, Zeev Melumian, and Ofir Bibi. LTX-Video: Realtime video latent diffusion. arXiv preprint arXiv:2501.00103 , 2025. 3 [17] Geoffrey Hinton, Oriol Vinyals, and Jeff Dean. Distill-ing the knowledge in a neural network. arXiv preprint arXiv:1503.02531 , 2015. 2 [18] Jonathan Ho, William Chan, Chitwan Saharia, Jay Whang, Ruiqi Gao, Alexey Gritsenko, Diederik P. Kingma, Ben Poole, Mohammad Norouzi, David J. Fleet, and Tim Sali-mans. Imagen Video: High definition video generation with diffusion models. arXiv preprint arXiv:2210.02303 , 2022. 3 [19] Wenyi Hong, Ming Ding, Wendi Zheng, Xinghan Liu, and Jie Tang. CogVideo: Large-scale pretraining for text-to-video generation via transformers. arXiv preprint arXiv:2205.15868 , 2022. 3 [20] Glenn Jocher, Jing Qiu, and Ayush Chaurasia. Ultralytics YOLO, 2023. 8 [21] Angjoo Kanazawa, Michael J. Black, David W. Jacobs, and Jitendra Malik. End-to-end recovery of human shape and pose. In Computer Vision and Pattern Recognition (CVPR) ,2018. 3 [22] Will Kay, Joao Carreira, Karen Simonyan, Brian Zhang, Chloe Hillier, Sudheendra Vijayanarasimhan, Fabio Viola, Tim Green, Trevor Back, Paul Natsev, et al. The kinetics hu-
+
+11 man action video dataset. arXiv preprint arXiv:1705.06950 ,2017. 3 [23] Kling Team. Kling-Omni technical report. arXiv preprint arXiv:2512.16776 , 2025. 3 [24] Muhammed Kocabas, Nikos Athanasiou, and Michael J. Black. Vibe: Video inference for human body pose and shape estimation. In The IEEE Conference on Computer Vi-sion and Pattern Recognition (CVPR) , 2020. 3 [25] Gyeonggeon Lee and Xiaoming Zhai. Computer vision in stem education research. In Artificial Intelligence for STEM Education Research: Advanced Methods and Applications ,pages 113–141. Springer, 2026. 2 [26] Jun Liu, Amir Shahroudy, Mauricio Perez, Gang Wang, Ling-Yu Duan, and Alex C Kot. Ntu rgb+ d 120: A large-scale benchmark for 3d human activity understanding. IEEE transactions on pattern analysis and machine intelligence ,42(10):2684–2701, 2019. 3, 9 [27] Qingtang Liu, Xinyu Jiang, and Ruyi Jiang. Classroom be-havior recognition using computer vision: A systematic re-view. Sensors , 25(2), 2025. 2 [28] Ziyu Liu, Hongwen Zhang, Zhenghao Chen, Zhiyong Wang, and Wanli Ouyang. Disentangling and unifying graph convo-lutions for skeleton-based action recognition. In Proceedings of the IEEE/CVF conference on computer vision and pattern recognition , pages 143–152, 2020. 9 [29] Matthew Loper, Naureen Mahmood, Javier Romero, Gerard Pons-Moll, and Michael J. Black. SMPL: A skinned multi-person linear model. ACM Transactions on Graphics, (Proc. SIGGRAPH Asia) , 34(6):248:1–248:16, 2015. 3 [30] OpenAI. Video generation models as world simula-tors. https : / / openai . com / index / video -generation - models - as - world - simulators/ ,2024. Accessed: 2026-05-11. 3 [31] OpenAI. Sora 2 is here. https://openai.com/ index/sora-2/ , 2025. Accessed: 2026-05-11. 3 [32] Adam Paszke, Sam Gross, Francisco Massa, Adam Lerer, James Bradbury, Gregory Chanan, Trevor Killeen, Zeming Lin, Natalia Gimelshein, Luca Antiga, Alban Desmaison, Andreas K¨ opf, Edward Yang, Zach DeVito, Martin Raison, Alykhan Tejani, Sasank Chilamkurthy, Benoit Steiner, Lu Fang, Junjie Bai, and Soumith Chintala. PyTorch: an imper-ative style, high-performance deep learning library . Curran Associates Inc., Red Hook, NY, USA, 2019. 8 [33] Georgios Pavlakos, Vasileios Choutas, Nima Ghorbani, Timo Bolkart, Ahmed A. A. Osman, Dimitrios Tzionas, and Michael J. Black. Expressive body capture: 3d hands, face, and body from a single image. In Proceedings IEEE Conf. on Computer Vision and Pattern Recognition (CVPR) , 2019. 3[34] Wei Peng, Xiaopeng Hong, Haoyu Chen, and Guoying Zhao. Learning graph convolutional network for skeleton-based human action recognition by neural searching. In Proceed-ings of the AAAI conference on artificial intelligence , pages 2669–2676, 2020. 3 [35] Joseph Redmon, Santosh Divvala, Ross Girshick, and Ali Farhadi. You only look once: Unified, real-time object de-tection. In Proceedings of the IEEE conference on computer vision and pattern recognition , pages 779–788, 2016. 8 [36] Amir Shahroudy, Jun Liu, Tian-Tsong Ng, and Gang Wang. Ntu rgb+d: A large scale dataset for 3d human activity anal-ysis. In Proceedings of the IEEE conference on computer vision and pattern recognition , pages 1010–1019, 2016. 3 [37] Dian Shao, Yue Zhao, Bo Dai, and Dahua Lin. Finegym: A hierarchical video dataset for fine-grained action under-standing. In Proceedings of the IEEE/CVF conference on computer vision and pattern recognition , pages 2616–2625, 2020. 9 [38] Lei Shi, Yifan Zhang, Jian Cheng, and Hanqing Lu. Two-stream adaptive graph convolutional networks for skeleton-based action recognition. In 2019 IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) , pages 12018–12027. IEEE, 2019. 3 [39] Lei Shi, Yifan Zhang, Jian Cheng, and Hanqing Lu. Skeleton-based action recognition with multi-stream adap-tive graph convolutional networks. IEEE Transactions on Image Processing , 29:9532–9545, 2020. 9 [40] Uriel Singer, Adam Polyak, Thomas Hayes, Xi Yin, Jie An, Songyang Zhang, Qiyuan Hu, Harry Yang, Oron Ashual, Oran Gafni, Devi Parikh, Sonal Gupta, and Yaniv Taigman. Make-a-video: Text-to-video generation without text-video data. In International Conference on Learning Representa-tions , 2023. 3 [41] Team Wan, Ang Wang, Baole Ai, et al. Wan: Open and ad-vanced large-scale video generative models. arXiv preprint arXiv:2503.20314 , 2025. 3 [42] Nha Tran, Dat Ly, Phi Ta, Hung Nguyen, and Hien D Nguyen. Ordinal-aware multimodal engagement recognition for collaborative learning. In Proceedings of the IEEE/CVF Winter Conference on Applications of Computer Vision ,pages 2424–2433, 2026. 2 [43] Sergey Tulyakov, Ming-Yu Liu, Xiaodong Yang, and Jan Kautz. MoCoGAN: Decomposing motion and content for video generation. In Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition , pages 1526– 1535, 2018. 3 [44] Gul Varol, Javier Romero, Xavier Martin, Naureen Mah-mood, Michael J Black, Ivan Laptev, and Cordelia Schmid. Learning from synthetic humans. In Proceedings of the IEEE conference on computer vision and pattern recogni-tion , pages 109–117, 2017. 3 [45] G¨ ul Varol, Ivan Laptev, Cordelia Schmid, and Andrew Zis-serman. Synthetic humans for action recognition from un-seen viewpoints. In IJCV , 2021. 3 [46] Ruben Villegas, Mohammad Babaeizadeh, Pieter-Jan Kin-dermans, Hernan Moraldo, Han Zhang, Mohammad Taghi Saffar, Santiago Castro, Julius Kunze, and Dumitru Erhan. Phenaki: Variable length video generation from open domain textual description. arXiv preprint arXiv:2210.02399 , 2022. 3[47] Carl Vondrick, Hamed Pirsiavash, and Antonio Torralba. Generating videos with scene dynamics. In Advances in Neu-ral Information Processing Systems , pages 613–621, 2016. 3 [48] Linfeng Xu, Fanman Meng, Qingbo Wu, Lili Pan, Heqian Qiu, Lanxiao Wang, Kailong Chen, Kanglei Geng, Yilei Qian, Haojie Wang, Shuchang Zhou, Shimou Ling, Zejia 
+
+12 Liu, Nanlin Chen, Yingjie Xu, Shaoxu Cheng, Bowen Tan, Ziyong Xu, and Hongliang Li. Aric: An activity recognition dataset in classroom surveillance images, 2024. 3 [49] Sijie Yan, Yuanjun Xiong, and Dahua Lin. Spatial tempo-ral graph convolutional networks for skeleton-based action recognition. In Thirty-second AAAI conference on artificial intelligence , 2018. 3 [50] Wilson Yan, Yunzhi Zhang, Pieter Abbeel, and Aravind Srinivas. VideoGPT: Video generation using VQ-VAE and transformers. arXiv preprint arXiv:2104.10157 , 2021. 3 [51] Fan Yang. Scb-dataset: A dataset for detecting student class-room behavior. arXiv preprint arXiv:2304.02488 , 2023. 3 
+
+13
