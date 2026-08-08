@@ -1,0 +1,69 @@
+{
+  "label": "2026-08-08",
+  "date": "2026-08-08",
+  "generated_at": "2026-08-08T19:54:11",
+  "count": 4,
+  "papers": [
+    {
+      "paper_id": "202608/08/2608.04394v1-free-lunch-augmentation-by-revisiting-diffusion-based-data-generation-for-cross-domain-few-shot-object-detection",
+      "section": "deep",
+      "title_en": "Free-Lunch Augmentation by Revisiting Diffusion-Based Data Generation for Cross-Domain Few-Shot Object Detection",
+      "authors": "Zijian Zhuang, Yixiong Zou, Yuhua Li, Ruixuan Li",
+      "date": "2026-08-05",
+      "pdf": "https://arxiv.org/pdf/2608.04394v1",
+      "score": "9.0",
+      "evidence": "跨域少样本目标检测的数据增广方法。",
+      "tldr": "跨域小样本目标检测面临域间隙与数据稀缺，直接使用扩散模型生成数据会因视觉和语义间隙而失效。本文提出SITN方法，生成模块添加定制噪声缓解视觉间隙，选择模块动态挑选背景修补区域弥合语义间隙。在6个检测和4个分割数据集上取得新SOTA，证明无需额外标注即可利用生成数据提升跨域小样本性能。",
+      "tags": "query:cv",
+      "abstract_en": "Cross-Domain Few-Shot Object Detection (CDFSOD) aims to transfer knowledge from data-rich upstream generic domains to downstream expert domains using scarce training data, where the significant domain gap and data scarcity make it an unsolved challenge. To address this problem, we revisit a natural yet underexplored approach in CDFSOD: data augmentation, by directly synthesizing data through diffusion models to supplement limited training samples. However, due to large domain gaps, we find that current diffusion methods cannot produce good results, leading to performance even lower than using the original images. To address these limitations, we divide the domain gaps into visual gaps and semantic gaps for separate analysis. For the visual gap, we find that the diffusion model cannot distinguish noise from useful information on expert domains, which can be mitigated by adding weakened noise. For the semantic gap, we find that the background semantics shows much smaller gaps between domains than foreground semantics, and we can bridge this gap by background inpainting. Based on the above analysis, we propose a method (Selective Inpainting with Tailored Noise, SITN) to dynamically take different strategies for downstream data synthesis based on their different gaps from the general domain, including a Generation Module for adding tailored noise and a Selection Module to dynamically select the inpainting regions. Extensive experiments on 6 datasets of CDFSOD and 4 datasets of cross-domain few-shot segmentation (CDFSS) validate that we can synthesize helpful data, achieving new state-of-the-art performance. Our codes is available at https://github.com/zzzzj311-droid/Free-Lunch-SITN",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202608/08/2608.00257v1-mdwd-a-street-level-dataset-for-municipal-solid-waste-detection-in-dense-urban-environments",
+      "section": "deep",
+      "title_en": "MDWD: A Street-Level Dataset for Municipal Solid Waste Detection in Dense Urban Environments",
+      "authors": "Andrea Filiberto Lucas, Mark Bugeja, Carl James Debono, Dylan Seychell",
+      "date": "2026-07-31",
+      "pdf": "https://arxiv.org/pdf/2608.00257v1",
+      "score": "8.0",
+      "evidence": "面向物体检测的城市固废检测街级数据集",
+      "tldr": "市政垃圾自动检测缺乏兼顾街景、实例级定位和垃圾分类的基准数据集。MDWD数据集包含3697张街景图像和11461个标注实例，覆盖马耳他五类生活垃圾。跨架构评测显示RF-DETR-M达到最优mAP50 94.49%，验证了数据集对实时检测器和Transformer模型的适用性，为城市垃圾视觉监测提供基准。",
+      "tags": "query:cv",
+      "abstract_en": "Automated visual monitoring of urban environments is a growing Computer Vision research area, but municipal solid waste detection remains under-represented in dedicated benchmark resources. Existing waste-related datasets predominantly address individual litter detection, aerial imagery, or image-level classification, and none simultaneously provide street-level imagery, instance-level localization, and categorization of domestic waste streams within a structured municipal collection context. This paper introduces the Maltese Domestic Waste Dataset (MDWD), a street-level benchmark comprising 3,697 high-resolution images and 11,461 manually annotated instances across five domestic waste categories representative of Malta's municipal collection system. The dataset captures substantial variation in location, illumination, object scale, occlusion, and urban context. To establish reproducible baselines, a cross-architecture benchmark is conducted across multiple generations of the YOLO family and a transformer-based detector. On the test set, RF-DETR-M achieves the strongest overall performance with an mAP50 of 94.49% and an F1-score of 93.56%, whilst smaller-capacity variants maintain competitive accuracy at substantially reduced parameter counts. These results indicate that MDWD supports effective training across both compact real-time detectors and transformer-based models, establishing a benchmark for future research in vision-based municipal waste monitoring.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202608/08/2608.02396v1-does-explainability-transfer-a-controlled-benchmark-of-attribution-methods-on-vision-transformers-and-cnns",
+      "section": "deep",
+      "title_en": "Does Explainability Transfer? A Controlled Benchmark of Attribution Methods on Vision Transformers and CNNs",
+      "authors": "Sathiyamohan Nishankar, Nethmi Pathirana, Pubudu Sanjeewani, Asanka Perera, Selvarajah Thuseethan",
+      "date": "2026-08-03",
+      "pdf": "https://arxiv.org/pdf/2608.02396v1",
+      "score": "8.0",
+      "evidence": "计算机视觉中视觉Transformer与CNN归因方法的基准测试",
+      "tldr": "可解释性归因方法的有效性证据多来自卷积神经网络，其在视觉Transformer上的适用性尚不明确。本文构建标准化基准，在八种代表性骨干上系统评估13种归因方法的五个维度。结果发现归因性能强烈依赖架构，CNN上的排名无法迁移到Transformer；CAM方法虽在定位指标上领先，但多为指标饱和所致。研究强调需架构感知的多维评估。",
+      "tags": "query:cv",
+      "abstract_en": "Most evidence on the effectiveness of explainable artificial intelligence (XAI) attribution methods has been established on convolutional neural networks (CNNs), with limited investigation into whether these conclusions generalize to the diverse Vision Transformer (ViT) architectures that now dominate computer vision. This paper presents a controlled benchmark that evaluates attribution quality across five dimensions: faithfulness, localization, robustness, complexity, and computational cost. A standardized framework assesses 13 attribution methods from four algorithmic families on eight representative backbones spanning CNNs, isotropic ViTs, hierarchical transformers, hybrid architectures, and linear-attention transformers. The results show that attribution performance is strongly architecture-dependent and that rankings established on CNNs do not reliably transfer to transformer-based models. CAM-based methods achieve the highest scores under the conventional bounding-box localization metric on CNNs and most ViTs but perform poorly on linear-attention architectures. Pixel-level dense-mask evaluation further reveals that these gains largely reflect metric saturation rather than accurate localization. CAM-based methods also exhibit limited robustness on global-attention transformers, whereas attention rollout provides consistently stable explanations with poor localization. Furthermore, faithfulness correlation offers limited discrimination between attribution methods, highlighting the limitations of single-metric evaluation. These findings challenge prevailing conclusions on attribution performance and demonstrate the need for architecture-aware, multi-dimensional evaluation. The open-source code for the evaluation framework and benchmark results is available at https://github.com/Nishan-Charlie/VIT_XAI_Bench.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202608/08/2608.04210v1-padformer-pose-agnostic-anomaly-detection-from-sparse-view-images",
+      "section": "deep",
+      "title_en": "PADFormer: Pose-agnostic Anomaly Detection from Sparse View Images",
+      "authors": "Ruiqi Wang, Yiming Qian, Fenggen Yu, Yuxuan Lu, Dakuo Wang, Hao Zhang, Jing Huang",
+      "date": "2026-08-04",
+      "pdf": "https://arxiv.org/pdf/2608.04210v1",
+      "score": "8.0",
+      "evidence": "基于ViT的稀疏视角姿态无关异常检测方法",
+      "tldr": "姿态无关异常检测需要处理任意视角下的异常，现有方法依赖3D重建，计算开销大且要求多视图数据。本文提出PADFormer，一种基于ViT的图像空间方法，通过跨视图掩码重建直接生成无异常图像，并设计动态补丁选择与空间对齐机制，仅用正常样本训练。推理时采用多种掩码模式多次前向，集成重建结果以覆盖全面。在PAD基准上达到最优，同时保持少样本异常检测的可比性能，无需3D重建，效率高且泛化能力强。",
+      "tags": "query:cv",
+      "abstract_en": "Pose-agnostic Anomaly Detection (PAD) remains challenging as anomalies can appear under arbitrary viewpoints, requiring methods to handle significant pose variations. Existing approaches rely on complex 3D reconstruction, which are computationally expensive and require extensive multi-view data. We propose PADFormer, a novel image-space approach that leverages Vision Transformer (ViT) to directly reconstruct anomaly-free versions of query images while preserving pose information. Our key insight is to adapt cross-view masked reconstruction for anomaly detection through training exclusively on normal data, combined with dynamic patch selection and spatial alignment mechanisms that enable effective learning from sparse reference views under significant pose variations. During inference, we perform multiple forward passes with different masking patterns to generate an ensemble of anomaly-free reconstructions, ensuring comprehensive coverage of the query image. Anomalies are detected by comparing these reconstructions with the query image. PADFormer achieves state-of-the-art results on the PAD benchmark while maintaining comparable performance on classic few-shot anomaly detection (FSAD) tasks, demonstrating superior efficiency and generalization without requiring 3D reconstruction.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

@@ -41,17 +41,17 @@
 <section class="dpr-home-dashboard-card dpr-home-report-card">
   <div class="dpr-home-dashboard-header">
     <div>
-      <span class="dpr-home-dashboard-kicker">2026-08-07</span>
+      <span class="dpr-home-dashboard-kicker">2026-08-08</span>
       <h3 class="dpr-home-dashboard-title">今日汇总</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">共 25 篇</strong>
+    <strong class="dpr-home-dashboard-count">共 4 篇</strong>
   </div>
   <dl class="dpr-home-dashboard-stats">
-    <div class="dpr-home-dashboard-stat"><dt>累计更新</dt><dd>2 次</dd></div>
-    <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>12</dd></div>
-    <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>13</dd></div>
+    <div class="dpr-home-dashboard-stat"><dt>累计更新</dt><dd>1 次</dd></div>
+    <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>4</dd></div>
+    <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>0</dd></div>
   </dl>
-  <p class="dpr-home-dashboard-body">最近更新：2026-08-07 21:07:17 UTC<br>状态：成功</p>
+  <p class="dpr-home-dashboard-body">最近更新：2026-08-08 19:54:07 UTC<br>状态：成功</p>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-brief-card">
   <div class="dpr-home-dashboard-header">
@@ -62,7 +62,9 @@
     <strong class="dpr-home-dashboard-count">AI</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<p>今日精读12篇、速读13篇，共处理25篇论文；其中多模态感知与自监督深度估计表现突出。最值得看的是满分论文《RegisterBridgeMM》（RGB-红外目标检测）和9分《XiDepth》（轻量自监督单目深度估计）。建议优先精读这两篇，可考虑复现实验或结合自身场景验证其泛化性。</p>
+<p>今天完成4篇论文精读，重点聚焦跨域小样本目标检测与城市固废检测两个方向。</p>
+<p>最值得关注的是9.0分的扩散模型数据生成工作，以及8.0分的城市固废检测数据集MDWD。</p>
+<p>建议优先精读第一篇，理解如何用扩散模型生成数据来缓解跨域检测中的样本稀缺问题。</p>
   </div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-deep-card">
@@ -71,12 +73,12 @@
       <span class="dpr-home-dashboard-kicker">今日累计</span>
       <h3 class="dpr-home-dashboard-title">精读推荐</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">12 篇</strong>
+    <strong class="dpr-home-dashboard-count">4 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="RegisterBridgeMM: A Register-Centric Framework for RGB-Infrared Object Detection">RegisterBridgeMM: A Register-Centric Framework for RGB-Infrared Object Detection</span></li><li><span class="dpr-home-dashboard-paper-title" title="XiDepth: a Lightweight and Efficient Network for Self-supervised Monocular Depth Estimation">XiDepth: a Lightweight and Efficient Network for Self-supervised Monocular Depth Estimation</span></li><li><span class="dpr-home-dashboard-paper-title" title="UBLLIE: Unified Backlight and Low-Light Image Enhancement">UBLLIE: Unified Backlight and Low-Light Image Enhancement</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Free-Lunch Augmentation by Revisiting Diffusion-Based Data Generation for Cross-Domain Few-Shot Object Detection">Free-Lunch Augmentation by Revisiting Diffusion-Based Data Generation for Cross-Domain Few-Shot Object Detection</span></li><li><span class="dpr-home-dashboard-paper-title" title="MDWD: A Street-Level Dataset for Municipal Solid Waste Detection in Dense Urban Environments">MDWD: A Street-Level Dataset for Municipal Solid Waste Detection in Dense Urban Environments</span></li><li><span class="dpr-home-dashboard-paper-title" title="Does Explainability Transfer? A Controlled Benchmark of Attribution Methods on Vision Transformers and CNNs">Does Explainability Transfer? A Controlled Benchmark of Attribution Methods on Vision Transformers and CNNs</span></li></ul>
   </div>
-  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">cv <strong>12</strong></span></div>
+  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">cv <strong>4</strong></span></div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-skim-card">
   <div class="dpr-home-dashboard-header">
@@ -84,12 +86,12 @@
       <span class="dpr-home-dashboard-kicker">今日累计</span>
       <h3 class="dpr-home-dashboard-title">速读推荐</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">13 篇</strong>
+    <strong class="dpr-home-dashboard-count">0 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Training-Free Out-of-Distribution Detection for Pathology Whole-Slide Images">Training-Free Out-of-Distribution Detection for Pathology Whole-Slide Images</span></li><li><span class="dpr-home-dashboard-paper-title" title="LoRetta: A Foundation Model and Extensive Dataset for Global-Scale Remote Sensing Dense Image Matching">LoRetta: A Foundation Model and Extensive Dataset for Global-Scale Remote Sensing Dense Image Matching</span></li><li><span class="dpr-home-dashboard-paper-title" title="TriCLE: Tri-Modal Vision-Language Reasoning for Edge-Deployed Fine-Grained Clustering">TriCLE: Tri-Modal Vision-Language Reasoning for Edge-Deployed Fine-Grained Clustering</span></li></ul>
+<p class="dpr-home-dashboard-empty">今日暂无推荐。</p>
   </div>
-  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">cv <strong>13</strong></span></div>
+
 </section>
 </div>
 
