@@ -1,0 +1,174 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-08-09T20:39:44.287707+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 4,
+    "quick_skim_target": 11,
+    "quick_selected": 4
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2608.00646v1",
+      "source": "arxiv",
+      "title": "PixelSR: Efficient Screen Content Super-Resolution via Pixel Classification",
+      "abstract": "Screen content images are generally composed of texts and graphics. Compared to natural images, these man-made images contain a large quantity of sharp but repetitive structures. However, existing works in screen content super-resolution underutilize the special characteristics of screen content, leaving a large room to improve model performance and speed up. In this paper, we propose PixelSR, a simple yet effective method to improve super-resolution performance but with faster inference speed. To improve model performance, we classify pixels via pixel binning to compute content attention in the training phase. Specifically, after binning pixels into content-dependent groups, content attention is aggregated from pixel features within each group to introduce a content-dependent and non-local receptive field for every pixel. In the testing phase, we utilize the properties of self-repetitiveness and redundancy in screen content to speed up inference without the loss of model performance. We divide targeted high-resolution pixels into three types, which are unique pixels, repeated pixels, and background pixels for each test image. We conduct conventional network processing on unique pixels and cache their predictions in the on-the-fly lookup table. For repeated pixels which have appeared in unique pixels, we directly retrieve prediction results from the lookup table without network processing. For background pixels, we use the nearest neighbor algorithm to generate high-resolution pixels. The on-the-fly lookup table is cleaned and repeats the procedure above for the next test image. Experiments show our PixelSR achieves state-of-the-art performance with shorter inference time in screen content super-resolution.",
+      "authors": [
+        "Zhiheng Li",
+        "Lei Chen",
+        "Jie Zhou",
+        "Jiwen Lu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-01T13:03:47+00:00",
+      "link": "https://arxiv.org/pdf/2608.00646v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Screen content image super-resolution using pixel classification",
+      "llm_evidence_cn": "基于像素分类的屏幕内容图像超分辨率",
+      "llm_evidence": "基于像素分类的屏幕内容图像超分辨率",
+      "canonical_evidence": "基于像素分类的屏幕内容图像超分辨率",
+      "llm_tldr_en": "Proposes PixelSR, a simple efficient method for screen content super-resolution. It classifies pixels by binning to compute content attention from grouped pixel features, improving performance and inference speed on sharp repetitive structures typical of text and graphics.",
+      "llm_tldr_cn": "针对屏幕内容图像中文字与图形具有大量清晰重复结构的特点，提出PixelSR超分辨率方法。通过像素分箱将像素按内容分组并聚合组内特征计算内容注意力，在提升重建性能的同时加快推理速度，为屏幕内容超分辨率提供了简单有效的解决方案。",
+      "llm_tldr": "针对屏幕内容图像中文字与图形具有大量清晰重复结构的特点，提出PixelSR超分辨率方法。通过像素分箱将像素按内容分组并聚合组内特征计算内容注意力，在提升重建性能的同时加快推理速度，为屏幕内容超分辨率提供了简单有效的解决方案。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "computer vision research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2608.01389v1",
+      "source": "arxiv",
+      "title": "KoVRE: Training an Efficient Embedding Model for Korean Visual Document Retrieval",
+      "abstract": "Visual Document Retrieval (VDR) directly matches text queries against document images, preserving visual and structural information that may be lost during text extraction. However, existing VDR models and training resources remain predominantly English-centric, while many high-performing systems rely on massive backbones or storage-intensive multi-vector representations. To address these limitations, we introduce KoVRE: Korean Visual Document Retrieval Embedding, a single-vector retriever for Korean visual documents, alongside a comprehensive training recipe. We train the model on 708,729 Korean and English query-page pairs using positive-aware hard-negative mining and conduct controlled analyses of training-data composition, hard-negative treatment, and reranker-based knowledge distillation. Across Korean visual document retrieval benchmarks, our 2B model substantially improves over the base backbone model, outperforming both its 8B single-vector counterpart and a strong multi-vector baseline. These results demonstrate that targeted bilingual supervision and our carefully designed training strategies can produce a highly effective Korean VDR model across diverse document domains, without requiring a scaled-up backbone or multi-vector representations.",
+      "authors": [
+        "Yongbin Choi",
+        "Gyuho Shim",
+        "Youngjoon Jang"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-08-02T17:11:09+00:00",
+      "link": "https://arxiv.org/pdf/2608.01389v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Efficient embedding model for visual document retrieval",
+      "llm_evidence_cn": "面向视觉文档检索的高效嵌入模型",
+      "llm_evidence": "面向视觉文档检索的高效嵌入模型",
+      "canonical_evidence": "面向视觉文档检索的高效嵌入模型",
+      "llm_tldr_en": "KoVRE trains a single-vector retriever for Korean visual documents using 708,729 query-page pairs and positive-aware hard-negative mining, overcoming English-centric bias and expensive multi-vector representations.",
+      "llm_tldr_cn": "视觉文档检索直接匹配文本与文档图像，保留视觉和结构信息，但现有模型资源主要面向英语，且高效系统依赖大规模骨干或多向量表示。KoVRE提出面向韩语的单向量检索器，利用70万以上韩英查询-页面配对训练，采用正例感知难负例挖掘，在降低存储开销的同时实现高效的韩语视觉文档检索。还系统分析了训练数据组成和难负例挖掘的影响，为多语种视觉文档检索提供参考。",
+      "llm_tldr": "视觉文档检索直接匹配文本与文档图像，保留视觉和结构信息，但现有模型资源主要面向英语，且高效系统依赖大规模骨干或多向量表示。KoVRE提出面向韩语的单向量检索器，利用70万以上韩英查询-页面配对训练，采用正例感知难负例挖掘，在降低存储开销的同时实现高效的韩语视觉文档检索。还系统分析了训练数据组成和难负例挖掘的影响，为多语种视觉文档检索提供参考。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "feature extraction in computer vision",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2608.02437v2",
+      "source": "arxiv",
+      "title": "InfiniSplat: Implicit Gaussian Decoding for Large-Baseline Monocular View Synthesis",
+      "abstract": "Single-image feed-forward 3D Gaussian Splatting (3DGS) aims to directly generate a renderable 3D scene representation from one input image, avoiding the cost of multi-view capture and per-scene optimization. However, existing methods are often constrained by a pixel-aligned representation, where Gaussians are predicted from fixed image-grid locations. Such pixel-aligned primitives can produce promising nearby-view renderings, but they remain weakly coupled to underlying scene surfaces and struggle to preserve coherent structures under large viewpoint shifts. We present InfiniSplat, a feed-forward single-image 3DGS framework that moves from a pixel-aligned representation toward a surface-aligned representation. InfiniSplat constructs this representation by first using geometry-guided sampling to place 2D supports according to depth-induced local surface structure, and then applying a query-conditioned implicit decoder to predict Gaussian attributes from the image features queried at these supports. By grounding support locations in geometry while decoupling Gaussian prediction from fixed pixel centers, InfiniSplat produces Gaussian layouts that better follow scene surfaces and reduce scattered primitives caused by grid discretization. Across multiple cross-dataset NVS evaluations, InfiniSplat achieves state-of-the-art performance compared with single-image feed-forward baselines, and demonstrates zero-shot generalization from Hypersim indoor synthetic training to complex open-world scenes. Project page: https://zju3dv.github.io/InfiniSplat.",
+      "authors": [
+        "Jiawei Wang",
+        "Hao Yu",
+        "Yongzhen Hu",
+        "Xinyi Yang",
+        "Tao Ni",
+        "Xin Zhan",
+        "Junbo Chen",
+        "Xiaowei Zhou",
+        "Ruizhen Hu",
+        "Sida Peng"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-03T16:17:39+00:00",
+      "link": "https://arxiv.org/pdf/2608.02437v2",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Computer vision paper on feed-forward 3D Gaussian splatting for view synthesis",
+      "llm_evidence_cn": "计算机视觉论文，研究前馈三维高斯溅射视图合成",
+      "llm_evidence": "计算机视觉论文，研究前馈三维高斯溅射视图合成",
+      "canonical_evidence": "计算机视觉论文，研究前馈三维高斯溅射视图合成",
+      "llm_tldr_en": "InfiniSplat presents a feed-forward single-image 3DGS framework shifting from pixel-aligned to surface-aligned Gaussians, enabling coherent large-baseline monocular view synthesis without per-scene optimization.",
+      "llm_tldr_cn": "单图前馈三维高斯溅射现有方法多采用像素对齐的高斯表示，大视角变化下结构保持差。InfiniSplat提出隐式高斯解码，将表示从像素对齐转向表面对齐，使每个高斯与场景表面对齐，从而在大基线单目视图合成中保持结构一致性，且无需多视角采集和逐场景优化。实验验证了其在大视角偏移下的优势。",
+      "llm_tldr": "单图前馈三维高斯溅射现有方法多采用像素对齐的高斯表示，大视角变化下结构保持差。InfiniSplat提出隐式高斯解码，将表示从像素对齐转向表面对齐，使每个高斯与场景表面对齐，从而在大基线单目视图合成中保持结构一致性，且无需多视角采集和逐场景优化。实验验证了其在大视角偏移下的优势。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "computer vision research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2608.01977v1",
+      "source": "arxiv",
+      "title": "SVGEval: A Vision-Grounded Framework for Perceptual-Quality Benchmarking and Evaluation in Text-to-SVG Generation",
+      "abstract": "Multimodal large models are increasingly used to generate scalable vector graphics (SVG), but reliable evaluation remains underexplored. Existing protocols are often code-centric or borrow raster-image metrics after rendering SVGs, which fail to reflect human perception and overlook SVG-specific qualities such as geometry and spatial composition. We introduce SVGEval, a vision-grounded multimodal benchmark for human-aligned SVG quality assessment. SVGEval explicitly incorporates visual renderings to evaluate whether models can judge the rendered outcome rather than only inspect SVG code, and provides high-quality annotations obtained via multi-round human labeling with expert refinement. Systematic evaluations across representative multimodal models reveal a clear gap: models perform relatively well on semantic alignment and aesthetics, yet struggle on geometry- and layout-related judgments. Building on SVGEval, we train an explainable SVG quality scorer that outputs multi-aspect scores with textual rationales. Ablations show that explicit visual grounding and reasoning supervision are crucial, especially for spatial and geometric assessment. SVGEval offers a reliable testbed and practical scorer for evaluating and improving SVG generation in the era of multimodal models.",
+      "authors": [
+        "Yiming Wang",
+        "Ye Chen",
+        "Hanqi Chen",
+        "Bingbing Ni"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-03T09:41:18+00:00",
+      "link": "https://arxiv.org/pdf/2608.01977v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Vision-grounded benchmark for perceptual-quality evaluation of text-to-SVG generation, a computer vision research topic.",
+      "llm_evidence_cn": "面向SVG生成的视觉接地质量评估基准，属于计算机视觉研究。",
+      "llm_evidence": "面向SVG生成的视觉接地质量评估基准，属于计算机视觉研究。",
+      "canonical_evidence": "面向SVG生成的视觉接地质量评估基准，属于计算机视觉研究。",
+      "llm_tldr_en": "SVGEval presents a vision-grounded multimodal benchmark for human-aligned evaluation of text-to-SVG generation, incorporating visual renderings to assess perceptual quality, geometry, and spatial composition, with expert-refined human annotations.",
+      "llm_tldr_cn": "文本到SVG生成正被多模态大模型广泛使用，但现有评估依赖代码或栅格指标，不能反映人类感知。SVGEval提出视觉基准，显式引入渲染图像，让模型直接评判视觉产物，并围绕几何与空间组成提供经专家精化的高质量标注。系统评估显示该框架能更接近人类对SVG质量的判断，为视觉生成评估提供新工具。",
+      "llm_tldr": "文本到SVG生成正被多模态大模型广泛使用，但现有评估依赖代码或栅格指标，不能反映人类感知。SVGEval提出视觉基准，显式引入渲染图像，让模型直接评判视觉产物，并围绕几何与空间组成提供经专家精化的高质量标注。系统评估显示该框架能更接近人类对SVG质量的判断，为视觉生成评估提供新工具。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "computer vision research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

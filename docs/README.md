@@ -41,17 +41,17 @@
 <section class="dpr-home-dashboard-card dpr-home-report-card">
   <div class="dpr-home-dashboard-header">
     <div>
-      <span class="dpr-home-dashboard-kicker">2026-08-08</span>
+      <span class="dpr-home-dashboard-kicker">2026-08-09</span>
       <h3 class="dpr-home-dashboard-title">今日汇总</h3>
     </div>
     <strong class="dpr-home-dashboard-count">共 4 篇</strong>
   </div>
   <dl class="dpr-home-dashboard-stats">
     <div class="dpr-home-dashboard-stat"><dt>累计更新</dt><dd>1 次</dd></div>
-    <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>4</dd></div>
-    <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>0</dd></div>
+    <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>0</dd></div>
+    <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>4</dd></div>
   </dl>
-  <p class="dpr-home-dashboard-body">最近更新：2026-08-08 19:54:07 UTC<br>状态：成功</p>
+  <p class="dpr-home-dashboard-body">最近更新：2026-08-09 20:41:56 UTC<br>状态：成功</p>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-brief-card">
   <div class="dpr-home-dashboard-header">
@@ -62,9 +62,9 @@
     <strong class="dpr-home-dashboard-count">AI</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<p>今天完成4篇论文精读，重点聚焦跨域小样本目标检测与城市固废检测两个方向。</p>
-<p>最值得关注的是9.0分的扩散模型数据生成工作，以及8.0分的城市固废检测数据集MDWD。</p>
-<p>建议优先精读第一篇，理解如何用扩散模型生成数据来缓解跨域检测中的样本稀缺问题。</p>
+<p>今日速读4篇论文，精读0篇，重点关注屏幕内容超分与单目新视角合成方向。</p>
+<p>最值得一看的是《PixelSR》与《InfiniSplat》（均7.0分），前者用像素分类提升屏幕超分效率，后者做隐式高斯解码的大基线视图合成。</p>
+<p>建议优先精读这两篇7分论文，并留意韩文文档检索模型《KoVRE》的嵌入优化思路。</p>
   </div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-deep-card">
@@ -73,12 +73,12 @@
       <span class="dpr-home-dashboard-kicker">今日累计</span>
       <h3 class="dpr-home-dashboard-title">精读推荐</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">4 篇</strong>
+    <strong class="dpr-home-dashboard-count">0 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Free-Lunch Augmentation by Revisiting Diffusion-Based Data Generation for Cross-Domain Few-Shot Object Detection">Free-Lunch Augmentation by Revisiting Diffusion-Based Data Generation for Cross-Domain Few-Shot Object Detection</span></li><li><span class="dpr-home-dashboard-paper-title" title="MDWD: A Street-Level Dataset for Municipal Solid Waste Detection in Dense Urban Environments">MDWD: A Street-Level Dataset for Municipal Solid Waste Detection in Dense Urban Environments</span></li><li><span class="dpr-home-dashboard-paper-title" title="Does Explainability Transfer? A Controlled Benchmark of Attribution Methods on Vision Transformers and CNNs">Does Explainability Transfer? A Controlled Benchmark of Attribution Methods on Vision Transformers and CNNs</span></li></ul>
+<p class="dpr-home-dashboard-empty">今日暂无推荐。</p>
   </div>
-  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">cv <strong>4</strong></span></div>
+
 </section>
 <section class="dpr-home-dashboard-card dpr-home-skim-card">
   <div class="dpr-home-dashboard-header">
@@ -86,12 +86,12 @@
       <span class="dpr-home-dashboard-kicker">今日累计</span>
       <h3 class="dpr-home-dashboard-title">速读推荐</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">0 篇</strong>
+    <strong class="dpr-home-dashboard-count">4 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<p class="dpr-home-dashboard-empty">今日暂无推荐。</p>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="PixelSR: Efficient Screen Content Super-Resolution via Pixel Classification">PixelSR: Efficient Screen Content Super-Resolution via Pixel Classification</span></li><li><span class="dpr-home-dashboard-paper-title" title="InfiniSplat: Implicit Gaussian Decoding for Large-Baseline Monocular View Synthesis">InfiniSplat: Implicit Gaussian Decoding for Large-Baseline Monocular View Synthesis</span></li><li><span class="dpr-home-dashboard-paper-title" title="KoVRE: Training an Efficient Embedding Model for Korean Visual Document Retrieval">KoVRE: Training an Efficient Embedding Model for Korean Visual Document Retrieval</span></li></ul>
   </div>
-
+  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">cv <strong>4</strong></span></div>
 </section>
 </div>
 

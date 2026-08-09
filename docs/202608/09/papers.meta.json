@@ -1,0 +1,69 @@
+{
+  "label": "2026-08-09",
+  "date": "2026-08-09",
+  "generated_at": "2026-08-09T20:41:59",
+  "count": 4,
+  "papers": [
+    {
+      "paper_id": "202608/09/2608.00646v1-pixelsr-efficient-screen-content-super-resolution-via-pixel-classification",
+      "section": "quick",
+      "title_en": "PixelSR: Efficient Screen Content Super-Resolution via Pixel Classification",
+      "authors": "Zhiheng Li, Lei Chen, Jie Zhou, Jiwen Lu",
+      "date": "2026-08-01",
+      "pdf": "https://arxiv.org/pdf/2608.00646v1",
+      "score": "7.0",
+      "evidence": "基于像素分类的屏幕内容图像超分辨率",
+      "tldr": "屏幕内容超分常忽略文本图形的重复结构，现有方法性能与速度提升有限。本文提出PixelSR，训练时利用像素分箱聚合内容注意力，测试时按自重复性将像素分为唯一、重复、背景三类，分别采用网络处理、查表缓存与最近邻生成。实验在屏幕内容超分上达到SOTA，同时推理更快。",
+      "tags": "query:cv",
+      "abstract_en": "Screen content images are generally composed of texts and graphics. Compared to natural images, these man-made images contain a large quantity of sharp but repetitive structures. However, existing works in screen content super-resolution underutilize the special characteristics of screen content, leaving a large room to improve model performance and speed up. In this paper, we propose PixelSR, a simple yet effective method to improve super-resolution performance but with faster inference speed. To improve model performance, we classify pixels via pixel binning to compute content attention in the training phase. Specifically, after binning pixels into content-dependent groups, content attention is aggregated from pixel features within each group to introduce a content-dependent and non-local receptive field for every pixel. In the testing phase, we utilize the properties of self-repetitiveness and redundancy in screen content to speed up inference without the loss of model performance. We divide targeted high-resolution pixels into three types, which are unique pixels, repeated pixels, and background pixels for each test image. We conduct conventional network processing on unique pixels and cache their predictions in the on-the-fly lookup table. For repeated pixels which have appeared in unique pixels, we directly retrieve prediction results from the lookup table without network processing. For background pixels, we use the nearest neighbor algorithm to generate high-resolution pixels. The on-the-fly lookup table is cleaned and repeats the procedure above for the next test image. Experiments show our PixelSR achieves state-of-the-art performance with shorter inference time in screen content super-resolution.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202608/09/2608.02437v2-infinisplat-implicit-gaussian-decoding-for-large-baseline-monocular-view-synthesis",
+      "section": "quick",
+      "title_en": "InfiniSplat: Implicit Gaussian Decoding for Large-Baseline Monocular View Synthesis",
+      "authors": "Jiawei Wang, Hao Yu, Yongzhen Hu, Xinyi Yang, Tao Ni, Xin Zhan, Junbo Chen, Xiaowei Zhou, Ruizhen Hu, Sida Peng",
+      "date": "2026-08-03",
+      "pdf": "https://arxiv.org/pdf/2608.02437v2",
+      "score": "7.0",
+      "evidence": "计算机视觉论文，研究前馈三维高斯溅射视图合成",
+      "tldr": "单图前馈三维高斯泼溅常受像素对齐表示限制，高斯与表面弱耦合，大视角下结构易失真。InfiniSplat提出几何引导采样放置二维支撑点，并用隐式解码器预测高斯属性，实现表面对齐表示。在跨数据集新视角合成上达到最优，并展现出从合成室内到开放世界的零样本泛化能力。",
+      "tags": "query:cv",
+      "abstract_en": "Single-image feed-forward 3D Gaussian Splatting (3DGS) aims to directly generate a renderable 3D scene representation from one input image, avoiding the cost of multi-view capture and per-scene optimization. However, existing methods are often constrained by a pixel-aligned representation, where Gaussians are predicted from fixed image-grid locations. Such pixel-aligned primitives can produce promising nearby-view renderings, but they remain weakly coupled to underlying scene surfaces and struggle to preserve coherent structures under large viewpoint shifts. We present InfiniSplat, a feed-forward single-image 3DGS framework that moves from a pixel-aligned representation toward a surface-aligned representation. InfiniSplat constructs this representation by first using geometry-guided sampling to place 2D supports according to depth-induced local surface structure, and then applying a query-conditioned implicit decoder to predict Gaussian attributes from the image features queried at these supports. By grounding support locations in geometry while decoupling Gaussian prediction from fixed pixel centers, InfiniSplat produces Gaussian layouts that better follow scene surfaces and reduce scattered primitives caused by grid discretization. Across multiple cross-dataset NVS evaluations, InfiniSplat achieves state-of-the-art performance compared with single-image feed-forward baselines, and demonstrates zero-shot generalization from Hypersim indoor synthetic training to complex open-world scenes. Project page: https://zju3dv.github.io/InfiniSplat.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202608/09/2608.01389v1-kovre-training-an-efficient-embedding-model-for-korean-visual-document-retrieval",
+      "section": "quick",
+      "title_en": "KoVRE: Training an Efficient Embedding Model for Korean Visual Document Retrieval",
+      "authors": "Yongbin Choi, Gyuho Shim, Youngjoon Jang",
+      "date": "2026-08-02",
+      "pdf": "https://arxiv.org/pdf/2608.01389v1",
+      "score": "6.0",
+      "evidence": "面向视觉文档检索的高效嵌入模型",
+      "tldr": "视觉文档检索(VDR)直接匹配文本查询与文档图像，避免文本提取丢失信息，然而现有模型和训练资源以英文为主，且高性能系统常依赖庞大骨干或多向量表示。为此提出KoVRE：韩语视觉文档检索单向量嵌入模型，在708,729个韩英查询-页面样本上训练，采用正感知难负采样、数据组成分析和重排序器知识蒸馏。2B模型在韩语VDR基准上大幅超越基础骨干、8B单向量和强多向量基线。结果表明，针对性的双语监督和训练策略无需扩大骨干或多向量也能实现高效韩语VDR。",
+      "tags": "query:cv",
+      "abstract_en": "Visual Document Retrieval (VDR) directly matches text queries against document images, preserving visual and structural information that may be lost during text extraction. However, existing VDR models and training resources remain predominantly English-centric, while many high-performing systems rely on massive backbones or storage-intensive multi-vector representations. To address these limitations, we introduce KoVRE: Korean Visual Document Retrieval Embedding, a single-vector retriever for Korean visual documents, alongside a comprehensive training recipe. We train the model on 708,729 Korean and English query-page pairs using positive-aware hard-negative mining and conduct controlled analyses of training-data composition, hard-negative treatment, and reranker-based knowledge distillation. Across Korean visual document retrieval benchmarks, our 2B model substantially improves over the base backbone model, outperforming both its 8B single-vector counterpart and a strong multi-vector baseline. These results demonstrate that targeted bilingual supervision and our carefully designed training strategies can produce a highly effective Korean VDR model across diverse document domains, without requiring a scaled-up backbone or multi-vector representations.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202608/09/2608.01977v1-svgeval-a-vision-grounded-framework-for-perceptual-quality-benchmarking-and-evaluation-in-text-to-svg-generation",
+      "section": "quick",
+      "title_en": "SVGEval: A Vision-Grounded Framework for Perceptual-Quality Benchmarking and Evaluation in Text-to-SVG Generation",
+      "authors": "Yiming Wang, Ye Chen, Hanqi Chen, Bingbing Ni",
+      "date": "2026-08-03",
+      "pdf": "https://arxiv.org/pdf/2608.01977v1",
+      "score": "6.0",
+      "evidence": "面向SVG生成的视觉接地质量评估基准，属于计算机视觉研究。",
+      "tldr": "多模态大模型生成的SVG缺乏可靠评估，现有协议多聚焦代码或借用光栅图像指标，未能反映人类感知，也忽视几何与空间构图等矢量特征。针对此问题，提出SVGEval视觉基底基准，把渲染结果纳入评估，要求模型判断视觉呈现而非仅解析代码，并通过多轮专家标注保证质量。系统评测显示，代表模型在语义一致性与美学层面表现较好，却在几何和布局相关判断上明显薄弱。进一步训练了可解释评分器，消融实验证实视觉基础与推理监督对空间几何评估至关重要，为SVG生成提供可靠测试床与实用工具。",
+      "tags": "query:cv",
+      "abstract_en": "Multimodal large models are increasingly used to generate scalable vector graphics (SVG), but reliable evaluation remains underexplored. Existing protocols are often code-centric or borrow raster-image metrics after rendering SVGs, which fail to reflect human perception and overlook SVG-specific qualities such as geometry and spatial composition. We introduce SVGEval, a vision-grounded multimodal benchmark for human-aligned SVG quality assessment. SVGEval explicitly incorporates visual renderings to evaluate whether models can judge the rendered outcome rather than only inspect SVG code, and provides high-quality annotations obtained via multi-round human labeling with expert refinement. Systematic evaluations across representative multimodal models reveal a clear gap: models perform relatively well on semantic alignment and aesthetics, yet struggle on geometry- and layout-related judgments. Building on SVGEval, we train an explainable SVG quality scorer that outputs multi-aspect scores with textual rationales. Ablations show that explicit visual grounding and reasoning supervision are crucial, especially for spatial and geometric assessment. SVGEval offers a reliable testbed and practical scorer for evaluating and improving SVG generation in the era of multimodal models.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
