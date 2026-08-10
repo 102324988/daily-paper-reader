@@ -1,0 +1,284 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-08-10T21:04:24.195157+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 6,
+    "deep_cap": 6,
+    "deep_selected": 6,
+    "quick_candidates": 1,
+    "quick_skim_target": 11,
+    "quick_selected": 1
+  },
+  "deep_dive": [
+    {
+      "id": "2608.03023v1",
+      "source": "arxiv",
+      "title": "Standalone DINOv3 for Training-Free Open-Vocabulary Semantic Segmentation in Remote Sensing",
+      "abstract": "Remote sensing semantic segmentation is hindered by costly pixel-level annotations, motivating training-free open-vocabulary methods. Recently, the recent release of DINOv3 brings DINO.txt, which equips the standalone DINO backbone with image-text contrastive learning and thus opens up the possibility of open-vocabulary segmentation. We propose DinoSplat-OV, a training-free framework that adapts DINOv3 to remote sensing without fine-tuning or additional pretraining. Targeting the dense distribution, multi-scale nature, and large size of remote sensing imagery, we design two core modules. Its Text-aware Laplacian Propagation module de-noises patch-level predictions by combining textual semantic affinities with local visual similarity, improving regional consistency while preserving boundaries. Its Gaussian Splatting Upsampling module reconstructs pixel-level features through RGB-guided anisotropic aggregation and test-time optimization. A global-anchor sliding-window strategy further supports large-scale imagery. Experiments on UDD5, DOTA, and LoveDA demonstrate competitive or superior performance over existing training-free methods, effectively filling the gap of DINO-series models in training-free open-vocabulary segmentation and providing a viable new path for further advances in this direction.",
+      "authors": [
+        "Changhao Zhao",
+        "Haoxiang Li",
+        "Yuke Li",
+        "Hai Liu",
+        "LingLin Zeng"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-08-04T02:12:39+00:00",
+      "link": "https://arxiv.org/pdf/2608.03023v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Training-free open-vocabulary semantic segmentation in remote sensing using DINOv3",
+      "llm_evidence_cn": "使用DINOv3的遥感开放词汇语义分割免训练方法",
+      "llm_evidence": "使用DINOv3的遥感开放词汇语义分割免训练方法",
+      "canonical_evidence": "使用DINOv3的遥感开放词汇语义分割免训练方法",
+      "llm_tldr_en": "Presents DinoSplat-OV, a training-free framework adapting DINOv3 to remote sensing open-vocabulary semantic segmentation, with text-aware Laplacian propagation and multi-scale processing.",
+      "llm_tldr_cn": "针对遥感图像语义分割标注成本高昂的问题，本文提出训练自由的DinoSplat-OV框架，利用DINOv3的图像-文本对比学习实现开放词汇分割。方法结合文本感知拉普拉斯传播模块和针对遥感大尺寸、多尺度特性的设计，在无需微调或额外预训练的情况下获得较强的分割性能。这为遥感领域提供了一种低成本、可泛化的分割方案。",
+      "llm_tldr": "针对遥感图像语义分割标注成本高昂的问题，本文提出训练自由的DinoSplat-OV框架，利用DINOv3的图像-文本对比学习实现开放词汇分割。方法结合文本感知拉普拉斯传播模块和针对遥感大尺寸、多尺度特性的设计，在无需微调或额外预训练的情况下获得较强的分割性能。这为遥感领域提供了一种低成本、可泛化的分割方案。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "image segmentation techniques",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.05333v1",
+      "source": "arxiv",
+      "title": "Context Matters: Support Set Selection and Failure Detection for In-Context Medical Image Segmentation",
+      "abstract": "In-context learning (ICL) adapts medical image segmentation models to unseen structures and modalities without retraining by conditioning on a task-specific support set of image-mask exemplars. Because this support set is the model's only task-specific signal, its composition directly influences segmentation performance. In this work, we investigate the support set as a controllable determinant of ICL reliability. First, we compare random sampling against similarity-based selection, where exemplars are retrieved based on their visual similarity to the query image. Second, we train a transformer-based classifier to predict, from the query and support images alone, whether a segmentation will fall below a specified Intersection-over-Union (IoU) threshold. Using MultiverSeg with DINOv3 embeddings across four benchmarks and three imaging modalities, we show that similarity-based selection consistently matches or outperforms random sampling, with the largest gains at the smallest support set sizes. Furthermore, our classifier predicts segmentation failure above chance on all four benchmarks. Ultimately, these results demonstrate that the reliability of in-context segmentation can be both improved via informed support selection and anticipated before use, providing practical mechanisms for safer clinical deployment.",
+      "authors": [
+        "Youssef Gehad",
+        "Emmanuel Zerefa",
+        "Krish Kabra",
+        "Guha Balakrishnan"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-05T18:43:42+00:00",
+      "link": "https://arxiv.org/pdf/2608.05333v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "In-context medical image segmentation with support set selection",
+      "llm_evidence_cn": "基于支持集选择的上下文医学图像分割",
+      "llm_evidence": "基于支持集选择的上下文医学图像分割",
+      "canonical_evidence": "基于支持集选择的上下文医学图像分割",
+      "llm_tldr_en": "Investigates how support set composition affects in-context medical image segmentation and proposes a transformer-based classifier for predicting segmentation failure from query and support images.",
+      "llm_tldr_cn": "针对上下文医学图像分割中支持集选择影响可靠性的问题，本文比较了随机采样与基于相似性的支持集选择方法，并训练了一个基于Transformer的分类器，仅利用查询图像和支持图像预测分割是否低于指定阈值。该研究为医学图像分割中的上下文学习提供了更可控的支持集配置和失败检测机制，有助于提升模型在未见结构或模态上的泛化与可靠性。",
+      "llm_tldr": "针对上下文医学图像分割中支持集选择影响可靠性的问题，本文比较了随机采样与基于相似性的支持集选择方法，并训练了一个基于Transformer的分类器，仅利用查询图像和支持图像预测分割是否低于指定阈值。该研究为医学图像分割中的上下文学习提供了更可控的支持集配置和失败检测机制，有助于提升模型在未见结构或模态上的泛化与可靠性。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "image segmentation techniques",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.06691v1",
+      "source": "arxiv",
+      "title": "CoDAT: Collaborative Dual-Attention Transformer with Low-Cost Temporal Modeling for Efficient Edge Action Recognition",
+      "abstract": "Real-time human action recognition on Internet-of-Things (IoT) edge devices requires models that capture rich spatio-temporal cues within strict latency, memory, and power envelopes. Current 3D CNNs, video transformers, and shift-based ViT deliver high accuracy but come at computational costs that preclude edge IoT deployment. This paper proposes CoDAT, a Collaborative Dual-Attention Transformer that replaces conventional multi-head attention with a lightweight dual-branch module: Spatial Convolutional Attention (SCA) for local aggregation and Strided Single-Head Attention (SSHA) for global context. SSHA jointly compresses the spatial resolution and channel dimensions of the query, key, and value tensors via stride-based sparse projection, then fuses the resulting global and local features at a markedly reduced cost. To enable temporal communication across frames, a parameter-free TShift module is embedded in each block. Extensive experiments on Jetson AGX Orin and Raspberry Pi 5 demonstrate that CoDAT achieves an energy-accuracy balance in both image and action recognition. On ImageNet-1K, CoDAT-M runs 2x faster than EfficientViT384 and FastViT-S12 at comparable accuracy, and CoDAT-L matches ViT-S with 3x fewer parameters at 2x higher throughput. On Kinetics-400 and MA-52, CoDAT achieves competitive Top-1 accuracy against state-of-the-art CNN, transformer, and hybrid baselines while running up to 2.9x faster than VSwin-T, 2x faster than ViT-Temporal-Shift variants, and 5x faster than UniFormer-B. On UCF-101, CoDAT-S384 matches TokShift and LAPS while being 6x faster and requiring up to 13x fewer FLOPs, establishing an efficiency-accuracy balance for real-time action recognition in edge IoT perception systems. Code is available at https://github.com/novendrastywn/CoDAT .",
+      "authors": [
+        "Novendra Setyawan",
+        "Chi-Chia Sun",
+        "Mao-Hsiu Hsu",
+        "Wen-Kai Kuo",
+        "Jing-Ming Guo",
+        "Jun-Wei Hsieh"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-07T01:40:20+00:00",
+      "link": "https://arxiv.org/pdf/2608.06691v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "action recognition is a visual recognition algorithm",
+      "llm_evidence_cn": "动作识别属于视觉识别算法",
+      "llm_evidence": "动作识别属于视觉识别算法",
+      "canonical_evidence": "动作识别属于视觉识别算法",
+      "llm_tldr_en": "CoDAT introduces a collaborative dual-attention transformer with strided single-head attention for efficient real-time action recognition on edge IoT devices, replacing costly multi-head attention to balance accuracy and computational cost.",
+      "llm_tldr_cn": "现有视频识别模型在边缘IoT设备上面临高计算成本，难以同时满足实时性与精度要求。为此提出CoDAT，以空间卷积注意力和跨步单头注意力组成的双分支模块，在低资源消耗下捕捉局部与全局时空信息，并利用跨步策略压缩查询、键、值张量以降低复杂度。实验表明该设计能在保持高精度的同时大幅降低计算开销，适合边缘部署。",
+      "llm_tldr": "现有视频识别模型在边缘IoT设备上面临高计算成本，难以同时满足实时性与精度要求。为此提出CoDAT，以空间卷积注意力和跨步单头注意力组成的双分支模块，在低资源消耗下捕捉局部与全局时空信息，并利用跨步策略压缩查询、键、值张量以降低复杂度。实验表明该设计能在保持高精度的同时大幅降低计算开销，适合边缘部署。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "visual recognition algorithms",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.06841v1",
+      "source": "arxiv",
+      "title": "ECAD: Expanding Class-Agnostic Detection Beyond Thing-Centric Objectness",
+      "abstract": "Object detection is a fundamental task in visual perception, providing structured region representations for recognition, grounding, reasoning, and interaction. However, existing detection paradigms largely inherit a thing-centric notion of objectness, where detectors are mainly trained to localize discrete and countable object instances. Consequently, many semantically meaningful visual elements, such as sky, road, grassland, water, and sports courts, are often absorbed into the background despite their importance for scene understanding and spatial reasoning. In this paper, we formulate Expanded Class-Agnostic Detection (ECAD), a new setting that aims to discover category-agnostic visual candidates beyond conventional thing-centric objects. To support this setting, we construct BTCO-Bench, a Beyond Thing-Centric Objectness benchmark with category-agnostic box annotations covering both real-world and cross-domain scenarios. We further propose ECADet, a lightweight DETR-based detector built upon a frozen DINOv3 encoder, and introduce Geometry-Aware Expert Regression (GAER) and Prototype-Guided Query Modulation (PGQM) to improve localization and objectness estimation for diverse visual elements, respectively. Extensive experiments show that ECADet consistently outperforms representative class-agnostic and proposal-based detectors on BTCO-Bench, demonstrating the effectiveness of expanded objectness discovery. Code and benchmark will be released.",
+      "authors": [
+        "Liang Wan",
+        "Zixin Ren",
+        "Yupeng Zhang",
+        "Yuhan Wang",
+        "Fangzhuo Gao"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-07T06:01:06+00:00",
+      "link": "https://arxiv.org/pdf/2608.06841v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Introduces expanded class-agnostic detection setting; directly an object detection method",
+      "llm_evidence_cn": "提出扩展类无关目标检测新设定，直接属于目标检测方法研究",
+      "llm_evidence": "提出扩展类无关目标检测新设定，直接属于目标检测方法研究",
+      "canonical_evidence": "提出扩展类无关目标检测新设定，直接属于目标检测方法研究",
+      "llm_tldr_en": "ECAD expands class-agnostic detection beyond thing-centric objectness to discover arbitrary visual candidates such as sky, road, and sports courts for holistic scene understanding.",
+      "llm_tldr_cn": "现有目标检测大多只关注可数的物体实例，导致天空、道路、草地等语义区域被当作背景。本文提出扩展的类无关检测（ECAD）新设定，旨在发现类别无关的任意视觉候选，并通过相应方法与数据支持该任务的实现。这项研究有助于提升场景理解与空间推理能力，为目标检测带来更完整的感知范围。",
+      "llm_tldr": "现有目标检测大多只关注可数的物体实例，导致天空、道路、草地等语义区域被当作背景。本文提出扩展的类无关检测（ECAD）新设定，旨在发现类别无关的任意视觉候选，并通过相应方法与数据支持该任务的实现。这项研究有助于提升场景理解与空间推理能力，为目标检测带来更完整的感知范围。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "object detection methods",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.06439v1",
+      "source": "arxiv",
+      "title": "A Low-Latency ASIC Architecture for Real-Time Line Segment Detection",
+      "abstract": "Line segment detection is a critical preprocessing step in embedded vision applications such as autonomous navigation, visual SLAM, and industrial inspection. Deep learning methods achieve high accuracy but require substantial resources, limiting their deployment on resource-constrained platforms. Classical algorithms are efficient but exhibit content-dependent latency. This paper presents a low-latency ASIC architecture for real-time line segment detection. The proposed design is based on the step-length algorithm and incorporates five ASIC-specific features: register-based line buffering with data reuse, multiplierless MCM-based filtering, 8-class angle quantization, a CAM-like associative memory for single-cycle matching, and an optimized duplicate removal mechanism. The architecture is fully pipelined and processes one pixel per clock cycle with deterministic latency. Synthesized in a 45nm CMOS process, the design achieves 325 FPS at VGA resolution and 48 FPS at Full HD, with 25.54 mW power consumption and 0.412 mm\\textsuperscript{2} area. At 125 MHz, the throughput increases to 406 FPS at VGA resolution with 31.48 mW power consumption. Compared with a 90nm ASIC implementation based on the Line Hough Transform, the proposed design reduces power consumption by 49\\% and delivers over 1.6 times higher frame rate. The architecture is well suited for edge-computing applications requiring real-time performance, low power, and minimal area.",
+      "authors": [
+        "Amir Hossein Jalilvand",
+        "Parsa Hassani Shariat Panahi",
+        "M. Hassan Najafi"
+      ],
+      "primary_category": "cs.AR",
+      "categories": [
+        "cs.AR"
+      ],
+      "published": "2026-08-06T09:27:48+00:00",
+      "link": "https://arxiv.org/pdf/2608.06439v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "line segment detection is a geometric feature extraction method",
+      "llm_evidence_cn": "线段检测是一种几何特征提取方法",
+      "llm_evidence": "线段检测是一种几何特征提取方法",
+      "canonical_evidence": "线段检测是一种几何特征提取方法",
+      "llm_tldr_en": "This paper presents a low-latency ASIC architecture for real-time line segment detection, using step-length algorithm with register-based buffering, multiplierless filtering, angle quantization, and CAM-based matching for embedded vision applications.",
+      "llm_tldr_cn": "线段检测是嵌入式视觉中的关键预处理，但现有深度学习资源开销大，传统算法延迟不稳定。本文提出一种基于步长算法的低延迟ASIC架构，通过寄存器线缓冲、无乘法器滤波、8类角度量化和CAM匹配等硬件设计实现实时检测。结果表明该架构在保证精度的同时显著降低延迟，适合自动驾驶与视觉SLAM等资源受限场景。",
+      "llm_tldr": "线段检测是嵌入式视觉中的关键预处理，但现有深度学习资源开销大，传统算法延迟不稳定。本文提出一种基于步长算法的低延迟ASIC架构，通过寄存器线缓冲、无乘法器滤波、8类角度量化和CAM匹配等硬件设计实现实时检测。结果表明该架构在保证精度的同时显著降低延迟，适合自动驾驶与视觉SLAM等资源受限场景。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "feature extraction in computer vision",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.06850v1",
+      "source": "arxiv",
+      "title": "RegionDet: A Benchmark for Region Detection Beyond Object Instances",
+      "abstract": "Object detection is a fundamental task in computer vision and has achieved remarkable progress on standard benchmarks by localizing discrete and well-bounded object instances. However, many visual targets in real-world scenarios are not individual objects, but regions defined by visual states, scene context, object relations, and human activities, such as construction areas, damaged road regions, queues, group conversations, and vendor regions. Existing detection benchmarks are mainly built around object instances, providing limited support for systematically evaluating such region targets. To address this gap, we introduce Region Detection, a task that extends conventional object detection beyond object instances, and construct RegionDet, a benchmark for region target localization. RegionDet contains eight region categories, including Construction, Crossing, Damage, Queuing, Talking, Vendor, Waiting, and Walking, with COCO-style bounding-box annotations and evaluation protocols. We systematically evaluate representative closed-set and zero-shot/open-vocabulary detectors on RegionDet. Results show that closed-set detectors can partially learn region-level patterns under supervision, while zero-shot/open-vocabulary detectors struggle severely, revealing the strong object-centric bias of current vision-language detectors. Further analyses highlight key challenges in Region Detection, including weak boundary cues, strong context dependency, and insufficient relation-level region understanding. The RegionDet will be released.",
+      "authors": [
+        "Liang Wan",
+        "Yuhan Wang",
+        "Yupeng Zhang",
+        "Zhen Xu",
+        "Han Wang",
+        "Fangjie Fu",
+        "Sirui Zhu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-07T06:19:08+00:00",
+      "link": "https://arxiv.org/pdf/2608.06850v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "region detection benchmark extends object detection",
+      "llm_evidence_cn": "区域检测基准扩展了目标检测",
+      "llm_evidence": "区域检测基准扩展了目标检测",
+      "canonical_evidence": "区域检测基准扩展了目标检测",
+      "llm_tldr_en": "RegionDet introduces a benchmark for region detection, extending object detection beyond discrete object instances to visual-state, scene-context, and relation-based regions such as construction areas and queues.",
+      "llm_tldr_cn": "现实世界中许多视觉目标并非独立对象，而是由视觉状态、场景上下文、对象关系和人类活动定义的区域。现有检测基准主要围绕目标实例构建，难以评估此类目标。为此作者提出区域检测任务并构建RegionDet基准，覆盖建筑区、道路损坏、队列、群体交谈等区域类型，为系统评估区域检测算法提供数据和标准，拓展了目标检测的研究范畴。",
+      "llm_tldr": "现实世界中许多视觉目标并非独立对象，而是由视觉状态、场景上下文、对象关系和人类活动定义的区域。现有检测基准主要围绕目标实例构建，难以评估此类目标。为此作者提出区域检测任务并构建RegionDet基准，覆盖建筑区、道路损坏、队列、群体交谈等区域类型，为系统评估区域检测算法提供数据和标准，拓展了目标检测的研究范畴。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "object detection methods",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2608.06913v1",
+      "source": "arxiv",
+      "title": "MuST-VAD: Mutual Structured Learning for Video Anomaly Detection",
+      "abstract": "In this paper, we propose MuST-VAD, a mutual structured learning framework for weakly supervised video anomaly detection (VAD) in which an anomaly detector and a large vision-language model (LVLM) exchange their acquired knowledge. Detectors in weakly supervised VAD learn anomaly scores from features extracted by a fixed, task-agnostic backbone. These fixed features bound the achievable detection accuracy. Recent methods therefore transfer LVLM semantics into the detector as richer features. However, this transfer is one-way: what the detector learns about the target videos never returns to the LVLM. MuST-VAD extends the one-way transfer into a bidirectional learning loop. In this loop, the latest detector predictions supervise the LVLM adaptation, and the adapted LVLM returns updated representations that retrain the detector; the two models alternate these updates over small video groups. Both models train on detector-selected key clips, while confidence weighting and annotation-anchored question answering keep the exchanged supervision reliable. On UCF-Crime, our mutual learning improves the one-pass transfer baseline from 88.15% to 88.63% AUROC and from 37.25% to 42.46% average precision (AP), outperforming the state-of-the-art method in AP by 4.13 points.",
+      "authors": [
+        "Satoshi Hashimoto",
+        "Hitoshi Nishimura",
+        "Mori Kurokawa"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-07T07:47:19+00:00",
+      "link": "https://arxiv.org/pdf/2608.06913v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Mutual structured learning for weakly supervised video anomaly detection",
+      "llm_evidence_cn": "弱监督视频异常检测的互结构学习",
+      "llm_evidence": "弱监督视频异常检测的互结构学习",
+      "canonical_evidence": "弱监督视频异常检测的互结构学习",
+      "llm_tldr_en": "Proposes MuST-VAD, a mutual structured learning framework where a detector and a vision-language model exchange knowledge bidirectionally to improve weakly supervised video anomaly detection.",
+      "llm_tldr_cn": "针对弱监督视频异常检测中固定骨干特征限制精度、LVLM语义特征单向传递的问题，本文提出MuST-VAD互结构学习框架。该框架使异常检测器与大视觉语言模型形成双向学习闭环：检测器的预测监督LVLM的适应，同时LVLM增强检测器的特征表达。实验表明MuST-VAD显著提升了异常检测性能，为视频理解中的多模态协同提供了新范式。",
+      "llm_tldr": "针对弱监督视频异常检测中固定骨干特征限制精度、LVLM语义特征单向传递的问题，本文提出MuST-VAD互结构学习框架。该框架使异常检测器与大视觉语言模型形成双向学习闭环：检测器的预测监督LVLM的适应，同时LVLM增强检测器的特征表达。实验表明MuST-VAD显著提升了异常检测性能，为视频理解中的多模态协同提供了新范式。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "visual recognition algorithms",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}

@@ -1,0 +1,121 @@
+{
+  "date": "20260810",
+  "date_label": "",
+  "generated_at": "2026-08-10 21:08:29 UTC",
+  "recommend_exists": true,
+  "run_count": 1,
+  "papers": [
+    {
+      "paper_id": "2608.03023v1",
+      "route": "202608/10/2608.03023v1-standalone-dinov3-for-training-free-open-vocabulary-semantic-segmentation-in-remote-sensing",
+      "title": "Standalone DINOv3 for Training-Free Open-Vocabulary Semantic Segmentation in Remote Sensing",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "使用DINOv3的遥感开放词汇语义分割免训练方法",
+      "first_seen_at": "2026-08-10 21:08:29 UTC",
+      "updated_at": "2026-08-10 21:08:29 UTC"
+    },
+    {
+      "paper_id": "2608.05333v1",
+      "route": "202608/10/2608.05333v1-context-matters-support-set-selection-and-failure-detection-for-in-context-medical-image-segmentation",
+      "title": "Context Matters: Support Set Selection and Failure Detection for In-Context Medical Image Segmentation",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "基于支持集选择的上下文医学图像分割",
+      "first_seen_at": "2026-08-10 21:08:29 UTC",
+      "updated_at": "2026-08-10 21:08:29 UTC"
+    },
+    {
+      "paper_id": "2608.06691v1",
+      "route": "202608/10/2608.06691v1-codat-collaborative-dual-attention-transformer-with-low-cost-temporal-modeling-for-efficient-edge-action-recognition",
+      "title": "CoDAT: Collaborative Dual-Attention Transformer with Low-Cost Temporal Modeling for Efficient Edge Action Recognition",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "动作识别属于视觉识别算法",
+      "first_seen_at": "2026-08-10 21:08:29 UTC",
+      "updated_at": "2026-08-10 21:08:29 UTC"
+    },
+    {
+      "paper_id": "2608.06841v1",
+      "route": "202608/10/2608.06841v1-ecad-expanding-class-agnostic-detection-beyond-thing-centric-objectness",
+      "title": "ECAD: Expanding Class-Agnostic Detection Beyond Thing-Centric Objectness",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "提出扩展类无关目标检测新设定，直接属于目标检测方法研究",
+      "first_seen_at": "2026-08-10 21:08:29 UTC",
+      "updated_at": "2026-08-10 21:08:29 UTC"
+    },
+    {
+      "paper_id": "2608.06439v1",
+      "route": "202608/10/2608.06439v1-a-low-latency-asic-architecture-for-real-time-line-segment-detection",
+      "title": "A Low-Latency ASIC Architecture for Real-Time Line Segment Detection",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "线段检测是一种几何特征提取方法",
+      "first_seen_at": "2026-08-10 21:08:29 UTC",
+      "updated_at": "2026-08-10 21:08:29 UTC"
+    },
+    {
+      "paper_id": "2608.06850v1",
+      "route": "202608/10/2608.06850v1-regiondet-a-benchmark-for-region-detection-beyond-object-instances",
+      "title": "RegionDet: A Benchmark for Region Detection Beyond Object Instances",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "区域检测基准扩展了目标检测",
+      "first_seen_at": "2026-08-10 21:08:29 UTC",
+      "updated_at": "2026-08-10 21:08:29 UTC"
+    },
+    {
+      "paper_id": "2608.06913v1",
+      "route": "202608/10/2608.06913v1-must-vad-mutual-structured-learning-for-video-anomaly-detection",
+      "title": "MuST-VAD: Mutual Structured Learning for Video Anomaly Detection",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "弱监督视频异常检测的互结构学习",
+      "first_seen_at": "2026-08-10 21:08:29 UTC",
+      "updated_at": "2026-08-10 21:08:29 UTC"
+    }
+  ]
+}
