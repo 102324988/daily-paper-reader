@@ -1,0 +1,297 @@
+{
+  "date": "20260811",
+  "date_label": "",
+  "generated_at": "2026-08-11 20:11:01 UTC",
+  "recommend_exists": true,
+  "run_count": 1,
+  "papers": [
+    {
+      "paper_id": "2608.07941v1",
+      "route": "202608/11/2608.07941v1-lad-cod-language-aligned-dense-perception-for-camouflaged-object-detection",
+      "title": "LAD-COD: Language-Aligned Dense Perception for Camouflaged Object Detection",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 10.0,
+      "evidence": "提出语言对齐的密集感知框架用于伪装目标检测。",
+      "first_seen_at": "2026-08-11 20:11:01 UTC",
+      "updated_at": "2026-08-11 20:11:01 UTC"
+    },
+    {
+      "paper_id": "2608.08308v1",
+      "route": "202608/11/2608.08308v1-open-world-semantic-segmentation-with-sensitivity-modeling",
+      "title": "Open-World Semantic Segmentation with Sensitivity Modeling",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 10.0,
+      "evidence": "直接对应图像分割技术需求，研究开放世界语义分割方法",
+      "first_seen_at": "2026-08-11 20:11:01 UTC",
+      "updated_at": "2026-08-11 20:11:01 UTC"
+    },
+    {
+      "paper_id": "2608.08290v1",
+      "route": "202608/11/2608.08290v1-test-time-prototype-adaptation-for-open-vocabulary-semantic-segmentation",
+      "title": "Test-Time Prototype Adaptation for Open-Vocabulary Semantic Segmentation",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "通过测试时原型自适应提升开放词汇语义分割",
+      "first_seen_at": "2026-08-11 20:11:01 UTC",
+      "updated_at": "2026-08-11 20:11:01 UTC"
+    },
+    {
+      "paper_id": "2608.08476v1",
+      "route": "202608/11/2608.08476v1-raylift-lifting-complementary-ray-wise-evidence-with-3d-geometry-priors-for-semantic-scene-completion",
+      "title": "RayLift: Lifting Complementary Ray-Wise Evidence with 3D Geometry Priors for Semantic Scene Completion",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "处理基于相机的3D语义场景补全，属于计算机视觉场景理解任务。",
+      "first_seen_at": "2026-08-11 20:11:01 UTC",
+      "updated_at": "2026-08-11 20:11:01 UTC"
+    },
+    {
+      "paper_id": "2608.09147v1",
+      "route": "202608/11/2608.09147v1-refineany3d-depth-refinement-as-semantic-alignment-for-monocular-3d-detection",
+      "title": "RefineAny3D: Depth Refinement as Semantic Alignment for Monocular 3D Detection",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "单目3D目标检测与深度细化",
+      "first_seen_at": "2026-08-11 20:11:01 UTC",
+      "updated_at": "2026-08-11 20:11:01 UTC"
+    },
+    {
+      "paper_id": "2608.09223v1",
+      "route": "202608/11/2608.09223v1-patchhead-learning-spatial-patch-evidence-for-generalizable-ai-generated-image-detection",
+      "title": "PatchHead: Learning Spatial Patch Evidence for Generalizable AI-Generated Image Detection",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "视觉识别算法，利用空间特征检测AI生成图像",
+      "first_seen_at": "2026-08-11 20:11:01 UTC",
+      "updated_at": "2026-08-11 20:11:01 UTC"
+    },
+    {
+      "paper_id": "2608.09691v1",
+      "route": "202608/11/2608.09691v1-diffuse-the-object-keep-its-label-curating-detector-training-data-from-a-few-unlabeled-photographs-via-vlm-built-3d-vegetation-scenes",
+      "title": "Diffuse the object, keep its label: curating detector training data from a few unlabeled photographs via VLM-built 3D vegetation scenes",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "通过VLM构建3D场景合成带标注的检测器训练图像",
+      "first_seen_at": "2026-08-11 20:11:01 UTC",
+      "updated_at": "2026-08-11 20:11:01 UTC"
+    },
+    {
+      "paper_id": "2608.07579v1",
+      "route": "202608/11/2608.07579v1-geometry-beats-estimated-depth-rgb-only-multi-camera-3d-tracking-under-sim2real",
+      "title": "Geometry Beats Estimated Depth: RGB-Only Multi-Camera 3D Tracking under Sim2Real",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "多相机三维跟踪，含检测与轨迹拼接",
+      "first_seen_at": "2026-08-11 20:11:01 UTC",
+      "updated_at": "2026-08-11 20:11:01 UTC"
+    },
+    {
+      "paper_id": "2608.07616v1",
+      "route": "202608/11/2608.07616v1-hsmla-hierarchical-softmax-multi-scale-linear-attention-for-efficient-vision-transformers",
+      "title": "HSMLA: Hierarchical Softmax Multi-scale Linear Attention for Efficient Vision Transformers",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "提出高效的视觉Transformer注意力机制，在CT器官分割和病理WSI上验证。",
+      "first_seen_at": "2026-08-11 20:11:01 UTC",
+      "updated_at": "2026-08-11 20:11:01 UTC"
+    },
+    {
+      "paper_id": "2608.07835v1",
+      "route": "202608/11/2608.07835v1-seqloc-beyond-the-single-frame-for-cross-view-geo-localization-in-feature-sparse-scenes",
+      "title": "SeqLoc: Beyond the Single Frame for Cross-View Geo-Localization in Feature-Sparse Scenes",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "跨视角地理定位的计算机视觉研究，提出序列聚合方法",
+      "first_seen_at": "2026-08-11 20:11:01 UTC",
+      "updated_at": "2026-08-11 20:11:01 UTC"
+    },
+    {
+      "paper_id": "2608.07863v1",
+      "route": "202608/11/2608.07863v1-lhsdet-high-resolution-ai-generated-image-detection-via-visual-question-answering",
+      "title": "LHSDet: High-Resolution AI-Generated Image Detection via Visual Question Answering",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "基于视觉问答的AI生成图像检测视觉识别算法",
+      "first_seen_at": "2026-08-11 20:11:01 UTC",
+      "updated_at": "2026-08-11 20:11:01 UTC"
+    },
+    {
+      "paper_id": "2608.07999v1",
+      "route": "202608/11/2608.07999v1-pe-mamba-bidirectional-selective-layer-aggregation-for-ai-generated-image-detection",
+      "title": "PE-Mamba: Bidirectional Selective Layer Aggregation for AI-Generated Image Detection",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "基于双向选择性层聚合的AI生成图像检测视觉识别算法",
+      "first_seen_at": "2026-08-11 20:11:01 UTC",
+      "updated_at": "2026-08-11 20:11:01 UTC"
+    },
+    {
+      "paper_id": "2608.08147v1",
+      "route": "202608/11/2608.08147v1-samot-state-aware-step-modulation-and-optimal-transport-matching-for-audio-visual-instance-segmentation",
+      "title": "SAMOT: State-Aware Step Modulation and Optimal Transport Matching for Audio-Visual Instance Segmentation",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "音视频实例分割框架",
+      "first_seen_at": "2026-08-11 20:11:01 UTC",
+      "updated_at": "2026-08-11 20:11:01 UTC"
+    },
+    {
+      "paper_id": "2608.08521v1",
+      "route": "202608/11/2608.08521v1-a-combined-feature-based-framework-for-disguise-and-spoofing-detection-in-face-recognition-systems",
+      "title": "A Combined Feature-Based Framework for Disguise and Spoofing Detection in Face Recognition Systems",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "用于人脸活体与伪装检测的组合特征提取流程",
+      "first_seen_at": "2026-08-11 20:11:01 UTC",
+      "updated_at": "2026-08-11 20:11:01 UTC"
+    },
+    {
+      "paper_id": "2608.08867v1",
+      "route": "202608/11/2608.08867v1-zero-shot-traffic-accident-detection-via-a-coarse-to-fine-vlm-tracking-pipeline",
+      "title": "Zero-Shot Traffic Accident Detection via a Coarse-to-Fine VLM-Tracking Pipeline",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "基于YOLO11x目标检测和BoT-SORT跟踪的零样本交通事故检测流程",
+      "first_seen_at": "2026-08-11 20:11:01 UTC",
+      "updated_at": "2026-08-11 20:11:01 UTC"
+    },
+    {
+      "paper_id": "2608.09101v1",
+      "route": "202608/11/2608.09101v1-contrastive-mask-fidelity-reference-free-auditing-of-ground-truth-masks-in-remote-sensing-semantic-segmentation",
+      "title": "Contrastive Mask Fidelity: Reference-Free Auditing of Ground-Truth Masks in Remote Sensing Semantic Segmentation",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "用于审计语义分割掩码的无参考指标",
+      "first_seen_at": "2026-08-11 20:11:01 UTC",
+      "updated_at": "2026-08-11 20:11:01 UTC"
+    },
+    {
+      "paper_id": "2608.09112v1",
+      "route": "202608/11/2608.09112v1-roevo-robust-organized-edge-feature-based-visual-odometry-using-rgb-d-cameras",
+      "title": "ROEVO: Robust Organized Edge Feature-based Visual Odometry Using RGB-D Cameras",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "在计算机视觉中提取组织边缘特征用于视觉里程计",
+      "first_seen_at": "2026-08-11 20:11:01 UTC",
+      "updated_at": "2026-08-11 20:11:01 UTC"
+    },
+    {
+      "paper_id": "2608.08685v1",
+      "route": "202608/11/2608.08685v1-semi-dense-matching-uncertainty-is-not-just-local-confidence",
+      "title": "Semi-Dense Matching Uncertainty Is Not Just Local Confidence",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "几何视觉中半稠密匹配的不确定性估计",
+      "first_seen_at": "2026-08-11 20:11:01 UTC",
+      "updated_at": "2026-08-11 20:11:01 UTC"
+    }
+  ]
+}

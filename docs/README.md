@@ -41,17 +41,17 @@
 <section class="dpr-home-dashboard-card dpr-home-report-card">
   <div class="dpr-home-dashboard-header">
     <div>
-      <span class="dpr-home-dashboard-kicker">2026-08-10</span>
+      <span class="dpr-home-dashboard-kicker">2026-08-11</span>
       <h3 class="dpr-home-dashboard-title">今日汇总</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">共 7 篇</strong>
+    <strong class="dpr-home-dashboard-count">共 18 篇</strong>
   </div>
   <dl class="dpr-home-dashboard-stats">
     <div class="dpr-home-dashboard-stat"><dt>累计更新</dt><dd>1 次</dd></div>
-    <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>6</dd></div>
-    <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>1</dd></div>
+    <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>7</dd></div>
+    <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>11</dd></div>
   </dl>
-  <p class="dpr-home-dashboard-body">最近更新：2026-08-10 21:08:29 UTC<br>状态：成功</p>
+  <p class="dpr-home-dashboard-body">最近更新：2026-08-11 20:11:01 UTC<br>状态：成功</p>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-brief-card">
   <div class="dpr-home-dashboard-header">
@@ -62,9 +62,7 @@
     <strong class="dpr-home-dashboard-count">AI</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<p>今日处理7篇论文，精读6篇，两篇获9.0高分领跑。</p>
-<p>最值得看：DINOv3实现免训练遥感开放词汇分割，医学分割聚焦支持集选择与失败检测。</p>
-<p>建议：深入探究这两篇高分方法的泛化性，速读可关注视频异常检测。</p>
+<p>今日共读18篇论文，其中7篇精读、11篇速读，核心聚焦计算机视觉的感知与分割任务。最值得关注的是两篇满分精读：伪装目标检测（LAD-COD）与开放世界语义分割（Sensitivity Modeling），分别从语言对齐和敏感性建模突破现有瓶颈。建议优先精读这两篇，并顺带浏览多相机3D跟踪与高效ViT的速读内容，以拓宽视觉感知与效率优化的视角。</p>
   </div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-deep-card">
@@ -73,12 +71,12 @@
       <span class="dpr-home-dashboard-kicker">今日累计</span>
       <h3 class="dpr-home-dashboard-title">精读推荐</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">6 篇</strong>
+    <strong class="dpr-home-dashboard-count">7 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Standalone DINOv3 for Training-Free Open-Vocabulary Semantic Segmentation in Remote Sensing">Standalone DINOv3 for Training-Free Open-Vocabulary Semantic Segmentation in Remote Sensing</span></li><li><span class="dpr-home-dashboard-paper-title" title="Context Matters: Support Set Selection and Failure Detection for In-Context Medical Image Segmentation">Context Matters: Support Set Selection and Failure Detection for In-Context Medical Image Segmentation</span></li><li><span class="dpr-home-dashboard-paper-title" title="CoDAT: Collaborative Dual-Attention Transformer with Low-Cost Temporal Modeling for Efficient Edge Action Recognition">CoDAT: Collaborative Dual-Attention Transformer with Low-Cost Temporal Modeling for Efficient Edge Action Recognition</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="LAD-COD: Language-Aligned Dense Perception for Camouflaged Object Detection">LAD-COD: Language-Aligned Dense Perception for Camouflaged Object Detection</span></li><li><span class="dpr-home-dashboard-paper-title" title="Open-World Semantic Segmentation with Sensitivity Modeling">Open-World Semantic Segmentation with Sensitivity Modeling</span></li><li><span class="dpr-home-dashboard-paper-title" title="Test-Time Prototype Adaptation for Open-Vocabulary Semantic Segmentation">Test-Time Prototype Adaptation for Open-Vocabulary Semantic Segmentation</span></li></ul>
   </div>
-  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">cv <strong>6</strong></span></div>
+  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">cv <strong>7</strong></span></div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-skim-card">
   <div class="dpr-home-dashboard-header">
@@ -86,12 +84,12 @@
       <span class="dpr-home-dashboard-kicker">今日累计</span>
       <h3 class="dpr-home-dashboard-title">速读推荐</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">1 篇</strong>
+    <strong class="dpr-home-dashboard-count">11 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="MuST-VAD: Mutual Structured Learning for Video Anomaly Detection">MuST-VAD: Mutual Structured Learning for Video Anomaly Detection</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Geometry Beats Estimated Depth: RGB-Only Multi-Camera 3D Tracking under Sim2Real">Geometry Beats Estimated Depth: RGB-Only Multi-Camera 3D Tracking under Sim2Real</span></li><li><span class="dpr-home-dashboard-paper-title" title="HSMLA: Hierarchical Softmax Multi-scale Linear Attention for Efficient Vision Transformers">HSMLA: Hierarchical Softmax Multi-scale Linear Attention for Efficient Vision Transformers</span></li><li><span class="dpr-home-dashboard-paper-title" title="SeqLoc: Beyond the Single Frame for Cross-View Geo-Localization in Feature-Sparse Scenes">SeqLoc: Beyond the Single Frame for Cross-View Geo-Localization in Feature-Sparse Scenes</span></li></ul>
   </div>
-  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">cv <strong>1</strong></span></div>
+  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">cv <strong>11</strong></span></div>
 </section>
 </div>
 
