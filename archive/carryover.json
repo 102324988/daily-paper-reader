@@ -1,92 +1,12 @@
 {
-  "generated_at": "2026-08-11T19:57:49.609799+00:00",
-  "updated_date": "20260811",
+  "generated_at": "2026-08-12T20:18:53.626970+00:00",
+  "updated_date": "20260812",
   "carryover_days": 9,
   "tag_states": {
     "cv": {
-      "updated_date": "20260811",
+      "updated_date": "20260812",
       "carryover_days": 9,
-      "items": [
-        {
-          "id": "2608.09656v1",
-          "source": "arxiv",
-          "title": "EgoHieraLoc: A Cortically Inspired Hierarchical Segmentation-Guided Framework for Egocentric Visual Query Localization",
-          "abstract": "Visual query localization (VQL) aims to retrieve and re-localize a queried object in egocentric videos, yet remains challenging when object boundaries are ambiguous and global context cannot effectively guide fine-grained localization. Human vision handles such ambiguity through a hierarchical process: it rapidly screens foreground candidates, selectively attends to the target despite distractors, refines perception via feedback between global context and local detail, and, when a single view is unreliable, integrates evidence across viewpoints according to its credibility. Inspired by these competencies, we propose \\textbf{EgoHieraLoc}, a unified framework for VQL-2D and VQL-3D. A Discriminative Parsing Module first extracts foreground-aware query representations using segmentation priors; a Query-Aware Module then performs robust target localization through discriminative correlation filtering with deformable modeling; and a Regional Adaptation Module feeds multi-scale context back into local regions to recover precise object boundaries. To extend this perceptual hierarchy to 3D localization, we introduce Geometric-Semantic Joint Confidence (GSJC), which multiplicatively couples segmentation confidence with local depth consistency, multi-view back-projection consistency, and triangulation-baseline quality, so that a viewpoint contributes to the 3D estimate only when it is credible both semantically and geometrically. Extensive experiments demonstrate state-of-the-art performance on both VQL-2D and -3D benchmarks.",
-          "authors": [
-            "Yifei Cao",
-            "Guolong Wang",
-            "Mingliang Hou",
-            "Xiya Bu",
-            "Daming Liu",
-            "Yu Liu"
-          ],
-          "primary_category": "cs.CV",
-          "categories": [
-            "cs.CV"
-          ],
-          "published": "2026-08-10T14:31:01+00:00",
-          "link": "https://arxiv.org/pdf/2608.09656v1",
-          "tags": [
-            "keyword:cv",
-            "query:cv"
-          ],
-          "llm_score": 8.0,
-          "llm_evidence_en": "computer vision research paper on egocentric visual query localization",
-          "llm_evidence_cn": "计算机视觉研究论文，研究第一视角视觉查询定位",
-          "llm_evidence": "计算机视觉研究论文，研究第一视角视觉查询定位",
-          "canonical_evidence": "计算机视觉研究论文，研究第一视角视觉查询定位",
-          "llm_tldr_en": "Presents EgoHieraLoc, a cortically inspired hierarchical segmentation-guided framework for egocentric visual query localization, unifying VQL-2D and VQL-3D by screening foreground candidates, attending to targets, and integrating multi-view evidence.",
-          "llm_tldr_cn": "第一视角视频中的视觉查询定位(VQL)在目标边界模糊且全局上下文不足时难以细粒度定位。受人类视觉层级处理启发，本文提出EgoHieraLoc统一框架，同时处理VQL-2D和VQL-3D。它通过判别式解析快速筛选前景候选，选择性注意到目标并整合多视角证据，从而在模糊边界和干扰下提升查询目标的再定位能力。",
-          "llm_tldr": "第一视角视频中的视觉查询定位(VQL)在目标边界模糊且全局上下文不足时难以细粒度定位。受人类视觉层级处理启发，本文提出EgoHieraLoc统一框架，同时处理VQL-2D和VQL-3D。它通过判别式解析快速筛选前景候选，选择性注意到目标并整合多视角证据，从而在模糊边界和干扰下提升查询目标的再定位能力。",
-          "llm_tags": [
-            "query:cv"
-          ],
-          "matched_query_tag": "query:cv",
-          "matched_query_text": "computer vision research papers",
-          "matched_requirement_id": "req-1",
-          "selection_source": "carryover_cache",
-          "paper_id": "2608.09656v1",
-          "carry_days": 1
-        },
-        {
-          "id": "2608.09519v1",
-          "source": "arxiv",
-          "title": "XFeat Revisited: Reproducibility and Evaluation of a Lightweight Image Matcher",
-          "abstract": "We present a reproducibility study of XFeat, a lightweight local feature extractor and matcher designed to identify corresponding points across images efficiently on resource-constrained hardware. We re-implement the architecture based on the paper and supplementary material, re-evaluate the authors' released checkpoint alongside our re-implementation, and conduct additional architectural ablations to examine design choices that were not fully justified in the original work. This distinction between re-evaluation and reproduction is important, as the paper, supplement, and public code differ in several implementation details, including the backbone layout, fusion block, and training losses. Empirically, our reproduced models closely match and, in some cases, outperform the re-evaluated original checkpoint on MegaDepth-1500 and ScanNet-1500, supporting the main claim that XFeat provides a strong accuracy-efficiency trade-off for standard image-matching benchmarks. Our ablations provide a more nuanced view of two architectural arguments from the original paper. In particular, the parallel keypoint branch is important for semi-dense matching, but its benefit is less pronounced than originally claimed, while the evidence for the specific placement of the single skip-connection remains inconclusive. Finally, we reproduce the original downstream evaluations and find close agreement for homography estimation, while Aachen visual localization remains below the reported results, even for the released checkpoint, suggesting sensitivity to underspecified evaluation details. We then extend the analysis to zero-shot out-of-distribution and cross-modal matching across retinal, thermal-visible, and multimodal remote-sensing imagery, where XFeat remains effective in some settings but degrades sharply under severe modality shifts.",
-          "authors": [
-            "Lazar Đoković",
-            "Aimee Lin"
-          ],
-          "primary_category": "cs.CV",
-          "categories": [
-            "cs.CV",
-            "cs.LG"
-          ],
-          "published": "2026-08-10T12:18:02+00:00",
-          "link": "https://arxiv.org/pdf/2608.09519v1",
-          "tags": [
-            "keyword:cv",
-            "query:cv"
-          ],
-          "llm_score": 8.0,
-          "llm_evidence_en": "Reproducibility and evaluation of a lightweight local feature extractor and matcher",
-          "llm_evidence_cn": "轻量级局部特征提取与匹配器的复现与评估",
-          "llm_evidence": "轻量级局部特征提取与匹配器的复现与评估",
-          "canonical_evidence": "轻量级局部特征提取与匹配器的复现与评估",
-          "llm_tldr_en": "Reproduces XFeat, a lightweight local feature extractor and matcher, re-evaluates released checkpoints, and performs architectural ablations, finding reproduced models closely match original performance.",
-          "llm_tldr_cn": "XFeat是一种面向资源受限硬件的轻量级局部特征提取和匹配器，但原文、补充材料和公开代码在实现上存在多处细节差异。该文基于论文和补充材料重新实现XFeat，并对作者发布的检查点与重实现进行再评估，开展额外消融实验以检验未充分证明的设计选择。实证显示重实现模型与原始结果高度接近，从而澄清了关键架构与训练细节，为轻量级特征匹配的可靠复现提供了参考。",
-          "llm_tldr": "XFeat是一种面向资源受限硬件的轻量级局部特征提取和匹配器，但原文、补充材料和公开代码在实现上存在多处细节差异。该文基于论文和补充材料重新实现XFeat，并对作者发布的检查点与重实现进行再评估，开展额外消融实验以检验未充分证明的设计选择。实证显示重实现模型与原始结果高度接近，从而澄清了关键架构与训练细节，为轻量级特征匹配的可靠复现提供了参考。",
-          "llm_tags": [
-            "query:cv"
-          ],
-          "matched_query_tag": "query:cv",
-          "matched_query_text": "feature extraction in computer vision",
-          "matched_requirement_id": "req-5",
-          "selection_source": "carryover_cache",
-          "paper_id": "2608.09519v1",
-          "carry_days": 1
-        }
-      ]
+      "items": []
     }
   }
 }

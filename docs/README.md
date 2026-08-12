@@ -41,17 +41,17 @@
 <section class="dpr-home-dashboard-card dpr-home-report-card">
   <div class="dpr-home-dashboard-header">
     <div>
-      <span class="dpr-home-dashboard-kicker">2026-08-11</span>
+      <span class="dpr-home-dashboard-kicker">2026-08-12</span>
       <h3 class="dpr-home-dashboard-title">今日汇总</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">共 18 篇</strong>
+    <strong class="dpr-home-dashboard-count">共 12 篇</strong>
   </div>
   <dl class="dpr-home-dashboard-stats">
     <div class="dpr-home-dashboard-stat"><dt>累计更新</dt><dd>1 次</dd></div>
-    <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>7</dd></div>
-    <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>11</dd></div>
+    <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>6</dd></div>
+    <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>6</dd></div>
   </dl>
-  <p class="dpr-home-dashboard-body">最近更新：2026-08-11 20:11:01 UTC<br>状态：成功</p>
+  <p class="dpr-home-dashboard-body">最近更新：2026-08-12 20:29:13 UTC<br>状态：成功</p>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-brief-card">
   <div class="dpr-home-dashboard-header">
@@ -62,7 +62,7 @@
     <strong class="dpr-home-dashboard-count">AI</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<p>今日共读18篇论文，其中7篇精读、11篇速读，核心聚焦计算机视觉的感知与分割任务。最值得关注的是两篇满分精读：伪装目标检测（LAD-COD）与开放世界语义分割（Sensitivity Modeling），分别从语言对齐和敏感性建模突破现有瓶颈。建议优先精读这两篇，并顺带浏览多相机3D跟踪与高效ViT的速读内容，以拓宽视觉感知与效率优化的视角。</p>
+<p>今日精读聚焦跨模态红外-可见光目标检测与轻量图像匹配，速读覆盖数据效率、伪装检测与位姿估计隐私。最值得看的是：显式特征域仿射配准将红外-可见光检测精度推至满分，而XFeat轻量匹配器经复现验证可作高效基础工具。下一步可结合伪装检测与现实场景需求，优先尝试上述高分方法的开源实现与适配。</p>
   </div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-deep-card">
@@ -71,12 +71,12 @@
       <span class="dpr-home-dashboard-kicker">今日累计</span>
       <h3 class="dpr-home-dashboard-title">精读推荐</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">7 篇</strong>
+    <strong class="dpr-home-dashboard-count">6 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="LAD-COD: Language-Aligned Dense Perception for Camouflaged Object Detection">LAD-COD: Language-Aligned Dense Perception for Camouflaged Object Detection</span></li><li><span class="dpr-home-dashboard-paper-title" title="Open-World Semantic Segmentation with Sensitivity Modeling">Open-World Semantic Segmentation with Sensitivity Modeling</span></li><li><span class="dpr-home-dashboard-paper-title" title="Test-Time Prototype Adaptation for Open-Vocabulary Semantic Segmentation">Test-Time Prototype Adaptation for Open-Vocabulary Semantic Segmentation</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Bridging Severe Cross-Modal Misalignment: End-to-End Visible-Infrared Object Detection via Explicit Feature-Domain Affine Registration">Bridging Severe Cross-Modal Misalignment: End-to-End Visible-Infrared Object Detection via Explicit Feature-Domain Affine Registration</span></li><li><span class="dpr-home-dashboard-paper-title" title="XFeat Revisited: Reproducibility and Evaluation of a Lightweight Image Matcher">XFeat Revisited: Reproducibility and Evaluation of a Lightweight Image Matcher</span></li><li><span class="dpr-home-dashboard-paper-title" title="Embedding Rotation Invariance for Provable Multi-Oriented Scene Text Recognition">Embedding Rotation Invariance for Provable Multi-Oriented Scene Text Recognition</span></li></ul>
   </div>
-  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">cv <strong>7</strong></span></div>
+  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">cv <strong>6</strong></span></div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-skim-card">
   <div class="dpr-home-dashboard-header">
@@ -84,12 +84,12 @@
       <span class="dpr-home-dashboard-kicker">今日累计</span>
       <h3 class="dpr-home-dashboard-title">速读推荐</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">11 篇</strong>
+    <strong class="dpr-home-dashboard-count">6 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Geometry Beats Estimated Depth: RGB-Only Multi-Camera 3D Tracking under Sim2Real">Geometry Beats Estimated Depth: RGB-Only Multi-Camera 3D Tracking under Sim2Real</span></li><li><span class="dpr-home-dashboard-paper-title" title="HSMLA: Hierarchical Softmax Multi-scale Linear Attention for Efficient Vision Transformers">HSMLA: Hierarchical Softmax Multi-scale Linear Attention for Efficient Vision Transformers</span></li><li><span class="dpr-home-dashboard-paper-title" title="SeqLoc: Beyond the Single Frame for Cross-View Geo-Localization in Feature-Sparse Scenes">SeqLoc: Beyond the Single Frame for Cross-View Geo-Localization in Feature-Sparse Scenes</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Rethinking Data Efficiency in Industrial Dense Prediction: Pretraining Coherence, Not Inductive Bias, Determines ViTs Low-Data Advantage">Rethinking Data Efficiency in Industrial Dense Prediction: Pretraining Coherence, Not Inductive Bias, Determines ViTs Low-Data Advantage</span></li><li><span class="dpr-home-dashboard-paper-title" title="Is There Really a Camouflaged Object? Towards Realistic Camouflaged Object Detection">Is There Really a Camouflaged Object? Towards Realistic Camouflaged Object Detection</span></li><li><span class="dpr-home-dashboard-paper-title" title="Protection Levels for Vision-Based Pose Estimation">Protection Levels for Vision-Based Pose Estimation</span></li></ul>
   </div>
-  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">cv <strong>11</strong></span></div>
+  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">cv <strong>6</strong></span></div>
 </section>
 </div>
 

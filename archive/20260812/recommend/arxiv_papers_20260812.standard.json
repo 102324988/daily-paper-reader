@@ -1,0 +1,487 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-08-12T20:18:53.625734+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 8,
+    "deep_cap": 6,
+    "deep_selected": 6,
+    "quick_candidates": 6,
+    "quick_skim_target": 11,
+    "quick_selected": 6
+  },
+  "deep_dive": [
+    {
+      "id": "2608.10680v1",
+      "source": "arxiv",
+      "title": "Bridging Severe Cross-Modal Misalignment: End-to-End Visible-Infrared Object Detection via Explicit Feature-Domain Affine Registration",
+      "abstract": "Visible-infrared object detection relies on complementary RGB and thermal cues, but its performance is often degraded by cross-modal spatial misalignment. Most existing methods rely on implicit feature adaptation to handle weakly misaligned scenarios, while large-offset geometric discrepancies remain insufficiently addressed. In this paper, we propose a Joint Feature-domain Registration and Detection network (JFRDet), an end-to-end visible-infrared oriented object detector tailored for severely cross-modal geometric discrepancies. JFRDet introduces a Cross-Modal Affine Alignment (CMAA) module to estimate an image-level affine transformation for explicit multi-level feature alignment. Note that illumination changes directly affect the reliability of RGB cues, an Illumination-Guided Complementary Fusion (IGCF) module adaptively exploits modality reliability under varying illumination conditions for cross-modal fusion. Then, an Alignment Quality-Consistency Gating (AQCG) strategy stabilizes joint optimization by modulating detection supervision according to alignment reliability and gradient consistency. We further construct DroneVehicle Misaligned (DVMA), a benchmark for evaluating visible-infrared oriented object detection under severe cross-modal geometric misalignment. The proposed JFRDet achieves 69.7\\% $\\mathrm{mAP}_{50}$ on DVMA, which represents state-of-the-art (SOTA) performance. The code and dataset will be available on GitHub.",
+      "authors": [
+        "Qi Ming",
+        "Yuyang Wang",
+        "Mingjing Zhao",
+        "Yifan Xiao",
+        "Zhixin Guo",
+        "Zhiqiang Zhou",
+        "Peng Sun",
+        "Juan Fang",
+        "Fuqiang Yang",
+        "Xudong Zhao"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-11T09:02:37+00:00",
+      "link": "https://arxiv.org/pdf/2608.10680v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 10.0,
+      "llm_evidence_en": "visible-infrared object detection",
+      "llm_evidence_cn": "可见光-红外目标检测方法",
+      "llm_evidence": "可见光-红外目标检测方法",
+      "canonical_evidence": "可见光-红外目标检测方法",
+      "llm_tldr_en": "JFRDet introduces explicit feature-domain affine registration via a Cross-Modal Affine Alignment module for end-to-end visible-infrared object detection, effectively handling severe cross-modal geometric misalignment.",
+      "llm_tldr_cn": "可见光-红外目标检测依赖RGB与热成像互补信息，但严重跨模态空间错位常导致性能下降，现有隐式特征适应方法难以应对大偏移。本文提出端到端JFRDet，通过跨模态仿射对齐模块显式估计图像级仿射变换，并对多级特征进行对齐，将配准与检测联合优化。实验表明该方法在严重错位场景下显著改善了检测精度，为多模态目标检测提供了显式几何对齐的解决思路。",
+      "llm_tldr": "可见光-红外目标检测依赖RGB与热成像互补信息，但严重跨模态空间错位常导致性能下降，现有隐式特征适应方法难以应对大偏移。本文提出端到端JFRDet，通过跨模态仿射对齐模块显式估计图像级仿射变换，并对多级特征进行对齐，将配准与检测联合优化。实验表明该方法在严重错位场景下显著改善了检测精度，为多模态目标检测提供了显式几何对齐的解决思路。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "object detection methods",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.09519v1",
+      "source": "arxiv",
+      "title": "XFeat Revisited: Reproducibility and Evaluation of a Lightweight Image Matcher",
+      "abstract": "We present a reproducibility study of XFeat, a lightweight local feature extractor and matcher designed to identify corresponding points across images efficiently on resource-constrained hardware. We re-implement the architecture based on the paper and supplementary material, re-evaluate the authors' released checkpoint alongside our re-implementation, and conduct additional architectural ablations to examine design choices that were not fully justified in the original work. This distinction between re-evaluation and reproduction is important, as the paper, supplement, and public code differ in several implementation details, including the backbone layout, fusion block, and training losses. Empirically, our reproduced models closely match and, in some cases, outperform the re-evaluated original checkpoint on MegaDepth-1500 and ScanNet-1500, supporting the main claim that XFeat provides a strong accuracy-efficiency trade-off for standard image-matching benchmarks. Our ablations provide a more nuanced view of two architectural arguments from the original paper. In particular, the parallel keypoint branch is important for semi-dense matching, but its benefit is less pronounced than originally claimed, while the evidence for the specific placement of the single skip-connection remains inconclusive. Finally, we reproduce the original downstream evaluations and find close agreement for homography estimation, while Aachen visual localization remains below the reported results, even for the released checkpoint, suggesting sensitivity to underspecified evaluation details. We then extend the analysis to zero-shot out-of-distribution and cross-modal matching across retinal, thermal-visible, and multimodal remote-sensing imagery, where XFeat remains effective in some settings but degrades sharply under severe modality shifts.",
+      "authors": [
+        "Lazar Đoković",
+        "Aimee Lin"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.LG"
+      ],
+      "published": "2026-08-10T12:18:02+00:00",
+      "link": "https://arxiv.org/pdf/2608.09519v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "reproducibility study of a lightweight local feature extractor and matcher",
+      "llm_evidence_cn": "轻量级局部特征提取与匹配器的可复现性研究",
+      "llm_evidence": "轻量级局部特征提取与匹配器的可复现性研究",
+      "canonical_evidence": "轻量级局部特征提取与匹配器的可复现性研究",
+      "llm_tldr_en": "Re-implements and evaluates XFeat, a lightweight local feature extractor and matcher, reproducing the architecture, comparing released checkpoint, and ablating design choices to clarify implementation details.",
+      "llm_tldr_cn": "XFeat是面向资源受限硬件的轻量级局部特征提取与匹配方法。本文依据论文和补充材料重新实现架构，并与作者发布的检查点对比，同时通过架构消融厘清骨干网络、融合块和训练损失等实现细节。研究发现公开代码与论文存在多处差异，但复现模型与原始结果高度吻合。该工作为特征提取与匹配领域提供了可信的基准。",
+      "llm_tldr": "XFeat是面向资源受限硬件的轻量级局部特征提取与匹配方法。本文依据论文和补充材料重新实现架构，并与作者发布的检查点对比，同时通过架构消融厘清骨干网络、融合块和训练损失等实现细节。研究发现公开代码与论文存在多处差异，但复现模型与原始结果高度吻合。该工作为特征提取与匹配领域提供了可信的基准。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "feature extraction in computer vision",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.10684v1",
+      "source": "arxiv",
+      "title": "Embedding Rotation Invariance for Provable Multi-Oriented Scene Text Recognition",
+      "abstract": "Multi-oriented text is ubiquitous in real-world scenes and remains a major challenge for scene text recognition (STR). Existing rotation-aware methods explicitly estimate text orientation. However, due to the lack of theoretical guarantees, they are prone to error accumulation, increased computational cost, and strong reliance on data. In this work, we incorporate rotation invariance into the STR framework to address these limitations. Specifically, we adopt an encoder-decoder architecture, embedding rotation equivariance in the encoder and rotation invariance in the decoder to construct a fully rotation-invariant network. On the decoder side, we first identify and prove the rotation-invariant property of the cross-attention mechanism and use it to formulate a rotation-invariant text decoder that maps visual features to output text in a rotation-invariant manner. On the encoder side, we propose a rotation-equivariant local-global extraction network that integrates deep equivariant convolutions with self-attention, enabling rotation-equivariant feature extraction while modeling inter-character dependencies and preserving fine-grained visual details. By integrating the encoder and decoder, we obtain an end-to-end Rotation-Invariant Scene Text Recognition network (RISTER). RISTER provides rotation invariance with theoretical guarantees, enhancing robustness on multi-oriented samples without introducing additional inference computation or relying on data-driven orientation correction. Experiments show that RISTER achieves state-of-the-art performance on both standard and multi-oriented benchmarks, surpassing the second-best model by 4.0 percent in accuracy on the general multi-oriented dataset.",
+      "authors": [
+        "Zhibin Ma",
+        "Pengwen Dai",
+        "Yi Liu",
+        "Xugong Qin",
+        "Chenyun Yu",
+        "Xiaochun Cao"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-11T09:06:46+00:00",
+      "link": "https://arxiv.org/pdf/2608.10684v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Scene text recognition method with rotation invariance",
+      "llm_evidence_cn": "面向场景文本识别的旋转不变性方法",
+      "llm_evidence": "面向场景文本识别的旋转不变性方法",
+      "canonical_evidence": "面向场景文本识别的旋转不变性方法",
+      "llm_tldr_en": "Incorporates rotation equivariance in encoder and invariance in decoder to build a fully rotation-invariant STR network, proving cross-attention's rotation invariance and reducing error accumulation.",
+      "llm_tldr_cn": "针对多方向场景文本识别中现有方法依赖显式方向估计、易累积误差且计算开销大的问题，提出在编码器中嵌入旋转等变性、在解码器中嵌入旋转不变性的全旋转不变网络。作者首先证明并利用交叉注意力机制的旋转不变性质，从而无需额外方向估计即可处理任意旋转文本，降低数据和计算依赖，为场景文本识别提供了更具理论保证的旋转鲁棒方案。",
+      "llm_tldr": "针对多方向场景文本识别中现有方法依赖显式方向估计、易累积误差且计算开销大的问题，提出在编码器中嵌入旋转等变性、在解码器中嵌入旋转不变性的全旋转不变网络。作者首先证明并利用交叉注意力机制的旋转不变性质，从而无需额外方向估计即可处理任意旋转文本，降低数据和计算依赖，为场景文本识别提供了更具理论保证的旋转鲁棒方案。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "visual recognition algorithms",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.11093v1",
+      "source": "arxiv",
+      "title": "Cross-View Feature Matching: Survey, Benchmarking, and Foundation-Model Perspectives",
+      "abstract": "Cross-view feature matching aims to establish reliable correspondences across images with large viewpoint variations. Over the past decade, the field has evolved from task-specific models toward increasingly unified and generalizable correspondence models, with recent progress further driven by the emergence of vision foundation models (VFMs). Despite these advances, existing studies remain highly diverse in their problem formulations, model architectures, training paradigms, and evaluation protocols, making it difficult to obtain a unified understanding of the field. In this survey, we present a unified review of cross-view feature matching. We first introduce a structured taxonomy covering feature extraction, single-type feature matcher, multi-type feature matcher, VFMs based methods, training strategy and robust estimation, providing a coherent framework for analysis and comparison. We further examine recent advances, distilling key design principles and highlighting the shift toward unified and generalizable correspondence models. We also provide a unified experimental benchmarking of representative state-of-the-art methods under consistent protocols, enabling fair and comprehensive performance comparisons. In addition, we discuss open challenges and future directions, including efficiency, robustness under extreme conditions, and cross-domain generalization. This survey aims to provide a comprehensive and structured reference for understanding the evolution, current landscape, and future development of cross-view feature matching in the era of vision foundation models.",
+      "authors": [
+        "Songlin Du",
+        "Xiaoyong Lu",
+        "Zeyu Wu",
+        "Xiaobo Lu",
+        "Guobao Xiao",
+        "Bin Fan",
+        "Jiayi Ma",
+        "Takeshi Ikenaga"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.CV"
+      ],
+      "published": "2026-08-11T16:00:40+00:00",
+      "link": "https://arxiv.org/pdf/2608.11093v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "survey of cross-view feature matching including feature extraction",
+      "llm_evidence_cn": "跨视角特征匹配综述，涵盖特征提取",
+      "llm_evidence": "跨视角特征匹配综述，涵盖特征提取",
+      "canonical_evidence": "跨视角特征匹配综述，涵盖特征提取",
+      "llm_tldr_en": "This survey reviews cross-view feature matching with a taxonomy covering feature extraction and matchers, and discusses foundation-model perspectives and benchmarking for unified understanding.",
+      "llm_tldr_cn": "跨视角特征匹配旨在建立大视角变化图像间的可靠对应，但领域内问题定义、架构、训练与评测高度分化，难以形成统一认识。本文对该领域进行系统性综述，提出涵盖特征提取、单类型特征匹配器和基础模型视角的结构化分类法，并梳理其发展脉络、基准测试与未来趋势。该工作为研究者理解跨视角匹配的技术演进和基础模型影响提供了参考框架。",
+      "llm_tldr": "跨视角特征匹配旨在建立大视角变化图像间的可靠对应，但领域内问题定义、架构、训练与评测高度分化，难以形成统一认识。本文对该领域进行系统性综述，提出涵盖特征提取、单类型特征匹配器和基础模型视角的结构化分类法，并梳理其发展脉络、基准测试与未来趋势。该工作为研究者理解跨视角匹配的技术演进和基础模型影响提供了参考框架。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "feature extraction in computer vision",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.07984v1",
+      "source": "arxiv",
+      "title": "AgriField-40K: Adapting Vision Models to Agriculture With Efficient Continual Pretraining",
+      "abstract": "Field-based agricultural computer vision is important for precision agriculture, yet it largely depends on expensive annotations and costly adaptation of large pretrained models. We introduce AgriField-40K, a field-centric dataset curated from 17 public resources and covering diverse crops, weeds, and field conditions. Building on this, we present AgriMAE, a parameter-efficient continual pretraining baseline that adapts a masked autoencoder pretrained on natural images by training only lightweight adapters. We further explore semantic feature reconstruction as an alternative pretraining objective and evaluate transfer across multiple tasks. AgriMAE consistently improves downstream performance and can match or even outperform full fine-tuning while using up to $9\\times$ fewer trainable parameters, showing that AgriField-40K is a practical resource for continual pretraining in agricultural vision. Project page: https://dtu-pas.github.io/agrifield40k/",
+      "authors": [
+        "Vasileios Tzouras",
+        "Paraskevas Pegios",
+        "Lazaros Nalpantidis"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-08T07:38:01+00:00",
+      "link": "https://arxiv.org/pdf/2608.07984v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Continual pretraining of masked autoencoders with lightweight adapters for agricultural feature learning",
+      "llm_evidence_cn": "通过轻量适配器持续预训练掩码自编码器以学习农业图像特征",
+      "llm_evidence": "通过轻量适配器持续预训练掩码自编码器以学习农业图像特征",
+      "canonical_evidence": "通过轻量适配器持续预训练掩码自编码器以学习农业图像特征",
+      "llm_tldr_en": "AgriMAE adapts ImageNet-pretrained masked autoencoders to agriculture using lightweight adapters and semantic feature reconstruction, improving downstream tasks with minimal cost.",
+      "llm_tldr_cn": "农业视觉任务依赖昂贵标注且大模型适应成本高。作者构建AgriField-40K农业数据集，并提出AgriMAE基线，通过仅训练轻量适配器将自然图像预训练的掩码自编码器适应到农业域。还探索语义特征重构作为替代预训练目标，并在多任务迁移上评估。结果表明AgriMAE一致提升下游性能，甚至媲美完全微调。该工作为领域适应和特征提取提供了高效途径。",
+      "llm_tldr": "农业视觉任务依赖昂贵标注且大模型适应成本高。作者构建AgriField-40K农业数据集，并提出AgriMAE基线，通过仅训练轻量适配器将自然图像预训练的掩码自编码器适应到农业域。还探索语义特征重构作为替代预训练目标，并在多任务迁移上评估。结果表明AgriMAE一致提升下游性能，甚至媲美完全微调。该工作为领域适应和特征提取提供了高效途径。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "feature extraction in computer vision",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.09656v1",
+      "source": "arxiv",
+      "title": "EgoHieraLoc: A Cortically Inspired Hierarchical Segmentation-Guided Framework for Egocentric Visual Query Localization",
+      "abstract": "Visual query localization (VQL) aims to retrieve and re-localize a queried object in egocentric videos, yet remains challenging when object boundaries are ambiguous and global context cannot effectively guide fine-grained localization. Human vision handles such ambiguity through a hierarchical process: it rapidly screens foreground candidates, selectively attends to the target despite distractors, refines perception via feedback between global context and local detail, and, when a single view is unreliable, integrates evidence across viewpoints according to its credibility. Inspired by these competencies, we propose \\textbf{EgoHieraLoc}, a unified framework for VQL-2D and VQL-3D. A Discriminative Parsing Module first extracts foreground-aware query representations using segmentation priors; a Query-Aware Module then performs robust target localization through discriminative correlation filtering with deformable modeling; and a Regional Adaptation Module feeds multi-scale context back into local regions to recover precise object boundaries. To extend this perceptual hierarchy to 3D localization, we introduce Geometric-Semantic Joint Confidence (GSJC), which multiplicatively couples segmentation confidence with local depth consistency, multi-view back-projection consistency, and triangulation-baseline quality, so that a viewpoint contributes to the 3D estimate only when it is credible both semantically and geometrically. Extensive experiments demonstrate state-of-the-art performance on both VQL-2D and -3D benchmarks.",
+      "authors": [
+        "Yifei Cao",
+        "Guolong Wang",
+        "Mingliang Hou",
+        "Xiya Bu",
+        "Daming Liu",
+        "Yu Liu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-10T14:31:01+00:00",
+      "link": "https://arxiv.org/pdf/2608.09656v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Hierarchical segmentation-guided framework for egocentric visual query localization",
+      "llm_evidence_cn": "用于自我中心视觉查询定位的层次化分割引导框架",
+      "llm_evidence": "用于自我中心视觉查询定位的层次化分割引导框架",
+      "canonical_evidence": "用于自我中心视觉查询定位的层次化分割引导框架",
+      "llm_tldr_en": "EgoHieraLoc mimics cortical hierarchy to combine global context and local detail for robust visual query localization in egocentric videos, addressing ambiguous boundaries and multi-view integration.",
+      "llm_tldr_cn": "视觉查询定位在边界模糊和全局上下文不足时较为困难。受人类视觉层次处理启发，提出EgoHieraLoc统一框架，通过判别性解析进行快速候选筛选、选择性注意以及全局细节反馈，并结合多视角证据。方法可同时处理VQL-2D和VQL-3D任务，在复杂自我中心视频中展现鲁棒定位能力。该工作推进了视频中的目标识别与定位研究。",
+      "llm_tldr": "视觉查询定位在边界模糊和全局上下文不足时较为困难。受人类视觉层次处理启发，提出EgoHieraLoc统一框架，通过判别性解析进行快速候选筛选、选择性注意以及全局细节反馈，并结合多视角证据。方法可同时处理VQL-2D和VQL-3D任务，在复杂自我中心视频中展现鲁棒定位能力。该工作推进了视频中的目标识别与定位研究。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "visual recognition algorithms",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2608.10590v1",
+      "source": "arxiv",
+      "title": "Rethinking Data Efficiency in Industrial Dense Prediction: Pretraining Coherence, Not Inductive Bias, Determines ViTs Low-Data Advantage",
+      "abstract": "Vision Transformers (ViTs) are widely believed to require more labeled data than CNNs for industrial dense prediction. Through controlled experiments on four industrial datasets, we show that the data-efficiency gap stems from pretraining incoherence, which refers to the statistical mismatch between ImageNet-pretrained ViT backbones and COCO-pretrained CNN necks, rather than from inherent self-attention deficits. We characterize the cross-architecture feature gap and propose a lightweight AlignBlock family for pyramid-level feature recalibration. Our core finding empirically identifies a data-efficiency frontier: for domain-proximal scenes with >= 200 samples, Swin-Graft surpasses YOLOv11x (terminal 703-shot: 0.973 vs 0.956 mAP@50); for domain-distant scenes, CNNs retain advantage (hook 141-shot: 0.900 vs 0.600 mAP@50). Grafted neck weights yield up to 2.5x the mAP of a randomly initialized neck.",
+      "authors": [
+        "Haoran Sui",
+        "Yaoyuan Jia"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-11T07:17:59+00:00",
+      "link": "https://arxiv.org/pdf/2608.10590v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Feature recalibration via AlignBlock for cross-architecture ViT-CNN dense prediction",
+      "llm_evidence_cn": "基于AlignBlock跨架构ViT-CNN特征重校准用于密集预测",
+      "llm_evidence": "基于AlignBlock跨架构ViT-CNN特征重校准用于密集预测",
+      "canonical_evidence": "基于AlignBlock跨架构ViT-CNN特征重校准用于密集预测",
+      "llm_tldr_en": "The paper identifies pretraining incoherence as the cause of ViTs' low-data disadvantage in dense prediction, and proposes AlignBlock feature recalibration to improve data efficiency.",
+      "llm_tldr_cn": "ViT被认为比CNN需要更多标注数据，本文在工业密集预测上控制实验，发现数据效率差距源于ImageNet预训练ViT主干与COCO预训练CNN颈部之间的统计失配。作者刻画跨架构特征差距并提出轻量AlignBlock系列进行金字塔级特征重校准。实验结果揭示数据效率边界：在领域接近且样本数大于等于200时，Swin-Graft超越YOLOv1。该研究为预训练特征对齐与数据高效迁移提供重要参考。",
+      "llm_tldr": "ViT被认为比CNN需要更多标注数据，本文在工业密集预测上控制实验，发现数据效率差距源于ImageNet预训练ViT主干与COCO预训练CNN颈部之间的统计失配。作者刻画跨架构特征差距并提出轻量AlignBlock系列进行金字塔级特征重校准。实验结果揭示数据效率边界：在领域接近且样本数大于等于200时，Swin-Graft超越YOLOv1。该研究为预训练特征对齐与数据高效迁移提供重要参考。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "feature extraction in computer vision",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2608.10023v1",
+      "source": "arxiv",
+      "title": "Protection Levels for Vision-Based Pose Estimation",
+      "abstract": "Vision-based navigation complements Global Navigation Satellite Systems, but certification demands integrity guarantees that account for faulty measurements. Previous work presented a probabilistic computer vision pipeline for runway-based pose estimation with fault detection inspired by Receiver Autonomous Integrity Monitoring. This work extends that framework by deriving protection levels, which provide probabilistic bounds on pose error that remain valid under undetected faults. We present an algorithm for computing protection levels for the nonlinear Perspective-$n$-Point problem applied to an aviation setting. The algorithm covers all six degrees of freedom of the aircraft pose (position and orientation) directly. We analyze the effect of measurement redundancy, pixel-level prediction uncertainty, and runway distance on the resulting protection levels. To make the results tangible, we demonstrate tradeoffs in the protection levels on an illustrative runway example.",
+      "authors": [
+        "Olivia Beyer Bruvik",
+        "Romeo Valentin",
+        "Marc R. Schlichting",
+        "Don Walker",
+        "Mykel J. Kochenderfer"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.CV",
+        "eess.SY"
+      ],
+      "published": "2026-08-09T12:37:39+00:00",
+      "link": "https://arxiv.org/pdf/2608.10023v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "computer vision pipeline for runway-based pose estimation with fault detection",
+      "llm_evidence_cn": "基于视觉的跑道位姿估计与故障检测的计算机视觉流程",
+      "llm_evidence": "基于视觉的跑道位姿估计与故障检测的计算机视觉流程",
+      "canonical_evidence": "基于视觉的跑道位姿估计与故障检测的计算机视觉流程",
+      "llm_tldr_en": "Extends a probabilistic computer vision pose estimation pipeline by deriving protection levels, providing probabilistic bounds on pose error under undetected faults for six-DOF aircraft pose.",
+      "llm_tldr_cn": "面向视觉导航的认证需求，本文在已有概率位姿估计框架基础上推导保护级别。算法针对非线性透视n点问题，直接覆盖飞机六个自由度的位姿，给出在未检测故障下仍有效的位姿误差概率界限。实验分析测量冗余与像素噪声等因素的影响，提升了视觉位姿估计的安全性保障能力。",
+      "llm_tldr": "面向视觉导航的认证需求，本文在已有概率位姿估计框架基础上推导保护级别。算法针对非线性透视n点问题，直接覆盖飞机六个自由度的位姿，给出在未检测故障下仍有效的位姿误差概率界限。实验分析测量冗余与像素噪声等因素的影响，提升了视觉位姿估计的安全性保障能力。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "computer vision research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2608.10790v1",
+      "source": "arxiv",
+      "title": "MVTrack: Ultrafast Appearance-Free Moving Object Tracking from Compressed Bitstreams",
+      "abstract": "Deploying modern video trackers at scale is bottlenecked by the computational cost of RGB-based object detectors. To this end, we present MVTrack, an ultrafast tracker for moving objects that operates directly on H.264 bitstreams. MVTrack combines MVDet, a lightweight detector for motion vector fields, with MVLink, a minimalist kinematic association module. On VIRAT, MVTrack outperforms YOLO26n while using 60$\\times$ fewer parameters, requiring 40$\\times$ fewer FLOPs, and reducing CPU latency by 8.6$\\times$. These results demonstrate that compressed video data alone can enable accurate and scalable surveillance tracking, thereby bypassing the need for pixel reconstruction.",
+      "authors": [
+        "Iñaki Erregue",
+        "Kamal Nasrollahi",
+        "Sergio Escalera"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-08-11T10:53:22+00:00",
+      "link": "https://arxiv.org/pdf/2608.10790v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Visual object tracking method operating on compressed bitstreams; not a survey",
+      "llm_evidence_cn": "面向视觉跟踪的方法，但并非综述性论文",
+      "llm_evidence": "面向视觉跟踪的方法，但并非综述性论文",
+      "canonical_evidence": "面向视觉跟踪的方法，但并非综述性论文",
+      "llm_tldr_en": "MVTrack tracks moving objects directly from H.264 bitstreams using motion vectors, combining a lightweight detector and kinematic association, achieving 60x fewer parameters than YOLO26n.",
+      "llm_tldr_cn": "面向大规模视频跟踪部署时RGB检测器计算成本高的问题，提出直接基于H.264压缩码流进行移动目标跟踪的MVTrack。其结合轻量运动矢量检测器MVDet与运动关联模块MVLink，无需像素重建。在VIRAT数据集上以比YOLO26n少60倍参数、40倍FLOPs和8.6倍CPU延迟的优势获得更优性能，表明压缩视频数据本身即可支撑准确可扩展的监控跟踪。",
+      "llm_tldr": "面向大规模视频跟踪部署时RGB检测器计算成本高的问题，提出直接基于H.264压缩码流进行移动目标跟踪的MVTrack。其结合轻量运动矢量检测器MVDet与运动关联模块MVLink，无需像素重建。在VIRAT数据集上以比YOLO26n少60倍参数、40倍FLOPs和8.6倍CPU延迟的优势获得更优性能，表明压缩视频数据本身即可支撑准确可扩展的监控跟踪。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "visual tracking surveys",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2608.11135v1",
+      "source": "arxiv",
+      "title": "Is There Really a Camouflaged Object? Towards Realistic Camouflaged Object Detection",
+      "abstract": "Camouflaged object detection (COD) aims to segment objects that are visually concealed in their surroundings and has attracted increasing attention in recent years. However, most existing COD methods are developed under a closed-world assumption, where each input image is assumed to contain a camouflaged object. This assumption ignores realistic scenarios with pure backgrounds or non-camouflaged objects, causing existing models to produce severe false positives when deployed in open-world environments. To address this limitation, we propose OPC16K, a large-scale benchmark for realistic COD. OPC16K contains 16,245 images from 14 sources and is carefully organized into camouflaged-object images, pure background images, and non-camouflaged-object images, enabling comprehensive evaluation of both segmentation quality and negative-sample rejection. Based on this benchmark, we further propose OPCNet, a presence-aware camouflage network that reformulates COD from a pure segmentation task into a joint problem of object localization and camouflage existence reasoning. Specifically, OPCNet introduces hierarchical existence reasoning to distinguish CO, BG, and NOCOD scenarios, similarity-aware camouflage relation modeling to capture foreground-background camouflage cues, and existence-aware feature refinement to regulate segmentation features with existence predictions. Extensive experiments on OPC16K demonstrate that OPCNet achieves superior performance under the proposed realistic COD evaluation protocol, significantly reducing false positives on negative samples while maintaining accurate camouflaged-object segmentation. Code and dataset will be released at https://github.com/2231122/OPCOD.",
+      "authors": [
+        "Huafeng Chen",
+        "Yueming Lyu",
+        "Chenyang Si",
+        "Wende Tan",
+        "Liucheng Guo",
+        "Caifeng Shan"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-11T16:57:40+00:00",
+      "link": "https://arxiv.org/pdf/2608.11135v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Camouflaged object detection benchmark aimed at segmenting concealed objects in realistic open-world settings",
+      "llm_evidence_cn": "面向现实开放世界环境中伪装目标分割的检测基准",
+      "llm_evidence": "面向现实开放世界环境中伪装目标分割的检测基准",
+      "canonical_evidence": "面向现实开放世界环境中伪装目标分割的检测基准",
+      "llm_tldr_en": "Introduces OPC16K, a large-scale benchmark for realistic camouflaged object detection with pure-background and non-camouflaged images, addressing open-world false positives.",
+      "llm_tldr_cn": "针对现有伪装目标检测（COD）方法在封闭世界假设下对纯背景或非伪装图像产生大量误检的问题，提出大规模基准OPC16K。该基准包含16245张来自14个来源的图像，分为伪装目标图、纯背景图和非伪装目标图三类，支持在开放世界环境中评估真实COD能力，推动模型减少误报，提升实际部署可靠性。",
+      "llm_tldr": "针对现有伪装目标检测（COD）方法在封闭世界假设下对纯背景或非伪装图像产生大量误检的问题，提出大规模基准OPC16K。该基准包含16245张来自14个来源的图像，分为伪装目标图、纯背景图和非伪装目标图三类，支持在开放世界环境中评估真实COD能力，推动模型减少误报，提升实际部署可靠性。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "image segmentation techniques",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2608.10195v1",
+      "source": "arxiv",
+      "title": "More Accurate, Less Human: Gestalt Grouping in Vision Models",
+      "abstract": "Human vision organizes what it sees into wholes: same-colored points group into series, similar marks cohere into categories, and shapes complete into recognizable objects. These are the Gestalt operations that visualization design builds on. Whether vision models organize visual content this way has not been systematically tested. We introduce a behavioral battery that scores models against human data from prior perception studies on four grouping tasks: mark-color odd-one-out, color-series counting, silhouette recognition, and object odd-one-out. We apply it to 45 models across five training families: supervised, self-supervised, and contrastive vision-language encoders, open-weight VLMs, and closed foundation models. The battery reveals that agreement with human responses captures aspects of perceptual organization that conventional performance metrics fail to distinguish, with several closed models exhibiting substantially lower alignment than their benchmark accuracy would suggest. Scoring against published perception data therefore gives visualization research a reusable yardstick, requiring no new user study, for auditing whether the models now entering visualization pipelines organize what they see the way their human audience does.",
+      "authors": [
+        "Sudhanva Manjunath Athreya",
+        "Sai Phani Kumar Malladi"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.LG"
+      ],
+      "published": "2026-08-10T20:14:14+00:00",
+      "link": "https://arxiv.org/pdf/2608.10195v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "behavioral battery evaluating Gestalt grouping in vision models",
+      "llm_evidence_cn": "用行为测试评估视觉模型的格式塔分组能力",
+      "llm_evidence": "用行为测试评估视觉模型的格式塔分组能力",
+      "canonical_evidence": "用行为测试评估视觉模型的格式塔分组能力",
+      "llm_tldr_en": "Introduces a behavioral battery scoring vision models against human Gestalt grouping data across four tasks, evaluating 45 models from five training families and finding variation in agreement with humans.",
+      "llm_tldr_cn": "本文提出一套行为测试，从四个分组任务（如标记颜色异类、序列计数、轮廓识别、物体异类）评估视觉模型与人类格式塔分组的一致性。作者对45个模型、五种训练家族的模型进行测试，发现不同模型与人类数据的符合程度存在显著差异。该工作系统揭示了当前视觉模型在组织性感知上的短板。",
+      "llm_tldr": "本文提出一套行为测试，从四个分组任务（如标记颜色异类、序列计数、轮廓识别、物体异类）评估视觉模型与人类格式塔分组的一致性。作者对45个模型、五种训练家族的模型进行测试，发现不同模型与人类数据的符合程度存在显著差异。该工作系统揭示了当前视觉模型在组织性感知上的短板。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "computer vision research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2608.10524v1",
+      "source": "arxiv",
+      "title": "Rethinking Text-Based Image Retrieval in Specific Domain",
+      "abstract": "Driven by the rapid advancement of vision-language representation learning, Text-based Image Retrieval (TBIR) has made notable progress. However, existing benchmarks are predominantly constructed on an exclusive single-match assumption between query and images. While effective in general scenarios, this assumption fails to reflect practical system performance in specific domains (e.g., surveillance), where a single query often corresponds to multiple relevant candidate images. To address this limitation, we design a Domain-Specific Multi-Match Text-based Image Retrieval (DSMM-TBIR) data engine. Leveraging this engine, we construct Security Multi-Match TBIR (SecMM-TBIR), a benchmark comprising 50k surveillance images with 200 comprehensive queries. Furthermore, we observe that vanilla contrastive learning in specific domains suffers from severe false negatives, forcing the model to push apart semantically similar pairs and thus degrading retrieval performance. We propose the Semantic-Aware Fine-Tuning (SAFT) framework to address semantic compression in specific domains, which incorporates Semantic-Aware Soft-Label Supervision (SASS) and Intra-modal Structural Distillation (ISD) to establish a promising paradigm for domain-specific TBIR tasks. Experiments across diverse CLIP-like models demonstrate that SAFT yields an average mAP@20 gain of 7.8 points on SecMM-TBIR over standard image-text contrastive (ITC) fine-tuning, while also improving general-domain performance. The entire benchmark will be released to facilitate further research.",
+      "authors": [
+        "Jingyang Tan",
+        "Sheng Yang",
+        "Yuanpeng Chen",
+        "Jian Wang",
+        "Nianjin Ye",
+        "Chen Xing",
+        "Lanpeng Jia"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-08-11T06:00:27+00:00",
+      "link": "https://arxiv.org/pdf/2608.10524v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "general computer vision research on text-based image retrieval",
+      "llm_evidence_cn": "关于文本图像检索的通用计算机视觉研究",
+      "llm_evidence": "关于文本图像检索的通用计算机视觉研究",
+      "canonical_evidence": "关于文本图像检索的通用计算机视觉研究",
+      "llm_tldr_en": "This paper rethinks text-based image retrieval in specific domains, proposing a domain-specific multi-match data engine and benchmark with 50k surveillance images to reflect practical multi-match query scenarios.",
+      "llm_tldr_cn": "现有文本图像检索基准基于query与图像一一匹配的假设，难以反映监控等特定领域中一query对应多张相关图像的真实情况。论文设计领域特定多匹配TBIR数据引擎，构建包含5万监控图像和200个综合查询的SecMM-TBIR基准。该工作揭示了单匹配假设的不足，为评估和改进多匹配场景下的检索系统提供了基础。",
+      "llm_tldr": "现有文本图像检索基准基于query与图像一一匹配的假设，难以反映监控等特定领域中一query对应多张相关图像的真实情况。论文设计领域特定多匹配TBIR数据引擎，构建包含5万监控图像和200个综合查询的SecMM-TBIR基准。该工作揭示了单匹配假设的不足，为评估和改进多匹配场景下的检索系统提供了基础。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "computer vision research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}

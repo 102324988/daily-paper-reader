@@ -1,0 +1,201 @@
+{
+  "date": "20260812",
+  "date_label": "",
+  "generated_at": "2026-08-12 20:29:13 UTC",
+  "recommend_exists": true,
+  "run_count": 1,
+  "papers": [
+    {
+      "paper_id": "2608.10680v1",
+      "route": "202608/12/2608.10680v1-bridging-severe-cross-modal-misalignment-end-to-end-visible-infrared-object-detection-via-explicit-feature-domain-affine-registration",
+      "title": "Bridging Severe Cross-Modal Misalignment: End-to-End Visible-Infrared Object Detection via Explicit Feature-Domain Affine Registration",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 10.0,
+      "evidence": "可见光-红外目标检测方法",
+      "first_seen_at": "2026-08-12 20:29:13 UTC",
+      "updated_at": "2026-08-12 20:29:13 UTC"
+    },
+    {
+      "paper_id": "2608.09519v1",
+      "route": "202608/12/2608.09519v1-xfeat-revisited-reproducibility-and-evaluation-of-a-lightweight-image-matcher",
+      "title": "XFeat Revisited: Reproducibility and Evaluation of a Lightweight Image Matcher",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "轻量级局部特征提取与匹配器的可复现性研究",
+      "first_seen_at": "2026-08-12 20:29:13 UTC",
+      "updated_at": "2026-08-12 20:29:13 UTC"
+    },
+    {
+      "paper_id": "2608.10684v1",
+      "route": "202608/12/2608.10684v1-embedding-rotation-invariance-for-provable-multi-oriented-scene-text-recognition",
+      "title": "Embedding Rotation Invariance for Provable Multi-Oriented Scene Text Recognition",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "面向场景文本识别的旋转不变性方法",
+      "first_seen_at": "2026-08-12 20:29:13 UTC",
+      "updated_at": "2026-08-12 20:29:13 UTC"
+    },
+    {
+      "paper_id": "2608.11093v1",
+      "route": "202608/12/2608.11093v1-cross-view-feature-matching-survey-benchmarking-and-foundation-model-perspectives",
+      "title": "Cross-View Feature Matching: Survey, Benchmarking, and Foundation-Model Perspectives",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "跨视角特征匹配综述，涵盖特征提取",
+      "first_seen_at": "2026-08-12 20:29:13 UTC",
+      "updated_at": "2026-08-12 20:29:13 UTC"
+    },
+    {
+      "paper_id": "2608.07984v1",
+      "route": "202608/12/2608.07984v1-agrifield-40k-adapting-vision-models-to-agriculture-with-efficient-continual-pretraining",
+      "title": "AgriField-40K: Adapting Vision Models to Agriculture With Efficient Continual Pretraining",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "通过轻量适配器持续预训练掩码自编码器以学习农业图像特征",
+      "first_seen_at": "2026-08-12 20:29:13 UTC",
+      "updated_at": "2026-08-12 20:29:13 UTC"
+    },
+    {
+      "paper_id": "2608.09656v1",
+      "route": "202608/12/2608.09656v1-egohieraloc-a-cortically-inspired-hierarchical-segmentation-guided-framework-for-egocentric-visual-query-localization",
+      "title": "EgoHieraLoc: A Cortically Inspired Hierarchical Segmentation-Guided Framework for Egocentric Visual Query Localization",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "用于自我中心视觉查询定位的层次化分割引导框架",
+      "first_seen_at": "2026-08-12 20:29:13 UTC",
+      "updated_at": "2026-08-12 20:29:13 UTC"
+    },
+    {
+      "paper_id": "2608.10590v1",
+      "route": "202608/12/2608.10590v1-rethinking-data-efficiency-in-industrial-dense-prediction-pretraining-coherence-not-inductive-bias-determines-vits-low-data-advantage",
+      "title": "Rethinking Data Efficiency in Industrial Dense Prediction: Pretraining Coherence, Not Inductive Bias, Determines ViTs Low-Data Advantage",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "基于AlignBlock跨架构ViT-CNN特征重校准用于密集预测",
+      "first_seen_at": "2026-08-12 20:29:13 UTC",
+      "updated_at": "2026-08-12 20:29:13 UTC"
+    },
+    {
+      "paper_id": "2608.11135v1",
+      "route": "202608/12/2608.11135v1-is-there-really-a-camouflaged-object-towards-realistic-camouflaged-object-detection",
+      "title": "Is There Really a Camouflaged Object? Towards Realistic Camouflaged Object Detection",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "面向现实开放世界环境中伪装目标分割的检测基准",
+      "first_seen_at": "2026-08-12 20:29:13 UTC",
+      "updated_at": "2026-08-12 20:29:13 UTC"
+    },
+    {
+      "paper_id": "2608.10023v1",
+      "route": "202608/12/2608.10023v1-protection-levels-for-vision-based-pose-estimation",
+      "title": "Protection Levels for Vision-Based Pose Estimation",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "基于视觉的跑道位姿估计与故障检测的计算机视觉流程",
+      "first_seen_at": "2026-08-12 20:29:13 UTC",
+      "updated_at": "2026-08-12 20:29:13 UTC"
+    },
+    {
+      "paper_id": "2608.10195v1",
+      "route": "202608/12/2608.10195v1-more-accurate-less-human-gestalt-grouping-in-vision-models",
+      "title": "More Accurate, Less Human: Gestalt Grouping in Vision Models",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "用行为测试评估视觉模型的格式塔分组能力",
+      "first_seen_at": "2026-08-12 20:29:13 UTC",
+      "updated_at": "2026-08-12 20:29:13 UTC"
+    },
+    {
+      "paper_id": "2608.10524v1",
+      "route": "202608/12/2608.10524v1-rethinking-text-based-image-retrieval-in-specific-domain",
+      "title": "Rethinking Text-Based Image Retrieval in Specific Domain",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "关于文本图像检索的通用计算机视觉研究",
+      "first_seen_at": "2026-08-12 20:29:13 UTC",
+      "updated_at": "2026-08-12 20:29:13 UTC"
+    },
+    {
+      "paper_id": "2608.10790v1",
+      "route": "202608/12/2608.10790v1-mvtrack-ultrafast-appearance-free-moving-object-tracking-from-compressed-bitstreams",
+      "title": "MVTrack: Ultrafast Appearance-Free Moving Object Tracking from Compressed Bitstreams",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "面向视觉跟踪的方法，但并非综述性论文",
+      "first_seen_at": "2026-08-12 20:29:13 UTC",
+      "updated_at": "2026-08-12 20:29:13 UTC"
+    }
+  ]
+}
