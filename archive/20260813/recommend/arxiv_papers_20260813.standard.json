@@ -1,0 +1,379 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-08-13T21:07:44.936748+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 7,
+    "deep_cap": 6,
+    "deep_selected": 6,
+    "quick_candidates": 3,
+    "quick_skim_target": 11,
+    "quick_selected": 3
+  },
+  "deep_dive": [
+    {
+      "id": "2608.11458v1",
+      "source": "arxiv",
+      "title": "Multi-Agent Target-Existence Verification and Learned Mask Geometry Refinement: Winning Report of the MeViS-Text Track at the 8th LSVOS Challenge 2026",
+      "abstract": "We present the first-place solution to the MeViS-Text track of the 8th Large-scale Video Object Segmentation (LSVOS) Challenge 2026: referring video object segmentation guided by written motion expressions, including deceptive no-target expressions that match no object in the video and must yield empty masks in every frame. Our pipeline, SSUPER, resolves each expression into a visual concept, generates full-video candidate masklets with SAM~3.1, and selects target IDs. At every reasoning stage, three heterogeneous multimodal large language models independently execute the same stage-specific prompt before a single synthesis pass commits one schema-validated verdict. Although this system rejects every no-target expression in validation, the leaderboard reveals that a substantial share of test no-target cases still slips through. The reason is that hard negatives name a plausible object and fail only under the complete temporal predicate, so when selection and existence are decided together, a category-plausible masklet anchors the verdict. Hence, we decouple existence verification into an independent multi-agent audit of the full predicate (category, count, action, trajectory, event order, and semantic role) that distinguishes absence from temporary invisibility, discounts apparent motion caused by camera movement, and requires contradicting evidence rather than mere uncertainty for a no-target verdict. Without any new segmentation call, this audit recovers most of the residual no-target errors. A training-data-only StyleRefiner then aligns mask geometry with the annotation style of MeViSv2 while preserving every presence decision by construction, showing that once the semantics are fixed, part of the remaining error is stylistic rather than semantic. The complete system reaches a Final score of 0.9081339614 on the official challenge leaderboard.",
+      "authors": [
+        "Jungyoon Lee",
+        "Gyuil Lim",
+        "Doeon Kim",
+        "Seong-heum Kim"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-11T21:47:52+00:00",
+      "link": "https://arxiv.org/pdf/2608.11458v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "referring video object segmentation with multi-agent verification",
+      "llm_evidence_cn": "视频目标分割，属于图像分割技术",
+      "llm_evidence": "视频目标分割，属于图像分割技术",
+      "canonical_evidence": "视频目标分割，属于图像分割技术",
+      "llm_tldr_en": "First-place solution for MeViS-Text referring video object segmentation, using multiple MLLM agents for stage-wise verification and SAM-based masklets with learned mask geometry refinement.",
+      "llm_tldr_cn": "面向运动表达的指代视频目标分割需要处理无目标欺骗性表达并生成空掩膜。本文提出SSUPER流水线，将表达解析为视觉概念，用SAM 3.1生成候选掩膜片段并选择目标ID。三个异质多模态大语言模型在每个推理阶段独立执行提示，最后综合验证输出。该方法在LSVOS挑战赛中取得第一名。",
+      "llm_tldr": "面向运动表达的指代视频目标分割需要处理无目标欺骗性表达并生成空掩膜。本文提出SSUPER流水线，将表达解析为视觉概念，用SAM 3.1生成候选掩膜片段并选择目标ID。三个异质多模态大语言模型在每个推理阶段独立执行提示，最后综合验证输出。该方法在LSVOS挑战赛中取得第一名。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "image segmentation techniques",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.11595v1",
+      "source": "arxiv",
+      "title": "ProtoHGF-Net: Prototype HyperGraph Fusion with Intra-modal Calibration for RGBT Object Detection",
+      "abstract": "RGB-Thermal (RGBT) object detection enables robust perception in complex scenes by leveraging the complementary strengths of visible textures and thermal cues. However, existing methods mainly rely on dense cross-modal interactions over full-resolution features, which inevitably introduce background interference and hinder the learning of target-relevant representations. In this paper, we propose the Prototype HyperGraph Fusion Network (ProtoHGF-Net), a novel framework that redefines cross-modal fusion as prototype-level semantic interaction rather than the dense cross-modal interaction paradigm. Specifically, we design Prototype HyperGraph Fusion to perform cross-modal interaction in a compact prototype-level semantic space. This design enables more selective fusion among target-relevant prototypes. To support this prototype-level fusion, we propose Teacher-Mask Calibration Distillation, which calibrates modality features before fusion using modality-specific teachers and target-aware masks. This strategy suppresses backgrou- nd-dominant responses and produces more target-focused features. Extensive experiments on DroneVehicle, DVTOD, and FLIR demonstrate that ProtoHGF-Net achieves state-of-the-art performance with 85.9\\% $mAP_{50}$, 88.2\\% $mAP_{50}$, and 79.1\\% $mAP_{50}$, respectively. Our code is available at \\href{https://github.com/ZiMo-Chen/ProtoHGF}{GitHub}.",
+      "authors": [
+        "Xiangqi Chen",
+        "Xiuling Zhang",
+        "Chengzhuan Yang",
+        "Li Zhao",
+        "Dawei Zhang",
+        "Yanchao Wang",
+        "Liyuan Chen",
+        "Hua Wang",
+        "Hao Peng",
+        "Zhonglong Zheng"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-12T03:08:19+00:00",
+      "link": "https://arxiv.org/pdf/2608.11595v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "RGBT object detection with prototype-level cross-modal fusion",
+      "llm_evidence_cn": "RGBT目标检测方法，直接对应目标检测技术",
+      "llm_evidence": "RGBT目标检测方法，直接对应目标检测技术",
+      "canonical_evidence": "RGBT目标检测方法，直接对应目标检测技术",
+      "llm_tldr_en": "Introduces prototype hypergraph fusion and intra-modal calibration for RGBT object detection, replacing dense cross-modal interactions with compact prototype-level semantic fusion to reduce background interference.",
+      "llm_tldr_cn": "现有RGBT目标检测依赖全分辨率特征的密集跨模态交互，易引入背景干扰且难以学习目标相关表示。本文提出原型超图融合网络，将跨模态融合重构为紧凑原型语义空间中的交互，并加入模态内校准。方法在复杂场景下提升了目标检测的鲁棒性和表示质量。",
+      "llm_tldr": "现有RGBT目标检测依赖全分辨率特征的密集跨模态交互，易引入背景干扰且难以学习目标相关表示。本文提出原型超图融合网络，将跨模态融合重构为紧凑原型语义空间中的交互，并加入模态内校准。方法在复杂场景下提升了目标检测的鲁棒性和表示质量。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "object detection methods",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.11681v1",
+      "source": "arxiv",
+      "title": "Learning from Multimodal Pseudo-Labels for Robust Open-Vocabulary Instance and Panoptic Segmentation",
+      "abstract": "This work addresses the challenge of open-vocabulary instance segmentation (OVIS) and open-set panoptic segmentation (OSPS), which aim to recognize both predefined and unseen object categories without exhaustive human annotations. Existing methods often suffer from noisy pseudo-masks, limited visual-textual grounding, and difficulty handling synonyms or out-of-vocabulary (OOV) words. To overcome these challenges, we propose a multimodal framework that leverages pre-trained vision-language models for automatic pseudo-label generation, CLIP-guided synonym filtering, and GPT-based caption reconstruction. In our target-vocabulary-assisted pseudo-labeling setting, the framework first constructs pseudo segmentation masks, descriptive captions, and semantically aligned synonym sets using Grounded SAM, LLaVA, and CLIP, providing multimodal supervision without manual annotation. We then enhance visual-textual alignment through three complementary training objectives: an extended grounding loss that incorporates visually grounded synonyms, a semantic consistency loss, and a generative caption reconstruction loss. Extensive experiments on the COCO dataset demonstrate that the proposed method consistently outperforms previous state-of-the-art approaches under this protocol, achieving substantial improvements on both OVIS and OSPS benchmarks.",
+      "authors": [
+        "Duy Tran Thanh",
+        "Yeejin Lee",
+        "Byeongkeun Kang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI",
+        "cs.MM"
+      ],
+      "published": "2026-08-12T05:39:57+00:00",
+      "link": "https://arxiv.org/pdf/2608.11681v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "open-vocabulary instance and panoptic segmentation with multimodal pseudo-labels",
+      "llm_evidence_cn": "利用多模态伪标签进行开放词汇实例与全景分割",
+      "llm_evidence": "利用多模态伪标签进行开放词汇实例与全景分割",
+      "canonical_evidence": "利用多模态伪标签进行开放词汇实例与全景分割",
+      "llm_tldr_en": "Proposes a multimodal framework for OVIS and OSPS using vision-language models for pseudo-label generation, CLIP synonym filtering, and GPT caption reconstruction, improving robustness to OOV words.",
+      "llm_tldr_cn": "开放词汇实例分割与开放集全景分割旨在无需详尽人工标注地识别预定义和未见类别，但现有方法受噪声伪掩码、视觉文本对齐不足及同义词/OOV词困扰。本文提出多模态框架，利用预训练视觉语言模型自动生成伪标签，结合CLIP同义词过滤和GPT标题重建，显著改善掩码质量与类别关联。在目标词汇辅助的伪标注设置下，该方法在相关分割任务上提升了鲁棒性。",
+      "llm_tldr": "开放词汇实例分割与开放集全景分割旨在无需详尽人工标注地识别预定义和未见类别，但现有方法受噪声伪掩码、视觉文本对齐不足及同义词/OOV词困扰。本文提出多模态框架，利用预训练视觉语言模型自动生成伪标签，结合CLIP同义词过滤和GPT标题重建，显著改善掩码质量与类别关联。在目标词汇辅助的伪标注设置下，该方法在相关分割任务上提升了鲁棒性。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "image segmentation techniques",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.11685v1",
+      "source": "arxiv",
+      "title": "EGM-Det: Entropy-Guided Multimodal Adaptive Fusion for UAV RGB-IR Object Detection",
+      "abstract": "Joint use of RGB and infrared (IR) imagery can improve UAV-view object detection, but most existing methods fuse multimodal features with static or fixed weights and therefore overlook spatially varying modality reliability. We propose EGM-Det, an entropy-guided multimodal adaptive fusion framework for RGB-IR object detection. EGM-Det employs a dual-stream architecture to preserve modality-specific representations and introduces an Entropy Offset Gate Fusion module for adaptive multi-scale fusion. The module derives shallow entropy priors from input intensity, local entropy, and cross-modal discrepancy, and uses them to guide local offset alignment and spatial-channel gated fusion. It therefore selectively aggregates reliable RGB and infrared cues instead of uniformly combining heterogeneous features. We further introduce cross-modal distillation to regularize the learned fusion gates and reduce fusion degradation. Each student branch extracts complementary knowledge from the cross-modality teacher branch matched to the main branch, while entropy-adaptive supervision emphasizes uncertain modality decisions. Experiments on DroneVehicle, LLVIP, and VEDAI demonstrate state-of-the-art performance across all three benchmarks; in particular, EGM-Det outperforms prior approaches by more than 10 percentage points on VEDAI.",
+      "authors": [
+        "Cunzheng Fan",
+        "Dawei Yan",
+        "Guanlin Wang",
+        "Xingshuo Yang",
+        "Yupeng Jia",
+        "Jing Yang",
+        "Haokui Zhang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-12T05:51:48+00:00",
+      "link": "https://arxiv.org/pdf/2608.11685v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "entropy-guided multimodal adaptive fusion for RGB-IR object detection",
+      "llm_evidence_cn": "熵引导的多模态自适应融合用于RGB-IR目标检测",
+      "llm_evidence": "熵引导的多模态自适应融合用于RGB-IR目标检测",
+      "canonical_evidence": "熵引导的多模态自适应融合用于RGB-IR目标检测",
+      "llm_tldr_en": "Proposes EGM-Det for UAV RGB-IR object detection with dual-stream architecture and entropy-offset gate fusion that adaptively combines reliable modality features across scales.",
+      "llm_tldr_cn": "无人机视角的RGB与红外联合目标检测中，现有融合方法多采用静态或固定权重，忽视空间上模态可靠性的变化。本文提出EGM-Det，采用双流结构保留模态特定表示，并引入熵偏移门控融合模块，利用输入强度、局部熵与跨模态差异形成浅层熵先验，指导局部偏移对齐与空间通道门控融合。实验表明该方法可选择性地聚合可靠RGB与红外特征，提升UAV目标检测性能。",
+      "llm_tldr": "无人机视角的RGB与红外联合目标检测中，现有融合方法多采用静态或固定权重，忽视空间上模态可靠性的变化。本文提出EGM-Det，采用双流结构保留模态特定表示，并引入熵偏移门控融合模块，利用输入强度、局部熵与跨模态差异形成浅层熵先验，指导局部偏移对齐与空间通道门控融合。实验表明该方法可选择性地聚合可靠RGB与红外特征，提升UAV目标检测性能。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "object detection methods",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.11367v1",
+      "source": "arxiv",
+      "title": "Gaze Target Estimation Anywhere with Concepts",
+      "abstract": "Estimating human gaze targets from images in-the-wild is an important and formidable task. Existing approaches primarily employ brittle, multi-stage pipelines that require explicit inputs, like head bounding boxes and human pose, in order to identify the subject of gaze analysis. As a result, detection errors can cascade and lead to failure. Moreover, these prior works lack the flexibility of specifying the gaze analysis task via natural language prompting, an approach which has been shown to have significant benefits in convenience and scalability for other image analysis tasks. To overcome these limitations, we introduce the Promptable Gaze Target Estimation (PGE) task, a new end-to-end, concept-driven paradigm for gaze analysis. PGE conditions gaze prediction on flexible user text or visual prompts (e.g., \"the boy in the red shirt\" or \"person in point [0.52, 0.48]\") to identify a specific subject for gaze analysis. This approach integrates subject localization with gaze estimation, and eliminates the rigid dependency on intermediate analysis stages. We develop a scalable data engine to generate Gaze-Co (Gaze Estimation with Concepts), a dataset and benchmark of 120K high-quality, prompt-annotated image pairs. We also propose GazeAnywhere, the first model designed for PGE. GazeAnywhere uses a transformer-based detector to fuse features from frozen encoders and simultaneously solves subject localization, in/out-of-frame presence, and gaze target heatmap estimation. GazeAnywhere achieves state-of-the-art performance on multiple PGE benchmarks, setting a strong baseline for this new problem even on a difficult out-of-domain, real-world clinical dataset. GazeAnywhere is open-sourced in github.com/IrohXu/GazeAnywhere.",
+      "authors": [
+        "Xu Cao",
+        "Houze Yang",
+        "Vipin Gunda",
+        "Zhongyi Zhou",
+        "Tianyu Xu",
+        "Adarsh Kowdle",
+        "Inki Kim",
+        "James M. Rehg"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-08-11T19:23:48+00:00",
+      "link": "https://arxiv.org/pdf/2608.11367v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Promptable gaze target estimation, an end-to-end concept-driven visual recognition task conditioned on natural language concepts",
+      "llm_evidence_cn": "基于自然语言概念条件的端到端概念驱动注视目标估计视觉识别任务",
+      "llm_evidence": "基于自然语言概念条件的端到端概念驱动注视目标估计视觉识别任务",
+      "canonical_evidence": "基于自然语言概念条件的端到端概念驱动注视目标估计视觉识别任务",
+      "llm_tldr_en": "The paper introduces Promptable Gaze Target Estimation (PGE), an end-to-end concept-driven paradigm for gaze analysis, replacing brittle multi-stage pipelines with natural-language-concept-conditioned prediction, enabling flexible task specification and improved scalability for in-the-wild images.",
+      "llm_tldr_cn": "在现实图像中估计人类注视目标通常依赖头部框和人体姿态等显式输入，形成易出错的级联流程，且难以通过自然语言指定任务。本文提出可提示的注视目标估计（PGE）这一端到端概念驱动范式，将注视预测建立在灵活的用户概念上，避免了显式检测依赖和错误传播。PGE提升了注视分析的便捷性与可扩展性，为自然语言引导的图像理解任务提供了新思路。",
+      "llm_tldr": "在现实图像中估计人类注视目标通常依赖头部框和人体姿态等显式输入，形成易出错的级联流程，且难以通过自然语言指定任务。本文提出可提示的注视目标估计（PGE）这一端到端概念驱动范式，将注视预测建立在灵活的用户概念上，避免了显式检测依赖和错误传播。PGE提升了注视分析的便捷性与可扩展性，为自然语言引导的图像理解任务提供了新思路。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "visual recognition algorithms",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.11770v1",
+      "source": "arxiv",
+      "title": "Achieving Near-Zero-Overhead Multi-Model Hierarchical Classification in Real-Time Detection Pipelines",
+      "abstract": "Edge-deployed vision systems in target recognition, surveillance, autonomous vehicles, and drone domains require hierarchical inference pipelines where a detection model identifies objects of interest and downstream classifiers provide fine-grained attribute analysis. Running all models on the GPU creates a serial bottleneck that limits real-time throughput as pipeline stages grow. Modern edge SoCs pair GPUs with dedicated neural accelerators (NPUs, DLAs) capable of concurrent execution, yet deploying custom models on these accelerators remains impractical due to strict operator constraints, quantization incompatibilities, and an undocumented end-to-end pipeline. We target NVIDIA Jetson DLA cores as the representative platform. We present a five-step methodology for zero GPU fallback DLA INT8 deployment of classification backbones, comprising architecture adaptation, manual dynamic range workaround to rescue TensorRT's implicit quantization (recovering 94.0% accuracy from implicit quantization's 75%) for rapid pipeline validation before explicit quantization, quantization-aware training, ONNX graph surgery for DLA compilation, and a concurrent GPU-detection/DLA-classification inference pipeline. We document nine engineering constraints with root-cause analysis and generalizable solutions. Validation on a dual-head person attribute classifier running on DLA alongside a GPU object detector on a Jetson Orin NX demonstrates near-zero pipeline overhead (12.5 vs. 13.3~FPS detector-only at 1080p), with dual-DLA scaling at no additional cost. The methodology is backbone-agnostic and generalizes to any detection-classification edge pipeline.",
+      "authors": [
+        "Vaishnav Raju"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.DC",
+        "cs.LG"
+      ],
+      "published": "2026-08-12T08:14:22+00:00",
+      "link": "https://arxiv.org/pdf/2608.11770v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "real-time detection pipelines with hierarchical classification on edge AI accelerators",
+      "llm_evidence_cn": "实时目标检测流水线，与目标检测方法相关",
+      "llm_evidence": "实时目标检测流水线，与目标检测方法相关",
+      "canonical_evidence": "实时目标检测流水线，与目标检测方法相关",
+      "llm_tldr_en": "Presents a system for running multi-model hierarchical detection and classification pipelines on edge NPUs/DLAs near zero overhead, overcoming operator and quantization constraints.",
+      "llm_tldr_cn": "边缘视觉系统需要多模型层级推理，但GPU串行瓶颈限制实时性。现代边缘SoC有专用神经加速器可并发执行，但自定义模型部署困难。本文以NVIDIA Jetson DLA为平台，解决了算子约束、量化不兼容和端到端流水线文档缺失等问题，实现近零开销的多模型层级分类。这为实时检测流水线提供了高效部署方案。",
+      "llm_tldr": "边缘视觉系统需要多模型层级推理，但GPU串行瓶颈限制实时性。现代边缘SoC有专用神经加速器可并发执行，但自定义模型部署困难。本文以NVIDIA Jetson DLA为平台，解决了算子约束、量化不兼容和端到端流水线文档缺失等问题，实现近零开销的多模型层级分类。这为实时检测流水线提供了高效部署方案。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "object detection methods",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2608.11928v1",
+      "source": "arxiv",
+      "title": "Seed2GS: Camera-Free, Training-Free Object Extraction from 3D Gaussian Scenes via a Single Reference-View Grounding",
+      "abstract": "Extracting a target object from a pre-built 3D Gaussian Splatting (3DGS) scene enables interactive 3D editing. Existing methods either train for tens of minutes per scene, sacrifice accuracy, or require original reconstruction cameras that pre-built assets may not include. We present Seed2GS, which achieves the highest reported LERF-MASK accuracy without original reconstruction cameras or scene-specific representation training. Its key insight is to separate target identity from 3D coverage. QD-SAM3 selects one reliable reference mask from several open-vocabulary candidates, fixing identity once. Seed lift and visibility-adaptive virtual orbits then expose the object from new viewpoints, while tracking propagates the seed without repeated detection. Because the scene remains frozen, these masks supervise only one temporary foreground logit per Gaussian. On LERF-MASK, Seed2GS reaches 92.1% mean intersection over union (mIoU) with a measured compute-only latency of 9.3 seconds, 3.7 points above the strongest scene-trained baseline and 7.6 points above the closest camera-free baseline. With one fixed test reference per scene, the complete pipeline retains 91.1% mIoU; replacing its predicted seed with a ground-truth mask improves mIoU by only 0.72 points. On 3D-OVS, Seed2GS reaches 95.7% mIoU.",
+      "authors": [
+        "Zongjian Ding",
+        "Yudong Gao",
+        "Jiale Liu",
+        "Xinglin Yu",
+        "Junxing Ren",
+        "Dong Wei",
+        "Yajing Chen",
+        "Shan Huang",
+        "Mingjun Cheng",
+        "Min Li"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-12T11:16:44+00:00",
+      "link": "https://arxiv.org/pdf/2608.11928v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Mask-based object extraction from 3D scenes using reference-view segmentation and tracking propagation",
+      "llm_evidence_cn": "基于参考视图分割与跟踪传播的3D场景物体提取方法",
+      "llm_evidence": "基于参考视图分割与跟踪传播的3D场景物体提取方法",
+      "canonical_evidence": "基于参考视图分割与跟踪传播的3D场景物体提取方法",
+      "llm_tldr_en": "Seed2GS extracts target objects from prebuilt 3D Gaussian Splatting scenes without original cameras or per-scene training, using QD-SAM3 reference mask selection followed by seed lift and visibility-adaptive virtual orbits with tracking propagation, reaching top LERF-MASK accuracy.",
+      "llm_tldr_cn": "针对从预建三维高斯场景中提取目标物体依赖训练或原始相机的问题，本文提出Seed2GS，无需相机和逐场景训练即可完成提取。其核心是通过QD-SAM3从开放词表候选中选出可靠的参考掩码，再借助种子抬升和可见性自适应的虚拟轨道生成新视角并传播跟踪。在相关基准上，该方法取得了最高的LERF-MASK准确率，为交互式3D编辑提供了一条高效的新路径。",
+      "llm_tldr": "针对从预建三维高斯场景中提取目标物体依赖训练或原始相机的问题，本文提出Seed2GS，无需相机和逐场景训练即可完成提取。其核心是通过QD-SAM3从开放词表候选中选出可靠的参考掩码，再借助种子抬升和可见性自适应的虚拟轨道生成新视角并传播跟踪。在相关基准上，该方法取得了最高的LERF-MASK准确率，为交互式3D编辑提供了一条高效的新路径。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "image segmentation techniques",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2608.08132v1",
+      "source": "arxiv",
+      "title": "When Does An Extra View Help? Adapting Single-View 3D Reconstruction with Extra Imagery",
+      "abstract": "Reconstruction of 3D objects from a single image is a challenging research problem in computer vision. The key challenge is the lack of critical information from viewpoints to complete 3D structures. Using an additional view may help to resolve the issue. However, there is no mechanism that can integrate the extra view into the single-view 3D reconstruction principle. We address this challenge by proposing ASV3D, a framework for adapting single-view 3D object reconstruction to test-time data with support from one additional image. We introduce two adaptation strategies: (i) a zero-shot adaptation scheme that leverages the auxiliary image to improve the reconstruction quality of an object without retraining, and (ii) an optimised adaptation scheme that further enhances visual fidelity and cross-view consistency via contrastive learning. We apply our ASV3D to improve two state-of-the-art single-view 3D reconstruction pipelines on both benchmark and real-world datasets. Results demonstrate that our approach consistently improves reconstruction accuracy and robustness under unconstrained multi-view inputs, outperforming the baselines in both quantitative metrics and human preference. We publish our code and the real-world object dataset in our project page at https://github.com/YNhuHuynh/ASV3D/tree/main.",
+      "authors": [
+        "Y Huynh",
+        "Duc Thanh Nguyen",
+        "Thao Minh Le",
+        "Mohamed Abdelrazek"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.GR"
+      ],
+      "published": "2026-08-08T13:39:28+00:00",
+      "link": "https://arxiv.org/pdf/2608.08132v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Adapts single-view 3D reconstruction with an extra image, core 3D CV problem",
+      "llm_evidence_cn": "利用额外视图自适应单视图3D重建，属于核心三维视觉问题",
+      "llm_evidence": "利用额外视图自适应单视图3D重建，属于核心三维视觉问题",
+      "canonical_evidence": "利用额外视图自适应单视图3D重建，属于核心三维视觉问题",
+      "llm_tldr_en": "Proposes ASV3D to adapt single-view 3D reconstruction at test time using one additional image, with zero-shot and optimized adaptation strategies to resolve viewpoint ambiguity.",
+      "llm_tldr_cn": "单图像三维重建因视角信息缺失而难以完整恢复结构，额外视图有可能提供帮助。本文提出ASV3D框架，在测试时利用一张附加图像自适应改进单视图重建结果，并引入两种策略：无需重训练的零样本自适应和基于优化的自适应。该方法有效缓解了视角歧义，提高了单视图重建的完整性与质量。",
+      "llm_tldr": "单图像三维重建因视角信息缺失而难以完整恢复结构，额外视图有可能提供帮助。本文提出ASV3D框架，在测试时利用一张附加图像自适应改进单视图重建结果，并引入两种策略：无需重训练的零样本自适应和基于优化的自适应。该方法有效缓解了视角歧义，提高了单视图重建的完整性与质量。",
+      "llm_tags": [
+        "query:cv:composite"
+      ],
+      "matched_query_tag": "query:cv:composite",
+      "matched_query_text": "Papers central to 计算机视觉相关论文, especially work that connects or combines: computer vision research papers; object detection methods; image segmentation techniques; visual recognition algorithms; feature extraction in computer vision; visual tracking surveys; Find papers on computer vision; Retrieve computer vision research articles; Search for state of the art in computer vision.",
+      "matched_requirement_id": "req-composite-cv",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2608.11263v1",
+      "source": "arxiv",
+      "title": "GeoUniPR: A Geometry-Consistent Unified Framework for Cross-Modal Place Recognition",
+      "abstract": "Cross-modal place recognition (CMPR) aims to identify the same location across heterogeneous sensing modalities, such as vision and LiDAR. Existing methods commonly bridge the modality gap using complex alignment modules, multi-stage training, or full fine-tuning of pretrained backbones. In this work, we revisit CMPR from the perspective of geometric consistency and propose GeoUniPR, a unified and concise geometry-consistent framework. GeoUniPR reduces cross-modal discrepancy at the representation level by projecting LiDAR point clouds into the camera perspective to construct Geometry-Consistent depth image views (DIV), which establish direct RGB-LiDAR correspondence. We further augment DIV with native LiDAR cues, including intensity and surface-normal information, yielding a multi-channel geometric representation that improves structural consistency. Based on this representation, GeoUniPR learns a unified embedding space using two modality-specific ViT-based encoders with identical architectures, trained through parameter-efficient adaptation without auxiliary alignment modules, multi-stage training, or full backbone fine-tuning. In addition, we introduce Spatially-Consistent InfoNCE (SC-InfoNCE), a CMPR-specific contrastive objective that suppresses distance-induced false negatives under spatial continuity. Extensive experiments on KITTI and KITTI-360 demonstrate that GeoUniPR achieves state-of-the-art (SOTA) performance in both same-modal and cross-modal place recognition, with strong cross-dataset generalization.",
+      "authors": [
+        "Wonbong Kim",
+        "Jiatong Xiao",
+        "Rui Li",
+        "Xufei Wang",
+        "Qiwen Gu",
+        "Junqiao Zhao",
+        "Chen Ye",
+        "Guang Chen"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-10T03:52:01+00:00",
+      "link": "https://arxiv.org/pdf/2608.11263v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Unified geometry-consistent framework for cross-modal place recognition from vision and LiDAR",
+      "llm_evidence_cn": "面向视觉与LiDAR跨模态地点识别的统一几何一致框架",
+      "llm_evidence": "面向视觉与LiDAR跨模态地点识别的统一几何一致框架",
+      "canonical_evidence": "面向视觉与LiDAR跨模态地点识别的统一几何一致框架",
+      "llm_tldr_en": "GeoUniPR is a concise geometry-consistent framework that projects LiDAR point clouds into camera perspective to build depth image views with direct RGB-LiDAR correspondence, improving cross-modal place recognition without complex alignment modules.",
+      "llm_tldr_cn": "跨模态地点识别旨在跨异构传感模态识别同一位置，现有方法常依赖复杂对齐模块或多阶段训练。本文提出简洁统一的几何一致框架GeoUniPR，通过将LiDAR点云投影到相机视角构建几何一致的深度图像视图，建立RGB-LiDAR直接对应，并在表示层面降低跨模态差异。该方法无需复杂对齐模块，即可高效提升跨模态地点识别精度，为多模态视觉识别提供了新思路。",
+      "llm_tldr": "跨模态地点识别旨在跨异构传感模态识别同一位置，现有方法常依赖复杂对齐模块或多阶段训练。本文提出简洁统一的几何一致框架GeoUniPR，通过将LiDAR点云投影到相机视角构建几何一致的深度图像视图，建立RGB-LiDAR直接对应，并在表示层面降低跨模态差异。该方法无需复杂对齐模块，即可高效提升跨模态地点识别精度，为多模态视觉识别提供了新思路。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "visual recognition algorithms",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}

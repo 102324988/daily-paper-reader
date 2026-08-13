@@ -41,17 +41,17 @@
 <section class="dpr-home-dashboard-card dpr-home-report-card">
   <div class="dpr-home-dashboard-header">
     <div>
-      <span class="dpr-home-dashboard-kicker">2026-08-12</span>
+      <span class="dpr-home-dashboard-kicker">2026-08-13</span>
       <h3 class="dpr-home-dashboard-title">今日汇总</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">共 12 篇</strong>
+    <strong class="dpr-home-dashboard-count">共 9 篇</strong>
   </div>
   <dl class="dpr-home-dashboard-stats">
     <div class="dpr-home-dashboard-stat"><dt>累计更新</dt><dd>1 次</dd></div>
     <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>6</dd></div>
-    <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>6</dd></div>
+    <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>3</dd></div>
   </dl>
-  <p class="dpr-home-dashboard-body">最近更新：2026-08-12 20:29:13 UTC<br>状态：成功</p>
+  <p class="dpr-home-dashboard-body">最近更新：2026-08-13 21:14:59 UTC<br>状态：成功</p>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-brief-card">
   <div class="dpr-home-dashboard-header">
@@ -62,7 +62,9 @@
     <strong class="dpr-home-dashboard-count">AI</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<p>今日精读聚焦跨模态红外-可见光目标检测与轻量图像匹配，速读覆盖数据效率、伪装检测与位姿估计隐私。最值得看的是：显式特征域仿射配准将红外-可见光检测精度推至满分，而XFeat轻量匹配器经复现验证可作高效基础工具。下一步可结合伪装检测与现实场景需求，优先尝试上述高分方法的开源实现与适配。</p>
+<p>今日精读6篇、速读3篇，聚焦多智能体目标验证与RGBT检测两篇9分工作。</p>
+<p>最值得关注：MeViS-Text挑战赛的多智能体目标存在验证与掩膜优化方案，以及ProtoHGF-Net的原型超图融合跨模态校准方法。</p>
+<p>建议优先阅读这两篇高分论文，并留意速读中Seed2GS的单参考视图三维场景提取思路。</p>
   </div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-deep-card">
@@ -74,7 +76,7 @@
     <strong class="dpr-home-dashboard-count">6 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Bridging Severe Cross-Modal Misalignment: End-to-End Visible-Infrared Object Detection via Explicit Feature-Domain Affine Registration">Bridging Severe Cross-Modal Misalignment: End-to-End Visible-Infrared Object Detection via Explicit Feature-Domain Affine Registration</span></li><li><span class="dpr-home-dashboard-paper-title" title="XFeat Revisited: Reproducibility and Evaluation of a Lightweight Image Matcher">XFeat Revisited: Reproducibility and Evaluation of a Lightweight Image Matcher</span></li><li><span class="dpr-home-dashboard-paper-title" title="Embedding Rotation Invariance for Provable Multi-Oriented Scene Text Recognition">Embedding Rotation Invariance for Provable Multi-Oriented Scene Text Recognition</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Multi-Agent Target-Existence Verification and Learned Mask Geometry Refinement: Winning Report of the MeViS-Text Track at the 8th LSVOS Challenge 2026">Multi-Agent Target-Existence Verification and Learned Mask Geometry Refinement: Winning Report of the MeViS-Text Track at the 8th LSVOS Challenge 2026</span></li><li><span class="dpr-home-dashboard-paper-title" title="ProtoHGF-Net: Prototype HyperGraph Fusion with Intra-modal Calibration for RGBT Object Detection">ProtoHGF-Net: Prototype HyperGraph Fusion with Intra-modal Calibration for RGBT Object Detection</span></li><li><span class="dpr-home-dashboard-paper-title" title="Learning from Multimodal Pseudo-Labels for Robust Open-Vocabulary Instance and Panoptic Segmentation">Learning from Multimodal Pseudo-Labels for Robust Open-Vocabulary Instance and Panoptic Segmentation</span></li></ul>
   </div>
   <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">cv <strong>6</strong></span></div>
 </section>
@@ -84,12 +86,12 @@
       <span class="dpr-home-dashboard-kicker">今日累计</span>
       <h3 class="dpr-home-dashboard-title">速读推荐</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">6 篇</strong>
+    <strong class="dpr-home-dashboard-count">3 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Rethinking Data Efficiency in Industrial Dense Prediction: Pretraining Coherence, Not Inductive Bias, Determines ViTs Low-Data Advantage">Rethinking Data Efficiency in Industrial Dense Prediction: Pretraining Coherence, Not Inductive Bias, Determines ViTs Low-Data Advantage</span></li><li><span class="dpr-home-dashboard-paper-title" title="Is There Really a Camouflaged Object? Towards Realistic Camouflaged Object Detection">Is There Really a Camouflaged Object? Towards Realistic Camouflaged Object Detection</span></li><li><span class="dpr-home-dashboard-paper-title" title="Protection Levels for Vision-Based Pose Estimation">Protection Levels for Vision-Based Pose Estimation</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Seed2GS: Camera-Free, Training-Free Object Extraction from 3D Gaussian Scenes via a Single Reference-View Grounding">Seed2GS: Camera-Free, Training-Free Object Extraction from 3D Gaussian Scenes via a Single Reference-View Grounding</span></li><li><span class="dpr-home-dashboard-paper-title" title="When Does An Extra View Help? Adapting Single-View 3D Reconstruction with Extra Imagery">When Does An Extra View Help? Adapting Single-View 3D Reconstruction with Extra Imagery</span></li><li><span class="dpr-home-dashboard-paper-title" title="GeoUniPR: A Geometry-Consistent Unified Framework for Cross-Modal Place Recognition">GeoUniPR: A Geometry-Consistent Unified Framework for Cross-Modal Place Recognition</span></li></ul>
   </div>
-  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">cv <strong>6</strong></span></div>
+  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">cv <strong>3</strong></span></div>
 </section>
 </div>
 
