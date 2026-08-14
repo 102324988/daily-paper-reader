@@ -1,0 +1,410 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-08-14T21:15:54.888374+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 9,
+    "deep_cap": 6,
+    "deep_selected": 6,
+    "quick_candidates": 4,
+    "quick_skim_target": 11,
+    "quick_selected": 4
+  },
+  "deep_dive": [
+    {
+      "id": "2608.12698v1",
+      "source": "arxiv",
+      "title": "Class Geometry as Supervision for Sample-Efficient Open-World Detection",
+      "abstract": "Open-world object detection requires models to recognize known categories, reject unfamiliar objects, and incorporate new classes over time. This is especially challenging in scarce-data settings such as biomedical and scientific imaging, where rare categories may have only a few annotated examples and fine-grained classes differ by subtle morphology. Prototype-based detectors are natural for this regime, but they typically learn class prototypes as independent anchors, ignoring relational structure among classes. We propose class-geometry supervision (CGS), a general framework that constrains learned prototype or class-representation spaces to preserve visual or semantic class dissimilarities estimated from training data. CGS introduces a dissimilarity-preserving objective that aligns pairwise distances among learned class representations with a target class-geometry matrix while retaining the standard task loss. We instantiate the same objective across prototype recognition, few-shot biomedical object detection, open-set detection, novel-class insertion, and OWOD adaptation on COCO. Experiments show that CGS improves sample efficiency in recognition and ova detection, substantially strengthens novel-class insertion, and improves unknown recall on COCO while retaining much of the known-class detection performance. Ablations show that meaningful visual geometry provides the most reliable gains, while random geometry can help novel separation but is less consistent for few-shot detection. These results suggest that relational class geometry is an effective supervisory signal for building calibrated and extensible open-world detectors under limited supervision.",
+      "authors": [
+        "Akash Rao",
+        "Zhou Chen",
+        "Revanth Reddy Palem",
+        "Udhav Ramachandran",
+        "Ruth Scimeca",
+        "Sathyanarayanan N. Aakur"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-13T01:20:47+00:00",
+      "link": "https://arxiv.org/pdf/2608.12698v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 10.0,
+      "llm_evidence_en": "open-world object detection with class-geometry supervision",
+      "llm_evidence_cn": "利用类几何监督的开放世界目标检测",
+      "llm_evidence": "利用类几何监督的开放世界目标检测",
+      "canonical_evidence": "利用类几何监督的开放世界目标检测",
+      "llm_tldr_en": "The paper proposes class-geometry supervision for open-world object detection in scarce-data settings, constraining prototype spaces to preserve visual/semantic class dissimilarities. This improves detection of rare categories and rejection of unknown objects.",
+      "llm_tldr_cn": "开放世界目标检测需要识别已知类别、拒绝未知物体并增量学习新类，在生物医学等稀缺数据场景尤为困难。原型检测器通常将各类原型视为独立锚点，忽略了类间关系。本文提出类几何监督(CGS)，通过约束原型或类表示空间保持训练数据中的视觉/语义类别不相似度，使类间结构参与学习。在少样本条件下提升了对稀有类别的检测与未知物体判别的能力，展示了对开放世界检测的通用价值。",
+      "llm_tldr": "开放世界目标检测需要识别已知类别、拒绝未知物体并增量学习新类，在生物医学等稀缺数据场景尤为困难。原型检测器通常将各类原型视为独立锚点，忽略了类间关系。本文提出类几何监督(CGS)，通过约束原型或类表示空间保持训练数据中的视觉/语义类别不相似度，使类间结构参与学习。在少样本条件下提升了对稀有类别的检测与未知物体判别的能力，展示了对开放世界检测的通用价值。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "object detection methods",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.13135v1",
+      "source": "arxiv",
+      "title": "Predicting Signed Distance Functions for Visual Instance Segmentation",
+      "abstract": "Visual instance segmentation is a challenging problem and becomes even more difficult if objects of interest varies unconstrained in shape. Some objects are well described by a rectangle, however, this is hardly always the case. Consider for instance long, slender objects such as ropes. Anchor-based approaches classify predefined bounding boxes as either negative or positive and thus provide a limited set of shapes that can be handled. Defining anchor-boxes that fit well to all possible shapes leads to an infeasible number of prior boxes. We explore a different approach and propose to train a neural network to compute distance maps along different directions. The network is trained at each pixel to predict the distance to the closest object contour in a given direction. By pooling the distance maps we obtain an approximation to the signed distance function (SDF). The SDF may then be thresholded in order to obtain a foreground-background segmentation. We compare this segmentation to foreground segmentations obtained from the state-of-the-art instance segmentation method YOLACT. On the COCO dataset, our segmentation yields a higher performance in terms of foreground intersection over union (IoU). However, while the distance maps contain information on the individual instances, it is not straightforward to map them to the full instance segmentation. We still believe that this idea is a promising research direction for instance segmentation, as it better captures the different shapes found in the real world.",
+      "authors": [
+        "Emil Brissman",
+        "Joakim Johnander",
+        "Michael Felsberg"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-13T12:09:23+00:00",
+      "link": "https://arxiv.org/pdf/2608.13135v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 10.0,
+      "llm_evidence_en": "visual instance segmentation via signed distance prediction; image segmentation technique",
+      "llm_evidence_cn": "通过有符号距离预测进行视觉实例分割；图像分割技术",
+      "llm_evidence": "通过有符号距离预测进行视觉实例分割；图像分割技术",
+      "canonical_evidence": "通过有符号距离预测进行视觉实例分割；图像分割技术",
+      "llm_tldr_en": "The paper tackles visual instance segmentation for objects with arbitrary shapes. Instead of anchor boxes, it trains a neural network to predict pixel-wise distances to object contours, enabling segmentation of long, slender objects like ropes.",
+      "llm_tldr_cn": "视觉实例分割对于绳索等细长无规则形状物体仍具挑战，基于锚框的方法难以覆盖所有形状。该论文提出训练神经网络逐像素预测到最近物体轮廓的方向距离图，从而避免预定义锚框的形状限制。网络在像素级输出距离信息，能够更灵活地表示任意形状的对象。实验表明该方法在处理非矩形对象时具有明显优势，为实例分割提供了新的表示思路。",
+      "llm_tldr": "视觉实例分割对于绳索等细长无规则形状物体仍具挑战，基于锚框的方法难以覆盖所有形状。该论文提出训练神经网络逐像素预测到最近物体轮廓的方向距离图，从而避免预定义锚框的形状限制。网络在像素级输出距离信息，能够更灵活地表示任意形状的对象。实验表明该方法在处理非矩形对象时具有明显优势，为实例分割提供了新的表示思路。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "image segmentation techniques",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.12179v1",
+      "source": "arxiv",
+      "title": "Map-Det3D: Metric Feed-Forward 3D Reconstruction Prior for Multi-view 3D Object Detection from Streaming Inputs",
+      "abstract": "Metric 3D object detection is a core capability for embodied agents, yet most reliable systems lean on depth sensors, trading away cost, power, and integration simplicity. This motivates monocular 3D detection, which avoids additional constraints, yet it faces a major obstacle: from a single image, depth, and especially absolute scale, are underconstrained. As a result, the prevailing pattern of detecting in 2D and then predicting 3D attributes is often brittle, since modest range errors can dominate 3D localization, and the learned scale prior can fail when cameras, motion, or environments undergo domain shifts. To address this, we propose Map-Det3D, an online multi-view 3D object detection model that brings detection directly into a 3D space reconstructed from RGB. We map a short temporal window into multiple views and repurpose a feed-forward metric 3D reconstruction model as our geometric backbone while tuning its object-aware capabilities. Building on this representation, Map-Det3D directly predicts boxes in metric 3D space, without the widely used 2D-to-3D lifting. Experiments across different benchmarks show that this design supports strong online performance and robust transfer without adaptation, suggesting that training reconstruction priors for detection is a practical route to stable metric 3D detection from monocular video. Code and models are available at https://royyang0714.github.io/Map-Det3D.",
+      "authors": [
+        "Yung-Hsu Yang",
+        "Luigi Piccinelli",
+        "Samuel Rota Bulò",
+        "Sunghwan Hong",
+        "Denis Rozumny",
+        "Johannes Schönberger",
+        "Zuria Bauer",
+        "Hermann Blum",
+        "Peter Kontschieder",
+        "Marc Pollefeys"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-12T15:33:42+00:00",
+      "link": "https://arxiv.org/pdf/2608.12179v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Multi-view 3D object detection with metric feed-forward reconstruction prior",
+      "llm_evidence_cn": "多视图3D目标检测，结合度量前馈重建先验",
+      "llm_evidence": "多视图3D目标检测，结合度量前馈重建先验",
+      "canonical_evidence": "多视图3D目标检测，结合度量前馈重建先验",
+      "llm_tldr_en": "Map-Det3D addresses monocular 3D object detection by introducing a metric feed-forward 3D reconstruction prior for streaming multi-view inputs, improving scale robustness without depth sensors.",
+      "llm_tldr_cn": "单目3D目标检测面临深度和绝对尺度欠约束的问题，现有检测后预测3D属性方式对尺度误差敏感。本文提出Map-Det3D，一种在线多视角3D检测模型，引入度量前馈3D重建先验，从多视角流式输入中恢复度量信息。实验表明该方法降低了对深度传感器的依赖，并提升了尺度估计的稳定性，为无深度传感器的3D检测提供了新范式。",
+      "llm_tldr": "单目3D目标检测面临深度和绝对尺度欠约束的问题，现有检测后预测3D属性方式对尺度误差敏感。本文提出Map-Det3D，一种在线多视角3D检测模型，引入度量前馈3D重建先验，从多视角流式输入中恢复度量信息。实验表明该方法降低了对深度传感器的依赖，并提升了尺度估计的稳定性，为无深度传感器的3D检测提供了新范式。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "object detection methods",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.12714v1",
+      "source": "arxiv",
+      "title": "Towards Sparsely Annotated Open-World Object Detection",
+      "abstract": "Real-world object detection operates under ambiguous supervision, where unlabeled regions may correspond to missing annotations of known objects or genuinely unknown categories. These challenges have been addressed separately in Sparsely Annotated Object Detection (SAOD) and Open-World Object Detection (OWOD). In practice, their co-occurrence remains an open problem. To address this problem, we introduce Sparsely Annotated Open-World Object Detection (SA-OWOD), a new task that jointly considers sparse supervision and the presence of unseen categories. We propose Dual-Perspective Object Discovery (DPOD), a unified framework that jointly models unlabeled known and unknown instances via two complementary mechanisms. The Known Target Recovery Module (KTRM) recovers supervision for unlabeled known instances and explicitly regularizes the feature space to separate known and unknown representations. Complementarily, the Dual-Disagreement Target Generator (DDTG) identifies reliable unknown candidates through cross-view semantic inconsistency. By integrating these modules, DPOD resolves contradictory supervision signals caused by ambiguous unlabeled regions. As a result, it prevents misclassification between known and unknown objects and stabilizes the decision boundaries. Experimental results on sparsely annotated open-world benchmarks demonstrate that the proposed method outperforms existing open-world detection methods, particularly in detecting unknown objects.",
+      "authors": [
+        "HeeJu Han",
+        "AJeong Kim",
+        "Jinsun Park"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-13T01:59:00+00:00",
+      "link": "https://arxiv.org/pdf/2608.12714v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "open-world object detection with sparse annotations",
+      "llm_evidence_cn": "稀疏标注的开放世界目标检测",
+      "llm_evidence": "稀疏标注的开放世界目标检测",
+      "canonical_evidence": "稀疏标注的开放世界目标检测",
+      "llm_tldr_en": "DPOD is a unified framework for sparsely annotated open-world object detection, jointly modeling unlabeled known and unknown instances via known-target recovery and unknown-instance discovery.",
+      "llm_tldr_cn": "现实世界的目标检测通常同时面临标注稀疏和未知类别出现的挑战，但已有方法往往只针对其中某一个方面。论文提出稀疏标注开放世界目标检测(SA-OWOD)新任务，并设计了双视角目标发现框架DPOD，通过已知目标恢复模块与未知目标发现模块分别处理缺失标注和未知实例。实验结果表明该方法能有效应对稀疏监督与开放世界的联合问题，推动了目标检测向更真实场景发展。",
+      "llm_tldr": "现实世界的目标检测通常同时面临标注稀疏和未知类别出现的挑战，但已有方法往往只针对其中某一个方面。论文提出稀疏标注开放世界目标检测(SA-OWOD)新任务，并设计了双视角目标发现框架DPOD，通过已知目标恢复模块与未知目标发现模块分别处理缺失标注和未知实例。实验结果表明该方法能有效应对稀疏监督与开放世界的联合问题，推动了目标检测向更真实场景发展。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "object detection methods",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.12898v1",
+      "source": "arxiv",
+      "title": "NaviDC-OCR: Navigating Document Parsing Across Digital and Camera-Captured Documents",
+      "abstract": "Document parsing aims to transform unstructured documents into structured and machine-readable representations. Recent advances in Vision-Language Models (VLMs) have significantly advanced document parsing. However, existing approaches still face two major challenges. First, decoupled VLM-based methods heavily rely on accurate layout analysis, where geometric distortions in camera-captured documents can introduce cascading errors. Second, although end-to-end VLM-based methods alleviate the dependence on explicit layout detection, they often suffer from redundant generation, hallucinations, and insufficient structural reasoning in high-resolution scenarios. To address these challenges, we propose NaviDC-OCR, a unified framework for document parsing. NaviDC-OCR introduces deformation-aware learning to incorporate geometric perception into VLMs and proposes an adaptive sampling mechanism for complex layout representation. Furthermore, a content-structure decoupled learning strategy is developed to explicitly model formula grammars and table structures, enabling more effective structured representation learning. Extensive experiments demonstrate that NaviDC-OCR achieves state-of-the-art performance across diverse document parsing benchmarks. It obtains overall scores of 96.87, 88.53 and 78.41 on OmniDocBench v1.6, Wild-OmniDocBench, and PureDocBench, respectively, and ranks first in the ICDAR 2026 Sci-ImageMiner Challenge. These results validate the effectiveness and generalization capability of NaviDC-OCR in complex document parsing scenarios.",
+      "authors": [
+        "Peng Cai",
+        "Zhaofan Zou",
+        "Shifa Liu",
+        "Yikun Wang",
+        "Jiawei Tang",
+        "Kaicheng Yang",
+        "Meng Tong",
+        "Zhongjiang He",
+        "Hao Sun"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-08-13T07:34:21+00:00",
+      "link": "https://arxiv.org/pdf/2608.12898v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Computer vision application for document parsing with VLMs",
+      "llm_evidence_cn": "视觉语言模型用于文档解析的计算机视觉应用",
+      "llm_evidence": "视觉语言模型用于文档解析的计算机视觉应用",
+      "canonical_evidence": "视觉语言模型用于文档解析的计算机视觉应用",
+      "llm_tldr_en": "NaviDC-OCR is a unified framework for document parsing across digital and camera-captured documents, addressing layout-analysis cascading errors and hallucination by reducing reliance on explicit layout detection and improving structural reasoning.",
+      "llm_tldr_cn": "文档解析旨在将非结构化文档转换为结构化表示，现有基于视觉语言模型的方法存在两类问题：解耦方法依赖精确布局分析，相机拍摄带来的几何畸变会导致级联错误；端到端方法则在高分辨率场景下易产生冗余生成和幻觉。为此提出NaviDC-OCR，一个统一框架，同时处理数字文档和相机拍摄文档的布局分析与内容解析。该框架旨在减少对显式布局检测的依赖，提升结构化推理能力，从而在两类文档上获得更可靠的解析结果。",
+      "llm_tldr": "文档解析旨在将非结构化文档转换为结构化表示，现有基于视觉语言模型的方法存在两类问题：解耦方法依赖精确布局分析，相机拍摄带来的几何畸变会导致级联错误；端到端方法则在高分辨率场景下易产生冗余生成和幻觉。为此提出NaviDC-OCR，一个统一框架，同时处理数字文档和相机拍摄文档的布局分析与内容解析。该框架旨在减少对显式布局检测的依赖，提升结构化推理能力，从而在两类文档上获得更可靠的解析结果。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "computer vision research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.13144v1",
+      "source": "arxiv",
+      "title": "LipCache: A Local Inference Proxy with Certified Caching for Edge Image Classification Service",
+      "abstract": "As edge-side vision services continue to expand toward low-latency, high-throughput scenarios, reducing the inference cost of vision models without sacrificing reliability has become a central concern. Existing semantic caching methods largely rely on empirical similarity thresholds; while such thresholds improve hit rates, they tend to introduce silent misclassifications near decision boundaries. To address this, we propose \\texttt{LipCache}, a certified semantic caching framework for image classification. Without modifying the existing deployed main model, \\texttt{MainNet}, the framework introduces a lightweight network, \\texttt{GuardNet}, that maps inputs into a low-dimensional feature space subject to a Lipschitz constraint. It then computes a per-sample certified reuse radius from the local classification margin and the spectral norm of the classification head. At runtime, a cached result is reused only when the query feature falls inside the certified reuse ball; otherwise, the query falls back to \\texttt{MainNet}. Thus, cache hits are transformed from empirical threshold tests into geometric certification decisions with explicit theoretical boundaries. Across standard image classification tasks like CIFAR, Tiny-ImageNet, and SVHN, \\texttt{LipCache} achieves a measured speedup of up to $1.65\\times$ with limited end-to-end accuracy degradation, while all accepted cache hits satisfy the \\texttt{GuardNet}-side certified-consistency condition. Furthermore, an enhanced \\texttt{GuardNet} training recipe substantially improves cache hit rates in the Tiny-ImageNet multi-class extension while maintaining a certified-consistency rate of $100\\%$. These results demonstrate that per-sample certified reuse can reduce main-model fallback while preserving theoretical consistency, providing a feasible approach to reliable cache-assisted inference at the edge.",
+      "authors": [
+        "Zhengzhe Xiang",
+        "Yinlin Chen",
+        "Fuli Ying",
+        "Binbin Zhou",
+        "Hailiang Zhao",
+        "Schahram Dustdar"
+      ],
+      "primary_category": "cs.DC",
+      "categories": [
+        "cs.DC",
+        "cs.AI"
+      ],
+      "published": "2026-08-13T12:16:58+00:00",
+      "link": "https://arxiv.org/pdf/2608.13144v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "image classification with certified semantic caching at the edge",
+      "llm_evidence_cn": "边缘图像分类中的可认证语义缓存",
+      "llm_evidence": "边缘图像分类中的可认证语义缓存",
+      "canonical_evidence": "边缘图像分类中的可认证语义缓存",
+      "llm_tldr_en": "LipCache introduces a lightweight GuardNet with Lipschitz-constrained features to certify semantic caching for edge image classification, reducing inference cost while avoiding silent misclassifications near decision boundaries.",
+      "llm_tldr_cn": "边缘图像分类服务在追求低延迟和高吞吐的同时需要保证可靠性，而传统语义缓存方法依赖经验相似度阈值，容易在决策边界附近产生静默误分类。论文提出LipCache，在不修改已部署主模型的前提下引入轻量级GuardNet，将输入映射到满足Lipschitz约束的低维特征空间，实现可认证的缓存判断。实验表明该方法在提升缓存命中率的同时有效避免了决策边界附近的误分类，为边缘视觉推理提供了可靠的加速方案。",
+      "llm_tldr": "边缘图像分类服务在追求低延迟和高吞吐的同时需要保证可靠性，而传统语义缓存方法依赖经验相似度阈值，容易在决策边界附近产生静默误分类。论文提出LipCache，在不修改已部署主模型的前提下引入轻量级GuardNet，将输入映射到满足Lipschitz约束的低维特征空间，实现可认证的缓存判断。实验表明该方法在提升缓存命中率的同时有效避免了决策边界附近的误分类，为边缘视觉推理提供了可靠的加速方案。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "visual recognition algorithms",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2608.13183v1",
+      "source": "arxiv",
+      "title": "A Controlled Study of Self-Supervised Image and Video Pretraining under Limited Resources",
+      "abstract": "Visual foundation models are a cornerstone of image and video understanding but typically require large amounts of data and computation. The current scale required for pretraining visual foundation models may be unsustainable or unnecessary, and significant benefits arise when effective models can be obtained with fewer resources. To better understand how self-supervised learning (SSL) objectives behave under resource constraints, we conduct a controlled study of image and video SSL objectives under matched data, architecture, and compute budgets. We compare contrastive, reconstruction, feature-prediction, and diffusion objectives and evaluate both standalone and jointly trained image-video SSL formulations across a diverse set of image and video understanding tasks. Our results show that DINOv2-style pretraining consistently provides the strongest overall performance under limited resources. Furthermore, combining DINOv2 with video SSL objectives such as VideoMAE substantially improves image classification and segmentation performance, but degrades video tracking and camera-pose estimation performance, revealing an important tradeoff between semantic and geometric representation learning. These findings suggest that combining image and video SSL objectives can be beneficial in resource-limited settings, while highlighting the need for improved methods that better balance semantic, temporal, and geometric supervision.",
+      "authors": [
+        "Brunó B. Englert",
+        "Gijs Dubbelman"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-13T12:47:36+00:00",
+      "link": "https://arxiv.org/pdf/2608.13183v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Controlled study of self-supervised objectives for visual representation/feature learning",
+      "llm_evidence_cn": "受限资源下自监督视觉特征学习方法对比研究",
+      "llm_evidence": "受限资源下自监督视觉特征学习方法对比研究",
+      "canonical_evidence": "受限资源下自监督视觉特征学习方法对比研究",
+      "llm_tldr_en": "A controlled study compares contrastive, reconstruction, feature-prediction, and diffusion SSL objectives for image and video pretraining under matched data, architecture, and compute budgets, revealing how SSL objectives behave with limited resources.",
+      "llm_tldr_cn": "视觉基础模型通常需要大量数据与计算，资源受限时其预训练效率值得重新审视。该文在匹配数据、架构和计算预算的条件下，系统比较对比式、重构式、特征预测和扩散式等自监督目标，并考察图像-视频联合训练形式。研究揭示了不同SSL目标在低资源场景下的表现规律，为高效视觉表征学习提供了实用指导。",
+      "llm_tldr": "视觉基础模型通常需要大量数据与计算，资源受限时其预训练效率值得重新审视。该文在匹配数据、架构和计算预算的条件下，系统比较对比式、重构式、特征预测和扩散式等自监督目标，并考察图像-视频联合训练形式。研究揭示了不同SSL目标在低资源场景下的表现规律，为高效视觉表征学习提供了实用指导。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "feature extraction in computer vision",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2608.08132v1",
+      "source": "arxiv",
+      "title": "When Does An Extra View Help? Adapting Single-View 3D Reconstruction with Extra Imagery",
+      "abstract": "Reconstruction of 3D objects from a single image is a challenging research problem in computer vision. The key challenge is the lack of critical information from viewpoints to complete 3D structures. Using an additional view may help to resolve the issue. However, there is no mechanism that can integrate the extra view into the single-view 3D reconstruction principle. We address this challenge by proposing ASV3D, a framework for adapting single-view 3D object reconstruction to test-time data with support from one additional image. We introduce two adaptation strategies: (i) a zero-shot adaptation scheme that leverages the auxiliary image to improve the reconstruction quality of an object without retraining, and (ii) an optimised adaptation scheme that further enhances visual fidelity and cross-view consistency via contrastive learning. We apply our ASV3D to improve two state-of-the-art single-view 3D reconstruction pipelines on both benchmark and real-world datasets. Results demonstrate that our approach consistently improves reconstruction accuracy and robustness under unconstrained multi-view inputs, outperforming the baselines in both quantitative metrics and human preference. We publish our code and the real-world object dataset in our project page at https://github.com/YNhuHuynh/ASV3D/tree/main.",
+      "authors": [
+        "Y Huynh",
+        "Duc Thanh Nguyen",
+        "Thao Minh Le",
+        "Mohamed Abdelrazek"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.GR"
+      ],
+      "published": "2026-08-08T13:39:28+00:00",
+      "link": "https://arxiv.org/pdf/2608.08132v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Single-view 3D object reconstruction with adaptive extra-view utilization",
+      "llm_evidence_cn": "利用额外视角自适应的单视图3D物体重建研究",
+      "llm_evidence": "利用额外视角自适应的单视图3D物体重建研究",
+      "canonical_evidence": "利用额外视角自适应的单视图3D物体重建研究",
+      "llm_tldr_en": "ASV3D adapts single-view 3D reconstruction at test time with one additional image via zero-shot and optimized adaptation strategies, improving reconstruction quality without retraining.",
+      "llm_tldr_cn": "单视图3D重建因缺少视角信息难以完整恢复物体结构。本文提出ASV3D框架，利用测试时的一张额外图像辅助重建，并设计了零样本自适应与优化自适应两种策略。零样本策略无需重训练即可提升重建质量，优化策略进一步适配数据。实验证明额外视角信息能有效弥补单视角缺失，为单视图重建提供了新的测试时增强途径。",
+      "llm_tldr": "单视图3D重建因缺少视角信息难以完整恢复物体结构。本文提出ASV3D框架，利用测试时的一张额外图像辅助重建，并设计了零样本自适应与优化自适应两种策略。零样本策略无需重训练即可提升重建质量，优化策略进一步适配数据。实验证明额外视角信息能有效弥补单视角缺失，为单视图重建提供了新的测试时增强途径。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "computer vision research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2608.13458v1",
+      "source": "arxiv",
+      "title": "Fine-Grained Action Recognition with Cross-Attentive Latent Sparse Experts",
+      "abstract": "Fine-grained human action recognition (FHAR) must distinguish visually similar actions that differ mainly in body configuration, timing, or local appearance. RGB representations retain visual context but often suppress joint-level geometry, whereas skeleton representations encode kinematics but discard dense spatial detail. We introduce FineX, which factorizes fine-grained cues into RGB appearance, pose heatmap geometry, and skeletal-graph topology. Pairwise cross-attention enables symmetric, stream-preserving information exchange, followed by a streamwise latent sparse Mixture-of-Experts that routes each representation to a content-dependent subset of shared experts, regularized by a load-balancing objective. FineX achieves state-of-the-art results on Gym99, Gym288, and Diving48. On the long-tailed Gym288, it raises mean class accuracy from 68.6% to 76.2% (+7.6 points) without textual supervision or large-scale vision-language pre-training, demonstrating the benefit of structured visual-pose-graph fusion and conditional expert refinement for FHAR.",
+      "authors": [
+        "Imtiaz Ul Hassan",
+        "Tasweer Ahmad",
+        "Nik Bessis",
+        "Ardhendu Behera"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-13T16:41:57+00:00",
+      "link": "https://arxiv.org/pdf/2608.13458v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "fine-grained human action recognition using visual representations",
+      "llm_evidence_cn": "基于视觉表示的细粒度人体动作识别",
+      "llm_evidence": "基于视觉表示的细粒度人体动作识别",
+      "canonical_evidence": "基于视觉表示的细粒度人体动作识别",
+      "llm_tldr_en": "FineX factorizes fine-grained actions into RGB appearance, pose heatmaps, and skeleton graphs, using pairwise cross-attention and latent sparse Mixture-of-Experts for state-of-the-art recognition.",
+      "llm_tldr_cn": "细粒度动作识别需区分仅在身体形态、时序或局部外观上存在微小差异的动作，单一RGB或骨架表示难以充分建模。论文提出FineX，将细粒度线索分解为RGB外观、姿态热图几何和骨骼图拓扑，通过成对交叉注意力保持各流的信息并交换，再用逐流潜稀疏专家混合为不同内容路由到相关专家子集。实验显示FineX在细粒度动作识别上取得了先进结果，验证了多表示融合与稀疏专家机制的有效性。",
+      "llm_tldr": "细粒度动作识别需区分仅在身体形态、时序或局部外观上存在微小差异的动作，单一RGB或骨架表示难以充分建模。论文提出FineX，将细粒度线索分解为RGB外观、姿态热图几何和骨骼图拓扑，通过成对交叉注意力保持各流的信息并交换，再用逐流潜稀疏专家混合为不同内容路由到相关专家子集。实验显示FineX在细粒度动作识别上取得了先进结果，验证了多表示融合与稀疏专家机制的有效性。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "visual recognition algorithms",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2608.13463v1",
+      "source": "arxiv",
+      "title": "MLLM-Routed Heterogeneous Ensembles for Robust Cross-Dataset Image Classification",
+      "abstract": "Modern image classification models excel when trained on single task-specific datasets but often struggle to generalize across domains and difficulty levels. We propose ARMDIL, an Adaptive Router for Multi-Domain Image classification with LLMs. ARMDIL is an ensemble that uses a multimodal large language model (MLLM) agent to dynamically route each image to the most suitable vision backbone. Our diverse ensemble employs convolutional neural networks (ResNets), self-supervised representation learners (SSL), and vision-language models (VLMs), each trained on a unified label space constructed from multiple image datasets with differing distributions and characteristics. Empirical evaluations illuminate the distinct capabilities and vulnerabilities of each architecture across disparate visual domains. Crucially, we show that ARMDIL effectively navigates these trade-offs, performing competitively with specialized training-based routers. Furthermore, it drastically improves adaptability by allowing new information to be integrated via simple prompt modifications, while enhancing interpretability through natural language reasoning traces. These advances in cross-dataset image classification pave the way for more reliable general-purpose vision systems such as AI assistants and autonomous robots.",
+      "authors": [
+        "Daniel Perkins",
+        "John Squires",
+        "Janou Milligan",
+        "Chandra Raskoti",
+        "Linda Ungerboeck"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI",
+        "cs.CL",
+        "cs.LG"
+      ],
+      "published": "2026-08-13T16:45:24+00:00",
+      "link": "https://arxiv.org/pdf/2608.13463v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Adaptive routing ensemble for cross-dataset image classification using MLLM and diverse vision backbones",
+      "llm_evidence_cn": "基于多模态大模型路由的异构集成跨数据集图像分类",
+      "llm_evidence": "基于多模态大模型路由的异构集成跨数据集图像分类",
+      "canonical_evidence": "基于多模态大模型路由的异构集成跨数据集图像分类",
+      "llm_tldr_en": "ARMDIL uses an MLLM agent to route images to suitable vision backbones in an ensemble of CNNs, SSL models, and VLMs for robust cross-dataset image classification.",
+      "llm_tldr_cn": "图像分类模型常受限于单数据集泛化不佳。本文提出ARMDIL，利用多模态大语言模型作为路由器，为每张图像动态选择最合适的视觉主干，集成ResNet、自监督表示学习模型和视觉语言模型。模型在统一标签空间上训练，提升了跨数据集和难度级别的鲁棒性。实验揭示了不同主干的优缺点，并通过路由实现了互补，为多域图像分类提供了新思路。",
+      "llm_tldr": "图像分类模型常受限于单数据集泛化不佳。本文提出ARMDIL，利用多模态大语言模型作为路由器，为每张图像动态选择最合适的视觉主干，集成ResNet、自监督表示学习模型和视觉语言模型。模型在统一标签空间上训练，提升了跨数据集和难度级别的鲁棒性。实验揭示了不同主干的优缺点，并通过路由实现了互补，为多域图像分类提供了新思路。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "visual recognition algorithms",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    }
+  ]
+}
