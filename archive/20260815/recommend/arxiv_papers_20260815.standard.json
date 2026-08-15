@@ -1,0 +1,95 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-08-15T19:32:25.319425+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 1,
+    "deep_cap": 6,
+    "deep_selected": 1,
+    "quick_candidates": 1,
+    "quick_skim_target": 11,
+    "quick_selected": 1
+  },
+  "deep_dive": [
+    {
+      "id": "2608.10708v1",
+      "source": "arxiv",
+      "title": "Self-Geometry: GT-Free and Plug-and-Play Test-Time Adaptation for Geometrically Consistent 3D Vision Foundation Models",
+      "abstract": "Recent Vision Foundation Models (VFMs) predict depth, camera pose, and pointmap in a single forward pass without per-scene optimization, achieving strong generalization. However, enforcing explicit multi-view geometric consistency, e.g., through bundle adjustment, is computationally costly and is thus not imposed during VFM pretraining, so such inconsistency can arise. To address this, implicit self-consistency derived from model outputs (e.g., pointmaps, features), though enforced at test-time in prior work, delivers inherently limited performance gain, especially on scenes where the pretrained VFM is highly inaccurate. In contrast to this implicit signal, we propose Self-Geometry, a plug-and-play test-time adaptation pipeline that directly imposes explicit multi-view geometric constraints using 2D pixel correspondences as pseudo ground-truth. Our proposed Self-Geometry consists of Geometric Disentanglement Optimization, which combines Multi-View Consistency and Epipolar Consistency losses with Gradient Disentanglement to prevent gradient conflict; Frame Angular-Neighbor, a view sampler based on SO(3) geodesic distances for lightly imposing these constraints; and Lightweight TTA, which adapts VFMs via LoRA. Our method achieves consistent improvements in both pose and geometry estimation across six VFMs (VGGT, $π^3$, DA3-Giant/Large/Base/Small) and four benchmarks (7Scenes, ETH3D, ScanNet++, HiRoom).",
+      "authors": [
+        "Seokhyun Youn",
+        "Dahyeon Kye",
+        "Sung-Ho Bae",
+        "Jihyong Oh"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-11T09:28:50+00:00",
+      "link": "https://arxiv.org/pdf/2608.10708v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "3D vision foundation models with geometric consistency and test-time adaptation",
+      "llm_evidence_cn": "3D视觉基础模型与几何一致性测试时自适应",
+      "llm_evidence": "3D视觉基础模型与几何一致性测试时自适应",
+      "canonical_evidence": "3D视觉基础模型与几何一致性测试时自适应",
+      "llm_tldr_en": "Self-Geometry is a plug-and-play test-time adaptation method for 3D vision foundation models that enforces geometric consistency in depth, pose, and pointmap predictions without ground truth, improving accuracy on challenging scenes and overcoming limits of implicit self-consistency.",
+      "llm_tldr_cn": "现有3D视觉基础模型能在一次前向中预测深度、相机位姿和点图，但缺乏显式的多视图几何一致性约束，在困难场景下输出不一致。本文提出Self-Geometry，一种即插即用的测试时自适应方法，利用模型自身输出的点图和特征作为隐式信号，在不使用真值的情况下强化几何一致性。在挑战性场景上的实验表明，相比先前的隐式自一致性方法，该方法能获得更优的几何一致性表现。这一工作提升了3D基础模型在下游任务中的可靠性。",
+      "llm_tldr": "现有3D视觉基础模型能在一次前向中预测深度、相机位姿和点图，但缺乏显式的多视图几何一致性约束，在困难场景下输出不一致。本文提出Self-Geometry，一种即插即用的测试时自适应方法，利用模型自身输出的点图和特征作为隐式信号，在不使用真值的情况下强化几何一致性。在挑战性场景上的实验表明，相比先前的隐式自一致性方法，该方法能获得更优的几何一致性表现。这一工作提升了3D基础模型在下游任务中的可靠性。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "computer vision research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2608.10131v1",
+      "source": "arxiv",
+      "title": "P3CA: Encoder-Agnostic Interpretation of Vision Foundation Model Embeddings via Spatial Probing",
+      "abstract": "Vision foundation models are increasingly used as reusable encoders in medical image computing, yet their high-dimensional spatial embeddings are difficult to inspect beyond downstream task performance or global dimensionality reduction. We propose position-prompted PCA (P3CA), an encoder-agnostic method for local probing of channel-rich spatial tensors. Given a user-selected spatial prompt, P3CA estimates the feature normalization and dominant covariance directions within that region, then applies the resulting projection to the full tensor to visualize where locally informative directions are expressed. This produces a region-conditioned representation lens without modifying the encoder, retraining, or requiring task-specific labels. We implement P3CA in EmbedVision, an interactive 3D Slicer-based workflow, and evaluate it across natural images, colorectal pathology foundation-model embeddings, and spatial transcriptomic tensors. Across these settings, prompted projections reveal local structure suppressed by global PCA, improve prompt-matched pathology discrimination from frozen three-dimensional projections, and support comparison between learned and measured spatial representations.",
+      "authors": [
+        "Amoon Jamzad",
+        "Dilakshan Srikanthan",
+        "Faranak Akbarifar",
+        "Nooshin Maghsoodi",
+        "Parvin Mousavi"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.LG"
+      ],
+      "published": "2026-08-10T18:42:38+00:00",
+      "link": "https://arxiv.org/pdf/2608.10131v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Spatial probing of vision foundation model embeddings",
+      "llm_evidence_cn": "视觉基础模型嵌入的空间探测",
+      "llm_evidence": "视觉基础模型嵌入的空间探测",
+      "canonical_evidence": "视觉基础模型嵌入的空间探测",
+      "llm_tldr_en": "This paper introduces P3CA, an encoder-agnostic method that uses position-prompted PCA to locally probe channel-rich spatial embeddings of vision foundation models, visualizing region-conditioned directions without modifying or retraining the encoder.",
+      "llm_tldr_cn": "视觉基础模型作为可复用编码器在医学图像计算中广泛使用，但其高维空间嵌入难以解释。作者提出位置提示PCA (P3CA)，对用户指定的空间区域估计特征归一化和主协方差方向，再投影到整个张量进行可视化。该方法无需修改编码器或重训练，即可揭示区域条件化的表示模式，增强模型可解释性。",
+      "llm_tldr": "视觉基础模型作为可复用编码器在医学图像计算中广泛使用，但其高维空间嵌入难以解释。作者提出位置提示PCA (P3CA)，对用户指定的空间区域估计特征归一化和主协方差方向，再投影到整个张量进行可视化。该方法无需修改编码器或重训练，即可揭示区域条件化的表示模式，增强模型可解释性。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "feature extraction in computer vision",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}

@@ -41,17 +41,17 @@
 <section class="dpr-home-dashboard-card dpr-home-report-card">
   <div class="dpr-home-dashboard-header">
     <div>
-      <span class="dpr-home-dashboard-kicker">2026-08-14</span>
+      <span class="dpr-home-dashboard-kicker">2026-08-15</span>
       <h3 class="dpr-home-dashboard-title">今日汇总</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">共 10 篇</strong>
+    <strong class="dpr-home-dashboard-count">共 2 篇</strong>
   </div>
   <dl class="dpr-home-dashboard-stats">
     <div class="dpr-home-dashboard-stat"><dt>累计更新</dt><dd>1 次</dd></div>
-    <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>6</dd></div>
-    <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>4</dd></div>
+    <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>1</dd></div>
+    <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>1</dd></div>
   </dl>
-  <p class="dpr-home-dashboard-body">最近更新：2026-08-14 21:22:53 UTC<br>状态：成功</p>
+  <p class="dpr-home-dashboard-body">最近更新：2026-08-15 19:35:29 UTC<br>状态：成功</p>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-brief-card">
   <div class="dpr-home-dashboard-header">
@@ -62,7 +62,7 @@
     <strong class="dpr-home-dashboard-count">AI</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<p>今日精读6篇、速读4篇共10篇，聚焦视觉识别与开放世界感知。最值得关注两篇满分工作：基于类别几何监督的开放世界检测，以及用符号距离函数实现实例分割。建议普通读者优先追踪自监督预训练与稀疏专家动作识别的低成本高效方案。</p>
+<p>今日精读1篇、速读1篇，聚焦3D视觉基础模型的几何一致性与可解释性。最值得看《Self-Geometry》：无需真值、即插即用的测试时适应方法，显著提升几何一致性；速读《P3CA》则从空间探针角度解释视觉嵌入。建议优先尝试自几何方法在自身任务上的零标注适配效果。</p>
   </div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-deep-card">
@@ -71,12 +71,12 @@
       <span class="dpr-home-dashboard-kicker">今日累计</span>
       <h3 class="dpr-home-dashboard-title">精读推荐</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">6 篇</strong>
+    <strong class="dpr-home-dashboard-count">1 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Class Geometry as Supervision for Sample-Efficient Open-World Detection">Class Geometry as Supervision for Sample-Efficient Open-World Detection</span></li><li><span class="dpr-home-dashboard-paper-title" title="Predicting Signed Distance Functions for Visual Instance Segmentation">Predicting Signed Distance Functions for Visual Instance Segmentation</span></li><li><span class="dpr-home-dashboard-paper-title" title="Map-Det3D: Metric Feed-Forward 3D Reconstruction Prior for Multi-view 3D Object Detection from Streaming Inputs">Map-Det3D: Metric Feed-Forward 3D Reconstruction Prior for Multi-view 3D Object Detection from Streaming Inputs</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Self-Geometry: GT-Free and Plug-and-Play Test-Time Adaptation for Geometrically Consistent 3D Vision Foundation Models">Self-Geometry: GT-Free and Plug-and-Play Test-Time Adaptation for Geometrically Consistent 3D Vision Foundation Models</span></li></ul>
   </div>
-  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">cv <strong>6</strong></span></div>
+  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">cv <strong>1</strong></span></div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-skim-card">
   <div class="dpr-home-dashboard-header">
@@ -84,12 +84,12 @@
       <span class="dpr-home-dashboard-kicker">今日累计</span>
       <h3 class="dpr-home-dashboard-title">速读推荐</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">4 篇</strong>
+    <strong class="dpr-home-dashboard-count">1 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="A Controlled Study of Self-Supervised Image and Video Pretraining under Limited Resources">A Controlled Study of Self-Supervised Image and Video Pretraining under Limited Resources</span></li><li><span class="dpr-home-dashboard-paper-title" title="Fine-Grained Action Recognition with Cross-Attentive Latent Sparse Experts">Fine-Grained Action Recognition with Cross-Attentive Latent Sparse Experts</span></li><li><span class="dpr-home-dashboard-paper-title" title="MLLM-Routed Heterogeneous Ensembles for Robust Cross-Dataset Image Classification">MLLM-Routed Heterogeneous Ensembles for Robust Cross-Dataset Image Classification</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="P3CA: Encoder-Agnostic Interpretation of Vision Foundation Model Embeddings via Spatial Probing">P3CA: Encoder-Agnostic Interpretation of Vision Foundation Model Embeddings via Spatial Probing</span></li></ul>
   </div>
-  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">cv <strong>4</strong></span></div>
+  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">cv <strong>1</strong></span></div>
 </section>
 </div>
 
