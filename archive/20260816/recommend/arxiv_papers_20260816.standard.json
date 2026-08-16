@@ -1,0 +1,410 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-08-16T19:27:06.382665+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 5,
+    "deep_cap": 6,
+    "deep_selected": 5,
+    "quick_candidates": 5,
+    "quick_skim_target": 11,
+    "quick_selected": 5
+  },
+  "deep_dive": [
+    {
+      "id": "2608.10723v2",
+      "source": "arxiv",
+      "title": "Grid-Preserving Knowledge Distillation: Transferring Convolutional Inductive Bias to Vision Transformers under Data Scarcity",
+      "abstract": "Vision Transformers demonstrate remarkable global modeling capacity but often underperform in data-scarce regimes. Distilling convolutional inductive biases from a CNN teacher provides an effective remedy while leaving the deployed model unchanged. However, general-purpose feature distillation transfers little in this setting. In CNN-to-CNN distillation, pooling, flattening, and logit-space projections remove the spatial grid that encodes locality and translation equivariance. Unlike a convolutional student, a ViT cannot readily reconstruct this structure on its own. In this paper, we propose iBKD, a distillation framework that preserves the spatial grid throughout the entire transfer process. Its core module, the Inductive Bias Attention Module, aggregates features from all student layers onto the teacher's grid using learned weights. It then enhances structural cues through channel and deformable spatial attention and injects them via convolutional cross-attention operating directly between spatial grids rather than token sets. The module is used only during training, leaving the deployed model as an unmodified ViT with no inference overhead. Across seven Transformer backbones and six data-scarce benchmarks, iBKD consistently outperforms both locality-guidance methods and general knowledge distillation baselines, with its advantage increasing as the amount of training data decreases.",
+      "authors": [
+        "Junyong Choi",
+        "Cheolhyeon Park",
+        "Jaehoon Cho"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-11T09:39:13+00:00",
+      "link": "https://arxiv.org/pdf/2608.10723v2",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "grid-preserving feature distillation from CNN to vision transformer under data scarcity",
+      "llm_evidence_cn": "数据稀缺下将保持网格的CNN特征蒸馏到视觉Transformer",
+      "llm_evidence": "数据稀缺下将保持网格的CNN特征蒸馏到视觉Transformer",
+      "canonical_evidence": "数据稀缺下将保持网格的CNN特征蒸馏到视觉Transformer",
+      "llm_tldr_en": "Vision Transformers underperform with limited data because they lack convolutional inductive bias. iBKD preserves the spatial grid throughout feature distillation from a CNN teacher to a ViT student, transferring locality and translation equivariance. It improves ViT learning under data scarcity without modifying the deployed model.",
+      "llm_tldr_cn": "视觉Transformer在数据稀缺时因缺乏卷积归纳偏置而表现欠佳。现有特征蒸馏常通过池化或展平破坏空间网格，丢失局部性和平移等变性。本文提出iBKD蒸馏框架，在整个迁移过程中保留空间网格，将CNN老师的卷积归纳偏置有效转移给ViT学生。实验表明该方法在数据有限时显著提升ViT性能，且部署模型无需改动。",
+      "llm_tldr": "视觉Transformer在数据稀缺时因缺乏卷积归纳偏置而表现欠佳。现有特征蒸馏常通过池化或展平破坏空间网格，丢失局部性和平移等变性。本文提出iBKD蒸馏框架，在整个迁移过程中保留空间网格，将CNN老师的卷积归纳偏置有效转移给ViT学生。实验表明该方法在数据有限时显著提升ViT性能，且部署模型无需改动。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "feature extraction in computer vision",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.12721v1",
+      "source": "arxiv",
+      "title": "VOS-Agent: The 1st Place Solution for the 8th LSVOS Challenge (MOSEv2 Track)",
+      "abstract": "Complex video object segmentation requires robust target propagation under severe occlusion, disappearance and reappearance. Although SAM3 provides strong promptable mask propagation, a uniform inference path remains unreliable for tiny targets with insufficient visual evidence and semantic-dominated targets whose identities depend on explicit attributes. To this end, we present VOS-Agent, a collaborative framework that retains SAM3 as the shared dense segmentation module and conditionally activates specialized agents according to target characteristics. A Target Perception and Routing Agent assigns each sequence to a regular, tiny, or semantic-dominated route. Tiny targets are supported by a Visual Tracking Agent through confidence-aware box prompts, while semantic-dominated targets are handled by an MLLM-based Semantic Agent through description-guided localization and candidate verification. On the MOSEv2 test set, VOS-Agent achieves 69.82% on the official $\\mathcal{J}\\&\\dot{\\mathcal{F}}$ metric and ranks first in the MOSEv2 Track of the 8th LSVOS Challenge at ECCV 2026.",
+      "authors": [
+        "Canyang Wu",
+        "Jinrong Zhang",
+        "Xusheng He",
+        "Ce Bian",
+        "Xianjing Han",
+        "Jianlong Wu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-13T02:08:00+00:00",
+      "link": "https://arxiv.org/pdf/2608.12721v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Video object segmentation with visual tracking agent and segmentation modules",
+      "llm_evidence_cn": "视频目标分割方法，结合视觉跟踪代理与分割模块",
+      "llm_evidence": "视频目标分割方法，结合视觉跟踪代理与分割模块",
+      "canonical_evidence": "视频目标分割方法，结合视觉跟踪代理与分割模块",
+      "llm_tldr_en": "Presents VOS-Agent, a collaborative framework for complex video object segmentation that conditionally activates specialized agents (tracking, tiny, semantic) on top of SAM3, winning the 8th LSVOS Challenge MOSEv2 track.",
+      "llm_tldr_cn": "复杂视频目标分割需要应对严重遮挡、消失与重现，统一推理路径对微小目标和语义主导目标不可靠。论文提出VOS-Agent协作框架，保留SAM3作为共享稠密分割模块，并根据目标特征有条件地激活专用代理：目标感知与路由代理将序列分配给常规、微小或语义主导路线，微小目标由视觉跟踪代理通过置信度感知框传播支持。该方法在第8届LSVOS挑战赛MOSEv2赛道获得第一名，表明针对目标特性分工协作能有效提升复杂场景下的视频分割性能。",
+      "llm_tldr": "复杂视频目标分割需要应对严重遮挡、消失与重现，统一推理路径对微小目标和语义主导目标不可靠。论文提出VOS-Agent协作框架，保留SAM3作为共享稠密分割模块，并根据目标特征有条件地激活专用代理：目标感知与路由代理将序列分配给常规、微小或语义主导路线，微小目标由视觉跟踪代理通过置信度感知框传播支持。该方法在第8届LSVOS挑战赛MOSEv2赛道获得第一名，表明针对目标特性分工协作能有效提升复杂场景下的视频分割性能。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "image segmentation techniques",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.09482v1",
+      "source": "arxiv",
+      "title": "Beyond Uniform Restoration: Empowering All-in-One Restoration with Pixel-Level Multimodal Guidance",
+      "abstract": "All-in-one image restoration is a unified low-level vision task that aims to effectively recover high-quality images from inputs degraded by various types and levels of corruption using a single model. Recent works have achieved remarkable progress by learning degradation-adaptive prompts or network architectures. However, these methods typically apply a uniform restoration strategy across the entire image, neglecting the fact that different regions may suffer from distinct degradation types and varying degrees of severity. In contrast, we propose to perform restoration at the pixel level, thereby enabling more fine-grained and precise control over the restoration process. Specifically, we present MGN-AIR, a novel pixel-level restoration framework for all-in-one image restoration. Our approach first learns to estimate a pixel-level visual prompt. Then, it leverages both textual and visual prompts to provide global and local degradation cues, guiding the model on where to look and how to restore at each pixel. We conduct extensive experiments on multiple all-in-one image restoration benchmarks, covering a wide range of tasks including denoising, deraining, deblurring, dehazing, desnowing, and low-light enhancement. Experimental results demonstrate that our proposed method consistently and significantly outperforms existing approaches.",
+      "authors": [
+        "Chunxiao Liu",
+        "Wei Liu",
+        "Anbin Xiong",
+        "Erli Meng"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-08-10T11:48:22+00:00",
+      "link": "https://arxiv.org/pdf/2608.09482v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Computer vision research on unified image restoration at pixel level",
+      "llm_evidence_cn": "计算机视觉中的全能图像修复研究",
+      "llm_evidence": "计算机视觉中的全能图像修复研究",
+      "canonical_evidence": "计算机视觉中的全能图像修复研究",
+      "llm_tldr_en": "MGN-AIR performs pixel-level multimodal guided restoration, adapting to region-specific degradation types and levels for all-in-one image restoration.",
+      "llm_tldr_cn": "全能图像修复旨在用单一模型恢复多种退化图像，但现有方法常对整幅图像采用均匀修复策略。本文提出MGN-AIR，在像素级引入多模态引导，针对不同区域的不同退化类型和程度进行差异化修复。实验证明该方法能实现更细粒度的修复控制，提升修复效果。该工作为低层视觉修复提供了一种像素级精细化恢复新思路。",
+      "llm_tldr": "全能图像修复旨在用单一模型恢复多种退化图像，但现有方法常对整幅图像采用均匀修复策略。本文提出MGN-AIR，在像素级引入多模态引导，针对不同区域的不同退化类型和程度进行差异化修复。实验证明该方法能实现更细粒度的修复控制，提升修复效果。该工作为低层视觉修复提供了一种像素级精细化恢复新思路。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "computer vision research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.10544v1",
+      "source": "arxiv",
+      "title": "Flow Straight to Reality: Perceptually Consistent Flow Matching for Efficient Image Restoration",
+      "abstract": "Image restoration is fundamentally constrained by the tradeoff between distortion and perception: minimizing pixel-wise error yields over-smoothed results, whereas optimizing for perceptual realism often introduces structural deviations. Recent approaches attempt to balance this tradeoff via posterior sampling or multi-stage generative pipelines, yet remain computationally expensive and architecturally complex. To overcome these limitations, we propose PCFlow (Perceptually Consistent Flow Matching), a unified framework that directly parameterizes a continuous transport from degraded observations to clean targets, jointly optimizing distortion and perceptual quality. While its latent consistency flow objective drives stable and efficient few-step inference, a Latent Consistency Perceptual Loss (LCPL) imposes semantic constraints directly on the guiding velocity field, steering the dynamics toward visually sharp data manifolds. Furthermore, recognizing the inherent conflict between structural and perceptual consistencies, we integrate a conflict-free gradient projection strategy to stabilize the multi-objective optimization landscape. Combined with lightweight, convolution-only backbone, PCFlow achieves competitive performance across diverse restoration tasks at a fraction of traditional computational costs.",
+      "authors": [
+        "Sangwoo Jo",
+        "Donggeun Ko",
+        "Jayeon Kang",
+        "Youngsang Kwak",
+        "Jaehwa Kwak",
+        "Sungjoon Choi"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI",
+        "cs.LG"
+      ],
+      "published": "2026-08-11T06:37:10+00:00",
+      "link": "https://arxiv.org/pdf/2608.10544v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Flow matching based image restoration balancing distortion and perceptual quality",
+      "llm_evidence_cn": "基于流匹配的图像恢复以平衡失真与感知质量",
+      "llm_evidence": "基于流匹配的图像恢复以平衡失真与感知质量",
+      "canonical_evidence": "基于流匹配的图像恢复以平衡失真与感知质量",
+      "llm_tldr_en": "PCFlow is a unified flow matching framework for image restoration that directly parameterizes continuous transport from degraded to clean images, jointly optimizing distortion and perceptual quality.",
+      "llm_tldr_cn": "图像恢复面临失真与感知质量的权衡，现有方法往往需要复杂的多阶段生成管线。PCFlow将退化观测到干净图像的连续输运直接参数化，用潜在一致性流目标联合优化失真与感知质量，在恢复清晰度与真实感之间取得平衡。相比现有生成式恢复方法，其计算更高效、结构更简洁，为图像恢复提供新的统一框架。",
+      "llm_tldr": "图像恢复面临失真与感知质量的权衡，现有方法往往需要复杂的多阶段生成管线。PCFlow将退化观测到干净图像的连续输运直接参数化，用潜在一致性流目标联合优化失真与感知质量，在恢复清晰度与真实感之间取得平衡。相比现有生成式恢复方法，其计算更高效、结构更简洁，为图像恢复提供新的统一框架。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "computer vision research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.12811v1",
+      "source": "arxiv",
+      "title": "Structured Local Differential Modeling for AI-Generated Image Detection",
+      "abstract": "The rapid advancement of AI-generated content has made the reliable detection of generated images an increasingly critical challenge. Existing detection methods are often dominated during training by semantically salient components with high signal-to-noise ratios (SNRs), thereby suppressing subtler forensic cues associated with the underlying generation mechanisms and embedded in low-level statistical structures. From an information-theoretic perspective, we present a key insight: effective detection in the low-level statistical space requires mitigating the dominance of semantic components while emphasizing and amplifying responses to low-SNR forgery traces. Building on this insight, we propose RippleNet, an AI-generated image detection framework based on local differential signals. RippleNet adaptively identifies forgery-sensitive regions and constructs multi-directional, multi-scale differential representations within local neighborhoods, explicitly characterizing anomalous patterns in neighborhood statistics. More importantly, we refine the attention mechanism to operate within the local differential representation space, enabling the model to establish explicit dependencies at a finer statistical granularity. This design facilitates the capture of pixel-level forgery traces that are difficult to model using conventional convolutions or image-wide patch-level attention. Extensive experiments on multiple public benchmarks and under cross-generator evaluation settings demonstrate that RippleNet achieves consistently competitive performance.",
+      "authors": [
+        "Jiazhen Yang",
+        "Ruijin Jin",
+        "Junjun Zheng",
+        "Xiangheng Kong",
+        "Zunlei Feng",
+        "Jie Lei"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-13T04:35:29+00:00",
+      "link": "https://arxiv.org/pdf/2608.12811v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Visual recognition algorithm for detecting AI-generated images via low-level statistical cues",
+      "llm_evidence_cn": "用于AI生成图像识别的视觉识别算法",
+      "llm_evidence": "用于AI生成图像识别的视觉识别算法",
+      "canonical_evidence": "用于AI生成图像识别的视觉识别算法",
+      "llm_tldr_en": "RippleNet detects AI-generated images by emphasizing low-SNR forgery traces in low-level statistical space, mitigating semantic dominance during training.",
+      "llm_tldr_cn": "AI生成图像检测面临语义显著区域主导训练、弱取证线索被抑制的问题。本文从信息论角度提出关键洞见：要在低层统计空间实现有效检测，需抑制语义分量而放大低信噪比伪造痕迹。据此提出RippleNet框架，在低层统计空间进行结构化局部差分建模。实验表明该方法能有效利用被忽略的取证线索，提升检测鲁棒性。该工作为AI生成内容取证提供了新视角。",
+      "llm_tldr": "AI生成图像检测面临语义显著区域主导训练、弱取证线索被抑制的问题。本文从信息论角度提出关键洞见：要在低层统计空间实现有效检测，需抑制语义分量而放大低信噪比伪造痕迹。据此提出RippleNet框架，在低层统计空间进行结构化局部差分建模。实验表明该方法能有效利用被忽略的取证线索，提升检测鲁棒性。该工作为AI生成内容取证提供了新视角。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "visual recognition algorithms",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2608.09011v1",
+      "source": "arxiv",
+      "title": "Dynamic Distribution-Aware Uncertainty Tracking in Vision-Language Representation Learning",
+      "abstract": "Uncertainty Quantification (UQ) aims to measure the reliability of model predictions, serving as a critical safeguard for deploying Vision-Language Models (VLMs) in safety-critical scenarios. Post-hoc approaches are widely adopted due to their lightweight nature, mapping the outputs of VLMs to uncertainty measures through learnable modules or inductive summarization. However, Post-hoc approaches remain inherently confined to fitting the failure patterns of the source domain, ignoring the dynamic nature of test distributions. To address this challenge, we propose a Dynamic Distribution-Aware Uncertainty Quantification framework (DDA-UQ) that shifts the paradigm from static mapping to a dynamic distribution-aware process. During training, we leverage a Gaussian Mixture Model to model the VVLMs'embedding space and extract distributional evidence, thereby dynamically deriving uncertainty estimates. During inference, the design dynamically responds to changes in the data distribution. Extensive experiments demonstrate that our approach significantly outperforms state-of-the-art methods.",
+      "authors": [
+        "Ao Zhou",
+        "Zhiwei Jiang",
+        "Zifeng Cheng",
+        "Cong Wang",
+        "Shufan Yang",
+        "Haoru Chen",
+        "Qing Gu"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-08-10T01:53:28+00:00",
+      "link": "https://arxiv.org/pdf/2608.09011v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Computer vision research on uncertainty quantification for vision-language models",
+      "llm_evidence_cn": "视觉语言模型不确定性量化研究",
+      "llm_evidence": "视觉语言模型不确定性量化研究",
+      "canonical_evidence": "视觉语言模型不确定性量化研究",
+      "llm_tldr_en": "DDA-UQ tracks dynamic distribution shifts for uncertainty quantification in vision-language representation learning, moving beyond static post-hoc mapping.",
+      "llm_tldr_cn": "视觉语言模型(VLM)在安全关键场景中需要不确定性量化，但现有后处理方法局限于拟合源域失败模式。本文提出DDA-UQ框架，将静态映射转变为动态分布感知过程，在训练和测试中追踪分布变化。该方法能更好地适应测试分布动态，提升不确定性估计的可靠性。该工作为VLM在动态环境中的可信部署提供了新机制。",
+      "llm_tldr": "视觉语言模型(VLM)在安全关键场景中需要不确定性量化，但现有后处理方法局限于拟合源域失败模式。本文提出DDA-UQ框架，将静态映射转变为动态分布感知过程，在训练和测试中追踪分布变化。该方法能更好地适应测试分布动态，提升不确定性估计的可靠性。该工作为VLM在动态环境中的可信部署提供了新机制。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "computer vision research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2608.13513v1",
+      "source": "arxiv",
+      "title": "TabSOM: A tabular-to-image encoding method based on self-organizing maps",
+      "abstract": "Tabular-to-image methods have emerged as novel approaches to leverage the high predictive performance of convolutional neural networks and vision transformers. They convert tabular data into image representations, mapping each feature at a fixed pixel location derived from a dimensionality-reduction method (e.g., t-SNE, UMAP, PCA). However, they encode only the marginal value of each feature and discard information about feature relationships. We propose TabSOM, a tabular-to-image encoding built on the Self-Organizing Map (SOM), which provides: (i) a spatial layout in which every input feature occupies a fixed canvas position derived from its component plane via collision-free Hungarian assignment; and (ii) a graph that captures pairwise feature relationships derived from the SOM component planes. The resulting image stacks two multi-scale node channels: one encodes feature values at fixed scales, while the other encodes pairwise feature interactions as spatial connections between related features. Two SOM-derived interpretability approaches are introduced: a prototype-inspired partial dependence plot and a class--separation importance score. Benchmarked against twelve existing tabular-to-image methods across public binary-classification datasets, TabSOM ranks first or second on every dataset and achieves the lowest variance of any method evaluated. Interpretability obtained with TabSOM was validated against Random Forest, XGBoost, and SHAP, the class-separation score shows reasonable agreement with established baselines on the top-ranked features while capturing complementary structural information from input data. These results demonstrate that TabSOM provides an effective and interpretable approach for applying deep learning architectures to tabular data, bridging the performance--interpretability gap in this domain.",
+      "authors": [
+        "David Chushig-Muzo",
+        "María Ángeles Rodríguez de Cara",
+        "Eva Milara",
+        "Francisco J. Lara-Abelenda",
+        "Luis Zhinin-Vera",
+        "Diego H. Peluffo-Ordóñez"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.LG"
+      ],
+      "published": "2026-08-13T17:35:37+00:00",
+      "link": "https://arxiv.org/pdf/2608.13513v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Tabular-to-image encoding with self-organizing maps for CNN and vision transformer predictors",
+      "llm_evidence_cn": "基于自组织映射的表格转图像编码方法，用于CNN和视觉Transformer",
+      "llm_evidence": "基于自组织映射的表格转图像编码方法，用于CNN和视觉Transformer",
+      "canonical_evidence": "基于自组织映射的表格转图像编码方法，用于CNN和视觉Transformer",
+      "llm_tldr_en": "Proposes TabSOM, a tabular-to-image encoding method based on Self-Organizing Maps that assigns each feature to a fixed canvas position via Hungarian assignment and builds a pairwise feature relation graph, improving tabular deep learning with CNNs/ViTs.",
+      "llm_tldr_cn": "表格转图像方法通过将表格数据编码为图像来利用CNN和视觉Transformer的预测性能，但现有方法仅编码单特征边际值，忽略特征间关系。论文提出基于自组织映射（SOM）的TabSOM编码：通过无冲突匈牙利匹配将每个输入特征映射到固定画布位置，并构建捕获成对特征关系的图结构。该方法保留了特征空间布局与关系信息，能够提升面向表格数据的深度视觉模型预测效果，为表格数据与视觉模型结合提供了新思路。",
+      "llm_tldr": "表格转图像方法通过将表格数据编码为图像来利用CNN和视觉Transformer的预测性能，但现有方法仅编码单特征边际值，忽略特征间关系。论文提出基于自组织映射（SOM）的TabSOM编码：通过无冲突匈牙利匹配将每个输入特征映射到固定画布位置，并构建捕获成对特征关系的图结构。该方法保留了特征空间布局与关系信息，能够提升面向表格数据的深度视觉模型预测效果，为表格数据与视觉模型结合提供了新思路。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "feature extraction in computer vision",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2608.10864v1",
+      "source": "arxiv",
+      "title": "Multi-View Relational Distillation for Spatial Reasoning with Vision-Language Models",
+      "abstract": "Vision-language models (VLMs) have achieved strong image and video understanding, yet their visual-spatial representations remain geometrically fragile, leading to failures in spatial reasoning needed for embodied AI, robotics, and autonomous driving. Prior approaches to geometry grounding either fine-tune VLMs on spatial question answering, which can perpetuate spurious visual representations, or fuse features from large geometry-grounded vision models, which substantially increases model size at inference. Knowledge distillation from geometry-grounded vision models offers an alternative, but directly matching multi-view teacher features can disrupt the pretrained alignment between visual and textual representations, degrading object- and language-semantic capabilities. We propose multi-view relational distillation (MVRD), which distills patch-wise cosine similarities across views instead of the teacher features themselves. These relations encode geometric correspondences adequate for spatial understanding, while leaving the student representation underdetermined, allowing it to remain close to its pretrained vision- language space. Across representative VLMs, MVRD improves visual-spatial reasoning, outperforming supervised fine-tuning and feature distillation while approaching feature fusion methods with considerably fewer added parameters and lower latency. We show that MVRD makes visual representations more geometric while retaining language alignment, and generalizes to 3D scene understanding tasks such as object grounding, dense captioning, and question answering.",
+      "authors": [
+        "Kiet T. Nguyen",
+        "Hanbo Shim",
+        "Jinwoo Kim",
+        "Seunghoon Hong"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-11T12:34:41+00:00",
+      "link": "https://arxiv.org/pdf/2608.10864v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "feature distillation for spatial visual representations",
+      "llm_evidence_cn": "空间视觉表征的特征蒸馏",
+      "llm_evidence": "空间视觉表征的特征蒸馏",
+      "canonical_evidence": "空间视觉表征的特征蒸馏",
+      "llm_tldr_en": "Proposes multi-view relational distillation from geometry-grounded models to improve VLM spatial reasoning while preserving visual-textual alignment and model size.",
+      "llm_tldr_cn": "针对视觉语言模型在空间推理中几何表征脆弱的问题，论文提出多视图关系蒸馏，从几何基干模型中迁移空间特征而不破坏视觉-文本预训练对齐。与直接特征匹配或增大模型不同，该方法保持了模型规模并提升了物体与空间关系理解。实验证明其在机器人、自动驾驶等空间推理任务上更鲁棒。",
+      "llm_tldr": "针对视觉语言模型在空间推理中几何表征脆弱的问题，论文提出多视图关系蒸馏，从几何基干模型中迁移空间特征而不破坏视觉-文本预训练对齐。与直接特征匹配或增大模型不同，该方法保持了模型规模并提升了物体与空间关系理解。实验证明其在机器人、自动驾驶等空间推理任务上更鲁棒。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "feature extraction in computer vision",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2608.12532v1",
+      "source": "arxiv",
+      "title": "MASCOT: Model-Aware Submodular Coverage for Composite-Attribute Text-to-Image Retrieval",
+      "abstract": "Vision-Language Models (VLMs) are highly effective in retrieving semantically relevant images. However, in practice, relevance alone is often insufficient. Systems must also achieve Result Diversification (RD) across composite attributes such as geography and time, a task for which precise control remains challenging. Current re-ranking methods, such as Multi-Source Determinantal Point Processes (MS-DPP), address this using manifold-based repulsion over similarity representations. Although this strategy is effective for broad exploration, it exposes a key limitation in manifold-based models: when subjected to diversity-decrease tasks on discrete metadata, they suffer substantial degradation in early-rank recall.   To bridge this gap, we introduce MASCOT (Model-Aware Submodular Coverage for Composite-Attribute Text-to-Image Retrieval). Instead of relying on manifold repulsion, MASCOT formulates multi-attribute diversity as a resource allocation problem, projecting attributes into a soft-binning space weighted by query-driven importance. Averaged across the three PixelProse diversity-decrease tasks, MASCOT preserves an early-rank recall (R@10) of 88.58%, while MS-DPP retains 67.63%. The margin widens under composite constraints: on PP_geo_hour, where temporal and geographic diversity must be suppressed simultaneously, MS-DPP's recall collapses from 0.9737 to 0.4931 and its top-ranked result degrades to R@1 = 0.23, while MASCOT holds R@10 = 0.9410 and R@1 = 0.7202 at a diversity metric above the unconstrained baseline. We do not claim uniform superiority: on aggregate diversity-relevance scores our own simpler ablations attain higher harmonic means on all three decrease tasks, and MASCOT's advantage is specific to recall beyond rank 1 under composite constraints.",
+      "authors": [
+        "Aaryan Sharma",
+        "Vishak Prasad C",
+        "Virendra Singh",
+        "Ganesh Ramakrishnan"
+      ],
+      "primary_category": "cs.MM",
+      "categories": [
+        "cs.MM",
+        "cs.CV",
+        "cs.IR"
+      ],
+      "published": "2026-08-12T19:07:07+00:00",
+      "link": "https://arxiv.org/pdf/2608.12532v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Submodular coverage for diversified text-to-image retrieval with composite attributes",
+      "llm_evidence_cn": "面向复合属性文本-图像检索的模型感知次模覆盖",
+      "llm_evidence": "面向复合属性文本-图像检索的模型感知次模覆盖",
+      "canonical_evidence": "面向复合属性文本-图像检索的模型感知次模覆盖",
+      "llm_tldr_en": "MASCOT addresses result diversification for text-to-image retrieval using model-aware submodular coverage, improving early-rank recall in diversity-decrease tasks compared to manifold-based re-rankers.",
+      "llm_tldr_cn": "文本-图像检索不仅需要相关性，还需在复合属性上实现结果多样化。现有流形重排序方法在离散元数据上的多样化任务中早期召回显著下降。MASCOT提出模型感知的次模覆盖重排序，显式建模元数据约束，在多样化增强与多样化降低任务中均保持较高早期召回，为检索系统提供了更可控的多样化排序方案。",
+      "llm_tldr": "文本-图像检索不仅需要相关性，还需在复合属性上实现结果多样化。现有流形重排序方法在离散元数据上的多样化任务中早期召回显著下降。MASCOT提出模型感知的次模覆盖重排序，显式建模元数据约束，在多样化增强与多样化降低任务中均保持较高早期召回，为检索系统提供了更可控的多样化排序方案。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "computer vision research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2608.13502v1",
+      "source": "arxiv",
+      "title": "GS$^{2}$CI: Robust Gaussian Splatting For Snapshot Compressive Imaging via Large Vision Model Priors",
+      "abstract": "Snapshot Compressive Imaging (SCI) offers an efficient solution for high-speed video acquisition and, under exposure-time camera--scene relative motion, multi-view scene capture by compressing temporal or spatial information into a single 2D measurement. While recent studies have explored SCI for 3D scene reconstruction, existing methods struggle with significant challenges due to information loss, limited viewpoint diversity, and the computational burden of jointly optimizing 3D representations and camera poses. In this work, we propose a novel framework that reconstructs high-quality 3D scenes from a single SCI measurement by leveraging 3D Gaussian Splatting (3DGS) and the powerful priors of large-scale vision foundation models (VFMs). Our primary reconstruction combines measurement-derived 3D VFM initialization with SCI-aware Gaussian optimization. After coarse-stage convergence, an auxiliary 2D VFM provides pseudo-view supervision at synthesized viewpoints for local appearance refinement. To further address the instability caused by ambiguous SCI supervision during 3DGS optimization, we introduce Opacity-Guided Splitting and Growth Regulation (OSGR), an SCI-specific densification strategy that augments split candidates using local opacity statistics, discourages loss-compensating opacity inflation through mean-opacity regulation, and bounds representation growth with explicit candidate-ratio and Gaussian-count constraints. Extensive experiments across multiple benchmarks demonstrate that our method achieves the strongest overall performance, combining leading reconstruction quality and robustness to viewpoint variation with competitive computational efficiency.",
+      "authors": [
+        "Yanming Yang",
+        "Chenxi Song",
+        "Ping Wang",
+        "Xin Yuan",
+        "Chi Zhang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-13T17:29:53+00:00",
+      "link": "https://arxiv.org/pdf/2608.13502v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "3D scene reconstruction with large vision model priors",
+      "llm_evidence_cn": "利用大视觉模型先验的三维场景重建",
+      "llm_evidence": "利用大视觉模型先验的三维场景重建",
+      "canonical_evidence": "利用大视觉模型先验的三维场景重建",
+      "llm_tldr_en": "Reconstructs high-quality 3D scenes from a single snapshot compressive measurement using 3D Gaussian Splatting with large vision model priors, improving robustness and quality.",
+      "llm_tldr_cn": "面向快照压缩成像中的3D场景重建，论文提出利用3D高斯溅射结合大视觉模型先验的框架，从单张SCI测量重建高质量场景。方法缓解了信息损失、视角不足和联合优化开销大的问题。实验表明其重建质量与鲁棒性均超过现有方法，为大视觉模型赋能计算成像提供新路径。",
+      "llm_tldr": "面向快照压缩成像中的3D场景重建，论文提出利用3D高斯溅射结合大视觉模型先验的框架，从单张SCI测量重建高质量场景。方法缓解了信息损失、视角不足和联合优化开销大的问题。实验表明其重建质量与鲁棒性均超过现有方法，为大视觉模型赋能计算成像提供新路径。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "computer vision research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}

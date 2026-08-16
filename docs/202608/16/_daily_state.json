@@ -1,0 +1,169 @@
+{
+  "date": "20260816",
+  "date_label": "",
+  "generated_at": "2026-08-16 19:33:48 UTC",
+  "recommend_exists": true,
+  "run_count": 1,
+  "papers": [
+    {
+      "paper_id": "2608.10723v2",
+      "route": "202608/16/2608.10723v2-grid-preserving-knowledge-distillation-transferring-convolutional-inductive-bias-to-vision-transformers-under-data-scarcity",
+      "title": "Grid-Preserving Knowledge Distillation: Transferring Convolutional Inductive Bias to Vision Transformers under Data Scarcity",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "数据稀缺下将保持网格的CNN特征蒸馏到视觉Transformer",
+      "first_seen_at": "2026-08-16 19:33:48 UTC",
+      "updated_at": "2026-08-16 19:33:48 UTC"
+    },
+    {
+      "paper_id": "2608.12721v1",
+      "route": "202608/16/2608.12721v1-vos-agent-the-1st-place-solution-for-the-8th-lsvos-challenge-mosev2-track",
+      "title": "VOS-Agent: The 1st Place Solution for the 8th LSVOS Challenge (MOSEv2 Track)",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "视频目标分割方法，结合视觉跟踪代理与分割模块",
+      "first_seen_at": "2026-08-16 19:33:48 UTC",
+      "updated_at": "2026-08-16 19:33:48 UTC"
+    },
+    {
+      "paper_id": "2608.09482v1",
+      "route": "202608/16/2608.09482v1-beyond-uniform-restoration-empowering-all-in-one-restoration-with-pixel-level-multimodal-guidance",
+      "title": "Beyond Uniform Restoration: Empowering All-in-One Restoration with Pixel-Level Multimodal Guidance",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "计算机视觉中的全能图像修复研究",
+      "first_seen_at": "2026-08-16 19:33:48 UTC",
+      "updated_at": "2026-08-16 19:33:48 UTC"
+    },
+    {
+      "paper_id": "2608.10544v1",
+      "route": "202608/16/2608.10544v1-flow-straight-to-reality-perceptually-consistent-flow-matching-for-efficient-image-restoration",
+      "title": "Flow Straight to Reality: Perceptually Consistent Flow Matching for Efficient Image Restoration",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "基于流匹配的图像恢复以平衡失真与感知质量",
+      "first_seen_at": "2026-08-16 19:33:48 UTC",
+      "updated_at": "2026-08-16 19:33:48 UTC"
+    },
+    {
+      "paper_id": "2608.12811v1",
+      "route": "202608/16/2608.12811v1-structured-local-differential-modeling-for-ai-generated-image-detection",
+      "title": "Structured Local Differential Modeling for AI-Generated Image Detection",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "用于AI生成图像识别的视觉识别算法",
+      "first_seen_at": "2026-08-16 19:33:48 UTC",
+      "updated_at": "2026-08-16 19:33:48 UTC"
+    },
+    {
+      "paper_id": "2608.09011v1",
+      "route": "202608/16/2608.09011v1-dynamic-distribution-aware-uncertainty-tracking-in-vision-language-representation-learning",
+      "title": "Dynamic Distribution-Aware Uncertainty Tracking in Vision-Language Representation Learning",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "视觉语言模型不确定性量化研究",
+      "first_seen_at": "2026-08-16 19:33:48 UTC",
+      "updated_at": "2026-08-16 19:33:48 UTC"
+    },
+    {
+      "paper_id": "2608.10864v1",
+      "route": "202608/16/2608.10864v1-multi-view-relational-distillation-for-spatial-reasoning-with-vision-language-models",
+      "title": "Multi-View Relational Distillation for Spatial Reasoning with Vision-Language Models",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "空间视觉表征的特征蒸馏",
+      "first_seen_at": "2026-08-16 19:33:48 UTC",
+      "updated_at": "2026-08-16 19:33:48 UTC"
+    },
+    {
+      "paper_id": "2608.12532v1",
+      "route": "202608/16/2608.12532v1-mascot-model-aware-submodular-coverage-for-composite-attribute-text-to-image-retrieval",
+      "title": "MASCOT: Model-Aware Submodular Coverage for Composite-Attribute Text-to-Image Retrieval",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "面向复合属性文本-图像检索的模型感知次模覆盖",
+      "first_seen_at": "2026-08-16 19:33:48 UTC",
+      "updated_at": "2026-08-16 19:33:48 UTC"
+    },
+    {
+      "paper_id": "2608.13502v1",
+      "route": "202608/16/2608.13502v1-gs2ci-robust-gaussian-splatting-for-snapshot-compressive-imaging-via-large-vision-model-priors",
+      "title": "GS$^{2}$CI: Robust Gaussian Splatting For Snapshot Compressive Imaging via Large Vision Model Priors",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "利用大视觉模型先验的三维场景重建",
+      "first_seen_at": "2026-08-16 19:33:48 UTC",
+      "updated_at": "2026-08-16 19:33:48 UTC"
+    },
+    {
+      "paper_id": "2608.13513v1",
+      "route": "202608/16/2608.13513v1-tabsom-a-tabular-to-image-encoding-method-based-on-self-organizing-maps",
+      "title": "TabSOM: A tabular-to-image encoding method based on self-organizing maps",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "基于自组织映射的表格转图像编码方法，用于CNN和视觉Transformer",
+      "first_seen_at": "2026-08-16 19:33:48 UTC",
+      "updated_at": "2026-08-16 19:33:48 UTC"
+    }
+  ]
+}
