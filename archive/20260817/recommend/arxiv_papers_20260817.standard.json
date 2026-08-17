@@ -1,0 +1,456 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-08-17T19:52:59.323730+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 7,
+    "deep_cap": 6,
+    "deep_selected": 6,
+    "quick_candidates": 5,
+    "quick_skim_target": 11,
+    "quick_selected": 5
+  },
+  "deep_dive": [
+    {
+      "id": "2608.12980v1",
+      "source": "arxiv",
+      "title": "DiCoR: Decoupled Referent Disambiguation and Contour Recalibration for Efficient Referring Remote Sensing Image Segmentation",
+      "abstract": "Referring remote sensing image segmentation (RRSIS) aims to delineate targets specified by natural language expressions in remote sensing imagery. Existing methods mainly follow joint fusion segmentation (JFS) or decoupled prompt segmentation (DPS). JFS is efficient but often suffers from limited accuracy because referent localization and mask delineation are optimized under a unified objective, whereas DPS separates localization from mask generation using spatial prompts and foundation segmenters at the cost of higher memory consumption and inference latency. To bridge this gap, we propose DiCoR, a decoupled referent disambiguation and contour recalibration framework built on an efficient JFS pipeline. DiCoR addresses two key challenges: distinguishing the correct referent from ambiguous candidates and refining coarse masks after localization. A disambiguation-aware localization guidance strategy ranks salient candidate regions with adaptive linguistic cues and injects the resulting localization prior into fused features. A lightweight contour recalibration module further predicts residual corrections to coarse logits under localized contour supervision, improving mask quality with limited computational overhead. Experiments on RefSegRS, RRSIS-D, and RISBench show that DiCoR achieves the best segmentation accuracy across all three benchmarks. On RefSegRS, it improves mIoU and gIoU by 5.28% and 2.87% over a competitive JFS method while running 4.7% faster than a representative DPS method, demonstrating a favorable accuracy-efficiency trade-off. Code is available at https://github.com/zyGao1126/DiCoR.",
+      "authors": [
+        "Ziyang Gao",
+        "Zhizhuo Jiang",
+        "Jingjing Chang",
+        "Yixin Yang",
+        "Yuwen Pan",
+        "Yong-Qiang Mao",
+        "Yu Liu",
+        "Hai-Bao Chen"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-13T09:02:55+00:00",
+      "link": "https://arxiv.org/pdf/2608.12980v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 10.0,
+      "llm_evidence_en": "Efficient referring remote sensing image segmentation with decoupled referent disambiguation and contour recalibration",
+      "llm_evidence_cn": "解耦指代消歧与轮廓重校准的高效遥感图像指代分割",
+      "llm_evidence": "解耦指代消歧与轮廓重校准的高效遥感图像指代分割",
+      "canonical_evidence": "解耦指代消歧与轮廓重校准的高效遥感图像指代分割",
+      "llm_tldr_en": "DiCoR separates referent disambiguation from mask delineation in an efficient joint fusion pipeline for referring remote sensing image segmentation, balancing accuracy and efficiency.",
+      "llm_tldr_cn": "指代遥感图像分割需根据自然语言描述圈定目标，现有方法在效率与精度间难以平衡。DiCoR在高效联合融合流水线上解耦目标消歧与轮廓生成，先定位再精化轮廓，既避免联合融合的精度不足，也降低解耦提示分割的显存和延迟开销。在基准上兼顾了性能与速度。",
+      "llm_tldr": "指代遥感图像分割需根据自然语言描述圈定目标，现有方法在效率与精度间难以平衡。DiCoR在高效联合融合流水线上解耦目标消歧与轮廓生成，先定位再精化轮廓，既避免联合融合的精度不足，也降低解耦提示分割的显存和延迟开销。在基准上兼顾了性能与速度。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "image segmentation techniques",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.08696v1",
+      "source": "arxiv",
+      "title": "OccAnyScene: Towards Unified Indoor-Outdoor 3D Occupancy Predictio",
+      "abstract": "3D occupancy prediction is fundamental to scene understanding, yet existing 3D semantic occupancy methods are typically specialized to fixed scene types and occupancy protocols. We introduce Cross-Scene 3D Semantic Occupancy Prediction, a new task setting which requires a single model to handle heterogeneous indoor and outdoor scenes with varying cameras, spatial ranges, voxel specifications, and semantic taxonomies. This setting poses a fundamental challenge: achieving metric-consistent yet scene-adaptive image-to-3D lifting across varying camera configurations and scene scales. To address this challenge, we propose OccAnyScene, a pixel-frustum-centered Gaussian framework built upon a pretrained depth foundation model. Specifically, the framework employs Pixel-Aligned Frustum Feature Aggregation to construct a camera-aware frustum query for each feature pixel, and Frustum-Parameterized Gaussian Construction to decode each query into multiple Gaussians whose positions and sizes are constrained by the predicted pixel depth and corresponding frustum geometry. OccAnyScene sets new state-of-the-art results, achieving 59.92% mIoU on the indoor Occ-ScanNet and 23.06% mIoU on the outdoor SurroundOcc-nuScenes.",
+      "authors": [
+        "Junjie Liu",
+        "Wanshui Gan",
+        "Zitong Dai",
+        "Guiping Cao",
+        "Yan Li",
+        "Ke Chen",
+        "Dongmei Jiang",
+        "Xiangyuan Lan",
+        "Jianguo Zhang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-09T13:19:53+00:00",
+      "link": "https://arxiv.org/pdf/2608.08696v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Cross-scene 3D semantic occupancy prediction for heterogeneous indoor and outdoor scenes",
+      "llm_evidence_cn": "面向异质室内外场景的跨场景三维语义占用预测",
+      "llm_evidence": "面向异质室内外场景的跨场景三维语义占用预测",
+      "canonical_evidence": "面向异质室内外场景的跨场景三维语义占用预测",
+      "llm_tldr_en": "OccAnyScene introduces cross-scene 3D semantic occupancy prediction and a pixel-frustum-centered Gaussian framework with a pretrained depth foundation model to handle heterogeneous indoor and outdoor cameras.",
+      "llm_tldr_cn": "现有三维语义占用方法针对固定场景类型和占用协议，难以统一室内外异质场景。本文提出跨场景三维语义占用预测任务，并设计OccAnyScene，基于预训练深度基础模型的像素-视锥高斯框架实现度量一致且场景自适应的图像到三维提升。在多种相机配置和语义体系下展现出良好泛化能力。",
+      "llm_tldr": "现有三维语义占用方法针对固定场景类型和占用协议，难以统一室内外异质场景。本文提出跨场景三维语义占用预测任务，并设计OccAnyScene，基于预训练深度基础模型的像素-视锥高斯框架实现度量一致且场景自适应的图像到三维提升。在多种相机配置和语义体系下展现出良好泛化能力。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "computer vision research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.09152v1",
+      "source": "arxiv",
+      "title": "LightAIR: Lightweight Action Inversion and Riemannian Rectification for Text-based Person Anomaly Search",
+      "abstract": "Traditional Text-based Person Search (TPS) is typically limited to matching static appearance attributes, severely neglecting dynamic action information. The Text-based Person Anomaly Search (TPAS) task bridges this gap, requiring models to locate micro-level specific abnormal behaviors while matching macro-level appearance of pedestrians. However, current TPAS methods face fundamental limitations: external explicit pose estimators are fragile in unconstrained surveillance scenarios, and implicit learning encounters visual decoupling failure under pixel-level entanglement, causing dominant appearance information to easily swallow and contaminate subtle action features. Furthermore, performing contrastive optimization on hard negative samples (``same appearance, different actions'') in conventional Euclidean spaces induces severe shortcut learning. To address these, we propose the Lightweight Action Inversion and Riemannian rectification network (LightAIR). First, it introduces textual semantic priors as anchors via a lightweight action inversion operator to extract pure action features, thereby overcoming visual-inherent coupling. Subsequently, it employs orthogonal null-space projection to constrain appearance features within the orthogonal complement space of action features, guaranteeing strict forward decoupling. Finally, we designed a gradient rectification module that computes the Riemannian gradient to constrain the backpropagation trajectory, forcing the gradient flow to update strictly along the tangent space that preserves decoupling properties, thereby cutting off harmful shortcuts. Extensive experiments on the widely used TPAS and TIPR datasets demonstrate that LightAIR significantly outperforms existing state-of-the-art methods. Codes are available at https://github.com/rainy-london/LightAIR",
+      "authors": [
+        "Yulun Zhang",
+        "Zixu Li",
+        "Zhiwei Chen",
+        "Zhiheng Fu",
+        "Wenbo Wang",
+        "Zihang Qiu",
+        "Zhilin Wang",
+        "Ruxin Wang",
+        "Yupeng Hu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-10T05:59:07+00:00",
+      "link": "https://arxiv.org/pdf/2608.09152v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "visual recognition algorithm for text-based person anomaly search",
+      "llm_evidence_cn": "文本行人异常搜索的视觉识别算法",
+      "llm_evidence": "文本行人异常搜索的视觉识别算法",
+      "canonical_evidence": "文本行人异常搜索的视觉识别算法",
+      "llm_tldr_en": "Proposes LightAIR, a lightweight method for text-based person anomaly search that combines action inversion and Riemannian rectification to locate micro abnormal behaviors while suppressing appearance contamination.",
+      "llm_tldr_cn": "传统文本行人搜索仅匹配静态外观，忽略了动态动作信息。文本行人异常搜索要求同时定位细微异常行为并匹配行人宏观外观，但现有方法受限于姿态估计脆弱和外观信息污染动作特征。为此提出LightAIR，采用轻量动作反转与黎曼校正来解耦并纠正动作与外观。实验表明该方法在异常定位与外观匹配上取得更好效果，为监控场景异常搜索提供高效方案。",
+      "llm_tldr": "传统文本行人搜索仅匹配静态外观，忽略了动态动作信息。文本行人异常搜索要求同时定位细微异常行为并匹配行人宏观外观，但现有方法受限于姿态估计脆弱和外观信息污染动作特征。为此提出LightAIR，采用轻量动作反转与黎曼校正来解耦并纠正动作与外观。实验表明该方法在异常定位与外观匹配上取得更好效果，为监控场景异常搜索提供高效方案。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "visual recognition algorithms",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.14142v1",
+      "source": "arxiv",
+      "title": "PISA: A Pseudo-Individual Source-Domain Feature Adaptation Framework for Test-Time Open-Vocabulary Object Detection",
+      "abstract": "Open-vocabulary object detection test-time adaptation (OVOD-TTA) aims to address the performance degradation that pre-trained base models suffer when encountering image-domain shifts. Existing source-free OVOD-TTA methods rely either on refined test-time information for re-scoring or on pseudo-labels for self-training, leading to significant accuracy degradation when initial predictions are poor. Meanwhile, most conventional source-domain estimation methods recover abstract, sparse representations suitable for the classification task, but fail to capture the dense, concrete features required for detection. To address these issues, we propose PISA, a novel source-free OVOD-TTA method that can be seamlessly integrated into open-vocabulary visual backbones. The core components of our method are the Corruption-Invariant Feature Extractor (CIFE), the Feature Alignment Module (FAM), and a multi-scale alignment framework (BAA). To capture detection-suitable features, we develop CIFE to exploit the invariance of CLIP's visual features across corrupted images, ensuring robustness against various corruptions. We further develop FAM and BAA for the pre-training and adaptation to transform the corruption-invariant features into pseudo-individual source-domain features that are close to the original source-domain features. In this way, dense and concrete pseudo-individual source-domain features are used for supervision instead of unreliable pseudo-label signals. Experiments on the corrupted VOC-C, COCO-C, and LVIS-C benchmarks across three base models demonstrate that PISA substantially improves both the localization precision and the category recognition accuracy of the original models. Notably, PISA achieves state-of-the-art performance without requiring access to source-domain data, surpassing existing methods by 3.92% in AP@50% on COCO-C.",
+      "authors": [
+        "Ziyan He",
+        "Xiongtai Yang",
+        "Tao Wang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-14T09:47:44+00:00",
+      "link": "https://arxiv.org/pdf/2608.14142v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "test-time adaptation for open-vocabulary object detection",
+      "llm_evidence_cn": "开放词汇目标检测的测试时适配",
+      "llm_evidence": "开放词汇目标检测的测试时适配",
+      "canonical_evidence": "开放词汇目标检测的测试时适配",
+      "llm_tldr_en": "Proposes PISA, a source-free test-time adaptation method for open-vocabulary object detection that uses pseudo-individual source-domain features to capture dense detection features and adapt seamlessly under domain shift.",
+      "llm_tldr_cn": "开放词汇目标检测测试时面对图像域偏移会显著退化，现有无源适配方法依赖重打分或伪标签，在初始预测差时精度损失大。本文提出PISA，一种伪个体源域特征适配框架，从源域估计中恢复密集且具体的检测特征，能够无缝适配目标域。该方法在域偏移下有效提升开放词汇检测精度，为无源测试时适配提供了新思路。",
+      "llm_tldr": "开放词汇目标检测测试时面对图像域偏移会显著退化，现有无源适配方法依赖重打分或伪标签，在初始预测差时精度损失大。本文提出PISA，一种伪个体源域特征适配框架，从源域估计中恢复密集且具体的检测特征，能够无缝适配目标域。该方法在域偏移下有效提升开放词汇检测精度，为无源测试时适配提供了新思路。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "object detection methods",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.14146v1",
+      "source": "arxiv",
+      "title": "CSG-Mamba: A Convolutional Scoring Gating Vision State Space Network for Endoscopic Polyp Segmentation",
+      "abstract": "Accurate polyp segmentation is critical for computer-aided colonoscopy, yet endoscopic images often contain low-contrast boundaries, mucosal texture interference, specular highlights, and device-dependent appearance shifts. Vision State Space Models (SSMs) provide efficient long-range modeling with linear complexity, but existing Vision Mamba segmentation models typically convert 2D features into 1D scanning sequences, which may weaken local geometric continuity and over-smooth irregular contours. We propose CSG-Mamba, a convolutional scoring gating Vision State Space network for endoscopic polyp segmentation. Built on a VM-UNet-style asymmetric U-shaped encoder-decoder, CSG-Mamba inserts a Convolutional Scoring Gating (CSG) module at the semantically rich bottleneck. CSG generates a local spatial score map through pointwise and large-kernel depthwise convolutions and recalibrates state-space features by multiplicative gating. Experiments with three random seeds show that CSG-Mamba achieves 0.9220 Dice and 15.87 HD95 on Kvasir-SEG, and 0.7418 Dice and 0.6570 mIoU on CVC-ColonDB, outperforming the baselines on most overlap and recall metrics while maintaining competitive boundary accuracy.",
+      "authors": [
+        "Yuliang Wang",
+        "Jiaqi Wu",
+        "Jiaye Song",
+        "Shuxia Ren"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-14T09:54:52+00:00",
+      "link": "https://arxiv.org/pdf/2608.14146v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "endoscopic polyp segmentation with a vision state space network",
+      "llm_evidence_cn": "基于视觉状态空间网络的内窥镜息肉分割",
+      "llm_evidence": "基于视觉状态空间网络的内窥镜息肉分割",
+      "canonical_evidence": "基于视觉状态空间网络的内窥镜息肉分割",
+      "llm_tldr_en": "Proposes CSG-Mamba, a convolutional scoring gating Vision State Space Network for endoscopic polyp segmentation, preserving local geometric continuity in a VM-UNet-style asymmetric U-shape encoder-decoder.",
+      "llm_tldr_cn": "内窥镜息肉分割面临低对比边界和黏膜纹理干扰，现有Vision Mamba模型将二维特征转为一维扫描序列，削弱局部几何连续性。本文提出CSG-Mamba，基于VM-UNet风格的非对称U型编解码器，插入卷积评分门控模块，兼顾长程依赖与局部细节。该方法在息肉分割任务上改善了不规则轮廓的恢复，为医学图像分割提供了高效的状态空间网络设计。",
+      "llm_tldr": "内窥镜息肉分割面临低对比边界和黏膜纹理干扰，现有Vision Mamba模型将二维特征转为一维扫描序列，削弱局部几何连续性。本文提出CSG-Mamba，基于VM-UNet风格的非对称U型编解码器，插入卷积评分门控模块，兼顾长程依赖与局部细节。该方法在息肉分割任务上改善了不规则轮廓的恢复，为医学图像分割提供了高效的状态空间网络设计。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "image segmentation techniques",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.14282v1",
+      "source": "arxiv",
+      "title": "MAGneT-3D: Monocular and Domain-Generalizable Temporal 3D Detection",
+      "abstract": "Monocular temporal 3D detection aims to detect objects in 3D, given a monocular video. Query-based 3D detectors unify detection and cross-view association, but their learnable queries fit the spatial distribution of the training data (e.g., field-of-view). We show that this issue is especially severe when these models are applied to monocular video, hindering generalization to unseen datasets and environments. To address this limitation, we introduce MAGneT-3D, the first method for domain-generalized monocular temporal 3D object detection. Instead of relying on static learnable queries, we propose a Domain-Robust Anchor Generator (DRAG) approach that adaptively derives 3D proposals during inference. To further enable domain generalization, we propose a Temporal Refinement and Identity Merging (TRIM) strategy, reducing dependence on specific 3D proposals. To enable comprehensive domain-generalization evaluation, we establish a cross-dataset benchmark spanning nuScenes, Waymo, Lyft, and ONCE. Under zero-shot domain shifts, MAGneT-3D outperforms all baselines, improving NDS from 12.1% to 18.6% while also increasing in-domain accuracy.",
+      "authors": [
+        "Mohamed Kotb",
+        "Johannes Meier",
+        "Christoph Reich",
+        "Oussema Dhaouadi",
+        "Luis Denninger",
+        "Daniel Cremers"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-14T13:09:07+00:00",
+      "link": "https://arxiv.org/pdf/2608.14282v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "domain-generalizable monocular temporal 3D object detection",
+      "llm_evidence_cn": "领域泛化的单目时序3D目标检测",
+      "llm_evidence": "领域泛化的单目时序3D目标检测",
+      "canonical_evidence": "领域泛化的单目时序3D目标检测",
+      "llm_tldr_en": "Introduces MAGneT-3D, the first domain-generalized monocular temporal 3D object detection method, with a Domain-Robust Anchor Generator that adaptively derives 3D proposals at inference to avoid overfitting to training view distributions.",
+      "llm_tldr_cn": "单目时序3D检测中，查询基检测器容易过拟合训练数据的空间分布，导致跨数据集泛化差。本文提出MAGneT-3D，首个领域泛化的单目时序3D检测方法，利用领域鲁棒锚点生成器在推理时自适应生成3D提案，摆脱静态可学习查询。该方法显著提升了对未知数据集和环境的泛化能力，为单目3D检测的实用化提供了新路径。",
+      "llm_tldr": "单目时序3D检测中，查询基检测器容易过拟合训练数据的空间分布，导致跨数据集泛化差。本文提出MAGneT-3D，首个领域泛化的单目时序3D检测方法，利用领域鲁棒锚点生成器在推理时自适应生成3D提案，摆脱静态可学习查询。该方法显著提升了对未知数据集和环境的泛化能力，为单目3D检测的实用化提供了新路径。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "object detection methods",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2608.14085v1",
+      "source": "arxiv",
+      "title": "CoDS: Robust Collaborative Perception via Expert-driven Detection and BEV Segmentation",
+      "abstract": "Collaborative perception breaks through single-view limitations via multi-agent information exchange. However, multi-source noise such as pose errors and communication delays degrades fusion feature quality, constraining perception performance. Joint training of detection and BEV segmentation provides a natural remedy, where segmented road regions help constrain target distributions and detection bounding boxes help recover ambiguous segmentation boundaries. To this end, we propose a robust Collaborative perception framework with expert-driven Detection and bev Segmentation (CoDS). To address spatial inconsistency in fusion quality, we first introduce the Collaborative Reliability Map (CoRM) to explicitly quantify feature quality distribution. Based on CoRM, we design the Semantic Mixture-of-Experts (S-MoE) module to extract differentiated features for inconsistent feature demands. Finally, to further mitigate feature noise degradation, the Bidirectional Task Complementary Interaction (BTCI) refines task-aware features through bidirectional injection. Extensive experiments on OPV2V and V2V4Real datasets show that our CoDS surpasses existing baselines on both tasks and maintains stable robustness under multi-source noise. Code: https://github.com/JinlongW128/CoDS and https://openi.pcl.ac.cn/OpenAIDriving/CoDS.",
+      "authors": [
+        "Jinlong Wang",
+        "Yuang Jia",
+        "Junhong Lin",
+        "Nannan Li",
+        "Wei Gao"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-14T08:47:28+00:00",
+      "link": "https://arxiv.org/pdf/2608.14085v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "collaborative perception with joint object detection and BEV segmentation",
+      "llm_evidence_cn": "联合目标检测与BEV分割的协作感知",
+      "llm_evidence": "联合目标检测与BEV分割的协作感知",
+      "canonical_evidence": "联合目标检测与BEV分割的协作感知",
+      "llm_tldr_en": "Proposes CoDS, a robust collaborative perception framework that jointly trains expert-driven object detection and BEV segmentation, using a Collaborative Reliability Map to handle feature quality degradation from pose errors and communication delays.",
+      "llm_tldr_cn": "多智能体协作感知中，位姿误差与通信延迟等噪声会降低融合特征质量。本文提出CoDS框架，将目标检测与BEV分割联合训练，并用协作可靠性图显式刻画特征质量分布，以分割区域约束目标分布、检测框恢复模糊分割边界。该方法能有效抑制多源噪声，提升协同感知的鲁棒性与精度，为多车协同提供了统一的检测-分割框架。",
+      "llm_tldr": "多智能体协作感知中，位姿误差与通信延迟等噪声会降低融合特征质量。本文提出CoDS框架，将目标检测与BEV分割联合训练，并用协作可靠性图显式刻画特征质量分布，以分割区域约束目标分布、检测框恢复模糊分割边界。该方法能有效抑制多源噪声，提升协同感知的鲁棒性与精度，为多车协同提供了统一的检测-分割框架。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "object detection methods",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2608.13783v1",
+      "source": "arxiv",
+      "title": "Doomed to Re-Annotate, Forever: The ImageNet Story",
+      "abstract": "Top-1 accuracy on ImageNet-1k remains the most commonly reported metric in visual recognition. Quality issues with the dataset have been repeatedly reported, yet the original 2012 noisy labels are still predominantly used. The paper presents a comprehensive effort, which goes well beyond prior correction attempts, towards obtaining accurate and complete ImageNet-1k validation set annotations. The result, ReImageNet, includes multilabel correction, object localization, revised class definitions, and semantic attributes (text-recognition, rendition, reflection, crowd, dominant). The reannotation reveals that approximately 12% of the original ImageNet-1k labels are incorrect, 33.3% of images are multilabel and 3.8% contain no object from an ImageNet-1k class. With the new labels, top-1 accuracy increases by up to 1.2% for supervised models and by 5-6% for MLLMs. We argue that annotation at ImageNet scale cannot realistically be completed in one pass, as errors and definitional issues are discovered only through annotating, and we build our pipeline around repeated refinement and error checking. We observed that human and LLM collaboration with appropriate tooling represents the current quality ceiling for annotation at this scale. ImageNet-1k issues propagate into its derivative test sets, indicating that the problem is structural rather than specific to any single benchmark. All annotations, class definitions, guidelines, and analysis code have been publicly released. Project page: https://vrg.fel.cvut.cz/reimagenet Annotations: https://huggingface.co/datasets/vrg-prague/ReImageNet Code: https://github.com/klarajanouskova/ImageNet",
+      "authors": [
+        "Illia Volkov",
+        "Nikita Kisel",
+        "Tetiana Mishkina",
+        "Klara Janouskova",
+        "Jiri Matas"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-13T21:24:49+00:00",
+      "link": "https://arxiv.org/pdf/2608.13783v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "corrected ImageNet-1k validation annotations for visual recognition evaluation",
+      "llm_evidence_cn": "修正ImageNet-1k验证集标注，支撑视觉识别评测",
+      "llm_evidence": "修正ImageNet-1k验证集标注，支撑视觉识别评测",
+      "canonical_evidence": "修正ImageNet-1k验证集标注，支撑视觉识别评测",
+      "llm_tldr_en": "Re-annotates ImageNet-1k validation set into ReImageNet with multilabel correction, object localization, revised class definitions, and semantic attributes, revealing that about 12% of original labels are incorrect.",
+      "llm_tldr_cn": "ImageNet-1k的top-1准确率是视觉识别最常用的评测指标，但原始噪声标签长期未被修正。本文对验证集进行全面重标注，构建ReImageNet，包含多标签修正、目标定位、类别定义修订和语义属性。重标注发现约12%的原始标签错误、33.3%的图像为多标签，3.8%图像不含目标类别。新标注为视觉识别算法提供了更可靠、信息更丰富的评测基准。",
+      "llm_tldr": "ImageNet-1k的top-1准确率是视觉识别最常用的评测指标，但原始噪声标签长期未被修正。本文对验证集进行全面重标注，构建ReImageNet，包含多标签修正、目标定位、类别定义修订和语义属性。重标注发现约12%的原始标签错误、33.3%的图像为多标签，3.8%图像不含目标类别。新标注为视觉识别算法提供了更可靠、信息更丰富的评测基准。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "visual recognition algorithms",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2608.13889v1",
+      "source": "arxiv",
+      "title": "Consensus-gated Multi-Agent Neural Architecture Search for Seismic Fault Segmentation",
+      "abstract": "Neural networks for seismic fault segmentation are often borrowed from computer vision and medical imaging domains where they train under relatively much larger labeled data resources. Optimizing their architecture under tight labeled data budgets as are common in geophysical applications is not a trivial problem. Manually designing data-optimal architectures is time-consuming while classical neural architecture search (NAS) is restricted to hand-crafted search spaces and large compute budgets. We present an agentic NAS system in which a panel of three large language models (Claude, GPT-5.1, and Gemini~2.5~Pro) debates each candidate architecture to unanimous consensus, authors the complete PyTorch implementation, cross-reviews it, and submits it to an automated validate-train-score loop with a hard 450K parameter budget, keep-or-revert lineage, and a memory of failed mechanisms. Operating on source code rather than a predefined operation menu, the search ran on a single consumer GPU and trained only eight candidates. It discovered \\ours{}: a 425K-parameter encoder-decoder with a strip-pooling bottleneck, squeeze-and-excitation gating, an asymmetric one-conv decoder, and a feature-pyramid fusion neck. Trained under a protocol identical to all baselines on sections derived from the Thebe fault dataset, it attains the highest F1 (0.578) and IoU of all models tested while being the smallest, outperforming a published-capacity U-Net (31M parameters, F1 0.484), DeepLabV3-ResNet50 (39.6M, 0.516), an Attention U-Net(1.83M, 0.502). The search cost 101 LLM calls ($\\sim$1.15M input / 0.39M output tokens) and roughly one GPU-day, making consensus-gated LLM panels a practical, low-cost route to domain-specific architecture discovery.",
+      "authors": [
+        "Shehram Baig",
+        "Ahmad Mustafa"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-14T02:41:37+00:00",
+      "link": "https://arxiv.org/pdf/2608.13889v1",
+      "tags": [
+        "keyword:cv"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "applies neural architecture search to improve seismic fault segmentation networks",
+      "llm_evidence_cn": "将神经架构搜索应用于地震断层分割网络优化",
+      "llm_evidence": "将神经架构搜索应用于地震断层分割网络优化",
+      "canonical_evidence": "将神经架构搜索应用于地震断层分割网络优化",
+      "llm_tldr_en": "Presents an agentic NAS system where three LLMs debate candidate architectures to consensus, generate PyTorch implementations, and optimize segmentation networks under small labeled data budgets.",
+      "llm_tldr_cn": "地震断层分割网络通常借用计算机视觉架构，但标注数据稀缺时手工设计最优架构费时费力，经典NAS又受限于搜索空间与算力。本文提出智能体NAS系统，由Claude、GPT-5.1和Gemini 2.5 Pro三个大语言模型对候选架构进行共识门控讨论，自动编写并交叉评审PyTorch实现。该方法可在小标注数据预算下高效搜索数据最优的断层分割架构，为地球物理领域的图像分割提供了新的自动化方案。",
+      "llm_tldr": "地震断层分割网络通常借用计算机视觉架构，但标注数据稀缺时手工设计最优架构费时费力，经典NAS又受限于搜索空间与算力。本文提出智能体NAS系统，由Claude、GPT-5.1和Gemini 2.5 Pro三个大语言模型对候选架构进行共识门控讨论，自动编写并交叉评审PyTorch实现。该方法可在小标注数据预算下高效搜索数据最优的断层分割架构，为地球物理领域的图像分割提供了新的自动化方案。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "image segmentation techniques",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2608.14051v1",
+      "source": "arxiv",
+      "title": "Discovery and Spatial Characterisation of Multiple Shortcut Groups for Auditing Vision Model Bias",
+      "abstract": "Deep learning models trained on datasets with spurious correlations can achieve high average accuracy whilst relying on shortcut features that do not generalise out of distribution. Whilst out-of-distribution testing highlights subgroup performance disparities arising from shortcut learning, it does not localise the regions within images that are associated with it. Existing research mostly uses attribution maps from interpretability methods to understand the spatial nature of spurious correlations. For example, conditional alignment methods separate task-relevant evidence from evidence tied to spurious correlations by comparing attribution maps from a task model, a sensitive attribute model, and a bias-reduced reference model. This yields shortcut-aligned and task-aligned contribution maps for each image. However, existing methods aggregate these maps across the dataset, potentially masking recurring spatial shortcut patterns that occur only in subsets of images. We address this limitation by grouping per-image shortcut and task contribution maps into recurring spatial patterns using K-means and non-negative matrix factorisation, and visualising the resulting shortcut groups through contribution maps and representative examples. Across CelebA, CheXpert, Waterbirds, Camelyon17, and ISIC2019, and across ResNet and ViT models, the discovered shortcut groups reveal both shared and distinct spatial patterns of shortcut and task contribution, with varying subgroup composition and error rates, enabling targeted inspection of image subsets with higher error rates. We perform input occlusion and internal test-time interventions to show that masking or suppressing task contribution regions substantially degrades the model classification performance and propose a combined shortcut suppression and task amplification feature intervention approach which generally reduces performance disparities.",
+      "authors": [
+        "Akshit Achara",
+        "Vishnunarayan Manickam",
+        "Thomas Day",
+        "Esther Puyol Anton",
+        "Alexander Hammers",
+        "Andrew P. King"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-14T07:57:38+00:00",
+      "link": "https://arxiv.org/pdf/2608.14051v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "audits shortcut features and spatial bias in vision models",
+      "llm_evidence_cn": "审计视觉模型中的捷径特征与空间偏差",
+      "llm_evidence": "审计视觉模型中的捷径特征与空间偏差",
+      "canonical_evidence": "审计视觉模型中的捷径特征与空间偏差",
+      "llm_tldr_en": "Proposes a method to discover and spatially characterize multiple shortcut groups using attribution maps, enabling finer-grained auditing of vision model bias beyond average accuracy.",
+      "llm_tldr_cn": "视觉模型常依赖虚假相关捷径特征，在分布外数据上性能不佳，现有测试难以定位与捷径相关的图像区域。本文提出从任务模型、敏感属性模型和偏差消减参考模型归因图的对比中，发现并空间刻画多个捷径组。该方法能更细致地揭示模型偏差所在区域，为视觉模型公平性和鲁棒性审计提供了新工具。",
+      "llm_tldr": "视觉模型常依赖虚假相关捷径特征，在分布外数据上性能不佳，现有测试难以定位与捷径相关的图像区域。本文提出从任务模型、敏感属性模型和偏差消减参考模型归因图的对比中，发现并空间刻画多个捷径组。该方法能更细致地揭示模型偏差所在区域，为视觉模型公平性和鲁棒性审计提供了新工具。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "computer vision research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2608.14075v1",
+      "source": "arxiv",
+      "title": "A Pathway to General-Purpose Scientific AI: Multimodal Comprehension of Scientific Images",
+      "abstract": "Scientific figures and tables encode essential experimental evidence, yet remain difficult for digital libraries and multimodal AI systems to retrieve and interpret. The ALD/E-ImageMiner benchmark and ICDAR 2026 Competition on Information Extraction from Atomic Layer Deposition/Etching Scientific Figures provide 1,951 figures from 205 publications, expert-annotated for classification, data table extraction, summarization, and visual question answering. In these companion proceedings, we present a forward-looking perspective on how the benchmark can guide future scientific-image challenges. We examine how its tasks probe capabilities from visual and quantitative reading to domain-grounded reasoning and evidential justification, and how Bloom-informed question design can support deeper scientific understanding. We propose \"scientific conceptual understanding from images\" as a long-term benchmark objective, with future directions including broader domains and figure types, contextual and cross-document synthesis, hypothesis evaluation, provenance, uncertainty, counterfactual grounding, and open-ended multimodal research. This perspective connects the ICDAR 2026 challenge to a broader agenda for machine-actionable scientific visual knowledge and verifiable multimodal scientific AI.",
+      "authors": [
+        "Jennifer D'Souza",
+        "Fahad Ahmed",
+        "Cecilia Andrea Bustamante Andrade",
+        "Lina Frolova",
+        "Poorani Gnanasambandan",
+        "Dilshad Hussain",
+        "Muhammad Uzair Khan",
+        "Nkembeng Kevin Nkengfoa",
+        "Paul Praveen J.",
+        "Fabio Priante",
+        "Sjoerd Franciscus van der Werf",
+        "Thomas Frederik Jan van Roeden"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI",
+        "cs.CV",
+        "cs.DL"
+      ],
+      "published": "2026-08-14T08:34:33+00:00",
+      "link": "https://arxiv.org/pdf/2608.14075v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Multimodal comprehension benchmark for scientific images in computer vision",
+      "llm_evidence_cn": "面向科学图像多模态理解的计算机视觉基准研究",
+      "llm_evidence": "面向科学图像多模态理解的计算机视觉基准研究",
+      "canonical_evidence": "面向科学图像多模态理解的计算机视觉基准研究",
+      "llm_tldr_en": "This paper presents a forward-looking perspective on the ALD/E-ImageMiner benchmark and ICDAR 2026 competition for information extraction from scientific figures, covering classification, table extraction, summarization, and visual question answering to guide future scientific-image AI challenges.",
+      "llm_tldr_cn": "科学图表蕴含关键实验证据，但现有系统难以检索和解析。本文基于ALD/E-ImageMiner基准和ICDAR 2026竞赛的1951幅专家标注图，从分类、数据表提取、摘要生成和视觉问答等多个任务出发，探讨如何探测量化阅读和领域推理能力，并对未来科学图像理解挑战提出前瞻性展望，为通用科学AI提供了评测与分析基础。",
+      "llm_tldr": "科学图表蕴含关键实验证据，但现有系统难以检索和解析。本文基于ALD/E-ImageMiner基准和ICDAR 2026竞赛的1951幅专家标注图，从分类、数据表提取、摘要生成和视觉问答等多个任务出发，探讨如何探测量化阅读和领域推理能力，并对未来科学图像理解挑战提出前瞻性展望，为通用科学AI提供了评测与分析基础。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "computer vision research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}

@@ -1,0 +1,185 @@
+{
+  "date": "20260817",
+  "date_label": "",
+  "generated_at": "2026-08-17 20:02:58 UTC",
+  "recommend_exists": true,
+  "run_count": 1,
+  "papers": [
+    {
+      "paper_id": "2608.12980v1",
+      "route": "202608/17/2608.12980v1-dicor-decoupled-referent-disambiguation-and-contour-recalibration-for-efficient-referring-remote-sensing-image-segmentation",
+      "title": "DiCoR: Decoupled Referent Disambiguation and Contour Recalibration for Efficient Referring Remote Sensing Image Segmentation",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 10.0,
+      "evidence": "解耦指代消歧与轮廓重校准的高效遥感图像指代分割",
+      "first_seen_at": "2026-08-17 20:02:58 UTC",
+      "updated_at": "2026-08-17 20:02:58 UTC"
+    },
+    {
+      "paper_id": "2608.08696v1",
+      "route": "202608/17/2608.08696v1-occanyscene-towards-unified-indoor-outdoor-3d-occupancy-predictio",
+      "title": "OccAnyScene: Towards Unified Indoor-Outdoor 3D Occupancy Predictio",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "面向异质室内外场景的跨场景三维语义占用预测",
+      "first_seen_at": "2026-08-17 20:02:58 UTC",
+      "updated_at": "2026-08-17 20:02:58 UTC"
+    },
+    {
+      "paper_id": "2608.09152v1",
+      "route": "202608/17/2608.09152v1-lightair-lightweight-action-inversion-and-riemannian-rectification-for-text-based-person-anomaly-search",
+      "title": "LightAIR: Lightweight Action Inversion and Riemannian Rectification for Text-based Person Anomaly Search",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "文本行人异常搜索的视觉识别算法",
+      "first_seen_at": "2026-08-17 20:02:58 UTC",
+      "updated_at": "2026-08-17 20:02:58 UTC"
+    },
+    {
+      "paper_id": "2608.14142v1",
+      "route": "202608/17/2608.14142v1-pisa-a-pseudo-individual-source-domain-feature-adaptation-framework-for-test-time-open-vocabulary-object-detection",
+      "title": "PISA: A Pseudo-Individual Source-Domain Feature Adaptation Framework for Test-Time Open-Vocabulary Object Detection",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "开放词汇目标检测的测试时适配",
+      "first_seen_at": "2026-08-17 20:02:58 UTC",
+      "updated_at": "2026-08-17 20:02:58 UTC"
+    },
+    {
+      "paper_id": "2608.14146v1",
+      "route": "202608/17/2608.14146v1-csg-mamba-a-convolutional-scoring-gating-vision-state-space-network-for-endoscopic-polyp-segmentation",
+      "title": "CSG-Mamba: A Convolutional Scoring Gating Vision State Space Network for Endoscopic Polyp Segmentation",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "基于视觉状态空间网络的内窥镜息肉分割",
+      "first_seen_at": "2026-08-17 20:02:58 UTC",
+      "updated_at": "2026-08-17 20:02:58 UTC"
+    },
+    {
+      "paper_id": "2608.14282v1",
+      "route": "202608/17/2608.14282v1-magnet-3d-monocular-and-domain-generalizable-temporal-3d-detection",
+      "title": "MAGneT-3D: Monocular and Domain-Generalizable Temporal 3D Detection",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "领域泛化的单目时序3D目标检测",
+      "first_seen_at": "2026-08-17 20:02:58 UTC",
+      "updated_at": "2026-08-17 20:02:58 UTC"
+    },
+    {
+      "paper_id": "2608.14085v1",
+      "route": "202608/17/2608.14085v1-cods-robust-collaborative-perception-via-expert-driven-detection-and-bev-segmentation",
+      "title": "CoDS: Robust Collaborative Perception via Expert-driven Detection and BEV Segmentation",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "联合目标检测与BEV分割的协作感知",
+      "first_seen_at": "2026-08-17 20:02:58 UTC",
+      "updated_at": "2026-08-17 20:02:58 UTC"
+    },
+    {
+      "paper_id": "2608.13783v1",
+      "route": "202608/17/2608.13783v1-doomed-to-re-annotate-forever-the-imagenet-story",
+      "title": "Doomed to Re-Annotate, Forever: The ImageNet Story",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "修正ImageNet-1k验证集标注，支撑视觉识别评测",
+      "first_seen_at": "2026-08-17 20:02:58 UTC",
+      "updated_at": "2026-08-17 20:02:58 UTC"
+    },
+    {
+      "paper_id": "2608.14051v1",
+      "route": "202608/17/2608.14051v1-discovery-and-spatial-characterisation-of-multiple-shortcut-groups-for-auditing-vision-model-bias",
+      "title": "Discovery and Spatial Characterisation of Multiple Shortcut Groups for Auditing Vision Model Bias",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "审计视觉模型中的捷径特征与空间偏差",
+      "first_seen_at": "2026-08-17 20:02:58 UTC",
+      "updated_at": "2026-08-17 20:02:58 UTC"
+    },
+    {
+      "paper_id": "2608.14075v1",
+      "route": "202608/17/2608.14075v1-a-pathway-to-general-purpose-scientific-ai-multimodal-comprehension-of-scientific-images",
+      "title": "A Pathway to General-Purpose Scientific AI: Multimodal Comprehension of Scientific Images",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "面向科学图像多模态理解的计算机视觉基准研究",
+      "first_seen_at": "2026-08-17 20:02:58 UTC",
+      "updated_at": "2026-08-17 20:02:58 UTC"
+    },
+    {
+      "paper_id": "2608.13889v1",
+      "route": "202608/17/2608.13889v1-consensus-gated-multi-agent-neural-architecture-search-for-seismic-fault-segmentation",
+      "title": "Consensus-gated Multi-Agent Neural Architecture Search for Seismic Fault Segmentation",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "将神经架构搜索应用于地震断层分割网络优化",
+      "first_seen_at": "2026-08-17 20:02:58 UTC",
+      "updated_at": "2026-08-17 20:02:58 UTC"
+    }
+  ]
+}
