@@ -1,0 +1,313 @@
+{
+  "date": "20260818",
+  "date_label": "",
+  "generated_at": "2026-08-18 20:55:34 UTC",
+  "recommend_exists": true,
+  "run_count": 1,
+  "papers": [
+    {
+      "paper_id": "2608.09122v1",
+      "route": "202608/18/2608.09122v1-visual-distortion-detection-in-ugc-images-using-large-multimodal-models",
+      "title": "Visual Distortion Detection in UGC Images Using Large Multimodal Models",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "利用大型多模态模型定位用户生成图像的感知失真，属于计算机视觉研究",
+      "first_seen_at": "2026-08-18 20:55:34 UTC",
+      "updated_at": "2026-08-18 20:55:34 UTC"
+    },
+    {
+      "paper_id": "2608.09391v1",
+      "route": "202608/18/2608.09391v1-coins-net-a-continuous-position-aware-network-for-joint-medical-image-interpolation-and-segmentation",
+      "title": "CoInS-Net: A Continuous Position-Aware Network for Joint Medical Image Interpolation and Segmentation",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "医学图像联合插值与分割方法",
+      "first_seen_at": "2026-08-18 20:55:34 UTC",
+      "updated_at": "2026-08-18 20:55:34 UTC"
+    },
+    {
+      "paper_id": "2608.15054v1",
+      "route": "202608/18/2608.15054v1-frequency-and-edge-guided-segment-anything-model-for-remote-sensing-image-semantic-segmentation",
+      "title": "Frequency and Edge-Guided Segment Anything Model for Remote Sensing Image Semantic Segmentation",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "基于SAM的遥感语义分割",
+      "first_seen_at": "2026-08-18 20:55:34 UTC",
+      "updated_at": "2026-08-18 20:55:34 UTC"
+    },
+    {
+      "paper_id": "2608.15238v1",
+      "route": "202608/18/2608.15238v1-uc-vlm-consistency-driven-learning-for-ai-generated-image-detection-with-vision-language-large-models",
+      "title": "UC-VLM: Consistency-Driven Learning for AI-Generated Image Detection with Vision-Language Large Models",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "利用视觉-语言大模型进行AI生成图像检测，属于视觉识别任务",
+      "first_seen_at": "2026-08-18 20:55:34 UTC",
+      "updated_at": "2026-08-18 20:55:34 UTC"
+    },
+    {
+      "paper_id": "2608.15363v1",
+      "route": "202608/18/2608.15363v1-a-multi-annotator-study-of-segmentation-noise-and-uncertainty-in-turbid-underwater-images",
+      "title": "A Multi-Annotator Study of Segmentation Noise and Uncertainty in Turbid Underwater Images",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "针对水下场景图像分割的标注不确定性与噪音研究",
+      "first_seen_at": "2026-08-18 20:55:34 UTC",
+      "updated_at": "2026-08-18 20:55:34 UTC"
+    },
+    {
+      "paper_id": "2608.15683v1",
+      "route": "202608/18/2608.15683v1-baseg-boundary-aware-remote-sensing-segmentation-with-structural-penalties",
+      "title": "BASeg: Boundary-Aware Remote Sensing Segmentation with Structural Penalties",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "带结构惩罚的边界感知语义分割",
+      "first_seen_at": "2026-08-18 20:55:34 UTC",
+      "updated_at": "2026-08-18 20:55:34 UTC"
+    },
+    {
+      "paper_id": "2608.15796v1",
+      "route": "202608/18/2608.15796v1-emergent-3d-instance-segmentation-from-self-supervised-point-transformers",
+      "title": "Emergent 3D Instance Segmentation from Self-Supervised Point Transformers",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "基于自监督点云Transformer的3D实例分割",
+      "first_seen_at": "2026-08-18 20:55:34 UTC",
+      "updated_at": "2026-08-18 20:55:34 UTC"
+    },
+    {
+      "paper_id": "2608.16673v1",
+      "route": "202608/18/2608.16673v1-how-sampling-strategy-affects-imbalance-mitigation-in-lidar-segmentation-a-study-of-structured-vs-random-point-based-architectures",
+      "title": "How Sampling Strategy Affects Imbalance Mitigation in LiDAR Segmentation: A Study of Structured vs. Random Point-Based Architectures",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "LiDAR语义分割与不平衡缓解",
+      "first_seen_at": "2026-08-18 20:55:34 UTC",
+      "updated_at": "2026-08-18 20:55:34 UTC"
+    },
+    {
+      "paper_id": "2608.10346v1",
+      "route": "202608/18/2608.10346v1-towards-unified-dynamic-face-landmark-detection",
+      "title": "Towards Unified Dynamic Face Landmark Detection",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "基于部件锚定进度表示的统一关键点检测",
+      "first_seen_at": "2026-08-18 20:55:34 UTC",
+      "updated_at": "2026-08-18 20:55:34 UTC"
+    },
+    {
+      "paper_id": "2608.14770v1",
+      "route": "202608/18/2608.14770v1-artificial-intelligence-as-a-tool-for-combating-child-labour-a-real-time-edge-vision-pipeline-for-child-detection-and-age-estimation",
+      "title": "Artificial Intelligence as a Tool for Combating Child Labour: A Real-Time Edge Vision Pipeline for Child Detection and Age Estimation",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "用于童工监测的实时行人与面部检测流水线",
+      "first_seen_at": "2026-08-18 20:55:34 UTC",
+      "updated_at": "2026-08-18 20:55:34 UTC"
+    },
+    {
+      "paper_id": "2608.15096v1",
+      "route": "202608/18/2608.15096v1-modal-multi-modal-object-re-id-via-model-driven-sparse-decoupling-and-text-image-differential-filtering",
+      "title": "MODAL: Multi-Modal Object Re-ID via Model-Driven Sparse Decoupling and Text-Image Differential Filtering",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "多模态目标重识别与特征解耦",
+      "first_seen_at": "2026-08-18 20:55:34 UTC",
+      "updated_at": "2026-08-18 20:55:34 UTC"
+    },
+    {
+      "paper_id": "2608.15196v1",
+      "route": "202608/18/2608.15196v1-anchor-regularized-adaptation-for-generalizable-ai-generated-image-detection-with-dinov3",
+      "title": "Anchor-Regularized Adaptation for Generalizable AI-Generated Image Detection with DINOv3",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "利用DINOv3表征分析进行可泛化的AI生成图像检测",
+      "first_seen_at": "2026-08-18 20:55:34 UTC",
+      "updated_at": "2026-08-18 20:55:34 UTC"
+    },
+    {
+      "paper_id": "2608.15251v1",
+      "route": "202608/18/2608.15251v1-robust-structure-from-motion-for-aerial-ground-images-via-detector-free-feature-matching-and-multi-view-track-refinement",
+      "title": "Robust structure from motion for aerial-ground images via detector-free feature matching and multi-view track refinement",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "面向航空-地面运动恢复结构的无检测器鲁棒特征匹配",
+      "first_seen_at": "2026-08-18 20:55:34 UTC",
+      "updated_at": "2026-08-18 20:55:34 UTC"
+    },
+    {
+      "paper_id": "2608.15802v1",
+      "route": "202608/18/2608.15802v1-pwlr-pairwise-witness-local-rejection-for-boundary-aware-out-of-distribution-detection",
+      "title": "PWLR: Pairwise Witness Local Rejection for Boundary-Aware Out-of-Distribution Detection",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "面向图像分类器的分布外检测，利用视觉-语言边界线索",
+      "first_seen_at": "2026-08-18 20:55:34 UTC",
+      "updated_at": "2026-08-18 20:55:34 UTC"
+    },
+    {
+      "paper_id": "2608.16015v1",
+      "route": "202608/18/2608.16015v1-multi-scale-decomposed-convolution-refinement-network-for-visible-infrared-person-re-identification",
+      "title": "Multi-scale Decomposed Convolution Refinement Network for Visible-Infrared Person Re-Identification",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "基于多尺度分解卷积注意力和跨模态特征学习的可见-红外人员重识别",
+      "first_seen_at": "2026-08-18 20:55:34 UTC",
+      "updated_at": "2026-08-18 20:55:34 UTC"
+    },
+    {
+      "paper_id": "2608.14725v1",
+      "route": "202608/18/2608.14725v1-spatial-attention-noise-masking-for-causally-sufficient-interpretability",
+      "title": "Spatial Attention Noise Masking for Causally Sufficient Interpretability",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "面向计算机视觉模型的因果可解释性方法",
+      "first_seen_at": "2026-08-18 20:55:34 UTC",
+      "updated_at": "2026-08-18 20:55:34 UTC"
+    },
+    {
+      "paper_id": "2608.14922v1",
+      "route": "202608/18/2608.14922v1-spin-vit-designing-a-sparsity-induced-vision-transformer-that-is-mechanistically-interpretable",
+      "title": "SpIn-ViT: Designing a Sparsity-Induced Vision Transformer That Is Mechanistically Interpretable",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "视觉Transformer与图像分类的可解释性研究",
+      "first_seen_at": "2026-08-18 20:55:34 UTC",
+      "updated_at": "2026-08-18 20:55:34 UTC"
+    },
+    {
+      "paper_id": "2608.15104v1",
+      "route": "202608/18/2608.15104v1-projformer-point-cloud-completion-via-geometric-projective-transformer-and-cross-modal-semantic-constraints",
+      "title": "ProjFormer: Point Cloud Completion via Geometric-Projective Transformer and Cross-Modal Semantic Constraints",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "基于几何投射Transformer的点云补全跨模态方法",
+      "first_seen_at": "2026-08-18 20:55:34 UTC",
+      "updated_at": "2026-08-18 20:55:34 UTC"
+    },
+    {
+      "paper_id": "2608.15539v1",
+      "route": "202608/18/2608.15539v1-crossview-can-vision-language-models-reason-across-cameras",
+      "title": "CrossView: Can Vision-Language Models Reason Across Cameras?",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "对标定多相机推理能力的视觉语言模型进行基准评测与分析，属于计算机视觉研究",
+      "first_seen_at": "2026-08-18 20:55:34 UTC",
+      "updated_at": "2026-08-18 20:55:34 UTC"
+    }
+  ]
+}

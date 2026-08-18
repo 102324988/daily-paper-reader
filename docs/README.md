@@ -41,17 +41,17 @@
 <section class="dpr-home-dashboard-card dpr-home-report-card">
   <div class="dpr-home-dashboard-header">
     <div>
-      <span class="dpr-home-dashboard-kicker">2026-08-17</span>
+      <span class="dpr-home-dashboard-kicker">2026-08-18</span>
       <h3 class="dpr-home-dashboard-title">今日汇总</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">共 11 篇</strong>
+    <strong class="dpr-home-dashboard-count">共 19 篇</strong>
   </div>
   <dl class="dpr-home-dashboard-stats">
     <div class="dpr-home-dashboard-stat"><dt>累计更新</dt><dd>1 次</dd></div>
-    <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>6</dd></div>
-    <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>5</dd></div>
+    <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>8</dd></div>
+    <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>11</dd></div>
   </dl>
-  <p class="dpr-home-dashboard-body">最近更新：2026-08-17 20:02:58 UTC<br>状态：成功</p>
+  <p class="dpr-home-dashboard-body">最近更新：2026-08-18 20:55:34 UTC<br>状态：成功</p>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-brief-card">
   <div class="dpr-home-dashboard-header">
@@ -62,9 +62,9 @@
     <strong class="dpr-home-dashboard-count">AI</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<p>今日共生成 11 篇推荐（精读 6 篇，速读 5 篇）</p>
-<p>精读：《DiCoR: Decoupled Referent Disambiguation and Contour Recalibration for Efficient Referring Remote Sensing Image Segmentation》（10.0/10）, 《OccAnyScene: Towards Unified Indoor-Outdoor 3D Occupancy Predictio》（9.0/10）</p>
-<p>速读：《CoDS: Robust Collaborative Perception via Expert-driven Detection and BEV Segmentation》（8.0/10）, 《Doomed to Re-Annotate, Forever: The ImageNet Story》（7.0/10）, 《Discovery and Spatial Characterisation of Multiple Shortcut Groups for Auditing Vision Model Bias》（7.0/10）</p>
+<p>今日共生成 19 篇推荐（精读 8 篇，速读 11 篇）</p>
+<p>精读：《Visual Distortion Detection in UGC Images Using Large Multimodal Models》（9.0/10）, 《CoInS-Net: A Continuous Position-Aware Network for Joint Medical Image Interpolation and Segmentation》（9.0/10）</p>
+<p>速读：《Towards Unified Dynamic Face Landmark Detection》（8.0/10）, 《Artificial Intelligence as a Tool for Combating Child Labour: A Real-Time Edge Vision Pipeline for Child Detection and Age Estimation》（8.0/10）, 《MODAL: Multi-Modal Object Re-ID via Model-Driven Sparse Decoupling and Text-Image Differential Filtering》（8.0/10）</p>
 <p>这些结果覆盖了当下较热的方向，建议先看精读区论文的关键问题与方法。</p>
   </div>
 </section>
@@ -74,12 +74,12 @@
       <span class="dpr-home-dashboard-kicker">今日累计</span>
       <h3 class="dpr-home-dashboard-title">精读推荐</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">6 篇</strong>
+    <strong class="dpr-home-dashboard-count">8 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="DiCoR: Decoupled Referent Disambiguation and Contour Recalibration for Efficient Referring Remote Sensing Image Segmentation">DiCoR: Decoupled Referent Disambiguation and Contour Recalibration for Efficient Referring Remote Sensing Image Segmentation</span></li><li><span class="dpr-home-dashboard-paper-title" title="OccAnyScene: Towards Unified Indoor-Outdoor 3D Occupancy Predictio">OccAnyScene: Towards Unified Indoor-Outdoor 3D Occupancy Predictio</span></li><li><span class="dpr-home-dashboard-paper-title" title="LightAIR: Lightweight Action Inversion and Riemannian Rectification for Text-based Person Anomaly Search">LightAIR: Lightweight Action Inversion and Riemannian Rectification for Text-based Person Anomaly Search</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Visual Distortion Detection in UGC Images Using Large Multimodal Models">Visual Distortion Detection in UGC Images Using Large Multimodal Models</span></li><li><span class="dpr-home-dashboard-paper-title" title="CoInS-Net: A Continuous Position-Aware Network for Joint Medical Image Interpolation and Segmentation">CoInS-Net: A Continuous Position-Aware Network for Joint Medical Image Interpolation and Segmentation</span></li><li><span class="dpr-home-dashboard-paper-title" title="Frequency and Edge-Guided Segment Anything Model for Remote Sensing Image Semantic Segmentation">Frequency and Edge-Guided Segment Anything Model for Remote Sensing Image Semantic Segmentation</span></li></ul>
   </div>
-  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">cv <strong>6</strong></span></div>
+  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">cv <strong>8</strong></span></div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-skim-card">
   <div class="dpr-home-dashboard-header">
@@ -87,12 +87,12 @@
       <span class="dpr-home-dashboard-kicker">今日累计</span>
       <h3 class="dpr-home-dashboard-title">速读推荐</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">5 篇</strong>
+    <strong class="dpr-home-dashboard-count">11 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="CoDS: Robust Collaborative Perception via Expert-driven Detection and BEV Segmentation">CoDS: Robust Collaborative Perception via Expert-driven Detection and BEV Segmentation</span></li><li><span class="dpr-home-dashboard-paper-title" title="Doomed to Re-Annotate, Forever: The ImageNet Story">Doomed to Re-Annotate, Forever: The ImageNet Story</span></li><li><span class="dpr-home-dashboard-paper-title" title="Discovery and Spatial Characterisation of Multiple Shortcut Groups for Auditing Vision Model Bias">Discovery and Spatial Characterisation of Multiple Shortcut Groups for Auditing Vision Model Bias</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Towards Unified Dynamic Face Landmark Detection">Towards Unified Dynamic Face Landmark Detection</span></li><li><span class="dpr-home-dashboard-paper-title" title="Artificial Intelligence as a Tool for Combating Child Labour: A Real-Time Edge Vision Pipeline for Child Detection and Age Estimation">Artificial Intelligence as a Tool for Combating Child Labour: A Real-Time Edge Vision Pipeline for Child Detection and Age Estimation</span></li><li><span class="dpr-home-dashboard-paper-title" title="MODAL: Multi-Modal Object Re-ID via Model-Driven Sparse Decoupling and Text-Image Differential Filtering">MODAL: Multi-Modal Object Re-ID via Model-Driven Sparse Decoupling and Text-Image Differential Filtering</span></li></ul>
   </div>
-  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">cv <strong>5</strong></span></div>
+  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">cv <strong>11</strong></span></div>
 </section>
 </div>
 

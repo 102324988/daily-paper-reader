@@ -1,0 +1,636 @@
+Title: PWLR: Pairwise Witness Local Rejection for Boundary-Aware Out-of-Distribution Detection
+
+URL Source: https://arxiv.org/pdf/2608.15802v1
+
+Published Time: Tue, 18 Aug 2026 01:14:21 GMT
+
+Number of Pages: 14
+
+Markdown Content:
+# PWLR: Pairwise Witness Local Rejection for Boundary-Aware Out-of-Distribution Detection 
+
+# Chengyao Jia 
+
+Guanghua School of Stomatology Sun Yat-sen University Guangzhou, China Guangdong Provincial Key Laboratory of Stomatology Guangzhou, China jiachy5@mail2.sysu.edu.cn 
+
+# Ruixuan Wang ✉
+
+School of Computer Science and Engineering Sun Yat-sen University Guangzhou, China Key Laboratory of Machine Intelligence and Advanced Computing, MOE Guangzhou, China wangruix5@mail.sysu.edu.cn 
+
+## Abstract 
+
+Out-of-distribution (OOD) detection remains challenging for im-age classifiers, especially when near-OOD samples lie close to in-distribution (ID) class boundaries. Recent vision-language detectors improve OOD detection through class semantics, local prompt-ing, or LLM-generated outlier concepts, but seldom use language as explicit boundary evidence between confusing ID classes. We propose Pairwise Witness Local Rejection (PWLR), which uses an MLLM offline to describe visible local cues that favor one ID class over a specific rival class. These cue phrases are then screened with ID-only data under a frozen vision-language backbone, so that only reliable local verifiers are kept. At inference, PWLR first retains a small set of globally plausible classes, then checks whether any of them is locally supported against its most relevant rivals, and finally combines this pairwise local evidence with the global class score through calibration. Experiments on ImageNet-100 far-OOD, cleaner/challenging OOD and near-OOD benchmarks show that PWLR consistently improves strong vision-language baselines across multiple backbones. Source code will be released. 
+
+## CCS Concepts 
+
+• Computing methodologies → Computer vision .
+
+## Keywords 
+
+OOD Detection, VLMs, Comparative Multimodal Reasoning, MLLMs 
+
+ACM Reference Format: 
+
+Chengyao Jia and Ruixuan Wang. 2026. PWLR: Pairwise Witness Local Rejection for Boundary-Aware Out-of-Distribution Detection. In Proceedings of the 34th ACM International Conference on Multimedia (MM ’26), November 10–14, 2026, Rio de Janeiro, Brazil. ACM, New York, NY, USA, 14 pages. https://doi.org/10.1145/3767308.3836282 
+
+## 1 Introduction 
+
+Out-of-distribution (OOD) detection aims to identify test samples that do not belong to the in-distribution (ID) space learned by a model. When deployed in open-world environments, image recog-nition models often misclassify OOD inputs as ID classes with high 
+
+> This work is licensed under a Creative Commons Attribution 4.0 International License.
+> MM ’26, Rio de Janeiro, Brazil
+> © 2026 Copyright held by the owner/author(s). ACM ISBN 979-8-4007-2213-4/2026/11 https://doi.org/10.1145/3767308.3836282
+
+confidence, causing potential severe consequences especially for safety-critical fields. This problem becomes particularly challenging when near-OOD samples lie close to ID class boundaries, making them difficult to reject using only whole-image class scores. Most existing OOD detectors either derive post-hoc scores from model confidence or feature geometry [14, 24, 33], or improve ID-OOD separation with auxiliary outliers [15]. With the rise of pre-trained vision-language models, OOD detection has further moved toward multimodal matching, where images are compared with textual class concepts in a shared embedding space [27]. Subse-quent studies strengthen this paradigm mainly from the text side, for example by introducing negative concepts [19], expanding the semantic pool of candidate labels [7], or enriching ID-side textual descriptions beyond plain class names [26]. Another line comple-ments global matching with local regions, local prompts, or region-aware regularization, showing that local evidence can improve robustness when global representations entangle object and con-text [28, 29, 41]. More recently, LLM- or MLLM-assisted methods use large models to generate ID descriptions, outlier concepts, or image-adaptive prompts, aiming to inject richer semantic knowl-edge into the detection process [5, 10, 20]. Despite these advances, language is still used mainly as class semantics, auxiliary concepts, or prompt guidance, rather than as explicit pairwise evidence tied to class competition. This leaves open an important question: can language be converted into stable, visually verifiable boundary evi-dence that directly supports one plausible class against a confusing rival? In this paper, we take a different view. Instead of asking an MLLM to imagine what unknown classes may be, we use it offline to describe why one ID class should be preferred over another. We propose Pairwise Witness Local Rejection (PWLR) , a boundary-aware OOD detection framework, where the boundary refers to the visual differences that separate one ID class from a confusing rival class. The pipeline uses text to describe these differences and uses local image evidence, rather than only whole-image matching, to verify whether an image supports one class over the rival. Specif-ically, for each anchor–rival class pair, we induce a small set of directed witness phrases that describe object-centric local evidence supporting the anchor against the rival. Crucially, PWLR does not use such witnesses as free-form test-time outputs. Instead, each witness defines a rival-conditioned lo-cal hypothesis: if a candidate class is correct against a competing arXiv:2608.15802v1 [cs.CV] 16 Aug 2026 MM ’26, November 10–14, 2026, Rio de Janeiro, Brazil Chengyao Jia and Ruixuan Wang 
+
+rival, part of the image should exhibit the corresponding anchor-supporting evidence. We test these hypotheses only within the competitive neighborhood of each candidate class, so that local evidence is used to explicitly model class boundaries rather than to provide another generic confidence cue. To make the witness bank quantitatively reliable, we further fit and filter witnesses using ID-only samples under the chosen backbone, converting open-ended language outputs into stable local evidence verifiers. For the final decision, PWLR calibrates the pairwise local veri-fication score and the global candidate prior to the same scale for each retained candidate class, and then combines them. Here, the local branch is not used as another generic regional confidence score; instead, it provides directed comparative evidence tied to specific class competition, while the global branch constrains which candidate classes remain semantically plausible at the image level. Consequently, an input is accepted as ID not merely when some class attains a high global match, but when at least one candidate is both globally plausible and locally supported against its most relevant rivals. In this way, PWLR turns OOD detection from direct confidence scoring into calibrated candidate-level acceptance under multimodal comparative boundary evidence. The main contributions of this work are as follows: 
+
+• We propose PWLR, a boundary-aware OOD detection frame-work that reformulates image classification OOD detection as directed pairwise witness verification in the competitive neighbourhood of candidate classes. 
+
+• We introduce an offline witness induction and ID-only screen-ing pipeline that converts MLLM-generated fine-grained de-scriptions into stable local evidence verifiers under a frozen VLM backbone. 
+
+• We further show how PWLR can combine local comparative evidence with a global candidate prior through candidate-level calibration, so that final acceptance requires both global plausibility and local boundary support. 
+
+## 2 Method 
+
+Our framework consists of four sequential stages: (1) pairwise wit-ness generation, (2) graph construction and candidate filtering, (3) pairwise witness local verification, and (4) retained-class calibrated acceptance. The first two stages are performed offline to build a reusable witness bank and a competition graph fitted to the chosen backbone, while the last two stages are used online for OOD de-tection. The ID training data are further divided into two disjoint offline splits: an ID fitting split Dfit for prototype estimation and ID-only witness screening, and a calibration split Dcal for retained-class calibration and threshold estimation. Under the chosen frozen VLM backbone, an image encoder maps an input image x to a nor-malized global image embedding g(x), while a text encoder maps each class label prompt or witness prompt to a normalized text embedding. All similarities in the following sections are computed on normalized embeddings, so inner products are equivalent to cosine similarities. 
+
+## 2.1 Pairwise Witness Generation 
+
+The first stage (Figure 1) is to construct a pairwise witness bank for later comparative verification using strong multimodal large language models (MLLMs). Rather than querying an MLLM at test time, we use it offline to convert open-ended multimodal knowledge into reusable pairwise evidence tied to class competition. Let CID =
+
+{1, . . . , 𝑀 } denote the index set of ID classes, where 𝑀 is the total number of ID classes, and let ℓ𝑐 denote the textual label of class 
+
+𝑐 ∈ C ID . For each directed class pair (𝑎, 𝑟 ) with 𝑎, 𝑟 ∈ C ID and 𝑎 ≠ 𝑟 ,where 𝑎 denotes the anchor class and 𝑟 denotes the rival class, we aim to generate an ordered list of witness phrase candidates for pair 
+
+(𝑎, 𝑟 ), from which the final witness set is obtained after the later ID-only screening stage, that visually distinguish class 𝑎 from class 𝑟 ,where 𝐿 is the number of retained witness phrases for pair (𝑎, 𝑟 ) and each 𝑤 𝑖 is a short natural-language witness phrase. They are not required to share the same length, and they are converted only later by the frozen text encoder into fixed-dimensional text embeddings for scoring. We use the term witness to emphasize that each phrase functions as directional visual evidence in a pairwise comparison: it supports the anchor class 𝑎 against a specific rival 𝑟 . Thus, a witness is not a generic caption or attribute, but a class-specific, rivalry-aware cue designed for later comparative verification. Each witness phrase is expected to satisfy two main requirements: (i) it describes specific visual evidence of the anchor class 𝑎 that can be seen and examined in the image, and (ii) it discriminates against the rival class 𝑟 which is likely to be visually confusable in natural images. For instance, African grey as an anchor class has jacamar as its rival class, considering their similar colorful tail feathers. In the following, we will describe how the directed class pairs are instantiated, how rivals are selected for each anchor class, and how the corresponding witness phrases are induced. 
+
+Coarse visual family assignment. Instead of searching rivals from all ID classes directly for any anchor class, each class is first assigned to a coarse visual family. Specifically, for the 𝑐 -th ID class, a GPT model (i.e., GPT-4o-mini) receives the textual label ℓ𝑐 and is asked to output a family label, yielding a family mapping 𝐹 (𝑐 ) ∈ F ,where F is a fixed set of 18 coarse visual families, predefined by pruning the WordNet noun hierarchy to mid-level visually coherent object groups, such as bird, dog, building, vehicle, and food, together with a fallback family other_object for classes not covered by the more specific groups. This step suppresses implausible cross-family pairings and stabilizes subsequent rival selection when the ID classes candidate catalog is large. 
+
+Family-constrained rival selection. For an anchor class 𝑎 , the rival search space is restricted to the same-family rival pool R ( 𝑎 ) =
+
+{𝑐 ∈ C ID | 𝐹 (𝑐 ) = 𝐹 (𝑎 ), 𝑐 ≠ 𝑎 }. Since the GPT model does not consume a mathematical set directly, C( 𝑎 ) is further introduced to denote the candidate catalog obtained by serializing R ( 𝑎 ) into a structured list of class entries. Thus, C( 𝑎 ) is the prompt-level representation of R ( 𝑎 ) rather than a different search space. The model then receives the anchor label ℓ𝑎 , the candidate catalog C( 𝑎 ),and two supporting images randomly sampled from class 𝑎 in the ID training set, and is prompted as follows:    
+
+> You are selecting visually confusable rival classes for image classifi-cation. Choose exactly five rival classes from candidate pool. Prefer classes that are likely to be confused with the anchor in natural images and have similar visible structure, shape, parts, texture, or coarse ap-pearance. Use the support images to focus on actual visual morphology rather than lexical relatedness. Do not choose the anchor itself. Return only the selected rival classes. PWLR: Pairwise Witness Local Rejection for Boundary-Aware Out-of-Distribution Detection MM ’26, November 10–14, 2026, Rio de Janeiro, Brazil ID-Class name
+> Coarse visual families
+> GPT-4o-mini bird, food, tool etc.
+> Family--bird
+> water ouzel jay
+> GPT-5.1
+> anchor a
+> Select rival classes for
+> each anchor class
+> Anchor
+> Rival
+> GPT-5.1
+> “Your task is to propose witness phrases
+> that distinguish the anchor class from the rival class. “
+> Witnesses:
+> golden flaky crust ,
+> chunky fruit filling ,
+> crust crimped rim,
+> domed pastry top
+> …
+> …
+> Witness bank
+> rival r 1
+> rival r 2
+
+Figure 1: Pipeline for pairwise witness generation. Each ID class is first assigned to a coarse visual family, after which a small set of visually confusable rival classes is selected for each anchor class. For each directed anchor-rival pair, a vision-capable MLLM then generates witness phrases that de-scribe local evidence supporting the anchor against the rival, forming a witness bank for later comparative verification. 
+
+The resulting rival neighbor set is denoted by N ( 𝑎 ) ⊆ R ( 𝑎 ). In the current implementation, a small fixed number of rivals is retained for each anchor class. 
+
+Pairwise witness generation. For each directed pair (𝑎, 𝑟 ) with 
+
+𝑟 ∈ N ( 𝑎 ), supporting images from both classes are provided to GPT-5.1, a vision-capable multimodal large language model, which is then asked to propose short textual phrases for visual description (i.e., witnesses) that support class 𝑎 against class 𝑟 . The model is instructed to describe local visual evidence rather than backgrounds or generic captions. To facilitate later quality control, each witness is also accompanied by two discrete attributes: a visibility score and a context-only risk score, both on a 1–3 scale. The visibility score measures whether the phrase corresponds to a clear and visually identifiable local cue on the foreground object associated with class 
+
+𝑎 , such as a distinctive part, shape detail, texture pattern, or local arrangement, that can be recognized from a limited image region, whereas the context-only risk score measures whether the phrase could be recognized largely from surrounding context instead of intrinsic object itself. In the current configuration, two anchor images and two rival images are randomly sampled from the ID training set, twelve primary phrases are requested in each round, and three rounds with the same prompt template are run for each directed pair (𝑎, 𝑟 ).
+
+Robust parsing and witness finalization. After merging dupli-cate phrases across rounds, each surviving candidate phrase 𝑝 is summarized by three statistics: its occurrence count 𝑛 (𝑝 ) across the three rounds, its accumulated visibility score 𝑣 (𝑝 ), and its ac-cumulated context-risk score 𝑢 (𝑝 ). To keep this stage simple and avoid mixing incomparable quantities, we order the candidates lexicographically: we first sort them by 𝑛 (𝑝 ) in descending order; ties are then broken by the average visibility ¯ 𝑣 (𝑝 ) = 𝑣 (𝑝 )/ 𝑛 (𝑝 )
+
+in descending order; any remaining ties are finally broken by the average context-risk ¯ 𝑢 (𝑝 ) = 𝑢 (𝑝 )/ 𝑛 (𝑝 ) in ascending order. We do not introduce an additional truncation hyperparameter at this stage. Instead, the resulting ordered candidate list is stored in the pairwise witness bank and is later screened with ID-only data in Section 2.2. The witness bank is stored in JSONL format; for each directed pair (𝑎, 𝑟 ), it contains the ordered merged candidates with their summary statistics and the raw outputs from the three prompting rounds. This pairwise witness bank is then used subsequently to construct the directed witness graph (Section 2.2) and for online pairwise local verification (Section 2.3), so no MLLM call is required during test-time inference. 
+
+## 2.2 Graph Construction and Filtering 
+
+After the pairwise witness bank is generated, a directed witness graph is constructed to organize the selected rival relations and their associated witness sets for later pairwise local verification (Figure 2). The nodes are ID classes, and a directed edge (𝑎, 𝑟 ) indicates that class 𝑟 is treated as a selected rival of anchor class 𝑎 . Each edge stores the witness set W ( 𝑎 →𝑟 ). This graph specifies which rival comparisons are available for each ID class and which witness set is attached to each comparison. The later pairwise local verification stage (Section 2.3) then evaluates whether an input image contains local visual evidence supporting one class against a specific rival, rather than assigning a single undirected compatibility score to the whole image. 
+
+Text embeddings and global class scoring. For each class 𝑐 , a small prompt ensemble is used to obtain a stable text representation of the class semantics, rather than relying on a single wording that may bias the text embedding. Specifically, we instantiate three class templates with the textual label ℓ𝑐 : “a photo of a {label}”, “a close-up photo of a {label}”, and “a centered photo of a {label}”, and the resulting text embeddings are averaged to obtain the class representation e𝑐 . Only three templates are used because the goal is not to build a large prompt ensemble, but to reduce sensitivity to any single phrasing while still keeping the text representation simple and stable. These three templates cover complementary object views: a generic class description, a close-up view that better matches fine-grained local detail, and a centered object-centric view that suppresses peripheral context. For each witness phrase 𝑤 on the edge (𝑎, 𝑟 ), three witness templates are similarly instantiated with the anchor class label ℓ𝑎 , where {anchor} denotes the textual label of the anchor class 𝑎 : “a photo of a {anchor} with {phrase}”, “a {anchor} showing {phrase}”, and “{anchor}, {phrase}”, The resulting embeddings are averaged to obtain the witness representation t𝑎,𝑟,𝑤 .The same design principle is used here: multiple phrasings make the witness representation less brittle to prompt wording while keeping it anchored to the directed comparison 𝑎 → 𝑟 . To score whole-image plausibility and define nearby rival classes before local verification, class prototypes are further introduced. Let p𝑐 denote the class prototype of class 𝑐 , defined as the mean of normalized MM ’26, November 10–14, 2026, Rio de Janeiro, Brazil Chengyao Jia and Ruixuan Wang Train image   
+
+> a photo of a {label}
+> Image
+> embeddings p c
+> Label text
+> embeddings e cAnchor class index
+> KNN neighbors (rivals)
+> Semantic rivals lookup per ID class
+> a photo of a {class}
+> with {witness}
+> Witness text
+> embeddings
+> Image
+> Encoder
+> Text
+> Encoder
+> Fused class
+> representation
+> Rival  class index
+> Text
+> Encoder
+> 𝜌
+> 1-𝜌
+> 3×3 crop
+> scale=0.7
+> Image
+> Encoder
+> Local
+> embeddings
+
+cos 
+
+> cos: cosine similarity
+> Fu: fuse the rivals appearing in KNN rivals and has pairwise witnesses
+> TopKmean
+
+Sw(𝑥 )
+
+Fu 
+
+> Sw(𝑥 )
+> Density
+
+Final graph        
+
+> 𝜇 𝑤 +
+> 𝜇 𝑤 -𝜇 𝑤 o
+> 𝑞 0.25 +
+> 𝑞 0.75 o
+> 𝑞 0.75 -
+> Sw(𝑥 ) for each witness
+> Keep witness only if:
+> 𝜇 𝑤 +>max( 𝜇 𝑤 -, 𝜇 𝑤 o),
+> 𝑞 0.25 +>max( 𝑞 0.75 -,𝑞 0.75 o)
+
+Figure 2: Pipeline for graph construction and filtering. Text representations and class prototypes are fused to define both global class plausibility and semantic rival neighborhoods. Each witness is then fitted on ID samples under the frozen VLM backbone, and only those whose local responses remain consistently higher on anchor-class samples than on rival-class and other-class samples are retained as reliable local verifiers. 
+
+global image embeddings over class-𝑐 images in the ID fitting split 
+
+Dfit . The same ID fitting split is used for ID-only witness screening. For a directed pair (𝑎, 𝑟 ), witness screening uses anchor-class sam-ples from class 𝑎 , rival-class samples from class 𝑟 , and other-class samples from all remaining ID classes CID \ { 𝑎, 𝑟 }. Using only the class text representation e𝑐 would preserve class semantics but ig-nore the empirical image distribution of class 𝑐 , whereas using only the class prototype p𝑐 would capture the image distribution but dis-card the text-side semantic prior. The two are therefore combined to define the global class score of class 𝑐 for input image x:
+
+𝐺 𝑐 (x) = (1 − 𝜌 ) g(x)⊤e𝑐 + 𝜌 g(x)⊤p𝑐 , (1) where g(x) is the normalized global image embedding of x under the frozen vision-language backbone, and 𝜌 balances the text and prototype terms. The score 𝐺 𝑐 (x) measures the global plausibility of class 𝑐 for image x and is used for retained-class selection. The proposed pipeline retains the top-𝐾 𝑔 (e.g., 5) ID classes with the largest 𝐺 𝑐 (x) values and denotes them by the retained class set 
+
+Y ( x). Subsequent pairwise witness verification is performed only for classes in Y ( x). This truncation avoids spending pairwise veri-fication budget on clearly unreasonable ID classes and focuses the subsequent witness-based comparisons on a small set of globally plausible ID classes. 
+
+Semantic-pruned rival subgraph. The raw witness graph is con-structed to provide sufficient rival coverage for each ID class, but not every stored rival edge is equally relevant at test time. There-fore, the pipeline does not compare each retained ID class 𝑦 ∈ Y ( x)
+
+against all of its outgoing rival classes in the raw witness graph. Comparing against all rivals would introduce unnecessary compu-tation and may include semantically distant or weakly relevant rival classes in the subsequent pairwise local witness verification stage. Thus, a semantic-pruned rival subgraph is built for each ID class. Specifically, a fused class representation h𝑐 = Norm (( 1−𝜌 )e𝑐 +𝜌 p𝑐 )
+
+is formed, where the same coefficient 𝜌 is used to combine text and prototype representations, so that global class scoring and rival pruning are defined in compatible spaces. Pairwise class similarities are then computed by h⊤ 
+
+> 𝑐
+
+h𝑐 ′ , and a small semantic-neighbor set (e.g., 12) is retained for each ID class. This semantic-neighbor set preserves plausible rival classes while excluding clearly irrelevant ones. For each retained ID class 𝑦 ∈ Y ( x), up to two outgoing rival classes are retained. A rival class 𝑗 is kept only if the directed edge 
+
+(𝑦, 𝑗 ) exists in the witness graph and class 𝑗 belongs to the retained semantic-neighbor set of 𝑦 . This second pruning step restricts pair-wise witness verification to the most relevant nearby rival classes of 𝑦 , rather than all rival classes linked offline. If no outgoing rival class of 𝑦 satisfies this condition, the single most similar outgoing rival class is retained as fallback. The resulting active rival set is denoted by J ( 𝑦 ).
+
+ID-only witness screening. The goal of ID-only witness screening is to retain only those witnesses whose image-level responses are consistently higher on anchor-class samples than on rival-class and other-class samples under the frozen vision-language backbone. After the active rival set is determined, each witness on an active edge is evaluated on Dfit . This step checks whether an MLLM-generated witness phrase yields stronger image-level responses on anchor-class samples than on non-anchor samples under the frozen backbone. Each image is represented by 𝑇 = 9 local embeddings extracted from a 3 ×3 crop grid. An explicit crop-grid representation is used in-stead of model-specific internal patch tokens so that witness screen-ing remains comparable across different vision-language backbones while still providing a small but diverse set of local views. Given the witness representation t𝑎,𝑟,𝑤 and the local embeddings {l𝑡 (x)} 𝑇 𝑡 =1,local-view similarities are computed by 𝑠 𝑡,𝑤 (x) = cos (l𝑡 (x), t𝑎,𝑟,𝑤 ),PWLR: Pairwise Witness Local Rejection for Boundary-Aware Out-of-Distribution Detection MM ’26, November 10–14, 2026, Rio de Janeiro, Brazil Test image        
+
+> 3×3 crop scale=0.7
+> Image
+> Encoder
+> a photo of a {anchor} with {witness}
+> a photo of a {rival} with {witness}
+> Text
+> Encoder
+> Image
+> Encoder
+> normalize g( 𝑥 )
+> ec
+> pc
+> cos 𝜌
+> 1-𝜌
+> Gc(𝑥 )
+> Select top-k gRetained
+> class set 𝑌 (𝑥 )
+> TopKmean Sw(𝑥 )sum
+> Anchor score
+> cos
+> Text
+> Encoder
+> cos
+> cos
+> TopKmean Sw(𝑥 )sum
+> +
+> -
+
+Figure 3: Pipeline for pairwise local witness verification. Given a test image, the pipeline first retains a small set of globally plausible classes using the fused global score, and then verifies each retained class only against its active ri-vals in the semantic-pruned witness graph. For each directed class pair, witness responses are computed from local views, standardized, and aggregated into a directed support score. 
+
+and the image-level witness response is defined as 
+
+𝑠 𝑤 (x) = TopKMean 
+
+
+
+{𝑠 𝑡,𝑤 (x)} 𝑇 𝑡 =1, 𝑘 𝑝 
+
+
+
+, (2) where TopKMean averages the largest 𝑘 𝑝 local-view similarities. This design reflects the assumption that a valid witness usually appears only in part of the object, so using only the strongest few local views preserves localized evidence while reducing dilution from irrelevant regions. For each witness 𝑤 on edge (𝑎, 𝑟 ), the response 𝑠 𝑤 (x) is evalu-ated on anchor-class, rival-class, and other-class screening samples, where the other-class fitting samples come from the remaining ID classes CID \ { 𝑎, 𝑟 }. From these three response sets, the means 𝜇 + 
+
+> 𝑤
+
+,
+
+𝜇 − 
+
+> 𝑤
+
+, and 𝜇 𝑜 𝑤 , the pooled standard deviation 𝜎 𝑤 , and the quantiles 
+
+𝑞 +
+
+> 0.25
+
+, 𝑞 −
+
+> 0.75
+
+, and 𝑞 𝑜  
+
+> 0.75
+
+are estimated. Let 𝜇 ref  
+
+> 𝑤
+
+= max (𝜇 −
+
+> 𝑤
+
+, 𝜇 𝑜 𝑤 ). Then the effect size of witness 𝑤 is defined as 𝑒 𝑤 = (𝜇 + 
+
+> 𝑤
+
+− 𝜇 ref  
+
+> 𝑤
+
+)/ 𝜎 𝑤 ,which measures average anchor-versus-non-anchor separation, while 𝑔 𝑤 = 𝑞 + 
+
+> 0.25
+
+− max (𝑞 −
+
+> 0.75
+
+, 𝑞 𝑜 
+
+> 0.75
+
+) measures whether this sepa-ration remains under harder tail cases. A witness is kept only if 
+
+𝜇 + 
+
+> 𝑤
+
+> 𝜇 ref  
+
+> 𝑤
+
+and 𝑞 + 
+
+> 0.25
+
+> max (𝑞 −
+
+> 0.75
+
+, 𝑞 𝑜 
+
+> 0.75
+
+). For each kept witness, the midpoint 𝑚 𝑤 = 12 (𝜇 + 
+
+> 𝑤
+
++ 𝜇 ref  
+
+> 𝑤
+
+) is stored for later standardization. The standardized score is centered at 𝑚 𝑤 , which lies between the anchor-class mean and the stronger non-anchor mean. It therefore reflects comparative support rather than absolute similarity. 
+
+## 2.3 Pairwise Local Witness Verification 
+
+Given an input image x, a retained candidate class 𝑦 ∈ Y ( x), and an active rival class 𝑗 ∈ J ( 𝑦 ), the retained witness set W ( 𝑦 → 𝑗 )
+
+is used to evaluate whether x contains the local visual evidence that supports 𝑦 against 𝑗 . This stage forms the core local verification step (Figure 3). Rather than assessing whether x is generally compatible with class 𝑦 , the verification focuses on whether the image exhibits the specific local evidence that distinguishes 𝑦 from the particular rival 𝑗 . Here, the boundary is instantiated as the directed distinction between 𝑦 and 𝑗 , rather than as an abstract global separation score. For each retained witness 𝑤 ∈ W ( 𝑦 → 𝑗 ), the image-level wit-ness response 𝑠 𝑤 (x) defined in the screening stage is first computed and then standardized by 
+
+𝑧 𝑤 (x) = 𝑠 𝑤 (x) − 𝑚 𝑤 
+
+𝜎 𝑤 + 𝜀 , (3) where 𝑚 𝑤 = 12 (𝜇 + 
+
+> 𝑤
+
++ 𝜇 ref  
+
+> 𝑤
+
+) is the midpoint between the anchor-class mean and the stronger non-anchor mean for witness 𝑤 , 𝜎 𝑤 is the pooled standard deviation estimated from the anchor-class, rival-class, and other-class screening samples, and 𝜀 is a small constant for numerical stability. This standardization is necessary because different witnesses may have very different raw similarity scales under the frozen encoder. Conversion to a common centered scale makes responses from different witnesses more comparable. 
+
+𝜙 𝑦,𝑗 (x) =
+
+Í𝑤 ∈ W ( 𝑦 →𝑗 ) 𝛼 𝑤 𝑧 𝑤 (x)
+
+Í𝑤 ∈ W ( 𝑦 →𝑗 ) 𝛼 𝑤 
+
+, 𝛼 𝑤 = max (𝑒 𝑤 , 0) , (4) where 𝑒 𝑤 is the fitted effect size of witness 𝑤 . Because only wit-nesses that pass the ID-only screening criteria are retained, the corresponding weights satisfy 𝛼 𝑤 > 0, so the normalization is well-defined. Larger weights are therefore assigned to witnesses that showed stronger anchor-versus-reference separation during screening. If the reverse edge ( 𝑗, 𝑦 ) also exists, it is used only as a one-sided penalty: 
+
+𝑟 𝑦,𝑗 (x) = 𝜙 𝑦,𝑗 (x) − [ 𝜙 𝑗,𝑦 (x)] + , (5) where [·] + = max (· , 0). If the reverse edge is absent, 𝑟 𝑦,𝑗 (x) =
+
+𝜙 𝑦,𝑗 (x) is used directly. Positive evidence on (𝑦, 𝑗 ) is treated as direct support for class 𝑦 , whereas positive evidence on ( 𝑗, 𝑦 ) only reduces the support for 𝑦 and is not treated as positive support for 𝑦 itself. For each retained class 𝑦 ∈ Y ( x), the pairwise local verification score is defined as 𝐴 𝑦 (x) = min 𝑗 ∈ J ( 𝑦 ) 𝑟 𝑦,𝑗 (x), which is the smallest penalized directed support for class 𝑦 over its active rival set. Therefore, a high value of 𝐴 𝑦 (x) is obtained only when support for class 𝑦 remains strong against every active rival in J ( 𝑦 ).Finally, the image-level pairwise verification score is 𝑆 ver (x) =
+
+max 𝑦 ∈ Y ( x) 𝐴 𝑦 (x), and the retained class with the maximum score is taken as the predicted ID label of the local verification branch. 
+
+## 2.4 Retained-Class Calibrated Acceptance 
+
+Although 𝐴 𝑦 (x) captures pairwise local support for a retained class 𝑦 , local verification alone is not sufficient for final acceptance. Strong local support may still arise from a small set of local cues even when class 𝑦 is globally implausible under the global class score 𝐺 𝑦 (x). A final retained-class calibration is therefore applied to combine local support and global plausibility on a common scale. Using the calibration split Dcal , one score pair is collected for ev-ery retained class of every image in Dcal . Each pair is (𝐺 𝑦 (x), 𝐴 𝑦 (x)) ,where x ∈ D cal and 𝑦 ∈ Y ( x). Here, 𝐺 𝑦 (x) is the global class score from retained-class selection, and 𝐴 𝑦 (x) is the pairwise local verifi-cation score defined above. The empirical cumulative distribution functions of the scalar sets {𝐺 𝑦 (x) | x ∈ D cal , 𝑦 ∈ Y ( x)} and 
+
+{𝐴 𝑦 (x) | x ∈ D cal , 𝑦 ∈ Y ( x)} are then computed, denoted by 
+
+𝐹 𝐺 (·) and 𝐹 𝐴 (·) , respectively. This maps the two scores to a com-mon rank-based scale, because their raw magnitudes are not directly comparable. For each retained class 𝑦 ∈ Y ( x), the calibrated global and local scores are defined as 𝑢 𝐺 (x, 𝑦 ) = 𝐹 𝐺 (𝐺 𝑦 (x)) and 𝑢 𝐴 (x, 𝑦 ) =MM ’26, November 10–14, 2026, Rio de Janeiro, Brazil Chengyao Jia and Ruixuan Wang 
+
+Table 1: OOD detection performance (%) on the conventional far-OOD benchmark, with ImageNet-100 as ID dataset and iNaturalist, SUN, Places, Textures as OOD datasets. The best and second-best results are shown in bold and underline, respectively.                                                                                                                                                                               
+
+> Method iNaturalist SUN Places Texture Average FPR95 ↓AUROC ↑FPR95 ↓AUROC ↑FPR95 ↓AUROC ↑FPR95 ↓AUROC ↑FPR95 ↓AUROC ↑
+> MCM 3.72 98.86 13.94 96.00 18.52 94.85 19.06 95.24 13.81 96.24 GL-MCM 3.00 99.22 13.50 96.53 17.62 95.46 17.20 95.93 12.83 96.78 MSP 13.74 95.99 20.10 94.23 25.62 93.53 11.98 97.43 17.86 95.30 Energy 7.32 97.90 16.44 95.33 22.50 94.77 8.64 97.70 13.73 96.43 ReAct 6.04 98.29 13.94 96.00 20.86 95.14 8.82 97.58 12.41 96.75 MaxLogit 8.20 97.53 16.92 95.30 22.72 94.68 8.74 97.86 14.14 96.34 NegLabel 0.02 99.97 10.04 97.83 16.10 96.02 10.30 97.44 9.12 97.82 DPM-F 6.52 98.20 21.04 93.64 27.06 92.80 15.02 96.58 17.41 95.30 AdaNeg 0.16 99.94 9.70 97.73 19.58 96.15 10.84 97.50 10.07 97.83 Mahalanobis 15.38 93.35 25.00 89.00 31.00 87.32 8.82 97.62 20.05 91.82 KNN 20.70 89.45 27.16 88.62 30.36 88.61 16.02 94.98 23.56 90.42 NNGuide 1.40 99.57 11.82 97.05 19.34 95.98 8.22 98.08 10.20 97.67 CSP 0.04 99.94 8.20 98.14 14.74 96.72 8.84 98.13 7.96 98.23 SeTAR 9.94 97.75 20.72 93.83 26.50 92.53 19.72 94.65 19.22 94.69 PWLR-NegLabel 0.10 99.94 7.50 98.05 11.12 97.06 8.68 97.85 6.85 98.23 PWLR-CSP 0.04 99.96 6.86 98.36 9.74 97.55 7.16 98.31 5.95 98.55
+
+𝐹 𝐴 (𝐴 𝑦 (x)) , respectively. The calibrated acceptance score of the retained class 𝑦 is then defined as 
+
+𝐶 𝑦 (x) = 𝜆 𝑎 𝑢 𝐴 (x, 𝑦 ) + ( 1 − 𝜆 𝑎 ) 𝑢 𝐺 (x, 𝑦 ) , (6) where 𝜆 𝑎 balances calibrated local support and calibrated global plausibility. The final image-level acceptance score is 𝑆 PWLR (x) =
+
+max 𝑦 ∈ Y ( x) 𝐶 𝑦 (x), and the maximizing retained class is taken as the predicted ID label. Thus, the final decision is determined by the strongest retained-class hypothesis after joint calibration of the local and global branches. 𝑆 PWLR (x) also serves as the final image-level ID score for OOD detection, with larger values indicating that 
+
+x is more likely in-distribution. 
+
+## 3 Experiment 3.1 Experimental Setup 
+
+Datasets. Following previous studies on vision-language OOD de-tection [18], we adopt the ImageNet-100 benchmark [11, 27]. We evaluate on four standard far-OOD datasets, including iNatural-ist [17], SUN [38], Places [46], and Textures [9]. To further assess robustness under cleaner and more realistic distribution shifts, we additionally report results on OpenImage-O [37], ImageNet-O [16], and NINCO [2], following recent challenging OOD evaluation proto-cols. Beyond ImageNet-100, we further validate our method on sev-eral additional fine-grained datasets, including CUB-200-2011 [35], Oxford-IIIT Pet [31], and Food-101 [4]. In particular, following [5], CUB-200-2011 is partitioned into two disjoint subsets, with one CUB-100 split used as ID classes and the other CUB-100 split used as OOD classes; Oxford-IIIT Pet is similarly partitioned into 18 ID classes and 19 OOD classes. These class-partitioned settings sim-ulate more challenging semantic shifts, because the OOD classes remain visually and semantically close to the ID classes. 
+
+Implementation details. Unless otherwise specified, all main re-sults are obtained with SigLIP2 ViT-L/16-256 (WebLI) [1, 34, 42] as the default frozen backbone. Cross-backbone generality is fur-ther evaluated with PE-Core-L/14-336 [3, 8] and DFN2B-CLIP ViT-L/14 [12]. For PWLR, each ID dataset is further divided into an offline ID fitting split and a calibration split. Witness induction is performed offline once for each ID dataset; prototype estimation and witness screening use the ID fitting split, while retained-class calibration uses the calibration split. The default hyperparameter settings in the main experiments are 𝜆 𝑎 = 0.4, 𝜌 = 0.35, 𝐾 𝑔 = 5 and 
+
+𝑘 𝑝 = 2. For fair comparison, all methods use the same dataset splits, image preprocessing pipeline, evaluation protocol, and backbone under each comparison setting. 
+
+Comparative Methods. We compare our method against a di-verse set of representative OOD detectors. These include generic post-hoc baselines, including MSP [14], Energy [24], ReAct [32], MaxLogit [13], Mahalanobis [21], KNN [33], and NNGuide [30]; vision-language concept-matching methods such as MCM [27] and GL-MCM [29]; and recent semantics-enhanced or VLM-based base-lines, including NegLabel [19], CSP [7], DPM-F [44], AdaNeg [43], and SeTAR [23]. This selection covers both classical confidence-based detectors and stronger recent VLM-based approaches, en-abling a comprehensive evaluation under a unified protocol. For all compared methods, we use the same backbone and the same ID-OOD splits as our method. 
+
+Metrics. We follow standard OOD detection protocols and use FPR95 and AUROC as the primary metrics. Specifically, FPR95 de-notes the false positive rate on OOD samples when the true positive rate on ID samples is fixed at 95%, and thus lower is better. AUROC measures threshold-free separability between ID and OOD scores over the entire operating range, and thus higher is better. For each benchmark, we report results on individual OOD datasets and their average. Following standard OOD evaluation on fixed dataset splits, the main tables report one run per benchmark setting. Since the proposed pipeline uses offline witness generation before evaluation, the reported results correspond to one instantiated witness bank PWLR: Pairwise Witness Local Rejection for Boundary-Aware Out-of-Distribution Detection MM ’26, November 10–14, 2026, Rio de Janeiro, Brazil 
+
+Table 2: OOD detection performance on the more challeng-ing OOD benchmark, with ImageNet-100 as ID dataset and OpenImage-O, ImageNet-O, NINCO as OOD datasets.                                                                                                                                            
+
+> Method OpenImage-O ImageNet-O NINCO Average FPR95 ↓AUROC ↑FPR95 ↓AUROC ↑FPR95 ↓AUROC ↑FPR95 ↓AUROC ↑
+> MCM 9.10 97.69 16.16 95.83 29.64 94.90 18.30 96.14 GL-MCM 7.96 98.17 14.76 96.33 25.52 95.44 16.08 96.65 MSP 13.24 96.84 18.36 95.62 24.18 94.69 18.59 95.72 Energy 10.38 97.09 15.38 96.18 26.78 94.23 17.51 95.83 ReAct 8.28 97.45 13.42 96.52 28.16 94.17 16.62 96.05 MaxLogit 10.46 97.30 15.60 96.27 26.64 94.58 17.57 96.05 NegLabel 10.64 97.93 16.46 96.36 20.98 95.31 16.03 96.53 DPM-F 12.84 97.01 15.06 96.72 24.54 93.93 17.48 95.89 AdaNeg 11.16 97.69 24.54 94.79 21.38 94.94 19.03 95.81 Mahalanobis 7.54 97.38 17.28 95.20 28.40 90.87 17.74 94.48 KNN 12.10 96.32 25.16 93.04 49.30 84.17 28.85 91.18 NNGuide 11.52 97.10 17.32 96.03 18.48 96.06 15.77 96.40 CSP 12.20 97.41 17.42 95.98 23.74 94.19 17.79 95.86 SeTAR 14.52 96.38 22.98 94.49 25.56 93.41 21.02 94.76 PWLR-NegLabel 6.72 98.60 12.56 97.16 18.30 96.08 12.53 97.28
+> PWLR-CSP 7.28 98.47 12.66 97.17 20.18 95.70 13.37 97.11
+
+under each setting; the stability under repeated witness generation is further discussed in the appendix. 
+
+## 3.2 Main Results 
+
+Results on the conventional far-OOD benchmark. Table 1 re-ports the conventional far-OOD results. PWLR-CSP achieves the best average performance at 5.95% FPR95 and 98.55% AUROC, while PWLR-NegLabel achieves 6.85% FPR95 and 98.23% AUROC. The gains are particularly clear on Places and remain consistent on SUN and Textures, whereas the margin on iNaturalist is smaller be-cause several strong baselines are close to saturation. These results show that pairwise local witness verification is most helpful when global matching leaves substantial ambiguity among competitive ID classes. 
+
+Results on the cleaner/challenging OOD benchmark. Table 2 reports the results on the more challenging benchmark, where the gains of PWLR become larger. PWLR-CSP improves CSP from 17.79%/95.86% to 13.37%/97.11% in average FPR95/AUROC, and PWLR-NegLabel improves NegLabel from 16.03%/96.53% to 12.53%/ 97.28%. The improvement is consistent across OpenImage-O, ImageNet-O, and NINCO, supporting that PWLR improves class-boundary discrimination rather than relying on coarse dataset-specific cues. 
+
+Results on the split near-OOD benchmarks and multi-backbone validation. Table 3 reports the split near-OOD results under three vision-language backbones. Across 24 plug-in comparisons, PWLR improves AUROC in all settings and reduces FPR95 in 22 compar-isons. On CUB100/100, the largest AUROC gain is from 84.34% to 85.19% for PWLR-CSP under SigLIP2-L16-256, and the largest FPR95 reduction is from 69.40% to 59.90% for PWLR-MSP under PE-Core-L14-336. These results support that PWLR is particularly effective under near-OOD class confusion, and that its plug-in gain is not tied to a single encoder family. 
+
+Ablation study. Table 4 reports the ablation results on the cleaner and challenging benchmarks. In Table 4(a), combining the two branches improves the result to 16.42% FPR95 and 96.23% AU-ROC, compared with 18.67%/95.13% using only the global prior and 31.90%/93.69% using only pairwise verification. In Table 4(b), reverse-edge penalty and active rival pruning are both beneficial, 
+
+Table 3: Multi-backbone results of different plug-in vari-ants on the split near-OOD benchmarks. We report FPR95/AUROC on Pet18/19 and CUB100/100 under three frozen vision-language backbones. 
+
+Architecture Method Pet18/19 CUB100/100 FPR95 ↓ AUROC ↑ FPR95 ↓ AUROC ↑
+
+SigLIP2-L16-256 MCM 38.01 93.48 63.72 84.85 
+
+PWLR-MCM 27.77 94.99 60.07 85.29 
+
+MSP 27.02 94.07 73.14 78.24 
+
+PWLR-MSP 29.91 94.81 70.61 80.76 
+
+NegLabel 27.19 92.81 63.30 84.40 
+
+PWLR-NegLabel 24.96 94.06 61.97 85.09 
+
+CSP 30.33 92.35 64.21 84.34 
+
+PWLR-CSP 24.73 94.23 61.89 85.19 
+
+DFN2B-L14 MCM 33.62 92.64 43.87 91.02 
+
+PWLR-MCM 33.60 93.20 43.83 91.30 
+
+MSP 34.61 91.86 57.98 85.67 
+
+PWLR-MSP 33.01 93.37 57.92 87.34 
+
+NegLabel 43.64 91.63 48.67 90.11 
+
+PWLR-NegLabel 38.61 92.00 46.90 90.63 
+
+CSP 43.05 91.53 48.04 90.34 
+
+PWLR-CSP 41.33 92.01 45.80 90.79 
+
+PE-Core-L14-336 MCM 17.47 96.57 45.70 91.01 
+
+PWLR-MCM 15.92 96.98 44.39 91.15 
+
+MSP 14.54 96.70 69.40 85.21 
+
+PWLR-MSP 14.60 97.18 59.90 87.47 
+
+NegLabel 17.16 95.89 48.70 89.13 
+
+PWLR-NegLabel 14.18 97.24 40.52 89.31 
+
+CSP 16.67 95.98 48.14 88.71 
+
+PWLR-CSP 13.59 97.34 46.60 89.52 
+
+Table 4: Ablation on the cleaner/challenging benchmarks. (a) Effect of the global prior branch and the pairwise witness verification branch. (b) Effect of two local comparison mech-anisms: reverse-edge penalty and active rival pruning. In (b), both core branches are enabled by default.                                       
+
+> (a) Core branches (b) Local comparison mechanisms Global Pairwise Full Reverse Pruning Full
+> Global Prior ✓–✓Reverse Penalty ✓–✓
+> Pairwise Verification –✓✓Rival Pruning –✓✓
+> FPR95 ↓18.67 31.90 16.42 FPR95 ↓16.64 16.90 16.42 AUROC ↑95.13 93.69 96.23 AUROC ↑96.23 96.20 96.44
+
+and their combination gives the best result of 16.42% FPR95 and 96.44% AUROC, showing that effective local verification depends on both the witness phrases and the correct competitive neighborhood. 
+
+Sensitivity analysis. Table 5 reports the sensitivity analysis of the local-global fusion weight 𝜆 𝑎 , the text-prototype fusion coefficient 
+
+𝜌 , the retained-class set size 𝐾 𝑔 , and the local aggregation parameter 
+
+𝑘 𝑝 . Overall, the method is stable across the scanned ranges. For the retained-class calibrated acceptance stage, the best results are obtained in a moderate range of 𝜆 𝑎 , while 𝜌 and 𝐾 𝑔 cause only minor variation, indicating that the method does not rely on a narrowly MM ’26, November 10–14, 2026, Rio de Janeiro, Brazil Chengyao Jia and Ruixuan Wang 
+
+Table 5: Sensitivity analysis of the hyperparameters for PWLR-NegLabel and PWLR-CSP on the cleaner/challenging OOD benchmarks. Bold: best results within each hyperparameter scan. Underlined: the default settings used in the main experiments.                                                                                    
+
+> 𝜆 𝑎 𝜌
+> 0.2 0.3 0.4 0.5 0.6 0.20 0.35 0.50 NegLabel FPR95 ↓18.56 18.26 18.34 18.24 18.74 18.24 18.34 18.36 NegLabel AUROC ↑95.73 95.93 96.07 96.16 96.16 96.09 96.07 96.07 CSP FPR95 ↓20.82 20.54 20.06 19.56 20.06 20.04 20.06 20.16 CSP AUROC ↑95.21 95.48 95.69 95.83 95.89 95.71 95.69 95.68
+> 𝐾 𝑔 𝑘 𝑝
+> 3571234NegLabel FPR95 ↓18.12 18.34 18.32 18.48 18.34 18.60 18.60 NegLabel AUROC ↑96.09 96.07 96.07 96.06 96.07 96.04 96.03 CSP FPR95 ↓20.00 20.06 20.12 20.36 20.06 20.26 20.36 CSP AUROC ↑95.72 95.69 95.69 95.67 95.69 95.65 95.63
+
+tuned text-prototype balance or retained-class set size. For local witness aggregation, 𝑘 𝑝 = 2 gives the best performance in both plug-in variants, which is consistent with the design choice that witness evidence is typically localized and can be diluted when too many local views are averaged. 
+
+## 4 Related Work 
+
+OOD detection with pre-trained vision-language models. Re-cent VLMs have opened a practical route to OOD detection by matching image features with textual class concepts. A representa-tive early work is MCM [27], which treats the textual embeddings of ID classes as concept prototypes and defines the OOD score from the maximum temperature-scaled concept-matching score over ID classes. Early zero-shot extensions also explored alternative prompt or label design beyond plain ID class names. CLIPN [36] equips CLIP with positive-semantic and negation-semantic prompts to teach CLIP to say no, while TAG [25] shows that simple text prompt augmentation can improve several zero-shot OOD scores without requiring external knowledge or additional training. Building on this line, later VLM-based methods increasingly strengthened the text side through negative labels, semantic pool expansion, or richer ID descriptions [22]. NegLabel [19] proposes a post-hoc OOD detec-tor that introduces a vast number of negative labels from external corpora and designs an OOD score by combining affinities to ID and negative labels. CSP [7] further argues that stronger OOD detection requires a larger and better-structured semantic pool, and therefore expands OOD label candidates with a conjugated semantic pool composed of modified superclass names rather than relying only on standard class names. Instead of expanding auxiliary labels, FA [26] improves OOD detection by learning a forced prompt that captures richer and more diversified descriptions of ID classes beyond the textual semantics of class labels. Taken together, these methods show that language can substantially strengthen VLM-based OOD detection through prompt design, auxiliary label spaces, and richer class-level descriptions. 
+
+Local and region-aware OOD detection in VLMs. Another line of work studies how local cues can complement global vision-language matching. GL-MCM [29] extends MCM by incorporating local image scores as an auxiliary score. LoCoOp [28] formulates few-shot OOD detection as prompt learning and performs OOD regularization using ID-irrelevant local regions from CLIP local fea-tures. Local-Prompt [41] further introduces a coarse-to-fine tuning paradigm with global prompt guided negative augmentation and local prompt enhanced regional regularization. OSPCoOp [40] ana-lyzes VLM-based OOD detection from the perspective of shortcut learning caused by foreground-background coupling and improves robustness by decoupling background semantics. These methods show that local or regional cues are useful for OOD detection, but they still use local information mainly for score refinement, prompt learning, or shortcut suppression rather than for explicit pairwise boundary verification under class competition. 
+
+LLM/MLLM/LVLM-assisted OOD detection. Recent work has begun to incorporate large language models, large vision-language models, and other foundation models into OOD detection. Dai et al. [10] apply world knowledge from LLMs to generate descriptive features for ID class names, while also showing that indiscrimi-nately using such generations can damage OOD detection because of LLM hallucinations; they therefore introduce selective gener-ation with uncertainty calibration. EOE [5] instead leverages the expert knowledge and reasoning capability of LLMs to envision potential outlier exposure and generate potential outlier class la-bels specialized for OOD detection. ReGuide [20] studies OoDD in generative LVLMs and proposes a two-stage self-guided prompt-ing approach that improves OoDD through self-generated, image-adaptive concept suggestions. A recent preprint, MM-OOD [39], further explores MLLM-based outlier detection through multimodal reasoning and multi-round conversation for near-OOD and far-OOD settings. LLaVA-OOD [45] takes an attribute-based route by using LLaVA to extract image attributes and comparing them with class-specific reference attribute sets for OOD estimation. Fod-FoM [6] instead takes a training-based route and combines BLIP-2, CLIP, Stable Diffusion, and GroundingDINO to generate two types of challenging fake outlier images for classifier training. Unlike these studies that use language outputs mainly as descriptors, out-lier concepts, prompt guidance, attributes, or synthetic supervision, our study converts them into offline, pairwise, rival-aware local evidence for boundary verification under a frozen VLM backbone. 
+
+## 5 Conclusion 
+
+In this paper, an OOD detection framework called Pairwise Witness Local Rejection (PWLR) is proposed for image classification OOD detection. Extensive empirical evaluations on far, cleaner and more challenging OOD benchmarks, and split near-OOD benchmarks confirm that PWLR consistently improves strong vision-language baselines, with especially clear gains under semantic-shifted and near-OOD settings. Moreover, PWLR can be flexibly used as a plug-in module on top of different base detectors and backbones. This study is expected to encourage further research on using language as explicit pairwise evidence for stronger vision-language OOD detection. PWLR: Pairwise Witness Local Rejection for Boundary-Aware Out-of-Distribution Detection MM ’26, November 10–14, 2026, Rio de Janeiro, Brazil 
+
+## Acknowledgments 
+
+This work was supported by National Natural Science Foundation of China under Grant 62571559. 
+
+## References 
+
+[1] Lucas Beyer, Xiaohua Zhai, and Alexander Kolesnikov. 2022. Big Vision. [2] Julian Bitterwolf, Maximilian Müller, and Matthias Hein. 2023. In or Out? Fixing ImageNet Out-of-Distribution Detection Evaluation. In ICML , Vol. 202. 2471– 2506. [3] Daniel Bolya, Po-Yao Huang, Peize Sun, Jang Hyun Cho, Andrea Madotto, Chen Wei, Tengyu Ma, Jiale Zhi, Jathushan Rajasegaran, Hanoona Rasheed, Junke Wang, Marco Monteiro, Hu Xu, Shiyu Dong, Nikhila Ravi, Daniel Li, Piotr Dollár, and Christoph Feichtenhofer. 2025. Perception Encoder: The best visual embeddings are not at the output of the network. arXiv (2025). [4] Lukas Bossard, Matthieu Guillaumin, and Luc Van Gool. 2014. Food-101 – Mining Discriminative Components with Random Forests. In ECCV . 446–461. [5] Chentao Cao, Zhun Zhong, Zhanke Zhou, Yang Liu, Tongliang Liu, and Bo Han. 2024. Envisioning Outlier Exposure by Large Language Models for Out-of-Distribution Detection. In ICML , Vol. 235. [6] Jiankang Chen, Ling Deng, Zhiyong Gan, Wei-Shi Zheng, and Ruixuan Wang. 2024. FodFoM: Fake Outlier Data by Foundation Models Creates Stronger Visual Out-of-Distribution Detector. In ACM MM . 1981–1990. [7] Mengyuan Chen, Junyu Gao, and Changsheng Xu. 2024. Conjugated Semantic Pool Improves OOD Detection with Pre-trained Vision-Language Models. In 
+
+NeurIPS , Vol. 37. [8] Jang Hyun Cho, Andrea Madotto, Effrosyni Mavroudi, Triantafyllos Afouras, Tushar Nagarajan, Muhammad Maaz, Yale Song, Tengyu Ma, Shuming Hu, Hanoona Rasheed, Peize Sun, Po-Yao Huang, Daniel Bolya, Suyog Jain, Miguel Martin, Huiyu Wang, Nikhila Ravi, Shashank Jain, Temmy Stark, Shane Moon, Babak Damavandi, Vivian Lee, Andrew Westbury, Salman Khan, Philipp Krähen-bühl, Piotr Dollár, Lorenzo Torresani, Kristen Grauman, and Christoph Feichten-hofer. 2025. PerceptionLM: Open-Access Data and Models for Detailed Visual Understanding. arXiv (2025). [9] Mircea Cimpoi, Subhransu Maji, Iasonas Kokkinos, Sammy Mohamed, and An-drea Vedaldi. 2014. Describing Textures in the Wild. In CVPR . 3606–3613. [10] Yi Dai, Hao Lang, Kaisheng Zeng, Fei Huang, and Yongbin Li. 2023. Explor-ing Large Language Models for Multi-Modal Out-of-Distribution Detection. In 
+
+EMNLP . 5292–5305. [11] Jia Deng, Wei Dong, Richard Socher, Li-Jia Li, Kai Li, and Li Fei-Fei. 2009. Ima-geNet: A large-scale hierarchical image database. In CVPR . 248–255. [12] Alex Fang, Albin Madappally Jose, Amit Jain, Ludwig Schmidt, Alexander Toshev, and Vaishaal Shankar. 2023. Data Filtering Networks. arXiv preprint 2309.17425 (2023). [13] Dan Hendrycks, Steven Basart, Mantas Mazeika, Andy Zou, Joseph Kwon, Mo-hammadreza Mostajabi, Jacob Steinhardt, and Dawn Song. 2022. Scaling Out-of-Distribution Detection for Real-World Settings. In ICML , Vol. 162. 8759–8773. [14] Dan Hendrycks and Kevin Gimpel. 2016. A Baseline for Detecting Misclassified and Out-of-Distribution Examples in Neural Networks. arXiv 1610.02136 (2016). [15] Dan Hendrycks, Mantas Mazeika, and Thomas Dietterich. 2019. Deep Anomaly Detection with Outlier Exposure. In ICLR .[16] Dan Hendrycks, Kevin Zhao, Steven Basart, Jacob Steinhardt, and Dawn Song. 2021. Natural Adversarial Examples. CVPR (2021). [17] Grant Van Horn, Oisin Mac Aodha, Yang Song, Yin Cui, Chen Sun, Alexan-der Shepard, Hartwig Adam, Pietro Perona, and Serge J. Belongie. 2017. The iNaturalist Species Classification and Detection Dataset. In CVPR . 8769–8778. [18] Rui Huang and Yixuan Li. 2021. MOS: Towards Scaling Out-of-distribution Detection for Large Semantic Space. CVPR (2021), 8706–8715. [19] Xue Jiang, Feng Liu, Zhen Fang, Hong Chen, Tongliang Liu, Feng Zheng, and Bo Han. 2024. Negative Label Guided OOD Detection with Pretrained Vision-Language Models. In ICLR .[20] Jihyo Kim, Seulbi Lee, and Sangheum Hwang. 2025. Reflexive Guidance: Improv-ing OoDD in Vision-Language Models via Self-Guided Image-Adaptive Concept Generation. In ICLR .[21] Kimin Lee, Kibok Lee, Honglak Lee, and Jinwoo Shin. 2018. A simple unified framework for detecting out-of-distribution samples and adversarial attacks. In 
+
+NeurIPS . 7167–7177. [22] Tianqi Li, Guansong Pang, Xiao Bai, Wenjun Miao, and Jin Zheng. 2024. Learning Transferable Negative Prompts for Out-of-Distribution Detection. In CVPR .[23] Yixia Li, Boya Xiong, Guanhua Chen, and Yun Chen. 2024. SeTAR: Out-of-Distribution Detection with Selective Low-Rank Approximation. In NeurIPS ,Vol. 37. 72840–72871. [24] Weitang Liu, Xiaoyun Wang, John D. Owens, and Yixuan Li. 2020. Energy-based out-of-distribution detection. In NeurIPS . Article 1802, 12 pages. [25] Xixi Liu and Christopher Zach. 2024. TAG: Text Prompt Augmentation for Zero-Shot Out-of-Distribution Detection. In ECCV . 364–380. [26] Xinhua Lu, Runhe Lai, Yanqi Wu, Kanghao Chen, Wei-Shi Zheng, and Ruixuan Wang. 2025. FA: Forced Prompt Learning of Vision-Language Models for Out-of-Distribution Detection. In ICCV . 1152–1161. [27] Yifei Ming, Ziyang Cai, Jiuxiang Gu, Yiyou Sun, Wei Li, and Yixuan Li. 2022. Delv-ing into Out-of-Distribution Detection with Vision-Language Representations. In NeurIPS , Vol. 35. 35087–35102. [28] Atsuyuki Miyai, Qing Yu, Go Irie, and Kiyoharu Aizawa. 2023. LoCoOp: Few-Shot Out-of-Distribution Detection via Prompt Learning. In NeurIPS .[29] Atsuyuki Miyai, Qing Yu, Go Irie, and Kiyoharu Aizawa. 2025. GL-MCM: Global and Local Maximum Concept Matching for Zero-Shot Out-of-Distribution Detec-tion. IJCV (2025). [30] Jaewoo Park, Yoon Gyo Jung, and Andrew Beng Jin Teoh. 2023. Nearest Neighbor Guidance for Out-of-Distribution Detection. In ICCV . 1686–1695. [31] Omkar M Parkhi, Andrea Vedaldi, Andrew Zisserman, and C. V. Jawahar. 2012. Cats and dogs. In CVPR . 3498–3505. [32] Yiyou Sun, Chuan Guo, and Yixuan Li. 2021. ReAct: Out-of-distribution Detection With Rectified Activations. In NeurIPS , Vol. 34. 144–157. [33] Yiyou Sun, Yifei Ming, Xiaojin Zhu, and Yixuan Li. 2022. Out-of-Distribution Detection with Deep Nearest Neighbors. In ICML , Vol. 162. 20827–20840. [34] Michael Tschannen, Alexey Gritsenko, Xiao Wang, Muhammad Ferjad Naeem, Ibrahim M. Alabdulmohsin, Nikhil Parthasarathy, Talfan Evans, Lucas Beyer, Ye Xia, Basil Mustafa, Olivier H’enaff, Jeremiah Harmsen, Andreas Steiner, and Xiao-Qi Zhai. 2025. SigLIP 2: Multilingual Vision-Language Encoders with Improved Semantic Understanding, Localization, and Dense Features. arXiv abs/2502.14786 (2025). [35] C. Wah, S. Branson, P. Welinder, P. Perona, and S. Belongie. 2011. The Caltech-UCSD Birds-200-2011 Dataset . Technical Report CNS-TR-2011-001. California Institute of Technology. [36] Hualiang Wang, Yi Li, Huifeng Yao, and Xiaomeng Li. 2023. CLIPN for Zero-Shot OOD Detection: Teaching CLIP to Say No. In ICCV . 1802–1812. [37] Haoqi Wang, Zhizhong Li, Litong Feng, and Wayne Zhang. 2022. ViM: Out-Of-Distribution with Virtual-logit Matching . In CVPR . 4911–4920. [38] Jianxiong Xiao, James Hays, Krista A. Ehinger, Aude Oliva, and Antonio Torralba. 2010. SUN database: Large-scale scene recognition from abbey to zoo. In CVPR .3485–3492. [39] Haoran Xu, Yanlin Liu, Zizhao Tong, Jiaze Li, Kexue Fu, Yuyang Zhang, Longxiang Gao, Shuaiguang Li, Xingyu Li, Yanran Xu, and Changwei Wang. 2026. Vision Also You Need: Navigating Out-of-Distribution Detection with Multimodal Large Language Model . arXiv:2601.14052 [40] Zhuo Xu, Xiang Xiang, and Yifan Liang. 2025. Overcoming Shortcut Problem in VLM for Robust Out-of-Distribution Detection. In CVPR . 15402–15412. [41] Fanhu Zeng, Zhen Cheng, Fei Zhu, Hongxin Wei, and Xu-Yao Zhang. 2025. Local-Prompt: Extensible Local Prompts for Few-Shot Out-of-Distribution Detection. In ICLR .[42] Xiaohua Zhai, Basil Mustafa, Alexander Kolesnikov, and Lucas Beyer. 2023. Sig-moid Loss for Language Image Pre-Training. In ICCV . 11941–11952. [43] Yabin Zhang and Lei Zhang. 2024. AdaNeg: Adaptive Negative Proxy Guided OOD Detection with Vision-Language Models. In NeurIPS , Vol. 37. 38744–38768. [44] Zihan Zhang, Zhuo Xu, and Xiang Xiang. 2024. Vision-Language Dual-Pattern Matching for Out-of-Distribution Detection. In ECCV . 273–291. [45] Daojie Zhao, Chao Hou, Yongwei Nie, Peican Zhu, and Keke Tang. 2025. Attribute-Based Out-of-Distribution Detection Using LLaVA. In ICIC . 112–122. [46] Bolei Zhou, Agata Lapedriza, Aditya Khosla, Aude Oliva, and Antonio Torralba. 2018. Places: A 10 Million Image Database for Scene Recognition. IEEE TPAMI 
+
+40, 6 (2018), 1452–1464. MM ’26, November 10–14, 2026, Rio de Janeiro, Brazil Chengyao Jia and Ruixuan Wang 
+
+## 6 Supplementary 6.1 Complete Prompt and Witness Generation Protocol 
+
+This section provides the prompt protocol used in the pairwise witness generation pipeline in Section 2.1. 
+
+Coarse visual family assignment. Each ID class is first assigned to one coarse visual family before rival selection. In the current implementation, the family assignment model is GPT-4o-mini. The model receives a batch of class entries containing the label, and is instructed to return exactly one family for each class. The purpose of this step is to suppress implausible cross-family pairings before the later rival search. The family-assignment instruction is instantiated as follows: 
+
+> Choose exactly one family for each class from the family list. The family should reflect visual appearance rather than abstract semantics. Return only JSON.
+
+Family-constrained rival selection. For an anchor class 𝑎 , the rival search space is restricted to the same-family rival pool 𝑅 (𝑎 ) =
+
+{𝑐 ∈ 𝐶 ID | 𝐹 (𝑐 ) = 𝐹 (𝑎 ), 𝑐 ≠ 𝑎 }, and the candidate catalog 𝐶 (𝑎 )
+
+is obtained by serializing this pool into a structured list of class entries. The rival-selection model is GPT-5.1. It receives the anchor class, the rival catalog, and supporting anchor and rival images, and then selects a small fixed number of visually confusable rival classes. In the current implementation, five rivals are retained for each anchor class. The rival-selection instruction is instantiated as follows: 
+
+> You are selecting visually confusable rival classes for image classification. You will receive one anchor class and a candi-date pool already restricted to the same coarse visual family. Choose exactly five rival classes from the rival candidate pool. Prefer classes that are likely to be confused with the anchor in natural images and have similar visible structure, shape, parts, texture, or coarse appearance. Use the support images to focus on actual visual morphology rather than lexical relatedness. Do not choose the anchor itself. Return only the selected rival classes.
+
+Pairwise witness generation. For each directed pair (𝑎, 𝑟 ) with 
+
+𝑟 ∈ 𝑁 (𝑎 ), GPT-5.1 is used again to generate witness phrases. The model receives supporting images from both anchor and rival classes and is asked to propose short natural-language phrases that support the anchor class against the rival class. The prompt is deliberately comparative rather than descriptive: it asks for local visual evidence of the anchor class that is useful against one spe-cific rival class, rather than a generic caption or an unconstrained attribute list. In the current configuration, two anchor images and two rival images are sampled from the ID training set for each prompting round, twelve primary phrases are requested in each round, and three rounds with the same prompt template are run for each directed pair. To make the generated phrases suitable for later pairwise ver-ification, the instruction explicitly suppresses background, scene, human, and container cues, and favors short object-centric local evidence. The system instruction is instantiated as follows: 
+
+> Your task is to propose short witness phrases that distinguish the anchor class from the rival class. Focus only on the main object itself. Do not use background, co-occurring humans, containers, locations, photographer angle, scene template, or dataset bias. Do not use phrases such as in water, on branch, in bowl, in aquarium, with person, held by hand, on beach, or in tank. Prefer short visual phrases, typically two to five words. Good witnesses are stable object properties, such as a body part, a local shape detail, a texture pattern, a distinctive coloration on a part, or another visible local structure. If a phrase depends on context, assign it a high context-only risk score. The phrase should remain meaningful when the object is cropped from the background. Return only JSON.
+
+The pair-specific user instruction is instantiated as follows: 
+
+> Anchor class: label. Rival class: label. You will see the support images of the anchor class, followed by the support images of the rival class. Goal: propose twelve short witness phrases that are more visually characteristic of the anchor class than the rival class. Important exclusions: no background or location, no scene words, no class names or synonyms, and no broad generic phrases unless tied to a specific visible object part.
+
+Structured outputs and round-level parsing. Each prompting round returns a structured JSON object containing the anchor label, the rival label, and twelve candidate witness phrases. Each witness is accompanied by the two discrete attributes defined in Section 2.1, namely a visibility score and a context-only risk score, both on a 1–3 scale. At the implementation level, the structured output is used only to make the round-level parsing deterministic and to preserve the witness-level attributes required by the later witness-bank construction. The formal reliability test of witnesses is still deferred to the ID-only fitting stage in Section 2.2. 
+
+Witness-bank construction. After the three prompting rounds are completed for one directed pair, duplicate phrases are merged. Each surviving phrase 𝑝 is summarized by its occurrence count 
+
+𝑛 (𝑝 ) across rounds, its accumulated visibility score 𝑣 (𝑝 ), and its accumulated context-risk score 𝑢 (𝑝 ). The merged witness phrases are then ordered lexicographically: first by 𝑛 (𝑝 ) in descending order, then by the average visibility ¯ 𝑣 (𝑝 ) = 𝑣 (𝑝 )/ 𝑛 (𝑝 ) in descending order, and finally by the average context-risk ¯ 𝑢 (𝑝 ) = 𝑢 (𝑝 )/ 𝑛 (𝑝 ) in ascending order. Following the main paper, no additional truncation hyperparameter is introduced at this stage. Instead, the resulting ordered list is stored in the pairwise witness bank, together with the raw outputs from the three prompting rounds, and is later screened with ID-only data in Section 2.2. 
+
+Role of the protocol. This prompt protocol is designed to make the MLLM outputs compatible with the later frozen VLM verification stage. The family assignment narrows the rival search to visually coherent regions of the ID label space, the rival-selection prompt instantiates a small set of difficult class competitors for each anchor class, and the pairwise witness-generation prompt converts anchor-versus-rival visual differences into short local phrases that can later be tested quantitatively on ID samples. As a result, the MLLM is used only offline to construct the witness bank, and no MLLM call is required during test-time inference. PWLR: Pairwise Witness Local Rejection for Boundary-Aware Out-of-Distribution Detection MM ’26, November 10–14, 2026, Rio de Janeiro, Brazil 
+
+## 6.2 Witness bank analysis 
+
+Pairwise witness generation. Table 6 summarizes the raw pair-wise witness bank under the three-round prompting and cross-round merge protocol. The resulting graph is highly regular, con-taining 500 directed pairs and 100 classes with outgoing pairs, with exactly five outgoing rivals per class on average. This indicates that the offline rival-instantiation step yields a highly regular raw witness graph, with exactly five outgoing rivals per class in this analysis setting. At the phrase level, each directed pair first produces 36 raw witness phrases across the three prompting rounds. After round-level parsing and prompt-level exclusions, this becomes 30 valid witness phrases before cross-round duplicate merging on average, where “before cross-round duplicate merging” refers to witness phrases that remain after round-level parsing and exclusions but have not yet been merged across rounds. These witness phrases are then consolidated into 21.78 merged witness phrases after cross-round duplicate merging. This confirms that repeated prompting introduces substantial redundancy, but a considerable number of distinct witness still remain after consolidation. The phrase attributes also remain well behaved after three-round merging. The average visibility score is 2.48, while the average context-risk score is only 1.04. These values suggest that the merged witness bank still favors visually identifiable local cues with limited context dependence, which is consistent with the design goal of the proposed pipeline. The raw witness graph has a reverse-edge coverage of 12%, indicating that the retained rival relations remain predominantly directed even under the five-rival setting. 
+
+Table 6: Statistics of the raw pairwise witness bank under the three-round prompting and cross-round merge protocol. For each directed pair (𝑎, 𝑟 ), we report the number of raw witness phrases accumulated across the three prompting rounds, the number of merged candidates after cross-round duplicate merging, and the average values of the visibility score and the context-risk score. The table also summarizes the induced directed rival structure at the raw-bank stage.             
+
+> Statistic Fixed support images Directed pairs 500 Classes with outgoing pairs 100 Mean out-degree 5Min out-degree 5Max out-degree 5Reverse-edge coverage 12% Raw witness phrases / pair 36 Pre-merge witness phrases / pair 30 Merged witness phrases / pair 21.78 Avg. visibility 2.48 Avg. context-risk 1.04
+
+Witness screening statistics. Table 7 summarizes the ID-only witness screening stage under the three-round witness bank. Start-ing from 500 evaluated directed edges and 10,890 evaluated witness phrases, the pipeline retains 493 directed edges and 10,575 wit-ness phrases after screening. On average, each surviving directed edge retains 21.45 screened witnesses, which is consistent with the main method in Section 2.1: the generation stage stores an ordered merged witness list after cross-round merge, and witness removal is mainly deferred to the later screening stage rather than enforced by an additional truncation hyperparameter during generation. The retained witnesses remain stable in their fitted statistics, with mean 𝑒 𝑤 = 1.679, mean 𝑔 𝑤 = 0.101, mean 𝜎 𝑤 = 0.078, and mean 
+
+𝑚 𝑤 = 0.124. Overall, these results support that the three-round wit-ness bank yields a richer candidate pool, while the ID-only screen-ing stage successfully converts it into a quantitatively reliable set of local verifiers. 
+
+Table 7: Statistics of the ID-only witness screening stage un-der the three-round witness bank. Starting from the directed witness bank constructed by three-round prompting and cross-round merge, the pipeline screens witness phrases on 
+
+𝐷 fit and retains only those that satisfy the mean-separation and tail-separation conditions in Section 2.2.               
+
+> Statistic Value Evaluated directed edges 500 Surviving directed edges 493 Evaluated witness phrases 10890 Witnesses kept after ID-only screening 10575 Kept witnesses / surviving edge 21.45 Mean 𝑒 𝑤 1.679 Mean 𝑔 𝑤 0.101 Mean 𝜎 𝑤 0.078 Mean 𝑚 𝑤 0.124
+
+Graph changes after screening and semantic pruning. Table 8 shows how the local comparison structure changes across the two contraction steps of the pipeline. The raw witness graph contains 500 directed edges, and the retained witness graph still preserves 493 of them, indicating that the main effect of ID-only screening is to remove unreliable witness phrases while eliminating only a small number of entire directed edges. By contrast, the subsequent semantic pruning step produces a much sparser rival structure, reducing the graph to 103 directed edges. Correspondingly, the mean out-degree decreases from 5.00 to 4.93 after screening and then to 1.03 after semantic pruning. Importantly, the semantic-pruned rival subgraph has a maximum out-degree of 2, which is consistent with the method design in Section 2.2, where up to two outgoing rivals are retained for each class. Thus, witness screening mainly improves phrase reliability, whereas semantic pruning is the main source of graph-level contraction. 
+
+Causes of witness rejection. Table 9 analyzes the witnesses re-jected by the ID-only screening stage. Among all rejected witnesses, 86.35% fail only the tail-separation condition, while the remaining 13.65% fail both the mean-separation and tail-separation condi-tions. No witness is removed by the mean-separation condition alone. This pattern is informative: most generated witnesses are not globally uninformative on average, but a non-trivial subset fails to maintain stable anchor-versus-reference separation on harder tail cases. Therefore, the tail-separation condition is the principal factor that filters out unstable witness phrases, which is consistent with the design motivation in Section 2.2. MM ’26, November 10–14, 2026, Rio de Janeiro, Brazil Chengyao Jia and Ruixuan Wang 
+
+Table 8: Graph statistics before and after the two contraction steps of the proposed pipeline. The retained witness graph is obtained after the ID-only screening stage, and the semantic-pruned rival subgraph is the final local comparison structure used by online pairwise verification.                      
+
+> Statistic Raw witness graph Retained witness graph Semantic-pruned rival subgraph Directed edges 500 493 103 Classes with outgoing edges 100 100 100 Mean out-degree 5.00 4.93 1.03 Min out-degree 5.00 4.00 1.00 Max out-degree 5.00 5.00 2.00 Reverse-edge coverage 12.00% 10.76% 7.77%
+
+Table 9: Causes of witness rejection under the ID-only screen-ing criteria in Section 2.2, based on the three-round witness bank. Rejected witnesses are categorized by whether they fail the mean-separation condition, the tail-separation condition, or both. 
+
+Rejection reason Count Ratio Tail-separation failure 272 86.35% Both failures 43 13.65% 
+
+## 6.3 Additional Mechanism, Robustness, and Efficiency Analysis 
+
+Role of pairwise local verification. To further examine the role of pairwise local verification, Table 10 evaluates two controls under the same fixed-support-image setting used in Table 14: removing pairwise local verification while retaining the same witness bank, and shuffling the rival assignment. For both NegLabel and CSP, both controls reduce performance relative to PWLR. Together with the ablations in Table 4 of the main paper, where the full model is stronger than either branch alone and both reverse-edge penalty and active rival pruning are beneficial, these results further support the role of pairwise local verification against active rivals. 
+
+Table 10: Role of pairwise local verification on ImageNet-100 (ID) and NINCO (OOD) under fixed support images. Results are reported as AUROC/FPR95 (%).           
+
+> Plug-in Base detector PWLR No pairwise local verification Shuffled rival assignment NegLabel 95.31 / 20.98 96.28 ±0.09 / 16.97 ±0.64 95.58 ±0.17 / 20.25 ±0.71 96.07 ±0.05 / 19.15 ±0.41 CSP 94.19 / 23.74 95.91 ±0.09 / 18.49 ±0.60 94.62 ±0.27 / 22.01 ±0.89 95.69 ±0.18 / 20.97 ±0.56
+
+Robustness to the pairwise witness generation model. Table 11 further evaluates the dependence on the model used for pairwise witness generation under the same fixed-support-image protocol. Replacing GPT-5.1 with GPT-4o or Qwen2.5-VL-7B keeps both PWLR-NegLabel and PWLR-CSP above their corresponding base detectors. This result complements the repeated witness-generation analysis in Table 14 and shows that the performance gain is retained across different pairwise witness generation models. 
+
+Online inference overhead. Table 12 reports the average en-coding time, scoring time, total inference time, and peak memory per image on a single T4 GPU. PWLR adds online overhead over NegLabel and CSP because it performs both global scoring and pair-wise local verification under the frozen backbone. PWLR-NegLabel and PWLR-CSP require 163.78 and 164.36 ms/image, respectively, while no MLLM call is required during test-time inference. 
+
+Table 11: Comparison across different models for pairwise witness generation on ImageNet-100 (ID) and NINCO (OOD) under fixed support images. Results are reported as AU-ROC/FPR95 (%).                   
+
+> Method Generator AUROC / FPR95 NegLabel –95.31 / 20.98 PWLR-NegLabel GPT-5.1 96.28 ±0.09 / 16.97 ±0.64 PWLR-NegLabel GPT-4o 96.37 ±0.11 / 15.96 ±0.73 PWLR-NegLabel Qwen2.5-VL-7B 95.97 ±0.15 / 17.20 ±0.42 CSP –94.19 / 23.74 PWLR-CSP GPT-5.1 95.91 ±0.09 / 18.49 ±0.60 PWLR-CSP GPT-4o 96.01 ±0.13 / 17.61 ±0.86 PWLR-CSP Qwen2.5-VL-7B 95.58 ±0.16 / 18.51 ±0.95
+
+Table 12: Average inference overhead per image on a T4 GPU.                                
+
+> Method Enc. Score Total Peak Mem. (ms/img) (ms/img) (ms/img) (MB) NegLabel 30.08 6.81 36.89 3978 CSP 56.03 28.97 85.01 4031 NNGuide 35.94 53.92 89.86 14069 SeTAR 154.82 12.70 167.51 14123 PWLR-NegLabel 130.37 33.41 163.78 5468 PWLR-CSP 131.08 33.28 164.36 5468
+
+Offline witness-bank construction cost. Table 13 reports the one-time offline construction cost for the ImageNet-100 witness bank. Family assignment uses 9 GPT-4o-mini calls, family-constrained rival selection uses 100 GPT-5.1 calls, and pairwise witness genera-tion uses 1,500 GPT-5.1 calls. The complete construction requires 1,609 API calls, 2,129,354 total tokens, and 5.71 hours of serial wall-clock time, with pairwise witness generation accounting for most of the offline cost. 
+
+Table 13: Offline construction cost for the ImageNet-100 wit-ness bank. 
+
+Stage Model Calls Total tokens Time Family assignment GPT-4o-mini 9 6,279 31.9 s Rival selection GPT-5.1 100 47,710 221.7 s Witness generation GPT-5.1 1,500 2,075,365 5.64 h Total – 1,609 2,129,354 5.71 h 
+
+## 6.4 Stability and Significance Analysis 
+
+Stability under repeated witness generation. Table 14 reports detector-level stability on the cleaner and more challenging bench-mark with ImageNet-100 as the ID dataset and openimage-o, ImageNet-O and NINCO as OOD datasets. These repeated-regeneration results are tightly clustered, showing that the detector remains stable when the witness bank is re-instantiated multiple times. PWLR: Pairwise Witness Local Rejection for Boundary-Aware Out-of-Distribution Detection MM ’26, November 10–14, 2026, Rio de Janeiro, Brazil 
+
+Table 14: Stability under repeated witness generation on the more challenging benchmark with ImageNet-100 as the ID dataset. Entries are reported as AUROC/FPR95 (%). “Base” denotes the fixed base detector from the main paper. “Main” denotes the single instantiated witness bank reported in the main paper. “B” denotes three independent full witness-bank regenerations, while “C” denotes three independent regenerations with fixed support images. Repeated results are reported as mean ±std over three runs. “All” summarizes the main-paper witness bank together with B1–B3 and C1–C3. 
+
+Dataset Method Base Main B (mean ±std) C (mean ±std) All (mean ±std) OpenImage-O PWLR-NegLabel 97.93 / 10.64 98.60 / 6.72 98.79 ±0.02 / 6.06 ±0.05 98.75 ±0.02 / 6.26 ±0.14 98.74 ±0.07 / 6.24 ±0.25 PWLR-CSP 97.41 / 12.20 98.47 / 7.28 98.67 ±0.01 / 6.57 ±0.10 98.64 ±0.02 / 6.91 ±0.29 98.63 ±0.07 / 6.82 ±0.32 ImageNet-O PWLR-NegLabel 96.36 / 16.46 97.16 / 12.56 97.45 ±0.03 / 10.59 ±0.55 97.41 ±0.06 / 11.36 ±0.51 97.39 ±0.11 / 11.20 ±0.83 PWLR-CSP 95.98 / 17.42 97.17 / 12.66 97.46 ±0.03 / 10.63 ±0.51 97.42 ±0.04 / 11.23 ±0.35 97.40 ±0.11 / 11.18 ±0.80 NINCO PWLR-NegLabel 95.31 / 20.98 96.08 / 18.30 96.48 ±0.06 / 15.72 ±0.29 96.28 ±0.09 / 16.97 ±0.64 96.34 ±0.16 / 16.62 ±1.05 PWLR-CSP 94.19 / 23.74 95.70 / 20.18 96.11 ±0.06 / 17.12 ±0.45 95.91 ±0.09 / 18.49 ±0.60 95.97 ±0.16 / 18.15 ±1.21 
+
+Significance relative to the base detector. The gains of the pro-posed pipeline are substantially larger than the run-to-run vari-ation. On ImageNet-O, the all-instantiation summary (the main-paper witness bank together with B1–B3 and C1–C3) gives 97 .39 ±
+
+0.11 AUROC and 11 .20 ± 0.83 FPR95 for PWLR-NegLabel, com-pared with 96 .36 /16 .46 for NegLabel, and 97 .40 ± 0.11 AUROC and 11 .18 ± 0.80 FPR95 for PWLR-CSP, compared with 95 .98 /17 .42 for CSP. On NINCO, the corresponding all-instantiation summaries are 96 .34 ± 0.16 /16 .62 ± 1.05 for PWLR-NegLabel versus 95 .31 /20 .98 for NegLabel, and 95 .97 ± 0.16 /18 .15 ± 1.21 for PWLR-CSP versus 94 .19 /23 .74 for CSP. Thus, even under the most conservative sum-mary, the AUROC gains and FPR95 reductions remain several times larger than the repeated-generation standard deviations. Interest-ingly, fixing the support images (C1–C3) does not further reduce the variance on either ImageNet-O or NINCO, suggesting that the observed variation is not dominated solely by support-image sam-pling. 
+
+Stability on the fine-grained CUB100/100 split. We note that the PWLR-CSP AUROC on CUB100/100 under SigLIP2-L16-256 was mis-entered in Table 3 of the main manuscript. Throughout Table 15 and the discussion below, we use the corrected value 85.19 for the single instantiated witness bank corresponding to the main-manuscript experiment setting. Table 15 reports repeated witness-generation results on the CUB100/100 split under SigLIP2-L16-256. For PWLR-NegLabel, the all-instantiation summary (the corrected main-paper witness bank together with B1–B3 and C1–C3) gives 85 .54 ± 0.38 AUROC and 61 .00 ± 1.56 FPR95, compared with 84 .40 /63 .30 for NegLabel. For PWLR-CSP, the corresponding result is 86 .00 ± 0.48 AUROC and 59 .70 ± 1.87 FPR95, compared with 84 .34 /64 .21 for CSP. Thus, the AUROC gains remain clearly larger than the repeated-generation standard deviations for both plug-in variants, while the FPR95 re-duction is especially strong for PWLR-CSP. 
+
+Effect of fixing the support images. Unlike the behavior on more challenging OOD benchmarks, fixing the support images sub-stantially reduces the run-to-run variance on the CUB100/100 split. For PWLR-NegLabel, the standard deviation decreases from 0 .55 to 0.10 in AUROC and from 2 .51 to 0 .38 in FPR95 when moving from B1–B3 to C1–C3. For PWLR-CSP, the corresponding reductions are from 0 .54 to 0 .11 in AUROC and from 2 .57 to 0 .77 in FPR95. This suggests that support-image sampling is a more important source of variation in the near-OOD fine-grained setting than on the more challenging far-OOD benchmarks. 
+
+## 6.5 More experiment results 
+
+Table 16 reports additional results on fine-grained ID datasets under the conventional far-OOD benchmark. Overall, the stronger vision-language baselines already perform close to saturation on these settings, especially NegLabel and CSP on CUB-200-2011 and Oxford-IIIT Pet, where AUROC is nearly 100% and FPR95 is close to zero on most OOD datasets. In this regime, the remaining room for improvement is naturally limited. Even under this strong saturation effect, PWLR-CSP remains consistently competitive and achieves the best or tied-best results on most entries. On CUB-200-2011 and Oxford-IIIT Pet, the margin over CSP is small because the baseline itself is already near ceil-ing. On Food-101, the improvement is slightly more visible on the harder columns, especially Places and Textures, where PWLR-CSP improves Food-101 from 99.48/0.06 to 99.53/0.06 on Textures and from 99.98/0.04 to 99.99/0.04 on Places. Although these absolute gains are small, they are consistent with the overall pattern in the main experiments: under conventional far-OOD settings, strong global vision-language detectors already separate ID and OOD sam-ples well, and the contribution of pairwise local witness verification is therefore moderate. Its advantage becomes more visible when global matching still leaves substantial ambiguity, as observed on the cleaner/challenging and near-OOD benchmarks. MM ’26, November 10–14, 2026, Rio de Janeiro, Brazil Chengyao Jia and Ruixuan Wang 
+
+Table 15: Stability under repeated witness generation on the CUB100/100 split under SigLIP2-L16-256. Entries are reported as AUROC/FPR95 (%). “Base” denotes the fixed base detector from the main manuscript. “Main” denotes the single instantiated witness bank reported in the main manuscript, using the corrected PWLR-CSP AUROC value of 85.19. “B” denotes three independent full witness-bank regenerations, while “C” denotes three independent regenerations with fixed support images. Repeated results are reported as mean ±std over three runs. “All” summarizes the corrected main-paper witness bank together with B1–B3 and C1–C3. 
+
+Dataset Method Base Main B (mean ±std) C (mean ±std) All (mean ±std) CUB100/100 PWLR-NegLabel 84.40 / 63.30 85.09 / 61.97 85.60 ±0.55 / 61.14 ±2.51 85.63 ±0.10 / 60.53 ±0.38 85.54 ±0.38 / 61.00 ±1.56 PWLR-CSP 84.34 / 64.21 85.19 / 61.89 86.11 ±0.54 / 58.92 ±2.57 86.16 ±0.11 / 59.75 ±0.77 86.00 ±0.48 / 59.70 ±1.87 
+
+Table 16: OOD detection performance on additional fine-grained ID datasets under the conventional far-OOD benchmark. Results are reported as AUROC/FPR95 (%). The best and second-best results are shown in bold and underline, respectively. 
+
+# ID dataset Method iNaturalist SUN Places Textures Average CUB-200-2011 
+
+# MCM 99.79/0.78 99.85/0.59 99.67/0.74 99.87/0.50 99.80/0.65 GL-MCM 99.86/0.54 99.90/0.36 99.71/0.57 99.93/0.32 99.85/0.45 MSP 99.78/0.91 99.85/0.70 99.67/0.86 99.87/0.57 99.79/0.76 NegLabel 99.99/ 0.00 100.00 /0.00 99.90/ 0.00 100.00 /0.00 99.97/ 0.00 
+
+# CSP 99.99/ 0.00 100.00 /0.00 99.90/ 0.00 100.00 /0.00 99.97/ 0.00 
+
+# PWLR-CSP 100.00 /0.00 100.00 /0.00 99.96 /0.00 100.00 /0.00 99.99 /0.00 Oxford-IIIT Pet 
+
+# MCM 98.76/4.74 99.60/1.96 99.58/1.64 99.45/2.62 99.35/2.74 GL-MCM 98.94/4.17 99.68/1.30 99.60/1.39 99.56/1.88 99.44/2.19 MSP 98.23/6.16 99.32/2.70 99.34/2.34 99.13/3.58 99.00/3.70 NegLabel 100.00 /0.00 99.98/0.03 99.92/0.05 99.91/0.10 99.95/0.04 CSP 100.00 /0.00 99.99/ 0.00 99.93/0.01 99.95/0.04 99.97/0.01 PWLR-CSP 100.00 /0.00 100.00 /0.00 99.98 /0.00 99.99 /0.00 99.99 /0.00 Food-101 
+
+# MCM 99.80/0.94 99.93/0.22 99.78/0.56 98.83/1.08 99.59/0.70 GL-MCM 99.83/0.68 99.96/0.12 99.82/0.34 98.93/0.64 99.63/0.45 MSP 99.52/2.16 99.74/0.94 99.54/1.52 98.56/2.26 99.34/1.72 NegLabel 100.00 /0.00 99.99/0.02 99.98/ 0.04 99.27/0.08 99.81/0.04 CSP 100.00 /0.00 99.99/0.02 99.98/ 0.04 99.48/ 0.06 99.86/ 0.03 
+
+# PWLR-CSP 100.00 /0.00 100.00 /0.01 99.99 /0.04 99.53 /0.06 99.88 /0.03
