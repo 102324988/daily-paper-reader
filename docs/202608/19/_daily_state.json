@@ -1,0 +1,57 @@
+{
+  "date": "20260819",
+  "date_label": "",
+  "generated_at": "2026-08-19 20:56:55 UTC",
+  "recommend_exists": true,
+  "run_count": 1,
+  "papers": [
+    {
+      "paper_id": "2608.16264v1",
+      "route": "202608/19/2608.16264v1-cyclops-lidar-as-a-camera-that-dreams-in-color",
+      "title": "Cyclops: LiDAR as a Camera That Dreams in Color",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "激光雷达到RGB的感知框架，实现全天候场景理解",
+      "first_seen_at": "2026-08-19 20:56:55 UTC",
+      "updated_at": "2026-08-19 20:56:55 UTC"
+    },
+    {
+      "paper_id": "2608.16367v1",
+      "route": "202608/19/2608.16367v1-depth-dominant-skeleton-detection-for-natural-scenes",
+      "title": "Depth-Dominant Skeleton Detection for Natural Scenes",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "深度主导、RGB辅助的自然场景骨架检测",
+      "first_seen_at": "2026-08-19 20:56:55 UTC",
+      "updated_at": "2026-08-19 20:56:55 UTC"
+    },
+    {
+      "paper_id": "2608.16480v1",
+      "route": "202608/19/2608.16480v1-rise-roadside-infrastructure-sequence-understanding-across-3d-tracking-and-structured-vision-language-reasoning",
+      "title": "RISE: Roadside Infrastructure Sequence Understanding across 3D Tracking and Structured Vision-Language Reasoning",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "跨多视角路侧相机序列的度量3D跟踪与标定引导身份关联",
+      "first_seen_at": "2026-08-19 20:56:55 UTC",
+      "updated_at": "2026-08-19 20:56:55 UTC"
+    }
+  ]
+}

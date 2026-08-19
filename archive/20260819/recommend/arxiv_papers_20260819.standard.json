@@ -1,0 +1,150 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-08-19T20:54:40.986078+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 3,
+    "deep_cap": 6,
+    "deep_selected": 3,
+    "quick_candidates": 0,
+    "quick_skim_target": 11,
+    "quick_selected": 0
+  },
+  "deep_dive": [
+    {
+      "id": "2608.16264v1",
+      "source": "arxiv",
+      "title": "Cyclops: LiDAR as a Camera That Dreams in Color",
+      "abstract": "Conventionally, robotic perception relies heavily on cameras due to the rich semantic texture they provide. However, their performance degrades significantly in low-light or high-dynamic-range environments. Conversely, while Light Detection and Ranging (LiDAR) captures illumination-invariant geometric and intensity properties, the resulting data are typically single-channel and sparse, creating a significant modality gap when applying vision models pre-trained on RGB datasets. In this paper, we propose Cyclops, a framework that translates sparse Non-Repetitive Scanning LiDAR (NRS-LiDAR) intensity into RGB video, enabling camera-free inference for all-day perception tasks. Our approach first converts sparse LiDAR intensity projections into dense representations via a frozen pre-trained densification module, serving as a geometrically rich source condition. The dense intensity latent is then transported toward the target RGB distribution through Latent Bridge Matching (LBM) with a learned velocity field in a few ODE integration steps. To mitigate inter-frame flickering, we inject prior-frame context via temporal attention layers and further formulate the velocity field as a policy optimized by a differentiable terminal reward that encourages terminal fidelity through backpropagation along the ODE trajectory. Extensive experiments demonstrate that the synthesized RGB, including those generated under near-dark conditions, enable standard RGB-based perception models to substantially outperform both LiDAR baselines and conventional cameras on semantic segmentation, lane detection, and point cloud colorization across diverse lighting conditions.",
+      "authors": [
+        "Wei Gao",
+        "Jian Shu",
+        "Mingle Zhao",
+        "Maani Ghaffari",
+        "David Kong",
+        "Chengzhong Xu",
+        "Hui Kong"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-08-17T08:37:09+00:00",
+      "link": "https://arxiv.org/pdf/2608.16264v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "LiDAR-to-RGB perception framework for all-day scene understanding",
+      "llm_evidence_cn": "激光雷达到RGB的感知框架，实现全天候场景理解",
+      "llm_evidence": "激光雷达到RGB的感知框架，实现全天候场景理解",
+      "canonical_evidence": "激光雷达到RGB的感知框架，实现全天候场景理解",
+      "llm_tldr_en": "Cyclops translates sparse LiDAR intensity into RGB video, enabling camera-free perception by harvesting RGB-pretrained vision models, robust in low-light and high-dynamic-range conditions.",
+      "llm_tldr_cn": "传统相机在弱光或高动态范围环境下性能下降，而LiDAR虽不受光照影响但数据稀疏且为单通道，难以直接应用RGB预训练视觉模型。本文提出Cyclops框架，将非重复扫描LiDAR强度投影转换为密集的RGB式表达，使感知任务无需相机即可全天候进行。该方法借助冻结的预训练视觉模型完成模态转换，显著降低了传感器对光照的依赖。实验表明该框架在多种全天候场景中具备良好的泛化能力。",
+      "llm_tldr": "传统相机在弱光或高动态范围环境下性能下降，而LiDAR虽不受光照影响但数据稀疏且为单通道，难以直接应用RGB预训练视觉模型。本文提出Cyclops框架，将非重复扫描LiDAR强度投影转换为密集的RGB式表达，使感知任务无需相机即可全天候进行。该方法借助冻结的预训练视觉模型完成模态转换，显著降低了传感器对光照的依赖。实验表明该框架在多种全天候场景中具备良好的泛化能力。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "computer vision research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "carryover_cache",
+      "paper_id": "2608.16264v1"
+    },
+    {
+      "id": "2608.16367v1",
+      "source": "arxiv",
+      "title": "Depth-Dominant Skeleton Detection for Natural Scenes",
+      "abstract": "To date, all natural scene skeleton detection follows the paradigm of taking RGB images as the sole input; despite notable progress, methods under this paradigm suffer significant performance degradation on complex-content images. We observe that depth images are inherently insensitive to color and texture, and can provide clear regional contours and inter-region spatial relationships, which naturally alleviates the difficulty of skeleton detection in complex scenarios. Motivated by this observation, this paper proposes for the first time a novel skeleton detection paradigm where depth images serve as the dominant modality and RGB images act as the auxiliary, and accordingly presents a model DDSkel (short for Depth-Dominant Skeleton Detection) under this paradigm. DDSkel employs an asymmetric encoder design to fuse RGB information into depth features, with the RGB modality branch having only 12% the parameters of the depth modality branch. DDSkel has a simple structure without intricate designs. Nevertheless, with only 36% of the trainable parameters of the current best method, DDSkel outperforms all state-of-the-art approaches on SymPASCAL, the most challenging dataset with a large volume of complex images.",
+      "authors": [
+        "Chengkun Rao",
+        "Yixuan Deng",
+        "Min Li",
+        "Yangjun Ou",
+        "Ye Li",
+        "Ziwei Luo",
+        "Zhaojing Wang",
+        "Junwei Tang",
+        "Bangchao Wang",
+        "Xiaoyun Yan"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-17T10:17:46+00:00",
+      "link": "https://arxiv.org/pdf/2608.16367v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Depth-dominant skeleton detection with RGB auxiliary for natural scenes",
+      "llm_evidence_cn": "深度主导、RGB辅助的自然场景骨架检测",
+      "llm_evidence": "深度主导、RGB辅助的自然场景骨架检测",
+      "canonical_evidence": "深度主导、RGB辅助的自然场景骨架检测",
+      "llm_tldr_en": "Proposes depth-dominant skeleton detection, using depth images to provide clear contours and spatial relations, with RGB as auxiliary, improving skeleton detection in complex scenes.",
+      "llm_tldr_cn": "现有自然场景骨架检测一律以RGB图像为唯一输入，在复杂内容图像上性能明显下降。本文观察到深度图像对颜色和纹理不敏感，能提供清晰的区域轮廓与空间关系，因此提出深度主导、RGB辅助的骨架检测范式并实现DDSkel模型。该方法首次将深度作为主导模态，有效缓解复杂场景下的检测难度。实验证明该范式在多个基准上取得显著提升，开辟了骨架检测的新方向。",
+      "llm_tldr": "现有自然场景骨架检测一律以RGB图像为唯一输入，在复杂内容图像上性能明显下降。本文观察到深度图像对颜色和纹理不敏感，能提供清晰的区域轮廓与空间关系，因此提出深度主导、RGB辅助的骨架检测范式并实现DDSkel模型。该方法首次将深度作为主导模态，有效缓解复杂场景下的检测难度。实验证明该范式在多个基准上取得显著提升，开辟了骨架检测的新方向。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "visual recognition algorithms",
+      "matched_requirement_id": "req-4",
+      "selection_source": "carryover_cache",
+      "paper_id": "2608.16367v1"
+    },
+    {
+      "id": "2608.16480v1",
+      "source": "arxiv",
+      "title": "RISE: Roadside Infrastructure Sequence Understanding across 3D Tracking and Structured Vision-Language Reasoning",
+      "abstract": "We present RISE (Roadside Infrastructure Sequence Understanding and Evaluation), a framework spanning metric 3D tracking and structured vision-language reasoning in roadside sequences. For metric tracking, our image-only method combines SAM3 video identities with calibration-guided mask agreement for multi-view identity association, recovering persistent 3D tracks without LiDAR or task-specific 3D training. Its calibration-conditioned geometry allows the procedure to be instantiated at different calibrated multi-camera intersections without layout-specific retraining. On 20 human-reviewed clips from six intersections, the generated tracks achieve 66.9 MOTA within the defined multi-view evaluation scope. For structured vision-language reasoning, a human-reviewed MLLM pipeline mines high-value clips and uses a constrained full-context Oracle to construct bbox-grounded predictive QA without exposing future evidence to evaluated models. The resulting RISE-VQA dataset contains 33,910 QA pairs from 557 clips across 16 intersections and 61 roadside views. Its intersection-held-out RISE-Bench evaluates semantic choices, coordinates, future boxes, and interaction sets with deterministic task-specific metrics. Experiments show consistent benefits from domain adaptation and generally from temporal context, while revealing persistent challenges in spatial grounding, future localization, and interaction reasoning.",
+      "authors": [
+        "Yanbo Jiang",
+        "Haotian Zheng",
+        "Jiahao Wang",
+        "Hanxiao Ren",
+        "Yitao Xu",
+        "Yining Xing",
+        "Zehong Ke",
+        "Hao Cheng",
+        "Yiqian Tu",
+        "Jinhao Li",
+        "Zhiyuan Xuan",
+        "Fang Zhang",
+        "Jianqiang Wang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-08-17T12:22:15+00:00",
+      "link": "https://arxiv.org/pdf/2608.16480v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Metric 3D tracking across multi-view roadside camera sequences with calibration-guided identity association",
+      "llm_evidence_cn": "跨多视角路侧相机序列的度量3D跟踪与标定引导身份关联",
+      "llm_evidence": "跨多视角路侧相机序列的度量3D跟踪与标定引导身份关联",
+      "canonical_evidence": "跨多视角路侧相机序列的度量3D跟踪与标定引导身份关联",
+      "llm_tldr_en": "Presents RISE, a framework for roadside infrastructure sequence understanding, combining SAM3-based multi-view 3D tracking with calibration-conditioned geometry to recover persistent tracks and structured vision-language reasoning.",
+      "llm_tldr_cn": "路侧基础设施序列理解需要同时进行度量3D跟踪和结构化视觉-语言推理。RISE框架仅凭图像方法，结合SAM3视频身份与标定引导的掩膜一致性，实现多视角身份关联，无需激光雷达或任务特定的3D训练。在六个交叉口的20个人工审查片段上达到66.9 MOTA，并可迁移到不同标定多相机设置。该工作为路侧场景的3D跟踪与推理提供了统一解决方案。",
+      "llm_tldr": "路侧基础设施序列理解需要同时进行度量3D跟踪和结构化视觉-语言推理。RISE框架仅凭图像方法，结合SAM3视频身份与标定引导的掩膜一致性，实现多视角身份关联，无需激光雷达或任务特定的3D训练。在六个交叉口的20个人工审查片段上达到66.9 MOTA，并可迁移到不同标定多相机设置。该工作为路侧场景的3D跟踪与推理提供了统一解决方案。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "visual tracking surveys",
+      "matched_requirement_id": "req-6",
+      "selection_source": "carryover_cache",
+      "paper_id": "2608.16480v1"
+    }
+  ],
+  "quick_skim": []
+}
