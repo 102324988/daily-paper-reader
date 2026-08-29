@@ -1,0 +1,436 @@
+Title: DocPC: Document-Level Visual Retrieval via Representative Page Composition
+
+URL Source: https://arxiv.org/pdf/2608.25434v1
+
+Published Time: Thu, 27 Aug 2026 00:35:18 GMT
+
+Number of Pages: 15
+
+Markdown Content:
+# DocPC: Document-Level Visual Retrieval via Representative Page Composition 
+
+Chengsong You 
+
+East China Normal University 
+
+51275901122@stu.ecnu.edu.cn 
+
+Junwei Zhou *
+
+Matter Innovation Inc. 
+
+zjw330501@gmail.com 
+
+Nan Du †
+
+Matter Innovation Inc. 
+
+frankdu@matter.ai 
+
+Abstract 
+
+Visual document retrieval has advanced by en-coding page screenshots with vision-language models, bypassing OCR pipelines. However, existing methods remain page-centric, mis-aligned with real-world scenarios requiring complete document retrieval. A naive page-then-document aggregation suffers from lin-ear indexing cost and degraded retrieval when relevance spans multiple pages. We pro-pose DocPC , a document-level visual retrieval framework based on Representative Page Composition : selecting representative pages and composing them into a single grid image for document-level indexing, reducing indexed images, vectors, and storage by 10.1 × and end-to-end indexing time by roughly 7.7 ×. To han-dle multi-positive supervision prevalent at the document level, we combine multi-positive contrastive learning with sparsely sched-uled listwise optimization . We also introduce 
+
+DocViRe , a benchmark with multi-positive rel-evance annotations. DocPC-ColQwen achieves NDCG@5 of 44.09 on DocViRe, outperform-ing the strongest page-level baseline at 38.91 
+
+while reducing storage by 10.1 ×. Code is available at https://anonymous.4open.sc ience/r/DocPC-Document-Level-Visua l-Retrieval-via-Representative-Pag e-Composition-1D52 . Data is available at 
+
+https://huggingface.co/datasets/anon ymous-7219/docpc .
+
+1 Introduction 
+
+Visual document retrieval has emerged as a com-pelling alternative to OCR-based pipelines by di-rectly encoding document page screenshots with vision-language models (Faysse et al., 2025). Mod-els such as ColPali and ColQwen represent page im-ages as multi-vector embeddings and perform late-interaction matching (Khattab and Zaharia, 2020; 
+
+> *Corresponding author.
+> †Corresponding author.
+
+Santhanam et al., 2022), achieving strong results on page-level benchmarks such as ViDoRe. However, existing visual document retrieval re-mains largely page-level . While page-level re-trieval suits retrieval-augmented generation (Lewis et al., 2020), many practical scenarios, such as en-terprise search, academic retrieval, and legal review, require retrieving complete documents . Yet cross-document document-level visual retrieval remains underexplored. ViDoRe (Faysse et al., 2025; Macé et al., 2025) and MMDocIR (Dong et al., 2025) focus on page-level retrieval, while VisDoMBench (Suri et al., 2025) targets QA rather than retrieval. A natural fallback is indexing pages indepen-dently and aggregating scores to the document level (e.g., MaxP). This faces a dual challenge : index size scales linearly with total pages, and relevance distributed across multiple pages may not be cap-tured by a single-page score. We propose DocPC , a document-level visual re-trieval framework built upon page-level retrievers via supervised fine-tuning. Its core idea, Repre-sentative Page Composition (PC) , selects K rep-resentative pages and arranges them into a single grid image, reducing document-side indexing from 
+
+O(N ) to O(1) without additional model complex-ity. Document-level retrieval also amplifies the 
+
+training challenge of multi-positive supervi-sion: topically related documents are more com-mon, making standard InfoNCE (van den Oord et al., 2018) prone to treating co-relevant docu-ments as negatives. We combine Multi-Positive Contrastive Loss (Khosla et al., 2020; Rivas-Villar et al., 2024) with a sparsely scheduled ApproxNDCG-based listwise loss (Qin et al., 2010) to address this. We further construct DocViRe , a benchmark for document-level visual retrieval with multi-positive relevance annotations across seven domains. Our contributions: 1arXiv:2608.25434v1 [cs.IR] 26 Aug 2026 • We formalize document-level visual retrieval and propose Representative Page Composi-tion for O(1) document indexing. • We construct DocViRe, a dedicated document-level visual retrieval benchmark with multi-positive annotations. • We empirically validate DocPC on DocViRe, demonstrating consistent retrieval gains from page selection and multi-positive training while significantly reducing index size. 
+
+2 Related Work 
+
+2.1 Visual Document Retrieval 
+
+Visual document retrieval has advanced rapidly by encoding document page images with vision-language models (VLMs) and matching queries via late interaction over token-level embeddings (Faysse et al., 2025; Khattab and Zaharia, 2020; Santhanam et al., 2022). ColPali is a representative OCR-free framework in this line: it produces multi-vector representations from page screenshots and applies late-interaction scoring, avoiding complex text extraction and ingestion pipelines while achiev-ing strong retrieval performance on visually rich documents (Faysse et al., 2025). Subsequent work has strengthened the visual backbone, for example through ColQwen (Faysse et al., 2025), explored more efficient retrieval architectures such as DSE (Ma et al., 2024a), and integrated visual retrievers into end-to-end visual RAG systems such as Vis-RAG (Yu et al., 2025). To reduce per-page indexing cost, efficient variants such as Light-ColPali (Ma et al., 2025) and DocPruner (Yan et al., 2025) fur-ther reduce the number of document-side vectors. However, these methods still operate at the page 
+
+level: they index and rank individual pages rather than complete documents. In contrast, this work targets document-level visual retrieval and repre-sents an entire multi-page document with a single composed encoding. 
+
+2.2 Retrieval Granularity and Benchmarks 
+
+Existing benchmarks for visual document retrieval are largely page-centric. ViDoRe (Faysse et al., 2025; Macé et al., 2025) evaluates cross-document retrieval where the retrieval unit is a single page. MMDocIR (Dong et al., 2025) focuses on intra-document page-level and layout-level retrieval. VisDoMBench (Suri et al., 2025) studies multi-document question answering rather than document ranking. As a result, current benchmarks do not provide a standard setting for document-level vi-sual retrieval, where the system must rank whole documents from a corpus of multi-page documents. A natural alternative is to reuse ideas from text retrieval by indexing smaller units and aggregating them to the document level. Passage-to-document aggregation has been widely studied in text re-trieval, where methods such as MaxP aggregate pas-sage scores into document scores (Dai and Callan, 2019; Li et al., 2023). Multi-page document un-derstanding has also been extensively explored for long-document question answering and reasoning, for example in Hi-VT5 (Tito et al., 2023), DUDE (Van Landeghem et al., 2023), M-LongDoc (Chia et al., 2025), and DocOwl 2 (Hu et al., 2025). Nev-ertheless, these settings differ from document re-trieval: the goal is typically to answer questions over a given document rather than to rank docu-ments by relevance. To clarify the landscape, we distinguish three re-lated but distinct task settings. (1) Cross-document retrieval ranks whole documents from a corpus given a query; this is the setting we address. (2) 
+
+Intra-document page retrieval finds relevant pages within documents to support downstream tasks such as QA. M3DocRAG (Cho et al., 2024) re-trieves pages via ColPali embeddings and feeds them to a multimodal LM for question answering. The key difference from our setting is that these methods retrieve pages rather than documents , and retrieval serves as an intermediate step rather than the end task. (3) Multi-page document QA evalu-ates comprehension over a given long document without corpus-level retrieval. MMLongBench-Doc (Ma et al., 2024b) benchmarks LVLMs on long PDF documents with cross-page questions, and LongDocURL (Deng et al., 2025) integrates un-derstanding, reasoning, and locating across 33,000+ pages. Our work targets setting (1), which remains underexplored compared to (2) and (3). To the best of our knowledge, there is still no benchmark or systematic study for cross-document document-level visual retrieval with multi-positive relevance annotations. 
+
+3 Task Formulation 
+
+Setting. We consider document-level visual re-trieval. The input is a text query q and a corpus 
+
+D = {d1, d 2, . . . , d M } of M documents. Each document di is a multi-page visual object: di =
+
+2{p(i)1 , p (i)2 , . . . , p (i) 
+
+> Ni
+
+}, where p(i) 
+
+> j
+
+denotes the j-th page of document i (e.g., a page image). The sys-tem assigns a relevance score s(q, d i) ∈ R to each document and returns a ranking over D. The goal is to rank relevant documents above irrelevant ones, where relevance is defined at the document level. 
+
+Differences from page-level retrieval. Two is-sues distinguish document-level from page-level retrieval. (1) Representation compression: Adocument has a variable number of pages Ni. Ef-ficient retrieval therefore requires a representation whose size does not grow linearly with Ni. Page-level methods index each page separately and incur 
+
+O(P 
+
+> i
+
+Ni · T ) storage (with T vectors per page), which is prohibitive at scale. (2) Multi-positive document supervision: At the document level, many queries naturally have multiple relevant doc-uments (e.g., several reports on the same policy). Training with a single positive per query mislabels other relevant documents as negatives and degrades learning. We therefore need objectives that support multiple positives per query. 
+
+Page-aggregation baseline. A straightforward baseline aggregates page scores into a document score: s(q, d i) = Agg p∈di s(q, p ) (MaxP). This does not reduce index size. When relevance is 
+
+distributed across pages, no single page has a dom-inant score, so MaxP tends to underrank such doc-uments. DocPC instead builds one composite rep-resentation per document and scores it directly. 
+
+Relevance distribution analysis. We analyze page-wise relevance ranks produced by zero-shot ColQwen on a randomly sampled 10% subset of the DocViRe training split (Figure 1). The first two pages achieve the best average ranks, indicating that early pages often carry stronger document-level signals. This motivates early-page-aware se-lection strategies in DocPC. 
+
+4 DocViRe Benchmark 
+
+Existing visual document retrieval benchmarks such as ViDoRe are defined at the page level: queries typically target local evidence within a sin-gle page, and systems are evaluated by whether they retrieve the correct page. In contrast, the task studied here takes the whole document as the re-trieval unit, where relevance depends on document-level topic, cross-page information, and global se-mantics. Page-level annotations in ViDoRe there-fore cannot be directly reused as document-level 
+
+> Figure 1: Average relevance rank by page index on a randomly sampled 10% subset of the DocViRe training split. For relevant query-document pairs, we compute the page-wise relevance rank produced by zero-shot ColQwen and report the first 20 page positions. Lower rank indicates stronger relevance. The first two pages are ranked most favorably, suggesting that early pages contain strong document-level signals.
+
+ground truth. Moreover, existing benchmarks are not designed for the cross-document document-ranking setting considered in this work. We thus construct DocViRe , a benchmark explicitly de-signed for document-level visual retrieval. DocViRe is designed to support document-level retrieval with document-grounded queries and multi-positive relevance annotations, while cov-ering cross-document retrieval across multiple do-mains and providing a reference training set for fine-tuning trainable retrievers. Documents are collected from the public PDFA dataset (Montalvo and Wightman, 2024). We con-sider seven domains: biology, education, finance, government, industrial, legal, and research. Table 1 reports the train and test split per domain, including query and document counts. In total, the training set contains 10,884 queries and 4,438 doc-uments. The test set contains 2,237 queries and 3,850 documents. The training and test splits are constructed from two disjoint document pools with no document overlap, ensuring that evaluation is performed on unseen documents rather than re-queried instances from the training corpus. These splits are designed to support both fine-tuning of trainable retrievers and standardized evaluation for document-level retrieval. Queries and ground-truth document sets are obtained through the construc-tion pipeline described below. Figure 2 summarizes that pipeline. We describe the four steps in the fol-lowing paragraphs. 3Table 1: DocViRe benchmark statistics per domain (training set and test set). The train and test splits are document-disjoint. All in English.                                              
+
+> Domain Training Test Description Queries Docs Queries Docs
+> Biology 427 310 101 550 Life sciences and biology textbooks and materials Education 2,424 956 975 550 Educational and pedagogical content and resources Finance 2,490 689 315 550 Financial reports, analysis, and market data Government 1,002 654 242 550 Administrative, policy, and regulatory documents Industrial 2,198 773 136 550 Industrial and manufacturing processes and standards Legal 911 431 207 550 Legal and regulatory compliance and contracts Research 1,432 625 261 550 Scientific and academic research publications and papers
+> Total 10,884 4,438 2,237 3,850
+
+Figure 2: Pipeline for constructing DocViRe. Docu-ments are first processed with OCR and a large language model (LLM) to extract keywords. Cluster analysis then groups documents by topical similarity and assigns each to a group. For each group, an LLM generates document-level query-ground-truth pairs, which are val-idated by a second LLM pass and by human review to produce the final benchmark. 
+
+Keyword extraction. For each input document, we first run OCR to obtain its text content. The OCR output, together with the raw document and a rule-based prompt, is then fed into a large lan-guage model. The LLM produces a structured set of keywords for the document, capturing its main topics and terminology at the document level rather than isolated page fragments. These keyword sets summarize document-level themes and serve as the basis for grouping documents by topical similarity in the next step. 
+
+Document grouping. We perform cluster analy-sis over the extracted keywords to form a keyword-level clustering. After sampling and document-cluster mapping, each document is assigned to one of k groups, so that documents within a group are topically similar (Group 1 through Group k). This grouping creates document-level semantic neigh-borhoods and provides the basis for generating queries that may correspond to more than one rele-vant document. 
+
+Query generation. For each group, we use an LLM with a rule prompt to generate document-level query-ground-truth (GT) pairs. The prompt guides the model to produce natural retrieval queries that are answered by one or more com-plete documents in the group, describing the over-all topic or higher-level information needs rather than specific sentences on a single page. 
+
+Quality validation. We apply a two-stage vali-dation procedure to ensure benchmark quality. In the first stage, an LLM filters candidate query-document pairs that are only weakly related, such as those linked by superficial keyword overlap or a single-page local match. In the second stage, three human annotators exhaustively review all test-split samples and manually correct problem-atic queries and query-document pairs to ensure document-level relevance. For query-document relevance, the three anno-tators labeled 98.8%, 99.0%, and 94.3% of the checked pairs as relevant, respectively, with a three-way full agreement of 92.5% and an at-least-two agreement of 98.8%. For query validity, the three annotators marked 99.3%, 99.7%, and 100.0% of all test queries as valid. On the test set, the three-way agreement reached 99.0%. All invalid or in-consistent samples were subsequently corrected and re-annotated before finalizing the benchmark. Importantly, human validation serves as the final quality-control step of the benchmark, rather than a lightweight spot check. All test-split samples are exhaustively reviewed by three annotators, and any invalid, ambiguous, or weakly document-grounded 4Document (N pages) N pages Expand VLM Encoder Model DocPC (Ours) Page Selection Grid Composition Entire document 2D embedding Page-level Baseline Document (N pages) N pages Expand VLM Encoder Model Page1 2D Embedding MaxSim Similarity Score VLM Encoder Model Attention Input Query Query Processing MaxSim  
+
+> +
+> MaxSim Similarity Score is all you need
+> +
+> Page2 2D Embedding Page3 2D Embedding PageN 2D Embedding
+
+Figure 3: Overview of DocPC compared with the page-level baseline. Top: DocPC selects K representative pages from a document, composes them into a single grid image (2 ×2 by default), and encodes the grid once with the VLM to obtain an O(1) multi-vector document representation. Bottom: The page-level baseline encodes each page independently, producing O(N ) embeddings per document, and aggregates per-page MaxSim scores at retrieval time. Both pipelines share the same query encoder with late interaction. Training combines Multi-Positive InfoNCE with a sparsely scheduled Top-K listwise loss to handle multi-positive relevance. 
+
+cases are manually corrected before inclusion. As a result, the final benchmark is determined by human-reviewed annotations, with LLM filtering used only as a preliminary screening step. Additional statistics on split composition and positive-target distributions are provided in Ap-pendix B. Full construction details, including LLM configurations, clustering hyperparameters, text sampling strategies, and annotation procedures, are provided in Appendix B.3. A query diversity analysis confirming that generated queries are not simple keyword recombinations is provided in Ap-pendix B.4. 
+
+5 Method: DocPC 
+
+5.1 Overview 
+
+DocPC represents each document by a small set of representative pages composed into a single grid image and scores it with a VLM and late interaction (Figure 3). Given a document with N pages, we select K pages (Section 5.2), compose them into a grid (2 ×2 by default), and encode the grid once. At retrieval time we encode the query and com-pute similarity via late interaction (e.g., MaxSim). Training uses document-level supervision from the DocViRe training split (Section 4) with the objec-tives below. Because each document is encoded once as a fixed-size grid rather than indexed page by page, DocPC reduces document-side indexing to one representation per document. Quantitative efficiency results are reported in Section 6.3. 
+
+5.2 Representative Page Composition 
+
+A core design choice is how to select K pages to form the document’s visual summary. Section 3 shows that early pages tend to carry stronger sig-nals. We consider both heuristic and embedding-based page selection strategies. 
+
+First-K. We take the first K pages, which often contain highly informative front matter such as titles, opening sections, and tables of contents. 
+
+Boundary. We take the first K/ 2 and the last 
+
+K/ 2 pages, targeting early and late document re-gions that often contain globally informative cues such as introductions, summaries, and conclusions. 
+
+Uniform-K. We sample K pages at uniformly spaced indices (e.g., pages 1, ⌊N/K ⌋+1 , . . . , N )to spread coverage across the document and avoid over-representing a single segment. 
+
+Random-K. We randomly sample K pages, providing a baseline with no structural prior. 
+
+Base-Clip. We also consider an embedding-based dynamic page selection strategy. We first compute CLIP embeddings for all candidate pages (Radford et al., 2021), cluster them, and select four representative pages from clusters to compose the final grid. Unlike fixed heuristics, this strategy se-lects pages according to document-specific visual-semantic structure and is used in ablation (Table 4) to compare against heuristic First-4 selection. 5By default we set K = 4 and arrange the se-lected pages in a 2×2 grid. We use the following layouts in our experiments: K=1 gives a single-page ( 1×1) representation. K=4 gives a four-page 
+
+2×2 grid. K=16 gives a 16-page larger grid. In all cases, pages are resized to a common resolution by the VLM preprocessing pipeline and arranged into a single grid image before being fed to the encoder. Thus, each document is represented by a fixed-size grid regardless of its total page count. By default we use the First-4 grid as the primary configura-tion. We also consider Boundary and Base-Clip as alternative page selection strategies. 
+
+5.3 Training Objectives 
+
+Document-level retrieval introduces two training challenges: multiple positive documents per query (multi-positive) and the need to optimize the rank-ing of top-K results. We address them with two losses. 
+
+Multi-Positive InfoNCE. Contrastive learning for visual and multimodal representations is well established (Chen et al., 2020; He et al., 2020; van den Oord et al., 2018). Standard contrastive losses (e.g., InfoNCE) assume one positive pair per query. In document-level benchmarks like DocViRe, a query can have multiple relevant doc-uments. Treating other positives in the batch as negatives hurts training. To relax the “one query, one positive” assumption, we use a multi-positive InfoNCE objective, similar in spirit to prior MP-InfoNCE formulations (Rivas-Villar et al., 2024), that aggregates over the positive set P and keeps negatives in N :
+
+LMP -InfoNCE = − log SP
+
+SP + SN
+
+, (1) where SP = P 
+
+> i∈P
+
+exp(sim( q, d + 
+
+> i
+
+)/τ ) and SN = 
+
+> P
+> j∈N
+
+exp(sim( q, d − 
+
+> j
+
+)/τ ). Here sim( q, d ) is the late-interaction similarity, τ is the temperature, d+
+
+> i
+
+are positives and d− 
+
+> j
+
+are negatives. This encourages the query to be close to all positives while pushed away from negatives. 
+
+Top-K listwise loss. To directly optimize the quality of the top-K ranking, we use a listwise loss based on ApproxNDCG (Qin et al., 2010), which is differentiable and focuses on the top positions: 
+
+Ltop -k = 1 − ApproxNDCG( y, r, K ), (2) where y and r denote predicted scores and rele-vance labels. Minimizing Ltop -k improves the or-dering of the top-K list relative to the relevance labels. Prior work in image retrieval has also opti-mized ranking metrics with listwise losses (Revaud et al., 2019). 
+
+Combined objective. We train with a weighted combination: 
+
+L = LMP -InfoNCE + λ Ltop -k, (3) where λ balances the contrastive and listwise terms. In practice, the multi-positive loss is applied at every step, while the listwise term is introduced intermittently during training. The multi-positive loss reduces false negatives among relevant docu-ments, and the listwise loss refines the ranking of the top results. 
+
+5.4 Training and Inference Training. We start from a pretrained page-level retrieval model ColQwen, apply the representative page composition to each document in the train-ing set, and fine-tune on DocViRe using the com-bined loss L. In-batch negatives are used for the contrastive term. No extra negative sampling is required. 
+
+Inference. Offline indexing is done once per document: compose a grid from the selected pages (2 ×2 by default), run a single VLM forward pass, and store the multi-vector representation. At query time, we encode the query once, compute late-interaction scores against all document representa-tions, and return the top-ranked documents. 
+
+6 Experiments 
+
+6.1 Setup 
+
+We evaluate DocPC primarily on the DocViRe benchmark described in Section 4. DocViRe con-tains document-level queries and multi-positive an-notations across seven domains (biology, educa-tion, finance, government, industrial, legal, and research). Unless otherwise stated, we report NDCG@5 as the main effectiveness metric and also compute Recall@ K on the document ranking. All metrics are computed over ranked documents 
+
+rather than pages. 
+
+Baselines. We compare DocPC against three groups of baselines that differ in retrieval unit and scoring. Text-only document retrieval includes a sparse lexical retriever (BM25), a dense re-triever (BGE-M3), and their LLM-summary vari-ants. Page-level visual retrieval with page aggrega-tion includes J INA -CLIP (Koukounas et al., 2024), 6Table 2: Main results on DocViRe (NDCG@5, %) per domain and average. Text-only baselines use OCR text or LLM-generated document summaries. Page-level VLM baselines index individual pages and aggregate with MaxP. Document-level methods use a single 4-page grid per document. For model names with two tags, the first tag denotes the training setting and the second denotes the test-time page or grid strategy. DocPC-ColQwen (First-4) uses the First-4 grid as the best configuration (see Section 6.4). Overall best in bold.                                                                                                         
+
+> Model Bio. Edu. Fin. Gov. Ind. Leg. Res. Avg
+> Text-only
+> BGE-M3 41.30 39.77 20.59 23.13 31.61 29.09 47.95 33.35 BM25 35.36 37.48 24.08 19.94 33.35 29.96 46.97 32.45 BGE-M3 (LLM sum.) 36.32 41.07 15.94 25.92 34.61 34.19 50.18 34.03 BM25 (LLM sum.) 31.96 40.17 17.96 24.06 35.76 34.18 44.79 32.70
+> Page-level VLM baselines
+> ColQwen-page (zero-shot, All pages) 50.98 33.92 22.83 27.04 10.02 37.98 56.40 34.17 ColQwen-page (zero-shot, Boundary) 52.89 34.20 22.89 26.54 8.52 40.58 56.48 34.59 ColQwen-page (DocViRe-sft, All pages) 46.01 37.90 30.36 30.89 20.53 44.78 56.65 38.16 ColQwen-page (DocViRe-sft, Boundary) 47.09 38.78 32.18 31.93 20.39 46.51 57.42 38.91
+> Document-level VLM (4-page grids)
+> Jina-CLIP (zero-shot, First-4) 20.35 23.86 10.92 10.10 25.18 13.20 31.36 19.28 Nomic-Embed (zero-shot, First-4) 4.90 6.96 8.98 1.74 16.06 0.73 10.40 7.11 ColQwen (DocViRe-sft, First-4) 42.24 46.86 30.22 31.93 41.11 42.40 50.47 40.75
+> Ours
+> DocPC-ColQwen (First-4) 49.02 46.44 33.46 33.25 47.44 46.64 52.41 44.09
+
+NOMIC -E MBED (Nussbaum et al., 2024), zero-shot ColQwen-page, and DocViRe-tuned ColQwen-page variants with page aggregation. Document-level visual retrieval with composed grids includes the document-level baseline ColQwen (DocViRe-sft, First-4) and our method DocPC-ColQwen (First-4) . Detailed baseline construction and scor-ing procedures are provided in Appendix A.7. 
+
+DocPC variants. DocPC represents each docu-ment by a single grid image rather than a set of individual pages. Unless otherwise stated, DocPC composes K = 4 representative pages into a 2×2
+
+grid and treats this grid as the retrieval unit. We use 
+
+First-4 (the first four pages) as the default strategy. In page-level contexts, “First-4” refers to the first four pages used in score aggregation, whereas in document-level contexts it refers to the first four pages composed into a single grid. We also con-sider Boundary (First2+Last2) as an alternative representative-page strategy. Supplementary com-parisons under alternative test-time representative-page strategies are reported in Appendix A.2. 
+
+Naming convention. We distinguish two model families. ColQwen-page (DocViRe-sft, Strategy) 
+
+is a page-level baseline fine-tuned on DocViRe with individual page images; at test time it encodes each selected page independently and aggregates scores via MaxP. DocPC-ColQwen (Strategy) is our document-level method fine-tuned with com-posed 2×2 grid images; at test time, selected pages are composed into a single grid, encoded once, and scored directly. The two families share the same VLM and late-interaction scoring but differ in input format (pages vs. grid), VLM passes per document (N vs. 1), and scoring (MaxP vs. direct). 
+
+Implementation details. We fine-tune a publicly available ColQwen checkpoint on DocViRe us-ing the combined objectives in Section 5.3, with listwise loss applied every m=40 steps (see Sec-tion 6.4). Page-level baselines use the original checkpoints in zero-shot mode unless stated oth-erwise; tuned ColQwen-page variants retain page-level indexing and MaxP aggregation. All methods share the same late-interaction scoring mechanism. 
+
+6.2 Main Results 
+
+DocPC-ColQwen (First-4) attains 44.09 aver-age NDCG@5, versus 38.91 for the strongest page-level baseline ColQwen-page (DocViRe-sft, Boundary) under matched supervision (Table 2), indicating that the gain comes from document-level composition rather than more supervision. Similar gains hold under different pool sizes (Ap-pendix A.6). 76.3 Efficiency and Footprint 
+
+Relative to page-level ColQwen on the DocViRe test set, DocPC reduces indexed images from 38,746 to 3,850 and indexed vectors from 29.25M to 2.91M ( ∼10 .1×). End-to-end indexing time drops from 15,588 s to 2,034 s ( 7.7×), and Milvus storage from 22.4 GB to 2.2 GB (Appendix A.4). Resolution sensitivity is analyzed in Appendix A.5. 
+
+6.4 Ablation Studies Grid composition vs. independent page encod-ing. To isolate the effect of grid composition from page selection, we compare DocPC-ColQwen (First-4 grid) with a matched independent-page baseline that uses the same four selected pages but encodes them separately and aggregates page scores with MaxP, AvgP, or SumP (Table 3).           
+
+> Table 3: Grid vs. independent page scoring (average NDCG@5, %). All use the same First-4 pages.
+> Method Scoring Avg Independent pages (First-4) MaxP 37.68 Independent pages (First-4) AvgP 32.76 Independent pages (First-4) SumP 32.76 DocPC-ColQwen (First-4) Grid 44.09
+
+Under the same page budget, grid composition outperforms the strongest independent-page variant (MaxP) by +6.41 NDCG@5. MaxP selects the best single-page score, discarding complementary cross-page signals; AvgP and SumP dilute relevant pages with irrelevant ones. Grid composition instead lets the encoder jointly observe cross-page layout, head-ings, and topical co-occurrence in a single repre-sentation. The advantage is positive in all seven domains (Appendix B.5), with the largest gains in Industrial (+21.08) and Education (+12.00). 
+
+Effect of representative page budget. Table 4 (DocPC variants trained with Combined m=5 , not directly comparable to Table 2) shows that more pages do not consistently help. A 4-page budget is the most reasonable choice in our setting.      
+
+> Table 4: Page budget ablation (average NDCG@5, %). All use Combined ( m=5 ); not directly comparable to Table 2.
+> Model Avg NDCG@5 DocPC-ColQwen (First-1) 39.03 DocPC-ColQwen (First-4) 40.66 DocPC-ColQwen (First-16) 36.59 DocPC-ColQwen (Base-Clip) 40.73
+
+Training objectives. Table 5 shows the effect of training objectives and listwise loss frequency (see also Figure 4 in the Appendix). The listwise objec-tive alone is insufficient (37.32); the multi-positive contrastive loss alone yields 42.68. The combined loss shows a three-phase pattern: at small m, pre-mature ranking optimization degrades performance (40.53 at m=1 ); at intermediate m, the contrastive loss stabilizes representations before the listwise term refines ranking, peaking at 44.09 ( m=40 ); at large m (50), ranking refinement is insufficient (42.83). Additional m values and a visualization are in Appendix B.7.         
+
+> Table 5: Training objective ablation (average NDCG@5, %). Combined ( m) applies the listwise loss every m
+> steps.
+> Variant Avg Listwise only 37.32 Multi-positive only 42.68 Combined ( m=1 )40.53 Combined ( m=10 )42.09 Combined ( m=40 )44.09
+> Combined ( m=50 )42.83
+
+Performance by document length and a qualita-tive analysis are provided in Appendix B.5 and B.8, respectively. 
+
+7 Conclusion 
+
+We propose DocPC, a document-level visual re-triever that composes representative pages into 2×2
+
+grids for efficient indexing, and DocViRe, a bench-mark with document-grounded queries and multi-positive annotations. DocPC-ColQwen (First-4) achieves 44.09 average NDCG@5 on DocViRe, outperforming the strongest page-level baseline (38.91) while reducing indexed images, vectors, and storage by 10 .1×. The results show that document-level composition is more effective than page-level aggregation under the same supervision. 
+
+8 Limitations 
+
+Grid composition inherently reduces per-page res-olution; fine-grained details such as small text and dense tables can lose legibility (Section B.8), sug-gesting a hybrid grid retrieval plus page reranking approach for detail-sensitive applications. We ex-plored only query-agnostic page selection; query-aware selection at reranking is a promising di-rection. DocViRe covers seven English domains; 8broader language and genre coverage remains for future work. The benchmark does not yet cover downstream settings such as retrieval-augmented generation. 
+
+9 Ethics Statement 
+
+DocViRe is constructed from the publicly available PDFA dataset (Montalvo and Wightman, 2024), which consists of openly accessible PDF docu-ments. We manually inspected sampled documents and did not identify personally identifiable infor-mation (PII) or offensive content. Query gener-ation was performed by a large language model (DeepSeek V3) and subsequently validated by the paper’s authors; no external crowd workers were recruited and no additional compensation was in-volved. The benchmark is intended solely for re-search on document retrieval and does not target any individual or sensitive population. We do not foresee direct negative societal impacts from our work, though we note that improved retrieval sys-tems could in principle be applied to surveillance or privacy-invasive search if misused. 
+
+References 
+
+Ting Chen, Simon Kornblith, Mohammad Norouzi, and Geoffrey Hinton. 2020. A simple framework for contrastive learning of visual representations. In 
+
+Proceedings of the 37th International Conference on Machine Learning , volume 119 of Proceedings of Machine Learning Research , pages 1597–1607. PMLR. Yew Ken Chia, Liying Cheng, Hou Pong Chan, Mao-jia Song, Chaoqun Liu, Mahani Aljunied, Soujanya Poria, and Lidong Bing. 2025. M-longdoc: A bench-mark for multimodal super-long document under-standing and a retrieval-aware tuning framework. In Proceedings of the 2025 Conference on Empir-ical Methods in Natural Language Processing , pages 9233–9250, Suzhou, China. Association for Compu-tational Linguistics. Jaemin Cho, Debanjan Mahata, Ozan Irsoy, Yu-jie He, and Mohit Bansal. 2024. M3DocRAG: Multi-modal retrieval is what you need for multi-page multi-document understanding. Preprint ,arXiv:2411.04952. Zhuyun Dai and Jamie Callan. 2019. Deeper text un-derstanding for IR with contextual neural language modeling. In Proceedings of the 42nd International ACM SIGIR Conference on Research and Develop-ment in Information Retrieval , pages 985–988. Chao Deng, Jiale Yuan, Pi Bu, Peijie Wang, Zhong-Zhi Li, Jian Xu, Xiao-Hui Li, Yuan Gao, Jun Song, Bo Zheng, and Cheng-Lin Liu. 2025. LongDocURL: a comprehensive multimodal long document bench-mark integrating understanding, reasoning, and locat-ing. Preprint , arXiv:2412.18424. Kuicai Dong, Yujing Chang, Derrick Goh Xin Deik, Dexun Li, Ruiming Tang, and Yong Liu. 2025. MM-DocIR: Benchmarking multimodal retrieval for long documents. Manuel Faysse, Hugues Sibille, Tony Wu, Bilel Omrani, Gautier Viaud, Céline Hudelot, and Pierre Colombo. 2025. ColPali: Efficient document retrieval with vision language models. In The Thirteenth Inter-national Conference on Learning Representations .ICLR 2025 poster. Kaiming He, Haoqi Fan, Yuxin Wu, Saining Xie, and Ross Girshick. 2020. Momentum contrast for un-supervised visual representation learning. In Pro-ceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) .Anwen Hu, Haiyang Xu, Liang Zhang, Jiabo Ye, Ming Yan, Ji Zhang, Qin Jin, Fei Huang, and Jingren Zhou. 2025. mPLUG-DocOwl2: High-resolution compressing for ocr-free multi-page document under-standing. In Proceedings of the 63rd Annual Meet-ing of the Association for Computational Linguistics (Volume 1: Long Papers) , pages 5817–5834, Vienna, Austria. Association for Computational Linguistics. Omar Khattab and Matei Zaharia. 2020. ColBERT: Effi-cient and effective passage search via contextualized late interaction over BERT. In Proceedings of the 43rd International ACM SIGIR Conference on Re-search and Development in Information Retrieval ,pages 39–48. Prannay Khosla, Piotr Teterwak, Chen Wang, Aaron Sarna, Yonglong Tian, Phillip Isola, Aaron Maschinot, Ce Liu, and Dilip Krishnan. 2020. Su-pervised contrastive learning. In Advances in Neural Information Processing Systems , volume 33, pages 18661–18673. Andreas Koukounas, Georgios Mastrapas, Michael Günther, Bo Wang, Scott Martens, Isabelle Mohr, Saba Sturua, Mohammad Kalim Akram, Joan Fontanals Martínez, Saahil Ognawala, Susana Guz-man, Maximilian Werk, Nan Wang, and Han Xiao. 2024. Jina CLIP: Your CLIP model is also your text retriever. Preprint , arXiv:2405.20204. Patrick Lewis, Ethan Perez, Aleksandra Piktus, Fabio Petroni, Vladimir Karpukhin, Naman Goyal, Hein-rich Küttler, Mike Lewis, Wen-tau Yih, Tim Rock-täschel, Sebastian Riedel, and Douwe Kiela. 2020. Retrieval-augmented generation for knowledge-intensive NLP tasks. In Advances in Neural Infor-mation Processing Systems , volume 33, pages 9459– 9474. Curran Associates, Inc. Canjia Li, Andrew Yates, Sean MacAvaney, Ben He, and Yingfei Sun. 2023. PARADE: Passage representation aggregation for document reranking. ACM Transac-tions on Information Systems , 42(2):36:1–36:26. 
+
+9Xueguang Ma, Sheng-Chieh Lin, Minghan Li, Wenhu Chen, and Jimmy Lin. 2024a. Unifying multimodal retrieval via document screenshot embedding. In Pro-ceedings of the 2024 Conference on Empirical Meth-ods in Natural Language Processing , pages 6492– 6505, Miami, Florida, USA. Association for Compu-tational Linguistics. Yubo Ma, Jinsong Li, Yuhang Zang, Xiaobao Wu, Xi-aoyi Dong, Pan Zhang, Yuhang Cao, Haodong Duan, Jiaqi Wang, Yixin Cao, and Aixin Sun. 2025. To-wards storage-efficient visual document retrieval: An empirical study on reducing patch-level embeddings. In Findings of the Association for Computational Linguistics: ACL 2025 , pages 19568–19580, Vienna, Austria. Association for Computational Linguistics. Yubo Ma, Yuhang Zang, Liangyu Chen, Meiqi Chen, Yizhu Jiao, Xinze Li, Xinyuan Lu, Ziyu Liu, Yan Ma, Xiaoyi Dong, Pan Zhang, Liangming Pan, Yu-Gang Jiang, Jiaqi Wang, Yixin Cao, and Aixin Sun. 2024b. MMLongBench-Doc: Benchmarking long-context document understanding with visualizations. In Ad-vances in Neural Information Processing Systems ,volume 37. Quentin Macé, António Loison, and Manuel Faysse. 2025. ViDoRe benchmark V2: Raising the bar for visual retrieval. Preprint , arXiv:2505.17166. Pablo Montalvo and Ross Wightman. 2024. Pdfa dataset (pixparse/pdfa-eng-wds). https://huggingface. co/datasets/pixparse/pdfa-eng-wds . Hugging Face dataset card. Accessed: 2026-03-17. Zach Nussbaum, John X. Morris, Brandon Duderstadt, and Andriy Mulyar. 2024. Nomic embed: Training a reproducible long context text embedder. Preprint ,arXiv:2402.01613. Tao Qin, Tie-Yan Liu, and Hang Li. 2010. A general ap-proximation framework for direct optimization of in-formation retrieval measures. Information Retrieval ,13(4):375–397. Alec Radford, Jong Wook Kim, Chris Hallacy, Aditya Ramesh, Gabriel Goh, Sandhini Agarwal, Girish Sas-try, Amanda Askell, Pamela Mishkin, Jack Clark, Gretchen Krueger, and Ilya Sutskever. 2021. Learn-ing transferable visual models from natural language supervision. In Proceedings of the 38th International Conference on Machine Learning , volume 139 of 
+
+Proceedings of Machine Learning Research , pages 8748–8763. PMLR. Jerome Revaud, Jon Almazan, Rafael S. Rezende, and Cesar Roberto de Souza. 2019. Learning with aver-age precision: Training image retrieval with a listwise loss. In Proceedings of the IEEE/CVF International Conference on Computer Vision (ICCV) .David Rivas-Villar, Álvaro S. Hervella, José Rouco, and Jorge Novo. 2024. Conked: Multiview contrastive descriptor learning for keypoint-based retinal image registration. Medical & Biological Engineering & Computing .Keshav Santhanam, Omar Khattab, Jon Saad-Falcon, Christopher Potts, and Matei Zaharia. 2022. Col-bertv2: Effective and efficient retrieval via lightweight late interaction. In Proceedings of the 2022 Conference of the North American Chapter of the Association for Computational Linguistics: Hu-man Language Technologies , pages 3715–3734, Seat-tle, United States. Association for Computational Linguistics. Manan Suri, Puneet Mathur, Franck Dernoncourt, Kanika Goswami, Ryan A. Rossi, and Dinesh Manocha. 2025. VisDoM: Multi-document QA with visually rich elements using multimodal retrieval-augmented generation. Proceedings of the 2025 Con-ference of the Nations of the Americas Chapter of the Association for Computational Linguistics: Human Language Technologies. Rubèn Tito, Dimosthenis Karatzas, and Ernest Valveny. 2023. Hierarchical multimodal transformers for mul-tipage DocVQA. Pattern Recognition , 144:109834. Aaron van den Oord, Yazhe Li, and Oriol Vinyals. 2018. Representation learning with contrastive predictive coding. Preprint , arXiv:1807.03748. Jordy Van Landeghem, Rubèn Tito, Łukasz Borchmann, Michał Pietruszka, Pawel Joziak, Rafal Powalski, Dawid Jurkiewicz, Mickael Coustaty, Bertrand Anck-aert, Ernest Valveny, Matthew Blaschko, Sien Moens, and Tomasz Stanislawek. 2023. Document under-standing dataset and evaluation (dude). In Proceed-ings of the IEEE/CVF International Conference on Computer Vision (ICCV) , pages 19528–19540. Yibo Yan, Guangwei Xu, Xin Zou, Shuliang Liu, James Kwok, and Xuming Hu. 2025. DocPruner: A storage-efficient framework for multi-vector visual document retrieval via adaptive patch-level embedding pruning. 
+
+Preprint , arXiv:2509.23883. Shi Yu, Chaoyue Tang, Bokai Xu, Junbo Cui, Jun-hao Ran, Yukun Yan, Zhenghao Liu, Shuo Wang, Xu Han, Zhiyuan Liu, and Maosong Sun. 2025. Vis-RAG: Vision-based retrieval-augmented generation on multi-modality documents. In The Thirteenth In-ternational Conference on Learning Representations .ICLR 2025 poster. 
+
+10 A Supplementary Experimental Results 
+
+In this appendix we use the same terminology as in the main paper: page-level retrieval indexes each page separately and aggregates scores at query time. 
+
+document-level retrieval composes a grid per docu-ment and encodes it once. We distinguish First-4 pages (first four pages used in page-level aggrega-tion) from First-4 grid (first four pages composed into a single document-level grid). All NDCG@5 values are reported in percentage (0 to 100). 
+
+A.1 Cross-Strategy Generalization of DocPC 
+
+Table 6 reports cross-strategy generalization of DocPC-ColQwen. Rows denote training page-selection strategies and columns denote test grid strategies. Values are average NDCG@5 (%) over the seven domains. 
+
+Table 6: Cross-strategy generalization of DocPC-ColQwen (average NDCG@5, %). Rows denote train-ing strategies and columns denote test strategies. F4 = First-4, Bnd. = Boundary, U4 = Uniform-4, R4 = Random-4, and L4 = Last-4.                                 
+
+> Train \Test F4 Bnd. U4 R4 L4 Bnd. 42.78 40.75 40.34 38.62 36.33 F4 40.66 39.17 38.95 36.77 35.36 L4 40.23 38.28 38.72 37.00 34.93 R4 42.64 40.69 40.17 39.60 36.00 U4 43.70 41.33 41.29 38.56 36.90
+
+A.2 Comparison of Tuned ColQwen and DocPC Under Different Test-Time Strategies 
+
+Table 7 compares tuned ColQwen and DocPC-ColQwen under different test-time representative-page strategies. All values are average NDCG@5 (%) over the seven domains. 
+
+A.3 Extended Ablations on Training Objective and Page Budget 
+
+The following tables are extended/exploratory ab-lations. Configurations and training setup may dif-fer from the main paper. Values are not directly comparable to Table 2 or the page-budget table in Section 6.4, which use controlled settings. The results suggest that the benefit of the listwise term depends strongly on how frequently it is applied. A possible explanation is that the multi-positive contrastive loss primarily shapes the representation space, whereas the listwise ApproxNDCG term 
+
+Table 7: Tuned ColQwen vs. DocPC-ColQwen un-der different test-time representative-page strategies on DocViRe (average NDCG@5, %).                   
+
+> Method Strategy Avg ColQwen (DocViRe-sft) First-4 40.75 ColQwen (DocViRe-sft) Boundary 39.26 ColQwen (DocViRe-sft) Uniform-4 37.96 ColQwen (DocViRe-sft) Random-4 36.23 DocPC-ColQwen First-4 43.70
+> DocPC-ColQwen Boundary 41.33 DocPC-ColQwen Uniform-4 41.29 DocPC-ColQwen Random-4 39.60
+
+mainly refines the ordering among already compet-itive candidates. When applied too frequently, the listwise term may interfere with early-stage repre-sentation learning; when applied sparsely, it can serve as a lightweight ranking refinement on top of a stronger representation space. 
+
+Table 8: Extended loss-frequency ablation for DocPC-ColQwen (NDCG@5, % AVG). Exploratory. Not di-rectly comparable to main-text Table 5 (controlled con-figuration). Listwise only / Multi-positive only and Combined( m) with various m.               
+
+> Variant Avg Combined (m=1) 40.53 Combined (m=3) 41.61 Combined (m=5) 40.66 Combined (m=7) 42.70 Combined (m=9) 42.96 Combined (m=11) 43.18 Combined (m=13) 43.67 Combined (m=15) 43.83 Combined (m=20) 43.36 Combined (m=30) 43.27 Combined (m=40) 44.09
+> Combined (m=50) 42.83 Listwise only 37.32 Multi-positive only 42.68
+
+A.4 Detailed efficiency breakdown 
+
+Table 10 reports the detailed efficiency and stor-age comparison between DocPC and page-level ColQwen on the DocViRe test index. DocPC re-duces the number of indexed images and vectors by about 10 .1×, lowers Milvus storage from 22.4 GB to 2.2 GB, and reduces end-to-end indexing time from 15,588 s to 2,034 s. While the composed 4-page grid slightly increases per-image encoding time, the overall encoding and insertion costs are substantially reduced because far fewer inputs need to be indexed. 11 Table 9: Extended representative-page budget ablation for DocPC-ColQwen (NDCG@5, % AVG). Exploratory. Main-text page-budget table (Section 6.4) uses a dif-ferent controlled setup (First-1/First-4/First-16, CLIP-selected 4-page grid).      
+
+> Model Avg DocPC-ColQwen (First-1) 39.03 DocPC-ColQwen (First-4) 40.66 DocPC-ColQwen (First-16) 36.59 DocPC-ColQwen (CLIP-selected 4-page grid) 40.73
+
+Table 10: Detailed efficiency and storage comparison be-tween DocPC and page-level ColQwen on the DocViRe test index.                                
+
+> Metric DocPC ColQwen Ratio Images 3,850 38,746 10 .1×fewer Vectors 2.91M 29.25M 10 .1×fewer Enc./img 431.7 ms 304.7 ms 1.42 ×higher Enc. 1,663 s 11,805 s 7.1×faster Insert 371 s 3,783 s 10 .2×faster Total 2,034 s 15,588 s 7.7×faster Storage 2.2 GB 22.4 GB 10 .1×smaller
+
+A.5 Resolution sensitivity 
+
+We further examine how DocPC-ColQwen (First-4 grid) behaves under different input resolutions of the composed grid image on DocViRe. As shown in Table 11, average NDCG@5 rises from 6.68 at 
+
+128 ×166 to 22.13 at 256 ×331 , 37.55 at 512 ×662 ,and 40.65 at the original-resolution setting, indicat-ing consistent but diminishing gains as resolution increases. 
+
+Table 11: Resolution sensitivity of DocPC-ColQwen (First-4 grid) on DocViRe (average NDCG@5, %).      
+
+> Resolution Avg NDCG@5
+> 128 ×166 6.68
+> 256 ×331 22.13
+> 512 ×662 37.55 Original 40.65
+
+A.6 Retrieval Performance Under Varying Candidate-Pool Sizes 
+
+Table 12 reports retrieval performance as the candi-date document pool size varies (per-domain pool size: 550, 400, or 200 size). The page-level base-line is ColQwen-page with MaxP aggregation (tak-ing the better of the two ColQwen-page variants for each pool size). DocPC-ColQwen (First-4) uses the First-4 grid. “Gain” is the absolute difference in average NDCG@5 (percentage points) between DocPC and the page-level baseline. 
+
+Table 12: Retrieval performance under varying candidate-pool sizes (NDCG@5, % AVG). Page-level baseline: ColQwen-page. Gain = DocPC minus page-level (absolute percentage points).             
+
+> Pool size Page-level DocPC-ColQwen (First-4) Gain 550 40.75 44.09 3.34 400 41.19 44.28 3.09 200 50.15 52.29 2.14
+
+A.7 Baseline Construction and Scoring Details 
+
+For text-only baselines, we first extract OCR text from each document. BM25 is applied directly to the extracted text, while BGE-M3 encodes OCR-derived text chunks into dense embeddings. We also include LLM-summary variants where each document is first compressed into a single abstrac-tive summary and retrieval is performed over sum-maries using BGE-M3 or BM25. OCR outputs are split into fixed-size chunks, each chunk is encoded once, and document scores are obtained by taking the maximum similarity over all chunks (MaxP aggregation). For page-level visual baselines, each page is treated as a retrieval unit. We compute query-page similarities with late interaction and obtain document scores via MaxP over pages, ensur-ing a uniform aggregation scheme across page-level methods. We report zero-shot ColQwen-page and ColQwen-page (Boundary), as well as DocViRe-tuned page-level variants: ColQwen-page (DocViRe-sft, All pages) and ColQwen-page (DocViRe-sft, Boundary) , which use the same su-pervision as DocPC while retaining page-level in-dexing and MaxP aggregation during inference. For document-level bi-encoder baselines, J INA -CLIP and N OMIC -E MBED are evaluated with First-4 grids, so that each document is represented by a single composed image. 
+
+B Supplementary Dataset Statistics 
+
+B.1 Dataset Collection and Preprocessing 
+
+To construct DocViRe, we used the first 40 source files to build the training split and files 41 to 50 to build the test split. After obtaining the raw PDFs, we first retained only documents with 4 to 30 pages. We then applied DeepSeek-based document classi-fication and kept only those PDFs assigned to one 12 of the seven target domains: biology, education, finance, government, industrial, legal, and research. The same preprocessing and filtering procedure was applied independently to the test split. This classification step was used only for corpus filter-ing, rather than as benchmark relevance annotation. 
+
+B.2 Quality validation agreement 
+
+For the test split, the three annotators labeled 98.8%, 99.0%, and 94.3% of checked query-document pairs as relevant, with a three-way full agreement of 92.5% and an at-least-two agreement of 98.8%. For query validity, they exhaustively reviewed all test-split queries and marked 99.3%, 99.7%, and 100.0% of them as valid. Across all test queries that received validity labels from all three annotators, the three-way agreement reached 99.0%. 
+
+B.3 Construction Details 
+
+We provide the complete specification of the DocViRe construction pipeline. 
+
+LLM and API details. All LLM-based steps use DeepSeek V3 (deepseek-v3-2-251201) ac-cessed via the Volcengine API. Specific configura-tions per step: • Keyword extraction: temperature=0.3, max_tokens=1024. Each document is sampled to 8,000 characters (first 2,000 + 8 evenly spaced 500-character blocks from the middle + last 2,000) before being sent to the model. • Query generation: temperature=0.3, max_tokens=500. The prompt receives the shared cluster keywords and partial excerpts (same 8,000-character sampling) from up to 5 documents in the group. The prompt explicitly instructs: “Make it sound like a typical search. Avoid technical phrasing, abstract concepts, or long constraints.” • LLM reverse validation: temperature=0.2, max_tokens=2,000. The full document text (up to 150,000 characters) is provided along with all candidate queries. The model judges which queries are semantically rele-vant. Queries linked only by superficial key-word overlap are filtered out. 
+
+Clustering details. Keywords are embedded using Qwen3-Embedding-8B. We apply FAISS KMeans clustering with n_iter=25 and seed=42. The number of clusters k is set to √n (number of unique keywords), clamped to [2 , 100] . We also use the elbow method (SSE vs. k) as a sanity check, though √n generally provides a reasonable de-fault. After clustering, each document is assigned the cluster IDs of its keywords. Documents shar-ing memberships in multiple clusters (cluster_num ranging from 2 to 10) are grouped together, with each group containing 3–5 documents. 
+
+Annotation procedure. All annotations were performed by three of the paper’s authors. No external annotators were recruited, and no addi-tional compensation was involved. For the test split, all query-document pairs and query validity labels were exhaustively reviewed by all three anno-tators. Specifically, for each test query, annotators reviewed the entire candidate pool (all documents in the test split), not just the LLM-generated pos-itives. Invalid, ambiguous, or weakly grounded cases were corrected through discussion and re-annotation. The three-way full agreement reached 92.5% for relevance and 99.0% for query validity (Section 4). 
+
+B.4 Query Diversity Analysis 
+
+To verify that the generated queries are not simple keyword recombinations, we measure the unigram lexical overlap between each test query and the document-level keywords of its relevant documents (Table 13).         
+
+> Table 13: Query-keyword lexical overlap statistics on the DocViRe test set.
+> Metric Value Avg. Jaccard similarity 0.07 Avg. query coverage 41.6% Avg. novel ratio 58.4% Queries w/ zero overlap 5.9% Queries w/ coverage ≤50% 71.7% Queries w/ 100% coverage 1.8%
+
+The average Jaccard similarity is only 0.07, con-firming that queries and document keywords oc-cupy largely disjoint lexical spaces. On average, 58.4% of query unigrams do not appear in any as-sociated document keyword, and 71.7% of queries have ≤50% token coverage. This confirms that the three-stage generation pipeline (group-level LLM generation → reverse LLM validation → exhaus-tive human review) produces queries with natural lexical diversity rather than keyword-copying bias. 13 B.5 Per-Domain Grid vs. Independent Page Comparison 
+
+Table 14 reports the per-domain NDCG@5 compar-ison between DocPC grid and independent pages with MaxP under the matched First-4 setting. Ta-ble 15 reports the comparison by document length. 
+
+Table 14: Per-domain NDCG@5 (%) comparison be-tween DocPC grid and independent pages with MaxP.                         
+
+> Domain DocPC grid Indep. MaxP ∆
+> Biology 46.62 46.47 +0.15 Education 50.37 38.37 +12.00 Finance 33.52 28.60 +4.92 Government 31.72 26.89 +4.83 Industrial 40.98 19.90 +21.08 Legal 47.66 46.66 +1.00 Research 58.03 56.85 +1.18
+
+The grid advantage is positive in all seven do-mains. The gains are largest in visually rich do-mains such as Industrial (+21.08) and Education (+12.00), where document-level evidence is often distributed across headers, tables, figures, and short text blocks on multiple early pages. In text-heavy domains with more uniform layouts (Biology, Le-gal, Research), both methods perform comparably, suggesting that independent high-resolution page encoding can preserve fine-grained textual details while grid composition is most helpful when cross-page visual context matters. 
+
+Table 15: DocPC grid vs. independent pages (MaxP) by document length (NDCG@5, %).                 
+
+> Document Length #Queries Grid Page ∆
+> ≤10 pages 1,331 43.82 36.75 +7.07 11–20 pages 765 48.05 38.84 +9.21
+> >20 pages 141 53.58 44.01 +9.57
+
+The grid advantage grows from +7.07 for short documents to +9.57 for long documents. Longer documents contain more diverse content across pages, and the grid’s ability to jointly encode mul-tiple pages becomes increasingly valuable. Table 16 reports DocPC-ColQwen (First-4) per-formance grouped by relevant-document page count. Performance is highest for mid-length docu-ments (11–20 pages), while short documents ( ≤10 
+
+pages) yield the lowest NDCG@5. This reflects pool composition: short documents account for 59.5% of queries, increasing topical overlap and retrieval difficulty. 
+
+Table 16: DocPC performance by document length (NDCG@5, %).             
+
+> Group Docs Queries NDCG@5
+> ≤10 pages 570 1721 37.57 11 to 20 pages 248 988 44.55
+> >20 pages 79 317 40.62
+
+B.6 Page Selection Strategy Analysis 
+
+We analyze the interaction between page selection strategy and document characteristics. Table 17 classifies queries by their information distribution pattern. For each query, we compare the NDCG@5 achieved by First-4, Last-4, and Uniform-4. If First-4 substantially outperforms Last-4 ( ∆ > 0.2), the document’s relevant content is likely concentrated in the early pages (“front-heavy”); the reverse indi-cates “end-heavy”; if Uniform-4 performs best, the information is distributed throughout (“balanced”). 
+
+Table 17: NDCG@5 ( ×100) by information distribution pattern.                     
+
+> Pattern #Q F4 Bnd. U4 L4 Front-heavy 582 68.17 55.90 59.08 19.60 Balanced 1,108 39.09 41.69 46.53 38.67 End-heavy 344 22.29 47.54 39.61 64.29
+
+First-4 is the single best strategy for 39.7% of individual queries and benefits from the empirical regularity that key document information (titles, ab-stracts, tables of contents) tends to appear early. For corpora known to contain long, content-distributed documents (e.g., textbooks, technical manuals), Uniform-4 provides better coverage. Boundary is effective for report-style documents with executive summaries and conclusions. For deployment in domains with known structural conventions, practi-tioners can select strategies accordingly. 
+
+B.7 Loss Frequency Visualization B.8 Qualitative Analysis 
+
+To understand the strengths and limitations of grid composition, we compare DocPC-ColQwen (First-4, Grid) with its page-level counterpart (Indepen-dent, First-4, MaxP) across all 2,237 test queries (Table 18). Grid composition exclusively succeeds in 17.8% of queries while exclusively failing in 9.7%, yield-ing a 1.83 × net positive ratio. The grid advan-tage is most pronounced for queries describing cross-page themes (e.g., “student complaints proce-dure university”), where the complaint procedure 14 1 3 10 30 40 50  
+
+> Listwise loss interval m
+> 36 38 40 42 44 46
+> Average NDCG@5 (%)
+> 44.09
+> Phase I Ranking dominance Phase II Optimal balance Phase III Insufficient refinement
+> Combined ( m)Listwise only (37.32) Contrastive only (42.68)
+
+Figure 4: Effect of listwise loss interval m on NDCG@5. The curve reveals a three-phase pattern: ranking loss dominance ( m≤3), optimal balance ( m=10 –40 ), and insufficient ranking refinement ( m=50 ). Dashed lines show standalone baselines. Table 18: Outcome distribution across 2,237 test queries. A method “succeeds” if it retrieves at least one relevant document in the top 5. 
+
+Outcome Count %Both succeed 1,108 49.5 Grid only succeeds 398 17.8 Page only succeeds 218 9.7 Both fail 513 22.9 
+
+spans multiple early pages with headers, policy text, and flowcharts. The 2×2 grid preserves the co-occurrence of these elements in a single repre-sentation, enabling the model to match the query holistically, while no single page contains sufficient signal for independent encoding. Conversely, grid compression loses critical in-formation when documents contain fine-grained visual details. For queries targeting medical forms with dosage tables or dense patient intake forms, the small-font text becomes illegible in the grid. In these cases, independent page encoding preserves per-page resolution and retrieves the correct docu-ment. Queries that defeat both methods typically in-volve very long documents ( ≥30 pages) where the relevant content lies beyond the first 4 pages, re-flecting a fundamental limitation of the First-4 page selection strategy rather than the grid representa-tion itself. We acknowledge that grid composition is not uniformly beneficial. The 218 page-only success cases (9.7%) represent genuine information loss due to resolution reduction. However, this is out-weighed by the 398 grid-only successes (17.8%), where joint encoding captures cross-page seman-tics that independent encoding misses. For applica-tions requiring fine-grained visual detail, a hybrid approach combining grid-level retrieval with page-level reranking is a promising direction. 15

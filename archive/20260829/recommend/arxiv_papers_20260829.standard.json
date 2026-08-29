@@ -1,16 +1,1376 @@
 {
   "mode": "standard",
-  "generated_at": "2026-08-29T03:19:37.119572+00:00",
+  "generated_at": "2026-08-29T22:31:07.789793+00:00",
   "stats": {
     "mode": "standard",
     "tag_count": 1,
-    "deep_divecandidates": 0,
-    "deep_cap": null,
-    "deep_selected": 0,
-    "quick_candidates": 0,
+    "deep_divecandidates": 38,
+    "deep_cap": 6,
+    "deep_selected": 24,
+    "quick_candidates": 28,
     "quick_skim_target": 11,
-    "quick_selected": 0
+    "quick_selected": 11
   },
-  "deep_dive": [],
-  "quick_skim": []
+  "deep_dive": [
+    {
+      "id": "2608.20639v1",
+      "source": "arxiv",
+      "title": "MV2GF: Multi-view Pedestrian Detection with a Visual Geometric Foundation Model",
+      "abstract": "Multi-View Pedestrian Detection (MVPD) aims to detect pedestrians in the form of a bird's eye view map from multi-view images. Recent MVPD methods adopt a unified framework that projects 2D image features into a 3D world space and aggregates them into a single feature. Although they are effective, they struggle to generalize to unseen camera configurations during training due to two main issues. First, they are difficult to capture accurate visual geometry across views in unseen camera configurations. Second, they make detection models highly dependent on distortion patterns during training arising from their image feature projection. To address these, we leverage a visual geometric foundation model and propose MV2GF. This foundation model has exhibited strong generalization in capturing visual geometry across views and predicting accurate 3D attributes in diverse camera configurations. MV2GF fuses task-specific features with general-purpose geometric features extracted by the foundation model to effectively capture the visual geometry even in unseen camera configurations. Furthermore, MV2GF projects each pixel in the image features to an appropriate 3D location using 3D pointmaps predicted by the foundation model, preventing the detection model from depending on distortion patterns during training. Our experiments demonstrate the effectiveness of leveraging a visual geometric foundation model for MVPD and that MV2GF generalizes better than existing methods.",
+      "authors": [
+        "Taiga Yamane",
+        "Satoshi Suzuki",
+        "Ryo Masumura",
+        "Shota Orihashi",
+        "Tomohiro Tanaka",
+        "Mana Ihori",
+        "Naoki Makishima"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-21T00:26:55+00:00",
+      "link": "https://arxiv.org/pdf/2608.20639v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "multi-view pedestrian detection",
+      "llm_evidence_cn": "多视角行人检测方法",
+      "llm_evidence": "多视角行人检测方法",
+      "canonical_evidence": "多视角行人检测方法",
+      "llm_tldr_en": "Introduces MV2GF, leveraging a visual geometric foundation model for multi-view pedestrian detection, improving generalization to unseen camera configurations by better cross-view geometry and robust feature aggregation.",
+      "llm_tldr_cn": "针对多视角行人检测在未见相机配置下泛化能力差的问题，提出基于视觉几何基础模型的MV2GF方法。该方法利用基础模型捕获准确的跨视角视觉几何，并改进特征投影与聚合，降低对训练时畸变模式的依赖。实验显示MV2GF在新相机配置下显著提升鸟瞰图行人检测性能，展示了基础模型在多视角检测中的潜力。",
+      "llm_tldr": "针对多视角行人检测在未见相机配置下泛化能力差的问题，提出基于视觉几何基础模型的MV2GF方法。该方法利用基础模型捕获准确的跨视角视觉几何，并改进特征投影与聚合，降低对训练时畸变模式的依赖。实验显示MV2GF在新相机配置下显著提升鸟瞰图行人检测性能，展示了基础模型在多视角检测中的潜力。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "object detection methods",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.20712v1",
+      "source": "arxiv",
+      "title": "Privacy-Preserving Object Detection for Vision Transformer-Based Models",
+      "abstract": "We propose a novel object detection method that enables us to protect sensitive visual information of test images. Previous studies considering visual information protection focus on image classification tasks. This paper proposes an object detection method using perceptual encryption for the first time. The proposed method can achieve almost the same accuracy as that of models without any protection by utilizing the embedding structure of the Vision Transformer (ViT) and a domain adaptation technique with keys. In experiments, the effectiveness of the proposed method is verified in terms of accuracy and visual protection under the use of ViTdet, which is a ViT-based object detection model.",
+      "authors": [
+        "Homare Sueyoshi",
+        "Kiyoshi Nishikawa",
+        "Hitoshi Kiya"
+      ],
+      "primary_category": "cs.CR",
+      "categories": [
+        "cs.CR",
+        "cs.CV"
+      ],
+      "published": "2026-08-21T03:40:01+00:00",
+      "link": "https://arxiv.org/pdf/2608.20712v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Novel object detection method with perceptual encryption for privacy preservation",
+      "llm_evidence_cn": "基于感知加密的隐私保护目标检测方法",
+      "llm_evidence": "基于感知加密的隐私保护目标检测方法",
+      "canonical_evidence": "基于感知加密的隐私保护目标检测方法",
+      "llm_tldr_en": "The paper proposes the first privacy-preserving object detection method using perceptual encryption for ViT-based models, achieving accuracy on par with unprotected models via embedding structure and key-based domain adaptation.",
+      "llm_tldr_cn": "针对测试图像敏感信息泄露问题，本文首次提出面向视觉Transformer目标检测模型的隐私保护方法。利用感知加密与密钥域适应技术，在保护视觉内容的同时保持检测精度。该方法利用ViT的嵌入结构，使加密图像仍保留语义特征，从而在不显著降低精度的情况下实现隐私保护。实验证明，在ViTDet上该方法与不加密模型的精度几乎一致，并有效保护图像隐私。这是首个将隐私保护扩展到目标检测的工作。",
+      "llm_tldr": "针对测试图像敏感信息泄露问题，本文首次提出面向视觉Transformer目标检测模型的隐私保护方法。利用感知加密与密钥域适应技术，在保护视觉内容的同时保持检测精度。该方法利用ViT的嵌入结构，使加密图像仍保留语义特征，从而在不显著降低精度的情况下实现隐私保护。实验证明，在ViTDet上该方法与不加密模型的精度几乎一致，并有效保护图像隐私。这是首个将隐私保护扩展到目标检测的工作。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "object detection methods",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.20916v1",
+      "source": "arxiv",
+      "title": "Semantically Compatible Knowledge Distillation for Cross-Domain Object Detection with Vision Foundation Models",
+      "abstract": "Vision foundation models (VFMs) offer strong generalization capabilities for domain-adaptive object detection (DAOD). However, existing VFM-based methods overlook the spatial-scale discrepancy between teacher and student feature maps, resulting in semantic incompatibility that weakens both feature alignment and pseudo-label learning. Moreover, domain shift can cause source-trained VFM teachers to miss target-domain objects, limiting the quality of their pseudo-labels. To address these issues, we propose the Semantic Localization-Enhanced Teacher (SLE-T), a semantically compatible knowledge-distillation framework built around a lightweight SLE Adapter for DINOv2. SLE Adapter injects pretrained local-texture priors into DINOv2 to improve cross-domain recognition and reformulates its features into dense representations that are spatially and semantically compatible with the student detector. SLE-T transfers the resulting teacher knowledge through either pseudo-label learning or feature alignment. We instantiate SLE-T with DINOv2-B and DINOv2-L (the ViT-B and ViT-L variants) and compare them with the larger DINOv2-G teacher. Extensive experiments on three DAOD benchmarks demonstrate that our method achieves state-of-the-art performance, and ablation studies confirm the importance of teacher-student semantic compatibility. Notably, SLE-T with DINOv2-B produces competitive or superior pseudo-labels using approximately one-quarter of the training time of DINOv2-G and substantially less GPU memory, demonstrating efficient VFM knowledge transfer under limited computational resources.",
+      "authors": [
+        "Qifeng Zhang",
+        "Ting Xiang",
+        "Zeyuan Bai",
+        "Changjian Chen"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-21T09:36:02+00:00",
+      "link": "https://arxiv.org/pdf/2608.20916v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "cross-domain object detection with knowledge distillation",
+      "llm_evidence_cn": "跨域目标检测与知识蒸馏方法",
+      "llm_evidence": "跨域目标检测与知识蒸馏方法",
+      "canonical_evidence": "跨域目标检测与知识蒸馏方法",
+      "llm_tldr_en": "Proposes SLE-T, a semantically compatible knowledge distillation framework for cross-domain object detection that injects local-texture priors from DINOv2 via a lightweight adapter, improving feature alignment and pseudo-label quality for domain-adaptive detection.",
+      "llm_tldr_cn": "针对跨域目标检测中师生特征图语义不兼容和教师模型在目标域漏检的问题，提出语义定位增强教师SLE-T。该方法基于DINOv2构建轻量级SLE适配器，注入预训练局部纹理先验，实现语义兼容的知识蒸馏。在跨域检测基准上的实验表明，SLE-T有效改善特征对齐和伪标签质量，提升目标域检测性能，为视觉基础模型在域自适应检测中的高效应用提供了新方案。",
+      "llm_tldr": "针对跨域目标检测中师生特征图语义不兼容和教师模型在目标域漏检的问题，提出语义定位增强教师SLE-T。该方法基于DINOv2构建轻量级SLE适配器，注入预训练局部纹理先验，实现语义兼容的知识蒸馏。在跨域检测基准上的实验表明，SLE-T有效改善特征对齐和伪标签质量，提升目标域检测性能，为视觉基础模型在域自适应检测中的高效应用提供了新方案。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "object detection methods",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.20944v1",
+      "source": "arxiv",
+      "title": "SuppreSensing: Expert-Guided Feature Recalibration and Discrepancy Augmentation for Multimodal Object Detection",
+      "abstract": "Multimodal object detection in remote sensing faces challenges due to semantic heterogeneity and modality-specific noise interference. To this end, we propose SuppreSensing, which reformulates multimodal fusion as a selective collaboration process that jointly models shared information and modality-specific cues. SuppreSensing first designs an Expert-driven Multimodal Feature Recalibration (EMFR) module, which reformulates shared-consensus extraction as an input-adaptive multi-expert selection process to alleviate the symmetry trap in multimodal fusion. Complementing this, a modality-specific attribute augmentation strategy is employed to enhance specific modality features by modeling bidirectional discrepancy patterns, mitigating cross-modal heterogeneity. Furthermore, we propose an Expert-driven Customized Feature Purification (ECFP) module based on a \"specialized inspection-comprehensive analysis-diagnostic update\" physical examination paradigm to iteratively filter redundancies and reinforce task-relevant semantics. Extensive experiments on the DroneVehicle and VEDAI datasets demonstrate that SuppreSensing achieves state-of-the-art detection performance. Cross-domain evaluations on natural scene datasets (FLIR and LLVIP) further validate its superior robustness and generalization capability across diverse environmental conditions.",
+      "authors": [
+        "Xin Wu",
+        "Zhenyu Gao",
+        "Qiankun Zhang",
+        "Shaoyong Guo"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-21T10:06:00+00:00",
+      "link": "https://arxiv.org/pdf/2608.20944v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "New method for multimodal object detection in remote sensing",
+      "llm_evidence_cn": "面向遥感多模态目标检测的新方法",
+      "llm_evidence": "面向遥感多模态目标检测的新方法",
+      "canonical_evidence": "面向遥感多模态目标检测的新方法",
+      "llm_tldr_en": "Proposes SuppreSensing for multimodal object detection in remote sensing, using expert-driven feature recalibration to select shared consensus and discrepancy augmentation to enhance modality-specific features, improving robustness against semantic heterogeneity and modality noise.",
+      "llm_tldr_cn": "针对遥感多模态目标检测中的语义异质与模态噪声问题，本文提出SuppreSensing，将多模态融合重构为选择性协作过程。通过专家驱动的特征重校准模块缓解对称陷阱，并用双向差异增强补充模态专属信息。实验表明该方法能有效提升多模态目标检测的鲁棒性与精度。",
+      "llm_tldr": "针对遥感多模态目标检测中的语义异质与模态噪声问题，本文提出SuppreSensing，将多模态融合重构为选择性协作过程。通过专家驱动的特征重校准模块缓解对称陷阱，并用双向差异增强补充模态专属信息。实验表明该方法能有效提升多模态目标检测的鲁棒性与精度。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "object detection methods",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.21099v1",
+      "source": "arxiv",
+      "title": "A2DINOv3: Rethinking Multi-Modal Object Detection via Socialized Collaboration",
+      "abstract": "Multi-modal object detection is essential for robust scene understanding in challenging conditions, including low-light and adverse environments. Recent vision foundation models (e.g., DINOv3) have exhibited strong representation capabilities, yet adapting them to multi-modal scenarios remains challenging. Existing dense cross-modal fusion strategies often force heterogeneous modalities to interact indiscriminately, which may introduce redundant information and disrupt the valuable pre-trained representations. To address this issue, we revisit multi-modal fusion from the perspective of socialized learning and propose adapter to DINOv3 (A2DINOv3), a multi-expert collaboration framework with a Socialized Collaboration Protocol (SCP). Specifically, RGB and infrared branches are modeled as heterogeneous experts that independently preserve their specialized knowledge while exchanging complementary information through selective and constrained interactions. This design mitigates harmful cross-modal interference and prevents degradation of pre-trained priors during adaptation. Furthermore, a zero-initialization strategy is introduced to gradually activate cross-modal collaboration, enabling a smooth transition from modality-specific learning to cooperative representation learning. Extensive experiments on four multi-modal benchmarks, including aerial detection (GAIIC), autonomous driving (FLIR), low-light surveillance (LLVIP), and diverse real-world scenarios (M3FD), demonstrate that A2DINOv3 consistently achieves state-of-the-art performance in multi-modal object detection.",
+      "authors": [
+        "Jiekang Feng",
+        "Zhihe Fan",
+        "Yunqi Zhu",
+        "Xinjie Yao",
+        "Yueying Zhang",
+        "Yike Gao",
+        "Ranxin Li",
+        "Guanzuo Chen"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-08-21T13:44:46+00:00",
+      "link": "https://arxiv.org/pdf/2608.21099v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Multi-modal object detection with adapter for DINOv3, socialized collaboration",
+      "llm_evidence_cn": "面向多模态目标检测的DINOv3适配与协作框架",
+      "llm_evidence": "面向多模态目标检测的DINOv3适配与协作框架",
+      "canonical_evidence": "面向多模态目标检测的DINOv3适配与协作框架",
+      "llm_tldr_en": "A2DINOv3 adapts DINOv3 for multi-modal object detection using multi-expert collaboration with a Socialized Collaboration Protocol, avoiding indiscriminate dense fusion and preserving pre-trained representations while improving robustness in low-light and adverse conditions.",
+      "llm_tldr_cn": "多模态目标检测对低光和恶劣环境下的场景理解至关重要，但现有密集跨模态融合会破坏预训练表示。本文提出适配DINOv3的A2DINOv3框架，采用多专家协作与社会化协作协议，让异构模态选择性交互，避免冗余信息干扰。具体地，每个专家聚焦特定模态或语义，通过协议进行选择性沟通。协议定义轻量通信规则，使专家间可动态决定交互强度。实验表明该框架在多个多模态检测基准上提升了性能，验证了社会化学习视角下的融合有效性。",
+      "llm_tldr": "多模态目标检测对低光和恶劣环境下的场景理解至关重要，但现有密集跨模态融合会破坏预训练表示。本文提出适配DINOv3的A2DINOv3框架，采用多专家协作与社会化协作协议，让异构模态选择性交互，避免冗余信息干扰。具体地，每个专家聚焦特定模态或语义，通过协议进行选择性沟通。协议定义轻量通信规则，使专家间可动态决定交互强度。实验表明该框架在多个多模态检测基准上提升了性能，验证了社会化学习视角下的融合有效性。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "object detection methods",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.21937v1",
+      "source": "arxiv",
+      "title": "C$^2$Path: Class-Conditional Pathway Decoupling for Vision-Language Incremental Object Detection",
+      "abstract": "Incremental Object Detection (IOD) aims to enable detectors to continuously learn novel categories while preserving previously acquired knowledge. However, existing methods suffer from two forms of \\textbf{class knowledge coupling}: class boundary erosion induced by shared parameter updates and class representation entanglement arising from mixed feature encoding. We argue that effective incremental learning requires class-specific computational pathways that enable isolated parameter updates and separated class-wise injection. To this end, we propose \\textbf{C$^2$Path}, a class-conditional pathway decoupling framework for vision-language incremental object detection that leverages token-level class cues to establish dedicated and updatable computational pathways for different categories. Specifically, C$^2$Path introduces a category expert library and a class-conditional decoupling module. The expert library consists of learnable low-rank computational nodes that capture category-specific knowledge, while the decoupling module generates class-aware routing signals to dynamically compose \\textit{ClassLoRA} adapters from these experts, thereby forming class-specific computational pathways for isolated updates and separated injection across categories. Extensive experiments on COCO 2017 under multiple incremental learning settings demonstrate that C$^2$Path consistently outperforms state-of-the-art methods, providing an effective and scalable solution for continual category expansion in vision-language detectors.",
+      "authors": [
+        "Lecheng Xu",
+        "Feifei Shao",
+        "Ouyangzi Ye",
+        "Zhen Wang",
+        "Lin Li",
+        "Kexin Li",
+        "Zhao Wang",
+        "Changqin Huang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-22T12:19:36+00:00",
+      "link": "https://arxiv.org/pdf/2608.21937v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "incremental object detection with class-conditional pathway decoupling",
+      "llm_evidence_cn": "基于类条件路径解耦的增量目标检测",
+      "llm_evidence": "基于类条件路径解耦的增量目标检测",
+      "canonical_evidence": "基于类条件路径解耦的增量目标检测",
+      "llm_tldr_en": "C2Path decouples class-specific computational pathways for vision-language incremental object detection, preventing class boundary erosion and representation entanglement while learning novel categories.",
+      "llm_tldr_cn": "增量目标检测需要持续学习新类并保持旧知识，但现有方法存在类别边界侵蚀和特征纠缠。C2Path提出类条件路径解耦框架，利用token级类别线索建立专用计算路径，隔离参数更新并分离类别注入。实验结果表明该方法能有效缓解类知识耦合，在增量检测任务中取得更优性能，为视觉语言增量检测提供新的思路。",
+      "llm_tldr": "增量目标检测需要持续学习新类并保持旧知识，但现有方法存在类别边界侵蚀和特征纠缠。C2Path提出类条件路径解耦框架，利用token级类别线索建立专用计算路径，隔离参数更新并分离类别注入。实验结果表明该方法能有效缓解类知识耦合，在增量检测任务中取得更优性能，为视觉语言增量检测提供新的思路。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "object detection methods",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.22064v1",
+      "source": "arxiv",
+      "title": "Competitive Memory Readout for Robust Video Object Segmentation: 2nd Place Technical Report for the MOSEv2 Track of the 8th LSVOS Challenge",
+      "abstract": "We present our solution for the MOSEv2 track of the 8th Large-scale Video Object Segmentation (LSVOS) Challenge at ECCV 2026. The challenge evaluates robust video object segmentation under complex temporal dynamics, including long-term occlusion, disappearance and reappearance, large appearance changes, and strong interference from visually similar objects. Our method builds on SAM~3 and focuses on its memory readout. Standard target-only memory retrieval can confuse the annotated target with same-class non-target objects because such distractors are represented only implicitly as background. Our method introduces Competitive Memory Readout, which explicitly incorporates same-class competitor evidence when retrieving target information from memory. To prevent excessive suppression of weak or reappearing targets, we further apply a lightweight adaptive restoration rule after competition. The resulting system retains the original SAM~3 tracking pipeline while improving target identity preservation in challenging videos. Our submission achieves 66.20 on the primary challenge score and ranks 2nd in the MOSEv2 track.",
+      "authors": [
+        "Mingqi Gao",
+        "Sijie Li",
+        "Jungong Han"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-22T18:09:51+00:00",
+      "link": "https://arxiv.org/pdf/2608.22064v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Robust video object segmentation method addressing same-class distractors",
+      "llm_evidence_cn": "解决同类干扰物干扰的鲁棒视频目标分割方法",
+      "llm_evidence": "解决同类干扰物干扰的鲁棒视频目标分割方法",
+      "canonical_evidence": "解决同类干扰物干扰的鲁棒视频目标分割方法",
+      "llm_tldr_en": "Presents a second-place solution for LSVOS MOSEv2: builds on SAM3 and introduces Competitive Memory Readout that explicitly models same-class non-target objects during memory retrieval, improving robustness under occlusion, reappearance, and similar distractors.",
+      "llm_tldr_cn": "视频目标分割在长期遮挡、消失重现和相似目标干扰下容易将目标与同类非目标混淆。本文基于SAM3提出竞争性记忆读取机制，在记忆检索时显式纳入同类干扰物信息，从而避免目标-背景二值化表示造成的误判。在LSVOS MOSEv2挑战赛中获得第二名，验证了该方法在复杂时空动态下的鲁棒性。",
+      "llm_tldr": "视频目标分割在长期遮挡、消失重现和相似目标干扰下容易将目标与同类非目标混淆。本文基于SAM3提出竞争性记忆读取机制，在记忆检索时显式纳入同类干扰物信息，从而避免目标-背景二值化表示造成的误判。在LSVOS MOSEv2挑战赛中获得第二名，验证了该方法在复杂时空动态下的鲁棒性。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "image segmentation techniques",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.22072v1",
+      "source": "arxiv",
+      "title": "Spiking Neural Networks for Energy-Efficient Object Detection in Forward-Looking Sonar Imagery",
+      "abstract": "Autonomous underwater vehicles (AUVs) are increasingly important tools in industries ranging from research, to energy, to defense. AUVs are power-constrained platforms operating in remote environments with fixed battery capacities, where propulsion competes with compute and sensors for power over lengthy mission durations. AUVs frequently operate in dark or turbid waters where optical sensing is of limited value, and rely on sonar as their primary sensing modality. Convolutional neural networks (CNNs) are the state-of-the-art solution for object detection in forward-looking sonar imagery, but are energy expensive (e.g. YOLOv8m: 322 mJ/inference). Spiking neural networks (SNNs) rely on binary spike activations and thus sparse accumulate-only operations, allowing them to be remarkably energy efficient, particularly when paired with dedicated neuromorphic hardware. The sparse, high-contrast structure of forward-looking sonar (FLS) returns is structurally matched to spike coding in a way that optical imagery is not. No prior work has assessed the suitability of SNNs for object detection in FLS imagery. SpikeYOLO, a fully spiking network trained with surrogate gradients, was benchmarked against state-of-the-art CNN baselines on three FLS object detection datasets. Key results: SpikeYOLO T=2 achieves 3.3$\\times$ lower theoretical compute energy on UATD (97 vs 322 mJ) at competitive accuracy (0.529 mAP@0.5:0.95 vs. YOLOv8m's 0.575); SpikeYOLO matches YOLOv8m on mAP@0.5 and outperforms YOLO-SONAR and Fast R-CNN baselines on the sparse Marine-Debris-FLS dataset at 4.4$\\times$ lower energy; SpikeYOLO demonstrates superior robustness to multiplicative speckle noise (3.0% degradation at $σ{=}0.4$ vs. 8.9% for YOLOv8m), outperforming YOLOv8m outright at $σ{=}0.6$, directly relevant to real-world FLS deployment.",
+      "authors": [
+        "Gwenevere Frank",
+        "Gert Cauwenberghs"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "eess.SP"
+      ],
+      "published": "2026-08-22T18:31:15+00:00",
+      "link": "https://arxiv.org/pdf/2608.22072v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "object detection with SNNs in sonar imagery",
+      "llm_evidence_cn": "基于脉冲神经网络的声纳图像目标检测",
+      "llm_evidence": "基于脉冲神经网络的声纳图像目标检测",
+      "canonical_evidence": "基于脉冲神经网络的声纳图像目标检测",
+      "llm_tldr_en": "Proposes spiking neural networks for energy-efficient object detection in forward-looking sonar imagery, addressing power constraints of AUVs while achieving competitive detection performance.",
+      "llm_tldr_cn": "前视声纳图像目标检测是自主水下航行器感知的核心任务，但传统CNN每帧推理能耗高，难以满足长时间续航。本文提出基于脉冲神经网络（SNN）的目标检测方法，利用二值脉冲激活和稀疏计算实现低能耗推理。实验表明该方法在声纳目标检测上取得有竞争力的精度，同时显著降低能耗，为资源受限的水下平台提供了一条可行的节能检测技术路线。",
+      "llm_tldr": "前视声纳图像目标检测是自主水下航行器感知的核心任务，但传统CNN每帧推理能耗高，难以满足长时间续航。本文提出基于脉冲神经网络（SNN）的目标检测方法，利用二值脉冲激活和稀疏计算实现低能耗推理。实验表明该方法在声纳目标检测上取得有竞争力的精度，同时显著降低能耗，为资源受限的水下平台提供了一条可行的节能检测技术路线。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "object detection methods",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.22313v1",
+      "source": "arxiv",
+      "title": "Adapting Dense Vision-Language Relationships for Multi-label Classification with Partial Label",
+      "abstract": "Learning multi-label image classification with incomplete annotations is a challenging task that has been widely studied for its superior trade-off between high efficiency and less labor consumption on large-scale datasets. Predominant methods rely on strong prior assumptions to recover the missing semantics from partial annotations. However, these statistic priors suffer from unstable semantic mistakes and thus lead to catastrophic overfitting. Toward this end, we propose a Language-driven Dense Semantic Adaptor (LDSA) that excavates prior-adaptive relationships from multimodal pretrained CLIP models. In our approach, the densely contrastive adaptor is first proposed to construct dense visual contrastive constraints, transferring the task-specific knowledge to visual domains. We then propose a language-driven interactive decoder with the help of class-specific prompt tuning, which adapts language proxies with visual domains. With the collaborative learning of proposed modules, experimental results demonstrate our proposed LDSA achieves a new state of the art on public multi-label classification benchmarks, and interpretable analyses reveal that our LDSA discovers implicit semantic relationships with the prior-adaptive learning scheme.",
+      "authors": [
+        "Cheng Chen",
+        "Yifan Zhao",
+        "Jia Li"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-23T09:20:30+00:00",
+      "link": "https://arxiv.org/pdf/2608.22313v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "visual recognition algorithm for multi-label classification",
+      "llm_evidence_cn": "面向多标签分类的视觉识别算法",
+      "llm_evidence": "面向多标签分类的视觉识别算法",
+      "canonical_evidence": "面向多标签分类的视觉识别算法",
+      "llm_tldr_en": "LDSA adapts dense vision-language relationships from CLIP to multi-label classification with partial labels, using dense contrastive constraints to recover missing semantics and reduce catastrophic overfitting.",
+      "llm_tldr_cn": "多标签图像分类常面临标注不完整的问题，现有方法依赖强统计先验恢复缺失语义，但易出现语义不稳定和灾难性过拟合。论文提出语言驱动的稠密语义适配器(LDSA)，从CLIP等预训练多模态模型中挖掘先验自适应关系，并通过稠密视觉对比约束迁移视觉语言知识。该方法在部分标签多标签分类上更鲁棒，验证了视觉语言关系对识别任务的价值。",
+      "llm_tldr": "多标签图像分类常面临标注不完整的问题，现有方法依赖强统计先验恢复缺失语义，但易出现语义不稳定和灾难性过拟合。论文提出语言驱动的稠密语义适配器(LDSA)，从CLIP等预训练多模态模型中挖掘先验自适应关系，并通过稠密视觉对比约束迁移视觉语言知识。该方法在部分标签多标签分类上更鲁棒，验证了视觉语言关系对识别任务的价值。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "visual recognition algorithms",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.22368v1",
+      "source": "arxiv",
+      "title": "DiD It in 87 Minutes: A Label-Free Softmax-to-Linear Adaptation of Vision Transformers for Object Detection",
+      "abstract": "While linear attention is a compelling mechanism for high-resolution object detection due to its reduced cost for global token mixing, converting the Softmax-attention ViT backbone of a trained detector into a linear-attention one is not a trivial drop-in replacement. Directly swapping the attention operator leads to severe performance degradation, and generic label-free distillation, though effective for classification, often fails on detection tasks. We argue that the central challenge is \\textit{detector-interface preservation}: the converted backbone must reproduce the exact feature tensors expected by the fixed downstream detector, rather than merely imitating internal Softmax hidden states. To address this, we introduce Detector-Interface Distillation (DiD), a label-free conversion method that exclusively trains the linear-attention backbone by aligning detector-facing interface tensors with those of a frozen Softmax teacher. On DOTA-v1.5, DiD substantially outperforms established baselines and matches supervised, fully trained linear models. Adaptation completes in roughly 87 minutes on 4 GPUs, and the linearized backbone cuts inference latency by ~62% and peak memory by ~49%. We hope our findings offer the community a simple, label-free route to reusing trained Softmax detectors as efficient linear ones, and encourage interface-aware objectives in future architecture-conversion work.",
+      "authors": [
+        "Huaiyuan Qin",
+        "Gabriel James Goenawan",
+        "Zihang Lin",
+        "Muli Yang",
+        "Hongyuan Zhu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.LG"
+      ],
+      "published": "2026-08-23T11:21:16+00:00",
+      "link": "https://arxiv.org/pdf/2608.22368v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Presents a label-free adaptation method specifically for object detection backbones",
+      "llm_evidence_cn": "提出面向目标检测骨干的无标签适配方法",
+      "llm_evidence": "提出面向目标检测骨干的无标签适配方法",
+      "canonical_evidence": "提出面向目标检测骨干的无标签适配方法",
+      "llm_tldr_en": "Presents a label-free distillation approach to convert a Softmax-attention ViT backbone of a pretrained object detector into linear attention in 87 minutes, preserving detector-interface tensors to avoid severe degradation.",
+      "llm_tldr_cn": "线性注意力对高分辨率目标检测很有吸引力，但直接替换检测器ViT骨干的Softmax注意力会导致严重性能下降，通用无标签蒸馏也常失效。本文提出以检测器接口保持为核心的无标签蒸馏，使转换后的骨干复现固定检测器所需的特征张量。方法在87分钟内完成适配，显著优于直接替换与通用蒸馏，为检测模型的低代价线性注意力适配提供了实用方案。",
+      "llm_tldr": "线性注意力对高分辨率目标检测很有吸引力，但直接替换检测器ViT骨干的Softmax注意力会导致严重性能下降，通用无标签蒸馏也常失效。本文提出以检测器接口保持为核心的无标签蒸馏，使转换后的骨干复现固定检测器所需的特征张量。方法在87分钟内完成适配，显著优于直接替换与通用蒸馏，为检测模型的低代价线性注意力适配提供了实用方案。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "object detection methods",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.23746v1",
+      "source": "arxiv",
+      "title": "CRISP: Calibration-Aware Visual State Space Duality for Remote Sensing Semantic Segmentation",
+      "abstract": "State space models, especially Visual State Space Duality (VSSD), have emerged as efficient linear-time alternatives to Transformers for dense visual tasks. However, we observe that VSSD compresses spatial context into a global aggregation that suppresses high-frequency responses, causing excessive boundary smoothing in remote sensing semantic segmentation. To address this, we propose CRISP, a calibration framework with two components. Its core, the Duality Calibration Operator (DCO), restores local contrast and boundary responses through residual injection and frequency calibration within the VSSD backbone, without altering its linear complexity. To retain the recovered detail, an Orthogonal Multi-Prototype (OMP) head assigns multiple orthogonally constrained prototypes per class to model large intra-class variance. Extensive experiments on Potsdam, Vaihingen, and LoveDA show that, with approximately 30M parameters, CRISP achieves consistent gains in mean F1 (mF) and mIoU while remaining competitive with state-of-the-art methods. Code is available at https://github.com/crazylifeha/CRISP.",
+      "authors": [
+        "Kangning Wang",
+        "Haopeng Zhang",
+        "Zhiguo Jiang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-24T18:35:00+00:00",
+      "link": "https://arxiv.org/pdf/2608.23746v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "remote sensing semantic segmentation",
+      "llm_evidence_cn": "遥感语义分割技术",
+      "llm_evidence": "遥感语义分割技术",
+      "canonical_evidence": "遥感语义分割技术",
+      "llm_tldr_en": "Introduces CRISP, a calibration framework for remote sensing semantic segmentation that restores boundary details in Visual State Space Duality models via residual injection and frequency calibration, maintaining linear complexity.",
+      "llm_tldr_cn": "针对视觉状态空间对偶模型在遥感分割中因全局压缩导致边界过度平滑的问题，提出CRISP校准框架。核心的对偶校准算子通过残差注入和频率校准恢复局部对比与边界响应，并配合正交多原型头保留细节。在遥感语义分割数据集上的实验表明CRISP在不改变线性复杂度的前提下有效改善分割边界质量，适用于高分辨率遥感图像。",
+      "llm_tldr": "针对视觉状态空间对偶模型在遥感分割中因全局压缩导致边界过度平滑的问题，提出CRISP校准框架。核心的对偶校准算子通过残差注入和频率校准恢复局部对比与边界响应，并配合正交多原型头保留细节。在遥感语义分割数据集上的实验表明CRISP在不改变线性复杂度的前提下有效改善分割边界质量，适用于高分辨率遥感图像。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "image segmentation techniques",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.23923v1",
+      "source": "arxiv",
+      "title": "ROI-Gated SAHI: Content-Adaptive Slicing-Based Inference for Efficient Object Detection",
+      "abstract": "Slicing-Aided Hyper Inference (SAHI) improves small object detection in high-resolution images but often spends substantial compute on background tiles. We propose region-of-interest (ROI)-Gated SAHI, an inference-time framework that introduces a lightweight proposer to localize foreground regions and restrict sliced refinement to informative areas. We evaluate the framework in two settings. On the COCO128 full split dataset comprising 128 images, static ROI-gating is slower on average than Full SAHI, achieving a speed ratio of 0.88, and yields a lower mAP@0.5 of 0.6602 compared with 0.7569 for Full SAHI. A simple adaptive routing policy with $τ=$ 0.4 educes the mean latency, achieving a slight gain of 1.02$\\times$ over Full SAHI. On a three-image sparse-to-dense case study, ROI-gating achieves speedups ranging from 0.96$\\times$ to 6.90$\\times$ with a mean speedup of 3.41$\\times$. These results show that ROI-gating is most beneficial in sparse scenes and requires policy-based routing for robust average behavior.",
+      "authors": [
+        "Rashid Riyadh",
+        "Abd Ullah Khan",
+        "Imad Gohar",
+        "Muzammil Behzad"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-25T00:02:26+00:00",
+      "link": "https://arxiv.org/pdf/2608.23923v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Efficient object detection with content-adaptive slicing inference, ROI gating",
+      "llm_evidence_cn": "基于内容自适应切片推理的高效目标检测方法",
+      "llm_evidence": "基于内容自适应切片推理的高效目标检测方法",
+      "canonical_evidence": "基于内容自适应切片推理的高效目标检测方法",
+      "llm_tldr_en": "ROI-Gated SAHI introduces a lightweight proposer to gate regions for sliced refinement, reducing background compute in small-object detection. Results on COCO128 show an adaptive routing policy speeds up inference with modest mAP impact.",
+      "llm_tldr_cn": "SAHI通过切片推理提升小目标检测，但在背景瓦片上消耗大量计算。本文提出ROI门控SAHI，利用轻量proposer定位前景区域，仅对有信息量的区域进行切片细化。该框架可在不重新训练检测器的情况下直接使用，并适用于高分辨率场景中的小目标检测。在COCO128上，静态ROI门控速度较慢且精度下降，而自适应路由策略在保持检测性能的同时获得轻微加速，展示了内容自适应推理的潜力。",
+      "llm_tldr": "SAHI通过切片推理提升小目标检测，但在背景瓦片上消耗大量计算。本文提出ROI门控SAHI，利用轻量proposer定位前景区域，仅对有信息量的区域进行切片细化。该框架可在不重新训练检测器的情况下直接使用，并适用于高分辨率场景中的小目标检测。在COCO128上，静态ROI门控速度较慢且精度下降，而自适应路由策略在保持检测性能的同时获得轻微加速，展示了内容自适应推理的潜力。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "object detection methods",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.24154v1",
+      "source": "arxiv",
+      "title": "Rethinking Pre-Training and Augmentation for Zero-Shot Cross-City Object Detection",
+      "abstract": "Real-world deployment of traffic surveillance systems is bottlenecked by geographic domain shift, in which models trained in one city underperform when applied to an unseen target city. Conventional domain adaptation relies on hyperparameter-sensitive architectures or direct profiling of target data. Both are fundamentally precluded in privacy-conscious ecosystems that require completely blind training and evaluation loops. In this setting, we explore the effects of pre-training and augmentation in addressing the domain shift problem. Specifically, we propose a new modular training pipeline for object detection structured around two core orthogonal pillars: (1) a multi-dataset pre-training strategy featuring a class-agnostic objectness distillation to decouple structural vehicle geometry from semantic taxonomies, and (2) a domain-resilient augmentation stream featuring a novel Grayworld transformation that forces global attention heads to strip volatile chromatic shortcuts in favor of robust shape priors. When evaluated with the real-time transformer-based detector RF-DETR, our framework bridges cross-city distribution gaps while using limited GPU memory (16GB). Our optimized variants, RF-DETR-HR and RF-DETR-Grayworld, deliver a substantial empirical gain of +24.29 over the baseline, achieving 1st place (47.53 mAP) on the AI City Challenge Track 6 leaderboard. Code and data are available at: \\href{https://github.com/SKKUAutoLab/aic26_cross_city}{SKKUAutoLab/aic26\\_cross\\_city}.",
+      "authors": [
+        "Long Hoang Pham",
+        "Quoc Pham-Nam Ho",
+        "Huy-Hung Nguyen",
+        "Duong Nguyen-Ngoc Tran",
+        "Ngoc Doan-Minh Huynh",
+        "Cu Quoc Le",
+        "Hoang-Khang Nguyen",
+        "Hyung-Min Jeon",
+        "Chi Dai Tran",
+        "Son Hong Phan",
+        "Duong Khac Vu",
+        "Trinh Le Ba Khanh",
+        "Jae Wook Jeon"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-08-25T07:16:42+00:00",
+      "link": "https://arxiv.org/pdf/2608.24154v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "zero-shot cross-city object detection",
+      "llm_evidence_cn": "零样本跨城市目标检测",
+      "llm_evidence": "零样本跨城市目标检测",
+      "canonical_evidence": "零样本跨城市目标检测",
+      "llm_tldr_en": "Explores pre-training and augmentation for zero-shot cross-city object detection, proposing a modular pipeline with multi-dataset pre-training and class-agnostic objectness distillation to handle geographic domain shift without target-domain data.",
+      "llm_tldr_cn": "针对跨城市目标检测中地理域偏移和隐私限制无法访问目标域数据的问题，重新思考预训练与数据增强的作用。提出模块化训练流程，采用多数据集预训练和类不可知目标性蒸馏，结合增强策略实现零样本跨城市检测。实验证明该流程在未知目标城市上有效缓解域偏移，为隐私敏感环境下的监控检测提供无需目标域数据的训练范式。",
+      "llm_tldr": "针对跨城市目标检测中地理域偏移和隐私限制无法访问目标域数据的问题，重新思考预训练与数据增强的作用。提出模块化训练流程，采用多数据集预训练和类不可知目标性蒸馏，结合增强策略实现零样本跨城市检测。实验证明该流程在未知目标城市上有效缓解域偏移，为隐私敏感环境下的监控检测提供无需目标域数据的训练范式。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "object detection methods",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.24281v1",
+      "source": "arxiv",
+      "title": "Example-based Robust Abnormality Detection with Minimal Annotations using Exemplar Med-DETR",
+      "abstract": "Reducing annotation requirements remains a key challenge in developing robust medical object detectors. To address this, Vision-Language (VL) object detection methods leverage grounding text information to enable powerful zero-shot and few-shot object detectors in the natural image domain [1, 2, 3, 4]. However, transferring these methods to the medical domain is challenging due to the absence of comparable quality and quantity of the grounding data. Regardless, significant contextual and non-imaging information exists in medical images that remains underutilized. Few-shot learning (FSL) techniques partially address this limitation but struggle to general ize to unseen medical findings and require extensive retraining when new findings are introduced [5, 6]. To overcome these challenges, we extend our prior EM-DETR framework [7] and introduce a scalable FS detection approach designed for efficient abnormality detection in Chest X-Ray (CXR) images under minimal supervision. The proposed architecture incorporates exemplar-based feature generation and domain-aware contrastive optimization, enabling effective adaptation to novel disease findings without exhaustive retraining. Our method achieves near state-of-the-art (SOTA) detection performance using less than 10% of the annotated data, demonstrating its potential for practical, annotation-efficient clinical deployment across both proprietary and public CXR datasets.",
+      "authors": [
+        "Sheethal Bhat",
+        "Bogdan Georgescu",
+        "Awais Mansoor",
+        "Mathias Zinnen",
+        "Pranjal Sahu",
+        "Florin C. Ghesu",
+        "Sasa Grbic",
+        "Andreas Maier"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-25T09:06:23+00:00",
+      "link": "https://arxiv.org/pdf/2608.24281v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Focuses on object detection methods in medical imaging with minimal annotations",
+      "llm_evidence_cn": "面向医学影像的目标检测方法，强调以最少标注实现鲁棒检测",
+      "llm_evidence": "面向医学影像的目标检测方法，强调以最少标注实现鲁棒检测",
+      "canonical_evidence": "面向医学影像的目标检测方法，强调以最少标注实现鲁棒检测",
+      "llm_tldr_en": "Proposes Exemplar Med-DETR for medical object detection with minimal annotations, leveraging example-based and vision-language guidance to enable robust multiorgan abnormality detection without extensive retraining.",
+      "llm_tldr_cn": "医学目标检测器常因标注稀缺而难以泛化，少样本学习对未见发现需重训。Exemplar Med-DETR结合视觉语言引导与示例信息，以极少标注实现鲁棒的医学异常检测。实验表明其能在极少量标注下达到有竞争力的检测性能，并保持对新发现的泛化能力，为医学影像识别提供了低标注成本的检测方案。",
+      "llm_tldr": "医学目标检测器常因标注稀缺而难以泛化，少样本学习对未见发现需重训。Exemplar Med-DETR结合视觉语言引导与示例信息，以极少标注实现鲁棒的医学异常检测。实验表明其能在极少量标注下达到有竞争力的检测性能，并保持对新发现的泛化能力，为医学影像识别提供了低标注成本的检测方案。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "object detection methods",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.24544v1",
+      "source": "arxiv",
+      "title": "KLTNet: Learning Sparse Feature Tracking for Robust and Accurate Monocular Visual-Inertial Odometry",
+      "abstract": "Many feature-based visual-inertial odometry (VIO) systems rely on sparse feature tracking, whose accuracy and robustness directly affect state estimation. Classical KLT trackers rely primarily on local image patches and can become unreliable under rapid motion or in low-texture environments. We propose KLTNet, a lightweight learning-based, plug-and-play sparse feature tracker designed to replace classical KLT trackers in KLT-based VIO front ends. KLTNet follows a coarse-to-fine, dense-to-sparse architecture that combines low-resolution dense optical flow for robust global motion initialization with triplet-patch refinement for accurate and temporally consistent tracking. A fixed reference patch provides a stable anchor throughout each feature track and helps reduce accumulated tracking drift. In addition, KLTNet predicts anisotropic confidence weights supervised through differentiable multi-view triangulation, which can be used as observation weights in compatible VIO estimators. Experiments with VINS-Mono and OpenVINS on public benchmarks and a self-collected low-texture dataset demonstrate improved tracking and odometry accuracy over classical KLT, while maintaining real-time performance on an embedded platform.",
+      "authors": [
+        "Renbiao Jin",
+        "Danping Zou",
+        "Wenxian Yu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-25T13:30:32+00:00",
+      "link": "https://arxiv.org/pdf/2608.24544v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "computer vision research on feature tracking for VIO",
+      "llm_evidence_cn": "面向VIO的特征跟踪计算机视觉研究",
+      "llm_evidence": "面向VIO的特征跟踪计算机视觉研究",
+      "canonical_evidence": "面向VIO的特征跟踪计算机视觉研究",
+      "llm_tldr_en": "KLTNet replaces classical KLT trackers in VIO front-ends with a learned sparse feature tracker combining dense optical flow and triplet-patch refinement, improving robustness under rapid motion and low texture.",
+      "llm_tldr_cn": "视觉惯性里程计依赖稀疏特征跟踪，但经典KLT在快速运动和低纹理场景下易失效。论文提出KLTNet，一个轻量级、即插即用的学习式稀疏特征跟踪器，通过低分辨率稠密光流进行全局运动初始化，并用三元组块精炼实现精确且时间一致的跟踪。该跟踪器可替代传统KLT前端，提升单目VIO的鲁棒性和精度，是计算机视觉中特征跟踪的一项有价值研究。",
+      "llm_tldr": "视觉惯性里程计依赖稀疏特征跟踪，但经典KLT在快速运动和低纹理场景下易失效。论文提出KLTNet，一个轻量级、即插即用的学习式稀疏特征跟踪器，通过低分辨率稠密光流进行全局运动初始化，并用三元组块精炼实现精确且时间一致的跟踪。该跟踪器可替代传统KLT前端，提升单目VIO的鲁棒性和精度，是计算机视觉中特征跟踪的一项有价值研究。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "computer vision research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.24782v1",
+      "source": "arxiv",
+      "title": "Image Difference Quantification Using Autoencoder-Based Latent Representations",
+      "abstract": "Traditional image similarity metrics such as Mean Squared Error (MSE), Peak Signal-to-Noise Ratio (PSNR), and the Structural Similarity Index Measure (SSIM) rely on pixel-level comparisons and often fail to capture perceptually meaningful differences between images. In contrast, latent representations learned by deep neural networks encode high-level semantic information that is more closely aligned with human visual perception. This paper proposes a convolutional autoencoder-based framework for quantifying image differences using cosine similarity in latent space. The learned compact embeddings enable robust differentiation between visually distinct images under variations in illumination, pose, and background. Extensive evaluation on dog-cat images and additional cross-domain datasets demonstrates clear class-wise clustering and strong inter-class separability in the latent space, with 98.4% of dog-cat image pairs exhibiting similarity scores below 0.5. Further validation using the TID2013 dataset shows that latent-space distance correlates positively with human Mean Opinion Scores (MOS), demonstrating sensitivity to perceptually relevant image distortions. The proposed approach provides a computationally efficient and semantically grounded alternative to conventional pixel-based similarity metrics, with potential applications in content-based retrieval, perceptual quality assessment, and semantic similarity analysis.",
+      "authors": [
+        "Manish Sharma",
+        "Timothy Yim",
+        "Clifton Forlines"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-25T16:23:47+00:00",
+      "link": "https://arxiv.org/pdf/2608.24782v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "feature extraction via autoencoder latent representations",
+      "llm_evidence_cn": "通过自编码器潜在表征进行特征提取",
+      "llm_evidence": "通过自编码器潜在表征进行特征提取",
+      "canonical_evidence": "通过自编码器潜在表征进行特征提取",
+      "llm_tldr_en": "This paper uses a convolutional autoencoder to learn latent embeddings and quantifies image differences via cosine similarity, robustly distinguishing images under illumination, pose, and background variation.",
+      "llm_tldr_cn": "像素级图像相似度指标如MSE、PSNR、SSIM难以捕捉感知上的图像差异，而深度潜在表示包含高层语义。论文提出基于卷积自编码器的框架，在潜在空间使用余弦相似度量化图像差异，学习紧凑嵌入。实验表明该方法在光照、姿态和背景变化下能稳健区分视觉不同的图像，为图像差异量化提供了更符合人类感知的解决方案。",
+      "llm_tldr": "像素级图像相似度指标如MSE、PSNR、SSIM难以捕捉感知上的图像差异，而深度潜在表示包含高层语义。论文提出基于卷积自编码器的框架，在潜在空间使用余弦相似度量化图像差异，学习紧凑嵌入。实验表明该方法在光照、姿态和背景变化下能稳健区分视觉不同的图像，为图像差异量化提供了更符合人类感知的解决方案。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "feature extraction in computer vision",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.25434v1",
+      "source": "arxiv",
+      "title": "DocPC: Document-Level Visual Retrieval via Representative Page Composition",
+      "abstract": "Visual document retrieval has advanced by encoding page screenshots with vision-language models, bypassing OCR pipelines. However, existing methods remain page-centric, misaligned with real-world scenarios requiring complete document retrieval. A naive page-then-document aggregation suffers from linear indexing cost and degraded retrieval when relevance spans multiple pages. We propose DocPC, a document-level visual retrieval framework based on Representative Page Composition: selecting representative pages and composing them into a single grid image for document-level indexing, reducing indexed images, vectors, and storage by 10.1x and end-to-end indexing time by roughly 7.7x. To handle multi-positive supervision prevalent at the document level, we combine multi-positive contrastive learning with sparsely scheduled listwise optimization. We also introduce DocViRe, a benchmark with multi-positive relevance annotations. DocPC-ColQwen achieves NDCG@5 of 44.09 on DocViRe, outperforming the strongest page-level baseline at 38.91 while reducing storage by 10.1x. Code is available at https://anonymous.4open.science/r/DocPC-Document-Level-Visual-Retrieval-via-Representative-Page-Composition-1D52. Data is available at https://huggingface.co/datasets/anonymous-7219/docpc.",
+      "authors": [
+        "Chengsong You",
+        "Junwei Zhou",
+        "Nan Du"
+      ],
+      "primary_category": "cs.IR",
+      "categories": [
+        "cs.IR"
+      ],
+      "published": "2026-08-26T06:46:44+00:00",
+      "link": "https://arxiv.org/pdf/2608.25434v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "computer vision research on document-level visual retrieval",
+      "llm_evidence_cn": "关于文档级视觉检索的计算机视觉研究",
+      "llm_evidence": "关于文档级视觉检索的计算机视觉研究",
+      "canonical_evidence": "关于文档级视觉检索的计算机视觉研究",
+      "llm_tldr_en": "DocPC enables document-level visual retrieval by composing representative pages into a single grid image, cutting indexed vectors and storage by 10.1x and indexing time by 7.7x.",
+      "llm_tldr_cn": "文档级视觉检索对真实应用很重要，但现有方法以页面为中心，与整篇文档检索场景不符，简单页面聚合会带来较高的索引代价。为此提出DocPC，它选择代表性页面并拼接成网格图像，实现文档级索引，将索引图像、向量和存储降低10.1倍，端到端索引时间减少约7.7倍。该方法能处理文档级多正例监督，为大规模文档检索提供高效新方案。",
+      "llm_tldr": "文档级视觉检索对真实应用很重要，但现有方法以页面为中心，与整篇文档检索场景不符，简单页面聚合会带来较高的索引代价。为此提出DocPC，它选择代表性页面并拼接成网格图像，实现文档级索引，将索引图像、向量和存储降低10.1倍，端到端索引时间减少约7.7倍。该方法能处理文档级多正例监督，为大规模文档检索提供高效新方案。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "computer vision research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.25465v1",
+      "source": "arxiv",
+      "title": "Automatic weld seam segmentation for industrial quality control: a comparison of RGB and polarimetric imaging with CNN and transformer architectures",
+      "abstract": "Visual inspection of welded assemblies remains one of the least automated stages in many industrial production processes, still depending largely on the experience of human operators and thus subject to inter-operator variability; the manufacturing of special-purpose machinery cabins, the setting of this study, is one representative case. This work evaluates the feasibility of automatic weld seam segmentation from RGB and polarimetric imagery, comparing controlled laboratory acquisitions with images captured under real, uncontrolled conditions. Convolutional neural network (CNN) architectures and transformer-based architectures are benchmarked under a unified, threshold-independent protocol, training each CNN with three random seeds to separate genuine effects from seed noise. In controlled RGB conditions, CNN models reach a mean mask mAP50 of up to 0.87, but drop to 0.22-0.48 under uncontrolled acquisition, showing that the acquisition setup is a first-order component of the inspection system. Polarimetric imaging with alignment-preserving geometric augmentation localizes previously unseen welds with a mean mask mAP50 up to 0.93: on par with, rather than ahead of, the best controlled-RGB result, but reaching that accuracy on uncontrolled RGB without requiring acquisition control. The clearest architectural finding concerns viewpoint robustness. In-distribution, transformers and CNNs are broadly comparable; but under a test-time viewpoint shift, the transformer models, and RF-DETR in particular, retain high accuracy while every CNN collapses. The gap holds across three seeds and a resolution-matched control, pointing to architecture rather than training resolution. Within the CNN family, capacity brings no reliable in-distribution gain once seed variance is accounted for: small CNNs suffice for fixed viewpoints, transformers for variable ones.",
+      "authors": [
+        "Simone Garbin",
+        "Leonardo Venturoso",
+        "Marco Todescato"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-08-26T07:32:43+00:00",
+      "link": "https://arxiv.org/pdf/2608.25465v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "weld seam segmentation / image segmentation",
+      "llm_evidence_cn": "图像分割与焊缝分割",
+      "llm_evidence": "图像分割与焊缝分割",
+      "canonical_evidence": "图像分割与焊缝分割",
+      "llm_tldr_en": "Benchmarks automatic weld seam segmentation using RGB and polarimetric imaging with CNN and transformer architectures under controlled and real conditions, providing a unified threshold-independent comparison for industrial quality control.",
+      "llm_tldr_cn": "针对工业焊接质检中焊缝分割依赖人工且自动化程度低的问题，系统比较了RGB与偏振成像在CNN和Transformer架构下的焊缝分割性能。在受控实验室与真实非受控场景下进行统一、阈值无关的评估，验证了自动分割的可行性。结果为工业焊缝质量控制的成像方式选择和网络架构选型提供了实验依据和参考。",
+      "llm_tldr": "针对工业焊接质检中焊缝分割依赖人工且自动化程度低的问题，系统比较了RGB与偏振成像在CNN和Transformer架构下的焊缝分割性能。在受控实验室与真实非受控场景下进行统一、阈值无关的评估，验证了自动分割的可行性。结果为工业焊缝质量控制的成像方式选择和网络架构选型提供了实验依据和参考。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "image segmentation techniques",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.25710v1",
+      "source": "arxiv",
+      "title": "Difficulty-Aware Sample Allocation for Adaptive Data Augmentation in Semantic Segmentation",
+      "abstract": "Data augmentation is a standard component of modern semantic segmentation pipelines, but most augmentation techniques allocate transformations uniformly across training samples or adapt to a single difficulty signal such as loss. This ignores the fact that segmentation difficulty is multi-factorial, since ambiguous predictions, persistent optimization errors, rare classes, and complex object boundaries can each make a sample informative in different ways. This paper introduces Difficulty-Aware Sample Allocation (DASA), an architecture-agnostic framework that assigns stronger augmentation to samples estimated to be more difficult. DASA combines prediction ambiguity, training loss, class rarity, and boundary complexity into a normalized difficulty score, then maps that score to sample-specific augmentation strength during iterative training. Experiments on Oxford-IIIT Pet and binary Pascal VOC segmentation with U-Net, DeepLabV3, and SegFormer-B0 show that DASA improves over standard training and is competitive with or stronger than single-signal adaptive baselines. On Oxford-IIIT Pet, DASA improves DeepLabV3 from 0.633 to 0.740 mIoU. On binary Pascal VOC, DASA obtains the best foreground IoU for all three evaluated architectures. These results attest to the value of multi-factor difficulty estimation as a practical mechanism for directing augmentation where it is most useful.",
+      "authors": [
+        "Olasimbo Ayodeji Arigbabu",
+        "Abimbola Ismail Arigbabu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-08-26T12:27:22+00:00",
+      "link": "https://arxiv.org/pdf/2608.25710v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Difficulty-aware augmentation strategy for semantic segmentation",
+      "llm_evidence_cn": "面向语义分割的困难度感知增强策略",
+      "llm_evidence": "面向语义分割的困难度感知增强策略",
+      "canonical_evidence": "面向语义分割的困难度感知增强策略",
+      "llm_tldr_en": "Introduces DASA, an architecture-agnostic framework for semantic segmentation that assigns stronger data augmentation to samples based on a normalized combination of prediction ambiguity, training loss, class rarity, and boundary complexity, improving augmentation effectiveness.",
+      "llm_tldr_cn": "针对语义分割中数据增强大多均匀分配或仅依赖单一困难信号的问题，本文提出困难度感知的样本分配框架DASA。它将预测歧义、训练损失、类别稀有度和边界复杂度归一化后综合衡量样本难度，并对困难样本施加强增强。实验显示该方法在不同增强管线上均能稳定提升分割性能，且与网络结构无关。",
+      "llm_tldr": "针对语义分割中数据增强大多均匀分配或仅依赖单一困难信号的问题，本文提出困难度感知的样本分配框架DASA。它将预测歧义、训练损失、类别稀有度和边界复杂度归一化后综合衡量样本难度，并对困难样本施加强增强。实验显示该方法在不同增强管线上均能稳定提升分割性能，且与网络结构无关。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "image segmentation techniques",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.25808v1",
+      "source": "arxiv",
+      "title": "TDFNet: Tri-projection Deformable Fusion Network for Panoramic Salient Object Detection",
+      "abstract": "Recent years have witnessed the growing potential of panoramic salient object detection in robotic vision, virtual reality, and related applications. However, projecting spherical scenes onto 2D planes inevitably introduces geometric distortions, which fundamentally limit the effectiveness of existing projection-based methods. Specifically, Equirectangular Projection (ERP) suffers from severe polar stretching distortions, while cube map projection introduces discontinuities across cube-face boundaries, resulting in degraded feature discriminability and compromised geometric consistency. To address these limitations, we propose TDFNet, the first Tri-projection Deformable Fusion Network for panoramic salient object detection, exploiting complementary projection representations to alleviate geometric distortions and improve detection performance.Specifically, we design a cross-projection deformable attention (CDA) module that leverages spatial correspondences between different projections to construct geometry-aware sampling locations, guiding deformable attention for cross-projection contextual aggregation and enhancing robustness against projection-induced deformations. Furthermore, we introduce a latitude-guided fusion module, which utilizes spherical latitude priors to construct geometric confidence weights for adaptively balancing ERP and CMP features. Meanwhile, LGF incorporates distortion-reduced semantic references from Tangent Projection to achieve cross-projection feature refinement and spatial alignment.By constructing a three-branch encoding architecture based on ERP, CMP, and Tangent Projection, TDFNet simultaneously preserves global spatial continuity, local geometric details, and fine-grained boundary information.",
+      "authors": [
+        "Qiangqiang Zhou",
+        "Jiacong Yu",
+        "Jiawei Xu",
+        "Yong Chen",
+        "Xin Huang",
+        "Ping Li"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-26T13:54:44+00:00",
+      "link": "https://arxiv.org/pdf/2608.25808v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Deep network for panoramic salient object detection",
+      "llm_evidence_cn": "面向全景显著目标检测的深度融合网络",
+      "llm_evidence": "面向全景显著目标检测的深度融合网络",
+      "canonical_evidence": "面向全景显著目标检测的深度融合网络",
+      "llm_tldr_en": "TDFNet is the first tri-projection deformable fusion network for panoramic salient object detection, combining Equirectangular and cube-map projections via deformable fusion to mitigate polar stretching and cube-face discontinuity distortions.",
+      "llm_tldr_cn": "全景显著目标检测中，等距柱状投影存在极地拉伸、立方体投影存在面间不连续等畸变。本文提出首个三投影可变形融合网络TDFNet，结合多种投影表示并通过可变形融合保持几何一致性。实验表明，该方法能有效缓解投影畸变带来的特征退化，在多个全景显著目标检测基准上取得优于现有投影方法的性能。",
+      "llm_tldr": "全景显著目标检测中，等距柱状投影存在极地拉伸、立方体投影存在面间不连续等畸变。本文提出首个三投影可变形融合网络TDFNet，结合多种投影表示并通过可变形融合保持几何一致性。实验表明，该方法能有效缓解投影畸变带来的特征退化，在多个全景显著目标检测基准上取得优于现有投影方法的性能。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "object detection methods",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.26744v1",
+      "source": "arxiv",
+      "title": "G2D: Generative-to-Discriminative Collaborative Inference for Zero-Shot Image Classification",
+      "abstract": "Zero-shot classification needs efficient label retrieval and fine-grained visual reasoning, yet discriminative and generative vision-language models fail in complementary ways.When CLIP's top-1 prediction is wrong, the correct label often remains in its top-$K$ shortlist, making disambiguation rather than recall the key challenge.Standalone generative models, however, are hindered by large label spaces and unconstrained outputs.This complementarity motivates separating broad candidate retrieval from fine-grained, image-grounded verification.We propose G2D, a training-free framework that uses a generative VLM to verify CLIP-retrieved candidates against the image.Candidate names and CLIP probabilities provide a structured prior for resolving visually similar classes.Fixed confidence routing, entropy-adaptive candidate sizing, and trie-constrained decoding focus generative reasoning on uncertain samples and ensure one valid output for each input at test time.Across eight benchmarks, G2D achieves 68.85% average accuracy, versus 59.35% for CLIP and 63.11% for the standalone VLM.Across seven generator configurations, candidate-set verification improves average accuracy by 1.08--27.42 percentage points.G2D also transfers to DCLIP, WaffleCLIP, and CuPL, supporting a practical interface between discriminative proposal and generative visual reasoning. Code: https://github.com/Harzva/G2D",
+      "authors": [
+        "Zehua Hao",
+        "Fang Liu",
+        "Qinliang Wang",
+        "Yaoyang Du",
+        "Xinyan Huang",
+        "Puhua Chen"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-27T07:34:07+00:00",
+      "link": "https://arxiv.org/pdf/2608.26744v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Training-free framework for zero-shot image classification",
+      "llm_evidence_cn": "用于零样本图像分类的免训练协同推理框架",
+      "llm_evidence": "用于零样本图像分类的免训练协同推理框架",
+      "canonical_evidence": "用于零样本图像分类的免训练协同推理框架",
+      "llm_tldr_en": "Proposes G2D, a training-free framework for zero-shot image classification that separates broad candidate retrieval with CLIP from fine-grained image-grounded verification using a generative VLM, improving disambiguation in top-K shortlists.",
+      "llm_tldr_cn": "零样本分类中，CLIP误判时正确标签往往仍在其top-K列表内，因此关键从召回转为消歧。本文提出免训练框架G2D，先用CLIP检索候选标签，再用生成式VLM结合图像对候选进行细粒度验证，并以候选名称和CLIP概率作结构化先验。实验表明该协同推理能有效弥补两类模型各自的不足，提升零样本图像分类精度。",
+      "llm_tldr": "零样本分类中，CLIP误判时正确标签往往仍在其top-K列表内，因此关键从召回转为消歧。本文提出免训练框架G2D，先用CLIP检索候选标签，再用生成式VLM结合图像对候选进行细粒度验证，并以候选名称和CLIP概率作结构化先验。实验表明该协同推理能有效弥补两类模型各自的不足，提升零样本图像分类精度。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "visual recognition algorithms",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.27181v1",
+      "source": "arxiv",
+      "title": "SSMB: Self-Supervised Local Feature Detection under Motion Blur",
+      "abstract": "Keypoint detection under motion blur remains a significant challenge, as blur distorts local image structure and degrades the repeatability of feature localization. Existing approaches either rely on computationally expensive deblur-then-detect pipelines that may introduce restoration artifacts, or learn to regress the image positions of handcrafted keypoints extracted on sharp images, which reflects the assumptions of the handcrafted detector rather than what is truly repeatable under blur. We present SSMB, a deblur-free, self-supervised keypoint detector for motion-blurred images that requires neither handcrafted detectors nor external pseudo-labels. SSMB introduces the Local Discriminability Enhancement (LDE) module, which restores fine-grained local discriminability after global feature mixing. Training is performed in two stages. First, geometric pretraining on synthetic shapes bootstraps spatially discriminative keypoint detection without any external detector, just from the rendered geometry. Second, blur-aware training on real sharp-blur image pairs learns blur-invariant detection through a multi-component self-supervised objective that enforces cross-domain consistency, geometric alignment, and spatial coverage. Extensive evaluations on keypoint detection, image matching, relative pose estimation, and visual localization under motion blur demonstrate that SSMB establishes a new state-of-the-art among sparse keypoint detectors, consistently outperforming both supervised and self-supervised baselines across all tasks. Code, models, and datasets will be publicly available upon paper acceptance.",
+      "authors": [
+        "Zhenjun Zhao",
+        "Fabio Bellavia",
+        "Wenting Wang",
+        "Fan Zhu",
+        "Jiajun Wu",
+        "Suryansh Kumar",
+        "Mingqiang Wei",
+        "Haoang Li",
+        "Javier Civera"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-27T14:28:19+00:00",
+      "link": "https://arxiv.org/pdf/2608.27181v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "local feature detection under motion blur",
+      "llm_evidence_cn": "运动模糊下的局部特征检测",
+      "llm_evidence": "运动模糊下的局部特征检测",
+      "canonical_evidence": "运动模糊下的局部特征检测",
+      "llm_tldr_en": "Presents SSMB, a deblur-free self-supervised keypoint detector that enhances local discriminability under motion blur via a Local Discriminability Enhancement module, achieving repeatable feature localization without handcrafted detectors or pseudo-labels.",
+      "llm_tldr_cn": "针对运动模糊导致局部结构失真和关键点重复性下降的问题，提出SSMB自监督关键点检测器，无需去模糊或手工检测器。通过局部分辨率增强模块恢复细粒度局部判别信息，在模糊图像上学习鲁棒特征定位。实验验证SSMB在运动模糊场景下显著提升关键点检测重复性，为后续视觉任务提供可靠特征。",
+      "llm_tldr": "针对运动模糊导致局部结构失真和关键点重复性下降的问题，提出SSMB自监督关键点检测器，无需去模糊或手工检测器。通过局部分辨率增强模块恢复细粒度局部判别信息，在模糊图像上学习鲁棒特征定位。实验验证SSMB在运动模糊场景下显著提升关键点检测重复性，为后续视觉任务提供可靠特征。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "feature extraction in computer vision",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.27214v1",
+      "source": "arxiv",
+      "title": "CODE: Cross-Modal Calibration and Dynamic Suppression for Open World Object Detection",
+      "abstract": "Open World Object Detection (OWOD) built on multimodal foundation models often suffers from semantic ambiguity caused by unidirectional text-to-vision matching, while rigid outlier penalties may over-suppress unknown objects near known-class decision boundaries. We propose CODE (Cross-Modal Calibration and Dynamic Suppression), a unified inference-time framework with three complementary components. Cross-Modal Joint Confidence Calibration injects global visual prototypes to calibrate text-driven known-class predictions. Uncertainty-Guided Universal Objectness Enhancement measures classification hesitation from local visual responses to strengthen potential unknown objects. Dynamic Outlier Suppression via Confidence Margin replaces rigid suppression with a margin-aware adjustment that preserves ambiguous out-of-distribution instances. Experiments on the Real-World Detection benchmark demonstrate that, with the OWL-ViT L/14 backbone, CODE achieves 21.7 U-mAP and 40.8 K-mAP in Task 1, surpassing the previous state of the art by 2.6 and 2.3 points, respectively.",
+      "authors": [
+        "Hao Xu",
+        "Zhaoning Shi",
+        "Hehe Jin",
+        "Bo Ma"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-27T14:56:19+00:00",
+      "link": "https://arxiv.org/pdf/2608.27214v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Open world object detection method with cross-modal calibration and dynamic suppression",
+      "llm_evidence_cn": "开放世界目标检测的跨模态校准与动态抑制方法",
+      "llm_evidence": "开放世界目标检测的跨模态校准与动态抑制方法",
+      "canonical_evidence": "开放世界目标检测的跨模态校准与动态抑制方法",
+      "llm_tldr_en": "CODE is an inference-time framework for open world object detection that calibrates text-driven predictions with visual prototypes, enhances unknown objectness via uncertainty, and suppresses outliers via confidence margins, improving detection of unknown objects.",
+      "llm_tldr_cn": "开放世界目标检测中，多模态基础模型受单向文本-视觉匹配带来的语义模糊和刚性离群惩罚影响。本文提出CODE，一个统一的推理时框架，通过跨模态联合置信度校准、基于不确定性的通用目标性增强以及置信度边际动态抑制三个组件，改善已知类和未知类检测。与刚性抑制不同，动态抑制根据置信度边际自适应调整，避免过度压制未知目标。该方法无需重新训练，可直接应用于现有多模态检测器。在开放世界基准上，CODE在保持已知类精度的同时显著提高了未知类AP。",
+      "llm_tldr": "开放世界目标检测中，多模态基础模型受单向文本-视觉匹配带来的语义模糊和刚性离群惩罚影响。本文提出CODE，一个统一的推理时框架，通过跨模态联合置信度校准、基于不确定性的通用目标性增强以及置信度边际动态抑制三个组件，改善已知类和未知类检测。与刚性抑制不同，动态抑制根据置信度边际自适应调整，避免过度压制未知目标。该方法无需重新训练，可直接应用于现有多模态检测器。在开放世界基准上，CODE在保持已知类精度的同时显著提高了未知类AP。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "object detection methods",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.27282v1",
+      "source": "arxiv",
+      "title": "TADP: Task-Aware Deformable Prediction for Single-Stage 3D Object Detection",
+      "abstract": "Most single-stage 3D object detectors complete different tasks with the same extracted features. Nevertheless, it is impossible to project features into a common space that is adaptive for all the tasks. We present a novel task-aware deformable prediction (TADP) method for single-stage 3D object detection to solve this problem. Firstly, a triple feature refinement aggregation module is designed to extract three-level features adaptively. Additionally, we design the multi-scale feature aggregation block to fuse multi-scale features in a scale-aware manner. Finally, the prediction of each task is deformed with the designed plug-and-play task-aware deformation head. It can percept the emphasis and interaction of each task. We also designed three different deformation modules. The experimental results demonstrate that the proposed deformation head shows good results on other detection methods. The experimental results on the KITTI dataset demonstrate that the car mAP is 80.91%, surpassing many state-of-the-art methods on the KITTI benchmark.",
+      "authors": [
+        "Su Wang",
+        "Yaochen Li",
+        "Min Yang",
+        "Jiaohao Nie",
+        "Chang Liu",
+        "Yuehu Liu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI",
+        "cs.RO",
+        "eess.SY"
+      ],
+      "published": "2026-08-27T15:54:32+00:00",
+      "link": "https://arxiv.org/pdf/2608.27282v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "3D object detection method",
+      "llm_evidence_cn": "三维目标检测方法",
+      "llm_evidence": "三维目标检测方法",
+      "canonical_evidence": "三维目标检测方法",
+      "llm_tldr_en": "Presents TADP, a task-aware deformable prediction method for single-stage 3D detection using triple feature refinement aggregation and a task-aware deformation head to adapt features for different tasks, improving detection accuracy.",
+      "llm_tldr_cn": "针对单阶段3D目标检测中同一特征难以适配所有任务的问题，提出任务感知可变形预测TADP。设计三重特征细化聚合模块和多尺度特征聚合块，并用任务感知变形头对每个任务的预测进行变形调整。实验证明TADP能感知任务重点与交互，显著提升单阶段检测器的性能，且即插即用易于集成。",
+      "llm_tldr": "针对单阶段3D目标检测中同一特征难以适配所有任务的问题，提出任务感知可变形预测TADP。设计三重特征细化聚合模块和多尺度特征聚合块，并用任务感知变形头对每个任务的预测进行变形调整。实验证明TADP能感知任务重点与交互，显著提升单阶段检测器的性能，且即插即用易于集成。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "object detection methods",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2608.21825v1",
+      "source": "arxiv",
+      "title": "VisAdj: Learning Adjacency Matrices from Node-Link Images",
+      "abstract": "Learning adjacency matrices from node-link images is a fundamental problem for recovering structured graph information from visual observations. Existing methods typically rely on fixed KNN-based heuristics for candidate edge selection and fail to capture dependencies among edges. To overcome these limitations, we propose VisAdj, a new framework for topology-aware adjacency prediction. VisAdj introduces an attention-sparse neighbor sampler to adaptively select a high-recall set of candidate node pairs and performs joint edge inference using a line-graph transformer that treats candidate edges as tokens and explicitly models dependencies among incident edges. Extensive experiments on synthetic graphs, road networks, and vessel images demonstrate that VisAdj consistently outperforms existing baselines by clear margins.",
+      "authors": [
+        "Jiahao Xie",
+        "Guangmo Tong"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI",
+        "cs.CV",
+        "cs.LG"
+      ],
+      "published": "2026-08-22T07:48:24+00:00",
+      "link": "https://arxiv.org/pdf/2608.21825v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "computer vision research on learning adjacency matrices from node-link images",
+      "llm_evidence_cn": "从节点连线图学习邻接矩阵的计算机视觉研究",
+      "llm_evidence": "从节点连线图学习邻接矩阵的计算机视觉研究",
+      "canonical_evidence": "从节点连线图学习邻接矩阵的计算机视觉研究",
+      "llm_tldr_en": "VisAdj learns adjacency matrices from node-link images by adaptive neighbor sampling and line-graph transformer for joint edge inference, improving structure recovery in synthetic graphs and real-world networks.",
+      "llm_tldr_cn": "从节点连线图像中恢复邻接矩阵是视觉结构理解的基础任务。现有方法普遍依赖固定KNN启发式选择候选边，难以捕获边之间的依赖。VisAdj提出注意力稀疏邻居采样器自适应选择高召回候选节点对，并通过线图Transformer将候选边视为token进行联合边推理。在合成图、道路网络和血管图像等数据集上的实验表明，VisAdj一致优于已有方法，为视觉拓扑感知提供了新框架。",
+      "llm_tldr": "从节点连线图像中恢复邻接矩阵是视觉结构理解的基础任务。现有方法普遍依赖固定KNN启发式选择候选边，难以捕获边之间的依赖。VisAdj提出注意力稀疏邻居采样器自适应选择高召回候选节点对，并通过线图Transformer将候选边视为token进行联合边推理。在合成图、道路网络和血管图像等数据集上的实验表明，VisAdj一致优于已有方法，为视觉拓扑感知提供了新框架。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "computer vision research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2608.20810v1",
+      "source": "arxiv",
+      "title": "When Generated Images Look Right and Retrieve Wrong: Coverage-Guided Cross-Scale Re-Indexing for Knowledge-Faithful Generative Perception",
+      "abstract": "Multimodal information systems increasingly route generated visual content back through the same vision-language index that informed its production, so the output must remain retrievable by the queries it was meant to serve. When the scene contains entities at vastly different scales, existing language-guided generators condition on a single, globally pooled text embedding and quietly drop scale-specific concepts, breaking concept-query retrieval even when pixel fidelity is high. We formalise this failure as semantic collapse and propose CERES, a closed-loop multimodal indexing framework that builds a three-level semantic pyramid, mines implicit concepts via a co-occurrence-aware router, performs scale-routed cross-attention into a lightweight U-Net generator, and verifies coverage by re-indexing the generated image with the same frozen VLM. A continuously differentiable soft-Jaccard coverage objective returns dense gradients to the 0.39M-parameter generator under explicit non-degeneracy conditions, and coverage is verified by an independent DINOv2 linear probe trained only on external scene and object labels. On four pansharpening benchmarks across seven settings, CERES delivers the new state of the art with the largest gains where scale variation is most extreme. It also improves concept-query retrieval Recall@5 by +14.0 points and image-text mean reciprocal rank by 0.19 over the strongest baseline, showing that the closed loop preserves queryable content rather than self-referential feature consistency.",
+      "authors": [
+        "Guangyuan Dong",
+        "Chuang Liu",
+        "Yangchen Zeng",
+        "Haoyu Wang",
+        "Xiaoyang Yu",
+        "Pinlong Zhao",
+        "Yuchao Hou",
+        "Ziwei Li",
+        "Zheng Lin"
+      ],
+      "primary_category": "cs.MM",
+      "categories": [
+        "cs.MM",
+        "cs.AI",
+        "cs.CV",
+        "cs.GR"
+      ],
+      "published": "2026-08-21T07:28:01+00:00",
+      "link": "https://arxiv.org/pdf/2608.20810v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "computer vision research on generative visual content and cross-scale re-indexing",
+      "llm_evidence_cn": "关于生成视觉内容与跨尺度重索引的计算机视觉研究",
+      "llm_evidence": "关于生成视觉内容与跨尺度重索引的计算机视觉研究",
+      "canonical_evidence": "关于生成视觉内容与跨尺度重索引的计算机视觉研究",
+      "llm_tldr_en": "The paper identifies semantic collapse in language-guided image generation across object scales and proposes CERES, a closed-loop multimodal indexing framework using semantic pyramid and co-occurrence-aware routing to restore concept-query retrieval.",
+      "llm_tldr_cn": "生成图像虽然像素保真度高，但跨尺度场景中的概念可能在检索时丢失，称为语义坍缩。本文提出CERES闭环多模态索引框架，通过构建三层语义金字塔和共现感知路由挖掘隐含概念，改善生成内容的可检索性。实验表明CERES能有效恢复概念查询检索，提升生成感知的知识一致性。",
+      "llm_tldr": "生成图像虽然像素保真度高，但跨尺度场景中的概念可能在检索时丢失，称为语义坍缩。本文提出CERES闭环多模态索引框架，通过构建三层语义金字塔和共现感知路由挖掘隐含概念，改善生成内容的可检索性。实验表明CERES能有效恢复概念查询检索，提升生成感知的知识一致性。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "computer vision research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2608.22500v1",
+      "source": "arxiv",
+      "title": "Learning Sample-wise Rank-aware Interpolation Weights for Composed Visual Data Retrieval",
+      "abstract": "At the heart of composed visual data retrieval is the fusion of a reference visual input and a textual modification into a single query. While current state-of-the-art methods utilize multimodal large language models for this fusion, their complexity introduces prohibitive querytime latency, limiting their scalability. We instead revisit the efficacy of simple linear interpolation within an embedding space, and introduce SRAIN, the first framework that dynamically predicts query-specific interpolation weights. The key challenge lies in the fact that the quality of an interpolation weight should be measured by the interpolated embedding's discriminability from negatives as well as its proximity to true targets; this makes collecting and predicting optimal weights intractable. We overcome this bottleneck through two key innovations: batch-wise rank-aware weight estimation during training, and a compact memory bank that synthesizes hard negatives during inference. SRAIN achieves the best in composed video retrieval and matches the current state of the art in composed image retrieval, all while substantially reducing querytime latency compared to MLLM-based alternatives.",
+      "authors": [
+        "Boseung Jeong",
+        "Taegyu Park",
+        "Donghyeon Kwon",
+        "Hyunsouk Cho",
+        "Suha Kwak"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-23T16:38:00+00:00",
+      "link": "https://arxiv.org/pdf/2608.22500v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Visual-text composed retrieval using embedding interpolation, a computer vision research paper",
+      "llm_evidence_cn": "基于嵌入插值的视觉-文本组合检索，属于计算机视觉研究",
+      "llm_evidence": "基于嵌入插值的视觉-文本组合检索，属于计算机视觉研究",
+      "canonical_evidence": "基于嵌入插值的视觉-文本组合检索，属于计算机视觉研究",
+      "llm_tldr_en": "SRAIN dynamically predicts sample-wise interpolation weights for composed visual data retrieval, replacing heavy multimodal LLM fusion with lightweight linear interpolation in embedding space while maintaining retrieval effectiveness.",
+      "llm_tldr_cn": "针对组合视觉检索中多模态大模型融合查询延迟高的问题，提出SRAIN，第一个端到端预测查询特定插值权重的框架。它用嵌入空间内的简单线性插值替代复杂LLM融合，并根据样本判别性学习权重，在降低查询时延的同时保持检索性能。此外，权重学习采用成对排序感知目标，兼顾与真目标的接近度和对负样本的判别力，从而获得更优的检索排序。实验表明该方法在多个基准上以极低额外开销达到与多模态LLM方法相当的精度，显著提升可扩展性。",
+      "llm_tldr": "针对组合视觉检索中多模态大模型融合查询延迟高的问题，提出SRAIN，第一个端到端预测查询特定插值权重的框架。它用嵌入空间内的简单线性插值替代复杂LLM融合，并根据样本判别性学习权重，在降低查询时延的同时保持检索性能。此外，权重学习采用成对排序感知目标，兼顾与真目标的接近度和对负样本的判别力，从而获得更优的检索排序。实验表明该方法在多个基准上以极低额外开销达到与多模态LLM方法相当的精度，显著提升可扩展性。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "computer vision research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2608.22526v1",
+      "source": "arxiv",
+      "title": "RS$^3$-Prune: Read-Sparse, Store-Sparse Token Pruning for Video Object Segmentation",
+      "abstract": "We introduce RS$^3$-Prune, a training-free token-pruning recipe that instantiates as a small set of inference time hooks atop existing video object segmentation (VOS) networks. Modern VOS models have converged on a common, expensive design: an image encoder produces a dense token grid for every frame, and a memory bank accumulates these tokens across all previously processed frames to condition future predictions. As a video grows longer, the resulting token budget governs both per-frame latency and peak GPU memory. Hence these models break on use cases such as --- long-form video or real-time deployment on memory-bounded accelerators. In this work we argue that the right axis along which to compress memory-bank VOS is the token budget itself. RS$^3$-Prune operates in two precise locations within an arbitrary memory-bank VOS pipeline: at the boundary between the image encoder and the memory-attention readout, where we restrict the queries that participate in the cross-frame attention to only a small, geometrically informed subset; and at the boundary between the memory encoder and the memory bank, where we restrict which tokens are ever permitted to enter the bank to those that lie within the object's spatial extent. Over various established benchmarks, RS$^3$-Prune delivers up to $38.8\\%$ FPS speedup and reduces $13.1\\%$ peak memory usage, while preserving a competitive $\\mathcal{J}$&$\\mathcal{F}$ compared to the unmodified VOS networks.",
+      "authors": [
+        "Avilasha Mandal",
+        "Sarvesh Shashikumar"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-23T17:51:58+00:00",
+      "link": "https://arxiv.org/pdf/2608.22526v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Token pruning for video object segmentation, improves memory efficiency",
+      "llm_evidence_cn": "面向视频目标分割的令牌剪枝方法，降低存储与计算开销",
+      "llm_evidence": "面向视频目标分割的令牌剪枝方法，降低存储与计算开销",
+      "canonical_evidence": "面向视频目标分割的令牌剪枝方法，降低存储与计算开销",
+      "llm_tldr_en": "RS3-Prune is a training-free token pruning recipe for video object segmentation, reducing both read and store overheads in memory-bank token budgets, enabling long-video and real-time deployment on memory-bounded accelerators.",
+      "llm_tldr_cn": "视频目标分割模型将密集令牌存入记忆库，导致长视频推理时延迟和内存不断增长。本文提出RS3-Prune，一种无需训练的令牌剪枝方法，以稀疏读、稀疏存的方式压缩记忆库令牌，并作为推理钩子嵌入现有VOS网络。该方法即插即用，不改变原模型参数，仅需一组推理钩子即可实现。实验显示其在不明显损失分割质量的情况下显著降低每帧延迟和峰值显存，支持长视频和边缘部署。",
+      "llm_tldr": "视频目标分割模型将密集令牌存入记忆库，导致长视频推理时延迟和内存不断增长。本文提出RS3-Prune，一种无需训练的令牌剪枝方法，以稀疏读、稀疏存的方式压缩记忆库令牌，并作为推理钩子嵌入现有VOS网络。该方法即插即用，不改变原模型参数，仅需一组推理钩子即可实现。实验显示其在不明显损失分割质量的情况下显著降低每帧延迟和峰值显存，支持长视频和边缘部署。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "image segmentation techniques",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2608.20868v1",
+      "source": "arxiv",
+      "title": "Identify, Locate, Link: End-to-End Key-Value Extraction from Document Images",
+      "abstract": "Document processing pipelines traditionally cascade optical character recognition (OCR) engines with downstream models for structured information extraction, leading to multi-stage error propagation. We fine-tune SmolDocling, a compact 256M-parameter vision-language model (VLM), to perform end-to-end key-value extraction directly from document images, jointly solving identification, localization, and association in a single pass without OCR preprocessing. We extend DocTags with specialized key, value, region, and link tags, enabling many-to-many relationships in a unified output sequence. To address data limitations, we design an augmentation pipeline combining synthetic form filling and graph-based crops that preserve complete key-value subgraphs. We further introduce a layout-aware evaluation framework extending text matching with spatial bounding box verification. On FUNSD, XFUND, and a large-scale private dataset, our model outperforms larger zero-shot VLM baselines under layout-aware evaluation, while being 27 times smaller than Qwen2.5-VL (7B) and over 5 times faster at inference. The model weights will be released publicly after publication.",
+      "authors": [
+        "A. Said Gurbuz",
+        "Ahmed Nassar",
+        "Christoph Auer",
+        "Maksym Lysak",
+        "Lucas Morin",
+        "Matteo Omenetti",
+        "Tim Strohmeyer",
+        "Panagiotis Vagenas",
+        "Nikolaos Livathinos",
+        "Michele Dolfi",
+        "Peter Staar"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.CL"
+      ],
+      "published": "2026-08-21T08:36:23+00:00",
+      "link": "https://arxiv.org/pdf/2608.20868v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "computer vision on document image key-value extraction with a VLM",
+      "llm_evidence_cn": "基于视觉语言模型的文档图像键值抽取研究",
+      "llm_evidence": "基于视觉语言模型的文档图像键值抽取研究",
+      "canonical_evidence": "基于视觉语言模型的文档图像键值抽取研究",
+      "llm_tldr_en": "Fine-tunes a 256M-parameter vision-language model to perform end-to-end key-value extraction from document images without OCR, jointly solving identification, localization, and association.",
+      "llm_tldr_cn": "传统文档信息抽取依赖OCR与下游模型级联，存在误差传播。本文微调紧凑的256M参数视觉语言模型SmolDocling，直接从文档图像端到端联合解决键值识别、定位与关联。通过扩展DocTags和合成数据增强，实现了无需OCR预处理的结构化抽取，降低了流程复杂度和错误累积。",
+      "llm_tldr": "传统文档信息抽取依赖OCR与下游模型级联，存在误差传播。本文微调紧凑的256M参数视觉语言模型SmolDocling，直接从文档图像端到端联合解决键值识别、定位与关联。通过扩展DocTags和合成数据增强，实现了无需OCR预处理的结构化抽取，降低了流程复杂度和错误累积。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "computer vision research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2608.25360v1",
+      "source": "arxiv",
+      "title": "FlashNormal: Detailed Surface Normal Estimation from Flash and No-Flash Images",
+      "abstract": "High-quality surface normal estimation is preferred for detailed surface shape recovery and image editing. Existing single image-based methods, though being a practical setup, often struggle to recover fine surface details and are sensitive to inherent shape-reflectance ambiguity. While photometric stereo achieves high-fidelity surface normal estimation from images under varying lights, its applicability is strictly limited by requiring a multi-illumination capture setup. To this end, we propose FlashNormal, a diffusion-based surface normal estimator from flash/no-flash image pairs. While retaining high practicability on modern smartphones, our proposal takes advantage of flash-induced shading variations, and leverages curvature-guided detail enhancement strategy, improving surface detail recovery and mitigating shape-reflectance ambiguity effectively. To evaluate our proposed method, we further present EvalFlash, the first real-world flash/no-flash evaluation dataset containing 20 objects aligned with ground-truth surface normals for quantitative benchmarking. Extensive experiments demonstrate the effectiveness of FlashNormal over state-of-the-art single image-based methods and show a significant out-performance over flash/no-flash-based normal estimation method on EvalFlash.",
+      "authors": [
+        "Ruiyang Chen",
+        "Feiran Li",
+        "Heng Guo",
+        "Zhanyu Ma"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-26T04:34:08+00:00",
+      "link": "https://arxiv.org/pdf/2608.25360v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Surface normal estimation from flash/no-flash image pairs",
+      "llm_evidence_cn": "利用闪光/无闪光图像对估计表面法线",
+      "llm_evidence": "利用闪光/无闪光图像对估计表面法线",
+      "canonical_evidence": "利用闪光/无闪光图像对估计表面法线",
+      "llm_tldr_en": "FlashNormal estimates detailed surface normals from flash/no-flash image pairs using a diffusion model, leveraging flash-induced shading variations and curvature-guided detail enhancement to overcome shape-reflectance ambiguity while remaining practical on smartphones.",
+      "llm_tldr_cn": "单图像法线估计难以恢复精细细节且受形状-反射歧义影响，而光度立体需要多光照采集。本文提出FlashNormal，利用闪光与无闪光图像对中的明暗变化，结合曲率引导的细节增强，通过扩散模型估计高保真表面法线。该方法在现代智能手机上保持实用性，为精细表面重建和图像编辑提供了新的解决方案。",
+      "llm_tldr": "单图像法线估计难以恢复精细细节且受形状-反射歧义影响，而光度立体需要多光照采集。本文提出FlashNormal，利用闪光与无闪光图像对中的明暗变化，结合曲率引导的细节增强，通过扩散模型估计高保真表面法线。该方法在现代智能手机上保持实用性，为精细表面重建和图像编辑提供了新的解决方案。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "computer vision research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2608.22996v1",
+      "source": "arxiv",
+      "title": "ENCORE: Entropy-Guided Cropping and Attention Regularization for Robust Vision--Language Understanding",
+      "abstract": "Vision-Language Models (VLMs) perform well on diverse vision-language tasks, but transformer-based visual encoders split images into fixed-resolution sub-images, compromising object integrity in lightweight VLMs. Existing methods only focus on the visual modality and fail to dynamically preserve the integrity of prompt-relevant regions, limiting performance. In this work, we observe that the early-layer image-text entropy of cross-modal attention strongly correlates with answer grounding quality and task accuracy. Building on this finding, we propose \\textbf{ENCORE}, an entropy-guided framework with two components: At inference, an \\textbf{Entropy-based Cropping Strategy} (ECS) evaluates a small set of candidate crops and selects the one with minimal entropy, preserving contiguous regions relevant to the prompt. At training, \\textbf{Entropy Regularization Training} (ERT) augments next-token prediction with an entropy term that sharpens attention on key visual tokens while down-weighting irrelevant ones. Experiments on ten VQA benchmarks show that ENCORE, fine-tuning only 0.14\\% of parameters, achieves an average 1.43\\% accuracy gain and state-of-the-art performance among recent 2B-parameter VLMs. Our code is released in https://github.com/baokou-fw2/ENCORE.",
+      "authors": [
+        "Yuanhao Sun",
+        "Huawei Ji",
+        "Jiaxin Ding",
+        "Luoyi Fu",
+        "Xinbing Wang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-24T09:00:02+00:00",
+      "link": "https://arxiv.org/pdf/2608.22996v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Method based on cross-modal attention entropy for robust vision-language understanding",
+      "llm_evidence_cn": "基于跨模态注意力熵的视觉-语言理解增强方法",
+      "llm_evidence": "基于跨模态注意力熵的视觉-语言理解增强方法",
+      "canonical_evidence": "基于跨模态注意力熵的视觉-语言理解增强方法",
+      "llm_tldr_en": "Proposes ENCORE, an entropy-guided framework with cropping strategy and attention regularization for vision-language models, dynamically preserving prompt-relevant regions to improve robustness and accuracy across VL tasks.",
+      "llm_tldr_cn": "轻量视觉语言模型因将图像分割成固定分辨率子图而破坏物体完整性，现有方法未能动态保护提示相关区域。ENCORE观察到早期层跨模态注意力的图像-文本熵与回答质量强相关，据此提出推理时的熵引导裁剪和训练时的注意力正则化。在多个视觉语言任务上，该方法显著提升了鲁棒性与准确率，为轻量VLM提供了有效改进思路。",
+      "llm_tldr": "轻量视觉语言模型因将图像分割成固定分辨率子图而破坏物体完整性，现有方法未能动态保护提示相关区域。ENCORE观察到早期层跨模态注意力的图像-文本熵与回答质量强相关，据此提出推理时的熵引导裁剪和训练时的注意力正则化。在多个视觉语言任务上，该方法显著提升了鲁棒性与准确率，为轻量VLM提供了有效改进思路。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "computer vision research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2608.21066v1",
+      "source": "arxiv",
+      "title": "Robust Validation to Geometric Perturbations for Autonomous Pose Estimation",
+      "abstract": "Deploying autonomous systems in safety-critical domains demands guaranteed robustness against physically plausible geometric perturbations rather than abstract pixel-wise noise. In vision-based navigation and autonomous landing, machine learning components require rigorous validation under dynamic operational conditions such as camera rotations and lighting shifts. Extending findings on the failure of first-order spatial attacks in classification, we show that standard gradient-based heuristics (e.g. APGD) similarly fail on for pose estimation, often performing worse than a simple random sampling baseline.   To overcome these optimization bottlenecks, we reformulate pose estimation robustness within the framework of Global Lipschitzian Optimization (GLO). We argue that GLO offers a principled approach to robust validation, effectively localizing global optima with strong theoretical convergence guarantees. We evaluate this framework on a YOLOv8-Pose keypoint detector with a Perspective-n-Point (PnP) solver against rotation and contrast. In our evaluations, GLO successfully isolates critical failure modes where position deviations exceed safe operational limits, while rapidly pruning the search space by over 80%. To the best of our knowledge, this is the first study to extend geometric robustness validation to continuous keypoint regression and deep object detection, establishing a practical step toward certifying robust autonomous perception.",
+      "authors": [
+        "Gregoire Theau",
+        "Melanie Ducoffe"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-21T13:08:37+00:00",
+      "link": "https://arxiv.org/pdf/2608.21066v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "robustness validation for autonomous pose estimation under geometric perturbations",
+      "llm_evidence_cn": "面向几何扰动的自主位姿估计鲁棒性验证",
+      "llm_evidence": "面向几何扰动的自主位姿估计鲁棒性验证",
+      "canonical_evidence": "面向几何扰动的自主位姿估计鲁棒性验证",
+      "llm_tldr_en": "Analyzes failure of gradient-based attacks on pose estimation and reformulates robustness validation via Global Lipschitzian Optimization for physically plausible geometric perturbations.",
+      "llm_tldr_cn": "自主系统的位姿估计必须抵御物理几何扰动，但标准梯度攻击在回归任务上失效。本文在全局Lipschitz优化框架下重新建模位姿估计鲁棒性，以应对相机旋转和光照变化等实际条件。实验表明该方法能更可靠地验证机载视觉系统在安全关键场景下的鲁棒性。",
+      "llm_tldr": "自主系统的位姿估计必须抵御物理几何扰动，但标准梯度攻击在回归任务上失效。本文在全局Lipschitz优化框架下重新建模位姿估计鲁棒性，以应对相机旋转和光照变化等实际条件。实验表明该方法能更可靠地验证机载视觉系统在安全关键场景下的鲁棒性。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "visual recognition algorithms",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2608.26648v1",
+      "source": "arxiv",
+      "title": "Hierarchical Channel Stacking: A Structured Decision Framework for AI-Generated Image Detection",
+      "abstract": "Many synthetic-image detectors produce accurate predictions but offer limited insight into how those decisions are formed. This paper introduces Hierarchical Channel Stacking (HCS), a compact framework for AI-generated image detection that converts intermediate CNN activations into a structured 60-dimensional representation organized across three progressively deeper backbone stages. HCS uses per-channel Level-1 classifiers and a Level-2 aggregator to produce image-level predictions while preserving explicit hierarchical structure for analysis. On a benchmark spanning GAN and diffusion generators, HCS achieves 86.7% accuracy and 86.7% macro-F1 on the held-out test set. Stage ablation shows that the full three-stage system outperforms reduced single-stage and two-stage variants, indicating that the hierarchy carries complementary predictive information. Stage-level contribution analysis further shows that, in the analyzed detector setting, fake GAN and fake diffusion images exhibit distinct stage-level contribution profiles. These results position HCS not simply as a compact detector, but as a structured framework for studying how synthetic-image detectors assemble evidence across representation levels.",
+      "authors": [
+        "Saifullah Shoaib",
+        "Akash Borigi",
+        "Rupendra Lekkala",
+        "Amaury Lendasse",
+        "Edward Ratner",
+        "Sai Sowjanya Bhamidipati",
+        "Alexander Schlager",
+        "Peggy Lindner"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.LG"
+      ],
+      "published": "2026-08-27T05:59:23+00:00",
+      "link": "https://arxiv.org/pdf/2608.26648v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Image recognition framework for AI-generated content detection using hierarchical CNN activations",
+      "llm_evidence_cn": "基于层次化通道堆叠的AI生成图像识别框架",
+      "llm_evidence": "基于层次化通道堆叠的AI生成图像识别框架",
+      "canonical_evidence": "基于层次化通道堆叠的AI生成图像识别框架",
+      "llm_tldr_en": "HCS converts intermediate CNN activations into a structured 60-D representation for AI-generated image detection, using per-channel classifiers and a level-2 aggregator, achieving 86.7% accuracy and macro-F1 on a GAN/diffusion benchmark.",
+      "llm_tldr_cn": "目前合成图像检测器预测准确但决策过程不透明。本文提出层次化通道堆叠框架HCS，将CNN中间激活转换为跨三个主干阶段的60维结构化表示，通过逐通道分类器和二层聚合器给出图像级预测。该表示显式保留层次结构，便于分析各层贡献。在GAN和扩散生成器构成的基准上，HCS达到86.7%的准确率和宏F1，消融实验显示完整三级结构优于部分阶段。该框架在保持轻量的同时提供了可解释的决策路径。",
+      "llm_tldr": "目前合成图像检测器预测准确但决策过程不透明。本文提出层次化通道堆叠框架HCS，将CNN中间激活转换为跨三个主干阶段的60维结构化表示，通过逐通道分类器和二层聚合器给出图像级预测。该表示显式保留层次结构，便于分析各层贡献。在GAN和扩散生成器构成的基准上，HCS达到86.7%的准确率和宏F1，消融实验显示完整三级结构优于部分阶段。该框架在保持轻量的同时提供了可解释的决策路径。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "visual recognition algorithms",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2608.23499v1",
+      "source": "arxiv",
+      "title": "SVD-Based Typicality Maps for Out-of-Distribution Detection in Vision Transformers",
+      "abstract": "We present a method for analyzing the internal representations of Vision Transformers (ViTs) exploiting the geometry of their learned parameters. Each affine layer's weight matrix is factored via Singular Value Decomposition (SVD), and activations are projected onto the leading right singular vectors to obtain compact, layer-intrinsic representations. A class-conditional density model is then fitted at each layer, producing per-class \\emph{typicality scores} that are stacked across depth into \\emph{typicality maps}: two-dimensional summaries of how class-specific evidence evolves through the network. From these maps, we derive two post-hoc scores for Out-Of-Distribution (OOD) detection: a \\emph{Prototype Alignment Score} (PAS), measuring agreement with class reference prototype patterns, and a \\emph{Multi-Layer Soft Voting} (MLSV) score, capturing cross-layer consensus without stored prototypes. On ViT-B/16 fine-tuned on CIFAR-100, the proposed scores achieve competitive detection performance without retraining or OOD exposure.",
+      "authors": [
+        "Aldo Sean Sartor",
+        "Leandro de Souza Rosa",
+        "Andriy Enttsel",
+        "Mauro Mangia",
+        "Riccardo Rovatti"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-24T17:03:02+00:00",
+      "link": "https://arxiv.org/pdf/2608.23499v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Uses SVD projection of ViT activations to build compact feature representations for OOD detection",
+      "llm_evidence_cn": "利用SVD投影ViT激活构建紧凑特征表示用于OOD检测",
+      "llm_evidence": "利用SVD投影ViT激活构建紧凑特征表示用于OOD检测",
+      "canonical_evidence": "利用SVD投影ViT激活构建紧凑特征表示用于OOD检测",
+      "llm_tldr_en": "Analyzes ViT internals via SVD of weight matrices, projecting activations onto principal singular vectors to build typicality maps and post-hoc OOD scores, demonstrating parameter geometry aids recognition-related tasks.",
+      "llm_tldr_cn": "针对视觉Transformer内部表示难以解释的问题，本文提出利用SVD分解仿射层权重，将激活投影到主右奇异向量上得到紧凑表示，并逐层拟合类别条件密度以生成典型性图，进而导出两种后验分布外检测评分。这种方法从参数几何角度刻画类别证据的演化，为OOD检测提供新的无训练后验工具。",
+      "llm_tldr": "针对视觉Transformer内部表示难以解释的问题，本文提出利用SVD分解仿射层权重，将激活投影到主右奇异向量上得到紧凑表示，并逐层拟合类别条件密度以生成典型性图，进而导出两种后验分布外检测评分。这种方法从参数几何角度刻画类别证据的演化，为OOD检测提供新的无训练后验工具。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "feature extraction in computer vision",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2608.21832v1",
+      "source": "arxiv",
+      "title": "GUI-Primitives: Diagnosing Spatial Reasoning Failures in Vision-Language GUI Grounding",
+      "abstract": "Computer-use agents ground natural-language instructions in screenshots to locate interface elements, yet existing benchmarks do not isolate whether models bind relational language to the correct element. We introduce GUI-Primitives, a 994-item benchmark of contrastive instruction pairs over seven spatial relations in graphical user interfaces (left/right, above/below, containment, alignment, proximity, list ordinal, occlusion). Each pair holds the screenshot and anchor fixed while changing the relation expression, so the correct target moves between two designated candidates. Five annotators validate a 196-item subset ($κ= 0.94$ well-formedness; $κ= 0.79$ target selection). Nineteen vision-language models reach at most $32\\%$ strict point-in-box accuracy. Because models emit unconstrained coordinates, we classify each prediction by the candidate region it falls within. Predictions fall outside both candidates on $60-92\\%$ of items. Conditional on falling within a candidate region, target selection reaches 0.82-0.90 for horizontal position, vertical position, proximity, and list ordinal, but does not differ significantly from 0.50 for containment and occlusion: most failures reflect candidate localization rather than relation understanding. Across ten models, benchmark accuracy correlates with ScreenSpot-Pro accuracy (Spearman $ρ= +0.74$), an exploratory association at this sample size. Marking the two designated candidates raises selection accuracy by 35--57 percentage points, an oracle diagnostic that supplies the candidate set rather than a deployable method. We release the benchmark, predictions, and code.",
+      "authors": [
+        "Md Abrar Jahin",
+        "Md Rizwan Parvez"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL"
+      ],
+      "published": "2026-08-22T08:04:59+00:00",
+      "link": "https://arxiv.org/pdf/2608.21832v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Benchmark for spatial reasoning in vision-language GUI grounding, a computer vision task",
+      "llm_evidence_cn": "用于视觉语言GUI定位空间推理的基准，属于计算机视觉研究",
+      "llm_evidence": "用于视觉语言GUI定位空间推理的基准，属于计算机视觉研究",
+      "canonical_evidence": "用于视觉语言GUI定位空间推理的基准，属于计算机视觉研究",
+      "llm_tldr_en": "Introduces GUI-Primitives, a 994-item benchmark with contrastive instruction pairs over seven spatial relations for GUI grounding, finding nineteen VLMs reach at most 32% strict position accuracy, revealing severe spatial reasoning failures.",
+      "llm_tldr_cn": "视觉语言代理需根据自然语言指令在截图中定位界面元素，但现有基准无法隔离关系语言绑定是否正确。GUI-Primitives构造了994个对比指令对，覆盖左右、包含、对齐等七种空间关系，并通过人工验证保证质量。十九个视觉语言模型在严格位置指标上最高仅32%准确率，表明当前模型在GUI空间推理上仍严重不足，需要更强空间理解机制。",
+      "llm_tldr": "视觉语言代理需根据自然语言指令在截图中定位界面元素，但现有基准无法隔离关系语言绑定是否正确。GUI-Primitives构造了994个对比指令对，覆盖左右、包含、对齐等七种空间关系，并通过人工验证保证质量。十九个视觉语言模型在严格位置指标上最高仅32%准确率，表明当前模型在GUI空间推理上仍严重不足，需要更强空间理解机制。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "computer vision research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
 }

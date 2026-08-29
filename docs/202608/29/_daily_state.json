@@ -1,8 +1,569 @@
 {
   "date": "20260829",
   "date_label": "",
-  "generated_at": "2026-08-29 03:19:37 UTC",
+  "generated_at": "2026-08-29 22:51:18 UTC",
   "recommend_exists": true,
-  "run_count": 1,
-  "papers": []
+  "run_count": 2,
+  "papers": [
+    {
+      "paper_id": "2608.20639v1",
+      "route": "202608/29/2608.20639v1-mv2gf-multi-view-pedestrian-detection-with-a-visual-geometric-foundation-model",
+      "title": "MV2GF: Multi-view Pedestrian Detection with a Visual Geometric Foundation Model",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "多视角行人检测方法",
+      "first_seen_at": "2026-08-29 22:51:18 UTC",
+      "updated_at": "2026-08-29 22:51:18 UTC"
+    },
+    {
+      "paper_id": "2608.20712v1",
+      "route": "202608/29/2608.20712v1-privacy-preserving-object-detection-for-vision-transformer-based-models",
+      "title": "Privacy-Preserving Object Detection for Vision Transformer-Based Models",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "基于感知加密的隐私保护目标检测方法",
+      "first_seen_at": "2026-08-29 22:51:18 UTC",
+      "updated_at": "2026-08-29 22:51:18 UTC"
+    },
+    {
+      "paper_id": "2608.20916v1",
+      "route": "202608/29/2608.20916v1-semantically-compatible-knowledge-distillation-for-cross-domain-object-detection-with-vision-foundation-models",
+      "title": "Semantically Compatible Knowledge Distillation for Cross-Domain Object Detection with Vision Foundation Models",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "跨域目标检测与知识蒸馏方法",
+      "first_seen_at": "2026-08-29 22:51:18 UTC",
+      "updated_at": "2026-08-29 22:51:18 UTC"
+    },
+    {
+      "paper_id": "2608.20944v1",
+      "route": "202608/29/2608.20944v1-suppresensing-expert-guided-feature-recalibration-and-discrepancy-augmentation-for-multimodal-object-detection",
+      "title": "SuppreSensing: Expert-Guided Feature Recalibration and Discrepancy Augmentation for Multimodal Object Detection",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "面向遥感多模态目标检测的新方法",
+      "first_seen_at": "2026-08-29 22:51:18 UTC",
+      "updated_at": "2026-08-29 22:51:18 UTC"
+    },
+    {
+      "paper_id": "2608.21099v1",
+      "route": "202608/29/2608.21099v1-a2dinov3-rethinking-multi-modal-object-detection-via-socialized-collaboration",
+      "title": "A2DINOv3: Rethinking Multi-Modal Object Detection via Socialized Collaboration",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "面向多模态目标检测的DINOv3适配与协作框架",
+      "first_seen_at": "2026-08-29 22:51:18 UTC",
+      "updated_at": "2026-08-29 22:51:18 UTC"
+    },
+    {
+      "paper_id": "2608.21937v1",
+      "route": "202608/29/2608.21937v1-c2path-class-conditional-pathway-decoupling-for-vision-language-incremental-object-detection",
+      "title": "C$^2$Path: Class-Conditional Pathway Decoupling for Vision-Language Incremental Object Detection",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "基于类条件路径解耦的增量目标检测",
+      "first_seen_at": "2026-08-29 22:51:18 UTC",
+      "updated_at": "2026-08-29 22:51:18 UTC"
+    },
+    {
+      "paper_id": "2608.22064v1",
+      "route": "202608/29/2608.22064v1-competitive-memory-readout-for-robust-video-object-segmentation-2nd-place-technical-report-for-the-mosev2-track-of-the-8th-lsvos-challenge",
+      "title": "Competitive Memory Readout for Robust Video Object Segmentation: 2nd Place Technical Report for the MOSEv2 Track of the 8th LSVOS Challenge",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "解决同类干扰物干扰的鲁棒视频目标分割方法",
+      "first_seen_at": "2026-08-29 22:51:18 UTC",
+      "updated_at": "2026-08-29 22:51:18 UTC"
+    },
+    {
+      "paper_id": "2608.22072v1",
+      "route": "202608/29/2608.22072v1-spiking-neural-networks-for-energy-efficient-object-detection-in-forward-looking-sonar-imagery",
+      "title": "Spiking Neural Networks for Energy-Efficient Object Detection in Forward-Looking Sonar Imagery",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "基于脉冲神经网络的声纳图像目标检测",
+      "first_seen_at": "2026-08-29 22:51:18 UTC",
+      "updated_at": "2026-08-29 22:51:18 UTC"
+    },
+    {
+      "paper_id": "2608.22313v1",
+      "route": "202608/29/2608.22313v1-adapting-dense-vision-language-relationships-for-multi-label-classification-with-partial-label",
+      "title": "Adapting Dense Vision-Language Relationships for Multi-label Classification with Partial Label",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "面向多标签分类的视觉识别算法",
+      "first_seen_at": "2026-08-29 22:51:18 UTC",
+      "updated_at": "2026-08-29 22:51:18 UTC"
+    },
+    {
+      "paper_id": "2608.22368v1",
+      "route": "202608/29/2608.22368v1-did-it-in-87-minutes-a-label-free-softmax-to-linear-adaptation-of-vision-transformers-for-object-detection",
+      "title": "DiD It in 87 Minutes: A Label-Free Softmax-to-Linear Adaptation of Vision Transformers for Object Detection",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "提出面向目标检测骨干的无标签适配方法",
+      "first_seen_at": "2026-08-29 22:51:18 UTC",
+      "updated_at": "2026-08-29 22:51:18 UTC"
+    },
+    {
+      "paper_id": "2608.23746v1",
+      "route": "202608/29/2608.23746v1-crisp-calibration-aware-visual-state-space-duality-for-remote-sensing-semantic-segmentation",
+      "title": "CRISP: Calibration-Aware Visual State Space Duality for Remote Sensing Semantic Segmentation",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "遥感语义分割技术",
+      "first_seen_at": "2026-08-29 22:51:18 UTC",
+      "updated_at": "2026-08-29 22:51:18 UTC"
+    },
+    {
+      "paper_id": "2608.23923v1",
+      "route": "202608/29/2608.23923v1-roi-gated-sahi-content-adaptive-slicing-based-inference-for-efficient-object-detection",
+      "title": "ROI-Gated SAHI: Content-Adaptive Slicing-Based Inference for Efficient Object Detection",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "基于内容自适应切片推理的高效目标检测方法",
+      "first_seen_at": "2026-08-29 22:51:18 UTC",
+      "updated_at": "2026-08-29 22:51:18 UTC"
+    },
+    {
+      "paper_id": "2608.24154v1",
+      "route": "202608/29/2608.24154v1-rethinking-pre-training-and-augmentation-for-zero-shot-cross-city-object-detection",
+      "title": "Rethinking Pre-Training and Augmentation for Zero-Shot Cross-City Object Detection",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "零样本跨城市目标检测",
+      "first_seen_at": "2026-08-29 22:51:18 UTC",
+      "updated_at": "2026-08-29 22:51:18 UTC"
+    },
+    {
+      "paper_id": "2608.24281v1",
+      "route": "202608/29/2608.24281v1-example-based-robust-abnormality-detection-with-minimal-annotations-using-exemplar-med-detr",
+      "title": "Example-based Robust Abnormality Detection with Minimal Annotations using Exemplar Med-DETR",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "面向医学影像的目标检测方法，强调以最少标注实现鲁棒检测",
+      "first_seen_at": "2026-08-29 22:51:18 UTC",
+      "updated_at": "2026-08-29 22:51:18 UTC"
+    },
+    {
+      "paper_id": "2608.24544v1",
+      "route": "202608/29/2608.24544v1-kltnet-learning-sparse-feature-tracking-for-robust-and-accurate-monocular-visual-inertial-odometry",
+      "title": "KLTNet: Learning Sparse Feature Tracking for Robust and Accurate Monocular Visual-Inertial Odometry",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "面向VIO的特征跟踪计算机视觉研究",
+      "first_seen_at": "2026-08-29 22:51:18 UTC",
+      "updated_at": "2026-08-29 22:51:18 UTC"
+    },
+    {
+      "paper_id": "2608.24782v1",
+      "route": "202608/29/2608.24782v1-image-difference-quantification-using-autoencoder-based-latent-representations",
+      "title": "Image Difference Quantification Using Autoencoder-Based Latent Representations",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "通过自编码器潜在表征进行特征提取",
+      "first_seen_at": "2026-08-29 22:51:18 UTC",
+      "updated_at": "2026-08-29 22:51:18 UTC"
+    },
+    {
+      "paper_id": "2608.25434v1",
+      "route": "202608/29/2608.25434v1-docpc-document-level-visual-retrieval-via-representative-page-composition",
+      "title": "DocPC: Document-Level Visual Retrieval via Representative Page Composition",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "关于文档级视觉检索的计算机视觉研究",
+      "first_seen_at": "2026-08-29 22:51:18 UTC",
+      "updated_at": "2026-08-29 22:51:18 UTC"
+    },
+    {
+      "paper_id": "2608.25465v1",
+      "route": "202608/29/2608.25465v1-automatic-weld-seam-segmentation-for-industrial-quality-control-a-comparison-of-rgb-and-polarimetric-imaging-with-cnn-and-transformer-architectures",
+      "title": "Automatic weld seam segmentation for industrial quality control: a comparison of RGB and polarimetric imaging with CNN and transformer architectures",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "图像分割与焊缝分割",
+      "first_seen_at": "2026-08-29 22:51:18 UTC",
+      "updated_at": "2026-08-29 22:51:18 UTC"
+    },
+    {
+      "paper_id": "2608.25710v1",
+      "route": "202608/29/2608.25710v1-difficulty-aware-sample-allocation-for-adaptive-data-augmentation-in-semantic-segmentation",
+      "title": "Difficulty-Aware Sample Allocation for Adaptive Data Augmentation in Semantic Segmentation",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "面向语义分割的困难度感知增强策略",
+      "first_seen_at": "2026-08-29 22:51:18 UTC",
+      "updated_at": "2026-08-29 22:51:18 UTC"
+    },
+    {
+      "paper_id": "2608.25808v1",
+      "route": "202608/29/2608.25808v1-tdfnet-tri-projection-deformable-fusion-network-for-panoramic-salient-object-detection",
+      "title": "TDFNet: Tri-projection Deformable Fusion Network for Panoramic Salient Object Detection",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "面向全景显著目标检测的深度融合网络",
+      "first_seen_at": "2026-08-29 22:51:18 UTC",
+      "updated_at": "2026-08-29 22:51:18 UTC"
+    },
+    {
+      "paper_id": "2608.26744v1",
+      "route": "202608/29/2608.26744v1-g2d-generative-to-discriminative-collaborative-inference-for-zero-shot-image-classification",
+      "title": "G2D: Generative-to-Discriminative Collaborative Inference for Zero-Shot Image Classification",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "用于零样本图像分类的免训练协同推理框架",
+      "first_seen_at": "2026-08-29 22:51:18 UTC",
+      "updated_at": "2026-08-29 22:51:18 UTC"
+    },
+    {
+      "paper_id": "2608.27181v1",
+      "route": "202608/29/2608.27181v1-ssmb-self-supervised-local-feature-detection-under-motion-blur",
+      "title": "SSMB: Self-Supervised Local Feature Detection under Motion Blur",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "运动模糊下的局部特征检测",
+      "first_seen_at": "2026-08-29 22:51:18 UTC",
+      "updated_at": "2026-08-29 22:51:18 UTC"
+    },
+    {
+      "paper_id": "2608.27214v1",
+      "route": "202608/29/2608.27214v1-code-cross-modal-calibration-and-dynamic-suppression-for-open-world-object-detection",
+      "title": "CODE: Cross-Modal Calibration and Dynamic Suppression for Open World Object Detection",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "开放世界目标检测的跨模态校准与动态抑制方法",
+      "first_seen_at": "2026-08-29 22:51:18 UTC",
+      "updated_at": "2026-08-29 22:51:18 UTC"
+    },
+    {
+      "paper_id": "2608.27282v1",
+      "route": "202608/29/2608.27282v1-tadp-task-aware-deformable-prediction-for-single-stage-3d-object-detection",
+      "title": "TADP: Task-Aware Deformable Prediction for Single-Stage 3D Object Detection",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "三维目标检测方法",
+      "first_seen_at": "2026-08-29 22:51:18 UTC",
+      "updated_at": "2026-08-29 22:51:18 UTC"
+    },
+    {
+      "paper_id": "2608.21825v1",
+      "route": "202608/29/2608.21825v1-visadj-learning-adjacency-matrices-from-node-link-images",
+      "title": "VisAdj: Learning Adjacency Matrices from Node-Link Images",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "从节点连线图学习邻接矩阵的计算机视觉研究",
+      "first_seen_at": "2026-08-29 22:51:18 UTC",
+      "updated_at": "2026-08-29 22:51:18 UTC"
+    },
+    {
+      "paper_id": "2608.22526v1",
+      "route": "202608/29/2608.22526v1-rs3-prune-read-sparse-store-sparse-token-pruning-for-video-object-segmentation",
+      "title": "RS$^3$-Prune: Read-Sparse, Store-Sparse Token Pruning for Video Object Segmentation",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "面向视频目标分割的令牌剪枝方法，降低存储与计算开销",
+      "first_seen_at": "2026-08-29 22:51:18 UTC",
+      "updated_at": "2026-08-29 22:51:18 UTC"
+    },
+    {
+      "paper_id": "2608.22996v1",
+      "route": "202608/29/2608.22996v1-encore-entropy-guided-cropping-and-attention-regularization-for-robust-vision--language-understanding",
+      "title": "ENCORE: Entropy-Guided Cropping and Attention Regularization for Robust Vision--Language Understanding",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "基于跨模态注意力熵的视觉-语言理解增强方法",
+      "first_seen_at": "2026-08-29 22:51:18 UTC",
+      "updated_at": "2026-08-29 22:51:18 UTC"
+    },
+    {
+      "paper_id": "2608.23499v1",
+      "route": "202608/29/2608.23499v1-svd-based-typicality-maps-for-out-of-distribution-detection-in-vision-transformers",
+      "title": "SVD-Based Typicality Maps for Out-of-Distribution Detection in Vision Transformers",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "利用SVD投影ViT激活构建紧凑特征表示用于OOD检测",
+      "first_seen_at": "2026-08-29 22:51:18 UTC",
+      "updated_at": "2026-08-29 22:51:18 UTC"
+    },
+    {
+      "paper_id": "2608.20810v1",
+      "route": "202608/29/2608.20810v1-when-generated-images-look-right-and-retrieve-wrong-coverage-guided-cross-scale-re-indexing-for-knowledge-faithful-generative-perception",
+      "title": "When Generated Images Look Right and Retrieve Wrong: Coverage-Guided Cross-Scale Re-Indexing for Knowledge-Faithful Generative Perception",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "关于生成视觉内容与跨尺度重索引的计算机视觉研究",
+      "first_seen_at": "2026-08-29 22:51:18 UTC",
+      "updated_at": "2026-08-29 22:51:18 UTC"
+    },
+    {
+      "paper_id": "2608.20868v1",
+      "route": "202608/29/2608.20868v1-identify-locate-link-end-to-end-key-value-extraction-from-document-images",
+      "title": "Identify, Locate, Link: End-to-End Key-Value Extraction from Document Images",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "基于视觉语言模型的文档图像键值抽取研究",
+      "first_seen_at": "2026-08-29 22:51:18 UTC",
+      "updated_at": "2026-08-29 22:51:18 UTC"
+    },
+    {
+      "paper_id": "2608.21066v1",
+      "route": "202608/29/2608.21066v1-robust-validation-to-geometric-perturbations-for-autonomous-pose-estimation",
+      "title": "Robust Validation to Geometric Perturbations for Autonomous Pose Estimation",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "面向几何扰动的自主位姿估计鲁棒性验证",
+      "first_seen_at": "2026-08-29 22:51:18 UTC",
+      "updated_at": "2026-08-29 22:51:18 UTC"
+    },
+    {
+      "paper_id": "2608.21832v1",
+      "route": "202608/29/2608.21832v1-gui-primitives-diagnosing-spatial-reasoning-failures-in-vision-language-gui-grounding",
+      "title": "GUI-Primitives: Diagnosing Spatial Reasoning Failures in Vision-Language GUI Grounding",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "用于视觉语言GUI定位空间推理的基准，属于计算机视觉研究",
+      "first_seen_at": "2026-08-29 22:51:18 UTC",
+      "updated_at": "2026-08-29 22:51:18 UTC"
+    },
+    {
+      "paper_id": "2608.22500v1",
+      "route": "202608/29/2608.22500v1-learning-sample-wise-rank-aware-interpolation-weights-for-composed-visual-data-retrieval",
+      "title": "Learning Sample-wise Rank-aware Interpolation Weights for Composed Visual Data Retrieval",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "基于嵌入插值的视觉-文本组合检索，属于计算机视觉研究",
+      "first_seen_at": "2026-08-29 22:51:18 UTC",
+      "updated_at": "2026-08-29 22:51:18 UTC"
+    },
+    {
+      "paper_id": "2608.25360v1",
+      "route": "202608/29/2608.25360v1-flashnormal-detailed-surface-normal-estimation-from-flash-and-no-flash-images",
+      "title": "FlashNormal: Detailed Surface Normal Estimation from Flash and No-Flash Images",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "利用闪光/无闪光图像对估计表面法线",
+      "first_seen_at": "2026-08-29 22:51:18 UTC",
+      "updated_at": "2026-08-29 22:51:18 UTC"
+    },
+    {
+      "paper_id": "2608.26648v1",
+      "route": "202608/29/2608.26648v1-hierarchical-channel-stacking-a-structured-decision-framework-for-ai-generated-image-detection",
+      "title": "Hierarchical Channel Stacking: A Structured Decision Framework for AI-Generated Image Detection",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "基于层次化通道堆叠的AI生成图像识别框架",
+      "first_seen_at": "2026-08-29 22:51:18 UTC",
+      "updated_at": "2026-08-29 22:51:18 UTC"
+    }
+  ]
 }

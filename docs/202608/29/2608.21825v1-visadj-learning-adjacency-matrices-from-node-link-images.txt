@@ -1,0 +1,899 @@
+Title: VisAdj: Learning Adjacency Matrices from Node-Link Images
+
+URL Source: https://arxiv.org/pdf/2608.21825v1
+
+Published Time: Tue, 25 Aug 2026 00:28:54 GMT
+
+Number of Pages: 12
+
+Markdown Content:
+# VisAdj: Learning Adjacency Matrices from Node-Link Images 
+
+# Jiahao Xie 
+
+jiahaox@udel.edu University of Delaware Newark, Delaware, USA 
+
+# Guangmo Tong 
+
+amotong@udel.edu University of Delaware Newark, Delaware, USA 
+
+## Abstract 
+
+Learning adjacency matrices from node-link images is a fundamen-tal problem for recovering structured graph information from visual observations. Existing methods typically rely on fixed KNN-based heuristics for candidate edge selection and fail to capture depen-dencies among edges. To overcome these limitations, we propose VisAdj, a new framework for topology-aware adjacency prediction. VisAdj introduces an attention-sparse neighbor sampler to adap-tively select a high-recall set of candidate node pairs and performs joint edge inference using a line-graph transformer that treats can-didate edges as tokens and explicitly models dependencies among incident edges. Extensive experiments on synthetic graphs, road networks, and vessel images demonstrate that VisAdj consistently outperforms existing baselines by clear margins. 
+
+## CCS Concepts 
+
+• Theory of computation → Graph algorithms analysis .
+
+## Keywords 
+
+Learning, Adjacency Matrices, Edge reasoning, Node-Link Images 
+
+ACM Reference Format: 
+
+Jiahao Xie and Guangmo Tong. 2026. VisAdj: Learning Adjacency Ma-trices from Node-Link Images. In Proceedings of the 35th ACM Interna-tional Conference on Information and Knowledge Management (CIKM ’26), November 07–11, 2026, Rome, Italy. ACM, New York, NY, USA, 12 pages. https://doi.org/10.1145/3799682.3840917 
+
+## 1 Introduction 
+
+Node-link images are widely used to visualize relational structures [19, 24, 39, 46], such as road and vessel networks (Fig. 1), where the underlying graphs encode the semantic information of interest and the images serve primarily for human interpretation. However, in practice, the original graph data are often unavailable, leaving only rasterized images such as satellite photos and medical images. Con-sequently, the adjacency structures become inaccessible to down-stream graph algorithms and learning models. This introduces the problem of recovering adjacency matrices from node-link images. Early attempts recover graphs from node-link images using hand-crafted heuristics [12], which are sensitive to visual variations. Re-cent road network extraction methods, such as SAM-Road [20] and SAM-Road++ [48], adopt learning-based pipelines but still rely on fixed KNN-based strategies to select candidate node pairs. This leads to an inherent limitation: a small neighborhood radius 
+
+> This work is licensed under a Creative Commons Attribution 4.0 International License.
+> CIKM ’26, Rome, Italy
+> © 2026 Copyright held by the owner/author(s). ACM ISBN 979-8-4007-2539-5/2026/11 https://doi.org/10.1145/3799682.3840917
+
+(a) Road Network (b) Vessel Network (c) Graph Image 
+
+Figure 1: Examples of node-link images and their underlying graphs. Orange lines denote ground-truth edges. Existing methods often miss long-range connections (orange dashed lines) and predict erroneous shortcut edges (red dotted lines) in visually ambiguous crossing regions. 
+
+misses long-range connections, whereas a large radius admits many spurious candidates. Such designs are effective for road networks with relatively simple structures and limited crossings (Fig. 1a), but become less reliable for general node-link images, where the un-derlying graph structures may be more complex (Figs. 1b-1c). More general image-to-graph methods, such as RelationFormer [40] and Any2Graph [27], infer graph structures through learned relational reasoning, but still predict each edge independently based only on endpoint features, without considering structural dependencies among edges. In practice, edge dependencies come from both node-level and graph-level structural constraints: node degree limits the number of incident edges, and global graph properties (e.g., pla-narity in Fig. 1a and tree topology in Fig. 1b) impose additional topological restrictions. Ignoring such edge-edge interactions often results in ambiguous or inconsistent adjacency predictions, making edge inference the primary bottleneck in graph reconstruction. 
+
+Contribution. We propose VisAdj , a new framework for recon-structing adjacency matrices from node-link images. VisAdj first encodes the input image into local and global visual features to support node detection and image-level structural understanding, with global features enhanced by learnable topology tokens. To overcome the rigidity of KNN-based candidate selection, VisAdj in-troduces an attention-sparse neighbor sampler to adaptively select a high-recall set of candidate node pairs. Furthermore, to address the limitation that existing methods ignore edge dependencies, VisAdj performs joint edge inference over candidate node pairs using a line-graph transformer, which treats edges as tokens and explicitly models interactions among incident edges for structurally consis-tent adjacency prediction. Experimentally, VisAdj improves the state of the art by over 15% in graph isomorphism rate and over 8% in edge prediction F1 score across diverse benchmarks, while also enhancing existing road network extraction pipelines as a plug-in graph reasoning module. Our code, dataset, and hyperparameter settings are available at https://github.com/Jiahao-Xie-86/VisAdj. arXiv:2608.21825v1 [cs.AI] 22 Aug 2026 CIKM ’26, November 07–11, 2026, Rome, Italy Jiahao Xie and Guangmo Tong 
+
+## 2 Related Work 
+
+Road network extraction . A large body of work studies image-to-graph reconstruction in the context of road network extrac-tion [2, 35, 36, 41]. Sat2Graph [18] models road graphs by predict-ing connectivity between detected junctions using convolutional features over local neighborhoods. RNGDet++ [47] adopts an it-erative graph-growing paradigm, progressively adding nodes and edges through region-of-interest sampling guided by historical maps. More recent approaches, such as SAM-Road [20] and SAM-Road++ [48], leverage vision foundation models to produce node and edge representations, which are subsequently converted into graph structures via post-processing. Despite their effectiveness on road datasets, these methods struggle to generalize to general node-link images because their graph reasoning modules are tailored to road-specific characteristics (e.g., planarity and local connectivity) and rely on fixed KNN-based methods for candidate edge selection. 
+
+General image-to-graph methods . In addition to road net-works, several methods aim to recover more general graph struc-tures from images [5]. For example, RelationFormer [40] introduces a transformer-based framework that jointly predicts nodes and edges using set prediction and bipartite matching, enabling end-to-end graph inference without explicit post-processing. Any2Graph [27] improves this paradigm by proposing an optimal transport-based loss to better align predicted and ground-truth graphs under permutation ambiguity. These approaches move toward unified image-to-graph modeling by jointly learning node and edge pre-diction. However, they predict each edge independently and lack explicit mechanisms to model structural dependencies among edges. In contrast, our framework overcomes these limitations by learning edge interactions and performing joint edge reasoning. 
+
+## 3 Preliminary 
+
+We study the problem of recovering graph adjacency matrices from node-link images. Let I denote the space of node-link images and G the space of undirected, unweighted graphs. Each image 
+
+I ∈ I provides a visualization of the underlying graph repre-sented as 𝐺 = (𝑉 , A) ∈ G , where 𝑉 denotes the node set and 
+
+A ∈ { 0, 1}|𝑉 | × | 𝑉 | is the corresponding adjacency matrix. Given a dataset 𝐷 = {( I𝑖 , 𝐺 𝑖 = (𝑉 𝑖 , A𝑖 ))} 𝑛 𝑖 =1, the goal is to learn a mapping 
+
+ℎ : I → ( b𝑉 , bA) that recovers the underlying adjacency structure. Since nodes are grounded in image space, node identities are de-fined by their spatial locations. During training, predicted nodes are aligned with ground-truth nodes via spatial matching, which induces a consistent ordering between b𝑉 and 𝑉 . Under this corre-spondence, ℎ is learned by minimizing the empirical loss 
+
+L( ℎ) = 1
+
+𝑛 
+
+> 𝑛
+
+∑︁ 
+
+> 𝑖 =1
+
+h
+
+ℓnode 
+
+ b𝑉 ℎ (I𝑖 ), 𝑉 𝑖 
+
+ + ℓedge 
+
+ bAℎ (I𝑖 ), A𝑖 
+
+i
+
+,
+
+where ℓnode measures the difference between predicted and ground-truth node sets, and ℓedge measures the discrepancy between pre-dicted and ground-truth adjacency matrices under the induced node correspondence (e.g., cross-entropy loss). 
+
+## 4 Methodology 
+
+Given a node-link image I, VisAdj aims to recover the underly-ing graph by predicting a node set and an adjacency matrix, i.e., 
+
+ b𝑉 (I), bA(I). To this end, VisAdj follows a three-stage pipeline: 1) 
+
+Image encoding: we encode I using a vision foundation model to obtain multi-scale features. 2) Node detection: the node set b𝑉 (I) is detected via node likelihood prediction. 3) Edge reasoning: based on b𝑉 (I), VisAdj aggregates image-level context with learnable topology tokens, adaptively selects candidate node pairs using an attention-sparse neighbor sampler (ASNS), and jointly infers con-nectivity by employing a line-graph transformer to model depen-dencies among edges and predict bA(I). The overall architecture of our framework is illustrated in Fig. 2, where the numbered blocks correspond to the main modules of VisAdj. In the following, we first detail the architecture and then describe the training strategy. 
+
+## 4.1 Architecture 
+
+4.1.1 Image Encoding. Given an input node-link image I ∈ R𝐻 ×𝑊 ×3
+
+with resolution 𝐻 × 𝑊 , we extract visual representations using a pretrained vision foundation model [1, 32] (e.g., SAM [26], SAM2 [38] and SAM3 [8]), as shown in block (#1) of Fig. 2. The encoder 
+
+E𝜽 𝐸 first maps the input image to a backbone feature representa-tion, which is further projected into two complementary feature streams [9]: 
+
+Flocal = F𝐿, 𝜽 𝐿 
+
+ E𝜽 𝐸 (I) ∈ R𝐻 𝐿 ×𝑊 𝐿 ×𝐷 𝐿 ,
+
+Fglobal = F𝐺, 𝜽 𝐺 
+
+ E𝜽 𝐸 (I) ∈ R𝐻 𝐺 ×𝑊 𝐺 ×𝐷 𝐺 , (1) where 𝜽 𝐸 denotes the parameters of the vision backbone. (𝐻 𝐿 ,𝑊 𝐿 )
+
+and (𝐻 𝐺 ,𝑊 𝐺 ) = (𝐻 𝐿 /𝜆 𝐺 ,𝑊 𝐿 /𝜆 𝐺 ) denote the spatial resolutions of the local and global feature streams, respectively, and 𝜆 𝐺 ∈ Z+ is the downsampling ratio. 𝐷 𝐿 , 𝐷 𝐺 ∈ Z+ are their corresponding feature dimensions. Both F𝐿, 𝜽 𝐿 and F𝐺, 𝜽 𝐺 are learnable feature represen-tation modules parameterized by 𝜽 𝐿 and 𝜽 𝐺 (e.g., CNN [17]). The local feature stream retains higher spatial resolution and preserves fine-grained geometric cues that are important for accurate node localization. In contrast, the global stream aggregates features at a coarser spatial scale, enlarging the receptive field and capturing long-range context that is critical for subsequent edge reasoning. 
+
+4.1.2 Node Detection. We detect graph nodes by estimating a dense node-likelihood map from Flocal , followed by peak extraction for node localization and feature sampling to obtain node descriptors. This node detection process is illustrated in block (#2) of Fig. 2. 
+
+1) Node likelihood prediction . We first predict a dense node-likelihood map over the image by applying a node prediction head 
+
+Hnode ,𝜽 𝑁 with parameters 𝜽 𝑁 to process Flocal :
+
+bM = U𝐻,𝑊 
+
+𝜎  Hnode ,𝜽 𝑁 (Flocal ) ∈ [ 0, 1]𝐻 ×𝑊 , (2) where 𝜎 denotes the sigmoid function and U𝐻,𝑊 is bilinear upsam-pling to the original image resolution. The resulting node-likelihood map bM assigns each pixel a probability of being a graph node, providing dense spatial evidence for node existence. In practice, 
+
+Hnode ,𝜽 𝑁 is implemented as a convolutional predictor composed of CoordConv layers [33] followed by standard convolutions. 
+
+2) Peak extraction with subpixel refinement. Candidate nodes are extracted as local maxima in the predicted likelihood map. A pixel ( ˜𝑥, ˜𝑦 ) ∈ Z2 is selected as a node candidate if 
+
+bM[ ˜𝑥, ˜𝑦 ] = max    
+
+> (𝑢,𝑣 ) ∈ N 𝑟 (˜𝑥, ˜𝑦 )
+
+bM[𝑢, 𝑣 ] and bM[ ˜𝑥, ˜𝑦 ] > 𝜏, VisAdj: Learning Adjacency Matrices from Node-Link Images CIKM ’26, November 07–11, 2026, Rome, Italy Vision Foundation Encoder   
+
+> Local Features
+> Global Features
+> Node Likelihood Map
+> 1
+> 0
+> Peak Extraction Soft -Argmax
+> weighted centroid
+> (subpixel refinement)
+> Detected Nodes
+> ⋮
+> Nnodes
+> ⋮ ⋮
+> Topology-Enhanced
+> Global Features
+
+••• 
+
+Input  Node -
+
+Link Images   
+
+> Road Network
+> Vessel Network
+> Graph Image
+> Top -KCandidate Edges (dashed)
+> j
+> i
+> Visual Features
+> i
+> j
+> 𝑑 𝑖𝑗
+> 𝑢 𝑖𝑗
+> 𝑜 𝑖𝑗
+> Spatial
+> Features
+> Topology Features
+> ij
+> ⋮
+> Edge Tokens
+> Line-Graph Transformer
+
+0 ⋯ 1⋮ ⋱ ⋮0 ⋯ 0 
+
+> #1
+
+Image Encoding  #2  Node Detection  
+
+> #3
+
+Global Topology Encoding  
+
+> #4
+
+ASNS Candidate Edge Generation  #5  Topology-Aware Edge Reasoning  Output 
+
+•••        
+
+> Adjacency Matrix
+> Flatten
+> Topology Token
+> (Learnable)
+> Predicted
+> Edge Logits High
+> Low
+> Symmetrize
+> Sigmoid
+> Threshold
+> Predicted
+> Adjacency
+> Matrix 1
+> 0
+> Local Descriptors
+> Entmax
+> Top-KSelection
+> Attention Score Matrix
+> High
+> Low
+> Predicted Node Predicted Edge Candidate Edge Coarse Integer Peak (Grid Location) Data Flow
+> LoRA
+> Node Head
+> Transformer Encoder
+> Trainable
+> NMS
+> NMS
+> NMS
+> Transformer
+
+Figure 2: Overview of VisAdj. Given an input node-link image, VisAdj first (#1) extracts local and global visual features using a vision foundation encoder, and (#2) detects graph nodes from a node likelihood map through peak extraction, non-maximum suppression, and soft-argmax refinement. It then (#3) enhances global features with learnable topology tokens to capture image-level structural context. Conditioned on the detected nodes, VisAdj (#4) applies ASNS to generate a sparse high-recall set of candidate edges, and (#5) represents these candidates as edge tokens for topology-aware reasoning with a line-graph transformer. The resulting edge logits are symmetrized and thresholded to obtain the predicted adjacency matrix. 
+
+where N𝑟 ( ˜𝑥, ˜𝑦 ) denotes an 𝑟 ∈ R+-radius neighborhood around the pixel ( ˜𝑥, ˜𝑦 ), and 𝜏 ∈ [ 0, 1] is a confidence threshold. We apply non-maximum suppression (NMS) [22] to merge spatially nearby detections that correspond to the same node. To improve localiza-tion accuracy, we refine each detected peak using a differentiable soft-argmax operation. For a peak located at integer coordinates 
+
+( ˜𝑥, ˜𝑦 ), the subpixel-refined node coordinates are computed via 
+
+(𝑥, 𝑦 ) =∑︁ 
+
+(𝑢 ′,𝑣 ′ ) ∈ N 𝑤 ( ˜𝑥, ˜𝑦 )
+
+exp   bM[𝑢 ′, 𝑣 ′]/ 𝑇  · ( 𝑢 ′, 𝑣 ′)
+
+Í(𝑢,𝑣 ) ∈ N 𝑤 ( ˜𝑥, ˜𝑦 ) exp   bM[𝑢, 𝑣 ]/ 𝑇  ,
+
+where N𝑤 ( ˜𝑥, ˜𝑦 ) denotes a local neighborhood of radius 𝑤 ∈ R+ and 
+
+𝑇 ∈ R+ is a temperature parameter controlling the sharpness of the localization. This procedure aggregates evidence from multiple pixels and yields node coordinates with continuous values, resulting in the final detected node set 
+
+b𝑉 = (𝑥 𝑖 , 𝑦 𝑖 ) 𝑁 𝑖 =1 ⊂ R2.
+
+3) Node descriptor extraction . For each detected node 𝑖 , the refined coordinates are mapped to the local feature space (𝑥 𝐿 𝑖 , 𝑦 𝐿 𝑖 ) =
+
+(𝑥 𝑖 · 𝑊 𝐿 /𝑊 , 𝑦 𝑖 · 𝐻 𝐿 /𝐻 ). We extract a local node descriptor by bi-linearly sampling Flocal at (𝑥 𝐿 𝑖 , 𝑦 𝐿 𝑖 ):
+
+𝒍 𝑖 = GridSample  Flocal , (𝑥 𝐿 𝑖 , 𝑦 𝐿 𝑖 ) ∈ R𝐷 𝑁 ,
+
+where 𝐷 𝑁 ∈ Z+ is the node descriptor dimension. These descriptors encode visual and geometric features around each node and provide node-level representations for edge reasoning. 
+
+4.1.3 Edge Reasoning. Having obtained the detected node set b𝑉 (I)
+
+and their local descriptors, we infer the adjacency matrix bA(I) by predicting edges over the detected nodes. Edge inference contains three stages: 1) global topology encoding, 2) sparse candidate edge generation, and 3) topology-aware edge reasoning. 
+
+1) Global topology encoding (block (#3) of Fig. 2). Edge connec-tivity in node-link images often depends on image-level structure, such as global layout and long-range connectivity. To incorporate such image-level context into edge reasoning, we introduce a trans-former augmented with learnable topology tokens. Given the global feature map Fglobal ∈ R𝐻 𝐺 ×𝑊 𝐺 ×𝐷 𝐺 (Eq. 1), we flatten it into a se-quence of spatial tokens and prepend 𝐾 𝑇 ∈ Z+ learnable topology tokens Ztopo ∈ R𝐾 𝑇 ×𝐷 𝐺 . The resulting sequence is processed by a transformer parameterized by 𝜽 𝑇 
+
+Fconcat = Transformer 𝜽 𝑇 
+
+Ztopo ; Flatten (Fglobal ),
+
+where Fconcat ∈ R(𝐾 𝑇 +𝐻 𝐺 𝑊 𝐺 ) × 𝐷 𝐺 . Through self-attention, the topol-ogy tokens attend to all spatial tokens to aggregate image-level patterns, and subsequently propagate this global context back to every spatial token. Since topology tokens serve only as image-level topology carriers and have no spatial correspondence, we discard them after this interaction and retain the topology-enhanced spatial tokens, which are reshaped back into the global feature map: 
+
+F′
+
+global = Reshape  Fconcat [𝐾 𝑇 :] ∈ R𝐻 𝐺 ×𝑊 𝐺 ×𝐷 𝐺 ,
+
+The resulting feature map F′
+
+global encodes global structural context and is subsequently used to guide candidate edge selection and adjacency structure reasoning. CIKM ’26, November 07–11, 2026, Rome, Italy Jiahao Xie and Guangmo Tong 
+
+2) Sparse candidate edge generation (block (#4) of Fig. 2). Existing approaches typically produce candidate edges using fixed KNN-based methods [43, 44, 50], lacking adaptability to diverse node-link images. To address this limitation, we introduce an attention-sparse neighbor sampler ( ASNS ) that learns to select a high-recall set of candidate node pairs. For each detected node 𝑖 , we first ex-tract the global context 𝒈 𝑖 ∈ R𝐷 𝐺 by sampling F′ 
+
+> global
+
+at the node location. Let 𝑁 ℎ ∈ Z+ be the number of heads and 𝑑 ∈ Z+ the output dimension of each head, with 𝐷 𝑁 = 𝑁 ℎ · 𝑑 . We compute a compatibility score between node 𝑖 and 𝑗 :
+
+𝑠 𝑖 𝑗 = 1
+
+𝑁 ℎ𝑁 ℎ∑︁ 
+
+> 𝑚 =1
+
+ W𝑚 𝑞 𝒍 𝑖 
+
+⊤  W𝑚 𝑘 𝒈 𝑗 
+
+
+
+√𝑑 ∈ R,
+
+where W𝑚 𝑞 ∈ R𝑑 ×𝐷 𝑁 and W𝑚 𝑘 ∈ R𝑑 ×𝐷 𝐺 are learnable projec-tions for the 𝑚 -th head, with all parameters collected as 𝜽 𝑆 =
+
+{W𝑚 𝑞 , W𝑚 𝑘 }𝑁 ℎ
+
+> 𝑚 =1
+
+. Collecting all scores into S ∈ R𝑁 ×𝑁 , we apply the entmax activation [11, 37]: 
+
+P = entmax 𝛼 ent (S) ∈ R𝑁 ×𝑁 , (3) yielding a sparse attention distribution over potential neighbors for all nodes. The sparsity parameter 𝛼 ent ∈ [ 1, 2] controls the degree of sparsity in the attention distribution, where larger values generally produce sparser outputs. For each node 𝑖 , we retain the top-𝐾 ∈ Z+ neighbors according to P𝑖, : to form a binary adjacency mask Mcand ∈ { 0, 1}𝑁 ×𝑁 . This learned mask focuses edge reasoning on a small set of plausible node pairs. 
+
+3) Topology-aware edge reasoning (block (#5) in Fig. 2). Given the candidate edge set defined by Mcand , we infer the adjacency matrix by learning true edges from all candidates. Rather than predicting each edge independently, we formulate edge reasoning as a structured problem, where the existence of an edge depends not only on visual evidence and geometric constraints, but also on interactions with other edges. For each candidate node pair (𝑖, 𝑗 ),we construct an edge representation that integrates the following complementary features (3-a to 3-c) and jointly process all candidate edges using a line-graph transformer (3-d) that treats edges as tokens, enabling explicit modeling of edge dependencies. 3-a) Visual features. To capture visual cues associated with a potential connection between nodes 𝑖 and 𝑗 , we sample visual fea-tures along a smoothly curved path connecting their coordinates. Specifically, we model the path using a quadratic Bézier curve [13]: 
+
+c𝑖 𝑗 (𝑡 ) = (1 − 𝑡 )2 (𝑥 𝑖 , 𝑦 𝑖 ) + 2𝑡 (1 − 𝑡 )
+
+ (𝑥 𝑖 , 𝑦 𝑖 ) + ( 𝑥 𝑗 , 𝑦 𝑗 )
+
+2 + 𝜹 𝑖 𝑗 
+
+
+
++ 𝑡 2 (𝑥 𝑗 , 𝑦 𝑗 ), and 𝜹 𝑖 𝑗 = MLP 𝜽 𝛿 ([ 𝒍 𝑖 , 𝒍 𝑗 ]) ∈ R2,
+
+where 𝑡 ∈ [ 0, 1] and 𝜹 𝑖 𝑗 is a learned control offset representing a deviation relative to the midpoint between nodes 𝑖 and 𝑗 . We sample 𝑁 𝑣 ∈ Z+ evenly spaced interpolation points 
+
+(𝑥 𝑛 𝑖 𝑗 , 𝑦 𝑛 𝑖 𝑗 ) = c𝑖 𝑗 
+
+ 𝑛 𝑁 𝑣 + 1
+
+
+
+, 𝑛 = 1, . . . , 𝑁 𝑣 .
+
+At each sampled location, we aggregate visual context within a 
+
+𝑟 𝑛 ∈ Z+-radius neighborhood to obtain descriptors {v𝑛 𝑖 𝑗 }𝑁 𝑣 
+
+> 𝑛 =1
+
+, which are then processed by a transformer parameterized by 𝜽 vis 
+
+𝒇 vis = Transformer 𝜽 vis 
+
+
+
+{v𝑛 𝑖 𝑗 }𝑁 𝑣 
+
+> 𝑛 =1
+
+
+
+∈ R𝐷 vis , (4) where 𝐷 vis ∈ Z+ denotes the visual feature dimension. This repre-sentation encodes stroke continuity and appearance consistency along the candidate connection. 3-b) Spatial features. For each candidate edge (𝑖, 𝑗 ), we encode geometric constraints using three spatial features: i) the normalized Euclidean distance 
+
+𝑑 𝑖 𝑗 = ∥( 𝑥 𝑗 , 𝑦 𝑗 ) − ( 𝑥 𝑖 , 𝑦 𝑖 )∥ 2
+
+√𝐻 2 + 𝑊 2 ∈ [ 0, 1].
+
+ii) the relative direction 
+
+u𝑖 𝑗 = (𝑥 𝑗 − 𝑥 𝑖 , 𝑦 𝑗 − 𝑦 𝑖 )∥( 𝑥 𝑗 , 𝑦 𝑗 ) − ( 𝑥 𝑖 , 𝑦 𝑖 )∥ 2
+
+∈ R2. (5) iii) a path consistency score measuring the minimum normalized distance from other nodes 𝑘 to the connection path c𝑖 𝑗 (𝑡 ):
+
+𝑜 𝑖 𝑗 = min 
+
+(
+
+1, min  
+
+> 𝑘 ∉{𝑖,𝑗 }
+
+min 𝑡 ∈ [ 0,1] (𝑥 𝑘 , 𝑦 𝑘 ) − c𝑖 𝑗 (𝑡 ) 2
+
+∥( 𝑥 𝑗 , 𝑦 𝑗 ) − ( 𝑥 𝑖 , 𝑦 𝑖 )∥ 2
+
+)
+
+∈ [ 0, 1].
+
+A large score 𝑜 𝑖 𝑗 indicates an unobstructed path, supporting the direct connectivity between 𝑖 and 𝑗 . The final spatial features are given by 𝒇 spatial = [𝑑 𝑖 𝑗 , u𝑖 𝑗 , 𝑜 𝑖 𝑗 ] ∈ R4.3-c) Topology features. For each candidate edge (𝑖, 𝑗 ), we sample the topology-enhanced feature map F′ 
+
+> global
+
+at the two endpoint locations to obtain global node descriptors 
+
+𝒈 𝑖 = GridSample 
+
+
+
+F′
+
+> global
+
+, (𝑥 𝐺 𝑖 , 𝑦 𝐺 𝑖 )
+
+
+
+∈ R𝐷 𝐺 , (6) where (𝑥 𝐺 𝑖 , 𝑦 𝐺 𝑖 ) = (𝑥 𝑖 ·𝑊 𝐺 /𝑊 , 𝑦 𝑖 ·𝐻 𝐺 /𝐻 ). 𝒈 𝑗 is defined analogously. 3-d) Line-graph transformer for adjacency prediction. For each candidate edge (𝑖, 𝑗 ), we construct an edge-level representation 
+
+𝒇 𝑖 𝑗 ∈ R𝐷 𝐸 with dimension 𝐷 𝐸 ∈ Z+ by combining all the above features and positional encoding: 
+
+𝒇 𝑖 𝑗 = MLP 𝜽 1
+
+ [𝒇 spatial , 𝒇 vis , 𝒈 𝑖 , 𝒈 𝑗 ] + MLP 𝜽 2
+
+ [𝑥 𝑖 , 𝑦 𝑖 , 𝑥 𝑗 , 𝑦 𝑗 ].
+
+All candidate edges are collected into an edge-token tensor 
+
+Fedge =
+
+n
+
+𝒇 𝑖 𝑗 | Mcand [𝑖, 𝑗 ] = 1
+
+o
+
+∈ R(𝑁 𝐾 ) × 𝐷 𝐸 .
+
+We perform joint reasoning over these edge tokens by applying a line-graph transformer ( LineGT ), where attention is restricted to incident edges that share a common endpoint [6]. This enables capturing structured interactions among adjacent edges, such as degree patterns, while avoiding interactions between unrelated pairs. Since ASNS retains at most 𝐾 candidate neighbors for each of the 𝑁 detected nodes, LineGT only needs to model interactions among a bounded number of incident candidate edges per node, resulting in complexity 𝑂 (𝑁 𝐾 2). After joint processing by LineGT with parameters 𝜽 line , each edge token is mapped to a scalar logit: 
+
+Elogits = MLP 𝜽 3
+
+
+
+LineGT 𝜽 line 
+
+ Fedge 
+
+
+
+∈ R𝑁 ×𝐾 . (7) These logits are written back to a matrix Alogits ∈ R𝑁 ×𝑁 at the candidate locations indicated by Mcand , while non-candidate entries are masked out and kept as non-edges. We then enforce symmetry and obtain the edge probability matrix via a sigmoid activation 
+
+Apred = 𝜎 
+
+ Alogits + A⊤
+
+> logits
+
+2
+
+
+
+∈ [ 0, 1]𝑁 ×𝑁 .
+
+The final predicted adjacency matrix bA is obtained by thresholding 
+
+Apred with an edge threshold. VisAdj: Learning Adjacency Matrices from Node-Link Images CIKM ’26, November 07–11, 2026, Rome, Italy 
+
+## 4.2 Training 
+
+Training VisAdj involves two key objectives: i) establishing consis-tent correspondences between predicted and ground-truth nodes, and ii) jointly optimizing node detection, sparse candidate edge generation, and final edge reasoning within a unified objective. In the following, we describe the training procedure in detail. 
+
+Dataset preparation. To stabilize the early optimization of edge reasoning, we adopt a teacher-forcing strategy [4, 28], where edge prediction during training is conditioned on ground-truth nodes rather than detected nodes. This prevents early-stage node detec-tion errors, including node omissions and inaccurate localization, from corrupting candidate generation and edge supervision. How-ever, using ground-truth nodes throughout training may introduce a train-test discrepancy, since edge reasoning is conditioned on predicted nodes at inference time. To mitigate this discrepancy, we adopt a scheduled node-conditioning strategy that gradually exposes the edge reasoning module to predicted nodes during train-ing. Let 𝑉 gt = {( 𝑥 gt  
+
+> 𝑗
+
+, 𝑦 gt  
+
+> 𝑗
+
+)} 𝑁 gt  
+
+> 𝑗 =1
+
+denote the ground-truth node set and 
+
+b𝑉 = {( 𝑥 𝑖 , 𝑦 𝑖 )} 𝑁 𝑖 =1 denote the predicted node set. When the teacher-forcing strategy is used, we first perturb the ground-truth node coordinates by adding Gaussian noise: 
+
+e𝑉 gt =
+
+n
+
+(𝑥 gt  
+
+> 𝑗
+
+, 𝑦 gt  
+
+> 𝑗
+
+) + 𝝐 𝑗 
+
+o𝑁 gt  
+
+> 𝑗 =1
+
+, 𝝐 𝑗 ∼ N ( 0, 𝜎 2 
+
+> 𝑔
+
+I),
+
+where 𝜎 𝑔 ∈ R+ is the noise standard deviation and 𝑁 gt ∈ Z+ denotes the number of ground-truth nodes. At each training epoch 𝑒 , the node set used for edge reasoning, which we denote as 𝑉 train =
+
+{( 𝑥 train  
+
+> 𝑖
+
+, 𝑦 train  
+
+> 𝑖
+
+)} 𝑁 train  
+
+> 𝑖 =1
+
+, is sampled by 
+
+𝑉 train =
+
+(e𝑉 gt , w.p. 𝑝 𝑒 ,
+
+b𝑉 , w.p. 1 − 𝑝 𝑒 , and 𝑝 𝑒 = max 
+
+
+
+0, 1 − 𝑒 𝑇 𝑠 
+
+
+
+,
+
+where 𝑝 𝑒 ∈ [ 0, 1] represents the teacher-forcing probability and 
+
+𝑇 𝑠 ∈ Z+ denotes the number of epochs over which 𝑝 𝑒 decays to zero. This schedule preserves stable edge supervision in early training and progressively shifts the conditioning distribution toward the inference-time setting, thereby reducing the train-test discrepancy. At inference time, ground-truth node coordinates are unavailable; VisAdj first detects the node set and then performs edge reasoning based only on the predicted node coordinates. 
+
+Node Matching. Since the training node set used for edge rea-soning may be unordered and may differ in cardinality from the ground truth, we establish correspondences based on spatial prox-imity using the Hungarian algorithm [7]. Specifically, we compute a minimum-cost bipartite matching between 𝑉 train and 𝑉 gt via min 
+
+> X
+> 𝑁 train
+
+∑︁ 
+
+> 𝑖 =1
+> 𝑁 gt
+
+∑︁ 
+
+> 𝑗 =1
+
+X𝑖 𝑗 (𝑥 train  
+
+> 𝑖
+
+, 𝑦 train  
+
+> 𝑖
+
+) − ( 𝑥 gt  
+
+> 𝑗
+
+, 𝑦 gt  
+
+> 𝑗
+
+) 2 , (8) s.t. 
+
+> 𝑁 gt
+
+∑︁ 
+
+> 𝑗 =1
+
+X𝑖 𝑗 ≤ 1,
+
+> 𝑁 train
+
+∑︁ 
+
+> 𝑖 =1
+
+X𝑖 𝑗 ≤ 1,
+
+> 𝑁 train
+
+∑︁ 
+
+> 𝑖 =1
+> 𝑁 gt
+
+∑︁ 
+
+> 𝑗 =1
+
+X𝑖 𝑗 = min (𝑁 train , 𝑁 gt )
+
+where X ∈ { 0, 1}𝑁 train ×𝑁 gt denotes the binary matching matrix. Af-ter matching, only pairs whose distance is below the threshold 
+
+𝜏 𝑑 ∈ R+ are retained as valid correspondences. The resulting corre-spondences are used to construct ground-truth adjacency labels in the training node space, providing supervision for both candidate generation and edge prediction. 
+
+Loss Functions. The training objective consists of three com-plementary losses to supervise three stages of the pipeline: node prediction, candidate generation, and edge reasoning. 
+
+1) Node mask loss. Node detection is supervised by minimizing the difference between the predicted node likelihood map bM (Eq. 2) and the ground-truth M
+
+Lnode 
+
+ 𝜽 𝐸 , 𝜽 𝐿 , 𝜽 𝑁 
+
+ = 𝜆 ce ℓce 
+
+  bM, M + 𝜆 mse ℓmse 
+
+  bM, M,
+
+where 𝜆 ce , 𝜆 mse ∈ R+ are balancing weights. ℓce denotes a weighted pixel-wise cross-entropy loss addressing foreground-background imbalance, and ℓmse denotes the mean squared error measuring pixel-wise deviations between bM and M.
+
+2) Coverage Loss. The attention-sparse neighbor sampler out-puts a sparse attention distribution P𝑖, : (Eq. 3) over potential neigh-bors for each node. To encourage high-recall candidate generation, we supervise this distribution using a smoothed target derived from the ground-truth adjacency. For each matched training node 𝑖 , the target distribution T𝑖 ∈ R𝑁 train is defined as 
+
+T𝑖 𝑗 = (1 − 𝛼 𝑠 ) I[ 𝑗 ∈ N gt (𝑖 )] |N gt (𝑖 )| + 𝛼 𝑠 
+
+1
+
+𝑁 train − 1 , 𝑗 ≠ 𝑖, 
+
+where Ngt (𝑖 ) denotes the ground-truth neighbor set mapped to the training node space via Eq. 8, I is the indicator function, and 
+
+𝛼 𝑠 ∈ [ 0, 1] is a smoothing factor. The coverage loss is defined as the cross-entropy between predicted and target neighbor distributions: 
+
+Lcover 
+
+ 𝜽 𝐺 , 𝜽 𝑇 , 𝜽 𝑆 
+
+ = − 1
+
+𝑁 train 
+
+> 𝑁 train
+
+∑︁ 
+
+> 𝑖 =1
+> 𝑁 train
+
+∑︁ 
+
+> 𝑗 =1, 𝑗 ≠𝑖
+
+T𝑖 𝑗 log  P𝑖 𝑗 
+
+.
+
+This loss encourages ASNS to assign non-negligible attention mass to all ground-truth neighbors of each node, thereby promoting high-recall candidate selection. 
+
+3) Edge loss. Edge reasoning is supervised by minimizing a focal loss defined on node-matched candidate adjacency entries. Let C = {( 𝑖, 𝑗 ) | Mcand [𝑖, 𝑗 ] = 1} denote the candidate edge set. For each candidate pair (𝑖, 𝑗 ) ∈ C , we define 𝑝 𝑖 𝑗 = Apred [𝑖, 𝑗 ] if (𝑖, 𝑗 ) is a ground-truth edge after node matching, and 𝑝 𝑖 𝑗 = 1 − Apred [𝑖, 𝑗 ]
+
+otherwise. The edge loss is then defined as 
+
+Ledge 
+
+ 𝜽 𝛿 , 𝜽 vis , 𝜽 1, 𝜽 2, 𝜽 3, 𝜽 line 
+
+ = − 1
+
+|C| ∑︁ (𝑖,𝑗 ) ∈ C 
+
+𝛼 𝑖 𝑗 (1 − 𝑝 𝑖 𝑗 )𝛾 log (𝑝 𝑖 𝑗 )
+
+where 𝛼 𝑖 𝑗 is set to 𝛼 𝑓 for positive candidate edges and 1 − 𝛼 𝑓 for negative candidate edges. 𝛼 𝑓 ∈ [ 0, 1] and 𝛾 ∈ R+ denote the bal-ance and focusing parameters of focal loss [31], respectively. This formulation mitigates the severe class imbalance in graphs by down-weighting easy negative pairs and emphasizing hard edge decisions. Although the loss is applied per adjacency entry, edge probabili-ties are predicted jointly by the line-graph transformer, enabling structured dependencies among incident edges to be learned. 
+
+Total loss. The overall objective of VisAdj is given by 
+
+Ltotal 
+
+ 𝜽 𝐸 , 𝜽 𝐿 , 𝜽 𝑁 , 𝜽 𝐺 , 𝜽 𝑇 , 𝜽 𝑆 , 𝜽 𝛿 , 𝜽 vis , 𝜽 1, 𝜽 2, 𝜽 3, 𝜽 line 
+
+
+
+= 𝜆 node · L node + 𝜆 cover · L cover + 𝜆 edge · L edge ,
+
+where 𝜆 node , 𝜆 cover , 𝜆 edge ∈ R+ are loss weights. 
+
+Optimization scheme. The vision encoder is fine-tuned using Low-Rank Adaptation (LoRA) [23], while all remaining modules are trained from scratch. All trainable components are optimized jointly using the total loss Ltotal .CIKM ’26, November 07–11, 2026, Rome, Italy Jiahao Xie and Guangmo Tong 
+
+Table 1: Dataset statistics. 
+
+Dataset Category Image #Train #Val #Test Synthetic Graph RGB 2763 395 788 Toulouse Road Binary 80357 11679 18998 US-Cities Road RGB 32740 1931 5730 OCTA500 Vessel Grayscale 11461 753 1505 
+
+## 5 Experiments 5.1 Experimental Settings 
+
+5.1.1 Dataset. We evaluate VisAdj on four datasets spanning syn-thetic graphs, road and vessel networks. These datasets cover var-ious graph types and visual styles. The detailed dataset statistics are summarized in Table 1 and each dataset is described below. 
+
+1) Synthetic Dataset : We construct a synthetic node-link image dataset to evaluate VisAdj under diverse graph structures and visual layouts. The underlying graphs are collected from the House of Graphs [10], covering planar/non-planar and tree/non-tree graphs. We generate graph layouts using the Fruchterman-Reingold and Kamada-Kawai algorithms [14, 25], and render them as RGB im-ages at a resolution of 512 × 512. This dataset contains challenging structures such as frequent edge crossings and long-range connec-tions, enabling evaluation beyond the regular patterns commonly observed in real-world networks. 
+
+2) Toulouse Dataset [3]: The Toulouse dataset consists of binary road network images extracted from map imagery, with a resolution of 64 × 64. This dataset features a relatively clean visual appearance and mostly local connectivity, serving as a real-world benchmark for evaluating performance on well-structured sparse planar graphs. 
+
+3) US-Cities Dataset [18]: US-Cities contains high-resolution satel-lite imagery from 20 U.S. cities. Following prior work [40], we ex-tract overlapping 128 × 128 patches from the original 180 tiles of resolution 2048 × 2048 to construct node-link images. Compared with Toulouse, this dataset contains more cluttered backgrounds, occlusions, and complex junctions, enabling more challenging eval-uation on realistic large-scale road networks. 
+
+4) OCTA500 Dataset [29]: OCTA500 is a retinal vessel imaging dataset that contains optical coherence tomography angiography scans with the corresponding vessel segmentation maps. We extract overlapping 256 ×256 patches from 500 scans with 6 mm ×6 mm and 3 mm × 3 mm fields of view to increase data diversity. This dataset is characterized by tree-like vessel graphs with fine-scale branches and low-contrast structures, making it suitable for evaluating graph recovery under noisy medical imaging conditions. 
+
+5.1.2 Baselines. We compare VisAdj with four typical graph in-ference baselines, including G-SAM-Road++ [48], G-RNGDet++ 
+
+[47], Any2Graph [27], and Sat2Graph [18]. Here, G-SAM-Road++ and G-RNGDet++ denote the graph reasoning modules in SAM-Road++ [48] and RNGDet++ [47], respectively. These baselines cover complementary graph inference paradigms, including rule-based graph construction from visual predictions, sequential graph growing, and general end-to-end graph prediction. All baselines are implemented using their official codebases and adapted to the image-to-adjacency-matrix setting. 
+
+5.1.3 Evaluation Metrics. We utilize the following metrics. 
+
+1) Graph-level metrics. We report Graph Isomorphism Rate (GIR ) [21], which measures the percentage of predicted graphs that are exactly isomorphic to the ground-truth graphs. GIR is a strict metric and only counts a prediction as correct when the entire graph structure is perfectly reconstructed. We also report Graph Edit Distance ( GED ) [15], which quantifies global structural similarity via the minimum number of node and edge edit operations required to transform the predicted graph into the ground-truth graph. GIR and GED are computed using standard NetworkX implementations [16]; for GED, we use a 300-second timeout per sample and report the mean over all test samples. 
+
+2) Subgraph-level metrics. We adopt TOPO Precision, Recall, and F1 score [18] to evaluate local topological consistency. For each matched node, TOPO compares the edge sets of the induced 𝑘 -hop neighborhoods in the prediction and ground truth, where we set 
+
+𝑘 = 2 in all experiments. Compared with exact graph-level metrics, TOPO metrics are more robust to small node or edge errors, and better reflect local structural correctness. 
+
+3) Element-level metrics. We report Node-F1 and Edge-F1 scores. Node-F1 evaluates node detection accuracy after spatial matching, where a predicted node is considered correct if it is matched to a ground-truth node within a distance threshold of 4 pixels for Toulouse and 8 pixels for other datasets. Edge-F1 measures pairwise connectivity accuracy over matched node pairs, isolating the quality of edge prediction from global graph-level correctness. 
+
+5.1.4 Training Settings. To ensure a fair comparison, VisAdj and baselines use the same vision backbone, namely the SAM-ViT-B encoder. All models are trained for up to 200 epochs with early stop-ping based on validation performance. Each experiment is repeated three times with different random seeds, and we report the mean and standard deviation of all evaluation metrics. We optimize all trainable modules using AdamW [34]. The initial learning rate is set to 1 × 10 −3 for newly initialized modules and 1 × 10 −4 for LoRA fine-tuning of the image encoder backbone. The learning rate follows a cosine decay schedule with a linear warmup of 10 epochs. The batch size is set to 96 and the training is conducted using Distributed Data Parallel (DDP) [30] on 4 NVIDIA L40S GPUs. For VisAdj, the key hyperparameters are set as follows. The entmax sparsity parameter is set to 𝛼 ent = 1.5. The model uses 𝐾 𝑇 = 16 topology tokens and a teacher-forcing decay length of 𝑇 𝑠 = 30. For candidate genera-tion, VisAdj retains 𝐾 = 8 neighbors on the Toulouse dataset and 
+
+𝐾 = 12 neighbors on the other datasets. Detailed hyperparameter configuration can be found in our public GitHub repository. 
+
+## 5.2 Main Results and Analysis 
+
+This section analyzes the comparative results and also presents sanity checks to validate that VisAdj works as designed. 
+
+VisAdj consistently outperforms all baselines. As shown in Table 2, VisAdj achieves the best results across all four datasets and all evaluation metrics. On the Synthetic dataset, VisAdj im-proves the GIR from Any2Graph’s 53 .79% to 73 .02%, indicating a substantial improvement in recovering global graph structure. Similar gains are also observed on real-world data. For example, VisAdj achieves GIR scores of 68 .57% on US-Cities and 64 .98% on OCTA500, exceeding the strongest baseline, G-SAM-Road++, by VisAdj: Learning Adjacency Matrices from Node-Link Images CIKM ’26, November 07–11, 2026, Rome, Italy 
+
+Table 2: Main comparison results across all datasets. The best performance for each metric is highlighted in bold. 
+
+Graph-level Metrics Subgraph-level Metrics (TOPO) Element-level Metrics Dataset Method GIR ↑ (%) GED ↓ Precision ↑ (%) Recall ↑ (%) F1 ↑ (%) Edge-F1 ↑ (%) Node-F1 ↑ (%) Synthetic G-SAM-Road++ 43.17 (0.73) 18.54 (2.24) 56.79 (1.36) 55.34 (1.08) 56.06 (1.18) 53.25 (1.24) 92.23 (1.37) 
+
+G-RNGDet++ 26.31 (1.53) 19.81 (2.36) 55.73 (1.31) 45.85 (1.86) 50.31 (1.67) 44.64 (1.61) 88.82 (1.58) 
+
+Any2Graph 53.79 (0.57) 17.96 (1.67) 57.35 (1.68) 55.10 (1.43) 56.20 (1.40) 59.14 (1.58) 92.69 (1.24) 
+
+Sat2Graph 20.91 (1.93) 21.35 (1.85) 51.42 (1.46) 47.05 (1.57) 49.14 (1.63) 40.35 (1.59) 88.46 (1.67) 
+
+VisAdj 73.02 (0.46) 0.50 (0.42) 98.78 (0.41) 98.67 (0.49) 98.72 (0.43) 95.09 (1.25) 99.23 (0.37) 
+
+Toulouse G-SAM-Road++ 86.75 (0.51) 0.60 (0.14) 98.19 (0.35) 95.70 (0.46) 96.93 (0.41) 96.35 (0.32) 98.89 (0.29) 
+
+G-RNGDet++ 77.66 (1.45) 0.75 (0.50) 95.12 (0.83) 94.52 (0.52) 94.82 (0.36) 91.24 (0.76) 98.67 (0.14) 
+
+Any2Graph 93.45 (0.21) 0.13 (0.01) 98.26 (0.36) 97.53 (0.28) 97.89 (0.33) 98.87 (0.59) 99.31 (0.07) 
+
+Sat2Graph 69.86 (1.73) 1.35 (0.29) 92.55 (0.77) 91.59 (0.35) 92.07 (0.58) 87.63 (0.79) 94.86 (0.56) 
+
+VisAdj 94.38 (0.33) 0.11 (0.02) 98.33 (0.43) 98.15 (0.45) 98.24 (0.41) 99.15 (0.49) 99.60 (0.11) 
+
+US-Cities G-SAM-Road++ 58.31 (1.13) 3.45 (0.31) 87.55 (0.82) 86.95 (0.86) 87.25 (0.85) 79.77 (1.17) 92.53 (0.90) 
+
+G-RNGDet++ 48.74 (1.64) 5.69 (0.49) 79.63 (1.28) 80.03 (1.14) 79.83 (1.21) 72.04 (1.14) 90.20 (1.21) 
+
+Any2Graph 55.64 (0.74) 3.86 (0.58) 86.07 (0.83) 85.38 (1.27) 85.72 (1.10) 76.94 (1.10) 91.84 (0.92) 
+
+Sat2Graph 32.48 (1.13) 6.23 (0.23) 61.38 (0.65) 62.45 (0.84) 61.91 (0.73) 54.20 (0.43) 89.45 (0.95) 
+
+VisAdj 68.57 (0.74) 0.57 (0.75) 93.86 (0.73) 93.06 (1.42) 93.46 (1.37) 88.54 (1.32) 96.68 (0.66) 
+
+OCTA500 G-SAM-Road++ 51.76 (0.93) 3.12 (0.39) 81.91 (1.32) 82.76 (1.03) 82.32 (1.14) 77.66 (1.37) 91.25 (0.91) 
+
+G-RNGDet++ 35.27 (1.48) 4.55 (0.53) 69.80 (1.48) 66.45 (1.18) 68.08 (1.31) 66.57 (1.46) 89.08 (1.11) 
+
+Any2Graph 45.79 (1.27) 3.57 (0.17) 79.05 (1.17) 77.26 (1.56) 78.14 (1.32) 74.95 (1.72) 90.46 (0.92) 
+
+Sat2Graph 27.15 (0.83) 6.54 (0.98) 56.42 (0.96) 55.84 (0.75) 56.13 (0.83) 49.09 (0.99) 86.28 (0.78) 
+
+VisAdj 64.98 (0.59) 0.63 (0.50) 88.85 (0.75) 91.30 (0.64) 90.06 (0.72) 90.27 (0.81) 96.33 (0.64) 
+
+clear margins. Beyond exact graph matching, VisAdj also achieves stronger local topological consistency, obtaining the highest TOPO-F1 scores on all datasets. For instance, VisAdj increases TOPO-F1 from G-SAM-Road++’s 82 .32% to 90 .06% on OCTA500. At the ele-ment level, VisAdj consistently delivers higher Edge-F1 scores, with Node-F1 exceeding 96% across all datasets. These results collectively confirm that VisAdj recovers both global and local graph structure more faithfully than existing methods across various domains. In addition, the observed improvements are also substantially larger than the reported standard deviations. For instance, on the Syn-thetic dataset, VisAdj improves GIR by 19 .23% over the strongest baseline, while the corresponding standard deviations are below 0.6%. Similar margins are also observed on US-Cities and OCTA500, supporting that the improvements are robust across random seeds. 
+
+Performance gains mainly come from improved edge rea-soning. According to Table 2, Node-F1 scores are already high across all methods and datasets, with relatively small variance between VisAdj and the baselines. In contrast, Edge-F1 exhibits sub-stantially larger gaps. For example, VisAdj improves Edge-F1 from Any2Graph’s 59 .14% to 95 .09% on the Synthetic dataset, and from G-SAM-Road++’s 77 .66% to 90 .27% on the OCTA500 dataset. These results demonstrate that VisAdj achieves significantly stronger edge reasoning capability than existing methods, directly validating the core idea and design of our model. By incorporating the global structural context and jointly reasoning over candidate edges with a line-graph transformer, VisAdj produces more discriminative and 
+
+Table 3: Performance of VisAdj with different image encoders on the Synthetic dataset. 
+
+Image encoder Size (M) GIR ↑ (%) TOPO-F1 ↑ (%) SAM-ViT-B [26] 91 73.02 (0.46) 98.72 (0.43) 
+
+SAM-ViT-L [26] 308 75.38 (0.39) 98.76 (0.42) 
+
+SAM-ViT-H [26] 636 76.73 (0.41) 98.81 (0.43) 
+
+SAM2-Hiera-S [38] 46 74.87 (0.38) 98.73 (0.41) 
+
+SAM2-Hiera-B [38] 80.8 75.56 (0.35) 98.78 (0.39) 
+
+SAM2-Hiera-L [38] 224.4 78.08 (0.32) 98.84 (0.38) 
+
+SAM3 [8] 900 78.23 (0.27) 98.89 (0.35) 
+
+structurally consistent edge predictions, which directly translates into improved graph-level correctness. 
+
+Stronger image encoders lead to better performance. Ta-ble 3 shows that VisAdj can benefit from stronger image encoders. Within the SAM-ViT family, increasing model capacity leads to steady improvements in graph-level accuracy: GIR increases from 73 .02% with SAM-ViT-B to 76 .73% with SAM-ViT-H. This trend indi-cates that larger encoders provide richer visual features that better support graph structure reasoning. Beyond model scale, replacing SAM with SAM2 further yields systematic gains. Under compa-rable sizes, SAM2-Hiera encoders consistently outperform their SAM-ViT counterparts. For example, GIR improves from 73 .02% CIKM ’26, November 07–11, 2026, Rome, Italy Jiahao Xie and Guangmo Tong Image Ground Truth VisAdj G-SAM-Road++ G-RNGDet++ Any2Graph Sat2Graph 
+
+Figure 3: Qualitative results. Each row presents one example, with columns showing the input image, ground-truth graph, and predictions from VisAdj, G-SAM-Road++, G-RNGDet++, Any2Graph, and Sat2Graph, respectively. Rows correspond to examples from the Synthetic, Toulouse, US-Cities, and OCTA500 datasets. Predicted nodes are shown as yellow dots, and predicted edges as orange line segments. 
+
+using SAM-ViT-B to 75 .56% using SAM2-Hiera-B. These results echo the fact that SAM2 has stronger representation ability than SAM in general. However, the performance gains diminish as the representation ability of the image encoder increases. For exam-ple, replacing SAM2-Hiera-L with SAM3 only increases GIR from 78 .08% to 78 .23%. This suggests that once the image encoder offers sufficient representation capacity, visual encoding is no longer the primary bottleneck. Further performance improvements therefore depend more on graph structure reasoning. 
+
+VisAdj enables robust graph reasoning under visual ambi-guity. Fig. 3 qualitatively compares VisAdj with baselines. In visu-ally challenging scenarios, such as cluttered backgrounds, closely spaced structures, and low-contrast vessel structures, the baselines often introduce spurious connections or miss true edges, indicat-ing difficulty in inferring valid connectivity from local visual cues alone. In contrast, VisAdj consistently recovers adjacency struc-tures that more closely match the ground-truth. On the synthetic dataset, VisAdj preserves long-range connections while suppress-ing implausible crossings. On road network images, it accurately recovers junction connectivity and road continuity, even when road segments are closely spaced or partially occluded. On OCTA500 vessel images, VisAdj correctly captures branching structures and vessel terminations while avoiding incorrect shortcuts. We further analyze representative failure cases in Fig. 4. VisAdj may still fail 
+
+Table 4: Inference runtime on the US-Cities dataset with a batch size of 1 under the same settings. Speedup is computed as the latency ratio between each baseline and VisAdj. 
+
+Method ms/image ↓ images/s ↑ Speedup ↑
+
+G-SAM-Road++ 88.18 11.34 1.40 ×
+
+G-RNGDet++ 269.54 3.71 4.27 ×
+
+Any2Graph 102.25 9.78 1.62 ×
+
+Sat2Graph 147.93 6.76 2.34 ×
+
+VisAdj 63.17 15.83 –
+
+in densely connected regions with heavy edge crossings or visually ambiguous connections, where it may introduce incorrect shortcuts or miss weakly visible edges. However, even in these challenging cases, VisAdj generally produces fewer errors than the baselines, with more accurate node detection and fewer incorrect or missing edges, indicating stronger robustness under complex visual con-ditions. These qualitative results underscore the effectiveness of VisAdj in adjacency reasoning across diverse visual domains. 
+
+Runtime efficiency. We further evaluate inference efficiency on the US-Cities dataset with batch size 1 under the same evalu-ation settings. As reported in Table 4, VisAdj achieves the lowest VisAdj: Learning Adjacency Matrices from Node-Link Images CIKM ’26, November 07–11, 2026, Rome, Italy Image Ground Truth VisAdj G-SAM-Road++ G-RNGDet++ Any2Graph Sat2Graph 
+
+Synthetic US Cities OCTA500 
+
+# Failure cases 
+
+Figure 4: Representative failure cases. Each row presents one example, with columns showing the input image, ground-truth graph, and predictions from VisAdj, G-SAM-Road++, G-RNGDet++, Any2Graph, and Sat2Graph. Predicted nodes are shown as yellow dots, and predicted edges as orange line segments. Although VisAdj may still make incorrect adjacency decisions under dense crossings, cluttered backgrounds, or weak visual contrast, it generally produces better predictions than the baselines. 
+
+latency and highest throughput among all compared methods, re-quiring only 63 .17 ms per image and processing 15 .83 images per second. Compared with G-SAM-Road++, Any2Graph, Sat2Graph, and G-RNGDet++, VisAdj is approximately 1 .40 ×, 1 .62 ×, 2 .34 ×,and 4 .27 × faster, respectively. These results show that the proposed graph reasoning method improves effectiveness without sacrificing inference efficiency. The efficiency gain mainly comes from ASNS, which restricts edge prediction to a sparse set of plausible candidate pairs, and LineGT, which models dependencies only among incident candidate edges rather than performing dense all-pair interactions. 
+
+Analysis of sensitivity to key hyperparameters. We also an-alyze the sensitivity of VisAdj to four key hyperparameters: the ent-max sparsity parameter 𝛼 ent , the number of topology tokens 𝐾 𝑇 , the number of retained candidate neighbors 𝐾 , and the teacher-forcing decay length 𝑇 𝑠 . The results are summarized in Fig. 5. 1) VisAdj is relatively robust to the sparsity parameter 𝛼 ent , with 𝛼 ent = 1.5generally achieving the best GIR across datasets. This indicates that the model is not overly sensitive to the exact entmax sparsity level, as long as the attention distribution maintains a reasonable balance between sparsity and true-edge coverage. 2) For topology tokens, increasing 𝐾 𝑇 to 16 clearly improves performance, while further in-creasing 𝐾 𝑇 only brings marginal gains. Since GIR becomes nearly saturated after 𝐾 𝑇 = 16, we select 𝐾 𝑇 = 16 to balance reconstruction accuracy and model size. 3) For Top-𝐾 candidate selection, a small 
+
+𝐾 misses many true neighbors and leads to low edge recall, whereas a large 𝐾 introduces many spurious neighbors and makes edge rea-soning harder. Therefore, we set 𝐾 = 8 for Toulouse and 𝐾 = 12 for the other datasets, as the nodes in Toulouse road graphs contain fewer neighbors. 4) For the teacher-forcing decay length, a small 1.1 1.3 1.5 1.7 1.9                 
+
+> αent
+> 70 80 90
+> GIR (%)
+> Entmax sparsity αent
+> 812 16 20 24
+> KT
+> 60 70 80 90
+> GIR (%)
+> Topology tokens KT
+> 4812 16 20
+> K
+> 40 60 80
+> GIR (%)
+> Top-Kneighbors
+> 010 20 30 40
+> Ts
+> 40 60 80
+> GIR (%)
+> Teacher-forcing decay length Ts
+> Synthetic (512×512) Toulouse (64×64) US-Cities (128×128) OCTA500 (256×256) Selected setting
+
+Figure 5: Sensitivity analysis of key hyperparameters on Synthetic, Toulouse, US-Cities, and OCTA500 datasets. 
+
+𝑇 𝑠 substantially degrades performance because edge reasoning is exposed to predicted nodes before node detection becomes reliable, leading to corrupted candidate generation and edge supervision. Increasing 𝑇 𝑠 improves training stability, but the gain from 𝑇 𝑠 = 30 to 𝑇 𝑠 = 40 is marginal. Therefore, we choose 𝑇 𝑠 = 30, which pro-vides stable early edge supervision while allowing edge reasoning to adapt to predicted nodes sufficiently early during training. Taken together, the selected settings provide a practical trade-off while achieving strong and stable performance across datasets. CIKM ’26, November 07–11, 2026, Rome, Italy Jiahao Xie and Guangmo Tong 
+
+Table 5: Ablation study on the Synthetic dataset. We assess five variants: 1) w/o LineGT: replace line-graph transformer (Eq. 7) with a standard graph transformer; 2) w/o ASNS: re-place ASNS (Eq. 3) with KNN; 3) w/o Visual: remove visual features (Eq. 4); 4) w/o Spatial: remove spatial features (Eq. 5); 5) w/o Topology: remove global topology features (Eq. 6). 
+
+Variant GIR ↑ TOPO-F1 ↑ Edge-F1 ↑ Node-F1 ↑ (%) Full 73.02 (0.46) 98.72 (0.43) 95.09 (1.25) 99.23 (0.37) 
+
+w/o LineGT 54.43 (0.70) 74.69 (0.38) 72.63 (0.63) 98.64 (0.25) 
+
+w/o ASNS 63.11 (0.68) 86.47 (0.65) 85.35 (0.94) 98.72 (0.41) 
+
+w/o Visual 66.30 (0.57) 90.75 (0.35) 89.36 (0.43) 98.82 (0.21) 
+
+w/o Spatial 70.26 (0.53) 95.68 (0.51) 93.81 (0.74) 99.07 (0.26) 
+
+w/o Topology 68.59 (0.42) 92.26 (0.81) 90.68 (0.86) 98.94 (0.19) 
+
+## 5.3 Ablation Study 
+
+We conduct ablation studies on the Synthetic dataset to assess the contribution of key components in the VisAdj framework. Specifi-cally, we evaluate five ablated variants, each modifying one compo-nent while keeping all other settings identical to the full model. 1) w/o LineGT: We replace the line-graph transformer (Eq. 7) with a standard graph transformer [49] that operates on node to-kens. This variant removes the explicit modeling of edge-edge interactions among incident candidate edges and instead performs edge reasoning over node representations. 2) w/o ASNS: We replace the ASNS (Eq. 3) with fixed KNN-based candidate selection, while keeping all other modules unchanged. This variant directly compares learned adaptive candidate selection with fixed KNN selection under identical edge reasoning conditions. 3) w/o Visual: We remove the visual features (Eq. 4) sampled along candidate paths. 4) w/o Spatial: We remove the spatial features (Eq. 5) used for candidate edge representation. 5) w/o Topology: We remove the global topology-enhanced features (Eq. 6) for candidate edge representation. As shown in Table 5, each ablated variant results in a perfor-mance drop, confirming that the improvements of VisAdj rely on the coordinated design of all the proposed modules. 
+
+1) Effect of edge-edge dependency modeling. Among all components, LineGT has the largest impact. Replacing it with a standard graph transformer reduces GIR from 73 .02% to 54 .43% and Edge-F1 from 95 .09% to 72 .63%. This highlights the importance of explicitly modeling dependencies among incident candidate edges for globally consistent connectivity prediction. It also shows that edge-level structured reasoning is more effective than relying only on node-level graph reasoning for adjacency reconstruction. 
+
+2) Effect of adaptive candidate selection. ASNS also plays a critical role. Replacing ASNS with fixed KNN candidate selection reduces GIR from 73 .02% to 63 .11% and TOPO-F1 from 98 .72% to 86 .47%. This demonstrates that learned candidate generation is im-portant for capturing long-range or visually ambiguous connections and for overcoming the limitations of fixed KNN neighborhoods. 
+
+3) Effect of edge representations. The remaining ablations validate the importance of visual, spatial, and topological features. SpaceNet US-Cities 77 78 79 80 81 82 83    
+
+> Score  80.52 77.23 81.57 80.01 82.68 81.95
+> TOPO-F1 (%)
+> SpaceNet US-Cities 68 69 70 71 72 73 74 75 76
+> Score  71.64 68.37 73.44 68.34 75.36 69.43
+> APLS (%)
+> SAM-Road SAM-Road++ SAM-Road++ with VisAdj
+
+Figure 6: Road network extraction results on SpaceNet and US-Cities datasets. APLS is Average Path Length Similarity. 
+
+Removing visual features reduces GIR to 66 .30%, showing that visual continuity cues along candidate paths help distinguish true edges from visually implausible connections. Removing spatial features or global topology features also leads to performance degradation, lowering GIR to 70 .26% and 68 .59%, respectively. This indicates that both geometric constraints and image-level structural context provide complementary signals for reliable edge reasoning. 
+
+## 5.4 Application in Road Network Extraction 
+
+To evaluate practical applicability, we consider a real-world road net-work extraction scenario. This experiment follows the experimental protocol of SAM-Road++ [48] and assesses the effect of VisAdj on an existing road extraction pipeline. Specifically, we integrate VisAdj into SAM-Road++ by replacing its graph reasoning module with VisAdj, while keeping all other components unchanged. As shown in Fig. 6, SAM-Road++ already improves over SAM-Road, forming a strong baseline. Integrating VisAdj into SAM-Road++ further improves both TOPO-F1 and APLS on SpaceNet [42] and US-Cities datasets. On US-Cities, TOPO-F1 increases from 80 .01% to 81 .95%, and APLS improves from 68 .34% to 69 .43%. On SpaceNet, VisAdj also improves TOPO-F1 from 81 .57% to 82 .68% and APLS from 73 .44% to 75 .36%. These results show that VisAdj can be effectively integrated into real-world road extraction pipelines to improve both topological accuracy and path-level connectivity. 
+
+## 6 Conclusion and Future Work 
+
+In this work, we propose VisAdj, a unified framework for recon-structing adjacency matrices from node-link images. VisAdj com-bines adaptive candidate edge generation with explicit modeling of edge dependencies via a line-graph transformer, substantially im-proving adjacency reasoning beyond existing approaches that rely on fixed KNN candidate selection and predict each edge indepen-dently. Future work will explore a permutation-invariant version [45] of VisAdj to decouple graph reasoning from node ordering and investigate broader application scenarios. Another promising direction is to extend VisAdj to more general visual inputs where graph structures are implicitly embedded, such as scene graphs. 
+
+## Acknowledgments 
+
+This project is supported in part by National Science Foundation under IIS-2144285 and IIS-2414308. VisAdj: Learning Adjacency Matrices from Node-Link Images CIKM ’26, November 07–11, 2026, Rome, Italy 
+
+## GenAI Usage Disclosure 
+
+During the preparation of this work, the authors used GenAI tools to help with code implementation and debugging. No GenAI tools were used in the collection, processing, or annotation of the datasets. GenAI tools were also used during the writing process to assist with grammar checking and sentence polishing. All core concepts, methodologies, and experimental results were developed indepen-dently by the authors. The authors have reviewed all GenAI-assisted content and take full responsibility for the accuracy and integrity of the work presented. 
+
+## References 
+
+[1] Muhammad Awais, Muzammal Naseer, Salman Khan, Rao Muhammad Anwer, Hisham Cholakkal, Mubarak Shah, Ming-Hsuan Yang, and Fahad Shahbaz Khan. 2025. Foundation models defining a new era in vision: a survey and outlook. IEEE Transactions on Pattern Analysis and Machine Intelligence 47, 4 (2025), 2245–2264. [2] Favyen Bastani, Songtao He, Sofiane Abbar, Mohammad Alizadeh, Hari Bal-akrishnan, Sanjay Chawla, Sam Madden, and David DeWitt. 2018. Roadtracer: Automatic extraction of road networks from aerial images. In Proceedings of the IEEE conference on computer vision and pattern recognition . IEEE, 4720–4728. [3] Davide Belli and Thomas Kipf. 2019. Image-conditioned graph generation for road network extraction. arXiv preprint arXiv:1910.14388 (2019). [4] Samy Bengio, Oriol Vinyals, Navdeep Jaitly, and Noam Shazeer. 2015. Scheduled sampling for sequence prediction with recurrent neural networks. Advances in neural information processing systems 28 (2015). [5] Alexander H Berger, Laurin Lux, Suprosanna Shit, Ivan Ezhov, Georgios Kaissis, Martin J Menten, Daniel Rueckert, and Johannes C Paetzold. 2025. Cross-Domain and Cross-Dimension Learning for Image-to-Graph Transformers. In 
+
+2025 IEEE/CVF Winter Conference on Applications of Computer Vision (WACV) .IEEE, 64–74. [6] Lei Cai, Jundong Li, Jie Wang, and Shuiwang Ji. 2021. Line graph neural networks for link prediction. IEEE Transactions on Pattern Analysis and Machine Intelligence 
+
+44, 9 (2021), 5103–5113. [7] Bin Cao, Jiaxing Wang, Jing Fan, Jianwei Yin, and Tianyang Dong. 2016. Querying similar process models based on the Hungarian algorithm. IEEE Transactions on Services Computing 10, 1 (2016), 121–135. [8] Nicolas Carion, Laura Gustafson, Yuan-Ting Hu, Shoubhik Debnath, Ronghang Hu, Didac Suris, Chaitanya Ryali, Kalyan Vasudev Alwala, Haitham Khedr, An-drew Huang, et al. 2025. Sam 3: Segment anything with concepts. arXiv preprint arXiv:2511.16719 (2025). [9] Nicolas Carion, Francisco Massa, Gabriel Synnaeve, Nicolas Usunier, Alexan-der Kirillov, and Sergey Zagoruyko. 2020. End-to-end object detection with transformers. In European conference on computer vision . Springer, 213–229. [10] Kris Coolsaet, Sven D’hondt, and Jan Goedgebeur. 2023. House of Graphs 2.0: A database of interesting graphs and more. Discrete Applied Mathematics 325 (2023), 97–107. [11] Gonçalo M Correia, Vlad Niculae, and André FT Martins. 2019. Adaptively sparse transformers. In Proceedings of the 2019 Conference on Empirical Methods in Natural Language Processing and the 9th International Joint Conference on Natural Language Processing (EMNLP-IJCNLP) . 2174–2184. [12] Amit K Das and Bhabatosh Chanda. 1997. Adjacency matrix generation from the image of graphs: a morphological approach. Machine Vision and Applications 10, 1 (1997), 9–16. [13] Gerald Farin. 2014. Curves and surfaces for computer-aided geometric design: a practical guide . Elsevier. [14] Thomas MJ Fruchterman and Edward M Reingold. 1991. Graph drawing by force-directed placement. Software: Practice and experience 21, 11 (1991), 1129–1164. [15] Xinbo Gao, Bing Xiao, Dacheng Tao, and Xuelong Li. 2010. A survey of graph edit distance. Pattern Analysis and applications 13, 1 (2010), 113–129. [16] Aric Hagberg, Pieter J Swart, and Daniel A Schult. 2007. Exploring network structure, dynamics, and function using NetworkX . Technical Report. Los Alamos National Laboratory (LANL). [17] Kaiming He, Xiangyu Zhang, Shaoqing Ren, and Jian Sun. 2016. Deep residual learning for image recognition. In Proceedings of the IEEE conference on computer vision and pattern recognition . 770–778. [18] Songtao He, Favyen Bastani, Satvat Jagwani, Mohammad Alizadeh, Hari Bal-akrishnan, Sanjay Chawla, Mohamed M Elshrif, Samuel Madden, and Moham-mad Amin Sadeghi. 2020. Sat2graph: Road graph extraction through graph-tensor encoding. In European Conference on Computer Vision . Springer, 51–67. [19] Yang He, Ravi Garg, and Amber Roy Chowdhury. 2022. Td-road: Top-down road network extraction with holistic graph construction. In European Conference on Computer Vision . Springer, 562–577. [20] Congrui Hetang, Haoru Xue, Cindy Le, Tianwei Yue, Wenping Wang, and Yihui He. 2024. Segment anything model for road network graph extraction. In Pro-ceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition .2556–2566. [21] John E Hopcroft and Jin-Kue Wong. 1974. Linear time algorithm for isomorphism of planar graphs (preliminary report). In Proceedings of the sixth annual ACM symposium on Theory of computing . 172–184. [22] Jan Hosang, Rodrigo Benenson, and Bernt Schiele. 2017. Learning non-maximum suppression. In Proceedings of the IEEE conference on computer vision and pattern recognition . 4507–4515. [23] Edward J Hu, Yelong Shen, Phillip Wallis, Zeyuan Allen-Zhu, Yuanzhi Li, Shean Wang, Lu Wang, and Weizhu Chen. 2022. LoRA: Low-Rank Adaptation of Large Language Models. In International Conference on Learning Representations .[24] Radu Jianu, Adrian Rusu, Yifan Hu, and Douglas Taggart. 2014. How to display group information on node-link diagrams: an evaluation. IEEE Transactions on Visualization and Computer Graphics 20, 11 (2014), 1530–1541. [25] Tomihisa Kamada and Satoru Kawai. 1989. An algorithm for drawing general undirected graphs. Information processing letters 31, 1 (1989), 7–15. [26] Alexander Kirillov, Eric Mintun, Nikhila Ravi, Hanzi Mao, Chloe Rolland, Laura Gustafson, Tete Xiao, Spencer Whitehead, Alexander C Berg, Wan-Yen Lo, et al. 2023. Segment anything. In Proceedings of the IEEE/CVF international conference on computer vision . 4015–4026. [27] Paul Krzakala, Junjie Yang, Rémi Flamary, Florence d’Alché Buc, Charlotte Laclau, and Matthieu Labeau. 2024. Any2graph: Deep end-to-end supervised graph pre-diction with an optimal transport loss. Advances in Neural Information Processing Systems 37 (2024), 101552–101588. [28] Alex M Lamb, Anirudh Goyal Alias Parth Goyal, Ying Zhang, Saizheng Zhang, Aaron C Courville, and Yoshua Bengio. 2016. Professor forcing: A new algorithm for training recurrent networks. Advances in neural information processing systems 
+
+29 (2016). [29] Mingchao Li, Kun Huang, Qiuzhuo Xu, Jiadong Yang, Yuhan Zhang, Zexuan Ji, Keren Xie, Songtao Yuan, Qinghuai Liu, and Qiang Chen. 2024. OCTA-500: a retinal dataset for optical coherence tomography angiography study. Medical image analysis 93 (2024), 103092. [30] Shen Li, Yanli Zhao, Rohan Varma, Omkar Salpekar, Pieter Noordhuis, Teng Li, Adam Paszke, Jeff Smith, Brian Vaughan, Pritam Damania, et al. 2020. PyTorch distributed: experiences on accelerating data parallel training. Proceedings of the VLDB Endowment 13, 12 (2020), 3005–3018. [31] Tsung-Yi Lin, Priya Goyal, Ross Girshick, Kaiming He, and Piotr Dollár. 2017. Focal loss for dense object detection. In Proceedings of the IEEE international conference on computer vision . 2980–2988. [32] Jiaxin Liu, Ding Zhong, Yue Wang, Zhidong Yang, Zhaolu Kang, Guangyuan Dong, Qishi Zhan, Pengcheng Fang, and Aofan Liu. 2026. Dual-Pathway Circuits of Object Hallucination in Vision-Language Models. arXiv preprint arXiv:2605.13156 
+
+(2026). [33] Rosanne Liu, Joel Lehman, Piero Molino, Felipe Petroski Such, Eric Frank, Alex Sergeev, and Jason Yosinski. 2018. An intriguing failing of convolutional neural networks and the coordconv solution. Advances in neural information processing systems 31 (2018). [34] Ilya Loshchilov and Frank Hutter. 2019. Decoupled Weight Decay Regularization. In International Conference on Learning Representations .[35] Xiaoyan Lu and Qihao Weng. 2025. Deep learning-based road extraction from remote sensing imagery: Progress, problems, and perspectives. ISPRS Journal of Photogrammetry and Remote Sensing 228 (2025), 122–140. [36] Gellért Máttyus, Wenjie Luo, and Raquel Urtasun. 2017. Deeproadmapper: Ex-tracting road topology from aerial images. In Proceedings of the IEEE international conference on computer vision . 3438–3446. [37] Ben Peters, Vlad Niculae, and André FT Martins. 2019. Sparse sequence-to-sequence models. In 57th Annual Meeting of the Association for Computational Linguistics, ACL 2019 . Association for Computational Linguistics (ACL), 1504– 1519. [38] Nikhila Ravi, Valentin Gabeur, Yuan-Ting Hu, Ronghang Hu, Chaitanya Ryali, Tengyu Ma, Haitham Khedr, Roman Rädle, Chloe Rolland, Laura Gustafson, et al. 2025. Sam 2: Segment anything in images and videos. In International Conference on Learning Representations , Vol. 2025. 28085–28128. [39] Bahador Saket, Paolo Simonetto, Stephen Kobourov, and Katy Börner. 2014. Node, node-link, and node-link-group diagrams: An evaluation. IEEE Transactions on Visualization and Computer Graphics 20, 12 (2014), 2231–2240. [40] Suprosanna Shit, Rajat Koner, Bastian Wittmann, Johannes Paetzold, Ivan Ezhov, Hongwei Li, Jiazhen Pan, Sahand Sharifzadeh, Georgios Kaissis, Volker Tresp, et al. 2022. Relationformer: A unified framework for image-to-graph generation. In European conference on computer vision . Springer, 422–439. [41] Yong-Qiang Tan, Shang-Hua Gao, Xuan-Yi Li, Ming-Ming Cheng, and Bo Ren. 2020. Vecroad: Point-based iterative graph exploration for road graphs extraction. In 2020 IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) .IEEE, 8907–8915. [42] Adam Van Etten, Dave Lindenbaum, and Todd M Bacastow. 2018. Spacenet: A remote sensing dataset and challenge series. arXiv preprint arXiv:1807.01232 CIKM ’26, November 07–11, 2026, Rome, Italy Jiahao Xie and Guangmo Tong 
+
+(2018). [43] Siqi Wang, Jiahao Xie, Yifan Wang, and Guangmo Tong. 2024. Query-Decision Regression for Misinformation Prevention in Social Networks. In International Conference on Computational Data and Social Networks . Springer, 48–60. [44] Siqi Wang, Jiahao Xie, Yifan Wang, and Guangmo Tong. 2025. Data-driven decision making for social influence risk management. Risk Sciences 1 (2025), 100019. [45] Jiahao Xie and Guangmo Tong. 2025. Advances in set function learning: a survey of techniques and applications. Comput. Surveys 57, 7 (2025), 1–37. [46] Jiahao Xie and Guangmo Tong. 2026. VSAL: A Vision Solver with Adaptive Layouts for Graph Property Detection. In Proceedings of the ACM Web Conference 2026 . 798–809. [47] Zhenhua Xu, Yuxuan Liu, Yuxiang Sun, Ming Liu, and Lujia Wang. 2023. Rngdet++: Road network graph detection by transformer with instance seg-mentation and multi-scale features enhancement. IEEE Robotics and Automation Letters 8, 5 (2023), 2991–2998. [48] Pan Yin, Kaiyu Li, Xiangyong Cao, Jing Yao, Lei Liu, Xueru Bai, Feng Zhou, and Deyu Meng. 2025. Towards Satellite Image Road Graph Extraction: A Global-Scale Dataset and A Novel Method. In Proceedings of the Computer Vision and Pattern Recognition Conference . 1527–1537. [49] Chengxuan Ying, Tianle Cai, Shengjie Luo, Shuxin Zheng, Guolin Ke, Di He, Yanming Shen, and Tie-Yan Liu. 2021. Do transformers really perform badly for graph representation? Advances in neural information processing systems 34 (2021), 28877–28888. [50] Shichao Zhang. 2021. Challenges in KNN classification. IEEE Transactions on Knowledge and Data Engineering 34, 10 (2021), 4663–4675.
