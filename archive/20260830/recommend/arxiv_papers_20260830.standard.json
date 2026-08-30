@@ -1,0 +1,693 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-08-30T21:44:36.958694+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 10,
+    "deep_cap": 6,
+    "deep_selected": 6,
+    "quick_candidates": 19,
+    "quick_skim_target": 11,
+    "quick_selected": 11
+  },
+  "deep_dive": [
+    {
+      "id": "2608.25733v1",
+      "source": "arxiv",
+      "title": "MIMONet: Multi-scale Input and Multi-scale Output Network for Salient Object Detection",
+      "abstract": "The existing methods for saliency detection task focus on the application of multi-level features, aiming to take advantage of the respective strengths of high- and low-level features. However, because the inputs of these models are single-size images, their multi-level features have difficulty in learning the knowledge of size variations of salient objects. Object-scale variation learning has great potential for detecting multi-scale objects, which has not been fully explored by existing methods. To improve the recognition ability of a model for objects with different sizes, we are inspired by the image pyramid to propose a Multi-scale Input and Multi-scale Output Network (MIMONet). In MIMONet, we extract multi-level features for three images with different resolutions to form three encoder branches, and information will be exchanged between the branches. The advantage of this approach is that the features of one branch can learn the knowledge of target size variation from the features of the other two branches. In addition, we design a Multi-scale Perception (MSP) module, in which the input feature layer is divided into several sub-layers with different resolutions. Capturing the multi-level structure information of the objects in these sub-layers can make the objects more fully perceived. For network training, we propose a Joint Saliency Loss (JSL), which can constrain multiple saliency maps output by the network to identify the same foreground objects, and induce their boundaries to be preserved clearly. Experimental results show that MIMONet has stronger detection capabilities and harvests better evaluation scores on multiple datasets compared to existing models. The code of our model will be released.",
+      "authors": [
+        "Zhaojian Yao",
+        "Wei Gao",
+        "Tiesong Zhao",
+        "Hui Yuan",
+        "Sam Kwong"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-26T12:46:22+00:00",
+      "link": "https://arxiv.org/pdf/2608.25733v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Salient object detection network for multi-scale objects, a direct object detection method",
+      "llm_evidence_cn": "面向多尺度目标显著物体检测网络，属于目标检测方法",
+      "llm_evidence": "面向多尺度目标显著物体检测网络，属于目标检测方法",
+      "canonical_evidence": "面向多尺度目标显著物体检测网络，属于目标检测方法",
+      "llm_tldr_en": "Proposes MIMONet, a multi-scale input and multi-scale output network for salient object detection that learns object-scale variation via image-pyramid-inspired features, improving detection of multi-scale objects.",
+      "llm_tldr_cn": "现有显著物体检测方法大多采用单一尺寸输入图像，多级特征虽然结合了高层语义与低层细节，却难以学习物体尺度变化这一关键知识。针对多尺度物体检测问题，本文借鉴图像金字塔思想，提出多尺度输入与多尺度输出网络MIMONet，在三个尺度上提取多层次特征并进行多尺度监督与融合。在多个公开显著物体检测数据集上的实验表明，该方法能有效提升不同尺寸显著物体的识别准确率，为显著性检测中的尺度变化建模提供了新的思路。",
+      "llm_tldr": "现有显著物体检测方法大多采用单一尺寸输入图像，多级特征虽然结合了高层语义与低层细节，却难以学习物体尺度变化这一关键知识。针对多尺度物体检测问题，本文借鉴图像金字塔思想，提出多尺度输入与多尺度输出网络MIMONet，在三个尺度上提取多层次特征并进行多尺度监督与融合。在多个公开显著物体检测数据集上的实验表明，该方法能有效提升不同尺寸显著物体的识别准确率，为显著性检测中的尺度变化建模提供了新的思路。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "object detection methods",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.22665v1",
+      "source": "arxiv",
+      "title": "Hyperbolic Hierarchical Clustering for Visual Representation Learning",
+      "abstract": "We investigate the token mixer in vision backbones by revisiting clustering, one of the most classic approaches in machine learning. An effective token mixer is a fundamental component of modern vision backbones like vision Transformers, facilitating information exchange between image patches. Mainstream token mixers, which rely on convolution, attention, MLP, or their hybrids, primarily focus on navigating the trade-off between accuracy and computational cost. However, a significant drawback of these methods is their black-box nature; their encoding process is opaque and lacks interpretability. Diverging from these opaque designs, we introduce ClusterMixer, a transparent token mixer that is grounded in a clustering paradigm and interpretable by design. ClusterMixer explicitly formulates the token mixing process through a hierarchical clustering mechanism. To model the natural, tree-like relationships inherent in visual data, the clustering is performed in hyperbolic space, which is well-suited for embedding hierarchies with low distortion. Building on this innovation, we present HCFormer, a new backbone architecture that integrates ClusterMixer with a series of meticulously designed clustering strategies to ensure robust performance across tasks. Extensive experiments demonstrate that HCFormer consistently outperforms its counterparts across diverse tasks, including image classification, object detection, instance segmentation, and semantic segmentation. Considering its transparency and efficacy, we hope HCFormer can facilitate a paradigm shift toward interpretable backbones.",
+      "authors": [
+        "Jianan Wei",
+        "Guikun Chen",
+        "Zhiyuan Weng",
+        "Chunchao Guo",
+        "Yujia Wang",
+        "Wenguan Wang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-08-24T00:01:09+00:00",
+      "link": "https://arxiv.org/pdf/2608.22665v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Visual representation learning via hyperbolic hierarchical clustering token mixer",
+      "llm_evidence_cn": "通过双曲层次聚类token混合器进行视觉表征学习",
+      "llm_evidence": "通过双曲层次聚类token混合器进行视觉表征学习",
+      "canonical_evidence": "通过双曲层次聚类token混合器进行视觉表征学习",
+      "llm_tldr_en": "Introduces ClusterMixer, a transparent token mixer for vision backbones grounded in hyperbolic hierarchical clustering, offering interpretable encoding while achieving competitive representation learning performance.",
+      "llm_tldr_cn": "视觉骨干中的主流token混合器（注意力、卷积、MLP）依赖黑盒编码，缺乏可解释性。提出ClusterMixer，一种基于聚类范式的透明token混合器，采用双曲层次聚类实现图像块间信息交换。在视觉表征学习任务上性能有竞争力，同时提供可解释的分层编码过程。该工作为可解释视觉骨干提供了新设计方向。",
+      "llm_tldr": "视觉骨干中的主流token混合器（注意力、卷积、MLP）依赖黑盒编码，缺乏可解释性。提出ClusterMixer，一种基于聚类范式的透明token混合器，采用双曲层次聚类实现图像块间信息交换。在视觉表征学习任务上性能有竞争力，同时提供可解释的分层编码过程。该工作为可解释视觉骨干提供了新设计方向。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "feature extraction in computer vision",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.23102v1",
+      "source": "arxiv",
+      "title": "Training-Free Pseudo-Fusion for Composed Image Retrieval with Diffusion Models and Multimodal Large Language Models",
+      "abstract": "Composed Image Retrieval (CIR) is an emerging paradigm in content-based image retrieval that enables users to formulate compositional queries by combining a reference image with an auxiliary modality, usually text-based. This approach supports fine-grained search where the target image shares structural elements with the user-provided image while incorporating the modifications specified by the auxiliary text. Conventional CIR methods rely on multimodal fusion to combine visual and textual features into a joint query embedding, which requires training modules that align composed queries with the targets. In this work, we propose PeFuse (for pseudo-fusion), a training-free framework that leverages pretrained Diffusion Models and Multimodal Large Language Models to bridge modalities via generative conversion. We introduce two novel strategies: uni-directional and bi-directional conversion, which convert CIR into four single-modality retrieval problems. These methods reformulate CIR as either intra-modal or cross-modal single-query retrieval tasks, bypassing the need for dedicated task-specific training. Extensive experiments on standard benchmarks demonstrate that converting CIR into text-to-image retrieval tasks is more effective than alternative conversion strategies, achieving competitive or superior performance compared with state-of-the-art methods, while maintaining high flexibility thanks to replaceable components of the conversion pipeline. These results highlight the effectiveness of the pseudo-fusion paradigm for zero-shot CIR. Our code is publicly available at: https://github.com/StevenXuf/PeFuse4CIR.",
+      "authors": [
+        "Fan Xu",
+        "Luis A. Leiva"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.IR"
+      ],
+      "published": "2026-08-24T11:08:28+00:00",
+      "link": "https://arxiv.org/pdf/2608.23102v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "computer vision research on composed image retrieval with multimodal fusion",
+      "llm_evidence_cn": "组合图像检索的计算机视觉研究，涉及多模态融合",
+      "llm_evidence": "组合图像检索的计算机视觉研究，涉及多模态融合",
+      "canonical_evidence": "组合图像检索的计算机视觉研究，涉及多模态融合",
+      "llm_tldr_en": "Proposes PeFuse, a training-free pseudo-fusion framework for composed image retrieval that leverages pretrained diffusion models and multimodal LLMs to align visual and textual features without additional training.",
+      "llm_tldr_cn": "组合图像检索需结合参考图像与文本描述形成联合查询嵌入，现有方法往往需要额外训练融合模块。本文提出PeFuse免训练伪融合框架，利用预训练扩散模型与多模态大语言模型，将视觉与文本特征伪融合得到查询嵌入，无需训练对齐模块。实验验证了其在零样本组合检索上的有效性，为跨模态检索提供了一种轻量高效的解决方案。",
+      "llm_tldr": "组合图像检索需结合参考图像与文本描述形成联合查询嵌入，现有方法往往需要额外训练融合模块。本文提出PeFuse免训练伪融合框架，利用预训练扩散模型与多模态大语言模型，将视觉与文本特征伪融合得到查询嵌入，无需训练对齐模块。实验验证了其在零样本组合检索上的有效性，为跨模态检索提供了一种轻量高效的解决方案。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "computer vision research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.23234v1",
+      "source": "arxiv",
+      "title": "MLLM-Assisted Audio VOS: A 3rd Place Report for the MeViS-Audio Track, 8th LSVOS Challenge",
+      "abstract": "In this technical report, we present a training-free framework for audio-guided video object segmentation, which integrates Multimodal Large Language Models (MLLMs) with SAM-based segmentation models. We decompose the task into several stages and identify suitable foundation models for each stage. Without introducing additional model training or task-specific fine-tuning, our approach leverages the strong multimodal reasoning capabilities of MLLMs to model text-visual correspondence and employs SAM-based models for accurate object mask generation. The proposed framework demonstrates the effectiveness of leveraging foundation models for audio-guided video segmentation and achieves competitive performance in the MeViS-Audio Track of the 8th LSVOS Challenge.",
+      "authors": [
+        "Liangtao Shi",
+        "Jinxia Xie",
+        "Xiantao Hu",
+        "Ting Liu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-24T13:22:28+00:00",
+      "link": "https://arxiv.org/pdf/2608.23234v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Audio-guided video object segmentation using MLLM and SAM",
+      "llm_evidence_cn": "音频引导视频对象分割技术，结合多模态大模型与SAM",
+      "llm_evidence": "音频引导视频对象分割技术，结合多模态大模型与SAM",
+      "canonical_evidence": "音频引导视频对象分割技术，结合多模态大模型与SAM",
+      "llm_tldr_en": "Presents a training-free audio-guided video object segmentation framework integrating Multimodal LLMs with SAM, decomposing the task and using foundation models to achieve competitive MeViS-Audio performance without fine-tuning.",
+      "llm_tldr_cn": "音频引导视频对象分割需跨模态理解，传统方法依赖任务专用训练且泛化不足。提出无需训练的新框架，将多模态大语言模型用于文本-视觉对应建模，并借助SAM生成精确对象掩码，任务分解为多个阶段选择合适基础模型。在MeViS-Audio赛道取得竞争力成绩，验证了基础模型组合的有效性。该技术报告为低资源视频分割提供了训练免费的新思路。",
+      "llm_tldr": "音频引导视频对象分割需跨模态理解，传统方法依赖任务专用训练且泛化不足。提出无需训练的新框架，将多模态大语言模型用于文本-视觉对应建模，并借助SAM生成精确对象掩码，任务分解为多个阶段选择合适基础模型。在MeViS-Audio赛道取得竞争力成绩，验证了基础模型组合的有效性。该技术报告为低资源视频分割提供了训练免费的新思路。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "image segmentation techniques",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.23850v1",
+      "source": "arxiv",
+      "title": "DDMS: Discriminative Distillation of Multi-view Foundational Features into Single-view Models",
+      "abstract": "Foundational visual features such as DINO have played a critical role across modern computer vision, and have recently become key components in multi-view feed-forward geometry estimators. In this work, we demonstrate that by re-distilling these multi-view models---their internal knowledge of 3D geometry---into a single-view estimator, we can obtain enhanced 3D consistent foundational features. Our key idea is to construct a multi-view teacher by fusing pretrained 2D foundation features with multi-view geometric features, and refining the fused representation with a discriminative ranking objective. Through our discriminative distillation framework, we enforce the learned features to be both 3D consistent and locally distinctive, while keeping them aligned with the feature space of the original foundation model to preserve the semantic structure of the pretrained representation. Consistency and local discriminability are critical for 3D computer vision problems such as forming semantic and geometric correspondences across images. To demonstrate the effectiveness of our method, we perform comprehensive experiments spanning multiple angles: direct feature analysis, dense prediction transfer, and explicit 3D lifting and rendering. Across these evaluations, our method consistently produces stronger 3D-aware foundation features that improve multi-view consistency and local discriminability while preserving the semantic transferability of the original representation.",
+      "authors": [
+        "Jeong-gi Kwak",
+        "Sho Kagami",
+        "Yuki Ono",
+        "Kwang Moo Yi"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-24T21:38:49+00:00",
+      "link": "https://arxiv.org/pdf/2608.23850v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "distills multi-view foundational features into single-view feature learning",
+      "llm_evidence_cn": "将多视角基础特征蒸馏到单视图模型，属特征提取",
+      "llm_evidence": "将多视角基础特征蒸馏到单视图模型，属特征提取",
+      "canonical_evidence": "将多视角基础特征蒸馏到单视图模型，属特征提取",
+      "llm_tldr_en": "DDMS distills multi-view geometry knowledge from foundational vision models into a single-view estimator. It constructs a multi-view teacher by fusing 2D foundation features with multi-view geometric features and refines it with a discriminative ranking objective, producing 3D-consistent and locally distinctive features.",
+      "llm_tldr_cn": "基础视觉特征如DINO已在多视角几何估计中发挥关键作用。DDMS提出判别性蒸馏框架，将多视角模型中的三维几何知识重新蒸馏到单视角网络：先融合预训练2D基础特征与多视角几何特征构造教师，再用判别性排序目标精化表征。所得特征兼具三维一致性与局部区分性，可用于单视角估计等下游任务。",
+      "llm_tldr": "基础视觉特征如DINO已在多视角几何估计中发挥关键作用。DDMS提出判别性蒸馏框架，将多视角模型中的三维几何知识重新蒸馏到单视角网络：先融合预训练2D基础特征与多视角几何特征构造教师，再用判别性排序目标精化表征。所得特征兼具三维一致性与局部区分性，可用于单视角估计等下游任务。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "feature extraction in computer vision",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.24130v1",
+      "source": "arxiv",
+      "title": "Syn2RealTrack: Bridging the Gap Between Synthetic and Real-World Datasets for Online Multi-View Multi-Target Tracking",
+      "abstract": "Multi-camera 3D perception systems for warehouse scenes are trained largely on synthetic data and evaluated on physically captured environments. The resulting synthetic-to-real gap, which corrupts ground-plane localization and cross-camera identity association, is usually treated as one deficiency for a single domain-adaptation module to absorb; we argue instead that it enters the pipeline at three separable points: the camera calibration, the object shape prior, and the assumption that the object census is known, each admitting a different local remedy. Our online pipeline, Syn2RealTrack, follows this decomposition: lens distortion is recovered from images alone under a calibration that provides none, detections are fused across views by a visibility-weighted part-based descriptor that abstains on occluded parts rather than guessing, person height is measured in closed form from calibration instead of copied from a synthetic prior, and a closed-world cardinality prior is paired with a causal filter that removes the phantom boxes the prior manufactures. The system therefore adapts by reallocating trust between geometry and appearance without retraining a feature extractor. On the AI City Challenge 2026 Track~1 evaluation server it reaches a 3D Higher Order Tracking Accuracy (HOTA) of 52.0118%. The code will be released at https://github.com/SKKUAutoLab/aic26_mc3dp",
+      "authors": [
+        "Duong Nguyen-Ngoc Tran",
+        "Ngoc Doan-Minh Huynh",
+        "Cu Quoc Le",
+        "Hoang-Khang Nguyen",
+        "Long Hoang Pham",
+        "Huy-Hung Nguyen",
+        "Quoc Pham-Nam Ho",
+        "Trinh Le Ba Khanh",
+        "Chi Dai Tran",
+        "Duong Khac Vu",
+        "Son Hong Phan",
+        "Hyung-Min Jeon",
+        "Jae Wook Jeon"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-08-25T06:48:50+00:00",
+      "link": "https://arxiv.org/pdf/2608.24130v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Multi-view multi-target tracking with synthetic-to-real adaptation",
+      "llm_evidence_cn": "多视角多目标跟踪及合成到真实的域适应",
+      "llm_evidence": "多视角多目标跟踪及合成到真实的域适应",
+      "canonical_evidence": "多视角多目标跟踪及合成到真实的域适应",
+      "llm_tldr_en": "This paper presents Syn2RealTrack, an online multi-view multi-target tracking pipeline that decomposes the synthetic-to-real gap into camera calibration, object shape prior, and census assumptions, addressing each with local remedies.",
+      "llm_tldr_cn": "该论文面向多摄像头多目标跟踪中的合成到真实数据域差距问题，提出在线管线Syn2RealTrack。它将域差距分解为相机标定、物体形状先验和目标数量假设三个可独立修复的环节，分别采用从图像恢复镜头畸变、形状先验校正等策略。实验表明该分解式方法能有效改善真实仓库场景下的地面定位与跨相机身份关联。",
+      "llm_tldr": "该论文面向多摄像头多目标跟踪中的合成到真实数据域差距问题，提出在线管线Syn2RealTrack。它将域差距分解为相机标定、物体形状先验和目标数量假设三个可独立修复的环节，分别采用从图像恢复镜头畸变、形状先验校正等策略。实验表明该分解式方法能有效改善真实仓库场景下的地面定位与跨相机身份关联。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "visual tracking surveys",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2608.25701v1",
+      "source": "arxiv",
+      "title": "Skeleton-based Zero-Shot Spatio-Temporal Action Localization via Weakly-Supervised Pretraining",
+      "abstract": "We propose a novel pretraining strategy for skeleton-based zero-shot spatio-temporal action localization to estimate unseen actions for person instances while overcoming high annotation costs for training via new target actions and pretraining using large-scale action scenery datasets. Specifically, our approach, termed Skeleton-Language feature Pooling Switching, introduces a weakly-supervised vision-language pretraining mechanism. This mechanism transitions pooling kernels from pretraining, which aggregates skeleton features at the video level and aligns them with each video's known action text embeddings, to the inference phase that computes instance-level features without training via target actions. Furthermore, we propose Scene-Mixed Discriminative Contrastive Learning to distinguish actions at the instance level within the combined scene through the MIL framework. Our experiments on four public spatio-temporal action localization and classification datasets demonstrate that the proposed method effectively addresses annotation limitations.",
+      "authors": [
+        "Koshiro Nagano",
+        "Fumiaki Sato",
+        "Ryo Hachiuma",
+        "Kazuki Tsutsukawa",
+        "Taiki Sekii"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-26T12:17:07+00:00",
+      "link": "https://arxiv.org/pdf/2608.25701v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Skeleton-based zero-shot spatio-temporal action localization, a visual recognition task",
+      "llm_evidence_cn": "基于骨架的零样本时空动作定位，属于视觉识别任务",
+      "llm_evidence": "基于骨架的零样本时空动作定位，属于视觉识别任务",
+      "canonical_evidence": "基于骨架的零样本时空动作定位，属于视觉识别任务",
+      "llm_tldr_en": "This paper proposes a weakly-supervised vision-language pretraining strategy for skeleton-based zero-shot spatio-temporal action localization, using pooling switching to align skeleton features with action text embeddings.",
+      "llm_tldr_cn": "该论文针对基于骨架的零样本时空动作定位提出弱监督视觉-语言预训练策略。通过Skeleton-Language特征池化切换机制，在预训练时以视频级特征对齐已知动作文本，在推理时无需目标动作训练即可计算实例级特征。所提方法降低了时空动作定位的标注成本，并能估计未见动作类别，为视频理解提供可扩展的方案。",
+      "llm_tldr": "该论文针对基于骨架的零样本时空动作定位提出弱监督视觉-语言预训练策略。通过Skeleton-Language特征池化切换机制，在预训练时以视频级特征对齐已知动作文本，在推理时无需目标动作训练即可计算实例级特征。所提方法降低了时空动作定位的标注成本，并能估计未见动作类别，为视频理解提供可扩展的方案。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "visual recognition algorithms",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2608.21819v1",
+      "source": "arxiv",
+      "title": "PatchGate: Narrowing the Verbalization Gap with Intrinsic Object Inventories in Frozen Vision-Language Models",
+      "abstract": "Reliable image captioning in Vision-Language Models (VLMs) requires captions to be both precise and complete, avoiding unsupported object mentions while covering visible objects. Existing training-free methods primarily address the former requirement, suppressing unsupported object words by intervening on model-predicted mentions during generation. Because they operate only on objects the model is already likely to mention, visible objects omitted from the output remain difficult to recover. We propose PatchGate, a training-free framework that extracts prompt-free object evidence intrinsic to a frozen VLM before generation and uses it to narrow the gap between an intrinsic object set and final object mentions. In the first stage, Visual Evidence eXtraction (VEX) reads patch-level lexical evidence from the latter half of LM decoder layers and constructs an image-conditioned object set without any task prompt. In the second stage, Visual-Evidence Inclusion-Exclusion Decoding (VIED) uses this object evidence to calibrate decoding logits, promoting evidence-supported but under-verbalized objects and suppressing weakly supported but over-verbalized objects. On AMBER, PatchGate improves both sides of object-level reliability, increasing visible-object coverage from 49.4 to 56.0 (+13.4%) and reducing object hallucination by lowering CHAIR from 7.5 to 6.6 (-12.0%), without external detectors or fine-tuning and with one extra forward pass.",
+      "authors": [
+        "Jihyung Ko",
+        "Eunji Jung",
+        "Hyeongsub Kim",
+        "Ziseok Lee",
+        "Jae Won Cho",
+        "Sanghyun Jo",
+        "Kyungsu Kim"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI",
+        "cs.CL",
+        "cs.LG"
+      ],
+      "published": "2026-08-22T07:37:40+00:00",
+      "link": "https://arxiv.org/pdf/2608.21819v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "vision-language image captioning with frozen VLMs",
+      "llm_evidence_cn": "基于冻结视觉语言模型的图像描述研究",
+      "llm_evidence": "基于冻结视觉语言模型的图像描述研究",
+      "canonical_evidence": "基于冻结视觉语言模型的图像描述研究",
+      "llm_tldr_en": "PatchGate is a training-free framework that extracts intrinsic object evidence from a frozen VLM before generation and uses it to align final object mentions with visible objects. It improves captioning completeness while reducing unsupported object mentions.",
+      "llm_tldr_cn": "视觉语言模型生成描述时容易出现虚假对象提及并遗漏可见对象。PatchGate提出训练免费框架，在生成前从冻结的VLM中提取与提示无关的内在对象证据，并利用该证据缩小内在对象集合与最终对象提及之间的差距。实验表明，它能在抑制幻觉的同时提升对象覆盖完整性，为可靠图像描述提供了新思路。",
+      "llm_tldr": "视觉语言模型生成描述时容易出现虚假对象提及并遗漏可见对象。PatchGate提出训练免费框架，在生成前从冻结的VLM中提取与提示无关的内在对象证据，并利用该证据缩小内在对象集合与最终对象提及之间的差距。实验表明，它能在抑制幻觉的同时提升对象覆盖完整性，为可靠图像描述提供了新思路。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "computer vision research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2608.21764v1",
+      "source": "arxiv",
+      "title": "LiteEvent-AE: Lightweight Autoencoder for Event-Based Vision on Low-Latency Energy-Constrained Edge Devices",
+      "abstract": "Event-based vision has emerged as a promising paradigm for energy-aware artificial intelligence (AI), offering sparse, low-latency visual signals that reduce redundant data processing and support sustainable edge computing. However, the asynchronous and noise-prone nature of event streams creates challenges for conventional deep learning models, which are often too computationally intensive for low-power embedded platforms. This work presents a compact and configurable event-driven autoencoder that efficiently compresses neuromorphic data while preserving essential spatiotemporal structure for downstream inference. The architecture integrates lightweight convolutional encoding with robust performance under adaptive event thresholding and a minimal classifier head, enabling substantial reductions in computational cost without degrading recognition fidelity. Extensive evaluations on the Smart Event Face Dataset (SEFD) and Event-Based Crossing Dataset (EBCD) show that the proposed framework achieves competitive or superior accuracy compared to YOLOv9 while requiring up to 35.6$\\times$ fewer parameters. To assess real-world sustainability, the model is deployed on resource-constrained hardware: a Raspberry Pi 4B and a NVIDIA Jetson Nano. On NVIDIA Jetson Nano, it delivers real-time throughput of 44.8 FPS. On a Raspberry Pi 4B CPU, the 50\\% autoencoder classifier consumes 16.19 J for the evaluated inference workload, corresponding to approximately 726.3$\\times$ lower energy consumption than YOLOv9 under the same evaluation protocol. These results demonstrate the potential of compact event-driven models to advance environmentally conscious, low-power AI systems for high-speed perception in autonomous, mobile, and embedded computing environments.",
+      "authors": [
+        "Riadul Islam",
+        "Joey Mule",
+        "Dhandeep Challagundla",
+        "Shahmir Rizvi",
+        "Sean Carson",
+        "Rachit Saini"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI",
+        "eess.IV"
+      ],
+      "published": "2026-08-22T04:13:47+00:00",
+      "link": "https://arxiv.org/pdf/2608.21764v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "computer vision research on lightweight event-based vision autoencoding for edge devices",
+      "llm_evidence_cn": "面向边缘设备的事件视觉轻量化自编码研究",
+      "llm_evidence": "面向边缘设备的事件视觉轻量化自编码研究",
+      "canonical_evidence": "面向边缘设备的事件视觉轻量化自编码研究",
+      "llm_tldr_en": "LiteEvent-AE presents a compact configurable event-driven autoencoder for edge devices that compresses neuromorphic event streams while preserving spatiotemporal structure for downstream inference, using lightweight convolutional encoding.",
+      "llm_tldr_cn": "事件视觉因其稀疏低延迟特性适合边缘AI，但异步噪声事件流对计算资源有限的嵌入式平台带来挑战。本文提出LiteEvent-AE，一种紧凑且可配置的事件驱动自编码器，通过轻量卷积编码高效压缩神经形态事件流，同时保留时空结构用于下游推理。在自适应噪声条件下仍保持稳定性能，适合低功耗边缘设备上的低延迟视觉任务，为可持续边缘计算提供了有效方案。",
+      "llm_tldr": "事件视觉因其稀疏低延迟特性适合边缘AI，但异步噪声事件流对计算资源有限的嵌入式平台带来挑战。本文提出LiteEvent-AE，一种紧凑且可配置的事件驱动自编码器，通过轻量卷积编码高效压缩神经形态事件流，同时保留时空结构用于下游推理。在自适应噪声条件下仍保持稳定性能，适合低功耗边缘设备上的低延迟视觉任务，为可持续边缘计算提供了有效方案。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "computer vision research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2608.26644v1",
+      "source": "arxiv",
+      "title": "Real-time Unsupervised Object Discovery from Asynchronous Event Streams",
+      "abstract": "Event cameras capture pixel-level intensity changes with microsecond resolution to produce highly sparse asynchronous data streams. For visual perception in latency-critical environments, we propose a lightweight, training-free framework for discovery of moving objects based on spatio-temporal clustering. This framework is driven by two core contributions. First, a linear-time Spatio-temporal Probabilistic Event Filter (SPEF) that introduces an adaptive event acceptance threshold to distinguish salient motion structures from background noise. Second, an Event Morton Code Clustering (EMCC) module that bypasses expensive distance matrix computation to efficiently group events for unsupervised discovery of moving objects. On the E-MLB dataset benchmark, SPEF achieves the best denoising performance among classical filtering methods and remains competitive with learning-based approaches without requiring any offline training. On object discovery, EMCC achieves the highest overall accuracy and lowest execution time across the FRED and eTraM datasets, outperforming established density-based clustering baselines by a substantial margin. Overall, this work establishes a new performance benchmark for classical object discovery in event data, providing a highly scalable, training-free solution for resource-constrained visual perception. The code is available at https://github.com/PrathamShenwai/SPEF_EMCC",
+      "authors": [
+        "Pratham G. Shenwai",
+        "Hemant Kumar Singh",
+        "Sridhar Ravi"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-27T05:53:04+00:00",
+      "link": "https://arxiv.org/pdf/2608.26644v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Unsupervised object discovery from asynchronous event streams via spatio-temporal clustering",
+      "llm_evidence_cn": "通过时空聚类从事件流中无监督发现运动物体",
+      "llm_evidence": "通过时空聚类从事件流中无监督发现运动物体",
+      "canonical_evidence": "通过时空聚类从事件流中无监督发现运动物体",
+      "llm_tldr_en": "Proposes a lightweight, training-free spatio-temporal clustering framework for unsupervised discovery of moving objects from event camera streams, with linear-time filtering and Morton code clustering.",
+      "llm_tldr_cn": "事件相机以微秒级时间分辨率输出高度稀疏的异步像素级强度变化流，对机器人和边缘视觉中的实时感知提出挑战。本文提出一种轻量、免训练的运动物体无监督发现框架，包括线性时间复杂度的时空概率事件滤波器SPEF和基于Morton编码的事件聚类模块EMCC，可高效地将显著运动结构与背景噪声分离。在E-MLB基准上的实验验证了该方法在实时性约束下仍能获得有竞争力的物体发现性能，适合事件流视觉的低延迟应用。",
+      "llm_tldr": "事件相机以微秒级时间分辨率输出高度稀疏的异步像素级强度变化流，对机器人和边缘视觉中的实时感知提出挑战。本文提出一种轻量、免训练的运动物体无监督发现框架，包括线性时间复杂度的时空概率事件滤波器SPEF和基于Morton编码的事件聚类模块EMCC，可高效地将显著运动结构与背景噪声分离。在E-MLB基准上的实验验证了该方法在实时性约束下仍能获得有竞争力的物体发现性能，适合事件流视觉的低延迟应用。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "object detection methods",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2608.22366v1",
+      "source": "arxiv",
+      "title": "When Do VLMs Help Arabic Manuscript OCR? A Cross-Dataset Study",
+      "abstract": "Vision-language models (VLMs) are increasingly being used for document understanding, yet their role in Arabic and Islamic manuscript recognition remains underexplored. To address such a gap in this paper, we evaluate traditional OCR, general-purpose VLMs, Arabic-specialized VLMs, and OCR-conditioned VLM correction across eight Arabic text datasets spanning historical manuscripts, aged printed books, clean print, multi-domain documents, and handwriting. The results show that no single approach dominates across setups. On line-level historical manuscripts, VLMs are close to Tesseract; on page-level manuscript images, they perform better; and in several settings, an OCR-conditioned corrector improves over both standalone OCR and standalone VLMs. The central finding is an OCR-prior recoverability principle: OCR conditioning helps when the OCR output remains visually and textually recoverable, providing anchors that the VLM can refine against the image. It improves recognition on aged print, clean print, mixed-domain Arabic, and some Naskh manuscripts, but degrades performance when the prior is script-mismatched or systematically misleading, as in Maghribi manuscripts and realistic student handwriting. Additional diagnostics show that Arabic VLM-OCR is sensitive to diacritics, preprocessing, generation budget, and repetition loops. These findings support an adaptive OCR-VLM workflow that routes pages according to script, OCR-prior recoverability, length diagnostics, and failure-mode indicators.",
+      "authors": [
+        "Moshiur Farazi",
+        "Firoj Alam",
+        "Abderrahmane Maaradji",
+        "Zakaria Maamar",
+        "Hamdy Mubarak",
+        "Wajdi Zaghouani"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-23T11:12:06+00:00",
+      "link": "https://arxiv.org/pdf/2608.22366v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Cross-dataset evaluation of OCR and vision-language models for Arabic manuscript recognition",
+      "llm_evidence_cn": "跨数据集评估OCR与视觉语言模型在阿拉伯文手稿识别中的性能",
+      "llm_evidence": "跨数据集评估OCR与视觉语言模型在阿拉伯文手稿识别中的性能",
+      "canonical_evidence": "跨数据集评估OCR与视觉语言模型在阿拉伯文手稿识别中的性能",
+      "llm_tldr_en": "Cross-dataset evaluation of traditional OCR, general VLMs, Arabic-specialized VLMs, and OCR-conditioned correction across eight Arabic text datasets, showing no approach dominates all settings.",
+      "llm_tldr_cn": "视觉语言模型正越来越多地用于文档理解，但其在阿拉伯文和伊斯兰手稿识别中的作用尚未得到充分研究。本文在八个阿拉伯文数据集上进行跨数据集评估，比较传统OCR、通用VLM、阿拉伯语专用VLM以及OCR条件校正器的性能，覆盖历史手稿、老化印刷书、干净印刷、多域文档和手写等场景。结果显示没有一种方法在所有设置中占优：行级历史手稿上VLM接近Tesseract，页级手稿上VLM更好，而OCR条件校正器在多种设置下同时优于单独OCR和单独VLM，为文档识别中的模型选择提供了实证依据。",
+      "llm_tldr": "视觉语言模型正越来越多地用于文档理解，但其在阿拉伯文和伊斯兰手稿识别中的作用尚未得到充分研究。本文在八个阿拉伯文数据集上进行跨数据集评估，比较传统OCR、通用VLM、阿拉伯语专用VLM以及OCR条件校正器的性能，覆盖历史手稿、老化印刷书、干净印刷、多域文档和手写等场景。结果显示没有一种方法在所有设置中占优：行级历史手稿上VLM接近Tesseract，页级手稿上VLM更好，而OCR条件校正器在多种设置下同时优于单独OCR和单独VLM，为文档识别中的模型选择提供了实证依据。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "visual recognition algorithms",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2608.26500v1",
+      "source": "arxiv",
+      "title": "Systematic Literature Review of Machine Learning Models and Applications for Text Recognition",
+      "abstract": "Optical Character Recognition (OCR) for text recognition using machine vision has significantly improved, particularly when handling heterogeneous textual data. Traditional OCR models struggle with script variations, writing styles, and degraded documents. Advancements in technology are leading to new AI models with improved architecture for handling multiple languages and complex data formats. Despite this progress, a comprehensive evaluation of OCR advancements remains limited. Based on the established preferred reporting items for systematic reviews and meta-analysis (PRISMA) guidelines, this literature review presents an extensive assessment of OCR research to trace the evolution of AI models over the past decade. It explores the transition in AI models, application domains, data types, linguistic coverage, and challenges. Through a detailed analysis of 97 selected studies published during January 2015 - January 2025, key OCR models are identified, and their performance, strengths, and limitations are analyzed. The findings highlight how OCR technologies have evolved to address structured and unstructured text, scene text recognition, and multilingual processing. Unresolved challenges include limited resources for underrepresented languages, high variability in handwritten text, visual similarity among characters, and constraints in real-time OCR applications. To address these issues, several promising approaches are proposed. Key suggestions include self-supervised learning, multimodal AI, automated machine learning (AutoML), AI-assisted postprocessing, tiny machine learning (TinyML), and the creation of joint corpora for script matching. The future recommendations aim to enhance OCR accuracy and tackle the challenges identified for real-time industrial applications. This study will guide future research and establish a foundation for OCR field.",
+      "authors": [
+        "Nuzhat Khan",
+        "Ab Al-Hadi Ab Rahman",
+        "Shahriyar Masud Rizvi",
+        "Ibrahim Yousef Alshareef",
+        "Muhammad Nadzir Marsono",
+        "Muhammad Paend Bakht",
+        "Mohd Shahrizal Rusli",
+        "Shahidatul Sadiah"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.LG"
+      ],
+      "published": "2026-08-27T00:48:11+00:00",
+      "link": "https://arxiv.org/pdf/2608.26500v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "systematic review of machine learning models for OCR text recognition, a computer vision research area",
+      "llm_evidence_cn": "面向OCR文本识别的机器学习系统性综述，属于计算机视觉研究领域",
+      "llm_evidence": "面向OCR文本识别的机器学习系统性综述，属于计算机视觉研究领域",
+      "canonical_evidence": "面向OCR文本识别的机器学习系统性综述，属于计算机视觉研究领域",
+      "llm_tldr_en": "A PRISMA-based systematic literature review assessing OCR machine learning models over the past decade, covering model evolution, applications, and open challenges in text recognition.",
+      "llm_tldr_cn": "光学字符识别（OCR）在异构文本数据处理上已有显著进步，但传统模型难以应对多样书写风格与退化文档，且缺乏系统评估。本综述基于PRISMA指南对近十年OCR机器学习模型进行系统性评估，梳理模型演进、应用场景与关键挑战。结果显示AI模型在多语言和复杂格式处理上持续进步，并为未来文本识别研究提供了证据性总结与研究方向建议。",
+      "llm_tldr": "光学字符识别（OCR）在异构文本数据处理上已有显著进步，但传统模型难以应对多样书写风格与退化文档，且缺乏系统评估。本综述基于PRISMA指南对近十年OCR机器学习模型进行系统性评估，梳理模型演进、应用场景与关键挑战。结果显示AI模型在多语言和复杂格式处理上持续进步，并为未来文本识别研究提供了证据性总结与研究方向建议。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "computer vision research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2608.26859v1",
+      "source": "arxiv",
+      "title": "A Geometry-Driven, Framework-Agnostic Optimization for Object Pose Estimation",
+      "abstract": "Current object pose estimation research remains predominantly model-centric, focusing on architectural innovations and post-processing refinements. This paper introduces a data-centric optimization by proposing a novel, physically grounded rotation representation through principal axes alignment. Our method aligns the object's coordinate system with its inherent geometric axes, derived from inertial properties, yielding three key advantages: Inherent Stability-leveraging the energy-minimizing property of principal axes provides a robust representation that is less sensitive to noise and occlusions; Symmetry-Aware Canonicalization-explicitly resolving rotational ambiguities for symmetric objects at the data level, which fundamentally eliminates label confusion during network training; and Framework Agnosticism-the optimization is applied purely at the dataset level, ensuring plug-and-play compatibility with existing networks without any architectural modification. We validate the framework across diverse category-level and instance-level models. Extensive experiments demonstrate consistent and significant accuracy improvements, while preserving the integrity of the baseline network. This work establishes a new, geometry-driven direction for enhancing pose estimation, circumventing the need for complex network redesign.",
+      "authors": [
+        "Wei Chen",
+        "Tao Zhen",
+        "Zhongchen Shi",
+        "Jing Zhang",
+        "Liang Xie",
+        "Erwei Yin"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-27T09:26:23+00:00",
+      "link": "https://arxiv.org/pdf/2608.26859v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Object pose estimation, a computer vision research problem",
+      "llm_evidence_cn": "物体位姿估计，属于计算机视觉研究范畴",
+      "llm_evidence": "物体位姿估计，属于计算机视觉研究范畴",
+      "canonical_evidence": "物体位姿估计，属于计算机视觉研究范畴",
+      "llm_tldr_en": "The paper introduces a data-centric, geometry-driven rotation representation for object pose estimation, aligning object coordinates with principal axes for stability and symmetry-aware canonicalization, applicable to existing pose estimators.",
+      "llm_tldr_cn": "该论文提出一种以数据为中心的几何驱动优化方法，用于物体位姿估计。通过将物体坐标系与惯性主轴对齐，构建物理上有依据的旋转表示，提升了对噪声和遮挡的鲁棒性，并从数据层面解决对称物体的旋转歧义。方法不依赖特定模型架构，具有框架无关性，能够广泛适用于现有位姿估计管道。",
+      "llm_tldr": "该论文提出一种以数据为中心的几何驱动优化方法，用于物体位姿估计。通过将物体坐标系与惯性主轴对齐，构建物理上有依据的旋转表示，提升了对噪声和遮挡的鲁棒性，并从数据层面解决对称物体的旋转歧义。方法不依赖特定模型架构，具有框架无关性，能够广泛适用于现有位姿估计管道。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "computer vision research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2608.22757v1",
+      "source": "arxiv",
+      "title": "Object-Uni: A Unified Model for Object-Centric Spatial Understanding and Controllable Generation",
+      "abstract": "Unified models for visual understanding and generation have made rapid progress, yet they still lack the ability to understand and manipulate the spatial states of object instances. Existing models can describe objects in natural language, but they struggle to precisely represent continuous object poses and generate geometrically consistent images under target viewpoints. To mitigate this, we propose \\emph{Object-Uni}, a unified model for object-centric spatial understanding and controllable generation. Specifically, we formulate object-centric spatial intelligence as a unified problem connecting pose perception, spatial reasoning, pose-conditioned generation, and object-centric novel view synthesis. We treat object pose as an explicit geometric variable shared by understanding and generation, rather than merely a prediction label or control signal. To make pose usable by multimodal large language models, we propose a viewpoint-based orientation abstraction that maps orientation into structured viewpoint descriptions while preserving continuous geometric supervision. We further construct an object-centric spatial benchmark (UniSpatial-80K) and train a unified model with an object-token-grounded pose anchor to associate each instance with its pose state. Experiments show that our model improves object-level pose understanding and pose-controllable generation, moving unified models from describing objects toward manipulating spatial states.",
+      "authors": [
+        "Mining Tan",
+        "Yinuo Wang",
+        "Ziqi Zhou",
+        "Weize Quan",
+        "Sifei Li",
+        "Jingdong Chen",
+        "DanDan Zheng",
+        "Libin Wang",
+        "Weiming Dong"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-08-24T03:27:22+00:00",
+      "link": "https://arxiv.org/pdf/2608.22757v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Object-centric spatial understanding and controllable generation, a CV research paper",
+      "llm_evidence_cn": "物体中心的空间理解与可控生成，属于计算机视觉研究",
+      "llm_evidence": "物体中心的空间理解与可控生成，属于计算机视觉研究",
+      "canonical_evidence": "物体中心的空间理解与可控生成，属于计算机视觉研究",
+      "llm_tldr_en": "This paper proposes Object-Uni, a unified model for object-centric spatial understanding and controllable generation, connecting pose perception, spatial reasoning, pose-conditioned generation, and novel view synthesis.",
+      "llm_tldr_cn": "该论文提出Object-Uni，一个统一物体中心空间理解与可控生成的模型。它将物体位姿感知、空间推理、姿态条件生成和新视角合成整合为统一问题，以物体姿态为表征纽带，能够更精确地表达连续物体姿态并生成几何一致的图像。该研究弥合了视觉理解与生成在物体空间状态上的鸿沟，对空间智能和可控内容生成有重要意义。",
+      "llm_tldr": "该论文提出Object-Uni，一个统一物体中心空间理解与可控生成的模型。它将物体位姿感知、空间推理、姿态条件生成和新视角合成整合为统一问题，以物体姿态为表征纽带，能够更精确地表达连续物体姿态并生成几何一致的图像。该研究弥合了视觉理解与生成在物体空间状态上的鸿沟，对空间智能和可控内容生成有重要意义。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "computer vision research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2608.26833v1",
+      "source": "arxiv",
+      "title": "Rethinking Image Processing for the Age of AI: A Problem-First Framework for Scientific Progress",
+      "abstract": "Modern AI has greatly expanded the capabilities of image processing. However, the ready availability of powerful models, public datasets, and benchmark leaderboards has also en- couraged a model-first research pattern: researchers increasingly begin with an available architecture and optimize it on a public benchmark, rather than beginning with the underlying real-world imaging problem. This can produce impressive benchmark results without necessarily improving our understanding or solution of the real problem. This paper argues for a problem-first approach that distinguishes the physical imaging problem, solution principle, statistical estimator, and computational implementation, while clarifying what modern AI can achieve and which fundamental problems remain unsolved. Through case studies of super- resolution and low-light enhancement, we show how benchmark datasets may define tasks that differ substantially from the real-world problems they are intended to represent, and why performance improvements must be interpreted within the conditions under which they are obtained. We propose a six-stage workflow that places problem formulation, image acquisition, information-loss analysis, assumptions, ambiguity, and evaluation before model and dataset selection. The paper also proposes clearer standards for evidence, reproducibility, uncertainty, and claims of state-of-the-art performance. More fundamentally, it calls for a change in research culture and education so that future researchers learn to understand imaging problems deeply and use modern AI to achieve genuine scientific and technical advancement.",
+      "authors": [
+        "Guoping Qiu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-27T09:05:39+00:00",
+      "link": "https://arxiv.org/pdf/2608.26833v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "position paper on image processing research methodology in the AI era",
+      "llm_evidence_cn": "AI时代图像处理研究方法的反思性论文",
+      "llm_evidence": "AI时代图像处理研究方法的反思性论文",
+      "canonical_evidence": "AI时代图像处理研究方法的反思性论文",
+      "llm_tldr_en": "This position paper critiques model-first image processing research driven by public benchmarks, and advocates a problem-first framework that separates physical imaging problem, solution principle, statistical estimator, and computational implementation to refocus on real imaging problems.",
+      "llm_tldr_cn": "现代AI极大扩展了图像处理能力，但模型优先、追求榜单的研究模式可能偏离真实成像问题。本文提出以问题为先的研究框架，将物理成像问题、解决原理、统计估计器和计算实现明确区分，并厘清AI所能发挥的作用。该框架有助于引导研究者从真实问题出发，而不是仅仅在公共基准上优化模型。",
+      "llm_tldr": "现代AI极大扩展了图像处理能力，但模型优先、追求榜单的研究模式可能偏离真实成像问题。本文提出以问题为先的研究框架，将物理成像问题、解决原理、统计估计器和计算实现明确区分，并厘清AI所能发挥的作用。该框架有助于引导研究者从真实问题出发，而不是仅仅在公共基准上优化模型。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "computer vision research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2608.27226v1",
+      "source": "arxiv",
+      "title": "DINOcular: Self-Supervised Visuospatial Representations",
+      "abstract": "We introduce a self-supervised framework for learning joint visuospatial representations from RGB-D observations. While modern vision foundation models are trained almost exclusively on RGB images, many embodied systems have access to explicit depth sensing, which provides geometric information that monocular inputs cannot recover. Our method integrates depth-derived geometric priors with a visual backbone through inter-patch and intra-patch fusion, enabling the model to encode both appearance and spatial structure efficiently. The resulting representation shows promising improvements on 3D awareness while preserving semantic transfer: it outperforms prior methods of comparable scale on multiple 3D geometry benchmarks, and remains competitive when probed for standard RGB-D semantic segmentation tasks.",
+      "authors": [
+        "Farkhat Almukhamedov",
+        "Sami Azirar",
+        "Hermann Blum"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-27T15:09:32+00:00",
+      "link": "https://arxiv.org/pdf/2608.27226v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Self-supervised visuospatial representation learning from RGB-D",
+      "llm_evidence_cn": "自监督视觉-空间特征表征学习",
+      "llm_evidence": "自监督视觉-空间特征表征学习",
+      "canonical_evidence": "自监督视觉-空间特征表征学习",
+      "llm_tldr_en": "Introduces DINOcular, a self-supervised framework learning joint visuospatial representations from RGB-D observations, fusing depth-derived geometric priors into a visual backbone to improve 3D awareness while preserving semantic transfer.",
+      "llm_tldr_cn": "现代视觉基础模型仅用RGB图像训练，缺乏深度几何信息，难以满足具身系统需求。提出自监督框架，从RGB-D观测学习联合视觉-空间表征，通过深度推导几何先验与视觉骨干的块间/块内融合高效编码外观与空间结构。在多个3D几何基准上超越同规模方法，语义迁移保持竞争力。该表征学习为具身视觉提供更强的空间感知基础。",
+      "llm_tldr": "现代视觉基础模型仅用RGB图像训练，缺乏深度几何信息，难以满足具身系统需求。提出自监督框架，从RGB-D观测学习联合视觉-空间表征，通过深度推导几何先验与视觉骨干的块间/块内融合高效编码外观与空间结构。在多个3D几何基准上超越同规模方法，语义迁移保持竞争力。该表征学习为具身视觉提供更强的空间感知基础。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "feature extraction in computer vision",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2608.23723v1",
+      "source": "arxiv",
+      "title": "DriftAD: Visually-Guided Text Drift for Few-Shot Industrial Anomaly Detection",
+      "abstract": "Few-shot anomaly detection (FSAD) has recently benefited from vision-language models such as CLIP, which enable anomaly de?tection by aligning visual features with text descriptions of normal and abnormal states. However, existing methods typically rely on static text prompts that are applied uniformly across the entire feature hierarchy and spatial dimensions. This rigid global-to-local matching fails to capture the highly localized and scale-dependent physical variations of industrial defects. To address this, we propose DriftAD, a FSAD framework built on three key modules. First, an Anomaly Signal Amplification (ASA) module enhances subtle defect signals through spatial and frequency branches before text-visual matching. Second, Visually-Guided Text Drift (VGTD) dynamically transforms frozen CLIP text embeddings, steering them into layer?wise, spatially-adaptive anomaly descriptors conditioned on local visual context at each encoder depth. Third, Drift-Guided Spatial Gating (DGSG) uses the drifted abnormal descriptor as a spatial probe to selectively enhance anomaly-relevant visual features. Addi?tionally, a drift separation loss prevents representational collapse of the drifted descriptors, and a gate supervision loss enforces spatially discriminative gating in DGSG. Extensive experiments on MVTec?AD and VisA demonstrate state-of-the-art performance across all 1-, 2-, and 4-shot settings on both image-level and pixel-level metrics. Code is available at https://github.com/wenyang001/DriftAD.",
+      "authors": [
+        "Wenyang Liu",
+        "Tianyi Liu",
+        "Dongshuo Zhang",
+        "Kejun Wu",
+        "Adams Wai-Kin Kong"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-24T18:09:46+00:00",
+      "link": "https://arxiv.org/pdf/2608.23723v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Few-shot visual anomaly detection using vision-language models",
+      "llm_evidence_cn": "少样本视觉异常检测算法，利用视觉语言模型",
+      "llm_evidence": "少样本视觉异常检测算法，利用视觉语言模型",
+      "canonical_evidence": "少样本视觉异常检测算法，利用视觉语言模型",
+      "llm_tldr_en": "Introduces DriftAD, a few-shot industrial anomaly detection framework using visual-guided text drift and anomaly signal amplification to align CLIP features across scales, improving detection of localized defects.",
+      "llm_tldr_cn": "少样本工业异常检测借助CLIP视觉语言模型，但静态文本提示的全局到局部匹配难以捕捉尺度依赖的局部缺陷。提出DriftAD框架，包含异常信号放大模块加强空间与频率分支中的细微缺陷信号，再通过视觉引导文本漂移进行跨层级对齐。在少样本工业异常检测任务中取得性能提升，能够更准确刻画局部尺度变化。该工作改进视觉语言模型对工业缺陷的适应能力。",
+      "llm_tldr": "少样本工业异常检测借助CLIP视觉语言模型，但静态文本提示的全局到局部匹配难以捕捉尺度依赖的局部缺陷。提出DriftAD框架，包含异常信号放大模块加强空间与频率分支中的细微缺陷信号，再通过视觉引导文本漂移进行跨层级对齐。在少样本工业异常检测任务中取得性能提升，能够更准确刻画局部尺度变化。该工作改进视觉语言模型对工业缺陷的适应能力。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "visual recognition algorithms",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}

@@ -1,0 +1,454 @@
+Title: When Do VLMs Help Arabic Manuscript OCR? A Cross-Dataset Study
+
+URL Source: https://arxiv.org/pdf/2608.22366v1
+
+Published Time: Tue, 25 Aug 2026 01:07:26 GMT
+
+Number of Pages: 23
+
+Markdown Content:
+# WHEN DO VLM S HELP ARABIC MANUSCRIPT OCR? A CROSS -D ATASET STUDY ∗
+
+Moshiur Farazi 1,∗ Firoj Alam 2 Abderrahmane Maaradji 1 Zakaria Maamar 1
+
+Hamdy Mubarak 2 Wajdi Zaghouani 3
+
+> 1
+
+University of Doha for Science and Technology, Doha, Qatar 
+
+> 2
+
+Qatar Computing Research Institute, Hamad Bin Khalifa University, Doha, Qatar 
+
+> 3
+
+Northwestern University in Qatar, Doha, Qatar 
+
+> ∗
+
+Corresponding author: moshiur.farazi@udst.edu.qa 
+
+# ABSTRACT 
+
+Vision-language models (VLMs) are increasingly being used for document understanding, yet their role in Arabic and Islamic manuscript recognition remains underexplored. To address such a gap in this paper, we evaluate traditional OCR, general-purpose VLMs, Arabic-specialized VLMs, and OCR-conditioned VLM correction across eight Arabic text datasets spanning historical manuscripts, aged printed books, clean print, multi-domain documents, and handwriting. The results show that no single approach dominates across setups. On line-level historical manuscripts, VLMs are close to Tesseract; on page-level manuscript images, they perform better; and in several settings, an OCR-conditioned corrector improves over both standalone OCR and standalone VLMs. The central find-ing is an OCR-prior recoverability principle: OCR conditioning helps when the OCR output re-mains visually and textually recoverable, providing anchors that the VLM can refine against the image. It improves recognition on aged print, clean print, mixed-domain Arabic, and some Naskh manuscripts, but degrades performance when the prior is script-mismatched or systematically mis-leading, as in Maghribi manuscripts and realistic student handwriting. Additional diagnostics show that Arabic VLM-OCR is sensitive to diacritics, preprocessing, generation budget, and repetition loops. These findings support an adaptive OCR-VLM workflow that routes pages according to script, OCR-prior recoverability, length diagnostics, and failure-mode indicators. 
+
+Keywords Islamic manuscripts, Arabic handwriting recognition, vision-language models, document understanding, metadata extraction, digital humanities, OCR correction 
+
+# 1 Introduction 
+
+Vision-Language Models (VLMs) are changing how document understanding systems are designed. Text recognition is moving from OCR-dependent pipelines toward OCR-free and end-to-end models that can read visually rich pages and reason over their content (Kim et al., 2022; Wei et al., 2024; Bai et al., 2025a). Recent work on historical doc-uments shows that multimodal LLMs can transcribe archival records competitively, and in some Latin-script settings they can outperform conventional OCR and Handwritten Text Recognition (HTR) systems (Greif et al., 2025; Sem-nani et al., 2025). The main question is therefore no longer only whether VLMs can read historical documents. It is also when they should be used, whether they should replace or complement OCR, and how their outputs should be evaluated (Greif et al., 2025; Kanerva et al., 2025). For Islamic manuscripts, these deployment questions remain largely unanswered. Existing Arabic OCR and VLM work focuses mainly on modern Arabic OCR, handwriting, and document understanding, while historical Arabic work has focused mainly on datasets and supervised HTR rather than zero-shot VLM-based manuscript recognition (Bhatia et al., 2024; Heakl et al., 2025; Saeed et al., 2024; Chan et al., 2024). 
+
+> ∗
+
+This is a preprint of a manuscript currently under peer review. It has not yet been peer-reviewed and may differ substantially from later versions. arXiv:2608.22366v1 [cs.CV] 23 Aug 2026 When Do VLMs Help Arabic Manuscript OCR? 
+
+This gap matters for cultural heritage. Islamic manuscripts preserve one of the world’s richest textual traditions. They span Qur’anic sciences, hadith, jurisprudence, theology, medicine, astronomy, philosophy, literature, and the transmis-sion of scholarly knowledge across centuries (Gruber, 2010; Gacek, 2009). Major libraries and digital initiatives have invested heavily in preservation and access. Large collections are held by the British Library, the Qatar Digital Library, the Bibliothèque nationale de France, the Bodleian Library, and institutions across the Middle East and North Africa. The Qatar Digital Library alone contains more than two million digitised pages (Qatar National Library, 2026). These efforts have made high-resolution manuscript images increasingly available. Yet digitised images alone do not make these collections computationally searchable, linkable, or analysable. The main bottleneck is the lack of reliable machine-readable structure extracted from the images. Researchers, cura-tors, and collection users still rely heavily on catalogue descriptions and keyword search. Manuscript pages contain much richer evidence, including transcribed text, layout, marginalia, colophons, script styles, dates, places, names, and subject cues (Gacek, 2009; Quiring-Zoche, 2013). Recovering this evidence requires systems that can move from pixels to text and from text to structured knowledge (Abdallah et al., 2024; Borchmann et al., 2021). 
+
+Figure 1: Representative data-level degradation modes in Arabic manuscript scans, drawn from samples in our evalu-ation corpora. Each mode corresponds to a failure pattern that traditional OCR and VLM systems handle differently. This transfer from image to machine-readable text is not guaranteed for Islamic manuscripts. Arabic is cursive and context-sensitive. Letter shapes depend on position, and small dots or diacritics can change character identity, pronun-ciation, or meaning (Faizullah et al., 2023; Bhatia et al., 2024). Manuscript images add further difficulty (Figure 1). They often contain marginal glosses, commentary around a base text, rubrication, colophons, paratextual notes, de-graded paper, faded ink, and script traditions such as Naskh and Maghribi (Gacek, 2009; Quiring-Zoche, 2013). These visual and linguistic properties make it unclear whether VLM gains reported for Latin-script historical OCR will transfer to Arabic-script manuscript collections (Greif et al., 2025; Semnani et al., 2025). The missing piece is not Arabic OCR itself. Recent Arabic-specific systems such as Qalam, QARI-OCR, and Baseer show rapid progress on Arabic OCR, handwriting recognition, and document-to-Markdown conversion (Bhatia et al., 2024; Wasfy et al., 2025; Hennara et al., 2025). KITAB-Bench and SARD provide modern multi-domain and synthetic printed Arabic benchmarks (Heakl et al., 2025; Nacar et al., 2025). Historical Arabic work has mainly produced datasets and supervised HTR systems, including Muharaf and HATFormer (Saeed et al., 2024; Chan et al., 2024). What remains unclear is whether current VLMs can serve as standalone recognisers or OCR-conditioned correctors for Islamic manuscript digitisation. It is also unclear which document settings favour each strategy. 2When Do VLMs Help Arabic Manuscript OCR? 
+
+This paper addresses that gap through a cross-domain zero-shot evaluation of traditional OCR, general-purpose VLMs, Arabic-specialised VLMs, and OCR-conditioned VLM correction. We evaluate eight Arabic text datasets with more than 7,700 samples. The datasets cover historical manuscripts, aged printed books, modern handwriting, multi-domain Arabic documents, and synthetic clean print. We treat these datasets as distinct document settings rather than as one pooled benchmark, since each setting tests a different deployment condition. 
+
+Research questions. We ask five questions. • RQ1. How do zero-shot VLMs compare with traditional OCR and supervised HTR baselines on Arabic manuscript recognition. • RQ2. When does OCR-conditioned VLM correction improve recognition, and when does the OCR prior mislead the model. • RQ3. Do common image preprocessing operations improve VLM recognition on historical Arabic manuscript lines. • RQ4. Which failure modes shape Arabic VLM-OCR, especially for diacritics, hallucination, truncation, and repetition. • RQ5. What does a zero-shot metadata extraction pilot reveal about prompt sensitivity and compliance-bias hallu-cination. 
+
+Contributions. The paper makes five contributions. • We provide a cross-domain zero-shot benchmark of traditional OCR, general-purpose VLMs, Arabic-specialised VLMs, and OCR-conditioned VLM correction across eight Arabic text datasets. • We introduce a hybrid OCR-corrector pipeline in which a VLM receives both the source image and noisy Tesseract output, and we show through ablations that both signals are necessary for its gains. • We identify an OCR-prior recoverability principle. OCR conditioning helps when the OCR output remains visually and textually recoverable, but it can hurt when the prior is script-mismatched or systematically misleading. • We analyse deployment-critical failure modes, including diacritics sensitivity, preprocessing effects, generation-budget truncation, repetition-loop failures, and metadata compliance bias. • We provide an exploratory metadata extraction study showing that null-enforcing prompt calibration can reduce schema-filling behaviour on manuscript pages. 
+
+Main findings. The experiments answer the research questions directly. For RQ1 , zero-shot VLMs are not yet replace-ments for supervised HTR, but they are competitive with traditional OCR in several manuscript settings. On line-level Muharaf manuscripts, Qwen2.5-VL-7B is close to Tesseract after diacritics normalisation. On page-level Madinah images, VLMs perform better than Tesseract, suggesting that page context can help VLM recognition. For RQ2 ,OCR-conditioned correction helps only when the OCR prior remains recoverable. On Muharaf, Tesseract →Qwen reduces CER from 69.2% to 60.6%. The corrector also improves SARD, KITAB-Bench, and QNL Books. In contrast, it hurts or gives little benefit on RASAM 2, KHATT, and Students Essays, where the OCR prior is less reliable or script-mismatched. For RQ3 , common OCR preprocessing does not uniformly help VLM recognition. On Muharaf, sharpening is the only tested operation that improves Qwen, reducing CER from 70.4% to 67.2%. Binarisation, denoising, contrast enhancement, and combined pipelines degrade performance, suggesting that aggressive preprocessing can damage small Arabic-script cues. For RQ4 , Arabic VLM-OCR is shaped by failure modes that CER alone does not fully explain. Diacritics add a large CER penalty for the main VLMs, while Tesseract often avoids this penalty by omitting tashkeel. Page-level generation is also sensitive to decoding settings. A small generation budget causes truncation on SARD, while greedy decoding causes repetition loops on about 28% of Students Essays pages. For RQ5 , the metadata pilot shows that zero-shot structured extraction is highly prompt-sensitive. A permissive prompt makes the VLM fill metadata fields with body text, while a null-enforcing prompt reduces this compliance-bias behaviour. We therefore treat this experiment as a failure-mode study rather than as a full metadata benchmark. Overall, the findings support an adaptive OCR-VLM workflow. A target collection should first be tested on a small annotated probe sample. The probe should compare traditional OCR, standalone VLMs, and OCR-conditioned correc-tion, and it should inspect CER, length ratio, repetition, script type, and qualitative OCR-prior recoverability. When the OCR prior remains readable and recoverable, the corrector is useful. When the prior is distorted, script-mismatched, or dominated by systematic errors, a standalone VLM is safer. The remainder of this paper is organised as follows. Section 2 reviews existing approaches to text recognition, layout analysis, and metadata extraction for Arabic manuscripts, and presents a taxonomy of challenges. Section 3 describes the datasets. Section 4 describes the experimental design. Section 5 reports the results. Section 6 discusses deployment implications, limitations, and future directions. Section 7 concludes the paper. 3When Do VLMs Help Arabic Manuscript OCR? 
+
+# 2 Background and Related Work 
+
+Islamic manuscript recognition sits at the intersection of Arabic OCR, historical handwritten text recognition, docu-ment layout analysis, metadata extraction, and vision-language modelling (Bhatia et al., 2026a). 
+
+2.1 Why Islamic Manuscript Images Are Difficult 
+
+Islamic manuscripts differ from both modern Arabic documents and many Latin-script historical records. The system input is a digitised page image, but many recognition difficulties come from the manuscript object itself. Arabic script is cursive and context-sensitive. Most letters connect to neighbouring letters within a word, and the same letter may take isolated, initial, medial, or final forms depending on its position. This makes character segmentation ambiguous and error-prone, which has long been a central challenge in Arabic OCR (Faizullah et al., 2023; Bhatia et al., 2024). Small visual marks also carry substantial information. Dots distinguish many Arabic letters, and diacritics, or tashkeel ,can change pronunciation and meaning. In Qur’anic and scholarly manuscripts, diacritics may be part of the text rather than optional decoration. They are also difficult to recognise visually because they are small and are often affected by fading, scanning noise, or paper degradation. Historical Islamic manuscripts show wide script variation. Common traditions include Naskh, Maghribi, Thuluth, Kufic, Ta’liq, and Nasta’liq. These scripts differ in letter shape, proportion, spacing, and decorative practice (Gacek, 2009). A system that works on one script style may not transfer well to another. This is especially important for historical Arabic HTR, where supervised systems can perform well in-domain but often depend on labelled data from the target script tradition (Chan et al., 2024; Vidal-Gorène et al., 2024). The page layout adds another source of difficulty. Many manuscripts contain marginal glosses, commentary around a base text, rubrication, decorative headings, ownership notes, and colophons. A single page may contain several text zones with different functions and reading orders. Colophons are especially important because they may contain names, dates, places, and copyist information (Quiring-Zoche, 2013). These features make simple line-by-line OCR insufficient for search, indexing, and downstream analysis. The content also differs from modern web Arabic. Many manuscripts use classical Arabic, specialised terminology, and dense scholarly conventions. They may contain Qur’anic quotations, hadith chains, legal concepts, scientific terminology, names of authorities, and transmission certificates. A useful system must therefore preserve the written text accurately while also supporting later linking, classification, and metadata extraction. Finally, many manuscript images are physically degraded. Ink fading, bleedthrough, stains, foxing, tears, page curva-ture, and binding damage are common. These artefacts interact with the visual density of Arabic script. They can hide dots, erase diacritics, or break thin connecting strokes. As a result, a system that works on clean printed Arabic may fail on historical manuscript pages. 
+
+2.2 Arabic OCR and Historical HTR 
+
+Traditional Arabic OCR systems usually follow a pipeline. They apply preprocessing, layout analysis, character or word recognition, and post-processing. Errors introduced at one stage can affect all later stages (Faizullah et al., 2023; Kasem et al., 2023; Gupta et al., 2007). Tesseract remains a widely used open-source OCR system and supports Arabic (Smith, 2007). It is therefore a useful reference point for practical digitisation projects, even when it is not expected to match supervised HTR on difficult manuscripts. Supervised HTR systems can be much stronger when labelled training data is available. CNN, RNN, CTC, and transformer-based systems have been widely used for offline handwriting recognition (Graves and Schmidhuber, 2008). For historical Arabic, HATFormer reports strong supervised performance on Muharaf (Chan et al., 2024). RASAM 2 also supports supervised recognition of Maghribi manuscripts (Vidal-Gorène et al., 2024). These results show the value of domain-specific training. The main limitation is data availability. Most Islamic manuscript collections do not have enough expert transcriptions to train a collection-specific HTR model. Script traditions, page layouts, and physical degradation also vary across collections. This makes supervised training expensive and difficult to scale. It also motivates zero-shot and weakly supervised alternatives that can be deployed before large annotation efforts are possible. 4When Do VLMs Help Arabic Manuscript OCR? 
+
+2.3 VLMs for Document and Historical OCR 
+
+Recent VLMs have changed how document understanding is framed. Earlier systems often depended on OCR before downstream processing. Newer systems treat recognition and understanding as a joint vision-language task. Donut introduced OCR-free document understanding (Kim et al., 2022). GOT-OCR frames OCR as a unified end-to-end task (Wei et al., 2024). Qwen2.5-VL further shows strong capabilities on visually rich documents, including pages with layout, tables, charts, and diagrams (Bai et al., 2025a). Historical document studies suggest that this shift is important for archival material. Multimodal LLMs have shown competitive performance on European historical documents (Greif et al., 2025; Kim et al., 2025; Crosilla et al., 2025). CHURRO extends this direction with a historical-text VLM trained and evaluated across many historical corpora (Sem-nani et al., 2025). These studies show that VLMs can be useful for historical OCR. They also show that performance depends on deployment choices such as input granularity, prompting, decoding, and evaluation protocol. Arabic-specific VLM and OCR systems are also emerging. Qalam targets Arabic OCR and handwriting recogni-tion (Bhatia et al., 2024). QARI-OCR adapts multimodal models for Arabic text recognition and includes diacri-tised text (Wasfy et al., 2025). Baseer focuses on Arabic document-to-Markdown conversion (Hennara et al., 2025). KITAB-Bench provides a multi-domain Arabic OCR and document understanding benchmark (Heakl et al., 2025). SARD provides a synthetic printed Arabic OCR benchmark (Nacar et al., 2025). These systems show rapid progress, but they do not fully answer the manuscript question. Most evaluations focus on modern printed Arabic, controlled handwriting, synthetic Arabic, or general document understanding. Historical Arabic work has mainly produced datasets and supervised HTR systems. The zero-shot behaviour of VLMs on Islamic manuscript images remains underexplored, especially when the same model must be compared against traditional OCR and OCR-conditioned correction across different document settings. 
+
+2.4 OCR Correction and Deployment Choices 
+
+A separate line of work uses language models to correct noisy OCR output. The basic idea is that OCR provides a rough textual prior, and the language model revises it. In historical documents, this can improve recognition when the OCR output still preserves useful anchors (Greif et al., 2025). Correction is not always beneficial. Kanerva et al. (2025) show that LLM-based OCR correction can help in some languages and fail in others. Levchenko (2025) also reports cases where post-OCR correction degrades historical OCR output. Reference-based correction has been used for historical Vietnamese diacritics (Do et al., 2024), but that setting assumes a stronger textual anchor than noisy OCR alone. These findings motivate a practical question for Arabic manuscripts. A noisy OCR prior may help a VLM by con-straining generation and giving it partial text anchors. It may also hurt by pulling the model toward systematic OCR errors. The outcome likely depends on how recoverable the OCR prior is, how compatible it is with the script, how degraded the image is, and which VLM is used as the corrector. This paper studies that question directly through an OCR-conditioned VLM pipeline that receives both the source image and the Tesseract output. 
+
+2.5 Layout, Metadata, and Semantic Understanding 
+
+Text recognition is only one part of manuscript understanding. Digitisation projects also need layout analysis, meta-data extraction, entity recognition, and content classification. These tasks support search, cataloguing, linking, and scholarly discovery. Layout analysis for Arabic-script manuscripts has received less attention than OCR. BADAM provides a public dataset for baseline detection in Arabic-script manuscripts (Kiessling et al., 2019). Related systems based on document layout models can detect text regions, but most do not model Islamic manuscript structures. Marginal glosses, nested commentary, rubrication, colophons, and paratextual zones remain difficult. Metadata and entity extraction are also underdeveloped for manuscript images. Arabic NER has been studied on text (Zaghouani, 2012). Image-based entity extraction has been explored for European historical documents (Greif et al., 2025). To our knowledge, there is no equivalent evaluation for historical Arabic manuscript images. Text-level Islamic NLP has advanced in parallel. Recent work addresses Qur’anic and hadith QA, hallucination de-tection, Arabic and Islamic cultural benchmarks, and Arabic-centric generative models (Bhatia et al., 2026b; Alwajih et al., 2025; FANAR Team et al., 2026). These systems usually assume clean digital text. They do not solve the image-level bottleneck. The gap between manuscript images and text-level Islamic NLP therefore remains substantial. 5When Do VLMs Help Arabic Manuscript OCR? 
+
+Table 1: Positioning of this work against related studies. The columns indicate script family, VLM setting, whether OCR correction is tested, whether diacritics are analysed, and whether cross-dataset quality comparison is included. 
+
+✓ = yes, ✗ = no, – = not applicable.                                                                 
+
+> Study Script VLM setting Corrector Diacritics Cross-dataset
+> European and multilingual historical OCR
+> Greif et al. (2025) Latin ZS ✓✗✗
+> Kim et al. (2025) Latin ZS ✗✗✗
+> Crosilla et al. (2025) Latin multi ZS ✗✗✓
+> Semnani et al. (2025) 46 languages FT ✗✗✓
+> Kanerva et al. (2025) Latin and Finnish –✓✗✓
+> Levchenko (2025) Latin ZS ✓✗✗
+> Do et al. (2024) Vietnamese –✓✓✗
+> Arabic OCR and HTR
+> Chan et al. (2024) Arabic historical –✗✗✗
+> Wasfy et al. (2025) Arabic printed FT ✗✓✗
+> Hennara et al. (2025) Arabic modern FT ✗✗✗
+> Heakl et al. (2025) Arabic multi-domain ZS ✗✗✓
+> This work Arabic historical and multi-domain ZS ✓✓✓
+
+Positioning of This Work. Table 1 summarises the closest prior work. Existing studies cover European historical OCR, Arabic OCR, supervised Arabic HTR, OCR correction, and Arabic document understanding. To our knowledge, prior work has not jointly evaluated zero-shot VLM recognition, OCR-conditioned correction, diacritics sensitivity, and cross-dataset OCR-prior recoverability for historical Arabic manuscript images. This is the gap addressed by our study. 
+
+# 3 Datasets 
+
+We evaluate eight Arabic text datasets. They cover historical manuscripts, modern handwriting, multi-domain Arabic OCR, synthetic printed text, aged printed books, and student handwriting. Six datasets are public or previously released external resources. Two datasets are in-house collections obtained directly from their originators. Table 2 summarises the evaluated datasets and also lists three related resources that define adjacent Arabic document-analysis tasks but are not used in our experiments. We use the datasets as separate evaluation settings rather than as one pooled benchmark. This is important because each dataset tests a different deployment condition. Muharaf and Madinah test historical manuscript recognition. RASAM 2 tests transfer to Maghribi-script manuscripts. KHATT and Students Essays test modern handwriting under controlled and realistic conditions. KITAB-Bench tests multi-domain Arabic OCR. SARD tests clean printed Arabic. QNL Books tests aged printed Arabic from a realistic digitisation setting. Table 2: Arabic text recognition datasets. Datasets marked with * are used in our experiments. 
+
+Dataset Content Scale Annotation Access 
+
+Muharaf * Historical Arabic manuscripts, 19th–21st c. 
+
+∼1,600 pages Line + polygon Public RASAM 2 * Maghribi manuscripts ∼300 pages Line, PAGE-XML Public KHATT * Modern Arabic handwriting 1,000 writers Paragraph Restricted Madinah * Ancient manuscripts, 8 books 40 pages Page Public KITAB-Bench * Multi-domain Arabic 3,760 samples Mixed, 13 subsets Public SARD * Synthetic printed Arabic 996 samples Character + word Public QNL Books * Aged printed Arabic, in-house 199 pages / 100 books Page, line-aligned In-house Students Essays * Student handwriting, Grade 4– 12, in-house 200 essays Page, dual ground truth In-house MADCAT Arabic handwriting ∼42,000 pages Page + line Restricted HistoryAr Historical Arabic ∼100 pages Line Public BADAM Baseline detection ∼400 pages Baseline polygon Public 
+
+6When Do VLMs Help Arabic Manuscript OCR? 
+
+3.1 External Datasets 
+
+Muharaf is our primary line-level historical manuscript benchmark (Saeed et al., 2024). We use its standard test split of 1,334 line images. The corpus contains more than 1,600 Arabic manuscript pages with expert transcriptions and polygon annotations. The script is predominantly Naskh. We use Muharaf for OCR versus VLM comparison, preprocessing analysis, diacritics analysis, and OCR-conditioned correction. 
+
+Madinah provides 40 page-level images from eight historical Arabic manuscripts (Najam and Faizullah, 2024). We use it to test page-level manuscript recognition and to examine whether VLMs benefit from full-page context. We also use the first and last page of each book as a small candidate set for the metadata extraction pilot, since title pages and colophons are often found near the beginning or end of manuscripts. 
+
+RASAM 2 contains Maghribi Arabic manuscript images from the BULAC Library (Vidal-Gorène et al., 2024). We use 159 page images with PAGE-XML line-level ground truth. This dataset tests whether Arabic VLM-OCR and OCR-conditioned correction transfer beyond Naskh-style manuscripts. It is therefore important for evaluating script mismatch and OCR-prior recoverability. 
+
+KHATT is a modern Arabic offline handwriting dataset (Mahmoud et al., 2014). We use 1,038 test paragraphs from controlled writers. It serves as a modern handwriting control condition. Compared with Students Essays, KHATT is more regular because the writing comes from a controlled data collection setup. 
+
+SARD is a synthetic printed Arabic OCR dataset (Nacar et al., 2025). We use 996 samples rendered across six fonts. It represents the clean printed setting. This setting is useful because traditional OCR is expected to be strong, which makes it possible to test whether VLMs and OCR-conditioned correction still add value when the OCR prior is already favourable. 
+
+KITAB-Bench is a multi-domain Arabic OCR benchmark with 3,760 samples across 13 subsets (Heakl et al., 2025). The subsets cover printed text, synthetic text, handwriting, historical documents, and literary Arabic. We use KITAB-Bench in two ways. First, it provides an aggregate test of the OCR-corrector pipeline across diverse Arabic document types. Second, its subsets provide a more fine-grained test of when the OCR prior helps or hurts VLM correction. 
+
+3.2 In-House Collections 
+
+QNL Books is an unpublished in-house collection of aged printed Arabic pages. It contains 199 evaluable page images from 100 Arabic books in the Qatar National Library collection. The pages were originally curated in 2017 for an OCR benchmarking project. The books were printed with older printing technology and show visible aging. Common issues include page yellowing, ink degradation, and mild scanning artefacts. QNL Books occupies a middle point between clean printed Arabic and historical handwriting. It is harder than SARD because the pages are aged and visually degraded. It is easier than handwritten manuscript data because the text is printed. Each page was transcribed verbatim by a trained linguist with line-level alignment. The transcription preserves diacritics, page numbers, and headers. The original test split contains two pages per book. One page contained only whitespace and was excluded. 
+
+Students Essays is an unpublished in-house corpus of 200 Arabic essays written by students in Grades 4–12. The pages contain natural handwriting from non-expert writers. They include variation in letter shape, spacing, page tilt, erasures, and mid-line corrections. This makes the corpus more realistic than controlled handwriting benchmarks. Each Students Essays page has two references. The verbatim reference preserves the spelling and grammar written on the page. The corrected reference normalises those errors. We use the verbatim reference as the primary ground truth because it matches the visual content of the page. We report results against the corrected reference as a supplementary signal. This helps show whether a model preserves the written form or silently corrects it. Sample-level metadata is available for Students Essays, but it is not analysed in this paper. It extends our evaluation to realistic student handwriting and complements KHATT, which contains more controlled handwriting samples. The two in-house collections serve two roles. They broaden the evaluation to aged printed Arabic and realistic student handwriting. They also reduce the chance that all results are affected by public benchmark exposure during model pretraining. QNL Books and Students Essays were not publicly released at the time of evaluation. 7When Do VLMs Help Arabic Manuscript OCR? 
+
+# 4 Experimental Design 
+
+This section describes the evaluation protocol. We first summarise how the experiments map to the research ques-tions. We then describe the evaluated systems, OCR-conditioned correction pipeline, preprocessing variants, prompts, inference settings, and evaluation metrics. 
+
+4.1 Evaluation Overview 
+
+The evaluation is organised around the five research questions. RQ1 compares traditional OCR and standalone VLMs on line-level and page-level manuscript recognition. RQ2 tests OCR-conditioned correction across manuscript, print, and handwriting settings. RQ3 uses Muharaf to study whether common preprocessing operations improve VLM recognition. RQ4 analyses failure modes that affect Arabic VLM-OCR, including diacritics, hallucination, truncation, and repetition loops. RQ5 uses a small Madinah metadata pilot to study prompt sensitivity rather than full extraction accuracy. Unless stated otherwise, the main results use fixed prompts and decoding settings for each input type. Reruns on SARD and Students Essays are reported as diagnostic experiments because they isolate token-budget truncation and greedy-decoding repetition failures. 
+
+4.2 Models 
+
+Table 3: Summary of evaluated systems. Kraken (Calfa, 2024) is part of the open-source HTR landscape but is not included in the head-to-head comparison because its default installation does not ship with an Arabic-capable model.             
+
+> Model Paradigm Parameters Architecture
+> Tesseract 5 (Smith, 2007) Traditional OCR —Rule-based + LSTM Qwen2.5-VL-7B-Instruct (Bai et al., 2025a) (Qwen) General-purpose VLM 7B Transformer VL Fanar-2-Oryx-IVU (FANAR Team et al., 2026) (Fanar-2) Arabic-tuned VLM 7B Qwen2.5-VL fine-tuned QARI-OCR (Wasfy et al., 2025; Bai et al., 2025b) OCR-tuned VLM 4B Qwen3-VL-4B + LoRA
+
+In Table 3, we summarise the models used in our experiments. All local VLM inference uses bfloat16 precision on NVIDIA GPUs. The comparison is framed as a zero-shot deployment study, not as a supervised HTR benchmark. While supervised Arabic HTR systems may perform better when labelled data from the target collection is available, our focus is on systems that can be deployed without collection-specific training. This setting allows us to compare the practical utility of traditional OCR, standalone VLM recognition, and OCR-conditioned VLM correction across diverse Arabic document types. 
+
+4.3 OCR-Corrector Pipeline 
+
+We test whether noisy OCR output can act as a useful textual prior for VLM recognition. In Figure 2, we present the experimental pipeline. It first runs Tesseract on the input image. It then provides the Tesseract output and the source image to a VLM. The VLM is asked to correct the OCR output while checking it against the image. This design follows recent post-OCR correction work on historical documents (Greif et al., 2025), however, it differs in one important way. The corrector receives both the noisy OCR text and the original image. The OCR-conditioned prompt is shown below. 
+
+An OCR system produced the following noisy transcription of this Arabic text image. tesseract_output 
+
+Please examine the image and produce a corrected transcription. Fix OCR errors while preserving the original text faithfully, including diacritical marks when they are visible. Output only the corrected text. 
+
+This pipeline tests whether OCR can serve as a useful text cue for the VLM. The OCR output may reduce hallucination by giving the model a textual context of the image. The image then helps the model check that text and correct OCR errors. The same prior can also be harmful when Tesseract output is systematically wrong. We therefore evaluate the corrector across different scripts, input granularities, and document settings. Qwen is the primary corrector. Fanar-2 is also evaluated as a second corrector on Muharaf, QNL Books, RASAM 2, and Students Essays. Madinah is excluded from this experiment as it is used for page-level recognition and the metadata analysis. 8When Do VLMs Help Arabic Manuscript OCR? 
+
+Figure 2: Architecture of the hybrid OCR-corrector pipeline. Tesseract provides a noisy text. The VLM receives this prior together with the source image and outputs a transcription. 
+
+4.4 Image Preprocessing 
+
+To address RQ3, we evaluate whether simple image preprocessing improves VLM recognition. We conduct this experiment on the released Muharaf line images using Qwen, since Muharaf provides expert-transcribed line-level data for historical handwritten Arabic manuscripts. We evaluate eight input conditions. The Raw condition uses the original image without preprocessing. Binarised applies adaptive binarisation. Contrast applies CLAHE-based contrast enhancement. Denoise uses Gaussian denoising. Sharpen uses unsharp masking. We also test two sequential variants. 
+
+Contrast+Sharpen applies contrast enhancement followed by sharpening, and Denoise+Contrast applies denoising followed by contrast enhancement. The Full condition applies all preprocessing operations in sequence. This design tests whether operations that are common in OCR pipelines also help VLMs. It also tests whether preprocessing removes small visual cues that are important for Arabic script, including dots, diacritics, and thin connecting strokes. 
+
+4.5 Prompting Strategy 
+
+We keep prompting simple and consistent across models so that differences in output are driven mainly by the model and input condition rather than by prompt variation. For standalone recognition, all VLMs receive the same tran-scription prompt. The prompt, as presented below, asks for faithful transcription only and suppresses explanations, translation, and commentary. 
+
+> You are an expert Arabic manuscript transcriber. Read the Arabic text in this image and transcribe it exactly as written. Output only the transcribed Arabic text, nothing else.
+
+For page-level images, we add only one instruction, namely to transcribe the page line by line. We do not ask the model to normalise, interpret, summarise, or correct the text in the standalone setting. We used English prompts as several prior works report that models are better with English prompts (Kmainasi et al., 2024; Bhatia et al., 2026b). We used greedy decoding for the main recognition experiments to make the outputs reproducible. Diagnostic reruns are reported separately when a different decoding constraint is applied. 
+
+4.6 Experimental Settings 
+
+All VLM inference was conducted with the transformers library on NVIDIA H100 80 GB GPUs. The default line-level setting uses max_new_tokens=512 , temperature=0 , and do_sample=False . Page-level inputs often require longer generations. We therefore use max_new_tokens values of 2,048 or 4,096 for Madinah, RASAM 2, QNL Books, Students Essays, and the SARD long-reference rerun. Students Essays exposes a repetition-loop failure under greedy decoding. For the standalone VLM reruns on the catastrophic subset, we set no_repeat_ngram_size=4 .This setting is reported only where it is used and is not silently applied to all results. We run Tesseract using page segmentation mode 7 for Muharaf line images. We use page segmentation mode 6 or 3 for paragraph-level and page-level inputs. Average inference time is below 0.1 seconds per image for Tesseract, about 2 seconds for standalone VLM inference, and about 3 seconds for the OCR-corrector pipeline. 
+
+4.7 Evaluation Metrics Text recognition metrics. We report Character Error Rate (CER) and Word Error Rate (WER). Both are computed as edit distance normalised by the reference length. 
+
+CER = dchar (r, h )
+
+|r|char 
+
+(1) 9When Do VLMs Help Arabic Manuscript OCR? 
+
+WER = dword (r, h )
+
+|r|word 
+
+(2) Here r is the reference, h is the hypothesis, dchar is character-level edit distance, and dword is word-level edit dis-tance. Lower values indicate better recognition. We report scores both with and without Arabic diacritics. The normalised variant strips Arabic diacritical marks from both reference and hypothesis before scoring. The stripped ranges are U+0610–U+061A, U+064B–U+065F, U+0670, and U+06D6–U+06ED. We also unify alef variants and remove tatweel. 
+
+Corpus-level aggregation. Corpus-level CER and WER are computed by summing edit distances across all samples and dividing by the total reference length. This gives a length-weighted score and prevents short samples from domi-nating the result. We report bootstrap 95% confidence intervals with 10,000 iterations for the main CER comparisons. We use paired bootstrap tests for key paired comparisons. 
+
+Relative improvement. For the corrector pipeline, relative improvement is computed against the better standalone method on the same dataset. The standalone methods are Tesseract and the corresponding standalone VLM. 
+
+∆rel = CER best − CER corr 
+
+CER best 
+
+× 100 (3) Here CER best is the CER of the better standalone method, and CER corr is the CER of the OCR-conditioned corrector. Positive values mean that the corrector improves over the best standalone method. Negative values mean that it underperforms. When we report improvement over Tesseract specifically, we name Tesseract as the baseline. 
+
+Error taxonomy. We use a lightweight error taxonomy to compare failure modes. The goal is descriptive analysis rather than a complete forensic decomposition of CER. The categories are not mutually exclusive at the character level. • Substitution character-level substitutions reported by jiwer.process_characters after diacritics stripping, alef unification, and tatweel removal. • Diacritics the difference between character-alignment errors computed with and without diacritics stripping. • Omission a length-ratio heuristic applied when the prediction is shorter than half the reference. • Hallucination a length-ratio heuristic applied when the prediction is longer than 1.5 times the reference. For omission, we attribute the missing characters as max(0 , |ref | − | hyp |). For hallucination, we attribute the ex-cess characters as max(0 , |hyp | − | ref |). These two heuristics capture severe empty-output and runaway-generation cases. They understate moderate length mismatch, so the resulting percentages should be interpreted as relative failure indicators. 
+
+Metadata extraction. For metadata extraction, we report per-field non-null rates and inspect schema compliance. Because the metadata pilot lacks expert field-level ground truth, we treat it as a failure-mode analysis rather than as a full precision and recall evaluation. 
+
+# 5 Results 
+
+In this section, we report the main experimental findings. We first compare traditional OCR and standalone VLMs for manuscript recognition. We then test OCR-conditioned correction and analyse whether the model uses both the OCR prior and the image. We next examine cross-dataset OCR-prior recoverability. The remaining subsections report diagnostic analyses on diacritics, preprocessing, generation budget, repetition loops, metadata extraction, and error types. 
+
+5.1 Standalone OCR and VLM Recognition Line-level recognition on Muharaf. In Table 4, we report CER and WER on the Muharaf test set of 1,334 line images. We report results with and without diacritics in both the reference and the hypothesis. With diacritics stripped, Tesseract obtains 69.2% CER, Qwen obtains 70.4%, and Fanar-2 obtains 70.8%. The Tesseract–Qwen difference is small. A paired bootstrap test gives a difference of −1.3 with a 95% CI of [ −8.8, +5.0], which is not statistically significant. 10 When Do VLMs Help Arabic Manuscript OCR? 
+
+Table 4: Text recognition on the Muharaf test set. Corpus-level CER and WER are reported as percentages. Lower is better. Kraken is omitted because its default installation does not ship an Arabic-capable model and produced empty output on all 1,334 lines. 
+
+Model With diacritics Without diacritics 
+
+CER ↓ WER ↓ CER ↓ WER ↓
+
+Traditional OCR 
+
+Tesseract 5 69.6 103.7 69.2 103.6 
+
+Vision-Language Models 
+
+Qwen2.5-VL-7B 86.7 108.0 70.4 104.6 Fanar-2-Oryx-IVU 87.7 109.0 70.8 105.6 QARI-OCR v0.4.0 194.7 232.0 167.2 230.2 The result shows that current VLMs are close to Tesseract on zero-shot line-level manuscript recognition, although the absolute error rates remain high. This is expected as the evaluation is zero-shot, while supervised systems such as HATFormer (Chan et al., 2024) are trained on target manuscript data. QARI-OCR performs poorly on Muharaf, with 167.2% normalised CER. This indicates severe domain mismatch between its OCR tuning data and historical manuscript images. In Section 5.8, we report that its errors are dominated by hallucinated text. Table 5: Comparison between Muharaf line images and Madinah page images. CER and WER are reported without diacritics. 
+
+Model Muharaf line Madinah page ∆CER CER WER CER WER Tesseract 5 69.2 103.6 51.0 85.7 −18 .2
+
+Qwen2.5-VL-7B 70.4 104.6 40.7 80.2 −29 .7
+
+Fanar-2 70.8 105.6 39.6 78.7 −31 .2
+
+Page-level recognition on Madinah. In Table 5, we compare line-level Muharaf with page-level Madinah. This comparison does not isolate page context because the datasets also differ in content, image quality, and annotation unit. It is still useful because it shows how model behaviour changes when the input contains a full manuscript page. On Madinah, Fanar-2 obtains the best CER at 39.6%. Qwen follows closely at 40.7%. Both VLMs outperform Tesseract, which obtains 51.0%. The improvement from Muharaf to Madinah is larger for VLMs than for Tesseract. This suggests that VLMs may benefit from page context, including surrounding text, layout cues, and visual continuity that are lost in line crops. The result should be interpreted cautiously because Madinah contains only 40 pages from 8 books. The Fanar–Qwen gap is 1.1 and is not statistically significant under book-level cluster bootstrap. 
+
+5.2 OCR-Conditioned Correction and Input Ablations 
+
+We next evaluate whether noisy OCR output can help a VLM. The corrector pipeline provides Tesseract output and the source image to the VLM. The model is asked to produce a corrected transcription. The best result is Tesseract →Qwen at 60.6% CER, as reported in Table 6. This is an 8.6 absolute reduction from Tesseract alone and a 12.4% relative improvement. A paired bootstrap test confirms that the improvement is significant. The 95% CI is [5.8, 10.9], with 
+
+p < 0.001 . Tesseract →Fanar-2 also improves over the standalone systems and reaches 63.5% CER. On Muharaf, Qwen is the stronger corrector. This does not hold everywhere, since Fanar-2 is the stronger corrector on QNL Books. The corpus-level gain hides sample-level variation. The corrector improves CER by more than 1% on 36.4% of Muharaf samples and worsens CER by more than 1% on 44.2%. The aggregate gain comes from improvements on longer samples, which carry more weight in corpus-level CER. The corrector is therefore useful on average, but it is not risk-free for every line. 
+
+Evidence for OCR-text use. The corrector appears to use the OCR prior rather than ignore it. We test this on the 1,198 Muharaf lines where Tesseract produced non-empty output. The corrector output is closer to the Tesseract prior than standalone Qwen is in 71.4% of these samples. The mean normalised distance from Tesseract to the corrector is 133.8%. The mean distance from Tesseract to standalone Qwen is 178.1%. 11 When Do VLMs Help Arabic Manuscript OCR? 
+
+Table 6: OCR-conditioned correction on Muharaf. Metrics are corpus-level percentages with diacritics normalised.                         
+
+> Condition CER ↓WER ↓∆CER
+> Standalone systems
+> Tesseract 5 69.2 103.6 —Qwen2.5-VL-7B (Qwen) 70.4 104.6 +1.2 Fanar-2-Oryx-IVU (Fanar-2) 70.8 105.6 +1.6
+> OCR-conditioned correctors
+> Tesseract →Qwen 60.6 93.9 −8.6
+> Tesseract →Fanar-2 63.5 96.3 −5.7
+
+Table 7: Ablations on the use of the OCR prior on Muharaf. The ablations use 1,198 lines with non-empty Tesseract output. CER is normalised.               
+
+> Condition CER Edit-distance signal
+> Tesseract alone 69.2 —Qwen standalone 70.4 —Tesseract →Qwen with real prior and image 60.6 baseline Shuffled prior with real image 81.6 Distance to wrong prior 64.5% Real prior with image withheld 73.9 Distance to real prior 29.9%
+
+We also run two ablations. The first pairs each image with a shuffled Tesseract prior from another sample. The second 
+
+withholds the image and gives the model only the real prior. In Table 7, we report the results. Both inputs are necessary. Shuffling the prior raises CER from 60.6% to 81.6%. The wrong prior actively harms the model. Withholding the image raises CER to 73.9%. The model then stays much closer to the OCR prior, but produces worse output than Tesseract alone. The corrector therefore depends on both signals. The prior provides an initial textual cue, and the image grounds the correction. The corrector also reduces the diacritics penalty. Tesseract →Qwen has an 8.9% diacritics penalty, compared with 16.3% for standalone Qwen. Since Tesseract rarely emits diacritics, its output may discourage the VLM from gener-ating incorrect tashkeel . This reduces, but does not solve, the diacritics problem. 
+
+5.3 Cross-Dataset OCR-Prior Recoverability 
+
+The Muharaf result raises a broader question. Does OCR-conditioned correction help across document settings. Ta-ble 8 compares the best standalone system with the best corrector across seven dataset-level scenarios. The corrector improves performance on SARD, KITAB-Bench, Muharaf, and QNL Books, however, it gives limited gains or de-grades recognition on RASAM 2, KHATT, and Students Essays. This supports an OCR-prior recoverability pattern. OCR helps when its output contains usable text cues that the VLM can verify against the image. It becomes less useful when the OCR text is systematically misleading or mismatched to the script style. The CER gap between Tesseract and the best VLM is useful (Figure 3), however, it is not enough by itself. QNL Books has a large positive gap of 13.9%, yet the corrector helps. RASAM 2 has a smaller gap of 8.3%, yet the corrector hurts. The decision therefore cannot rely only on the gap. Script compatibility, error type, and corrector-model choice also matter. QNL Books shows that aged print can produce noisy yet recoverable OCR. RASAM 2 shows the opposite pattern. Maghribi script appears to produce an OCR prior that misleads the VLM during correction. The practical implication is cautious, however, it is useful. A small probe sample should compare Tesseract, one or two standalone VLMs, and an OCR-conditioned corrector. The CER gap should be inspected together with length ratio, script type, and qualitative error patterns. If the OCR output preserves usable text cues, the corrector is likely to help. If the OCR output is strongly distorted or script-mismatched, the standalone VLM is safer. 
+
+KITAB-Bench. KITAB-Bench evaluates whether the corrector pipeline generalises beyond the main manuscript datasets. It contains 3,760 samples across 13 Arabic OCR subsets. The corrector obtains 32.7% CER (Table 9). This is a 15.5% relative improvement over Qwen and an 18.7% improvement over Tesseract. When the pathological 
+
+khattparagraph subset is excluded, the corrector obtains 17.8% CER. This gives a 24.3% relative improvement over the better standalone method. The corrector gives the best CER on 11 of 13 subsets (Table 10, visualised in Figure 4). One of these wins is not meaningful because all methods exceed 394% CER on khattparagraph . Excluding that subset, the corrector wins 12 When Do VLMs Help Arabic Manuscript OCR? 
+
+Table 8: Cross-dataset OCR-prior recoverability analysis. CER values are normalised percentages. The gap is Tesser-act CER minus the best standalone VLM CER. Positive relative change means that the corrector improves over the best standalone method. Students Essays uses per-sample medians. The standalone VLM value uses the mitigated outputs on the catastrophic subset. Corrector medians are unmitigated. All other rows use dataset aggregates. SARD uses the 2,048-token rerun.                                                     
+
+> Dataset Setting Tess. Best VLM Best corr. ∆Rel. Gap
+> SARD Clean printed 4.7 Qwen 3.8 T→Q2.6 +31.6% +0.9 KITAB-Bench Mixed 40.2 Qwen 38.7 T→Q32.7 +15.5% +1.5 Muharaf Historical Naskh 69.2 Qwen 70.4 T→Q60.6 +12.4% −1.2
+> RASAM 2 Historical Maghribi 72.2 Qwen 63.9 T→Q 75.8 −18 .6%+8.3 QNL Books Aged printed 33.1 Fanar-2 19.2 T→F15.5 +19.3% +13.9 Students Essays Modern student HW 77.4 Qwen 49.4 T→F 86.7 −75 .5%+28.0 KHATT Modern HW 67.3 Qwen 40.9 T→Q 42.1 −2.9%+26.4
+
+Figure 3: Relative improvement of the best corrector over the best standalone method. The Tesseract–VLM gap is useful, but it is not a complete decision rule. OCR-prior recoverability also depends on script, document setting, and error type. on 10 of 12 non-degenerate subsets. The failure cases are informative. Tesseract wins on arabicocr , a clean printed subset. The standalone VLM wins on the KITAB-Bench muharaf subset. In that subset, Tesseract is much worse than Qwen, and the OCR prior misleads the corrector. The KITAB-Bench muharaf subset gives lower Qwen CER than our full Muharaf evaluation. We reran our Qwen pipeline on the exact KITAB-Bench 200-sample slice and obtained 61.3% CER, close to the reported 61.6%. The difference is therefore due to sample selection rather than pipeline or normalisation differences. 
+
+QNL Books. QNL Books tests aged printed Arabic. It sits between clean synthetic print and historical handwriting. The pages are printed, but they show aging, ink degradation, yellowing, and mild scanning artefacts. Both VLMs outperform Tesseract (Table 11). Fanar-2 obtains 19.2% CER, and Qwen obtains 20.1%. Tesseract obtains 33.1%. This shows that aged print is much harder for Tesseract than clean printed SARD. The best result is Tesseract →Fanar-2 at 15.5% CER. This is a 19.3% relative improvement over the best standalone method and a 53.2% relative improvement over Tesseract. It is the strongest single-dataset gain in the paper. The QNL result also shows that the corrector model matters. Fanar-2 is a stronger corrector than Qwen on QNL Books, while Qwen is stronger on Muharaf. This Table 9: KITAB-Bench aggregate results. Metrics are dataset-level and diacritics normalised.             
+
+> Condition CER ↓WER ↓
+> Tesseract 5 40.2 77.3 Qwen2.5-VL-7B 38.7 57.5 Tesseract →Qwen 32.7 51.9
+
+13 When Do VLMs Help Arabic Manuscript OCR? 
+
+Table 10: KITAB-Bench per-subset CER. Values are normalised percentages. Bold marks the best method per subset.                                                         
+
+> Subset NTess. Qwen Corrector
+> arabicocr 50 1.2 6.7 4.7 hindawi 200 16.5 21.2 15.6
+> patsocr 500 17.5 11.3 3.3
+> isippt 500 18.2 38.8 16.7
+> synthesizear 500 30.4 22.0 10.7
+> onlinekhatt 200 61.7 31.6 28.3
+> historicalbooks 10 62.6 30.7 29.7
+> adab 200 63.0 61.4 44.5
+> khatt 200 63.9 34.7 31.0
+> evarest 800 71.5 41.2 32.7
+> muharaf 200 81.3 61.6 93.4 historyar 200 86.7 47.0 46.8
+> khattparagraph 200 412.1 407.6 394.3
+
+Figure 4: KITAB-Bench per-subset CER. The khattparagraph subset is excluded from the plot because all methods exceed 394% CER. may reflect the benefit of Arabic-specialised tuning for aged printed or classical Arabic material. We treat this as a hypothesis because it is based on one dataset. Table 11: QNL Books results. The dataset contains 199 page-level samples from 100 aged printed Arabic books.                   
+
+> Condition CER ↓WER ↓
+> Tesseract 5 33.1 63.9 Qwen2.5-VL-7B 20.1 35.4 Fanar-2-Oryx-IVU 19.2 34.7 Tesseract →Qwen 19.9 36.5 Tesseract →Fanar-2 15.5 30.0
+
+5.4 Diacritics Sensitivity 
+
+Diacritics are a major difference between traditional OCR and VLM recognition. In Table 12 and Figure 5, we compare CER and WER with and without tashkeel . The main pattern is clear. VLMs are strongly penalised when diacritics are retained. Qwen increases by 16.3%, and Fanar-2 increases by 16.9%. Averaged across these two competitive VLMs, the diacritics penalty is 16.6%. Tesseract behaves differently. Its CER changes by only 0.4%. This does not mean that Tesseract handles diacritics well. It usually does not produce them. The low penalty reflects omission of tashkeel , not faithful preservation. The same pattern appears beyond Muharaf. In Table 13, we report the Qwen diacritics penalty across five datasets. The penalty is largest on KHATT and Muharaf. It is smaller on SARD, where printed samples contain fewer diacritics. These results motivate reporting diacritics-stripped CER as the main cross-system comparison. Raw CER should still be reported for applications where tashkeel fidelity matters. 14 When Do VLMs Help Arabic Manuscript OCR? 
+
+Table 12: Diacritics sensitivity on Muharaf. CER and WER are reported with diacritics retained and with diacritics stripped. The difference is shown in percentage points.                                
+
+> Model CER WER +D −D∆+D −D∆
+> Tesseract 5 69.6 69.2 +0.4 103.7 103.6 +0.1 Qwen2.5-VL-7B 86.7 70.4 +16.3 108.0 104.6 +3.4 Fanar-2 87.7 70.8 +16.9 109.0 105.6 +3.4 QARI-OCR v0.4.0 194.7 167.2 +27.5 232.0 230.2 +1.8
+
+Figure 5: CER with and without tashkeel . VLMs show a large diacritics penalty, while Tesseract is nearly flat. 
+
+5.5 Impact of Preprocessing 
+
+For this experiment we use Qwen on Muharaf line images. As presented in Table 14 and in Figure 6, only sharpening helps. It reduces Qwen CER from 70.4% to 67.2%. This makes sharpened Qwen better than standalone Tesseract on Muharaf line images. The effect is VLM-specific. Applying the same sharpening to Tesseract gives 69.5% CER, which is close to the raw Tesseract result. Other preprocessing operations degrade performance. Denoising, binarisation, and combined pipelines likely remove or distort fine visual cues. These cues are important in Arabic script, where dots, diacritics, and thin strokes distinguish characters. The result shows that preprocessing is not uniformly helpful for Arabic VLM-OCR. A narrow sharpening operation can help, but more aggressive processing can damage the visual evidence. 
+
+5.6 Decoding-Length and Repetition Analysis 
+
+The SARD and Students Essays results show two complementary page-level failure modes. A restrictive maximum output length can truncate long predictions. A larger output limit, however, can give greedy decoding more opportunity to enter repetition loops. We therefore report these cases as targeted analyses of output-length and decoding failures. Table 13: Cross-dataset diacritics penalty for Qwen2.5-VL-7B. The values show the CER increase when diacritics are retained. Tesseract is shown where available.               
+
+> Dataset Qwen ∆pp Tess. ∆pp
+> KHATT +20.2 —Muharaf +16.3 +0.4 RASAM 2 +9.8 +0.1 KITAB-Bench +6.9 +1.5 SARD +2.9 +2.3
+
+15 When Do VLMs Help Arabic Manuscript OCR? 
+
+Table 14: Effect of preprocessing on Qwen2.5-VL-7B. Muharaf results are corpus-level and diacritics normalised.                              
+
+> Preprocessing CER ↓WER ↓∆CER
+> P1 Raw baseline 70.4 104.6 —P5 Sharpen 67.2 100.6 −4.5%P3 Contrast CLAHE 71.3 103.3 +1.3% P8 Full pipeline 72.3 109.7 +2.7% P4 Denoise 72.4 104.0 +2.8% P2 Binarised 72.8 106.3 +3.4% P6 Contrast+Sharpen 74.8 112.7 +6.3% P7 Denoise+Contrast 75.0 112.3 +6.5%
+
+Figure 6: The eight preprocessing variants applied to a Muharaf line crop. Only sharpening improves CER. Other operations either smooth or quantise fine Arabic-script cues. 
+
+SARD. SARD evaluates clean printed Arabic. It contains 996 samples rendered across six fonts. The first run used 
+
+max_new_tokens =512. This produced a misleading negative result for VLMs. We therefore report both the original run and a rerun with max_new_tokens =2048 (Table 15). Under the 512-token setting, Qwen obtains 36.3% CER and the corrector obtains 36.7%. Both appear far worse than Tesseract at 4.7%. The per-font analysis in Table 16 shows that this is a truncation artefact. The worst results occur on Arial and Calibri, which have the longest references. Their prediction-to-reference length ratio falls to 0.48. Table 15: SARD aggregate results before and after increasing the VLM generation token size. Tesseract is unaffected by this setting.                        
+
+> Condition 512 tokens 2048 tokens CER ↓WER ↓CER ↓WER ↓
+> Tesseract 5 4.7 24.4 4.7 24.4 Qwen2.5-VL-7B 36.3 40.8 3.8 11.2 Tesseract →Qwen 36.7 43.7 2.6 12.8
+
+16 When Do VLMs Help Arabic Manuscript OCR? 
+
+Table 16: SARD per-font CER under the original 512-token size. The truncation artefact is concentrated on the long-reference fonts.                      
+
+> Font Tess. Qwen 512 Corrector 512
+> Arial 3.9 51.9 52.7 Calibri 4.0 52.7 53.0 Scheherazade New 4.4 12.5 13.7 Sakkal Majalla 4.5 27.1 28.4 Traditional Arabic 4.5 29.2 28.5 Amiri 7.7 24.0 23.2
+
+Increasing the maximum output length to 2,048 tokens changes the conclusion. Qwen improves from 36.3% to 3.8% CER, while the corrector improves from 36.7% to 2.6% CER and slightly outperforms Tesseract. This indicates that the clean printed setting does not reflect a fundamental VLM recognition failure. Instead, page-level VLM-OCR is strongly affected by output-length constraints. Since CER can obscure truncation effects, page- and paragraph-level evaluations should also report prediction-to-reference length ratios. 
+
+Students Essays. Students Essays evaluates realistic student handwriting. It contains 200 Arabic essays from Grades 4–12, with both verbatim and corrected references for each page. We use the verbatim reference as the primary ground truth as it most directly matches the written page. Median CER favours standalone VLMs over Tesseract. Qwen obtains 55.8% median CER, compared with 77.4% for Tesseract. The corrector degrades performance, consistent with the OCR-prior recoverability analysis: Tesseract is much weaker than the VLM on this dataset, so its output provides a poor prior. However, dataset-level VLM scores are dominated by catastrophic failure cases as reported in Table 17. Qwen reaches 199.0% corpus CER, and Fanar-2 reaches 183.3%. These large values are caused by repetition loops in a substantial subset of outputs. 28% of Qwen outputs and 27.5% of Fanar-2 outputs are excessively long repetitive predictions, which dominate dataset-level CER. The repetition-loop failure is associated with greedy decoding. Catastrophic out-puts have very low trigram diversity, indicating repeated text generation rather than ordinary recognition errors. Rerun-ning these cases with no_repeat_ngram_size =4 corrects 51 of 56 Qwen failures and 50 of 55 Fanar-2 failures. After replacing the failed outputs with the constrained-decoding outputs, corpus CER drops to 66.6% for Qwen and 66.9% for Fanar-2 (Figure 7). SARD and Students Essays therefore expose two distinct decoding risks. Page-level Arabic VLM-OCR requires a sufficiently large maximum output length to avoid truncation, while handwriting recognition also requires repetition control to prevent degenerate outputs. Table 17: Students Essays results. CER is normalised. The catastrophe rate is the fraction of samples with per-sample CER above 200%.                          
+
+> Condition Median CER Catastrophe rate Corpus CER Corpus CER + norep
+> Tesseract 5 77.4 0.0% 76.3 —Qwen2.5-VL-7B 55.8 28.0% 199.0 66.6
+> Fanar-2-Oryx-IVU 56.7 27.5% 183.3 66.9
+> Tesseract →Qwen 90.9 30.5% 228.6 —Tesseract →Fanar-2 86.7 27.0% 208.3 —
+
+5.7 Zero-Shot Metadata Extraction 
+
+We evaluate metadata extraction on 16 candidate pages from Madinah. The pages are the first and last page of each of the eight books. This selection is based on the expectation that title pages and colophons often occur near the beginning or end of a manuscript. The goal of the evaluation is to see whether prompt design changes VLM behaviour in a structured extraction task. The naive prompt asks the model to extract metadata fields if present. It produces non-null responses for every field on every page (Table 18, naive columns), with values that are chunks of transcribed body text rather than actual metadata. This shows a compliance-bias failure mode: the model fills the schema even when the requested information may not be present. A calibrated prompt reduces this behaviour (Table 18, calibrated columns). It forbids extracting prose chunks, requires null when evidence is absent, warns that many pages are body-text pages, and restricts dates and script labels to valid types. 17 When Do VLMs Help Arabic Manuscript OCR? 0 100 200 300 400 500      
+
+> per-sample CER (%, best-of-two GTs)
+> 010 20 30 40 50 60 70
+> number of pages  median 56 200% threshold corpus 199 n = 200 pages catastrophes (>200%): 56 (28%) ≥500%: 24
+> (a) Original: greedy decoding
+> 0100 200 300 400 500
+> per-sample CER (%, best-of-two GTs)
+> median 49 200% threshold corpus 67 n = 200 pages catastrophes (>200%): 5 (2%)
+> (b) After no_repeat_ngram_size=4
+
+Figure 7: Per-sample CER on Students Essays under Qwen2.5-VL-7B before and after setting 
+
+no_repeat_ngram_size =4. The mitigation reduces the catastrophic tail and lowers corpus CER from 199.0% to 66.6%. Table 18: Zero-shot metadata extraction from 16 Madinah manuscript pages using Qwen, under a naive prompt and a null-enforcing calibrated prompt. Non-null rate measures how often the model attempts an extraction; under the naive prompt this rate is 100% for every field (compliance bias), while the calibrated prompt returns null for most content fields. 
+
+Field Naive prompt Calibrated prompt Category 
+
+Non-null Rate Non-null Rate 
+
+Visual classification 
+
+Language 16/16 100.0 16/16 100.0 Classification Script type 16/16 100.0 16/16 100.0 Classification 
+
+Content extraction 
+
+Subject 16/16 100.0 3/16 18.8 Content Author 16/16 100.0 2/16 12.5 Content Title 16/16 100.0 1/16 6.2 Content Place 16/16 100.0 1/16 6.2 Content Date Hijri 16/16 100.0 0/16 0.0 Content Date CE 16/16 100.0 0/16 0.0 Content 
+
+The calibrated prompt returns language and script type for all pages. It suppresses most content-field extraction. Content fields have non-null rates between 0% and 18.8%. These residual outputs may include correct extractions or remaining compliance bias. We cannot separate these cases without expert annotation. The robust finding is therefore not metadata extraction accuracy. It is prompt sensitivity. A permissive prompt causes systematic field filling, while a null-enforcing prompt substantially reduces this behaviour. 
+
+5.8 Failure Taxonomy 
+
+Finally, we compare how the systems fail on Muharaf. In Table 19 and Figure 8, we report relative error attribu-tions. The categories are heuristic and should not be read as a complete decomposition of CER. (i) Tesseract errors are dominated by substitution and omission. Together they account for 97.2% of its attributed errors. This reflects the classic behaviour of an OCR pipeline on out-of-domain cursive script. (ii) VLM errors have a different profile. Qwen and Fanar-2 have similar substitution rates to Tesseract, however, much higher diacritics and hallucination rates. Diacritics account for 27.0% of Qwen errors and 27.3% of Fanar-2 errors. Hallucination accounts for 15.9% and 16.5%, respectively. (iii) VLMs omit less text than Tesseract. Their omission rate is 11.9%, compared with 47.7% for Tesseract. This suggests a coverage–precision trade-off. VLMs are more willing to produce text, however, this increases hallucination risk. (iv) QARI-OCR shows the strongest hallucination pattern. Hallucination accounts for 62.4% of its attributed errors. This is consistent with the high CER reported in Table 4. It suggests that Arabic OCR tuning alone does not guarantee robustness on historical manuscript images. 18 When Do VLMs Help Arabic Manuscript OCR? 
+
+Table 19: Heuristic error type attribution on Muharaf. Each column is normalised so that the four heuristic counts sum to 100%.                     
+
+> Error type Tess. Qwen Fanar-2 QARI
+> Substitution 49.4 45.3 44.3 16.6 Omission 47.7 11.9 11.9 4.1 Diacritics 2.7 27.0 27.3 16.9 Hallucination 0.1 15.9 16.5 62.4
+
+Figure 8: Error type distribution on Muharaf. Tesseract errors are dominated by substitution and omission. VLM errors shift toward diacritics and hallucination. 
+
+# 6 Discussion 
+
+The results answer the research questions at three levels. They show when zero-shot VLMs are useful, when OCR-conditioned correction helps or hurts, and which evaluation choices matter for Arabic manuscript digitisation. 
+
+6.1 RQ1. How do VLMs compare with traditional OCR and HTR? 
+
+Zero-shot VLMs are not yet replacements for supervised HTR, yet they are no longer only weak baselines. On line-level Muharaf, Qwen approaches Tesseract after diacritics normalisation. On page-level Madinah, VLMs outperform Tesseract, suggesting that page context can improve recognition through neighbouring text, layout cues, and visual continuity. This has practical implications for deployment. Traditional OCR relies mainly on local character and word evidence, whereas VLMs can exploit broader visual context. This is useful when pages show repeated letter forms, stable writing style, or layout regularities. Manuscript projects should therefore consider full-page or region-level inference when context is informative. Line crops remain important for controlled evaluation, although they may understate the practical value of VLMs. Supervised HTR remains the stronger option when labelled training data from the target collection is available. Zero-shot VLM-OCR serves a different setting, where collection-specific transcription is costly or unavailable. This setting is common in the long tail of Islamic manuscript collections. 
+
+6.2 RQ2. When does OCR-conditioned VLM correction help? 
+
+OCR-conditioned correction is useful when the OCR prior is recoverable. The prior need not be highly accurate, however, it must preserve enough readable structure for the VLM to refine using the image. This explains the gains on Muharaf, KITAB-Bench, SARD after increasing the maximum output length, and QNL Books. In these settings, Tesseract output is noisy, however, it still provides useful text cues, while the image allows the VLM to verify and correct them. The failures follow the same pattern: on RASAM 2, KHATT, and Students Essays, the OCR prior is too misleading and degrades correction. In these cases, the standalone VLM is the safer option. The CER gap between Tesseract and the best VLM is informative but not sufficient. QNL Books has a larger gap than RASAM 2, yet the corrector helps on QNL Books and degrades performance on RASAM 2. This suggests that the type of OCR error matters: aged print can yield noisy but recoverable OCR, whereas Maghribi script can produce OCR text that is less compatible with the image evidence. The input ablations further support this interpretation: (i) 
+
+19 When Do VLMs Help Arabic Manuscript OCR? 
+
+shuffling the OCR prior degrades the corrector, and (ii) removing the image also degrades the corrector. Thus, the corrector is not simple text-only post-editing. It uses both textual and visual evidence. The OCR prior provides partial text cues, and the image validates and corrects them. The practical implication is adaptive model selection. A digitisation project should first probe the target collection with Tesseract, one or two standalone VLMs, and an OCR-conditioned corrector. The final system should then be selected based on CER, prediction-to-reference length ratio, script type, and qualitative OCR error patterns. 
+
+6.3 RQ3. Does preprocessing improve VLM recognition? 
+
+The preprocessing results show that generic image enhancement does not uniformly improve VLM recognition. On Muharaf, sharpening improves Qwen2.5-VL-7B, whereas most other operations degrade performance. This finding is important because OCR pipelines often assume that binarisation, denoising, and contrast enhancement are broadly beneficial. Arabic manuscript recognition depends on small visual cues, including dots, diacritics, and thin connecting strokes. Sharpening may make these cues more visible, while denoising or binarisation may remove or distort them. Thus, preprocessing that makes an image appear cleaner may still reduce the information needed by a VLM. The practical recommendation is targeted preprocessing. Sharpening should be tested on a small probe set, while more aggressive operations should not be assumed beneficial. This is especially important for Arabic manuscripts, where small marks can carry high linguistic value. 
+
+6.4 RQ4. What failure modes shape Arabic VLM-OCR? 
+
+Traditional OCR and VLMs fail in different ways. Tesseract mainly produces substitutions and omissions, whereas VLMs omit less text yet introduce additional risks, including diacritics sensitivity, hallucination, and decoding failures. The diacritics result is especially important for Arabic manuscripts. VLMs often attempt tashkeel , although many marks are misplaced. Tesseract avoids much of this penalty because it rarely emits diacritics. This creates an evaluation issue. A model that omits diacritics can appear stronger under raw CER, even when it fails to preserve part of the manuscript text. We therefore report both raw and diacritics-stripped CER. Diacritics-stripped CER better reflects base-text recognition, while raw CER remains necessary for applications where tashkeel fidelity matters, such as Quranic and scholarly manuscripts. The generation results show two complementary page-level risks. SARD shows that a restrictive maximum output length can cause artificial truncation. Students Essays shows that larger output limits can expose repetition loops under greedy decoding. Page-level Arabic VLM-OCR therefore requires both sufficient maximum output length and repetition control. More broadly, VLM-OCR evaluation should not rely only on CER or WER. Evaluations should therefore report prediction-to-reference length ratios, repetition rates, and checks for hallucinated text, since CER and WER alone may miss truncation, repeated text, or invented content. 
+
+6.5 RQ5. What does the metadata pilot show? 
+
+The metadata pilot should be read as a prompt-sensitivity and failure-mode study, not as an accuracy evaluation, because the selected pages lack expert field-level ground truth. The clearest finding is compliance bias. With a permissive prompt, the model filled missing metadata fields with body text. A calibrated prompt reduced this behaviour by making null outputs explicit and expected. This indicates that structured metadata extraction from manuscript images requires strong prompt constraints and explicit support for abstention. The pilot also suggests a staged workflow. VLMs may be most useful as an early routing component, identifying language, script type, and pages likely to contain titles, colophons, or other cataloguing cues. Content metadata should then be extracted only from pages likely to contain relevant evidence, with filtering or human review before catalogue or knowledge-graph ingestion. This is safer than asking a VLM to extract all fields from arbitrary manuscript pages and is consistent with the OCR results. A reliable manuscript pipeline should route pages using page type, script, OCR-prior recoverability, and output-quality checks. 
+
+6.6 Cross-Cutting Deployment Implications 
+
+Across the research questions, Arabic manuscript recognition is best viewed as adaptive system selection rather than single-model selection. A practical pipeline should begin with a small annotated probe from the target collection, comparing Tesseract, at least one standalone VLM, and an OCR-conditioned corrector. The probe should report CER, prediction-to-reference length ratio, hallucinated text, repetition, script type, and qualitative OCR-prior errors. These signals indicate whether the OCR prior provides useful text cues or misleading input. When the OCR prior 20 When Do VLMs Help Arabic Manuscript OCR? 
+
+remains readable and recoverable, the corrector is preferred because the prior constrains generation and the image supports visual correction. When the OCR prior is strongly distorted, script-mismatched, or dominated by systematic errors, the standalone VLM is safer. This explains why correction helps on aged print, mixed-domain Arabic, clean printed Arabic after increasing the maximum output length, and parts of historical Naskh, but degrades performance on Maghribi manuscripts and realistic student handwriting. The same adaptive view applies to the surrounding design choices. Full-page or region-level inputs should be used when page context supports recognition, while line crops remain useful for controlled evaluation. Preprocessing should be treated as a targeted intervention, since sharpening may improve fine Arabic-script cues whereas denoising and binarisation may remove them. Evaluation should report diacritics-stripped CER for base-text comparison and raw CER when tashkeel fidelity matters. Page-level VLM-OCR also requires sufficient maximum output length and repetition control, since truncation and repetition loops are both realistic failure modes. For metadata extraction, prompts should explicitly allow empty outputs, and extracted fields should be filtered or reviewed before catalogue or knowledge-graph ingestion. Overall, these findings support an OCR-VLM workflow that routes pages by script, page type, OCR-prior recoverability, length diagnostics, and repetition indicators rather than relying on a universal recogniser. 
+
+6.7 Limitations and Future Work 
+
+This study is designed as a zero-shot deployment analysis rather than an exhaustive benchmark of all OCR, HTR, and VLM systems. We focus on reproducible local inference and do not evaluate frontier API models such as GPT-4o, Claude, or Gemini. These models may perform better on page-level recognition and structured extraction, however, comparing them raises additional issues of cost, reproducibility, versioning, and long-term accessibility. The OCR-prior recoverability analysis is also conducted mainly at the dataset level. Future work should develop page- or region-level routers that choose between Tesseract, standalone VLMs, and OCR-conditioned correctors using signals such as OCR length ratio, script type, image quality, repetition indicators, and OCR error patterns. The metadata and error analyses should be interpreted as diagnostic studies rather than complete evaluations. The metadata pilot shows prompt sensitivity and compliance-bias hallucination, but does not measure extraction accuracy because expert field-level annotations are unavailable. Similarly, the error taxonomy is heuristic and does not provide a full alignment-based decomposition of every recognition error. Future benchmarks should include expert metadata labels, manual error audits, layout annotations, unpublished collections, and contamination checks where possible. They should also cover a wider range of scripts and page types, including Naskh, Maghribi, Thuluth, Nasta’liq, marginalia, commentary, title pages, and colophons. 
+
+# 7 Conclusion 
+
+This paper studied when VLMs should be used for Arabic manuscript recognition and when traditional OCR should guide them. Across eight Arabic text datasets and more than 7,700 samples, we show that no single system is uniformly best. Traditional OCR, standalone VLMs, and OCR-conditioned VLM correction each perform best in different settings. The central finding is an OCR-prior recoverability pattern: correction improves recognition when OCR output remains readable enough to guide the VLM, but degrades performance when the prior is systematically misleading. Controlled ablations show that both the OCR prior and the source image are needed, while cross-domain results show that this pattern holds across historical manuscripts, aged print, clean print, and handwriting. The study also identifies deployment-critical failure modes, including diacritics sensitivity, selective effects of preprocessing, output-length truncation, repetition loops, and metadata hallucination. Overall, the findings provide a practical decision framework for Islamic manuscript collections where supervised HTR training data is costly or unavailable. 
+
+# References 
+
+Abdelrahman Abdallah, Daniel Eberharter, Zoe Pfister, and Adam Jatowt. A survey of recent approaches to form un-derstanding in scanned documents. Artificial Intelligence Review , 57:342, 2024. doi: 10.1007/s10462-024-11000-0. Fakhraddin Alwajih, Abdellah El Mekki, Hamdy Mubarak, Majd Hawasly, Abubakr Mohamed, and Muhammad Abdul-Mageed. PalmX 2025: The first shared task on benchmarking LLMs on Arabic and Islamic culture. arXiv preprint arXiv:2509.02550 , 2025. Shuai Bai, Keqin Chen, Xuejing Liu, Jialin Wang, Wenbin Ge, Sibo Song, Kai Dang, Peng Wang, Shijie Wang, Jun Tang, et al. Qwen2.5-VL Technical Report. arXiv preprint arXiv:2502.13923 , 2025a. Shuai Bai et al. Qwen3-VL technical report. arXiv preprint arXiv:2511.21631 , 2025b. 21 When Do VLMs Help Arabic Manuscript OCR? 
+
+Gagan Bhatia, El Moatez Billah Nagoudi, Fakhraddin Alwajih, and Muhammad Abdul-Mageed. Qalam: A multi-modal LLM for Arabic optical character and handwriting recognition. In Proceedings of the Second Arabic Natural Language Processing Conference , pages 210–224, Bangkok, Thailand, 2024. Association for Computational Lin-guistics. doi: 10.18653/v1/2024.arabicnlp-1.19. Gagan Bhatia, Hamdy Mubarak, Majd Hawasly, Mustafa Jarrar, George Mikros, Fadi Zaraket, Mahmoud Alhirthani, Mutaz Al-Khatib, Logan Cochrane, Kareem Darwish, Rashid Yahiaoui, and Firoj Alam. Advances in ai systems on islamic knowledge capabilities: A critical survey. TechRxiv (preprint) , February 2026a. doi: 10.36227/techrxiv. 177155997.77147487/v1. URL http://dx.doi.org/10.36227/techrxiv.177155997.77147487/v1 .Gagan Bhatia, Hamdy Mubarak, Mustafa Jarrar, George Mikros, Fadi Zaraket, Mahmoud Alhirthani, Mutaz al Khatib, Logan Cochrane, Kareem Mohamed Darwish, Rashid Yahiaoui, and Firoj Alam. From RAG to agentic RAG for faithful islamic question answering. In Maria Liakata, Viviane P. Moreira, Jiajun Zhang, and David Jurgens, editors, Findings of the Association for Computational Linguistics: ACL 2026 , pages 26469–26488, San Diego, California, United States, July 2026b. Association for Computational Linguistics. ISBN 979-8-89176-395-1. doi: 10.18653/v1/2026.findings-acl.1317. URL https://aclanthology.org/2026.findings-acl.1317/ .Łukasz Borchmann, Michał Pietruszka, Tomasz Stanislawek, Dawid Jurkiewicz, Michał Turski, Karolina Szyndler, and Filip Grali´ nski. Measuring the state of document understanding. In NeurIPS 2021 Datasets and Benchmarks ,2021. Calfa. Arabic OCR and HTR benchmark, 2024. URL https://calfa.fr/ocr-arabic-benchmark/ . Accessed: 2026. Adrian Chan, Anupam Mijar, Mehreen Saeed, Chau-Wai Wong, and Akram Khater. HATformer: Historic handwritten arabic text recognition with transformers. arXiv preprint arXiv:2410.02179 , 2024. Giorgia Crosilla, Lukas Klic, and Giovanni Colavizza. Benchmarking large language models for handwritten text recognition. arXiv preprint arXiv:2503.15195 , 2025. Thao Do, Dinh Phu Tran, An Vo, and Daeyoung Kim. Reference-based post-OCR processing with LLM for precise diacritic text in historical document recognition. arXiv preprint arXiv:2410.13305 , 2024. Safiullah Faizullah, Muhammad Sohaib Ayub, Sajid Hussain, and Muhammad Asad Khan. A survey of OCR in Arabic language: Applications, techniques, and challenges. Applied Sciences , 13(7):4584, 2023. doi: 10.3390/ app13074584. FANAR Team, Ummar Abbas, Mohammad Shahmeer Ahmad, Minhaj Ahmad, Abdulaziz Al-Homaid, Anas Al-Nuaimi, Enes Altinisik, Ehsaneddin Asgari, Sanjay Chawla, Shammur Chowdhury, Fahim Dalvi, Kareem Darwish, Nadir Durrani, Mohamed Elfeky, Ahmed Elmagarmid, Mohamed Eltabakh, et al. Fanar 2.0: Arabic generative AI stack. arXiv preprint arXiv:2603.16397 , 2026. Adam Gacek. Arabic manuscripts: a vademecum for readers , volume 98. Brill, 2009. Alex Graves and Jürgen Schmidhuber. Offline handwriting recognition with multidimensional recurrent neural net-works. In Advances in Neural Information Processing Systems , volume 21, 2008. Gavin Greif, Niclas Griesshaber, and Robin Greif. Multimodal LLMs for OCR, OCR post-correction, and named entity recognition in historical documents. arXiv preprint arXiv:2504.00414 , 2025. Christiane J Gruber. The Islamic manuscript tradition: ten centuries of book arts in Indiana University collections .Indiana University Press, 2010. Maya R. Gupta, Nathaniel P. Jacobson, and Eric K. Garcia. OCR binarization and image pre-processing for searching historical documents. Pattern Recognition , 40(2):389–397, 2007. doi: 10.1016/j.patcog.2006.04.043. Ahmed Heakl, Muhammad Abdullah Sohail, Mukul Ranjan, Rania Elbadry, Ghazi Shazan Ahmad, Mohamed El-Geish, Omar Maher, Zhiqiang Shen, Fahad Shahbaz Khan, and Salman Khan. KITAB-bench: A comprehensive multi-domain benchmark for Arabic OCR and document understanding. In Findings of the Association for Com-putational Linguistics: ACL 2025 , pages 22006–22024, Vienna, Austria, 2025. Association for Computational Linguistics. doi: 10.18653/v1/2025.findings-acl.1135. Khalil Hennara, Muhammad Hreden, Mohamed Motasim Hamed, Ahmad Bastati, Zeina Aldallal, Sara Chrouf, and Safwan AlModhayan. Baseer: A vision-language model for Arabic document-to-markdown OCR. arXiv preprint arXiv:2509.18174 , 2025. Jenna Kanerva, Cassandra Ledins, Siiri Käpyaho, and Filip Ginter. OCR error post-correction with LLMs in historical documents: No free lunches. In Proceedings of the Third Workshop on Resources and Representations for Under-Resourced Languages and Domains (RESOURCEFUL-2025) , pages 38–47, Tallinn, Estonia, 2025. University of Tartu Library, Estonia. 22 When Do VLMs Help Arabic Manuscript OCR? 
+
+Mahmoud SalahEldin Kasem, Mohamed Mahmoud, and Hyun-Soo Kang. Advancements and challenges in Arabic optical character recognition: A comprehensive survey. arXiv preprint arXiv:2312.11812 , 2023. Benjamin Kiessling, Daniel Stökl Ben Ezra, and Matthew Thomas Miller. BADAM: A public dataset for baseline detection in Arabic-script manuscripts. In Proceedings of the 5th International Workshop on Historical Document Imaging and Processing , pages 13–18, 2019. doi: 10.1145/3352631.3352648. Geewook Kim, Teakgyu Hong, Moonbin Yim, JeongYeon Nam, Jinyoung Park, Jinyeong Yim, Wonseok Hwang, Sangdoo Yun, Dongyoon Han, and Seunghyun Park. OCR-Free Document Understanding Transformer. In Com-puter Vision – ECCV 2022 , pages 498–517. Springer, 2022. doi: 10.1007/978-3-031-19815-1_29. Seorin Kim, Julien Baudru, Wouter Ryckbosch, Hugues Bersini, and Vincent Ginis. Early evidence of how LLMs outperform traditional systems on OCR/HTR tasks for historical records. arXiv preprint arXiv:2501.11623 , 2025. Mohamed Bayan Kmainasi, Rakif Khan, Ali Ezzat Shahroor, Boushra Bendou, Maram Hasanain, and Firoj Alam. Native vs non-native language prompting: A comparative analysis. In International Conference on Web Information Systems Engineering , pages 406–420. Springer, 2024. Maria Levchenko. Evaluating LLMs for historical document OCR: A methodological framework. arXiv preprint arXiv:2510.06743 , 2025. Sabri A. Mahmoud, Irfan Ahmad, Wasfi G. Al-Khatib, Mohammad Alshayeb, Mohammad Tanvir Parvez, Volker Märgner, and Gernot A. Fink. KHATT: An open Arabic offline handwritten text database. Pattern Recognition , 47 (3):1096–1112, 2014. doi: 10.1016/j.patcog.2013.08.009. Omer Nacar, Yasser Al-Habashi, Serry Sibaee, Adel Ammar, and Wadii Boulila. SARD: A large-scale synthetic Arabic OCR dataset for book-style text recognition. arXiv preprint arXiv:2505.24600 , 2025. Rayyan Najam and Safiullah Faizullah. A scarce dataset for ancient Arabic handwritten text recognition. Data in Brief , 55:110729, 2024. Qatar National Library. Heritage library, 2026. URL https://www.qnl.qa/en/explore/heritage-library .Accessed: 2026-02-11. Rosemarie Quiring-Zoche. The colophon in arabic manuscripts. a phenomenon without a name. Journal of Islamic Manuscripts , 4(1):49–81, 2013. Mehreen Saeed, Adrian Chan, Anupam Mijar, Joseph Moukarzel, Georges Habchi, Carlos Younes, Amin Elias, Chau-Wai Wong, and Akram Khater. Muharaf: Manuscripts of handwritten Arabic dataset for cursive text recognition. 
+
+Advances in Neural Information Processing Systems , 37:58525–58538, 2024. Sina Semnani, Han Zhang, Xinyan He, Merve Tekgurler, and Monica Lam. CHURRO: Making history readable with an open-weight large vision-language model for high-accuracy, low-cost historical text recognition. In Christos Christodoulopoulos, Tanmoy Chakraborty, Carolyn Rose, and Violet Peng, editors, Proceedings of the 2025 Confer-ence on Empirical Methods in Natural Language Processing , pages 34777–34824, Suzhou, China, November 2025. Association for Computational Linguistics. ISBN 979-8-89176-332-6. doi: 10.18653/v1/2025.emnlp-main.1763. URL https://aclanthology.org/2025.emnlp-main.1763/ .Ray Smith. An overview of the Tesseract OCR engine. In Ninth International Conference on Document Analysis and Recognition (ICDAR) , volume 2, pages 629–633. IEEE, 2007. doi: 10.1109/ICDAR.2007.4376991. Chahan Vidal-Gorène, Clément Salah, Noëmie Lucas, Aliénor Decours-Perez, and Antoine Perrier. Enhancing Arabic Maghribi handwritten text recognition with RASAM 2: A comprehensive dataset and benchmarking. In Compu-tational Humanities Research (CHR 2024) , volume 3834 of CEUR Workshop Proceedings , pages 200–216, 2024. URL https://ceur-ws.org/Vol-3834/paper35.pdf .Ahmed Wasfy, Omer Nacar, Abdelakreem Elkhateb, Mahmoud Reda, Omar Elshehy, Adel Ammar, and Wadii Boulila. QARI-OCR: High-fidelity Arabic text recognition through multimodal large language model adaptation. arXiv preprint arXiv:2506.02295 , 2025. Haoran Wei, Chenglong Liu, Jinyue Chen, Jia Wang, Lingyu Kong, Yanming Xu, Zheng Ge, Liang Zhao, Jianjian Sun, Yuang Peng, Chunrui Han, and Xiangyu Zhang. General OCR Theory: Towards OCR-2.0 via a Unified End-to-end Model. arXiv preprint arXiv:2409.01704 , 2024. Wajdi Zaghouani. RENAR: A rule-based Arabic named entity recognition system. ACM Transactions on Asian Language Information Processing , 11(1):2:1–2:13, 2012. doi: 10.1145/2090176.2090178. 23

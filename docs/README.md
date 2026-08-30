@@ -41,17 +41,17 @@
 <section class="dpr-home-dashboard-card dpr-home-report-card">
   <div class="dpr-home-dashboard-header">
     <div>
-      <span class="dpr-home-dashboard-kicker">2026-08-29</span>
+      <span class="dpr-home-dashboard-kicker">2026-08-30</span>
       <h3 class="dpr-home-dashboard-title">今日汇总</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">共 35 篇</strong>
+    <strong class="dpr-home-dashboard-count">共 17 篇</strong>
   </div>
   <dl class="dpr-home-dashboard-stats">
-    <div class="dpr-home-dashboard-stat"><dt>累计更新</dt><dd>2 次</dd></div>
-    <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>24</dd></div>
+    <div class="dpr-home-dashboard-stat"><dt>累计更新</dt><dd>1 次</dd></div>
+    <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>6</dd></div>
     <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>11</dd></div>
   </dl>
-  <p class="dpr-home-dashboard-body">最近更新：2026-08-29 22:51:18 UTC<br>状态：成功</p>
+  <p class="dpr-home-dashboard-body">最近更新：2026-08-30 21:55:48 UTC<br>状态：成功</p>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-brief-card">
   <div class="dpr-home-dashboard-header">
@@ -62,7 +62,9 @@
     <strong class="dpr-home-dashboard-count">AI</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<p>今日精读24篇、速读11篇，共梳理35篇视觉前沿论文；最值得关注多视图行人检测的几何基础模型（9.0分）与视觉Transformer的隐私保护检测（9.0分）。若想快速跟进，可优先看RS³-Prune的稀疏令牌剪枝和ENCORE的鲁棒视觉-语言理解，两者均为8.0分且实用性强。</p>
+<p>今日精选17篇论文，精读2篇、速读3篇，聚焦显著目标检测、双曲层次聚类与零样本动作定位。</p>
+<p>最值得关注的是《MIMONet》多尺度输入输出显著目标检测（9.0分）和《Hyperbolic Hierarchical Clustering》双曲层次聚类（8.0分），前者在分割精度上表现突出，后者为视觉表征学习提供新思路。</p>
+<p>建议优先精读这两篇高分工作，再结合速读中的无监督目标发现与姿态估计，拓展应用场景。</p>
   </div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-deep-card">
@@ -71,12 +73,12 @@
       <span class="dpr-home-dashboard-kicker">今日累计</span>
       <h3 class="dpr-home-dashboard-title">精读推荐</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">24 篇</strong>
+    <strong class="dpr-home-dashboard-count">6 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="MV2GF: Multi-view Pedestrian Detection with a Visual Geometric Foundation Model">MV2GF: Multi-view Pedestrian Detection with a Visual Geometric Foundation Model</span></li><li><span class="dpr-home-dashboard-paper-title" title="Privacy-Preserving Object Detection for Vision Transformer-Based Models">Privacy-Preserving Object Detection for Vision Transformer-Based Models</span></li><li><span class="dpr-home-dashboard-paper-title" title="Semantically Compatible Knowledge Distillation for Cross-Domain Object Detection with Vision Foundation Models">Semantically Compatible Knowledge Distillation for Cross-Domain Object Detection with Vision Foundation Models</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="MIMONet: Multi-scale Input and Multi-scale Output Network for Salient Object Detection">MIMONet: Multi-scale Input and Multi-scale Output Network for Salient Object Detection</span></li><li><span class="dpr-home-dashboard-paper-title" title="Hyperbolic Hierarchical Clustering for Visual Representation Learning">Hyperbolic Hierarchical Clustering for Visual Representation Learning</span></li><li><span class="dpr-home-dashboard-paper-title" title="Training-Free Pseudo-Fusion for Composed Image Retrieval with Diffusion Models and Multimodal Large Language Models">Training-Free Pseudo-Fusion for Composed Image Retrieval with Diffusion Models and Multimodal Large Language Models</span></li></ul>
   </div>
-  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">cv <strong>24</strong></span></div>
+  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">cv <strong>6</strong></span></div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-skim-card">
   <div class="dpr-home-dashboard-header">
@@ -87,7 +89,7 @@
     <strong class="dpr-home-dashboard-count">11 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="VisAdj: Learning Adjacency Matrices from Node-Link Images">VisAdj: Learning Adjacency Matrices from Node-Link Images</span></li><li><span class="dpr-home-dashboard-paper-title" title="RS$^3$-Prune: Read-Sparse, Store-Sparse Token Pruning for Video Object Segmentation">RS$^3$-Prune: Read-Sparse, Store-Sparse Token Pruning for Video Object Segmentation</span></li><li><span class="dpr-home-dashboard-paper-title" title="ENCORE: Entropy-Guided Cropping and Attention Regularization for Robust Vision--Language Understanding">ENCORE: Entropy-Guided Cropping and Attention Regularization for Robust Vision--Language Understanding</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Skeleton-based Zero-Shot Spatio-Temporal Action Localization via Weakly-Supervised Pretraining">Skeleton-based Zero-Shot Spatio-Temporal Action Localization via Weakly-Supervised Pretraining</span></li><li><span class="dpr-home-dashboard-paper-title" title="Real-time Unsupervised Object Discovery from Asynchronous Event Streams">Real-time Unsupervised Object Discovery from Asynchronous Event Streams</span></li><li><span class="dpr-home-dashboard-paper-title" title="A Geometry-Driven, Framework-Agnostic Optimization for Object Pose Estimation">A Geometry-Driven, Framework-Agnostic Optimization for Object Pose Estimation</span></li></ul>
   </div>
   <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">cv <strong>11</strong></span></div>
 </section>

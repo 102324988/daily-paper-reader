@@ -1,0 +1,281 @@
+{
+  "date": "20260830",
+  "date_label": "",
+  "generated_at": "2026-08-30 21:55:48 UTC",
+  "recommend_exists": true,
+  "run_count": 1,
+  "papers": [
+    {
+      "paper_id": "2608.25733v1",
+      "route": "202608/30/2608.25733v1-mimonet-multi-scale-input-and-multi-scale-output-network-for-salient-object-detection",
+      "title": "MIMONet: Multi-scale Input and Multi-scale Output Network for Salient Object Detection",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "面向多尺度目标显著物体检测网络，属于目标检测方法",
+      "first_seen_at": "2026-08-30 21:55:48 UTC",
+      "updated_at": "2026-08-30 21:55:48 UTC"
+    },
+    {
+      "paper_id": "2608.22665v1",
+      "route": "202608/30/2608.22665v1-hyperbolic-hierarchical-clustering-for-visual-representation-learning",
+      "title": "Hyperbolic Hierarchical Clustering for Visual Representation Learning",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "通过双曲层次聚类token混合器进行视觉表征学习",
+      "first_seen_at": "2026-08-30 21:55:48 UTC",
+      "updated_at": "2026-08-30 21:55:48 UTC"
+    },
+    {
+      "paper_id": "2608.23102v1",
+      "route": "202608/30/2608.23102v1-training-free-pseudo-fusion-for-composed-image-retrieval-with-diffusion-models-and-multimodal-large-language-models",
+      "title": "Training-Free Pseudo-Fusion for Composed Image Retrieval with Diffusion Models and Multimodal Large Language Models",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "组合图像检索的计算机视觉研究，涉及多模态融合",
+      "first_seen_at": "2026-08-30 21:55:48 UTC",
+      "updated_at": "2026-08-30 21:55:48 UTC"
+    },
+    {
+      "paper_id": "2608.23234v1",
+      "route": "202608/30/2608.23234v1-mllm-assisted-audio-vos-a-3rd-place-report-for-the-mevis-audio-track-8th-lsvos-challenge",
+      "title": "MLLM-Assisted Audio VOS: A 3rd Place Report for the MeViS-Audio Track, 8th LSVOS Challenge",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "音频引导视频对象分割技术，结合多模态大模型与SAM",
+      "first_seen_at": "2026-08-30 21:55:48 UTC",
+      "updated_at": "2026-08-30 21:55:48 UTC"
+    },
+    {
+      "paper_id": "2608.23850v1",
+      "route": "202608/30/2608.23850v1-ddms-discriminative-distillation-of-multi-view-foundational-features-into-single-view-models",
+      "title": "DDMS: Discriminative Distillation of Multi-view Foundational Features into Single-view Models",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "将多视角基础特征蒸馏到单视图模型，属特征提取",
+      "first_seen_at": "2026-08-30 21:55:48 UTC",
+      "updated_at": "2026-08-30 21:55:48 UTC"
+    },
+    {
+      "paper_id": "2608.24130v1",
+      "route": "202608/30/2608.24130v1-syn2realtrack-bridging-the-gap-between-synthetic-and-real-world-datasets-for-online-multi-view-multi-target-tracking",
+      "title": "Syn2RealTrack: Bridging the Gap Between Synthetic and Real-World Datasets for Online Multi-View Multi-Target Tracking",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "多视角多目标跟踪及合成到真实的域适应",
+      "first_seen_at": "2026-08-30 21:55:48 UTC",
+      "updated_at": "2026-08-30 21:55:48 UTC"
+    },
+    {
+      "paper_id": "2608.25701v1",
+      "route": "202608/30/2608.25701v1-skeleton-based-zero-shot-spatio-temporal-action-localization-via-weakly-supervised-pretraining",
+      "title": "Skeleton-based Zero-Shot Spatio-Temporal Action Localization via Weakly-Supervised Pretraining",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "基于骨架的零样本时空动作定位，属于视觉识别任务",
+      "first_seen_at": "2026-08-30 21:55:48 UTC",
+      "updated_at": "2026-08-30 21:55:48 UTC"
+    },
+    {
+      "paper_id": "2608.26644v1",
+      "route": "202608/30/2608.26644v1-real-time-unsupervised-object-discovery-from-asynchronous-event-streams",
+      "title": "Real-time Unsupervised Object Discovery from Asynchronous Event Streams",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "通过时空聚类从事件流中无监督发现运动物体",
+      "first_seen_at": "2026-08-30 21:55:48 UTC",
+      "updated_at": "2026-08-30 21:55:48 UTC"
+    },
+    {
+      "paper_id": "2608.26859v1",
+      "route": "202608/30/2608.26859v1-a-geometry-driven-framework-agnostic-optimization-for-object-pose-estimation",
+      "title": "A Geometry-Driven, Framework-Agnostic Optimization for Object Pose Estimation",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "物体位姿估计，属于计算机视觉研究范畴",
+      "first_seen_at": "2026-08-30 21:55:48 UTC",
+      "updated_at": "2026-08-30 21:55:48 UTC"
+    },
+    {
+      "paper_id": "2608.27226v1",
+      "route": "202608/30/2608.27226v1-dinocular-self-supervised-visuospatial-representations",
+      "title": "DINOcular: Self-Supervised Visuospatial Representations",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "自监督视觉-空间特征表征学习",
+      "first_seen_at": "2026-08-30 21:55:48 UTC",
+      "updated_at": "2026-08-30 21:55:48 UTC"
+    },
+    {
+      "paper_id": "2608.21819v1",
+      "route": "202608/30/2608.21819v1-patchgate-narrowing-the-verbalization-gap-with-intrinsic-object-inventories-in-frozen-vision-language-models",
+      "title": "PatchGate: Narrowing the Verbalization Gap with Intrinsic Object Inventories in Frozen Vision-Language Models",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "基于冻结视觉语言模型的图像描述研究",
+      "first_seen_at": "2026-08-30 21:55:48 UTC",
+      "updated_at": "2026-08-30 21:55:48 UTC"
+    },
+    {
+      "paper_id": "2608.22366v1",
+      "route": "202608/30/2608.22366v1-when-do-vlms-help-arabic-manuscript-ocr-a-cross-dataset-study",
+      "title": "When Do VLMs Help Arabic Manuscript OCR? A Cross-Dataset Study",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "跨数据集评估OCR与视觉语言模型在阿拉伯文手稿识别中的性能",
+      "first_seen_at": "2026-08-30 21:55:48 UTC",
+      "updated_at": "2026-08-30 21:55:48 UTC"
+    },
+    {
+      "paper_id": "2608.22757v1",
+      "route": "202608/30/2608.22757v1-object-uni-a-unified-model-for-object-centric-spatial-understanding-and-controllable-generation",
+      "title": "Object-Uni: A Unified Model for Object-Centric Spatial Understanding and Controllable Generation",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "物体中心的空间理解与可控生成，属于计算机视觉研究",
+      "first_seen_at": "2026-08-30 21:55:48 UTC",
+      "updated_at": "2026-08-30 21:55:48 UTC"
+    },
+    {
+      "paper_id": "2608.23723v1",
+      "route": "202608/30/2608.23723v1-driftad-visually-guided-text-drift-for-few-shot-industrial-anomaly-detection",
+      "title": "DriftAD: Visually-Guided Text Drift for Few-Shot Industrial Anomaly Detection",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "少样本视觉异常检测算法，利用视觉语言模型",
+      "first_seen_at": "2026-08-30 21:55:48 UTC",
+      "updated_at": "2026-08-30 21:55:48 UTC"
+    },
+    {
+      "paper_id": "2608.21764v1",
+      "route": "202608/30/2608.21764v1-liteevent-ae-lightweight-autoencoder-for-event-based-vision-on-low-latency-energy-constrained-edge-devices",
+      "title": "LiteEvent-AE: Lightweight Autoencoder for Event-Based Vision on Low-Latency Energy-Constrained Edge Devices",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "面向边缘设备的事件视觉轻量化自编码研究",
+      "first_seen_at": "2026-08-30 21:55:48 UTC",
+      "updated_at": "2026-08-30 21:55:48 UTC"
+    },
+    {
+      "paper_id": "2608.26500v1",
+      "route": "202608/30/2608.26500v1-systematic-literature-review-of-machine-learning-models-and-applications-for-text-recognition",
+      "title": "Systematic Literature Review of Machine Learning Models and Applications for Text Recognition",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "面向OCR文本识别的机器学习系统性综述，属于计算机视觉研究领域",
+      "first_seen_at": "2026-08-30 21:55:48 UTC",
+      "updated_at": "2026-08-30 21:55:48 UTC"
+    },
+    {
+      "paper_id": "2608.26833v1",
+      "route": "202608/30/2608.26833v1-rethinking-image-processing-for-the-age-of-ai-a-problem-first-framework-for-scientific-progress",
+      "title": "Rethinking Image Processing for the Age of AI: A Problem-First Framework for Scientific Progress",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "AI时代图像处理研究方法的反思性论文",
+      "first_seen_at": "2026-08-30 21:55:48 UTC",
+      "updated_at": "2026-08-30 21:55:48 UTC"
+    }
+  ]
+}
