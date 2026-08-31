@@ -41,17 +41,17 @@
 <section class="dpr-home-dashboard-card dpr-home-report-card">
   <div class="dpr-home-dashboard-header">
     <div>
-      <span class="dpr-home-dashboard-kicker">2026-08-30</span>
+      <span class="dpr-home-dashboard-kicker">2026-08-31</span>
       <h3 class="dpr-home-dashboard-title">今日汇总</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">共 17 篇</strong>
+    <strong class="dpr-home-dashboard-count">共 15 篇</strong>
   </div>
   <dl class="dpr-home-dashboard-stats">
     <div class="dpr-home-dashboard-stat"><dt>累计更新</dt><dd>1 次</dd></div>
     <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>6</dd></div>
-    <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>11</dd></div>
+    <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>9</dd></div>
   </dl>
-  <p class="dpr-home-dashboard-body">最近更新：2026-08-30 21:55:48 UTC<br>状态：成功</p>
+  <p class="dpr-home-dashboard-body">最近更新：2026-08-31 23:59:02 UTC<br>状态：成功</p>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-brief-card">
   <div class="dpr-home-dashboard-header">
@@ -62,9 +62,7 @@
     <strong class="dpr-home-dashboard-count">AI</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<p>今日精选17篇论文，精读2篇、速读3篇，聚焦显著目标检测、双曲层次聚类与零样本动作定位。</p>
-<p>最值得关注的是《MIMONet》多尺度输入输出显著目标检测（9.0分）和《Hyperbolic Hierarchical Clustering》双曲层次聚类（8.0分），前者在分割精度上表现突出，后者为视觉表征学习提供新思路。</p>
-<p>建议优先精读这两篇高分工作，再结合速读中的无监督目标发现与姿态估计，拓展应用场景。</p>
+<p>今日精读6篇、速读9篇，重点聚焦YOLO系列在复杂果园小目标检测与嵌入式 sidewalk 提取的轻量化方案。最值得关注的是跨代YOLO优化（YOLOv26/11/8）在小目标分割上的9分表现，以及单目嵌入式路径提取的实用价值。建议普通读者后续可关注OpenCVL等新数据集，并留意低秩近似在移动端卷积中的加速潜力。</p>
   </div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-deep-card">
@@ -76,7 +74,7 @@
     <strong class="dpr-home-dashboard-count">6 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="MIMONet: Multi-scale Input and Multi-scale Output Network for Salient Object Detection">MIMONet: Multi-scale Input and Multi-scale Output Network for Salient Object Detection</span></li><li><span class="dpr-home-dashboard-paper-title" title="Hyperbolic Hierarchical Clustering for Visual Representation Learning">Hyperbolic Hierarchical Clustering for Visual Representation Learning</span></li><li><span class="dpr-home-dashboard-paper-title" title="Training-Free Pseudo-Fusion for Composed Image Retrieval with Diffusion Models and Multimodal Large Language Models">Training-Free Pseudo-Fusion for Composed Image Retrieval with Diffusion Models and Multimodal Large Language Models</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Cross-Generation Optimization of YOLOv26, YOLOv11, and YOLOv8 for Fine-Grained Small-Object Detection and Instance Segmentation in Complex Orchards">Cross-Generation Optimization of YOLOv26, YOLOv11, and YOLOv8 for Fine-Grained Small-Object Detection and Instance Segmentation in Complex Orchards</span></li><li><span class="dpr-home-dashboard-paper-title" title="Lightweight Machine Learning-Driven Monocular Sidewalk Path Extraction for Embedded Micromobility Navigation">Lightweight Machine Learning-Driven Monocular Sidewalk Path Extraction for Embedded Micromobility Navigation</span></li><li><span class="dpr-home-dashboard-paper-title" title="From Perspective to Fisheye Depth Estimation and Open-Vocabulary Segmentation">From Perspective to Fisheye Depth Estimation and Open-Vocabulary Segmentation</span></li></ul>
   </div>
   <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">cv <strong>6</strong></span></div>
 </section>
@@ -86,12 +84,12 @@
       <span class="dpr-home-dashboard-kicker">今日累计</span>
       <h3 class="dpr-home-dashboard-title">速读推荐</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">11 篇</strong>
+    <strong class="dpr-home-dashboard-count">9 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Skeleton-based Zero-Shot Spatio-Temporal Action Localization via Weakly-Supervised Pretraining">Skeleton-based Zero-Shot Spatio-Temporal Action Localization via Weakly-Supervised Pretraining</span></li><li><span class="dpr-home-dashboard-paper-title" title="Real-time Unsupervised Object Discovery from Asynchronous Event Streams">Real-time Unsupervised Object Discovery from Asynchronous Event Streams</span></li><li><span class="dpr-home-dashboard-paper-title" title="A Geometry-Driven, Framework-Agnostic Optimization for Object Pose Estimation">A Geometry-Driven, Framework-Agnostic Optimization for Object Pose Estimation</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="OpenCVL: An Open, Diverse, and Large-Scale Dataset for Fine-Grained Cross-View Localization">OpenCVL: An Open, Diverse, and Large-Scale Dataset for Fine-Grained Cross-View Localization</span></li><li><span class="dpr-home-dashboard-paper-title" title="PIVOT: A Multi-Trajectory Dataset and Testbed for Pose, Intrinsics, and Novel Viewpoint Evaluation in Real-World 3D Reconstruction">PIVOT: A Multi-Trajectory Dataset and Testbed for Pose, Intrinsics, and Novel Viewpoint Evaluation in Real-World 3D Reconstruction</span></li><li><span class="dpr-home-dashboard-paper-title" title="Group-Shared Low-Rank Approximation for Mobile-Efficient Pointwise Convolutions in Large-Kernel CNNs">Group-Shared Low-Rank Approximation for Mobile-Efficient Pointwise Convolutions in Large-Kernel CNNs</span></li></ul>
   </div>
-  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">cv <strong>11</strong></span></div>
+  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">cv <strong>9</strong></span></div>
 </section>
 </div>
 

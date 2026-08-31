@@ -1,0 +1,360 @@
+Title: Focus Where It Counts: A Salience-Driven Vision-Language Model for Low Vision Assistance
+
+URL Source: https://arxiv.org/pdf/2608.28218v1
+
+Published Time: Mon, 31 Aug 2026 00:52:30 GMT
+
+Number of Pages: 13
+
+Markdown Content:
+> 1
+
+# Focus Where It Counts: A Salience-Driven Vision-Language Model for Low Vision Assistance 
+
+Jiazhao Liang †, Hao Huang †, Shuaihang Yuan †, Congcong Wen, Geeta Chandra Raju Bethala, Giles Hamilton-Fletcher, Yu Hao, John-Ross Rizzo, Mengyu Wang, Anthony Tzes, and Yi Fang 
+
+Abstract —Vision-language models (VLMs) are rapidly pro-gressing and offer promising capabilities for assistive technologies supporting persons with blindness or low vision. However, exist-ing VLMs are primarily designed for general-purpose captioning and do not explicitly model human perceptual priorities, thereby limiting their ability to emphasize the most relevant information in a scene. To address this gap, we propose a salience-driven captioning framework that prioritizes scene elements according to their importance for human-centered assistance. We curate three salience-aware datasets, namely, Salience COCO, Salience Flickr, and Salience VizWiz, with object-level salience annotations designed to reflect the visual information most relevant to low vision users across different environments. Building on these datasets, we introduce Salience-LLaVA, a salience-aware VLM that incorporates salience cues to generate captions in which im-portant elements are mentioned in the order of importance. Our work makes four main contributions. We build salience-aware datasets verified by low vision participants, propose Salience-LLaVA to describe objects in the order of importance, introduce SCMI to evaluate ordering accuracy, and deploy the system on assistive glasses to demonstrate real-world practicality. Code and datasets are available at: https://github.com/topo-focus/Topofocus 
+
+Index Terms —Assistive technology, computer vision, image captioning, vision-language models 
+
+I. I NTRODUCTION 
+
+# RECENT studies show that vision-language models (VLMs) can describe images in a zero-shot manner, enabled by training on large and diverse datasets. This gen-eralization has supported their use in applications such as visual interpreters that convert complex scenes into natural language [1], [2]. More recently, VLMs have been integrated into wearable devices [3], offering real-time feedback for individuals with low vision. By translating visual input into verbal descriptions, these systems help users understand and navigate dynamic environments [4]. However, current VLMs are built for general-purpose captioning and describe scenes without considering how humans naturally prioritize visual information, often missing elements critical to the safety and orientation of low vision users. 
+
+> †Equal contribution.
+> Jiazhao Liang is with New York University Tandon School of Engineering, Brooklyn, NY 11201, USA. Hao Huang, Yu Hao, Geeta Chandra Raju Bethala, Congcong Wen, Shuai-hang Yuan, Anthony Tzes, and Yi Fang are with NYUAD Center for Artificial Intelligence and Robotics (CAIR) and Embodied AI and Robotics (AIR) Lab, New York University Abu Dhabi, Abu Dhabi 129188, UAE. Giles Hamilton-Fletcher and John-Ross Rizzo are with NYU Grossman School of Medicine, NYU Langone Health, New York, NY 10016, USA. Mengyu Wang is with Harvard AI and Robotics Lab, Harvard University, Boston, MA 02114, USA.
+
+This limitation becomes critical in assistive settings, where task-relevant and safety-critical cues are essential for inde-pendent mobility. Although VLMs produce detailed outputs, they often miss subtle but important environmental cues. These include uneven curbs, oncoming vehicles, or misaligned tactile paths. As shown in Fig. 1, a human annotator ranks salient objects in a street-crossing scene in the descending order of importance: Crosswalk , Traffic Light , People , and Bicycle .The original LLaVA caption begins with People rather than 
+
+Crosswalk and places Vehicles before Bicycle , deviating from this human priority. Salience-LLaVA more closely follows the human ordering, describing the Crosswalk and Traffic Light 
+
+first before mentioning People and Cyclists . These challenges highlight the need for VLMs that can prioritize scene elements based on their importance to the user, rather than treating all objects equally in the description. In practice, visually impaired users often have a low visual acuity, a limited field of view, or they experience night blind-ness, making small but critical objects easy to miss [5], [6]. For these users, the order in which scene elements are described matters significantly. Safety-critical information, such as road conditions, traffic signals, and moving obstacles, must be conveyed first, as delayed or buried descriptions may lead to dangerous decisions. A caption that accurately lists all objects in a scene but fails to prioritize them according to the user’s immediate needs provides limited practical value. Therefore, there is a clear need for a salience-aware captioning mecha-nism that orders scene elements based on their importance to the user’s safety and navigation. This gap stems from the absence of any mechanism to model human perceptual priorities: standard VLM captioning pipelines assign no ordering or weight to scene elements based on user needs. For example, although a sighted person may naturally disregard certain obstacles on the ground, failing to account for them can present substantial trip hazards for in-dividuals with visual impairments. Recent work in navigation and anomaly detection [7]–[9] also underscores the importance of salience tuned for people with visual impairments. However, despite these advances, existing captioning models lack mech-anisms to incorporate salience information that reflects human perceptual priorities. Human-centered alignment is critical in assistive captioning because low vision users may rely entirely on verbalized descriptions to make safety-critical decisions, making the ordering of information as important as its con-tent. Inspired by saliency maps, we propose a saliency-aware captioning system that not only describes scene elements but also prioritizes and orders them based on their contextual importance under specific circumstances. We approach this arXiv:2608.28218v1 [cs.CV] 28 Aug 2026 2Crosswalk, Traffic Light, People, Bicycle 
+
+Human: 
+
+LLaVA: 
+
+Salience LLaVA: 
+
+The image shows a group of people crossing a street at a 
+
+crosswalk. There are several cars and a truck in the scene, 
+
+with some cars stopped at the traffic light. The traffic light is green, indicating that the pedestrians have the right of way. There are at least six people in the scene, 
+
+with some of them carrying backpacks. A bicycle can also 
+
+be seen in the image, adding to the busy atmosphere of the street. 
+
+The image shows a crosswalk at a busy intersection. The 
+
+traffic light ahead is currently green for cross traffic, so 
+
+vehicles may still be moving through. Several people are 
+
+walking across the crosswalk, including a family with an adult holding a child's hand and other pedestrians carrying backpacks moving in the same direction. 
+
+Cyclists are sharing the crosswalk area, approaching from both directions.  
+
+> Fig. 1. Comparison of image descriptions generated by the original LLaVA and Salient-LLaVA. The first row lists salient objects in order of importance, as determined by a human annotator, representing human commonsense prioritization. While the original LLaVA description does not fully align with human perception, Salient-LLaVA better reflects human-centered relevance by highlighting key elements earlier in the caption.
+
+problem from both the dataset curation and model architecture 
+
+perspectives by curating salience-annotated datasets grounded in the real needs of users with low vision and by explicitly integrating saliency rankings generated by a dedicated saliency prediction module into the captioning pipeline, ensuring that the most relevant elements are described first. Our main contributions are summarized as follows. 1) Datasets With Salience-Aware Captions Tailored to Low Vision Users: We present Salience COCO, Salience Flickr, and Salience VizWiz to capture the complex, real-world human-centered salient objects missing from existing image captioning benchmarks. 2) Salience-Aware VLM for Captioning: We integrate im-age salience features into a VLM to generate descrip-tions that prioritize visually crucial details often over-looked by generic VLMs. 3) Assistive Glasses Implementation for Low Vision Users: 
+
+We integrate our salience-aware captioning model with glasses hardware that capture visual input and deliver audio feedback, offering an accessible and intuitive experience for the visually impaired. By integrating salience information with a VLM-based cap-tioning model, our approach aims to bridge the gap between generic, visually prominent descriptions and the specific, human-centered requirements of low vision users. We believe that our work will advance the development of inclusive, reliable, and user-centered assistive technologies. II. R ELATED WORKS 
+
+A. VLM for Image Captioning 
+
+VLMs have advanced image captioning by effectively bridg-ing visual inputs with natural language outputs through diverse architectural innovations [10], [11]. For instance, VinVL [12] employs object detection to extract detailed visual features that significantly boost caption accuracy. Building on this, SimVLM [13] enhances captioning performance by utilizing a straightforward prefix language modeling objective over vast, weakly supervised image-text pairs. Complementing these approaches, both OFA [14] and BLIP [15], [16] adopt uni-fied sequence-to-sequence frameworks to streamline caption generation. In addition, mPLUG [17] integrates cross-modal skip connections to better balance visual and linguistic cues, thereby reducing issues such as hallucinations. ViTCAP [18] elevates caption fidelity by incorporating semantic concept tokens within a detector-free Transformer [19] to enrich the descriptive quality of generated captions. Meanwhile, reducing the cost of data annotation remains a key concern, as active learning techniques have shown promise in efficiently curating labeled datasets for visual recognition tasks [20]. Beyond captioning, recent MLLM-based methods explore federated adaptation and embedding-level reranking [21], [22], while augmentation-based methods strengthen contrastive represen-tations for recognition tasks [23], [24]; however, these di-rections emphasize model training, candidate discrimination, or recognition robustness rather than human-centered object prioritization in captioning. Despite their strong performance, these methods share a common limitation: they treat all visual elements with equal importance during caption generation, without mechanisms to prioritize objects based on their rel-evance to the user. On the contrary, our work integrates salience cues into the captioning pipeline, enabling the model to emphasize safety-critical objects in the descriptions. 
+
+B. Salience Information as Human-Centered Cues 
+
+Salience maps are designed to highlight the most influential regions or features in an input image, aligning model focus with human visual priorities. For instance, Chen et al. [25] demonstrate that deep saliency models can decompose learned representations into interpretable semantic bases that mirror human fixation patterns. Similarly, Levin et al. [26] propose parameter-space saliency maps to diagnose and correct mis-alignments between model attention and human perception. 3Detected Objects         
+
+> The most prominent object is a blue pickup truck in the foreground. The street is lined with buildings, and traffic lights are visible at intersections. While other vehicles, such as cars and buses, are visible in the background, there are also some pedestrians .
+> Salience Map
+> Truck Traffic Light Car Person
+> QAGNet
+> Janus Pro-7b
+> Input Image Description Reordered Objects
+> Fig. 2. An Illustration of the salience-aware captioning ground-truth generation process. The input image is processed to produce a salience map, from which salient objects are detected and reordered. A salience-aware description is then generated, highlighting the most salient elements in the scene.
+
+Furthermore, Deng et al. [27] leverage real human fixation data to accurately rank salient regions in images, thereby enhancing the reliability of saliency maps. In parallel, Bhunia 
+
+et al. [28] show that human sketches can serve as effective weak supervision for saliency detection, emphasizing the value of natural perceptual cues. Moreover, Chen et al. [29] generate natural language explanations for visual scan paths, linking model decisions with interpretability. Related work on video anomaly detection also highlights the need to identify critical visual elements in dynamic scenes [30], [31]. However, these methods mainly interpret attention patterns rather than guide language generation. Our work incorporates saliency rankings into a VLM captioning framework, so that generated descrip-tions follow the importance ordering aligned with low vision users. III. D ATASETS CURATION 
+
+Recent advances in vision-language research have signifi-cantly enhanced assistive devices for low vision individuals; however, the models powering these technologies are trained on datasets that suffer from several limitations. First, the original captions do not capture salient information; in other words, they fail to convey the relative importance of visual elements as humans perceive them. Second, some scenarios presented in the pictures lack the complexity to reflect real-world environments. Third, the datasets are not designed with 
+
+low vision user experiences in mind, often including sporting scenarios that are nonadaptive, and hence less representative of their daily activities. These limitations underscore the need for salience-aware captioning datasets coupled with visually impaired user experiences, prompting us to repurpose and propose three datasets: Salience COCO, Salience Flickr, and Salience Vizwiz. Our filtering criteria are grounded in both low vision research and empirical evidence from observed accessibility needs in real-world settings. Visual crowding is widely recognized as a major bottleneck in degraded and peripheral vision because it affects not only object detection but also object discrimination in cluttered scenes [32]. Many people with low vision rely on peripheral or residual central vision due to conditions such as macular degeneration. As a result, they often face greater difficulty in scenes that contain multiple object types and richer semantic content. These environments require users to distinguish which objects matter most, not just detect whether an object is present. This challenge is common in everyday settings such as kitchens, living rooms, and urban streets. On the contrary, images with only a single supercategory contain less perceptual ambiguity and lower semantic complexity. They therefore do not reflect the complexity of many real-world assistive situations. By requiring at least two supercategories, we ensure that the benchmark evaluates models under more realistic levels of visual complexity and better captures the perceptual demands faced by low vision users. We exclude outdoor sports scenes because prior evidence suggests that assistive technology for blind and low vision users is needed mainly in indoor everyday settings. Brady et al. [33] analyzed more than 40,000 visual questions submitted by 5,329 blind users through the VizWiz application. Most requests focused on object identification, scene description, and text reading. These questions were concentrated in house-hold environments, retail spaces, and indoor navigation tasks. Gurari et al. [34] further showed that images captured by blind users mainly depict close-range indoor objects, personal items, and daily living scenes, with very limited representation of sporting events. Taken together, these studies indicate that outdoor sports scenes are not a common setting in which assistive visual support is typically sought. This choice is also consistent with prior evidence on every-day visual function and accessibility needs. Owsley et al. [35] showed that quality of life among older adults with impaired vision is closely tied to activities such as reading, self-care, and navigating residential environments. Outdoor sports scenes in COCO usually contain wide spaces, distant people, and fast motion. They are, therefore, visually and functionally different from the cluttered everyday environments that more often motivate assistive use. Including them would reduce the alignment between the benchmark and the practical situations it is intended to represent. Excluding them helps keep the dataset focused on scenes that better reflect the documented daily needs of low vision users. 4Salience Vizwiz Caption: The image shows a room with a television 
+
+mounted on a stand in the background. In front of the television, there is a bottle of orange liquid placed on a table. The room has a 
+
+clock on the wall. To the right of the bottle, there is a small bowl 
+
+containing some colorful items. The table is cluttered with various papers, folders, and a glass of water. 
+
+Salience Flickr Caption: The image shows a 
+
+person walking a cat on a leash along a brick-paved sidewalk. The person is dressed in a black jacket and dark pants, holding the leash with one hand while the cat walks ahead. The cat appears to be a small, brown tabby with stripes. The sidewalk is lined with storefronts, and other pedestrians can be seen in the background. The scene takes place in an urban area with buildings and shops on either side of the walkway. 
+
+Salience COCO Caption: The image depicts a kitchen scene with two cats .One cat is sitting on a countertop near 
+
+bananas and a bowl , while the other cat is perched on top of a white 
+
+appliance . The kitchen features awindow with curtains, a stand mixer, and various other items. The cats are the most prominent elements, with the one on the countertop being the most noticeable.  
+
+> Fig. 3. Examples of images, salience masks, and salience-aware ground-truth captions of Salience COCO, Salience Flickr, and Salience Vizwiz datasets.
+
+(a) PDF of word count for Salience COCO (b) PDF of sentence length for Salience COCO (c) PDF of word count for Salience Flickr (d) PDF of sentence length for Salience Flickr (f) PDF of sentence length for Salience Vizwiz (e) PDF of word count for Salience Vizwiz  
+
+> Fig. 4. Statistics of word counts and sentence lengths of Salience COCO, Salience Flickr, and Salience VizWiz datasets.
+
+1) Salience COCO: To address the limitations mentioned above, we repurpose the COCO dataset [36] to form our Salience COCO dataset, and the repurposing process is shown in Fig. 2. To generate human-centered captions that effectively incorporate salience information, we redefine the ground-truth image captions. First, to capture the complexity of real-world environments, we filtered the COCO dataset [36] to include only images containing at least two supercategories. Next, we selected images relevant to the everyday needs of individuals with low vision, focusing on categories such as indoor objects, crossroads, and traffic signs. Each image was then processed with QAGNet [27] to generate salience masks, where brighter regions indicate higher salience and darker regions indicate lower salience. We computed salience scores from these masks and mapped them to the original bounding boxes, ranking objects by their scores in descending order. Finally, we provided this ranked list, along with the original image, to Janus Pro 7b [37] to produce ground truth captions that capture the relative importance of each object. Eventually, our Salience COCO dataset has 6,636 training images and 1,659 test images. To ensure reproducibility, we use a pre-trained QAGNet with a confidence threshold of 0.7, discarding low-confidence instances. For each retained object, we compute the mean saliency intensity within its bounding box and rank all objects in descending order. For caption generation, a single standardized template is applied across all three datasets, instructing Janus Pro-7B to “generate a multiple-sentence caption describing these objects exactly 5
+
+in the order provided.” This configuration, including the confidence threshold, saliency ranking procedure, and caption generation template, is kept fixed to ensure consistency. The latter two datasets, Salience Flickr and Salience VizWiz, are generated using the same configurations. 
+
+2) Salience Flickr: For the Salience Flickr dataset, we gen-erated salience-aware ground-truth captions for the Flickr30K dataset [38], which does not include COCO-style annotations. We employed YOLO-World [39], an annotation model based on the YOLO-V8x [40], to automatically detect objects, extract bounding boxes, labels, supercategories, and item categories for each image. Following the same annotation process as Salience COCO, we applied a filtering procedure to maintain scenario diversity and ensure high relevance to low vision people’s lives. In particular, we retain images that contain at least two distinct categories and remove those predominantly featuring outdoor sports scenes. Similar to the previously described Salience COCO ground-truth caption generation process, the correctly ordered labels and corresponding origi-nal images were then input into Janus Pro-7b [37] to generate the ground-truth captions. Ultimately, this procedure resulted in a curated dataset comprising 6,980 training images and 1,745 test images. 
+
+3) Salience Vizwiz: The Vizwiz dataset [41], originally collected from individuals with visual impairments, offers a genuine perspective on the everyday visual challenges encoun-tered by low vision users. To extend the utility of Vizwiz, we adopted an annotation pipeline using YOLO-World to generate COCO-style bounding boxes, labels, supercategories, and item categories for each image, as described above. We then applied a filtering procedure to retain only those images containing at least two supercategories, thereby ensuring the necessary contextual richness for effective model training. Following this, the reordered labels and corresponding original images were sent to Janus Pro-7b [37] to generate the ground-truth captions. This process ultimately yielded 779 training images and 266 test images. In summary, our repurposed dataset addresses the three key limitations in existing image captioning datasets for low vision assistive technologies: the absence of salience-aware information, insufficient scene complexity, and the presence of nonrepresentative contexts, such as outdoor sports, for low vi-sion people. Through a YOLO-World ground-truth annotation pipeline and a targeted filtering process, we selected sets of training and testing images for each of the repurposed datasets that more accurately reflect the everyday visual challenges encountered by low vision users. Detailed statistics for all three repurposed datasets regarding the number of images, number of total words, number of caption sentences, average sentence numbers, vocabulary sizes, and average word counts in sentences are summarized in Table I and the distributions of word counts and sentence lengths for all three datasets are detailed in Fig. 4. We also show some examples from these three datasets in Fig. 3. 
+
+4) Human Verification of Annotation Quality: To validate that our salience annotations align with the perceptual pri-orities of low vision users, we conducted a human verifica-tion study following established agreement evaluation proto-                    
+
+> TABLE I STATISTICS FOR THE THREE SALIENCE IMAGE CAPTIONING DATASETS .
+> Salience COCO Salience Flickr Salience Vizwiz
+> #Images 8,295 8,725 1,045 #Total words 728,043 712,516 73,689 #Caption sentences 46,012 46,190 4,815 Avg sentence 554Vocab size 6,657 6,882 2,854 Avg words in sentence 16 15 15
+
+cols [42]. This evaluation examines whether our annotations order objects according to the perceived importance to real low vision users. Rather than only checking whether the same objects are present, this study also assesses whether the ranking of those objects reflects how low vision users naturally judge their importance within a scene. To assess annotation quality, we randomly sampled 40 images from each of the three salience datasets, for a total of 120 verification images. Following Institutional Review Board approval, we recruited four low vision participants for the study. The four participants were all male, aged 38, 47, 54, and 73 years, and had a formal diagnosis of uncorrectable visual impairment with visual acuity no worse than 20/400 1. All were able to visually explore image details and independently com-plete the online survey. The verification images were divided evenly across participants, with each participant viewing 30 images. For each image, participants identified and ranked the three most salient objects based on their perceived importance. To assist this process, each image was accompanied by a GPT-5 [43] generated description and a list of candidate objects. We then compared these human annotations with the salience rankings produced by our model on the same images. We evaluated annotation quality using Cohen’s kappa [42] between the human annotations and the model-generated salience labels on the verification images. Across all verifica-tion images, Cohen’s κ was 0.70, indicating a good agreement between the model generated salience annotations and the annotations provided by low vision participants. 2 This result supports that our salience rankings are well aligned with the perceptual priorities of low vision users and strengthens the reliability of the annotations across the three datasets. IV. M ETHOD 
+
+We propose Salience-LLaVA, a dual-branch multimodal architecture based on LLaVA [45], as shown in Fig. 6, that enables the original LLaVA to generate salience-aware image captions. Our Salience-LLaVA consists of three components: 1) a vision backbone branch that inherits from CLIP-ViT [46] to extract image features; 2) a salience branch built upon QAGNet [27] to obtain multiscale saliency features; and 3) a large language model, i.e. , Vicuna [47], to encode language instructions and output image captions.           
+
+> 1The subject must be at a distance of 20 feet to recognize an object that a person with normal vision can see from 400 feet away
+> 2Altman’s guidelines [44] interpret Cohen’s κ < 0.20 as poor, 0.21 –0.40
+> as fair, 0.41 –0.60 as moderate, 0.61 –0.80 as good, and 0.81 –1.00 as very good agreement. 6
+
+A. Vision Backbone Branch 
+
+We adopt CLIP-ViT as our vision encoder, as used in the original LLaVA. In particular, an input image x is first resized and then tokenized into a grid of nonoverlapping patches 
+
+[x1, x2, . . . , xN ]. A ViT model embeds each patch into fixed-dimensional feature vectors, resulting in a patch-level sequence 
+
+[f1, f2, . . . , fN ] ∈ RN ×d where N is the number of patches, and d = 768 is the feature dimension of the ViT output. Then, an MLP projection head is applied to map these image features to match the input dimension D = 4096 required by Vicuna, 
+
+i.e. , the final output is [f1, f2, . . . , fN ] ∈ RN ×D .
+
+B. Multiscale Saliency Branch 
+
+This branch begins by processing the input image x through ResNet-50 [48] to extract multiscale feature maps from suc-cessive convolutional layers. These feature maps, rich in both semantic and spatial information, are then refined by a pixel decoder inspired by Mask2Former [49] to fuse into a coherent representation that maintains a detailed spatial context. At this point, a set of N learnable instance queries are introduced to act as proposals for potential salient instances. These queries are then fed into a graph neural network known as QAG-Net [27] for saliency instance ranking. We adopt QAGNet [27] as it ranks salient objects using genuine human fixation data, yielding a saliency signal that is more closely aligned with natural human visual perception. Importantly, QAGNet [27] does not produce fixed salience rankings; because the model is trained on human fixation patterns that naturally reflect context-dependent attention, the same object category can receive different salience scores depending on the surrounding scene. As shown in Fig. 5, a cup is ranked as highly salient in a dining setting but receives lower priority in a social scene where persons dominate attention, while traffic lights are ranked highest in street-crossing scenarios. This context-sensitive behavior enables our framework to adapt salience priorities across different scenes without requiring explicit task-specific rules. The overall Salience-LLaVA framework is shown in Fig. 6. Within QAGNet [27], the core architecture is organized into an input layer, multiple hidden layers, and an output layer. In the hidden layers, each QAG layer constructs a tritiered nested graph that comprises: 1) Single Scale Graphs (SSGs): For each instance, three query features (obtained from different decoder layers at a fixed scale) are aggregated by averaging, and then refined using a graph neural network layer. 2) Multiscale Graphs (MSGs): The representative nodes from the SSGs at different scales ( e.g. , , 32, 64, 128) are combined into MSGs, capturing multiscale instance-level cues. 3) Global Relationship Graph (GRG): MSG representative nodes from all instances are interconnected to model the global relationships among salient objects. The representative aggregation (RA) stage of each QAG layer aggregates these multiscale features, while the subsequent rep-resentative feedback (RF) stage propagates ranking-aware cues from the GRG back to the SSGs. This bidirectional flow refines the query representations by integrating both intrainstance multiscale details and interinstance relational information. The final output of the method is a refined feature representation 
+
+z ∈ RN ×D , also known as a saliency feature, where N denotes the number of detected salient instances and D is the feature dimension. This output is then passed through a linear rank head to predict the relative saliency ranking scores for each instance. 
+
+C. Saliency Map Construction and Fusion 
+
+In order to capture saliency features alongside the original visual representations, we employ a projection layer that integrates both signals into a single embedding, enabling the model to leverage salient cues without disrupting the underly-ing visual structure. After retrieving the saliency feature z, we pass it through a projection module consisting of a two-layer MLP defined as follows: 
+
+s = W2 σ(W1 z + b1) + b2 (1) where W1 and b1 are the weight matrix and bias vector of the first linear layer, while W2 and b2 are the corresponding parameters for the second linear layer, respectively. Here, σ
+
+denotes the ReLU function. Next, we concatenate the projected saliency feature s ∈
+
+RN ×Ds with the original feature vectors, yielding ffused ∈
+
+RN ×(D+Ds). These fused features are then passed into the Vicuna for caption generation. 
+
+D. Caption Generation as Response 
+
+Language instructions, e.g. , , bottom left in Fig. 6, are tokenized using Vicuna’s tokenizer into L tokens and embed-ded into a text representation e ∈ RL×De via the pretrained embedding layer (where De is the embedding dimension). Meanwhile, the vision pathway produces fused visual features 
+
+ffused . These fused features are projected to the text embedding space via a linear layer, yielding ˆffused ∈ RN ×D′
+
+, and concate-nated with text representation e along the sequence dimension to form a unified representation c ∈ R(L+N )×De , which is then input into Vicuna for salience-aware caption generation. 
+
+E. Loss Function 
+
+We use the cross-entropy loss for caption generation, where for a given image-prompt pair, the target caption tokens y =
+
+{y1, . . . , y T } are generated based on the unified representation 
+
+c ∈ R(L+N )×De as follows: 
+
+L = − 1
+
+T
+
+> T
+
+X
+
+> t=1
+
+log P (yt | c, y <t ) (2) Here, T denotes the total number of tokens in the caption, and t indexes each token position. To fine-tune the VLM effi-ciently, we adopt low-rank adaptation (LoRA), which modifies each attention weight matrix W as W ′ = W +AB , with A and 
+
+B being low-rank trainable matrices. In addition, we only train the newly introduced projection layer for saliency integration, keeping all other model parameters frozen. This preserves the pretrained knowledge of the base model and reduces the risk of overfitting. 7The image captures a serene evening 
+
+scene at an intersection. A traffic light 
+
+stands prominently at the corner of the 
+
+intersection, displaying a green signal. 
+
+In the foreground, a car is driving 
+
+along the road, heading towards the 
+
+viewer. The buildings in the 
+
+background add a sense of depth to the 
+
+scene, with their architectural details 
+
+contrasting against the sky. 
+
+The image shows a person standing 
+
+next to a dining table, where a laptop is 
+
+placed. The dining table is set with 
+
+various items, including a wine glass, a 
+
+cup, and some plates with food. The 
+
+person is wearing a tie and appears to 
+
+be engaged in a conversation with 
+
+another individual who is seated at the 
+
+table. 
+
+The image shows a dining table where a large pizza is placed in the center. The pizza is topped with various ingredients, including slices of tomato, black olives, and melted cheese. To the left of the pizza, there is a bottle of beer and a cup filled with 
+
+a dark beverage, likely a cocktail. On the 
+
+right side of the pizza, there is a person 
+
+holding a knife and fork, ready to cut and 
+
+eat the pizza.  
+
+> Fig. 5. QAGNet produces context-dependent salience rankings across different scenes. Left: in a street-crossing scenario, the traffic light is ranked as the most salient object. Center: in a social setting, the person is prioritized over the cup and laptop. Right: in a dining scenario, the cup is ranked above the person. These examples demonstrate that the same object category (e.g., cup, person) receives different salience rankings depending on the scene context. Image Features
+
+Salience Features 
+
+> Vicuna QAGNet
+> Fused Visual Features
+> Projection ❄CLIP-ViT Projection
+> 🔥
+
+Input Instruction Input Image   
+
+> Linear layer ResNet-50 ❄
+> ❄
+> Tokenizer
+> 𝑍 !
+> 𝑄(𝑆) 𝜙(𝑧) 𝑊 !
+> 🔥 ❄
+
+Please generate a detailed caption, starting with the most important object. The image shows a stop sign positioned at the intersection of a cobblestone street. Directly beneath the stop sign, a 
+
+bicycle is locked to the pole. To the right of the bicycle, a yellow taxi cab is parked on the street. In the background, a 
+
+person is walking on the sidewalk, and several buildings, including a brick structure with multiple windows, are visible. The scene captures a typical urban environment with a mix of transportation modes and pedestrian activity. 
+
+Output Caption  
+
+> 🔥
+> 🔥
+> Fig. 6. Overview of the Salient LLaVA framework for image captioning. The model processes an input image and an instruction, extracting visual features using CLIP-ViT and ResNet-50. A QAGNet module enhances feature extraction, followed by projection layers to generate salience features. These features are fused and processed through a linear layer, combined with tokenized instruction embeddings, and fed into Vicuna to generate the output caption.
+
+V. E XPERIMENT 
+
+A. Evaluation 
+
+Our evaluation framework includes both conventional cap-tioning metrics and a newly introduced measure that as-sesses the salience order in which objects are identified. The conventional metrics, including BLEU, CIDEr, ROUGE, and METEOR, collectively provide complementary perspectives on the linguistic quality of the generated captions. To capture the salience-aware nature of our method, we introduce a “Salience Coherent Match Index” (SCMI) metric grounded in a longest common substring approach. Con-sider Wgt as the ground-truth sequence of salience object instance labels, ranked by salience, and let Wpred be the sequence of words obtained from the prediction. We define 
+
+LCS (Wgt , W pred ) as the longest subsequence common to both 
+
+Wgt and Wpred without violating the salience order of the instance labels. The SCMI is defined as follows: 
+
+SCMI( Wgt , W pred ) = |LCS( Wgt , W pred )||Wgt | (3) This is especially relevant for low vision assistance, where describing the most salient object instances first can improve users’ ability to orient themselves and navigate a scene. 8
+
+TABLE II COMPARISON OF MODEL PERFORMANCE ON OUR THREE SALIENCY DATASETS USING MULTIPLE EVALUATION METRICS . W E ADDITIONALLY INCLUDE RECENT STATE -OF -THE -ART MLLM S EVALUATED WITH EXPLICIT SALIENCE -AWARE TWO -SHOT PROMPTING . T HE BEST RESULTS FOR EACH DATASET AND METRIC ARE HIGHLIGHTED IN BOLD .Datasets Models BLEU-1 BLEU-2 BLEU-3 BLEU-4 CIDEr METEOR ROUGE-1 ROUGE-2 ROUGE-L SCMI Wu-Palmer SCMI Salience COCO DeCap [51] 0.35 0.18 0.06 0.03 0.07 0.26 0.38 0.09 0.23 0.35 0.44 GRIT [52] 0.27 0.13 0.05 0.03 0.03 0.19 0.35 0.09 0.23 0.28 0.32 Tag2text [53] 0.27 0.14 0.06 0.02 0.05 0.21 0.36 0.10 0.24 0.33 0.38 LLaVA [45] 0.25 0.15 0.09 0.06 0.12 0.21 0.34 0.13 0.22 0.36 0.28 LLaVA-FT [45] 0.46 0.32 0.22 0.20 0.40 0.40 0.55 0.30 0.35 0.51 0.58 SCOPE [54] 0.44 0.27 0.17 0.10 0.17 0.33 0.48 0.19 0.30 0.53 0.60 WalkVLM [55] 0.45 0.31 0.21 0.15 0.29 0.38 0.53 0.25 0.34 0.53 0.60 Gemma4-2Shot [56] 0.24 0.15 0.09 0.06 0.13 0.19 0.31 0.12 0.20 0.25 0.31 Qwen3.6-2Shot [57] 0.39 0.25 0.15 0.10 0.12 0.39 0.50 0.19 0.30 0.50 0.55                                                                                                                                                                                                                                        
+
+> Ours 0.52 0.37 0.28 0.21 0.45 0.43 0.60 0.33 0.40 0.60 0.63
+> Salience Flickr DeCap [51] 0.35 0.20 0.16 0.06 0.06 0.26 0.37 0.08 0.21 0.42 0.51 GRIT [52] 0.28 0.14 0.06 0.03 0.03 0.19 0.35 0.09 0.23 0.27 0.29 Tag2text [53] 0.28 0.13 0.05 0.03 0.05 0.21 0.37 0.10 0.23 0.40 0.43 LLaVA [45] 0.30 0.19 0.12 0.07 0.13 0.25 0.39 0.15 0.25 0.38 0.27 LLaVA-FT [45] 0.44 0.32 0.24 0.20 0.42 0.37 0.51 0.28 0.36 0.73 0.80 SCOPE [54] 0.41 0.25 0.15 0.10 0.14 0.33 0.46 0.16 0.29 0.53 0.59 WalkVLM [55] 0.24 0.14 0.10 0.05 0.10 0.34 0.34 0.13 0.21 0.68 0.76 Gemma4-2Shot [56] 0.28 0.17 0.11 0.07 0.17 0.23 0.34 0.13 0.23 0.35 0.45 Qwen3.6-2Shot [57] 0.39 0.25 0.16 0.10 0.14 0.39 0.50 0.19 0.30 0.58 0.65
+> Ours 0.50 0.35 0.26 0.20 0.45 0.42 0.57 0.31 0.39 0.79 0.83
+> Salience Vizwiz DeCap [51] 0.32 0.15 0.05 0.02 0.03 0.26 0.37 0.08 0.22 0.53 0.65 GRIT [52] 0.33 0.17 0.07 0.04 0.05 0.22 0.38 0.10 0.25 0.55 0.61 Tag2text [53] 0.26 0.14 0.06 0.03 0.05 0.20 0.37 0.12 0.25 0.59 0.62 LLaVA [45] 0.11 0.07 0.05 0.03 0.05 0.13 0.24 0.10 0.20 0.40 0.43 LLaVA-FT [45] 0.35 0.25 0.18 0.13 0.31 0.29 0.43 0.22 0.30 0.60 0.49 SCOPE [54] 0.43 0.27 0.17 0.11 0.24 0.33 0.48 0.20 0.31 0.65 0.74 WalkVLM [55] 0.27 0.18 0.11 0.08 0.06 0.36 0.39 0.17 0.25 0.69 0.79
+> Gemma4-2Shot [56] 0.30 0.19 0.12 0.08 0.15 0.25 0.38 0.16 0.26 0.41 0.50 Qwen3.6-2Shot [57] 0.39 0.26 0.17 0.12 0.14 0.40 0.50 0.22 0.32 0.63 0.69
+> Ours 0.47 0.32 0.23 0.17 0.36 0.38 0.54 0.27 0.35 0.71 0.79
+
+Notably, SCMI evaluates both the presence of key object instances and their relative ordering, rewarding predictions that preserve the salience-consistent sequence of important visual elements. However, SCMI uses string matching and penalizes equivalent labels with different names (e.g., “couch” versus “sofa”). We, therefore, report Wu-Palmer SCMI, which uses the Wu-Palmer semantic similarity [50] to measure how closely two labels are related in meaning based on their po-sitions in the WordNet hierarchy. In our evaluation, labels are treated as matched when their Wu-Palmer similarity exceeds 0.85, making the metric more robust to naming variations and semantically equivalent terms. The results are compared against three recent caption gen-eration approaches. DeCap [51] utilizes CLIP’s multimodal embedding space through a training-free projection mecha-nism, which enables a text-only decoder to generate captions in a zero-shot manner. GRIT [52] introduces a Transformer-based architecture that integrates grid-based and region-based features, i.e. , replacing traditional CNN-based detectors with a DETR-based approach and employing a Swin Transformer backbone, to capture richer contextual details. Tag2Text [53] automatically parses semantic tags from paired texts, providing strong guidance during caption generation and yielding more directed captions. We further compare with recent works in salience-driven VLMs and low vision assistance: SCOPE [54], a salience-driven approach that models both saliency and semantic coverage to select the most informative visual tokens in multimodal LLMs, and WalkVLM [55], a vision-language model specifically designed to assist visually impaired people by generating navigation-oriented scene descriptions. 
+
+B. Results 
+
+In addition to DeCap [51], GRIT [52], and Tag2text [53], we also compare our approach with the unmodified LLaVA model [45] as well as a fine-tuned variant (LLaVA-FT) trained on our salience datasets. We further include SCOPE [54] and WalkVLM [55] as recent baselines representing salience-driven and low vision-oriented VLMs, respectively. To verify whether recent MLLMs can achieve similar salience-aware captioning behavior through prompting alone, we evaluate Gemma4 [56] and Qwen3.6 [57] using two-shot examples, each consisting of an image and a ground-truth salience-aware response. We further use the same human-centered instruction as in our framework: “Please generate a detailed human-centered caption by describing the scene from the most important object to the least important object.” Evaluations are conducted on Salience COCO, Flickr, and VizWiz using both conventional captioning metrics ( i.e. , BLEU, CIDEr, ME-TEOR, ROUGE) and two salience-specific metrics: SCMI and Wu-Palmer SCMI. As shown in Table II, our model generally improves over baselines, supporting the benefit of salience integration for generating human-centered captions. Although Gemma4 [56] and Qwen3.6 [57] benefit from explicit salience-aware demonstrations, their performance remains below our model on most captioning and salience-ordering metrics, sug-gesting that prompting alone is insufficient to reliably enforce human-centered object prioritization. On Salience COCO, while BLEU-4 shows only a small improvement over LLaVA-FT (0.21 versus 0.20), METEOR increases from 0.40 to 0.43 and ROUGE-1 from 0.55 to 0.60, with SCMI improving from 0.51 to 0.60. SCOPE and WalkVLM achieve competitive SCMI scores of 0.53, while our model shows further improve-9                                                                                  
+
+> TABLE III ABLATION STUDY ON SALIENCE INFORMATION INTEGRATION USING SALIENCE COCO DATASET .
+> Method BLEU-1 BLEU-2 BLEU-3 BLEU-4 CIDEr METEOR ROUGE-1 ROUGE-2 ROUGE-L SCMI Wu-Palmer SCMI
+> Static Merge 0.33 0.21 0.13 0.08 0.16 0.25 0.38 0.15 0.25 0.41 0.44 CNN 0.37 0.23 0.15 0.09 0.17 0.29 0.44 0.17 0.28 0.45 0.49
+> Ours 0.52 0.37 0.28 0.21 0.45 0.43 0.60 0.33 0.40 0.60 0.63
+> TABLE IV COMPARISON OF MODEL PERFORMANCE ON REAL -WORLD DATASET . T HE BEST RESULTS ARE HIGHLIGHTED IN BOLD
+> BLEU-1 BLEU-2 BLEU-3 BLEU-4 CIDEr METEOR ROUGE-1 ROUGE-2 ROUGE-L SCMI Wu-Palmer SCMI
+> LLaVA [45] 0.14 0.10 0.06 0.04 0.03 0.10 0.16 0.05 0.12 0.07 0.20
+> Ours 0.40 0.31 0.21 0.14 0.26 0.41 0.53 0.22 0.33 0.14 0.56
+
+ment on SCMI and Wu-Palmer SCMI (0.60 and 0.63). This indicates that our method better captures salience-driven object ordering, a benefit not reflected by n-gram metrics. Overall, salience cues strengthen linguistic accuracy and perceptual alignment. On Salience Flickr, our method also improves over LLaVA-FT, raising BLEU-1 from 0.44 to 0.50 and CIDEr from 0.42 to 0.45, together with gains in METEOR (0.42 versus 0.37) and ROUGE-1 (0.57 versus 0.51). Although higher-order BLEU scores change only slightly, the SCMI increase from 0.73 to 0.79 highlights the stronger alignment of our captions with hu-man salience annotations. WalkVLM achieves a notable SCMI of 0.68, though with lower conventional captioning scores. SCOPE shows moderate performance across both aspects. Our Wu-Palmer SCMI of 0.83 suggests strong semantic salience alignment on this dataset. On the more challenging Salience VizWiz dataset, our approach demonstrates advantages. Compared to LLaVA-FT, BLEU-4 improves from 0.13 to 0.17, CIDEr from 0.31 to 0.36, and METEOR from 0.29 to 0.38, while ROUGE-1 rises from 0.43 to 0.54. SCMI increases from 0.60 to 0.71, underscoring the robustness of our salience-aware design under noisy real-world conditions. SCOPE and WalkVLM show strong SCMI performance (0.65 and 0.69), with WalkVLM matching our Wu-Palmer SCMI at 0.79, demonstrating competitive semantic salience alignment on this challenging dataset. These results suggest that our method generalizes well while maintaining salience alignment, as measured by SCMI and Wu-Palmer SCMI.Overall, each baseline offers distinct strengths, and incorporating salience information improves caption quality and salience alignment. 
+
+C. Ablation Study 
+
+Based on the performance described in Section V-B, we conduct ablation studies on the MLP module in the salience branch (the Projection module of the salience branch in Fig. 6). In one study, we ablate the MLP module using the “Static Merge” strategy, which directly reshapes and concatenates the features with the original vision feature. In the other, we replace the MLP module with a CNN module. The correspond-ing ablation results are reported in Table III. Additional eval-uations include real-world deployment in Table IV, robustness Seeed Studio XIAO ESP32 S3 Sense OV2640 camera Bluetooth Earphone   
+
+> Fig. 7. Smart glasses used in our real-world experiment with smart sensors, earphone and camera.
+> Fig. 8. A sequence diagram outlines the flow of how user interacts with our captioning model deployed at the backend through ESP32 S3.
+
+under low-light conditions in Table V, and alternative salience networks in Table VI. 
+
+Static Merge. This modification results in a marked per-formance degradation, as shown in Table III, with the largest BLEU-1–BLEU-4 drop reaching 0.19, SCMI decreasing by 0.19, and CIDEr showing the most substantial decline of 0.29. These results indicate that the learned projection module is essential for effectively leveraging the salience features. 
+
+CNN Substitution. As shown in Table III, replacing the MLP with a CNN module also reduces performance; BLEU-1– BLEU-4 scores drop by up to 0.15, while CIDEr and SCMI fall by 0.28 and 0.15, respectively. These results highlight the role of the MLP module in aligning salience and vision features. 10 
+
+TABLE V ROBUSTNESS EVALUATION UNDER LOW -LIGHT CONDITIONS . “F ULL DATASET ” DENOTES FULL TEST SET RESULTS ; “L OW -L IGHT ” DENOTES THE LOW -LIGHT SUBSET . T HE BEST RESULTS FOR EACH DATASET AND METRIC ARE HIGHLIGHTED IN BOLD .                                                                                 
+
+> Dataset Setting BLEU-1 BLEU-2 BLEU-3 BLEU-4 CIDEr METEOR ROUGE-1 ROUGE-2 ROUGE-L SCMI Wu-Palmer SCMI
+> Salience COCO Full dataset 0.52 0.37 0.28 0.21 0.45 0.43 0.60 0.33 0.40 0.60 0.63
+> Low-Light 0.52 0.36 0.27 0.15 0.35 0.40 0.58 0.30 0.38 0.53 0.53 Salience Flickr Full dataset 0.50 0.35 0.26 0.20 0.45 0.42 0.57 0.31 0.39 0.79 0.83
+> Low-Light 0.50 0.34 0.23 0.16 0.40 0.39 0.55 0.24 0.36 0.75 0.78 Salience VizWiz Full dataset 0.47 0.32 0.23 0.17 0.36 0.38 0.54 0.27 0.35 0.71 0.79
+> Low-Light 0.43 0.28 0.20 0.14 0.32 0.35 0.51 0.25 0.35 0.63 0.63
+
+TABLE VI SALIENCE INFORMATION ABLATION STUDY ACROSS THREE SALIENCY DATASETS . T HE BEST RESULTS FOR EACH DATASET AND METRIC ARE HIGHLIGHTED IN BOLD .Datasets Models BLEU-1 BLEU-2 BLEU-3 BLEU-4 CIDEr METEOR ROUGE-1 ROUGE-2 ROUGE-L SCMI Wu-Palmer SCMI Salience COCO Samba [58] 0.51 0.36 0.27 0.18 0.41 0.41 0.59 0.31 0.38 0.57 0.58 DSGNN [59] 0.51 0.35 0.25 0.19 0.42 0.41 0.59 0.31 0.38 0.57 0.59                                                                              
+
+> Ours 0.52 0.37 0.28 0.21 0.45 0.43 0.60 0.33 0.40 0.60 0.63
+> Salience Flickr Samba [58] 0.52 0.38 0.29 0.23 0.40 0.43 0.59 0.31 0.41 0.69 0.77 DSGNN [59] 0.52 0.38 0.29 0.22 0.41 0.42 0.59 0.31 0.41 0.70 0.76
+> Ours 0.50 0.35 0.26 0.20 0.45 0.42 0.57 0.31 0.39 0.79 0.83
+> Salience Vizwiz Samba [58] 0.47 0.31 0.21 0.17 0.31 0.32 0.52 0.28 0.31 0.66 0.73 DSGNN [59] 0.46 0.30 0.19 0.15 0.32 0.30 0.54 0.25 0.33 0.68 0.74
+> Ours 0.47 0.32 0.23 0.17 0.36 0.38 0.54 0.27 0.35 0.71 0.79
+
+D. Robustness Under Low-Light Conditions 
+
+low vision users frequently encounter degraded lighting, whether due to night blindness or dimly lit environments that make scene understanding more difficult. These conditions are especially important for assistive systems because reduced visibility can affect both object recognition and the estimation of relative importance. To evaluate robustness under such conditions, we manually selected 50 low-light images from each dataset. These images are characterized by reduced brightness, weaker contrast, and limited scene visibility. We then compared model performance on these selected low-light images against performance on the full test sets to examine how the model behaves when visual quality is degraded. As shown in Table V, performance degradation under low light is moderate overall, but the effect is more visible in salience ranking than in surface-level caption quality. On Salience COCO, BLEU-1 remains at 0.52, while SCMI drops from 0.60 to 0.53 and Wu-Palmer SCMI from 0.63 to 0.53. This suggests that the model can still generate generally rea-sonable descriptions, but becomes less reliable in preserving the correct ordering of important objects. A similar trend appears on Salience Flickr, where BLEU-1 stays at 0.50 while Wu-Palmer SCMI decreases from 0.83 to 0.78. On Salience VizWiz, which already contains noisy user-captured images, the degradation is larger, with Wu-Palmer SCMI falling from 0.79 to 0.63. This likely reflects the combined difficulty of poor lighting and already challenging image quality. Overall, these results suggest that reduced visibility affects QAGNet mainly in saliency estimation rather than language generation. Future improvements may, therefore, come from strengthening visual perception before ranking, such as through low-light enhancement or illumination-aware saliency estimation. 
+
+E. Alternate Salience Network 
+
+To further examine whether our framework depends on a salience extractor, we replace QAGNet with two recent salience models, Samba [58] and DSGNN [59], while keeping the remaining Salience-LLaVA architecture unchanged. As shown in Table VI, Samba [58] and DSGNN [59] achieve competitive performance. For some conventional captioning metrics such as BLEU, ROUGE, and METEOR, these alter-native salience models obtain comparable results, with a few scores slightly higher. On the contrary, our model consistently performs better on SCMI and Wu-Palmer SCMI, the two metrics most directly tied to human-centered salience ordering. This gap indicates that while alternative salience models can provide useful visual cues for caption generation, they tend to order objects less consistently with human priorities, causing less important elements to sometimes appear before more critical ones. Our method produces object orderings that more closely follow human salience annotations, resulting in higher SCMI and Wu-Palmer SCMI scores. 
+
+F. Real-World Experiment 
+
+We design and implement a wearable device, as shown in Fig. 7, to assist visually impaired users by providing almost real-time scene analysis through auditory feedback. At its core is the Seeed Studio XIAO ESP32 S3 Sense, a compact, thumb-sized development board that integrates an OV2640 camera sensor along with Wi-Fi and Bluetooth connectivity. This powerful yet small microcontroller captures high-resolution images and facilitates efficient wireless communication, suited for integration into a wearable platform. The interaction flow between the user, wearable device, and backend captioning model is illustrated in Fig. 8. 11 
+
+In the real-world experiment, we used the same pipeline as the Salience datasets: YOLO-World extracts COCO-style annotations, and Janus Pro-7b generates ground-truth cap-tions. As shown in Table IV, our method outperforms the original LLaVA on BLEU, CIDEr, METEOR, and ROUGE, while SCMI remains relatively low. This drop is primarily attributable to the hardware constraints of the edge device used for image acquisition. Because of its compact, portable form factor, the onboard camera operates at a limited resolution, which reduces the level of visual detail captured in each frame and diminishes the clarity of objects within the scene. Under these conditions, the model struggles to distinguish fine-grained object categories, and the resulting detections are often less specific, occasionally collapsing visually similar classes such as different vehicle or furniture types into a single broader label. Consequently, the model tends to produce less precise classifications, which limits its ability to generate exact object labels and yields lower SCMI scores than those observed on benchmark datasets with higher image resolutions. This resolution limitation directly explains the larger Wu-Palmer improvement on the real-world dataset. Because im-ages captured by the edge device have lower visual clarity, the model often predicts labels that are semantically correct but not exact lexical matches to the reference annotations. For example, the model may output a broader but still appropriate term such as vehicle” instead of a more specific label such as car,” or use a related category name that reflects the visible content at reduced fidelity. Under exact matching, these predictions are penalized even when they preserve the underlying meaning. By applying Wu-Palmer similarity with a threshold of 0.85, the evaluation can account for semantic relatedness in WordNet and better reflect whether the model identified the correct concept. This leads to a substantial increase in SCMI, from 0.14 to 0.56, showing that much of the apparent error comes from naming variations rather than a failure to capture the salient object. To further as-sess real-world usability, we conducted a pilot study with two participants in real-world scenes, including indoor areas and street-crossing environments. For each scene, participants viewed the captured image and identified the three most important objects for understanding the environment in the order of importance. We then compared the objects selected by participants with the top three salient objects conveyed through the Salience-LLaVA audio output. The Wu-Palmer SCMI was 0.64, and Cohen’s kappa [42] was 0.62, indicating a good agreement between participant selections and model outputs. These results provide preliminary evidence that the proposed system can preserve human-aligned salience cues during real-world wearable deployment and deliver useful audio feedback in practical environments. Despite these challenges, the im-provements across most metrics indicate the robustness of our approach in unconstrained, real-world scenarios. VI. C ONCLUSION 
+
+In this work, we present Salience-LLaVA, a salience-driven VLM, along with three salience-aware datasets and a dedi-cated evaluation metric (SCMI), to enhance accessibility for individuals with low vision. By integrating saliency cues and reordering visual objects based on real-world prioritization, Salience-LLaVA generates descriptions that better align with human attention and intent. Evaluations on three benchmark datasets demonstrate consistent improvements over existing methods across standard captioning metrics, highlighting the model’s ability to produce contextually relevant and percep-tually meaningful outputs. We further validate its practical effectiveness through deployment on a customized wearable device, showcasing its real-time applicability in everyday assistive scenarios. In terms of limitations, the current model remains compu-tationally heavy, requiring server-based inference and limit-ing fully mobile use when network access is unreliable or unavailable. Beyond low vision assistance, the framework could extend to autonomous navigation, search and rescue, and industrial inspection, where salient information must also be prioritized. Future work will improve edge efficiency and evaluate more diverse real-world scenarios, including outdoor navigation, public transit, and crowded urban environments, to better reflect everyday conditions faced by low vision users. ACKNOWLEDGMENT 
+
+The authors thank Dr. William Seiple and Fernanda Garcia-Pi˜ na for questionnaire feedback and participant recruitment; the study was approved by the Lighthouse Guild’s IRB. REFERENCES [1] J. Guo, J. Li, D. Li, A. M. H. Tiong, B. Li, D. Tao, and S. Hoi, “From images to textual prompts: Zero-shot visual question answering with frozen large language models,” in Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , 2023, pp. 10 867–10 877. [2] C. Wen, Y. Huang, H. Huang, Y. Huang, S. Yuan, Y. Hao, H. Lin, Y.-S. Liu, and Y. Fang, “Zero-shot object navigation with vision-language models reasoning,” in International Conference on Pattern Recognition .Springer, 2025, pp. 389–404. [3] Y. Hao, A. Magay, H. Huang, S. Yuan, C. Wen, and Y. Fang, “Chatmap: A wearable platform based on the multi-modal foundation model to augment spatial cognition for people with blindness and low vision,” in              
+
+> IEEE/RSJ International Conference on Intelligent Robots and Systems .IEEE, 2024, pp. 129–134. [4] M. S. A. Baig, S. A. Gillani, S. M. Shah, M. Aljawarneh, A. A. Khan, and M. H. Siddiqui, “Ai-based wearable vision assistance system for the visually impaired: Integrating real-time object recognition and contextual understanding using large vision-language models,” arXiv preprint arXiv:2412.20059 , 2024. [5] J. Reynolds, C. K. Nagesh, and D. Gurari, “Salient object detection for images taken by people with vision impairments,” in Proceedings of the IEEE/CVF Winter Conference on Applications of Computer Vision ,2024, pp. 8522–8531. [6] H. R. Tavakoli, R. Shetty, A. Borji, and J. Laaksonen, “Paying attention to descriptions generated by image captioning models,” in Proceedings of the IEEE International Conference on Computer Vision , 2017, pp. 2487–2496. [7] A. Liang, J. Thomason, and E. Bıyık, “Visarl: Visual reinforcement learning guided by human saliency,” in IEEE/RSJ International Confer-ence on Intelligent Robots and Systems .IEEE, 2024, pp. 2907–2912. [8] H. Son, A. Vora, G. Pandey, and J. Weiland, “Infrastructure enabled guided navigation for visually impaired,” IEEE Transactions on Intelli-gent Transportation Systems , vol. 26, no. 5, 2025. [9] R. Liu, J. Zheng, Y. Chen, Z. Wang, K. Peng, K. Yang, J. Zhang, M. Pollefeys, and R. Stiefelhagen, “Situat3dchange: Situated 3d change understanding dataset for multimodal large language model,” in Ad-vances in Neural Information Processing Systems (NeurIPS) , 2025. 12
+
+[10] H. Lin, D. Hong, S. Ge, C. Luo, K. Jiang, H. Jin, and C. Wen, “Rs-moe: Mixture of experts for remote sensing image captioning and visual question answering,” arXiv preprint arXiv:2411.01595 , 2024. [11] H. Lin, C. Zhang, D. Hong, K. Dong, and C. Wen, “Fedrsclip: Federated learning for remote sensing scene classification using vision-language models,” arXiv preprint arXiv:2501.02461 , 2025. [12] P. Zhang, X. Li, X. Hu, J. Yang, L. Zhang, L. Wang, Y. Choi, and J. Gao, “Vinvl: Revisiting visual representations in vision-language models,” in Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , 2021, pp. 5579–5588. [13] Z. Wang, J. Yu, A. W. Yu, Z. Dai, Y. Tsvetkov, and Y. Cao, “SimVLM: Simple Visual Language Model Pretraining with Weak Supervision,” in 
+
+Proceedings of the International Conference on Learning Representa-tions , 2022. [14] P. Wang, A. Yang, R. Men, J. Lin, S. Bai, Z. Li, J. Ma, C. Zhou, J. Zhou, and H. Yang, “Ofa: Unifying architectures, tasks, and modalities through a simple sequence-to-sequence learning framework,” in International Conference on Machine Learning . PMLR, 2022, pp. 23 318–23 340. [15] J. Li, D. Li, C. Xiong, and S. Hoi, “Blip: Bootstrapping language-image pre-training for unified vision-language understanding and generation,” in International Conference on Machine Learning . PMLR, 2022, pp. 12 888–12 900. [16] J. Li, D. Li, S. Savarese, and S. Hoi, “Blip-2: Bootstrapping language-image pre-training with frozen image encoders and large language models,” in International Conference on Machine Learning . PMLR, 2023, pp. 19 730–19 742. [17] C. Li, H. Xu, J. Tian, W. Wang, M. Yan, B. Bi, J. Ye, H. Chen, G. Xu, Z. Cao et al. , “mplug: Effective and efficient vision-language learning by cross-modal skip-connections,” arXiv preprint arXiv:2205.12005 , 2022. [18] Z. Fang, J. Wang, X. Hu, L. Liang, Z. Gan, L. Wang, Y. Yang, and Z. Liu, “Injecting semantic concepts into end-to-end image captioning,” in Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , 2022, pp. 18 009–18 019. [19] A. Vaswani, N. Shazeer, N. Parmar, J. Uszkoreit, L. Jones, A. N. Gomez, Ł. Kaiser, and I. Polosukhin, “Attention is all you need,” Advances in Neural Information Processing Systems , vol. 30, 2017. [20] S. U. Amin, A. Hussain, B. Kim, and S. Seo, “Deep learning based active learning technique for data annotation and improve the overall performance of classification models,” Expert Systems with Applications ,vol. 228, p. 120391, 2023. [21] B. Xu, X. Shu, H. Mei, G. Xie, B. Fernando, and J. Tang, “Fedmllm: Federated fine-tuning mllm on multimodal heterogeneity data,” arXiv preprint arXiv:2411.14717 , 2024. [22] T. Gu, K. Yang, K. Zhang, X. An, Z. Feng, Y. Zhang, W. Cai, J. Deng, and L. Bing, “Unime-v2: Mllm-as-a-judge for universal multimodal em-bedding learning,” in Proceedings of the AAAI Conference on Artificial Intelligence , vol. 40, no. 26, 2026, pp. 21 378–21 386. [23] B. Xu, X. Shu, J. Zhang, R. Yan, and G.-S. Xie, “Attack-augmented mixing-contrastive skeletal representation learning,” IEEE Transactions on Image Processing , 2026. [24] Z. Liu, Z. Sun, Y. Zang, W. Li, P. Zhang, X. Dong, Y. Xiong, D. Lin, and J. Wang, “Rar: Retrieving and ranking augmented mllms for visual recognition,” IEEE Transactions on Image Processing , 2026. [25] S. Chen, M. Jiang, and Q. Zhao, “What do deep saliency models learn about visual attention?” Advances in Neural Information Processing Systems , vol. 36, pp. 9543–9555, 2023. [26] R. Levin, M. Shu, E. Borgnia, F. Huang, M. Goldblum, and T. Gold-stein, “Where do models go wrong? parameter-space saliency maps for explainability,” Advances in Neural Information Processing Systems ,vol. 35, pp. 15 602–15 615, 2022. [27] B. Deng, S. Song, A. P. French, D. Schluppeck, and M. P. Pound, “Advancing saliency ranking with human fixations: Dataset models and benchmarks,” in Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , 2024, pp. 28 348–28 357. [28] A. K. Bhunia, S. Koley, A. Kumar, A. Sain, P. N. Chowdhury, T. Xiang, and Y.-Z. Song, “Sketch2saliency: Learning to detect salient objects from human drawings,” in Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , 2023, pp. 2733–2743. [29] X. Chen, M. Jiang, and Q. Zhao, “Gazexplain: Learning to predict natu-ral language explanations of visual scanpaths,” in European Conference on Computer Vision . Springer, 2024, pp. 314–333. [30] S. Ul Amin, B. Kim, Y. Jung, S. Seo, and S. Park, “Video anomaly detection utilizing efficient spatiotemporal feature fusion with 3d con-volutions and long short-term memory modules,” Advanced Intelligent Systems , vol. 6, no. 7, p. 2300706, 2024. [31] S. Ul Amin, M. Ullah, M. Sajjad, F. A. Cheikh, M. Hijji, A. Hijji, and K. Muhammad, “Eadn: An efficient deep learning model for anomaly detection in videos,” Mathematics , vol. 10, no. 9, p. 1555, 2022. [32] D. Whitney and D. M. Levi, “Visual crowding: A fundamental limit on conscious perception and object recognition,” Trends in cognitive sciences , vol. 15, no. 4, pp. 160–168, 2011. [33] E. Brady, M. R. Morris, Y. Zhong, S. White, and J. P. Bigham, “Visual challenges in the everyday lives of blind people,” in Proceedings of the SIGCHI conference on human factors in computing systems , 2013, pp. 2117–2126. [34] D. Gurari, Q. Li, A. J. Stangl, A. Guo, C. Lin, K. Grauman, J. Luo, and J. P. Bigham, “Vizwiz grand challenge: Answering visual questions from blind people,” in Proceedings of the IEEE conference on computer vision and pattern recognition , 2018, pp. 3608–3617. [35] C. Owsley, G. McGwin, K. Scilley, G. C. Meek, D. Seker, and A. Dyer, “Effect of refractive error correction on health-related quality of life and depression in older nursing home residents,” Archives of Ophthalmology ,vol. 125, no. 11, pp. 1471–1477, 2007. [36] T.-Y. Lin, M. Maire, S. Belongie, J. Hays, P. Perona, D. Ramanan, P. Doll´ ar, and C. L. Zitnick, “Microsoft coco: Common objects in context,” in European Conference on Computer Vision . Springer, 2014, pp. 740–755. [37] X. Chen, Z. Wu, X. Liu, Z. Pan, W. Liu, Z. Xie, X. Yu, and C. Ruan, “Janus-pro: Unified multimodal understanding and generation with data and model scaling,” arXiv preprint arXiv:2501.17811 , 2025. [38] P. Young, A. Lai, M. Hodosh, and J. Hockenmaier, “From image descriptions to visual denotations: New similarity metrics for semantic inference over event descriptions,” Transactions of the Association for Computational Linguistics , vol. 2, pp. 67–78, 2014. [39] T. Cheng, L. Song, Y. Ge, W. Liu, X. Wang, and Y. Shan, “Yolo-world: Real-time open-vocabulary object detection,” in Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition ,2024, pp. 16 901–16 911. [40] J. Redmon, S. Divvala, R. Girshick, and A. Farhadi, “You only look once: Unified, real-time object detection,” in Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition , 2016, pp. 779– 788. [41] D. Gurari, Y. Zhao, M. Zhang, and N. Bhattacharya, “Captioning images taken by people who are blind,” in European Conference on Computer Vision . Springer, 2020, pp. 417–434. [42] J. Cohen, “A coefficient of agreement for nominal scales,” Educational and psychological measurement , vol. 20, no. 1, pp. 37–46, 1960. [43] A. Singh, A. Fry, A. Perelman et al. , “OpenAI GPT-5 System Card,” 2025. [Online]. Available: https://arxiv.org/abs/2601.03267 [44] D. G. Altman, Practical Statistics for Medical Research . London: Chapman and Hall/CRC, 1990. [45] H. Liu, C. Li, Q. Wu, and Y. J. Lee, “Visual instruction tuning,” Ad-vances in Neural Information Processing Systems , vol. 36, pp. 34 892– 34 916, 2023. [46] A. Radford, J. W. Kim, C. Hallacy, A. Ramesh, G. Goh, S. Agarwal, G. Sastry, A. Askell, P. Mishkin, J. Clark et al. , “Learning transferable visual models from natural language supervision,” in International Conference on Machine Learning . PMLR, 2021, pp. 8748–8763. [47] W.-L. Chiang, Z. Li, Z. Lin, Y. Sheng, Z. Wu, H. Zhang, L. Zheng, S. Zhuang, Y. Zhuang, J. E. Gonzalez et al. , “Vicuna: An open-source chatbot impressing gpt-4 with 90%* chatgpt quality,” See https://vicuna. lmsys. org (accessed 14 April 2023) , vol. 2, no. 3, p. 6, 2023. [48] K. He, X. Zhang, S. Ren, and J. Sun, “Deep residual learning for image recognition,” in Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition , 2016, pp. 770–778. [49] B. Cheng, I. Misra, A. G. Schwing, A. Kirillov, and R. Girdhar, “Masked-attention mask transformer for universal image segmentation,” in Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , 2022, pp. 1290–1299. [50] Z. Wu and M. Palmer, “Verb semantics and lexical selection,” in 32nd annual meeting of the association for computational linguistics , 1994, pp. 133–138. [51] W. Li, L. Zhu, L. Wen, and Y. Yang, “Decap: Decoding clip la-tents for zero-shot captioning via text-only training,” arXiv preprint arXiv:2303.03032 , 2023. [52] V.-Q. Nguyen, M. Suganuma, and T. Okatani, “Grit: Faster and better image captioning transformer using dual visual features,” in European Conference on Computer Vision . Springer, 2022, pp. 167–184. [53] X. Huang, Y. Zhang, J. Ma, W. Tian, R. Feng, Y. Zhang, Y. Li, Y. Guo, and L. Zhang, “Tag2text: Guiding vision-language model via image tagging,” in International Conference on Learning Representations ,2024. 13 
+
+[54] J. Deng, W. Li, J. T. Zhou, and Y. He, “SCOPE: Saliency-coverage oriented token pruning for efficient multimodel LLMs,” in The Thirty-ninth Annual Conference on Neural Information Processing Systems , 2025. [Online]. Available: https://openreview.net/forum?id= oUghNi5XWc [55] Z. Yuan, T. Zhang, Y. Deng, J. Zhang, Y. Zhu, Z. Jia, J. Zhou, and J. Zhang, “Walkvlm: Aid visually impaired people walking by vision language model,” in Proceedings of the IEEE/CVF International Conference on Computer Vision (ICCV) , 2025. [56] Gemma Team, Google DeepMind, “Gemma 4 model card,” https://ai. google.dev/gemma/docs/core/model card 4, 2026. [57] Qwen Team, “Qwen3.6-27B: Flagship-level coding in a 27B dense model,” April 2026. [Online]. Available: https://qwen.ai/blog?id=qwen3. 6-27b [58] J. He, K. Fu, X. Liu, and Q. Zhao, “Samba: A unified mamba-based framework for general salient object detection,” in Proceedings of the Computer Vision and Pattern Recognition Conference , 2025, pp. 25 314– 25 324. [59] Z. Wu, J. Lu, J. Han, L. Bai, Y. Zhang, Z. Zhao, and S. Song, “Domain separation graph neural networks for saliency object ranking,” in Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , 2024, pp. 3964–3974.

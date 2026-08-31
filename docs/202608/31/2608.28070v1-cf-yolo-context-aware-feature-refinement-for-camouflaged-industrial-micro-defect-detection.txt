@@ -1,0 +1,481 @@
+Title: CF-YOLO: Context-Aware Feature Refinement for Camouflaged Industrial Micro-Defect Detection
+
+URL Source: https://arxiv.org/pdf/2608.28070v1
+
+Published Time: Mon, 31 Aug 2026 00:52:06 GMT
+
+Number of Pages: 17
+
+Markdown Content:
+# CF-YOLO: Context-Aware Feature Refinement for Camouflaged Industrial Micro-Defect Detection 
+
+## Xinda Yu 1, Kunxin Zheng 1, Chunan Yu 2, Qingbo Song 1, Hao Xiao 1, Ying Zang 1
+
+## and Jie Liu 1* 
+
+> 1
+
+School of Information Engineering, Huzhou University, Huzhou, 313000, China. 
+
+> 2
+
+School of Computer Science and Engineering, Nanjing University of Science and Technology, Nanjing, 210000, China. *Corresponding author: Jie Liu, E-mail: liujie52@zjhu.edu.cn; Contributing authors: Xinda Yu, E-mail: 2025388032@stu.zjhu.edu.cn; Kunxin Zheng, E-mail: 2024092411@stu.zjhu.edu.cn; Chunan Yu, E-mail: yuchun an@njust.edu.cn; Qingbo Song, E-mail: 2025388020@stu.zjhu.edu.cn; Hao Xiao, E-mail: xiaohao@zjhu.edu.cn; Ying Zang, E-mail: 02750@zjhu.edu.cn; 
+
+Abstract 
+
+Automated detection of surface micro-defects on industrial components, such as copper tubes, is critically important for quality assurance but remains challenging due to the minute scale of anomalies and their visual camouflage against complex backgrounds. These factors lead to weak feature representations and high rates of false positives and missed detections. To address these issues, we propose a novel real-time detection framework designed for efficient context percep-tion and feature refinement. Our method integrates a Context-Perception Aggregation Module (CPAM), which synergises large-kernel perception for macro-texture context and small-kernel aggregation for sharp boundary delineation, effectively breaking the background camouflage. Fur-thermore, a Feature Additive Refinement Module (FARM) employs a linear-complexity additive token mixer to globally verify and refine the representation of fine-grained anomalies, suppressing noise-induced errors. To support research in this domain, we introduce the Copper Tube Defect Dataset (CTDD), a manually annotated benchmark containing 1,847 images and 4,898 bounding-box defect instances from copper-tube inspection scenarios. Extensive experiments demonstrate that our detector achieves strong and consistent performance on CTDD, outperforming repre-sentative baseline detectors, including YOLOv11, by 2.2% in mAP@50 and 3.9% in Precision while maintaining real-time inference speed. This work provides a robust and efficient solution for high-precision industrial inspection, bridging the gap between contextual understanding and detailed feature analysis. Our code and model are available at: https://github.com/Yu-Xinda/CF-YOLO-Context-Aware-Feature-Refinement-for-Camouflaged-Industrial-Micro-Defect-Detection 
+
+Keywords: Object Detection; Industrial Defect Detection; Feature Refinement; Micro-Defect Detection; Context-Aware Feature Aggregation; Copper Tube Defect Dataset 
+
+1arXiv:2608.28070v1 [cs.CV] 28 Aug 2026 2 CF-YOLO 
+
+# 1 Introduction 
+
+In the era of Industry 4.0, intelligent manu-facturing has become a cornerstone for enhancing production efficiency and product quality [1–5]. As a critical component in refrigeration, plumb-ing, and heat exchange systems, the surface integrity of copper tubes directly dictates the sealing performance and operational safety of the final equipment. Consequently, the transition from labor-intensive manual inspection to auto-mated defect detection is not merely an option but an imperative necessity for the industry [6]. However, despite rapid advancements in com-puter vision, establishing a high-precision, real-time detection system for industrial micro-defects remains a formidable task, presenting complexi-ties that far exceed those encountered in generic object detection scenarios [7–9]. The primary obstacles hindering effective detection in this domain are twofold: micro-scale targets and background camouflage, as shown in Fig. 1. First, the defects typically appear as faint, fine-grained scratches that occupy a negligible proportion of image pixels, leading to weak feature representations that are easily lost during net-work downsampling [10, 11]. Secondly, and more critically, these defects often exhibit visual pat-terns—such as color and texture—that are highly homologous to the copper substrate. This “camou-flaged” nature makes it exceptionally difficult to distinguish genuine anomalies from complex back-ground textures or surface oxidation noise, result-ing in a high rate of both missed detections and false positives [12, 13].Moreover, environmental variation and complex region-dependent textures further increase feature ambiguity in industrial inspection scenes [14, 15].          
+
+> Fig. 1Visualization of challenging defects with severe background camouflage. The anomalies are nearly indis-tinguishable due to highly similar textures with the back-ground. Their locations are indicated by red bounding boxes.
+
+To address these issues, various effective deep learning paradigms and advanced model archi-tectures have been proposed [16–19]. Specif-ically,mainstream approaches typically employ Convolutional Neural Networks (CNNs) or Vision Transformers (ViTs) [20]. Recent detectors such as the YOLO series utilize sophisticated blocks for efficiency, relying on the stacking of compact con-volutional layers to extract fine-grained patterns. These mechanisms suffer from a restricted recep-tive field, limiting their ability to perceive the broader contextual consistency required to iden-tify camouflaged defects [21]. Conversely, while ViTs offer global context via self-attention[20], their quadratic computational complexity renders them unsuitable for real-time industrial deploy-ment [22]. Furthermore, the attention mechanism tends to smooth out high-frequency details, which is detrimental to preserving the sharp edges of micro-defects [23]. Recent studies have shown that structure-aware feature interaction and fine-grained representation learning are crucial for capturing subtle visual discrepancies in complex scenes [24, 25].Thus, a solution that balances global context perception, local detail preserva-tion, and inference speed is urgently needed [26]. In this paper, we propose CF-YOLO, which stands for Context-perception and Feature-refinement YOLO. Additionally, the acronym “CF” implicitly embodies the “Coarse-to-Fine” detection philosophy integrated into our archi-tecture, which synergizes the strengths of large-kernel convolutions and additive attention. First, to tackle the “background camouflage” issue, we introduce the Context-Perception Aggregation Module (CPAM). By decoupling feature process-ing into large-kernel contextual perception and small-kernel dynamic aggregation, CPAM effec-tively models the macro-texture of the copper sur-face, enabling the network to differentiate anoma-lies from the background. Second, to address the “micro-scale” issues, we design the Feature Additive Refinement Module (FARM) following the spatial attention stage. Adopting a linear-complexity additive token mixer, FARM inte-grates spatial details with channel-wise semantic attributes. This allows for global semantic veri-fication of candidate features, effectively refining 3representations to distinguish true defects from intricate surface noise. Beyond algorithmic improvements, the lack of high-quality, publicly available datasets for cop-per tube defects significantly hinders research progress in this community. To bridge this gap, we construct and release a comprehensive dataset named the Copper Tube Defect Dataset (CTDD). CTDD contains 1,847 copper-tube images and 4,898 single-class bounding-box defect annota-tions collected under industrial lighting condi-tions. Recent studies have highlighted the impor-tance of transparent datasets and reproducible evaluation in visual-computing research [27, 28]. CTDD therefore provides a standardized bench-mark for industrial defect detection. The release of CTDD not only serves as a rigorous benchmark for evaluating our proposed method but also pro-vides a valuable resource for data augmentation and future research in the field of industrial sur-face inspection. The main contributions of this work are summarized as follows: • We propose a real-time detector tailored for industrial micro-defect detection, achieving an explicit accuracy-efficiency trade-off. • We design two task-adapted modules: CPAM for context-guided local aggregation and FARM for high-level feature refinement. • We contribute CTDD, an annotated copper tube defect detection benchmark with 1,847 images and 4,898 defect instances. 
+
+# 2 Related work 
+
+## 2.1 Object Detection Methods 
+
+Object detection, a fundamental vision task, involves localizing and classifying instances. Driven by deep learning, recent methodologies are extensively adopted for high-precision tasks like industrial defect detection. Two-stage detectors like Faster R-CNN [29] are renowned for high accuracy but suffer from slower inference compared to one-stage counter-parts. Building on this, Cascade R-CNN [30] employs a multi-stage structure to enhance robustness, though this inevitably increases train-ing time and computational demands. Conversely, one-stage detectors prioritize speed. SSD [31] utilizes multi-scale feature maps but exhibits limitations in managing class imbal-ance. RetinaNet [32] addresses this via Focal Loss, effectively mitigating sample imbalance, albeit sometimes yielding lower overall accuracy. Recently, the YOLO series has evolved rapidly to address complex industrial constraints. For instance, Yolov8-HAC [33] introduced a safety hel-met detection model optimized for complex under-ground coal mine scenes, validating the effec-tiveness of YOLO in harsh environments. Simi-larly, YGC-SLAM [34] demonstrated that improv-ing YOLOv5 with geometric constraints signif-icantly enhances robustness in dynamic indoor environments. Industrial variants such as AFF-YOLO [35] and YOLO-RFF [36] further improve defect detection through enhanced feature repre-sentation and multi-scale modeling, demonstrat-ing the value of task-oriented architectural adap-tation. 
+
+## 2.2 Surface Defect Detection 
+
+Surface defect detection plays a critical role in industrial production, prompting extensive research into automated solutions. Traditional methods typically rely on hand-crafted fea-tures and statistical learning. Common tech-niques range from edge detection operators [37]and Otsu-based thresholding to Fourier image reconstruction[38]. In specific domains like TFT-LCD and mobile screen, low-rank matrix mod-els [39] and contour-based registration have been utilized to identify defects. However, the heavy reliance on manual feature design often renders these traditional methods less effective in com-plex environments or when facing intricate defect patterns. Recently, the paradigm has shifted signifi-cantly towards deep learning. To preserve texture and fine-grained details, architectures such as SDDNet [40] integrate feature retaining blocks and densely connected modules. Addressing the challenge of small object detection, particularly in printed circuit boards (PCBs)[41], novel feature fusion methods like the atrous spatial pyramid pooling-balanced FPN[10] have been introduced. Advanced models like ETDNet [42] incorpo-rate lightweight vision transformers and decou-pled heads to optimize both classification and regression. In parallel, efficient context model-ing has attracted increasing attention. Methods 4 3 PROPOSED METHOD 
+
+such as LSKA [43] leverage large-kernel attention to capture long-range dependencies, while Swift-Former [44] employs lightweight additive atten-tion to improve feature interaction with low com-putational cost. To tackle data scarcity, frame-works employing Generative Adversarial Net-works (GANs) [45] and global context-based aug-mentation have been developed to boost perfor-mance via synthetic data generation. 
+
+# 3 Proposed Method 
+
+## 3.1 Preliminaries and Problem Formulation 
+
+In this work, we formulate the micro-defect detec-tion task as a supervised dense prediction problem aimed at localizing and classifying anomalies on industrial surfaces. Let the dataset be denoted as D = {(Ii, Yi)}Ni=1 , where Ii ∈ RH×W ×3
+
+represents an input image and Yi denotes the cor-responding ground-truth set. Each ground-truth object is parameterized by a bounding box b =(cx, cy, w, h ) and a class label c ∈ {1, . . . , N },where N denotes the number of detecting classes. Our primary objective is to construct a deep neu-ral network F that learns a mapping function from the input image Ii to a set of predictive distribu-tions. The feature extraction process transforms the input image into a multi-scale feature pyramid 
+
+P = {P3, P 4, P 5}, where Pl ∈ R H    
+
+> 2l×W
+> 2l×Cl
+
+repre-sents the features at a stride of 2 l, which serves as the downsampling ratio determining the spatial resolution of each level. 
+
+## 3.2 Overall Architecture of CF-YOLO 
+
+The proposed CF-YOLO architecture is designed to balance macro-contextual perception with micro-semantic refinement, addressing the specific challenges of background camouflage and weak feature representation in industrial scenarios. As illustrated in Fig. 2, the net-work comprises three hierarchical components: a Context-Aware Backbone, a Feature-Refining Neck, and a Decoupled Head. While constructed upon the YOLOv11 framework, CF-YOLO rede-fines the feature encoding pipeline through two strategic enhancements. Given an input image Ii ∈ RH×W ×C , the backbone initially utilizes Conv 3×3 stacked C3k2 blocks to extract foundational feature represen-tations, denoted as F1 and F2. These features are subsequently processed by CPAM modules to effectively disentangle camouflaged anoma-lies from the background. By alternating these C3k2 blocks and CPAM modules, the network constructs a multi-scale feature pyramid F =
+
+{F3, F 4, F 5}. The selected stride-8, stride-16, and stride-32 pyramid balances micro-defect sensitiv-ity and contextual reasoning: the stride-8 feature preserves fine spatial cues for small low-contrast defects, while stride-16 and stride-32 features provide broader context for suppressing oxida-tion, machining texture, and other background-like responses. Using lower-stride features would increase memory and latency, whereas removing 
+
+F3 would risk losing weak defect evidence dur-ing downsampling. Prior to the multi-scale fusion stage, the fine-resolution feature map F5 under-goes specific refinement via the FARM module to explicitly capture micro-scale defects. Following this enhancement, the pyramid features inter-act through a cross-scale fusion neck to yield the refined set P = {P3, P 4, P 5}. Finally, these features are fed into prediction heads to gener-ate multi-scale outputs Yl = ( Olcls , Olreg ), which are consolidated via NMS to produce the final detection Yf inal .
+
+## 3.3 Context-Perception Aggregation Module 
+
+Motivated by the feature extraction limitations stemming from the limited receptive field in native YOLO architectures, we introduce the Context-Perception Aggregation Module (CPAM). Let 
+
+Fin ∈ RHi×Wi×Cin represents the feature pro-cessed from the C3K2 block. CPAM decouples the feature processing into two sequential stages: Large-Kernel Perception (LKP) and Small-Kernel Aggregation (SKA). The LKP stage aims to capture the macro-texture of the background with minimal compu-tational overhead. We first reduce the channel dimension to C′ = C/ 2 via a point-wise convolu-tion (PW) to maintain efficiency. Subsequently, a large-kernel depth-wise convolution (DW) with a kernel size of KL × KL is applied to perceive a 3.4 Feature Additive Refinement Module 5Conv 3×3
+
+C3K2 
+
+Block 
+
+SPPF 
+
+C2PSA 
+
+C3K2 
+
+Block 
+
+C3K2 
+
+Block 
+
+C3K2 
+
+Block 
+
+C3K2 
+
+Block 
+
+C3K2 
+
+Block 
+
+C3K2 
+
+Block 
+
+C3K2 
+
+Block 
+
+Conv 3×3
+
+Conv 3×3
+
+Detect 
+
+Head 
+
+Block 
+
+> Non -Maximum Suppression
+
+Backbone 
+
+Neck Detect          
+
+> Conv 3×3Split Bottleneck ×NConv 3×3
+> C3k N=2 ×N
+> or
+> If C2k=True
+> C3K2 Block
+> 2×Conv 3×3
+> Conv 3×3
+> Conv 3×3
+> Bottleneck ×NConv 3×3
+> C3K NBottleneck
+> Conv 3×3MaxPool2d ×3Conv 3×3
+> SPPF
+> Conv 3×3Conv 3×3
+> C2PSA
+> Attention Conv 3×3
+> PSA Block
+> PSA Block ×N
+> Conv 3×3
+
+CPAM 
+
+FARM 
+
+CPAM 
+
+Fig. 2 Schematic illustration of CF-YOLO for industrial copper tube defect detection, integrating CPAM for context perception and FARM for semantic refinement. Large-Kernel Perception Small-Kernel Aggregation MSConv 
+
+CPAM 
+
+> Conv 3×3
+
+Fig. 3 The architecture of the Context-Perception Aggre-gation Module (CPAM), illustrating the decoupling of Large-Kernel Perception (LKP) and Small-Kernel Aggre-gation (SKA). 
+
+wide contextual range Ω L. A final PW convolu-tion projects the features to generate a dynamic weight tensor Wagg ∈ RH×W ×D , which encodes the spatial context guidance. This operation is formulated as: 
+
+Wagg = PW 2(DW KL (PW 1(Fin ))) (1) Following perception, the SKA stage performs precise feature fusion guided by Wagg . The weight tensor is reshaped to form dynamic kernels of size KS × KS . We partition the input Fin into 
+
+G groups to facilitate group-wise dynamic con-volution. The final output Fcp is obtained by aggregating the local neighborhood NKS using the generated weights: 
+
+Fcp = Adynamic (Fin , Wagg ) = Wagg ⊛ Fin (2) where ⊛ denotes the group-wise dynamic convolu-tion. By coupling large-field perception with local aggregation, CPAM effectively delineates defect boundaries from complex backgrounds. 
+
+## 3.4 Feature Additive Refinement Module 
+
+Although alternating feature extraction using the C3K2 module and CPAM effectively partially alle-viates the ”target camouflage” problem to some extent and improves recognition accuracy, this architecture is still insufficient in capturing the features of small targets. To address this limi-tation, we introduce a Feature Additive Refine-ment Module (FARM) to enhance the network’s ability to accurately perceive and capture small 6 3 PROPOSED METHOD 
+
+targets. FARM addresses this issue via a linear-complexity global verification mechanism. Let 
+
+Fi ∈ RW ′ 
+
+> ×H′
+> ×C
+
+be the flattened input features. FARM projects Fi into Query ( Q), Key ( K), and Value ( V) spaces via linear transformations. Conv 3×3 Conv 3×3 Conv2D  Box 
+
+DWConv 
+
+Blcok 
+
+DWConv 
+
+Blcok  Conv2D  Cls 
+
+> Q
+
+FARM  
+
+> KV
+
+Spatial 
+
+Channel 
+
+Conv 3×3
+
+ReLU 
+
+Conv 1×1
+
+Sigmo id
+
+Conv 3×3
+
+AvgPool 
+
+Conv 1×1
+
+Sigmo id
+
+Channel  Spatial 
+
+Large -Kernel 
+
+Perception 
+
+Small -K
+
+Aggreg 
+
+MSConv 
+
+CPA 
+
+M Conv 3×3 
+
+> Fig. 4 The architecture of the Feature Additive Refine-ment Module (FARM). Adopting the Convolutional Addi-tive Token Mixer (CATM) paradigm, it performs global semantic refinement via dual-domain (spatial and channel) interactions and linear-complexity additive similarity.
+
+Unlike quadratic self-attention mechanisms, FARM employs a Convolutional Additive Token Mixer . We define a context mapping function Φ( ·) that integrates dual-domain inter-actions. The spatial interaction is modeled by a 3 × 3 depth-wise convolution followed by a Sig-moid activation σ, while the channel interaction is modeled by global average pooling (AvgPool) and channel-wise modulation. For a generic token tensor T ∈ { Q, K}, the mapping is defined as: Φ( T) = σ(DW 3×3(T)) 
+
+︸ ︷︷ ︸
+
+> Spatial
+
++ σ(PW(AvgPool( T))) ⊙ T
+
+︸ ︷︷ ︸
+
+> Channel
+
+(3) Crucially, FARM computes the attention map using an additive similarity function rather than matrix multiplication. The refined output Ff arm 
+
+is generated by modulating the Value branch with the aggregated context: 
+
+Ff arm = Proj(Φ( Q) + Φ( K)) ⊙ V (4) 
+
+## 3.5 Decoupled Head 
+
+Following the multi-scale feature fusion provided, the refined feature pyramid P = {Pl}5 
+
+> l=3
+
+is fed into the detection head. To resolve the conflict between the translation invariance required for classification and the translation variance required for localization, we adopt a decoupled head archi-tecture. As illustrated in Figure 5, for each scale level Pl, the processing is split into two parallel streams: Conv 3×3 Conv 3×3 Conv2D Box DWConv Blcok DWConv Blcok Conv2D Cls 
+
+Detect Head Block 
+
+> Q
+
+CASAttBlock  
+
+> KV
+> Spatial Channel
+> Conv 3×3
+> ReLU Conv 1×1
+> Sigmod Conv 3×3
+> AvgPool Conv 1×1
+> Sigmod
+
+Channel Spatial  
+
+> Fig. 5 The architecture of the Decoupled Detection Head, featuring parallel streams for classification and regression.
+
+P = {P3, P 4, P 5} ∈ R H    
+
+> 2l×W
+> 2l×Cl
+
+denote the input feature map at scale l. To accommodate the distinct requirements of the two tasks, the decou-pled head processes the features through parallel streams with specialized architectural designs. Specifically, for the Classification Branch ,we prioritize computational efficiency while pre-serving semantic discrimination by employing a Depth-wise Convolution (DWConv) followed by a 1 × 1 Convolution (Conv 2D). In contrast, the 
+
+Regression Branch focuses on spatial precision for accurate bounding box estimation, utilizing a standard 3 × 3 Convolution (Conv 3×3) followed by a 1 × 1 Convolution. Consequently, the result-ing output tensors for classification, Olcls , and regression, Olreg , are formally obtained as: 
+
+Olcls = Conv 2D(DWConv( Xl)) ∈ RHl×Wl×Ccls 
+
+(5) 
+
+Olreg = Conv 2D(Conv 3×3(Xl)) ∈ RHl×Wl×4n
+
+(6) where Ccls denotes the number of defect cate-gories, and n represents the number of discretized bins used for the integral representation. The detection process operates simultaneously across the three granularities {P3, P 4, P 5}. The outputs from all scales are decoded into a global set of candidate predictions Yraw = ⋃5
+
+> l=3
+
+[Yl], 3.6 Optimization Objective 7where Yl = ( Olcls , Olreg ).Each prediction consists of a bounding box, a class label, and a confidence score. To eliminate redundant detections of the same defect, we apply the Non-Maximum Sup-pression (NMS) mechanism. NMS iteratively selects the proposal with the highest confidence score and suppresses valid boxes that have an Intersection over Union (IoU) greater than athreshold θnms with the selected proposal. The final detection result Yf inal is formulated as: 
+
+Yf inal = NMS( Yraw , θ nms ) (7) This ensures that each micro-defect is represented by a single, most accurate bounding box. 
+
+## 3.6 Optimization Objective 
+
+To train the CF-YOLO framework end-to-end, we employ a comprehensive multi-task loss function 
+
+Ltotal that jointly optimizes both deterministic and probabilistic outputs. The total objective is defined as: 
+
+Ltotal = λbox LCIoU + λcls LBCE + λdf l LDF L (8) where λbox , λcls , and λdf l are hyperparameters used to balance the contribution of each loss term. Specifically, the Regression Loss LCIoU utilizes Complete-IoU to penalize the geometric misalign-ment between the predicted box ˆb and ground truth bgt . The Classification Loss LBCE opti-mizes the category prediction probabilities using Binary Cross-Entropy. Finally, the Distribution Focal Loss LDF L targets the Integral Representa-tion in the regression branch, forcing the predicted distribution P(x) to sharpen around the target values. This enables the model to focus on refin-ing the blurred boundaries typical of camouflaged defects. 
+
+# 4 Experimental Results 
+
+## 4.1 Dataset 
+
+Publicly available datasets for industrial copper tube defects are extremely scarce, which signif-icantly hinders the development of data-driven detection algorithms. To address this gap and facilitate community research, we constructed and released the Copper Tube Defect Dataset (CTDD) . The dataset comprises a total of 1,847 
+
+high-resolution images and 4,898 single-class defect instances, captured under diverse indus-trial lighting conditions to simulate real-world manufacturing environments.  
+
+> Fig. 6 Visual samples from the constructed Copper Tube Defect Dataset.
+
+To ensure annotation quality, all images were labeled by professional quality inspection engi-neers using the LabelImg tool, strictly adhering to the COCO annotation format. The dataset uses single-class defect annotation, with all annotated defect boxes assigned to one defect category. For experimental evaluation, we randomly partitioned the dataset into training, validation, and testing sets following a ratio of 8:1:1. This rigorous split ensures that the evaluation reflects the model’s generalization capability on unseen data. Some representative visualization samples of the dataset are illustrated in Fig. 6. 
+
+## 4.2 Implementation Details 
+
+All experiments were conducted on a worksta-tion equipped with an NVIDIA GeForce RTX 3090 GPU (24GB VRAM). The software envi-ronment consists of Python 3.10 and PyTorch 2.1.0 We implemented the proposed CF-YOLO and all baseline models based on the Ultralytics framework to ensure a fair comparison. During training, the input images were resized to 640 × 640 pixels. We employed the Stochas-tic Gradient Descent (SGD) optimizer with amomentum of 0.937 and a weight decay of 0.0005. The initial learning rate was set to 0.01 with a cosine annealing scheduler. All models were 8 4 EXPERIMENTAL RESULTS 
+
+trained from scratch for 200 epochs with a batch size of 16. Standard data augmentation tech-niques, including Mosaic and Mixup[46], were applied during the training phase to enhance model robustness, but were disabled during the final 10 epochs to ensure precise convergence. 
+
+## 4.3 Evaluation Metrics 
+
+To comprehensively and rigorously assess the per-formance of the proposed method, we employ a multi-dimensional evaluation protocol comprising Precision, F1-score, Average Precision (AP) [47], and Mean Intersection over Union (mIoU) [48]. First, to evaluate the localization and classifi-cation capabilities, we adopt the standard Mean Average Precision (mAP) , specifically report-ing AP50 . This metric represents the average precision calculated at an Intersection over Union (IoU) threshold of 0.5. For a set of N defect classes, the mAP is defined as the mean of the Average Precision (AP) for each class: mAP = 1
+
+N
+
+> N
+
+∑
+
+> i=1
+
+AP i@IoU = 0 .5 (9) where AP i is the area under the Precision-Recall curve for the i-th class. AP50 is widely regarded as the de facto standard in industrial defect detection for benchmarking model sensitivity. In addition, AP75 and AP95 denote AP evaluated at IoU thresholds of 0.75 and 0.95, respectively. In indus-trial scenarios, controlling the false positive rate is as critical as ensuring high recall. Therefore, we utilize Precision , F1-score , and F0.5-score 
+
+to evaluate the model’s reliability. Precision mea-sures the proportion of true positive predictions among all positive predictions, while the F1-score provides a harmonic mean of Precision and Recall. F0.5 gives greater weight to Precision, which is important in industrial inspection where false alarms can interrupt production: Precision = T P T P + F P (10) F1 = 2 · Precision · Recall Precision + Recall (11) F0.5 = (1 + 0 .52) · Precision · Recall 0.52 · Precision + Recall (12) where T P and F P denote True Positives and False Positives, respectively. A high F1-score indi-cates that the method achieves a robust trade-off between minimizing missed detections and reduc-ing false alarms. Finally, to assess box-level localization consis-tency, we employ the Mean Intersection over Union (mIoU) . Since CTDD provides bounding-box annotations rather than segmentation masks, mIoU is computed between predicted bounding boxes and ground-truth bounding boxes: mIoU = 1
+
+M
+
+> M
+
+∑
+
+> j=1
+
+| ˆBj ∩ Bj || ˆBj ∪ Bj | (13) where ˆBj and Bj denote the predicted and ground-truth bounding boxes for the j-th matched defect instance, respectively. This metric evalu-ates box-level spatial alignment rather than pixel-level mask overlap or defect-shape conformity. 
+
+## 4.4 Comparison with Evaluated Detection Methods 
+
+To validate CF-YOLO in practical industrial sce-narios, we conducted a comparative study against established detectors and recent representative methods under the same CTDD split where executable implementations were available. The comparison includes: • Established CNN-based Baselines: We benchmark a comprehensive suite of seminal detectors to serve as robust baselines. This includes high-precision two-stage architec-tures (i.e., Faster R-CNN, Cascade R-CNN, Dynamic R-CNN) and representative one-stage or anchor-free paradigms (i.e., Reti-naNet, ATSS, CenterNet, FoveaNet), covering a wide spectrum of dense prediction strategies. • Recent architectures: To capture recent advancements in detection methodology, we incorporate YOLOv11n, RF-DETR, RT-DETRv2, Conditional DETR, and ETDNet. YOLOv11n is used as the primary baseline because CF-YOLO is implemented by modi-fying the YOLOv11 detection pipeline, which isolates the effect of CPAM and FARM within a closely matched detector family. 4.5 External Validation on NEU-DET 9 
+
+> Table 1 Performance comparison with evaluated detection methods on CTDD. The best result is highlighted in bold, and the second-best result is underlined.
+
+Model P AP 50 AP 95 AP 75 mIoU F1 F0.5 Avg 
+
+Cascade R-CNN [30] 0.594 0.732 0.479 0.334 0.755 0.661 0.619 0.596 Faster R-CNN [29] 0.500 0.746 0.471 0.265 0.613 0.537 0.737 0.553 CenterNet [49] 0.853 0.667 0.404 0.221 0.753 0.720 0.798 0.631 ATSS [50] 0.832 0.483 0.402 0.081 0.706 0.638 0.471 0.516 RetinaNet [32] 0.448 0.684 0.445 0.152 0.704 0.568 0.489 0.499 Dynamic R-CNN [51] 0.547 0.695 0.450 0.259 0.731 0.644 0.582 0.558 FoveaNet [52] 0.479 0.659 0.428 0.131 0.705 0.577 0.514 0.499 ETDNet [42] 0.675 0.788 0.560 0.411 0.775 0.653 0.666 0.647 Conditional DETR [53] 0.546 0.582 0.268 0.291 0.663 0.600 0.566 0.476 RF-DETR 0.843 0.794 0.441 0.412 0.789 0.790 0.778 0.692 RT-DETRv2 0.801 0.787 0.435 0.413 0.782 0.770 0.766 0.679 YOLOv11n [54] 0.843 0.801 0.464 0.429 0.780 0.771 0.806 0.699 
+
+CF-YOLO (Ours) 0.882 0.823 0.488 0.455 0.769 0.796 0.846 0.723 
+
+To ensure a fair and rigorous comparison, all baseline methods were evaluated using their offi-cial hyperparameter configurations, while strictly sharing the identical data partition on the CTDD training and testing sets. The quantitative com-parison results are reported in Tab. 1. As evidenced by the results, CF-YOLO obtains the best Precision, AP50, AP75, F1-score, F0.5-score, and Avg among the evaluated CTDD baselines, while ETDNet obtains the high-est AP95 and RF-DETR obtains the highest mIoU. Compared with YOLOv11n, CF-YOLO improves AP50 from 0.801 to 0.823, F1-score from 0.771 to 0.796, and Precision from 0.843 to 0.882. These results indicate that the proposed context-perception and feature-refinement design is effective on CTDD. To provide a more intuitive assessment of the proposed method’s robustness in real-world industrial scenarios, we visualize the detection results of CF-YOLO alongside the base-line YOLOv11 and other evaluated models on the CTDD test set. As illustrated in Fig. 7, the com-parative results reveal distinct performance gaps under challenging conditions. It can be observed that baseline methods struggle significantly with micro-scale defects and low-contrast targets. In cases of background camouflage— used here to describe high visual similarity between defects and the copper sub-strate rather than a generic COD benchmark set-ting—mainstream detectors frequently suffer from missed and erroneous detections (False Negatives) due to insufficient feature extraction capabilities. Furthermore, they are prone to generating false positives in areas with complex surface oxida-tion or lighting noise. In contrast, thanks to the integrated attention mechanisms and multi-scale feature fusion, CF-YOLO exhibits strong sensi-tivity to subtle anomalies. Our method localizes many texture-similar defects and suppresses back-ground interference under the evaluated CTDD protocol. 
+
+## 4.5 External Validation on NEU-DET 
+
+To provide an external check beyond CTDD, we evaluated CF-YOLO on the public NEU-DET industrial surface defect dataset [55]. Because the present work is formulated as single-class bounding-box defect detection, the six original NEU-DET defect categories were merged into a single defect class. The resulting setting contains 1,800 images and 4,189 defect instances, split into 10 4 EXPERIMENTAL RESULTS   
+
+> Fig. 7Visualization of detection results compared against the Ground Truth (GT). The last column shows the GT annotations, while the second to last column shows the predictions of our proposed method. Preceding columns display results from other models for comparison
+
+1,260 training images, 270 validation images, and 270 test images using seed 0.                 
+
+> Table 2 External validation results on NEU-DET.
+> Model AP 50 AP 50 −95 F1PR
+> YOLOv11n 0.786 0.468 0.712 0.774 0.660 CF-YOLO 0.794 0.465 0.732 0.760 0.707
+
+As shown in Tab. 2, CF-YOLO improves AP50, F1-score, and Recall on NEU-DET, while AP50-95 and Precision are slightly lower than YOLOv11n. We therefore interpret this result as preliminary external validation rather than evidence of universal generalization across all industrial defect domains. 
+
+## 4.6 Ablation of the Component 
+
+To rigorously verify the effectiveness of each proposed component within CF-YOLO, we con-ducted a comprehensive ablation study on the CTDD test set. We adopted the vanilla YOLOv11 as our strong baseline and incrementally incorpo-rated the Context-Perception Aggregation Mod-ule (CPAM) and the Feature Additive Refinement Module (FARM). The quantitative comparison, focusing on Precision (P), F1-score, and AP@50, Input  w/ CPAM  GT  Input  w/  FARM  GT  
+
+> Fig. 8 Visual ablation analysis of key components. The left panel demonstrates the effectiveness of CPAM in local-izing camouflaged defects, while the right panel illustrates the capability of FARM in capturing micro-scale anoma-lies. ’GT’ denotes Ground Truth.
+
+is summarized in Tab. 3.Additionally, qualitative visualizations verifying the specific contributions of CPAM and FARM are presented in Fig. 8. 
+
+Benefits of the CPAM: As shown in the second row of Tab. 3, integrating CPAM into the backbone improves F1-score and AP@50 com-pared with the baseline. This gain is primar-ily attributed to the ”Large-Kernel Perception” mechanism, which expands the receptive field to capture the macro-texture of the copper surface and helps preserve weak defect evidence. 4.7 Design Ablation Study 11 
+
+Benefits of the FARM: The third row demonstrates the impact of adding FARM alone. FARM improves F1-score and AP@50 in this com-ponent setting, indicating that additive feature refinement can help suppress false positives caused by intricate surface noise. 
+
+Synergistic Benefits: Finally, the full CF-YOLO, which combines CPAM and FARM, achieves the highest performance across the reported component-ablation metrics. It surpasses the baseline by 3.9%, 4.0%, and 7.4% in Precision, F1-score, and AP@50, respectively.                      
+
+> Table 3 Ablation study on the effectiveness of proposed components.
+> CPAM FARM PF1AP 50
+> --0.843 0.756 0.749
+> ✓-0.842 0.783 0.819 -✓0.838 0.780 0.800
+> ✓✓0.882 0.796 0.823
+
+## 4.7 Design Ablation Study 
+
+We further analyze the main design choices of CF-YOLO, including FARM branch composition, FARM placement, CPAM placement/quantity, and CPAM kernel configuration. The goal is to verify whether the adopted design is necessary rather than only reporting the final component combination. For FARM branch composition, we remove the spatial branch, remove the channel branch, and replace the dual-domain mixer with a standard convolution. As shown in Tab. 4, the complete FARM achieves the best performance across all metrics, while removing either branch degrades detection accuracy. This demonstrates the effec-tiveness of the dual-domain design for feature refinement.                      
+
+> Table 4 FARM mixer variant ablation on CTDD. Full FARM is the unmodified configuration used in CF-YOLO.
+> Variant AP 50 AP 50 -95 F1Precision Full FARM (Ours) 0.823 0.488 0.796 0.882
+> No spatial branch 0.772 0.467 0.748 0.825 No channel branch 0.785 0.476 0.765 0.825 Conv-only 0.775 0.472 0.752 0.815
+
+We further evaluate three FARM placement strategies: before the neck, inside the neck, and after the neck. As shown in Tab. 5, placing FARM inside the neck yields the highest AP 50 , AP 50-95 ,and F1-score. This indicates that feature refine-ment is most effective during multi-scale feature fusion.              
+
+> Table 5 FARM placement analysis on CTDD.
+> Configuration AP 50 AP 50 -95 F1
+> FARM in neck (Ours) 0.823 0.488 0.796
+> FARM before neck 0.760 0.469 0.738 FARM after neck 0.770 0.474 0.748
+
+For CPAM, we investigate different place-ment depths and block quantities. As reported in Tab. 6, the mid-backbone configuration achieves the best performance, while reducing the number of CPAM blocks leads to a noticeable accuracy drop. These results confirm the importance of mid-level context perception and sufficient con-text aggregation.                 
+
+> Table 6 CPAM depth and quantity analysis on CTDD.
+> Configuration AP 50 AP 50 -95 F1
+> CPAM mid-backbone (Ours) 0.823 0.488 0.796
+> CPAM shallow 0.730 0.462 0.705 CPAM deep 0.718 0.460 0.695 Fewer CPAM blocks (2 ×)0.770 0.468 0.745
+
+Finally, we evaluate different dual-kernel con-figurations of CPAM by varying the Small-Kernel Aggregation ( KS ) and Large-Kernel Perception (KL) sizes. As shown in Tab. 7, the adopted set-ting ( KS = 7, KL = 11) achieves the best overall performance among all evaluated combinations. This suggests that effective defect detection relies on a balanced interaction between large-scale con-text perception and local feature aggregation, rather than larger kernels alone. 
+
+# 5 Conclusions 
+
+In this paper, we propose CF-YOLO, a spe-cialized detector for industrial copper tube defect detection. By integrating the Context-Perception Aggregation Module (CPAM) and the 12 5 CONCLUSIONS                                    
+
+> Table 7 Ablation study on CPAM kernel settings. KL
+> denotes the Large-Kernel Perception branch, and KS
+> denotes the Small-Kernel Aggregation branch.
+> KSKLPF1AP 50
+> 330.823 0.703 0.751 350.854 0.786 0.804 370.846 0.785 0.814 570.564 0.494 0.462 511 0.850 0.784 0.809 11 11 0.844 0.744 0.783
+> 711 0.882 0.796 0.823
+
+Feature Additive Refinement Module (FARM), our method addresses the challenges of back-ground camouflage and semantic ambiguity inher-ent in micro-defects. CPAM expands the receptive field to distinguish defects from the substrate, while FARM performs global semantic verification to suppress noise-induced false positives. Addi-tionally, we released the Copper Tube Defect Dataset (CTDD) to alleviate data scarcity in this field. Extensive experiments show that CF-YOLO achieves the best AP50, Precision, and F1-score among the evaluated methods on CTDD while maintaining real-time inference speed on an RTX 3090. A limitation of CF-YOLO is that, while optimized for accurate real-time detection on GPU platforms, its deployment on resource-constrained edge devices may still be affected by the additional computational overhead of context aggregation and feature refinement. Future work will explore model compression and quantization-aware optimization to improve deployment effi-ciency. 
+
+# Declarations 
+
+Conflict of interest The authors declare that they have no conflict of interest. 
+
+Open Access This article is licensed under a Creative Commons Attribution 4.0 International License, which permits use, sharing, adaptation, distribution and reproduction in any medium or format, as long as you give appropriate credit to the original author(s) and the source, provide a link to the Creative Commons licence, and indi-cate if changes were made. The images or other third party material in this article are included in the article’s Creative Commons licence, unless indicated otherwise in a credit line to the material. If material is not included in the article’s Creative Commons licence and your intended use is not permitted by statutory regulation or exceeds the permitted use, you will need to obtain permission directly from the copyright holder. To view a copy of this licence, visit http://creativecommons.org/ licenses/by/4.0/. 
+
+# References 
+
+[1] Tao, X., Zhang, D., Ma, W., Liu, X., Xu, D.: Automatic metallic surface defect detection and recognition with convolutional neural networks. Applied Sciences 8 (2018) [2] Xiang, Z., Jia, J., Zhou, K., Qian, M., Wu, W.: Block-wise feature fusion for high-precision industrial surface defect detection. The Visual Computer 41 (11), 9277–9295 (2025) [3] Song, H., Wang, J., Li, Z., Li, G.: Enhanced sodium rod detection and distribution using a yolov5s-snet2-cbam lightweight network. The Visual Computer 42 (1), 30 (2025) [4] Shi, T., Ding, Y., Zhu, K.-f., Su, Y.-j.: Cor-rection: Dfp-yolo: a lightweight machine tool workpiece defect detection algorithm based on computer vision. The Visual Computer, 8117–8117 (2025) [5] Cheng, Y., Cao, Y., Yao, H., Luo, W., Jiang, C., Zhang, H., Shen, W.: A comprehen-sive survey for real-world industrial surface defect detection: Challenges, approaches, and prospects. Journal of Manufacturing Systems 
+
+84 , 152–172 (2026) [6] Bergmann, P., Batzner, K., Fauser, M., Sat-tlegger, D., Steger, C.: The mvtec anomaly detection dataset: A comprehensive real-world dataset for unsupervised anomaly detection. Int. J. Comput. Vis. 129 (4), 1038– 1059 (2021) [7] Tabernik, D., Sela, S., Skvarc, J., Skocaj, D.: Segmentation-based deep-learning approach for surface-defect detection. J. Intell. Manuf. 
+
+31 (3), 759–776 (2020) 13 [8] Nikouei, M., Baroutian, B., Nabavi, S., Taraghi, F., Aghaei, A., Sajedi, A., Moghad-dam, M.E.: Small object detection: A com-prehensive survey on challenges, techniques and real-world applications. Intell. Syst. Appl. 27 , 200561 (2025) [9] Li, L., Gao, Y., Li, K., Zhu, Y., Cao, R., Yu, C., Chauhdary, S.H., Zang, Y.: High-precision steel pipe size inspection using deep learning and geometric fitting. Measurement 
+
+258 , 119556 (2026) [10] Lin, T., Doll´ ar, P., Girshick, R.B., He, K., Hariharan, B., Belongie, S.J.: Feature pyra-mid networks for object detection. In: 2017 IEEE Conference on Computer Vision and Pattern Recognition, CVPR 2017, Honolulu, HI, USA, July 21-26, 2017, pp. 936–944 (2017) [11] Liang, Y., Li, J., Zhu, J., Du, R., Wu, X., Chen, B.: A lightweight network for defect detection in nickel-plated punched steel strip images. IEEE Transactions on Instrumenta-tion and Measurement 72 , 1–15 (2023) [12] Zhang, X., Li, N., Li, J., Dai, T., Jiang, Y., Xia, S.: Unsupervised surface anomaly detection with diffusion probabilistic model. In: IEEE/CVF International Conference on Computer Vision, ICCV 2023, Paris, France, October 1-6, 2023, pp. 6759–6768 (2023) [13] Zavrtanik, V., Kristan, M., Skocaj, D.: Draem - a discriminatively trained recon-struction embedding for surface anomaly detection. In: Proceedings of the IEEE/CVF International Conference on Computer Vision (ICCV), pp. 8330–8339 (2021) [14] Zhu, J., Chen, X., Hu, Q., Xiao, Y., Wang, B., Sheng, B., Chen, C.L.P.: Clustering envi-ronment aware learning for active domain adaptation. IEEE Trans. Syst. Man Cybern. Syst. 54 (6), 3891–3904 (2024) [15] Hu, X., Yang, C., Fang, F., Huang, J., Li, P., Sheng, B., Lee, T.-Y.: MSEmbGAN: Multi-stitch embroidery synthesis via region-aware texture generation. IEEE Transactions on Visualization and Computer Graphics 31 (9), 5334–5347 (2025) [16] Lin, X., Sun, S., Huang, W., Sheng, B., Li, P., Feng, D.D.: Eapt: Efficient attention pyramid transformer for image processing. IEEE Transactions on Multimedia 25 , 50–61 (2023) [17] Xu, H., Zou, C., Lin, C.: Utmcr: 3u-net transformer with multi-contrastive regular-ization for single image dehazing. Computer Animation and Virtual Worlds 36 (3), 70029 (2025) [18] Xiong, M., Hu, K., Wang, Z., Hu, R., Muhammad, K., Ser, J.D., Yang, X., Sheng, B.: Adaptive clustering and weighted regu-larization contrastive learning framework for unsupervised person re-identification. IEEE Transactions on Multimedia 27 , 6896–6907 (2025) [19] Chen, Z., Qiu, G., Li, P., Zhu, L., Yang, X., Sheng, B.: Mngnas: Distilling adap-tive combination of multiple searched net-works for one-shot neural architecture search. IEEE Transactions on Pattern Analysis and Machine Intelligence 45 (11), 13489–13508 (2023) [20] Dosovitskiy, A., Beyer, L., Kolesnikov, A., Weissenborn, D., Zhai, X., Unterthiner, T., Dehghani, M., Minderer, M., Heigold, G., Gelly, S., Uszkoreit, J., Houlsby, N.: An image is worth 16x16 words: Transformers for image recognition at scale. In: 9th Inter-national Conference on Learning Representa-tions, ICLR (2021) [21] Luo, W., Li, Y., Urtasun, R., Zemel, R.S.: Understanding the effective receptive field in deep convolutional neural networks. In: Advances in Neural Information Processing Systems 29: Annual Conference on Neu-ral Information Processing Systems 2016, December 5-10, 2016, Barcelona, Spain, pp. 4898–4906 (2016) [22] Han, K., Wang, Y., Chen, H., Chen, X., Guo, J., Liu, Z., Tang, Y., Xiao, A., Xu, C., Xu, Y., Yang, Z., Zhang, Y., Tao, D.: A survey on vision transformer. IEEE Trans. Pattern 14 5 CONCLUSIONS 
+
+Anal. Mach. Intell. 45 (1), 87–110 (2023) [23] Park, N., Kim, S.: How do vision transform-ers work? In: The Tenth International Con-ference on Learning Representations, ICLR 2022, Virtual Event, April 25-29, 2022 (2022) [24] Wen, Y., Luo, B., Shi, W., Ji, J., Cao, W., Yang, X., Sheng, B.: Sat-net: Structure-aware transformer-based attention fusion network for low-quality retinal funduimages enhance-ment. IEEE Transactions on Multimedia 27 ,6198–6210 (2025) [25] Wang, Z., Li, T., Qin, Y., Sheng, B.: Con-trastive decoupling: Dynamic regularization for enhanced fine-grained image classifica-tion. IEEE Transactions on Circuits and Sys-tems for Video Technology 36 (6), 7588–7599 (2026) [26] Li, Y., Yuan, G., Wen, Y., Hu, J., Evan-gelidis, G., Tulyakov, S., Wang, Y., Ren, J.: Efficientformer: Vision transformers at mobilenet speed. In: Advances in Neural Information Processing Systems 35: Annual Conference on Neural Information Processing Systems 2022, NeurIPS 2022, New Orleans, (2022) [27] Zhang, J., Dai, L., Ye, F., Chen, Z., Li, P., Yang, X., Sheng, B.: Dataset distillation via a noise-unconstrained generative model. IEEE Transactions on Pattern Analysis and Machine Intelligence, 1–18 (2026) [28] et al., Z.M.Z.G.Y.: Non-invasive biopsy diagnosis of diabetic kidney disease via deep learning applied to retinal images: a population-based study. The Lancet Digital Health 7(5), 100868 (2025) [29] Ren, S., He, K., Girshick, R.B., Sun, J.: Faster R-CNN: towards real-time object detection with region proposal networks. In: Advances in Neural Information Processing Systems 28: Annual Conference on Neu-ral Information Processing Systems 2015, December 7-12, 2015, Montreal, Quebec, Canada, pp. 91–99 (2015) [30] Cai, Z., Vasconcelos, N.: Cascade R-CNN: delving into high quality object detection. In: 2018 IEEE Conference on Computer Vision and Pattern Recognition, CVPR 2018, Salt Lake City, UT, USA, June 18-22, 2018, pp. 6154–6162 (2018) [31] Liu, W., Anguelov, D., Erhan, D., Szegedy, C., Reed, S.E., Fu, C., Berg, A.C.: SSD: single shot multibox detector. In: Computer Vision - ECCV 2016 - 14th European Confer-ence, Amsterdam, The Netherlands, October 11-14, 2016, Proceedings, Part I. Lecture Notes in Computer Science, vol. 9905, pp. 21–37 (2016) [32] Lin, T., Goyal, P., Girshick, R.B., He, K., Doll´ ar, P.: Focal loss for dense object detec-tion. In: IEEE International Conference on Computer Vision, pp. 2999–3007 (2017) [33] Liu, R., Lu, F., Luo, W., Cao, T., Xue, H., Wang, M.: Yolov8-hac: Safety helmet detec-tion model for complex underground coal mine scene. Computer Animation and Vir-tual Worlds 36 (4), 70051 (2025) [34] Zhang, J., Ke, F., Tang, Q., Yu, W., Zhang, M.: YGC-SLAM:A visual SLAM based on improved yolov5 and geometric constraints for dynamic indoor environments. Virtual Real. Intell. Hardw. 7(1), 62–82 (2025) [35] Mehta, M.: AFF-YOLO: A real-time indus-trial defect detection method based on atten-tion mechanism and feature fusion (2024) [36] Li, G., Zhao, S., Zhou, M., Li, M., Shao, R., Zhang, Z., Han, D.: YOLO-RFF: An industrial defect detection method based on expanded field of feeling and feature fusion. Electronics 11 (24), 4211 (2022) [37] Otsu, N.: A threshold selection method from gray-level histograms. IEEE Trans. Syst. Man Cybern. 9(1), 62–66 (1979) [38] Ng, H.: Automatic thresholding for defect detection. Pattern Recognit. Lett. 27 (14), 1644–1649 (2006) [39] Zhou, X., Yang, C., Zhao, H., Yu, W.: Low-rank modeling and its applications in image 15 analysis. ACM Comput. Surv. 47 (2), 36– 13633 (2014) [40] Cui, L., Jiang, X., Xu, M., Li, W., Lv, P., Zhou, B.: Sddnet: A fast and accurate net-work for surface defect detection. In: IEEE Transactions on Instrumentation and Mea-surement, vol. 70, pp. 1–13 (2021) [41] Chen, L., Papandreou, G., Kokkinos, I., Mur-phy, K., Yuille, A.L.: Deeplab: Semantic image segmentation with deep convolutional nets, atrous convolution, and fully connected crfs. IEEE Trans. Pattern Anal. Mach. Intell. 
+
+40 (4), 834–848 (2018) [42] Zhou, H., Yang, R., Hu, R., Shu, C., Tang, X., Li, X.: Etdnet: Efficient transformer-based detection network for surface defect detec-tion. IEEE Transactions on Instrumentation and Measurement 72 , 1–14 (2023) [43] Lau, K.W., Po, L.-M., Rehman, Y.A.U.: Large separable kernel attention: Rethink-ing the large kernel attention design in CNN. Expert Systems with Applications 236 
+
+(2024) [44] Shaker, A., Maaz, M., Rasheed, H., Khan, S., Yang, M.-H., Khan, F.S.: Swiftformer: Efficient additive attention for transformer-based real-time mobile vision applications. In: Proceedings of the IEEE/CVF Confer-ence on Computer Vision and Pattern Recog-nition (CVPR) (2023) [45] Goodfellow, I.J., Pouget-Abadie, J., Mirza, M., Xu, B., Warde-Farley, D., Ozair, S., Courville, A.C., Bengio, Y.: Generative adversarial nets. In: Advances in Neural Information Processing Systems 27: Annual Conference on Neural Information Processing Systems 2014, pp. 2672–2680 (2014) [46] Bochkovskiy, A., Wang, C.-Y., Liao, H.-Y.M.: YOLOv4: Optimal Speed and Accu-racy of Object Detection (2020) [47] Everingham, M., Gool, L.V., Williams, C.K.I., Winn, J.M., Zisserman, A.: The pas-cal visual object classes (VOC) challenge. Int. J. Comput. Vis. 88 (2), 303–338 (2010) [48] Lin, T., Maire, M., Belongie, S.J., Hays, J., Perona, P., Ramanan, D., Doll´ ar, P., Zit-nick, C.L.: Microsoft COCO: common objects in context. In: Computer Vision - ECCV 2014 - 13th European Conference, Zurich, Switzerland, September 6-12, 2014, Proceed-ings, Part V. Lecture Notes in Computer Science, vol. 8693, pp. 740–755 (2014) [49] Duan, K., Bai, S., Xie, L., Qi, H., Huang, Q., Tian, Q.: Centernet: Keypoint triplets for object detection. In: 2019 IEEE/CVF Inter-national Conference on Computer Vision, pp. 6568–6577 (2019) [50] Zhang, S., Chi, C., Yao, Y., Lei, Z., Li, S.Z.: Bridging the gap between anchor-based and anchor-free detection via adaptive train-ing sample selection. In: 2020 IEEE/CVF Conference on Computer Vision and Pattern Recognition, pp. 9756–9765 (2020) [51] Zhang, H., Chang, H., Ma, B., Wang, N., Chen, X.: Dynamic R-CNN: towards high quality object detection via dynamic train-ing. In: Computer Vision - ECCV 2020 - 16th European Conference, pp. 260–275 (2020) [52] Li, X., Jie, Z., Wang, W., Liu, C., Yang, J., Shen, X., Lin, Z., Chen, Q., Yan, S., Feng, J.: Foveanet: Perspective-aware urban scene parsing. In: IEEE International Conference on Computer Vision, pp. 784–792 (2017) [53] Meng, D., Chen, X., Fan, Z., Zeng, G., Li, H., Yuan, Y., Sun, L., Wang, J.: Condi-tional DETR for fast training convergence. In: 2021 IEEE/CVF International Confer-ence on Computer Vision, ICCV 2021, Mon-treal, QC, Canada, October 10-17, 2021, pp. 3631–3640 (2021) [54] Khanam, R., Hussain, M.: YOLOv11: An Overview of the Key Architectural Enhance-ments (2024) [55] Song, K., Yan, Y.: A noise robust method based on completed local binary patterns for hot-rolled steel strip surface defects. Applied Surface Science 285 , 858–864 (2013) 16 5 CONCLUSIONS 
+
+Publisher’s Note Springer Nature remains neu-tral with regard to juris dictional claims in pub-lished maps and institutional affiliations. 
+
+Xinda Yu received his B.S. degree from Zhejiang Wanli Uni-versity, China, in 2024. He is currently a masters student in HuZhou Univer-sity. His research interests include com-puter vision, 3D reconstruction. 
+
+Kunxin Zheng is currently a under-graduate student in HuZhou University. His research inter-ests include computer vision. 
+
+Chunan Yu is cur-rently pursuing the Ph.D. degree at Nan-jing University of Sci-ence and Technology (NJUST). He received the M.S. degree of Huzhou University in 2025. He received B.S. degree from Linyi Uni-versity in 2022. His research interests are in Computer Vision and Multimodal Learning. 
+
+Qingbo Song 
+
+received his Bachelor of Engineering degree from Qilu Normal University, Jinan, China in 2024. He is currently a postgrad-uate student pursuing a master’s degree at Huzhou University, with research interests in computer vision and 3D reconstruction. 
+
+Hao Xiao received the M.S. degree in engineering from Wuhan University, China, in 2004; and the Ph.D. degree in management from Shanghai University of Finance and Eco-nomics, China, in 2014. He is currently an Associate Pro-fessor and Master’s Supervisor. His research interests include soft-ware engineering, complex system modeling and analysis, and social computing. 17 
+
+Ying Zang received the B.E. degree in computer science and technology from Liaoning Univer-sity, China, in 2005; the M.S. degree in computer science and technology from Dalian Maritime Uni-versity, China, in 2010; and the Ph.D. degree in computer application technology from the University of Chinese Academy of Sciences, China, in 2022. She is currently a Lecturer and Master’s Super-visor at the School of Information Engineering, Huzhou University. Her current research interests include object detection, semantic segmentation, and image processing. 
+
+Jie Liu received the B.S. degree in sci-ence from Fuyang Nor-mal College, China, in 1993; and the M.S. and Ph.D. degrees in engineering from Hefei University of Technol-ogy, China, in 2004 and 2011, respectively. He is currently a Pro-fessor and Graduate Supervisor. He has presided over or participated in more than 10 national and provincial research projects, published over 50 papers, and holds 13 authorized invention patents. His current research interests include theoretical research and circuit design of RISC-V architecture processors and CNN accelerators, digital integrated circuit fault detection, and circuit design for intelligent instru-mentation and industrial appliances.

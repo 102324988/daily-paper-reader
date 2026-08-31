@@ -1,0 +1,249 @@
+{
+  "date": "20260831",
+  "date_label": "",
+  "generated_at": "2026-08-31 23:59:02 UTC",
+  "recommend_exists": true,
+  "run_count": 1,
+  "papers": [
+    {
+      "paper_id": "2608.23636v1",
+      "route": "202608/31/2608.23636v1-cross-generation-optimization-of-yolov26-yolov11-and-yolov8-for-fine-grained-small-object-detection-and-instance-segmentation-in-complex-orchards",
+      "title": "Cross-Generation Optimization of YOLOv26, YOLOv11, and YOLOv8 for Fine-Grained Small-Object Detection and Instance Segmentation in Complex Orchards",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "对多种YOLO版本进行小目标检测与实例分割基准评测，直接对应目标检测与分割。",
+      "first_seen_at": "2026-08-31 23:59:02 UTC",
+      "updated_at": "2026-08-31 23:59:02 UTC"
+    },
+    {
+      "paper_id": "2608.25178v1",
+      "route": "202608/31/2608.25178v1-lightweight-machine-learning-driven-monocular-sidewalk-path-extraction-for-embedded-micromobility-navigation",
+      "title": "Lightweight Machine Learning-Driven Monocular Sidewalk Path Extraction for Embedded Micromobility Navigation",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "使用SegFormer-B0语义分割进行单目人行道提取",
+      "first_seen_at": "2026-08-31 23:59:02 UTC",
+      "updated_at": "2026-08-31 23:59:02 UTC"
+    },
+    {
+      "paper_id": "2608.27860v1",
+      "route": "202608/31/2608.27860v1-from-perspective-to-fisheye-depth-estimation-and-open-vocabulary-segmentation",
+      "title": "From Perspective to Fisheye Depth Estimation and Open-Vocabulary Segmentation",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "将视觉基础模型泛化到鱼眼图像，用于开放词汇分割",
+      "first_seen_at": "2026-08-31 23:59:02 UTC",
+      "updated_at": "2026-08-31 23:59:02 UTC"
+    },
+    {
+      "paper_id": "2608.28070v1",
+      "route": "202608/31/2608.28070v1-cf-yolo-context-aware-feature-refinement-for-camouflaged-industrial-micro-defect-detection",
+      "title": "CF-YOLO: Context-Aware Feature Refinement for Camouflaged Industrial Micro-Defect Detection",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "上下文感知细化的工业伪装微缺陷检测",
+      "first_seen_at": "2026-08-31 23:59:02 UTC",
+      "updated_at": "2026-08-31 23:59:02 UTC"
+    },
+    {
+      "paper_id": "2608.28216v1",
+      "route": "202608/31/2608.28216v1-waldo-one-shot-exemplar-conditioned-object-detection-in-cluttered-scenes",
+      "title": "WALDO: One-Shot Exemplar-Conditioned Object Detection in Cluttered Scenes",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "基于冻结V-JEPA特征的单样本示例条件目标检测，属于目标检测方法。",
+      "first_seen_at": "2026-08-31 23:59:02 UTC",
+      "updated_at": "2026-08-31 23:59:02 UTC"
+    },
+    {
+      "paper_id": "2608.28524v1",
+      "route": "202608/31/2608.28524v1-texture-image-classification-using-dwt-alexnet-feature-fusion-and-deep-neural-networks",
+      "title": "Texture Image Classification Using DWT AlexNet Feature Fusion and Deep Neural Networks",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "结合小波变换与AlexNet深度特征的混合特征融合方法",
+      "first_seen_at": "2026-08-31 23:59:02 UTC",
+      "updated_at": "2026-08-31 23:59:02 UTC"
+    },
+    {
+      "paper_id": "2608.25274v1",
+      "route": "202608/31/2608.25274v1-opencvl-an-open-diverse-and-large-scale-dataset-for-fine-grained-cross-view-localization",
+      "title": "OpenCVL: An Open, Diverse, and Large-Scale Dataset for Fine-Grained Cross-View Localization",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "大规模跨视角定位数据集，属于计算机视觉研究",
+      "first_seen_at": "2026-08-31 23:59:02 UTC",
+      "updated_at": "2026-08-31 23:59:02 UTC"
+    },
+    {
+      "paper_id": "2608.25401v1",
+      "route": "202608/31/2608.25401v1-pivot-a-multi-trajectory-dataset-and-testbed-for-pose-intrinsics-and-novel-viewpoint-evaluation-in-real-world-3d-reconstruction",
+      "title": "PIVOT: A Multi-Trajectory Dataset and Testbed for Pose, Intrinsics, and Novel Viewpoint Evaluation in Real-World 3D Reconstruction",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "面向3D重建的计算机视觉数据集与评测框架",
+      "first_seen_at": "2026-08-31 23:59:02 UTC",
+      "updated_at": "2026-08-31 23:59:02 UTC"
+    },
+    {
+      "paper_id": "2608.26069v2",
+      "route": "202608/31/2608.26069v2-group-shared-low-rank-approximation-for-mobile-efficient-pointwise-convolutions-in-large-kernel-cnns",
+      "title": "Group-Shared Low-Rank Approximation for Mobile-Efficient Pointwise Convolutions in Large-Kernel CNNs",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "大型核CNN中点卷积的分组共享低秩近似压缩方法",
+      "first_seen_at": "2026-08-31 23:59:02 UTC",
+      "updated_at": "2026-08-31 23:59:02 UTC"
+    },
+    {
+      "paper_id": "2608.27066v1",
+      "route": "202608/31/2608.27066v1-beyond-classification-task-dependent-learnability-under-privacy-motivated-image-transformations",
+      "title": "Beyond Classification: Task-Dependent Learnability under Privacy-Motivated Image Transformations",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "计算机视觉中隐私变换的评估协议",
+      "first_seen_at": "2026-08-31 23:59:02 UTC",
+      "updated_at": "2026-08-31 23:59:02 UTC"
+    },
+    {
+      "paper_id": "2608.27502v1",
+      "route": "202608/31/2608.27502v1-image-augmentation-as-test-generation-for-deep-learning-based-image-retrieval-systems",
+      "title": "Image Augmentation as Test Generation for Deep Learning-Based Image Retrieval Systems",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "将图像增强用于图像检索系统的测试生成，属于计算机视觉可靠性研究",
+      "first_seen_at": "2026-08-31 23:59:02 UTC",
+      "updated_at": "2026-08-31 23:59:02 UTC"
+    },
+    {
+      "paper_id": "2608.28218v1",
+      "route": "202608/31/2608.28218v1-focus-where-it-counts-a-salience-driven-vision-language-model-for-low-vision-assistance",
+      "title": "Focus Where It Counts: A Salience-Driven Vision-Language Model for Low Vision Assistance",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "面向低视力助残的显著性驱动视觉语言描述框架",
+      "first_seen_at": "2026-08-31 23:59:02 UTC",
+      "updated_at": "2026-08-31 23:59:02 UTC"
+    },
+    {
+      "paper_id": "2608.28246v1",
+      "route": "202608/31/2608.28246v1-training-free-suction-grasp-detection-for-deformed-aseptic-cartons-using-vision-language-models-and-geometric-surface-scoring",
+      "title": "Training-free Suction Grasp Detection for Deformed Aseptic Cartons Using Vision-Language Models and Geometric Surface Scoring",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "结合开放词汇VLM检测与SAM2实例分割的抓取系统",
+      "first_seen_at": "2026-08-31 23:59:02 UTC",
+      "updated_at": "2026-08-31 23:59:02 UTC"
+    },
+    {
+      "paper_id": "2608.23192v1",
+      "route": "202608/31/2608.23192v1-an-energy-proportional-multimodal-and-context-aware-vision-iot-node",
+      "title": "An Energy-Proportional Multimodal and Context-Aware Vision IoT Node",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "面向视觉物联网节点的多模态上下文感知节能图像采集方案",
+      "first_seen_at": "2026-08-31 23:59:02 UTC",
+      "updated_at": "2026-08-31 23:59:02 UTC"
+    },
+    {
+      "paper_id": "2608.27417v1",
+      "route": "202608/31/2608.27417v1-retrieval-heads-meet-vision-uncovering-how-vlms-locate-and-extract-visual-information",
+      "title": "Retrieval Heads Meet Vision: Uncovering How VLMs Locate and Extract Visual Information",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "识别视觉语言模型中负责定位与提取视觉信息的注意力头",
+      "first_seen_at": "2026-08-31 23:59:02 UTC",
+      "updated_at": "2026-08-31 23:59:02 UTC"
+    }
+  ]
+}

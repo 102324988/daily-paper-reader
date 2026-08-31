@@ -1,0 +1,608 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-08-31T23:48:17.298369+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 6,
+    "deep_cap": 6,
+    "deep_selected": 6,
+    "quick_candidates": 9,
+    "quick_skim_target": 11,
+    "quick_selected": 9
+  },
+  "deep_dive": [
+    {
+      "id": "2608.23636v1",
+      "source": "arxiv",
+      "title": "Cross-Generation Optimization of YOLOv26, YOLOv11, and YOLOv8 for Fine-Grained Small-Object Detection and Instance Segmentation in Complex Orchards",
+      "abstract": "Small-object detection and instance segmentation remain challenging in orchard environments because of green-on-green similarity, occlusion, and limited pixel representation of fine fruit anatomy. This study presents a cross-generation benchmark of Ultralytics YOLOv8, YOLOv11, and YOLOv26 for detecting and segmenting apple fruitlet, calyx, and peduncle structures for robotic orchard perception. Five model scales (n, s, m, l, and x) were evaluated under conventional 640 x 640 and small-object focused 960 x 960 training configurations, yielding 30 experiments. Increasing model capacity did not consistently improve accuracy. YOLOv11s-960 achieved the highest observed mask mAP@50:95 (0.402) and box mAP@50:95 (0.426), while YOLOv26s-960 achieved comparable values of 0.397 and 0.425 with only 10.37 M parameters and 34.1 GFLOPs. Peduncle remained the most challenging class. Overall, compact-to-moderate YOLO models with small-object-focused training provided favorable accuracy efficiency trade-offs, establishing a practical benchmark for fine-grained agricultural robotics and orchard perception. Github Link: https://github.com/rnjnspkt/Optimizing-and-Comparing-Ultralytics-YOLOv26-YOLOv11-and-YOLOv8-for-Small-Object-Detection-and-Seg",
+      "authors": [
+        "Ranjan Sapkota",
+        "Manoj Karkee"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-23T17:00:22+00:00",
+      "link": "https://arxiv.org/pdf/2608.23636v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Benchmarks YOLOv8/YOLOv11/YOLOv26 for small-object detection and instance segmentation; directly matches object detection and segmentation.",
+      "llm_evidence_cn": "对多种YOLO版本进行小目标检测与实例分割基准评测，直接对应目标检测与分割。",
+      "llm_evidence": "对多种YOLO版本进行小目标检测与实例分割基准评测，直接对应目标检测与分割。",
+      "canonical_evidence": "对多种YOLO版本进行小目标检测与实例分割基准评测，直接对应目标检测与分割。",
+      "llm_tldr_en": "Cross-generation benchmark of YOLOv8, YOLOv11, and YOLOv26 for fine-grained small-object detection and instance segmentation in orchards, with 30 experiments; YOLOv11s-960 achieved best mask mAP.",
+      "llm_tldr_cn": "果园环境下小目标检测与实例分割受绿色相似、遮挡和像素少挑战。本文对YOLOv8/11/26的五个模型尺度在640与960分辨率下开展30组实验，评估对苹果幼果、花萼和果梗的检测分割。结果表明增大模型容量并不总提升精度，YOLOv11s-960取得最高掩膜mAP@50，为机器人果园感知提供了模型选择参考。",
+      "llm_tldr": "果园环境下小目标检测与实例分割受绿色相似、遮挡和像素少挑战。本文对YOLOv8/11/26的五个模型尺度在640与960分辨率下开展30组实验，评估对苹果幼果、花萼和果梗的检测分割。结果表明增大模型容量并不总提升精度，YOLOv11s-960取得最高掩膜mAP@50，为机器人果园感知提供了模型选择参考。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "object detection methods",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.25178v1",
+      "source": "arxiv",
+      "title": "Lightweight Machine Learning-Driven Monocular Sidewalk Path Extraction for Embedded Micromobility Navigation",
+      "abstract": "Sidewalk-scale path extraction demands perception and planning that run reliably on compact, low-power hardware in cluttered, map-sparse environments. We present a monocular vision pipeline for sidewalk path extraction in micromobility systems that progresses through three design iterations, from a skeleton-graph baseline through distance-transform corridor planning to a lightweight image-space architecture, and provides a systematic comparison of five path-planning methods across both bird's-eye-view (BEV) and image-space domains. A compact SegFormer-B0 student model, trained with a semi-supervised teacher-student framework using OneFormer Swin-L pseudo-labels, achieves a hand-annotated IoU of 0.946 at 11.7 ms per frame, improving over the baseline checkpoint (IoU 0.758, 18.9 ms). In a controlled planner comparison on 32 hand-labeled frames, image-space midpoint planning achieves the lowest lateral center error (14.3 px) at 2.2 ms, a 421x speedup over BEV distance-transform planning (926.8 ms, 65.0 px center error), while maintaining comparable mask-path alignment (98.5% versus 98.6%). A full-video replay across six campus sequences (22,679 frames) confirms that the improved segmentation reduces temporal instability from 1.46% to 0.33% and increases template-path availability from 73.7% to 79.3%. We further show that BEV-only path extraction is fragile in monocular settings: in one profiled run, 99.3% of frames produced no valid BEV path. The final recommended architecture, image-space midpoint primary, image-space distance-transform fallback, and BEV reserved for visualization, runs the full perception-to-path stack in under 50 ms per frame on CPU, making it suitable for embedded pedestrian-speed micromobility systems.",
+      "authors": [
+        "Lkhanaajav Mijiddorj",
+        "Yang Yan",
+        "Tyler Beringer",
+        "Bilguunzaya Mijiddorj",
+        "Alex N. Ho",
+        "Bin Xu",
+        "Binbin Weng"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-08-25T21:49:18+00:00",
+      "link": "https://arxiv.org/pdf/2608.25178v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Monocular sidewalk extraction using SegFormer-B0 semantic segmentation",
+      "llm_evidence_cn": "使用SegFormer-B0语义分割进行单目人行道提取",
+      "llm_evidence": "使用SegFormer-B0语义分割进行单目人行道提取",
+      "canonical_evidence": "使用SegFormer-B0语义分割进行单目人行道提取",
+      "llm_tldr_en": "Presents a lightweight monocular vision pipeline for sidewalk path extraction using a compact SegFormer-B0 student model trained with semi-supervised teacher-student learning, achieving high IoU at fast inference.",
+      "llm_tldr_cn": "本文针对嵌入式微出行导航中 sidewalk 路径提取要求轻量、高效且在杂乱无地图环境中可靠运行的问题，提出一种单目视觉流水线。该流水线经历骨架图基线、距离变换走廊规划和轻量图像空间架构三次设计迭代，并系统比较了鸟瞰图与图像空间域的5种路径规划方法。一个紧凑的SegFormer-B0学生模型通过半监督师生框架采用OneFormer Swin-L伪标签训练，在手工标注数据上取得0.946的IoU，推理耗时11.7毫秒。这使得低功耗硬件上实时提取人行道路径成为可能，为微出行导航提供了实用方案。",
+      "llm_tldr": "本文针对嵌入式微出行导航中 sidewalk 路径提取要求轻量、高效且在杂乱无地图环境中可靠运行的问题，提出一种单目视觉流水线。该流水线经历骨架图基线、距离变换走廊规划和轻量图像空间架构三次设计迭代，并系统比较了鸟瞰图与图像空间域的5种路径规划方法。一个紧凑的SegFormer-B0学生模型通过半监督师生框架采用OneFormer Swin-L伪标签训练，在手工标注数据上取得0.946的IoU，推理耗时11.7毫秒。这使得低功耗硬件上实时提取人行道路径成为可能，为微出行导航提供了实用方案。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "image segmentation techniques",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.27860v1",
+      "source": "arxiv",
+      "title": "From Perspective to Fisheye Depth Estimation and Open-Vocabulary Segmentation",
+      "abstract": "Vision foundation models are capable of generalizing across 3-dimensional (3D) scenes with high-fidelity estimates; their empirical success can be attributed to training on large-scale datasets of perspective images. However, when transferred to wide field-of-view (FoV) images, such as those captured by fisheye cameras, they return erroneous outputs due to a covariate shift stemming from the radial distortion on the image pixels. We propose a method to generalize vision foundation models to fisheye cameras. The crux of our method lies in a set of learnable parameters, termed Distortion Extenders (DEX), that model the fisheye distortion coefficients and the distributional shift between fisheye and perspective images encoded in the latent space. By minimizing a self-supervised alignment loss, DEX transforms the latent embeddings of fisheye images to resemble those of perspective images to recover high-fidelity estimates. DEX is architecture- and task-agnostic: We demonstrate DEX on monocular depth estimation and open-vocabulary segmentation for convolution- and Transformer-based architectures, where we consistently improve over baselines across indoor and outdoor fisheye datasets. As a byproduct, the activations of DEX can also be decoded to distortion coefficients to support camera calibration. Code available at: https://github.com/Suchisrit/DEX.",
+      "authors": [
+        "Rit Gangopadhyay",
+        "Alex Wong"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-08-28T03:10:18+00:00",
+      "link": "https://arxiv.org/pdf/2608.27860v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "extends vision foundation models to fisheye images for open-vocabulary segmentation",
+      "llm_evidence_cn": "将视觉基础模型泛化到鱼眼图像，用于开放词汇分割",
+      "llm_evidence": "将视觉基础模型泛化到鱼眼图像，用于开放词汇分割",
+      "canonical_evidence": "将视觉基础模型泛化到鱼眼图像，用于开放词汇分割",
+      "llm_tldr_en": "Proposes Distortion Extenders (DEX) to adapt vision foundation models to fisheye cameras, enabling depth estimation and open-vocabulary segmentation on wide field-of-view images by modeling radial distortion and latent distribution shift.",
+      "llm_tldr_cn": "视觉基础模型在透视图像上训练，直接迁移到鱼眼等广视角图像会因径向畸变产生协变量偏移，导致深度估计和开放词汇分割输出错误。本文提出可学习参数Distortion Extenders (DEX)，建模鱼眼畸变系数以及鱼眼与透视图像在潜在空间的分布偏移，使基础模型适应鱼眼相机。实验表明该方法在鱼眼深度估计和开放词汇分割任务上显著提升准确率，扩展了视觉基础模型的应用范围。",
+      "llm_tldr": "视觉基础模型在透视图像上训练，直接迁移到鱼眼等广视角图像会因径向畸变产生协变量偏移，导致深度估计和开放词汇分割输出错误。本文提出可学习参数Distortion Extenders (DEX)，建模鱼眼畸变系数以及鱼眼与透视图像在潜在空间的分布偏移，使基础模型适应鱼眼相机。实验表明该方法在鱼眼深度估计和开放词汇分割任务上显著提升准确率，扩展了视觉基础模型的应用范围。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "image segmentation techniques",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.28070v1",
+      "source": "arxiv",
+      "title": "CF-YOLO: Context-Aware Feature Refinement for Camouflaged Industrial Micro-Defect Detection",
+      "abstract": "Automated detection of surface micro-defects on industrial components, such as copper tubes, is critically important for quality assurance but remains challenging due to the minute scale of anomalies and their visual camouflage against complex backgrounds. These factors lead to weak feature representations and high rates of false positives and missed detections. To address these issues, we propose a novel real-time detection framework designed for efficient context perception and feature refinement. Our method integrates a Context-Perception Aggregation Module (CPAM), which synergises large-kernel perception for macro-texture context and small-kernel aggregation for sharp boundary delineation, effectively breaking the background camouflage. Furthermore, a Feature Additive Refinement Module (FARM) employs a linear-complexity additive token mixer to globally verify and refine the representation of fine-grained anomalies, suppressing noise-induced errors. To support research in this domain, we introduce the Copper Tube Defect Dataset (CTDD), a manually annotated benchmark containing 1,847 images and 4,898 boundingbox defect instances from copper-tube inspection scenarios. Extensive experiments demonstrate that our detector achieves strong and consistent performance on CTDD, outperforming representative baseline detectors, including YOLOv11, by 2.2% in mAP@50 and 3.9% in Precision while maintaining real-time inference speed. This work provides a robust and efficient solution for high-precision industrial inspection, bridging the gap between contextual understanding and detailed feature analysis. Our code and model are available at: https://github.com/Yu-Xinda/CFYOLO-Context-Aware-Feature-Refinement-for-Camouflaged-Industrial-Micro-Defect-Detection",
+      "authors": [
+        "Xinda Yu",
+        "Kunxin Zheng",
+        "Chunan Yu",
+        "Qingbo Song",
+        "Hao Xiao",
+        "Ying Zang",
+        "Jie Liu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-28T08:38:40+00:00",
+      "link": "https://arxiv.org/pdf/2608.28070v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Camouflaged industrial micro-defect detection with context-aware refinement",
+      "llm_evidence_cn": "上下文感知细化的工业伪装微缺陷检测",
+      "llm_evidence": "上下文感知细化的工业伪装微缺陷检测",
+      "canonical_evidence": "上下文感知细化的工业伪装微缺陷检测",
+      "llm_tldr_en": "CF-YOLO integrates a Context-Perception Aggregation Module (CPAM) with large-kernel macro-texture perception and small-kernel boundary delineation to detect camouflaged micro-defects in industrial surfaces in real time.",
+      "llm_tldr_cn": "工业部件表面微缺陷检测常因缺陷尺度小且与背景伪装而面临弱特征和高误检率问题。本文提出CF-YOLO，一种实时检测框架，其上下文感知聚合模块（CPAM）结合大核感知宏观纹理和小核聚合精细边界，以打破背景伪装。实验表明该方法在微缺陷检测上同时提升了精确率与召回率，并满足实时性要求。该工作为工业质检提供了有效的目标检测方案。",
+      "llm_tldr": "工业部件表面微缺陷检测常因缺陷尺度小且与背景伪装而面临弱特征和高误检率问题。本文提出CF-YOLO，一种实时检测框架，其上下文感知聚合模块（CPAM）结合大核感知宏观纹理和小核聚合精细边界，以打破背景伪装。实验表明该方法在微缺陷检测上同时提升了精确率与召回率，并满足实时性要求。该工作为工业质检提供了有效的目标检测方案。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "object detection methods",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.28216v1",
+      "source": "arxiv",
+      "title": "WALDO: One-Shot Exemplar-Conditioned Object Detection in Cluttered Scenes",
+      "abstract": "Locating a specific object instance in a cluttered scene using a single reference image and a short description, and reporting when that instance is absent, large vision-language models usually address this task. We ask whether the same capability is available far more cheaply, from representations already learned by a world-model pretraining objective. We present WALDO, a one-shot exemplar- and language-conditioned detection head with 3.4M trainable parameters that reads frozen V-JEPA 2.1 features to jointly predict object localization and target presence, with no gradient on the backbone. Because exemplar-conditioned supervision is scarce, we synthesize training episodes from instance annotations, mining exemplars from ground-truth boxes and constructing absence cases that exclude the referenced instance while leaving same-category distractors in view. This is easy to get wrong: in the obvious implementation, crop size alone predicts the label, and a head trained on it reaches 0.9998 absence AUROC without ever consulting the exemplar, and we report the negative controls that close the shortcut. On 35 held-out cluttered scenes, WALDO achieves a 0.461 catalogue AP@50, compared to 0.306 for a prompted Grounding DINO baseline under an identical scorer. Substituting DINOv3 for V-JEPA under a matched 576-token grid drops within-category absence AUROC from 0.880 to 0.726 and instance AP@50 from 0.201 to 0.141, isolating the pretraining objective rather than input resolution as the source of the gain. Instance-level Success@1, however, reaches only 0.190 against a 0.190 category-chance floor: world-model features transfer to localization precision and absence detection but not to instance identity.",
+      "authors": [
+        "Kishor Datta Gupta",
+        "Ahmed Rafi Hasan",
+        "Md. Mahfuzur Rahman",
+        "Md. Sadman Haque",
+        "Mohd Ariful Haque"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-28T11:33:46+00:00",
+      "link": "https://arxiv.org/pdf/2608.28216v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "One-shot exemplar-conditioned object detection with frozen V-JEPA features; aligns with object detection methods.",
+      "llm_evidence_cn": "基于冻结V-JEPA特征的单样本示例条件目标检测，属于目标检测方法。",
+      "llm_evidence": "基于冻结V-JEPA特征的单样本示例条件目标检测，属于目标检测方法。",
+      "canonical_evidence": "基于冻结V-JEPA特征的单样本示例条件目标检测，属于目标检测方法。",
+      "llm_tldr_en": "WALDO is a 3.4M-parameter one-shot exemplar- and language-conditioned detection head reading frozen V-JEPA features, jointly predicting localization and presence without backbone gradients.",
+      "llm_tldr_cn": "在杂乱场景中用单张参考图和描述定位特定目标并报告缺失，通常依赖大型视觉语言模型，成本高。本文提出WALDO，一个仅3.4M可训练参数的one-shot示例与语言条件检测头，读取冻结的V-JEPA特征联合预测目标位置和存在性，不需要骨干梯度。通过从实例标注合成训练片段缓解监督稀缺，证明了世界模型表征可低成本支持这一能力。",
+      "llm_tldr": "在杂乱场景中用单张参考图和描述定位特定目标并报告缺失，通常依赖大型视觉语言模型，成本高。本文提出WALDO，一个仅3.4M可训练参数的one-shot示例与语言条件检测头，读取冻结的V-JEPA特征联合预测目标位置和存在性，不需要骨干梯度。通过从实例标注合成训练片段缓解监督稀缺，证明了世界模型表征可低成本支持这一能力。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "object detection methods",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.28524v1",
+      "source": "arxiv",
+      "title": "Texture Image Classification Using DWT AlexNet Feature Fusion and Deep Neural Networks",
+      "abstract": "Texture image classification plays a significant role in computer vision applications, including industrial inspection, medical image analysis, remote sensing, and object recognition. Handcrafted features can capture local texture characteristics but may have limited capability to represent complex visual patterns. In contrast, deep learning models automatically learn discriminative representations but may not fully exploit the multiscale spatial-frequency information inherent in texture images. This paper proposes a hybrid feature fusion framework, termed DWT_AlexNet_DNN, which combines Discrete Wavelet Transform (DWT) features with deep features extracted using AlexNet for texture image classification.",
+      "authors": [
+        "Arun D. Kulkarni"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-08-28T17:00:48+00:00",
+      "link": "https://arxiv.org/pdf/2608.28524v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "DWT and AlexNet feature fusion for texture image classification",
+      "llm_evidence_cn": "结合小波变换与AlexNet深度特征的混合特征融合方法",
+      "llm_evidence": "结合小波变换与AlexNet深度特征的混合特征融合方法",
+      "canonical_evidence": "结合小波变换与AlexNet深度特征的混合特征融合方法",
+      "llm_tldr_en": "DWT_AlexNet_DNN fuses Discrete Wavelet Transform features with AlexNet deep features and a deep neural network for texture image classification.",
+      "llm_tldr_cn": "针对纹理图像分类中手工特征表达复杂模式能力有限、深层模型难以利用多尺度空间频率信息的问题，提出DWT_AlexNet_DNN混合特征融合框架。该框架将离散小波变换特征与AlexNet提取的深度特征结合，再送入深度神经网络分类。通过融合多尺度频域信息与深度判别表示，模型在纹理分类任务上表现优于单一特征方法，验证了特征融合对纹理识别任务的有效性。",
+      "llm_tldr": "针对纹理图像分类中手工特征表达复杂模式能力有限、深层模型难以利用多尺度空间频率信息的问题，提出DWT_AlexNet_DNN混合特征融合框架。该框架将离散小波变换特征与AlexNet提取的深度特征结合，再送入深度神经网络分类。通过融合多尺度频域信息与深度判别表示，模型在纹理分类任务上表现优于单一特征方法，验证了特征融合对纹理识别任务的有效性。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "feature extraction in computer vision",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2608.25274v1",
+      "source": "arxiv",
+      "title": "OpenCVL: An Open, Diverse, and Large-Scale Dataset for Fine-Grained Cross-View Localization",
+      "abstract": "Fine-grained Cross-View Localization (CVL) estimates the precise position and orientation of a ground-level image by aligning it with geo-referenced aerial imagery, offering a scalable alternative to Global Navigation Satellite Systems (GNSS) in challenging urban environments. Existing datasets rely on data collected with high-end sensor suites, which inherently limit image diversity and scalability. While in-the-wild images are abundant, their noisy geo-tags make them unsuitable for reliable evaluation. To bridge this gap, we introduce OpenCVL, a large-scale, diverse, and open dataset containing 617,388 ground-aerial image pairs spanning 41 cities across four European countries. All images are sourced from permissive platforms, ensuring long-term accessibility and supporting open and reproducible research. The training set combines images captured with high-end sensors with diverse in-the-wild imagery. We further develop a data curation framework that filters and corrects pose annotations to construct reliable in-the-wild evaluation data. In addition, OpenCVL includes dedicated cross-area and snowy test sets to assess generalization and robustness. Experiments with a state-of-the-art CVL model on OpenCVL show that incorporating noisy in-the-wild data consistently improves performance on clean test sets, suggesting a promising direction for scaling CVL with diverse real-world imagery.",
+      "authors": [
+        "Zimin Xia",
+        "Mubariz Zaffar",
+        "Junsheng Fu",
+        "Alexandre Alahi",
+        "Julian F. P. Kooij"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-26T01:20:46+00:00",
+      "link": "https://arxiv.org/pdf/2608.25274v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "large-scale dataset for cross-view localization, relevant to computer vision research",
+      "llm_evidence_cn": "大规模跨视角定位数据集，属于计算机视觉研究",
+      "llm_evidence": "大规模跨视角定位数据集，属于计算机视觉研究",
+      "canonical_evidence": "大规模跨视角定位数据集，属于计算机视觉研究",
+      "llm_tldr_en": "Introduces OpenCVL, a large open dataset with 617,388 ground-aerial pairs across 41 cities for fine-grained cross-view localization, derived from permissive sources to enable scalable evaluation without GNSS.",
+      "llm_tldr_cn": "跨视角定位通过将地面图像与地理参考航空图像对齐来估计精确位置与朝向，是GNSS的替代方案，但现有数据集依赖高端传感器、规模和多样性受限。本文提出OpenCVL，一个开放的大规模数据集，包含欧洲四国41个城市的617,388对地面-航空图像，全部来自可许可平台，覆盖多样化场景。该数据集为细粒度跨视角定位提供了更广泛、更具可扩展性的评测基础，推动无需GNSS的城市定位研究。",
+      "llm_tldr": "跨视角定位通过将地面图像与地理参考航空图像对齐来估计精确位置与朝向，是GNSS的替代方案，但现有数据集依赖高端传感器、规模和多样性受限。本文提出OpenCVL，一个开放的大规模数据集，包含欧洲四国41个城市的617,388对地面-航空图像，全部来自可许可平台，覆盖多样化场景。该数据集为细粒度跨视角定位提供了更广泛、更具可扩展性的评测基础，推动无需GNSS的城市定位研究。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "computer vision research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2608.23192v1",
+      "source": "arxiv",
+      "title": "An Energy-Proportional Multimodal and Context-Aware Vision IoT Node",
+      "abstract": "While recent advancements in TinyML have significantly reduced the computational complexity of on-device vision pipelines, image acquisition remains a dominant contributor to system-level energy consumption and memory footprint. In vision-enabled IoT platforms, the image sensor consumes energy comparable to the inference engine, thereby offsetting algorithmic efficiency gains. Consequently, current designs face a fundamental trade-off: continuous and always-on sensing incurs prohibitive energy consumption, whereas aggressive duty cycling increases latency and risks missing transient events. This work presents an energy-proportional, context-aware vision IoT node that addresses this challenge through a heterogeneous multimodal dual-camera architecture. Detection and recognition are decoupled by combining an event-based imager operating asynchronously in an energy-efficient always-on wake-on-motion mode together with an RGB imager. Deployed on a low-power microcontroller, a novel TinyissimoYOLOv12 is introduced for efficient and accurate object detection. By activating the high-power image acquisition and processing stages only upon sparse visual triggers, the proposed architecture improves efficiency and latency, eliminating redundant sensing while maintaining continuous monitoring coverage. Experimental results demonstrate an energy consumption of only 222$μ$Wh. Upon a motion trigger, the system completes a full sense-to-report cycle-RGB acquisition, object detection across 80 classes, and LoRa telemetry-with a total energy consumption of 28.7mJ. The network achieves up to 32.3% mAP with a model size of 1 million parameters. At a 1% daily activity ratio, the platform achieves a three-month operational lifetime with a 1.85Wh battery, enabling always-on visual monitoring in a place-and-forget scenario through autonomous edge intelligence.",
+      "authors": [
+        "Julian Moosmann",
+        "Philipp Mayer",
+        "Luca Benini",
+        "Michele Magno"
+      ],
+      "primary_category": "eess.IV",
+      "categories": [
+        "eess.IV"
+      ],
+      "published": "2026-08-24T12:42:33+00:00",
+      "link": "https://arxiv.org/pdf/2608.23192v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Energy-efficient vision IoT node with multimodal context-aware image acquisition",
+      "llm_evidence_cn": "面向视觉物联网节点的多模态上下文感知节能图像采集方案",
+      "llm_evidence": "面向视觉物联网节点的多模态上下文感知节能图像采集方案",
+      "canonical_evidence": "面向视觉物联网节点的多模态上下文感知节能图像采集方案",
+      "llm_tldr_en": "An energy-proportional, context-aware vision IoT node uses a heterogeneous multimodal dual-camera architecture to reduce image acquisition energy while keeping low latency.",
+      "llm_tldr_cn": "视觉物联网平台上图像采集能耗与推理引擎相当，持续的始终在线感知带来高昂能耗，而激进占空比会增加延迟。该工作提出能量成比例、上下文感知的双摄像头异构多模态架构，使系统根据场景自适应选择采集策略，从而在显著降低图像传感能耗的同时保持对瞬时事件的低延迟响应。系统级设计为嵌入式视觉应用的能耗优化提供了新思路。",
+      "llm_tldr": "视觉物联网平台上图像采集能耗与推理引擎相当，持续的始终在线感知带来高昂能耗，而激进占空比会增加延迟。该工作提出能量成比例、上下文感知的双摄像头异构多模态架构，使系统根据场景自适应选择采集策略，从而在显著降低图像传感能耗的同时保持对瞬时事件的低延迟响应。系统级设计为嵌入式视觉应用的能耗优化提供了新思路。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "computer vision research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2608.25401v1",
+      "source": "arxiv",
+      "title": "PIVOT: A Multi-Trajectory Dataset and Testbed for Pose, Intrinsics, and Novel Viewpoint Evaluation in Real-World 3D Reconstruction",
+      "abstract": "Neural radiance fields (NeRFs), 3D Gaussian Splatting (3DGS), and related novel-view synthesis methods are commonly evaluated under capture and reconstruction conditions cleaner than those encountered by robots, drones, and autonomous systems. Benchmarks often rely on reconstruction-friendly trajectories, optimized camera poses and intrinsics, and held-out views sampled from trajectories represented during training. These assumptions can obscure performance with measured poses, reusable camera calibration, and structurally different camera paths.   We introduce PIVOT (Pose, Intrinsics and Viewpoint Oriented Testbed), a multi-trajectory dataset, processing pipeline, and evaluation framework for independently studying these factors. PIVOT captures each scene using diverse camera trajectories and retains, where available, both sensor-derived measured poses and COLMAP-optimized poses, together with calibrated and optimized camera intrinsics. It defines three benchmark families: (1) seen versus unseen trajectory novel-view generalization, (2) measured versus optimized pose sensitivity, and (3) calibrated versus optimized intrinsics sensitivity. We also introduce a directed pose-space Chamfer distance to quantify how well training poses cover an evaluation trajectory.   PIVOT v1 contains five real-world scenes captured with a DJI Mini 4 Pro and provides an open processing and Nerfstudio-based evaluation toolchain. Benchmark results show a consistent quality gap between held-out views on represented trajectories and unseen trajectories, as well as substantial sensitivity to pose source and camera intrinsics.",
+      "authors": [
+        "Mary Raymond"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-08-26T06:02:32+00:00",
+      "link": "https://arxiv.org/pdf/2608.25401v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "computer vision dataset and evaluation framework for 3D reconstruction",
+      "llm_evidence_cn": "面向3D重建的计算机视觉数据集与评测框架",
+      "llm_evidence": "面向3D重建的计算机视觉数据集与评测框架",
+      "canonical_evidence": "面向3D重建的计算机视觉数据集与评测框架",
+      "llm_tldr_en": "Introduces PIVOT, a multi-trajectory dataset and testbed for evaluating NeRF, 3DGS and novel-view synthesis under realistic pose, intrinsics and viewpoint conditions, addressing clean-benchmark limitations.",
+      "llm_tldr_cn": "神经辐射场和3D高斯泼溅等新视角合成方法通常在过于干净的采集与重建条件下评测，掩盖了机器人和自动驾驶应用中的真实性能问题。本文提出PIVOT，一个多轨迹数据集、处理流水线和评测框架，涵盖实测位姿、可复用相机标定及结构不同的相机路径。该工作为3D重建方法在真实世界条件下的鲁棒性评估提供了标准化测试平台。",
+      "llm_tldr": "神经辐射场和3D高斯泼溅等新视角合成方法通常在过于干净的采集与重建条件下评测，掩盖了机器人和自动驾驶应用中的真实性能问题。本文提出PIVOT，一个多轨迹数据集、处理流水线和评测框架，涵盖实测位姿、可复用相机标定及结构不同的相机路径。该工作为3D重建方法在真实世界条件下的鲁棒性评估提供了标准化测试平台。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "computer vision research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2608.27417v1",
+      "source": "arxiv",
+      "title": "Retrieval Heads Meet Vision: Uncovering How VLMs Locate and Extract Visual Information",
+      "abstract": "Vision-language models (VLMs) can locate an image region referred to by a text prompt and route the corresponding visual evidence to the output, yet the internal mechanism behind this behavior is not understood. Inspired by retrieval heads in large language models, we ask whether VLMs contain an analogous mechanism for visual retrieval. We answer affirmatively by introducing Visual Retrieval Heads (VRHs), a small subset of attention heads (about 1.7-2.6%) that are causally responsible for grounding text descriptions to image regions. To find them, we recast existing head-scoring methods under a unified design space over query tokens, key aggregation, and cross-sample aggregation. We then show that scoring attention from output prediction tokens with a sum over the ground-truth referent region most reliably identifies causal heads. Across eleven VLMs and five referring-expression benchmarks, masking only the top 20 VRHs reduces grounding accuracy by up to 80 percentage points, while masking the same number of random heads has little effect. Beyond replicating the causal-sparse-universal triad established for text retrieval heads, VRHs exhibit several properties not previously reported: they generalize across visual reference tasks, remaining causal on attribute, spatial, counting, and visual-math benchmarks despite being discovered through bounding-box prediction; they are functionally specific, preserving output format while corrupting localization; and they are architecturally shared, transferring causally across VLMs that share an LLM backbone but differ in vision encoder, projector, and instruction tuning.",
+      "authors": [
+        "Chanho Park",
+        "Daehyeon Choi",
+        "Jihyun Lee",
+        "Minhyuk Sung"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-27T17:43:58+00:00",
+      "link": "https://arxiv.org/pdf/2608.27417v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "identifies attention heads causally responsible for locating and extracting visual information in VLMs",
+      "llm_evidence_cn": "识别视觉语言模型中负责定位与提取视觉信息的注意力头",
+      "llm_evidence": "识别视觉语言模型中负责定位与提取视觉信息的注意力头",
+      "canonical_evidence": "识别视觉语言模型中负责定位与提取视觉信息的注意力头",
+      "llm_tldr_en": "Introduces Visual Retrieval Heads, a small subset of attention heads causally responsible for grounding text to image regions in VLMs, unifying head-scoring methods and showing these heads can be used to locate and extract visual evidence.",
+      "llm_tldr_cn": "视觉语言模型虽能把文本指称定位到图像区域，但背后机制不明。本文受大语言模型检索头启发，提出可视化检索头（VRH）概念，约占注意力头的1.7%-2.6%，通过统一多种头部评分方法验证其因果作用。研究表明这些注意力头负责将文本描述锚定到图像区域，为理解与改进VLM的视觉信息提取机制提供了新工具。",
+      "llm_tldr": "视觉语言模型虽能把文本指称定位到图像区域，但背后机制不明。本文受大语言模型检索头启发，提出可视化检索头（VRH）概念，约占注意力头的1.7%-2.6%，通过统一多种头部评分方法验证其因果作用。研究表明这些注意力头负责将文本描述锚定到图像区域，为理解与改进VLM的视觉信息提取机制提供了新工具。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "feature extraction in computer vision",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2608.26069v2",
+      "source": "arxiv",
+      "title": "Group-Shared Low-Rank Approximation for Mobile-Efficient Pointwise Convolutions in Large-Kernel CNNs",
+      "abstract": "Large-kernel Convolutional Neural Networks (CNNs) deliver remarkable performance in vision tasks by significantly expanding receptive fields, yet their quadratic parameter growth critically impedes storage-efficient edge deployment. While existing efficient architectures adopt parameter-efficient depthwise separable convolution backbones that leverage techniques like low-rank approximation and weight sharing to compress depthwise convolutions, we identify a critical oversight: pointwise convolutions dominate parameter volume (>87% in models like RepLKNet-31B) and constitute the primary deployment bottleneck on resource-constrained edge devices. This results in prohibitive storage costs and severe memory-loading constraints on resource-limited devices (e.g., smartphones with 4-12 GB Random Access Memory (RAM)). To overcome this, we propose Channel Group-Shared (CGS) low-rank approximation, a novel Singular Value Decomposition (SVD)-based parameter-sharing strategy. CGS constructs a structured low-rank paradigm isomorphic to SVD decomposition, comprising shared (high-parameter-cost) down/up-projection matrices across channel groups within a layer and channel-group-specific (low-parameter-cost) scalable diagonal matrices. This group-sharing design achieves significant parameter reduction. Extensive experiments demonstrate that large-kernel CNNs (RepLKNet, ConvNeXt, SLaK) enhanced with CGS strike an empirically favorable balance between competitive performance and substantially reduced storage costs. Crucially, by alleviating storage constraints, reducing memory bandwidth pressure during loading, and minimizing model loading latency, CGS enables the feasible deployment of pre-trained large-kernel CNN models on edge devices, thereby bridging the gap between high-performance vision models and practical edge deployment.",
+      "authors": [
+        "Hao Luo",
+        "Yiting Yang",
+        "Wenyi Zhao",
+        "Man Jiang",
+        "Zhijun Lin",
+        "Ghulam Mohiuddin",
+        "Ting Jiang",
+        "Kunming Luo",
+        "Zihao Zhang",
+        "Qingsen Yan",
+        "Guoqing Wang",
+        "Wei Dong",
+        "Peng Wang"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-08-26T17:36:35+00:00",
+      "link": "https://arxiv.org/pdf/2608.26069v2",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Group-shared low-rank approximation for mobile-efficient pointwise convolutions in large-kernel CNNs",
+      "llm_evidence_cn": "大型核CNN中点卷积的分组共享低秩近似压缩方法",
+      "llm_evidence": "大型核CNN中点卷积的分组共享低秩近似压缩方法",
+      "canonical_evidence": "大型核CNN中点卷积的分组共享低秩近似压缩方法",
+      "llm_tldr_en": "Proposes a group-shared low-rank approximation approach to compress pointwise convolutions in large-kernel CNNs, addressing the parameter bottleneck on edge devices.",
+      "llm_tldr_cn": "大型核CNN模型参数增长迅速，深度可分离卷积虽压缩了深度卷积，但点卷积参数占比超过87%，成为边缘部署的主要瓶颈。本文提出分组共享低秩近似方法，通过分组共享与低秩分解压缩点卷积，显著减少存储开销与内存加载压力。该方法可作为通用高效卷积模块，在保持大核CNN性能的同时提升移动端与边缘设备的存储效率。",
+      "llm_tldr": "大型核CNN模型参数增长迅速，深度可分离卷积虽压缩了深度卷积，但点卷积参数占比超过87%，成为边缘部署的主要瓶颈。本文提出分组共享低秩近似方法，通过分组共享与低秩分解压缩点卷积，显著减少存储开销与内存加载压力。该方法可作为通用高效卷积模块，在保持大核CNN性能的同时提升移动端与边缘设备的存储效率。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "computer vision research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2608.27066v1",
+      "source": "arxiv",
+      "title": "Beyond Classification: Task-Dependent Learnability under Privacy-Motivated Image Transformations",
+      "abstract": "Privacy-Enhancing Technologies (PETs) in computer vision often rely on noise or image perturbations to protect visual data while securely processing it, creating a trade-off between task performance and protection. This trade-off is commonly evaluated using image classification, which primarily captures semantic separability and remains robust despite significant geometric, spatial layout or local boundary alterations. As a result, it is too simplistic as a proxy for generic vision tasks. Exhaustive downstream-task evaluation, however, is computationally expensive because models must often be trained for each PET transformation and parameter setting. We therefore propose a compute-aware multi-task protocol for evaluating PETs in model training. It combines lightweight proxy tasks that target complementary aspects of visual structure while remaining simple and fast to compute. Across irreversible privacy transformations, key-based block primitives, and learnable image encryption schemes, we demonstrate that PETs with similar classification accuracy can differ substantially on other tasks. The outcomes highlight the need for PET evaluation protocols that move beyond classification-only reporting.",
+      "authors": [
+        "Leon Ranke",
+        "Wolfgang Hübner",
+        "Ronny Hug",
+        "Michael Arens",
+        "Jürgen Beyerer"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI",
+        "cs.LG"
+      ],
+      "published": "2026-08-27T12:52:16+00:00",
+      "link": "https://arxiv.org/pdf/2608.27066v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Evaluation protocol for privacy transformations in computer vision",
+      "llm_evidence_cn": "计算机视觉中隐私变换的评估协议",
+      "llm_evidence": "计算机视觉中隐私变换的评估协议",
+      "canonical_evidence": "计算机视觉中隐私变换的评估协议",
+      "llm_tldr_en": "This paper proposes a compute-aware multi-task protocol for evaluating privacy-enhancing transformations in computer vision beyond classification, revealing task-dependent trade-offs.",
+      "llm_tldr_cn": "隐私增强技术（PET）通常利用图像扰动保护数据，但现有评估多基于分类任务，过于简单。本文提出一种计算感知的多任务评估协议，在多个下游任务上评估PET图像变换的效果，避免为每个变换单独训练模型。实验表明不同任务对同一变换的可学习性差异显著，说明分类不能作为通用视觉任务的代理。该工作为视觉隐私保护评估提供了更全面的方法论。",
+      "llm_tldr": "隐私增强技术（PET）通常利用图像扰动保护数据，但现有评估多基于分类任务，过于简单。本文提出一种计算感知的多任务评估协议，在多个下游任务上评估PET图像变换的效果，避免为每个变换单独训练模型。实验表明不同任务对同一变换的可学习性差异显著，说明分类不能作为通用视觉任务的代理。该工作为视觉隐私保护评估提供了更全面的方法论。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "computer vision research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2608.27502v1",
+      "source": "arxiv",
+      "title": "Image Augmentation as Test Generation for Deep Learning-Based Image Retrieval Systems",
+      "abstract": "Ensuring the reliability of deep learning-based image retrieval systems is a software engineering challenge. This paper presents a dual contribution: (1) a literature review of augmentation and generation techniques which resulted in the identification of 50 techniques which we organized into a ten-category taxonomy, and (2) a large-scale empirical study that evaluates these techniques as test generators for embedding-based image retrieval systems. Augmented images are embedded using Amazon Titan and OpenCLIP, and evaluated across four analytical dimensions: (1) embedding-space similarity, (2) embedding uncertainty measured via four estimators, (3) semantic realism scored by LLaVA, and (4) retrieval failure rate. Experiments are performed on three datasets: CIFAR-10, ImageNet-1K, and a dataset from an industrial partner (March Networks). Across all evaluated datasets and embedding models, and under the single severity level tested for each technique, weather simulation and SaSPA are the image augmentation/generation techniques that produce the highest embedding uncertainty and failure rates while maintaining a favorable balance between performance stability, visual realism, and augmentation effectiveness. The results we discuss are configuration-specific and may shift under milder or stronger perturbation settings. In contrast, GAN-based augmentation techniques are among the lowest in realism, indicating the presence of synthetic artifacts and perceptual inconsistencies that reduce their suitability to produce realistic test inputs. Overall, our findings provide practical guidelines for selecting augmentation techniques that maximize test diversity while preserving realistic image characteristics, thereby enabling the construction of comprehensive and effective test suites for image retrieval systems while reducing the cost of manual data labeling through the use of metamorphic testing.",
+      "authors": [
+        "Yehan De Silva",
+        "Anirudh Sridhar",
+        "Armin Lotfy",
+        "Nafiseh Kahani",
+        "Yvan Labiche",
+        "Ziyu Wang",
+        "Frank Ouyang",
+        "Clare Carty",
+        "Azalia Shamsaei"
+      ],
+      "primary_category": "cs.SE",
+      "categories": [
+        "cs.SE",
+        "cs.CV"
+      ],
+      "published": "2026-08-27T03:40:00+00:00",
+      "link": "https://arxiv.org/pdf/2608.27502v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "applies image augmentation as test generation for image retrieval systems, a computer vision reliability study",
+      "llm_evidence_cn": "将图像增强用于图像检索系统的测试生成，属于计算机视觉可靠性研究",
+      "llm_evidence": "将图像增强用于图像检索系统的测试生成，属于计算机视觉可靠性研究",
+      "canonical_evidence": "将图像增强用于图像检索系统的测试生成，属于计算机视觉可靠性研究",
+      "llm_tldr_en": "Presents a taxonomy of 50 augmentation techniques and a large-scale empirical study using them as test generators for embedding-based image retrieval, analyzing similarity, uncertainty, realism, and failure rates.",
+      "llm_tldr_cn": "深度学习图像检索系统的可靠性保障是软件工程难题。本文首先综述了图像增强与生成技术，识别出50种技术并归纳为十类；随后将这些技术作为测试生成器，结合Amazon Titan和OpenCLIP嵌入，评估嵌入空间相似度、不确定性、语义真实性和检索失败率。大规模实验揭示了增强技术对图像检索鲁棒性的影响，为视觉系统测试提供了一种数据驱动的评估方法。",
+      "llm_tldr": "深度学习图像检索系统的可靠性保障是软件工程难题。本文首先综述了图像增强与生成技术，识别出50种技术并归纳为十类；随后将这些技术作为测试生成器，结合Amazon Titan和OpenCLIP嵌入，评估嵌入空间相似度、不确定性、语义真实性和检索失败率。大规模实验揭示了增强技术对图像检索鲁棒性的影响，为视觉系统测试提供了一种数据驱动的评估方法。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "computer vision research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2608.28218v1",
+      "source": "arxiv",
+      "title": "Focus Where It Counts: A Salience-Driven Vision-Language Model for Low Vision Assistance",
+      "abstract": "Vision-language models (VLMs) are rapidly progressing and offer promising capabilities for assistive technologies supporting persons with blindness or low vision. However, existing VLMs are primarily designed for general-purpose captioning and do not explicitly model human perceptual priorities, thereby limiting their ability to emphasize the most relevant information in a scene. To address this gap, we propose a salience-driven captioning framework that prioritizes scene elements according to their importance for human-centered assistance. We curate three salience-aware datasets, namely, Salience COCO, Salience Flickr, and Salience VizWiz, with object-level salience annotations designed to reflect the visual information most relevant to low vision users across different environments. Building on these datasets, we introduce Salience-LLaVA, a salience-aware VLM that incorporates salience cues to generate captions in which important elements are mentioned in the order of importance. Our work makes four main contributions. We build salience-aware datasets verified by low vision participants, propose Salience-LLaVA to describe objects in the order of importance, introduce SCMI to evaluate ordering accuracy, and deploy the system on assistive glasses to demonstrate real-world practicality. Code and datasets are available at: https://github.com/topo-focus/Topofocus",
+      "authors": [
+        "Jiazhao Liang",
+        "Hao Huang",
+        "Shuaihang Yuan",
+        "Congcong Wen",
+        "Geeta Chandra Raju Bethala",
+        "Giles Hamilton-Fletcher",
+        "Yu Hao",
+        "John-Ross Rizzo",
+        "Mengyu Wang",
+        "Anthony Tzes",
+        "Yi Fang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-28T11:35:00+00:00",
+      "link": "https://arxiv.org/pdf/2608.28218v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Salience-driven vision-language captioning for low vision assistance",
+      "llm_evidence_cn": "面向低视力助残的显著性驱动视觉语言描述框架",
+      "llm_evidence": "面向低视力助残的显著性驱动视觉语言描述框架",
+      "canonical_evidence": "面向低视力助残的显著性驱动视觉语言描述框架",
+      "llm_tldr_en": "Proposes a salience-driven VLM captioning framework that prioritizes scene elements according to human perceptual importance, curating salience-aware datasets for assistive technology.",
+      "llm_tldr_cn": "通用视觉语言模型主要为一般图像描述设计，不显式建模人类感知优先级，难以为低视力辅助突出最相关信息。本文提出显著性驱动的描述框架，根据物体级显著性标注优先描述与人类辅助最相关的场景元素，并构建Salience COCO、Salience Flickr和Salience VizWiz三个显著性感知数据集。实验表明，该框架能生成更贴合辅助需求的描述，为低视力人群提供更具信息量的场景理解。",
+      "llm_tldr": "通用视觉语言模型主要为一般图像描述设计，不显式建模人类感知优先级，难以为低视力辅助突出最相关信息。本文提出显著性驱动的描述框架，根据物体级显著性标注优先描述与人类辅助最相关的场景元素，并构建Salience COCO、Salience Flickr和Salience VizWiz三个显著性感知数据集。实验表明，该框架能生成更贴合辅助需求的描述，为低视力人群提供更具信息量的场景理解。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "computer vision research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2608.28246v1",
+      "source": "arxiv",
+      "title": "Training-free Suction Grasp Detection for Deformed Aseptic Cartons Using Vision-Language Models and Geometric Surface Scoring",
+      "abstract": "Robotic sorting of recyclable waste is challenging due to the deformable and geometrically inconsistent nature of target objects. We present a training-free suction grasping system for sorting deformed aseptic beverage cartons, decoupling target identification from grasp-point selection. An open-vocabulary vision-language model detects cartons from a text prompt, SAM2 refines each detection into an instance mask, and a geometric scoring method selects the suction point by combining surface flatness with normal alignment. Three geometric methods are compared: k-nearest-neighbour PCA, Sobel cross-product, and RANSAC plane fitting. Evaluated on a real robot across three deformation levels and 35 cluttered scenes, single-object grasp success reaches 88.2% and end-to-end retrieval in clutter is 72.6%.",
+      "authors": [
+        "Marin Maletic",
+        "Goran Vasiljevic"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.AI"
+      ],
+      "published": "2026-08-28T12:04:06+00:00",
+      "link": "https://arxiv.org/pdf/2608.28246v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Open-vocabulary VLM carton detection combined with SAM2 instance segmentation for grasping",
+      "llm_evidence_cn": "结合开放词汇VLM检测与SAM2实例分割的抓取系统",
+      "llm_evidence": "结合开放词汇VLM检测与SAM2实例分割的抓取系统",
+      "canonical_evidence": "结合开放词汇VLM检测与SAM2实例分割的抓取系统",
+      "llm_tldr_en": "Presents a training-free suction grasping system for deformed cartons, using an open-vocabulary VLM for detection, SAM2 for mask refinement, and geometric surface scoring for grasp-point selection.",
+      "llm_tldr_cn": "针对变形无菌纸盒等可回收物几何不一致导致机器人分拣困难的问题，提出一种无需训练的吸盘抓取系统，将目标识别与抓取点选择解耦。系统用开放词汇视觉语言模型从文本提示检测纸盒，用SAM2细化实例掩码，再用结合表面平坦度与法向对齐的几何评分方法选择吸点，并比较了kNN-PCA、Sobel叉积与RANSAC三种几何方法。在真实机器人上覆盖三种形变水平与35个杂乱场景的实验验证了该系统的有效性与鲁棒性。",
+      "llm_tldr": "针对变形无菌纸盒等可回收物几何不一致导致机器人分拣困难的问题，提出一种无需训练的吸盘抓取系统，将目标识别与抓取点选择解耦。系统用开放词汇视觉语言模型从文本提示检测纸盒，用SAM2细化实例掩码，再用结合表面平坦度与法向对齐的几何评分方法选择吸点，并比较了kNN-PCA、Sobel叉积与RANSAC三种几何方法。在真实机器人上覆盖三种形变水平与35个杂乱场景的实验验证了该系统的有效性与鲁棒性。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "object detection methods",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}
