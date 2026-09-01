@@ -41,17 +41,17 @@
 <section class="dpr-home-dashboard-card dpr-home-report-card">
   <div class="dpr-home-dashboard-header">
     <div>
-      <span class="dpr-home-dashboard-kicker">2026-08-31</span>
+      <span class="dpr-home-dashboard-kicker">2026-09-01</span>
       <h3 class="dpr-home-dashboard-title">今日汇总</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">共 15 篇</strong>
+    <strong class="dpr-home-dashboard-count">共 22 篇</strong>
   </div>
   <dl class="dpr-home-dashboard-stats">
     <div class="dpr-home-dashboard-stat"><dt>累计更新</dt><dd>1 次</dd></div>
-    <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>6</dd></div>
+    <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>13</dd></div>
     <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>9</dd></div>
   </dl>
-  <p class="dpr-home-dashboard-body">最近更新：2026-08-31 23:59:02 UTC<br>状态：成功</p>
+  <p class="dpr-home-dashboard-body">最近更新：2026-09-01 22:49:21 UTC<br>状态：成功</p>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-brief-card">
   <div class="dpr-home-dashboard-header">
@@ -62,7 +62,7 @@
     <strong class="dpr-home-dashboard-count">AI</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<p>今日精读6篇、速读9篇，重点聚焦YOLO系列在复杂果园小目标检测与嵌入式 sidewalk 提取的轻量化方案。最值得关注的是跨代YOLO优化（YOLOv26/11/8）在小目标分割上的9分表现，以及单目嵌入式路径提取的实用价值。建议普通读者后续可关注OpenCVL等新数据集，并留意低秩近似在移动端卷积中的加速潜力。</p>
+<p>今日共读22篇论文，精读13篇、速读9篇，聚焦高分辨率检测与通用感知前沿。最值得关注的是两篇满分精读：可变粒度分词用于高分辨率目标检测，以及无背景类无关检测学习，均突破传统架构限制。建议优先研读这两篇核心方法，再以速读中的异常检测与6D姿态估计作为扩展视角。</p>
   </div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-deep-card">
@@ -71,12 +71,12 @@
       <span class="dpr-home-dashboard-kicker">今日累计</span>
       <h3 class="dpr-home-dashboard-title">精读推荐</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">6 篇</strong>
+    <strong class="dpr-home-dashboard-count">13 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Cross-Generation Optimization of YOLOv26, YOLOv11, and YOLOv8 for Fine-Grained Small-Object Detection and Instance Segmentation in Complex Orchards">Cross-Generation Optimization of YOLOv26, YOLOv11, and YOLOv8 for Fine-Grained Small-Object Detection and Instance Segmentation in Complex Orchards</span></li><li><span class="dpr-home-dashboard-paper-title" title="Lightweight Machine Learning-Driven Monocular Sidewalk Path Extraction for Embedded Micromobility Navigation">Lightweight Machine Learning-Driven Monocular Sidewalk Path Extraction for Embedded Micromobility Navigation</span></li><li><span class="dpr-home-dashboard-paper-title" title="From Perspective to Fisheye Depth Estimation and Open-Vocabulary Segmentation">From Perspective to Fisheye Depth Estimation and Open-Vocabulary Segmentation</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Variable-Granularity Tokenization for High-Resolution Object Detection">Variable-Granularity Tokenization for High-Resolution Object Detection</span></li><li><span class="dpr-home-dashboard-paper-title" title="Background-Free Objectness Learning for Class-Agnostic Detection">Background-Free Objectness Learning for Class-Agnostic Detection</span></li><li><span class="dpr-home-dashboard-paper-title" title="NBS: No Bias Stereo">NBS: No Bias Stereo</span></li></ul>
   </div>
-  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">cv <strong>6</strong></span></div>
+  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">cv <strong>13</strong></span></div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-skim-card">
   <div class="dpr-home-dashboard-header">
@@ -87,7 +87,7 @@
     <strong class="dpr-home-dashboard-count">9 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="OpenCVL: An Open, Diverse, and Large-Scale Dataset for Fine-Grained Cross-View Localization">OpenCVL: An Open, Diverse, and Large-Scale Dataset for Fine-Grained Cross-View Localization</span></li><li><span class="dpr-home-dashboard-paper-title" title="PIVOT: A Multi-Trajectory Dataset and Testbed for Pose, Intrinsics, and Novel Viewpoint Evaluation in Real-World 3D Reconstruction">PIVOT: A Multi-Trajectory Dataset and Testbed for Pose, Intrinsics, and Novel Viewpoint Evaluation in Real-World 3D Reconstruction</span></li><li><span class="dpr-home-dashboard-paper-title" title="Group-Shared Low-Rank Approximation for Mobile-Efficient Pointwise Convolutions in Large-Kernel CNNs">Group-Shared Low-Rank Approximation for Mobile-Efficient Pointwise Convolutions in Large-Kernel CNNs</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="NFAD: Nuisance-Filtered Anomaly Detection Under Distribution Shift">NFAD: Nuisance-Filtered Anomaly Detection Under Distribution Shift</span></li><li><span class="dpr-home-dashboard-paper-title" title="Foundational feature fusion for conditional flow matching in 6D pose estimation">Foundational feature fusion for conditional flow matching in 6D pose estimation</span></li><li><span class="dpr-home-dashboard-paper-title" title="Seeing Through Extreme Visual Sparsity: Surface Understanding from a Single Random Visual Patch">Seeing Through Extreme Visual Sparsity: Surface Understanding from a Single Random Visual Patch</span></li></ul>
   </div>
   <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">cv <strong>9</strong></span></div>
 </section>

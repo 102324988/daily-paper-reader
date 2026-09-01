@@ -1,0 +1,361 @@
+{
+  "date": "20260901",
+  "date_label": "",
+  "generated_at": "2026-09-01 22:49:21 UTC",
+  "recommend_exists": true,
+  "run_count": 1,
+  "papers": [
+    {
+      "paper_id": "2608.28706v1",
+      "route": "202609/01/2608.28706v1-variable-granularity-tokenization-for-high-resolution-object-detection",
+      "title": "Variable-Granularity Tokenization for High-Resolution Object Detection",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 10.0,
+      "evidence": "面向高分辨率目标检测的免训练自适应令牌化方法",
+      "first_seen_at": "2026-09-01 22:49:21 UTC",
+      "updated_at": "2026-09-01 22:49:21 UTC"
+    },
+    {
+      "paper_id": "2608.29232v1",
+      "route": "202609/01/2608.29232v1-background-free-objectness-learning-for-class-agnostic-detection",
+      "title": "Background-Free Objectness Learning for Class-Agnostic Detection",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 10.0,
+      "evidence": "面向类无关检测的稠密目标检测框架，解决背景监督偏置问题",
+      "first_seen_at": "2026-09-01 22:49:21 UTC",
+      "updated_at": "2026-09-01 22:49:21 UTC"
+    },
+    {
+      "paper_id": "2608.28933v1",
+      "route": "202609/01/2608.28933v1-nbs-no-bias-stereo",
+      "title": "NBS: No Bias Stereo",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "使用纯视觉Transformer并消除归纳偏置的立体视觉重建核心论文",
+      "first_seen_at": "2026-09-01 22:49:21 UTC",
+      "updated_at": "2026-09-01 22:49:21 UTC"
+    },
+    {
+      "paper_id": "2608.29126v1",
+      "route": "202609/01/2608.29126v1-efficient-language-to-vision-feature-injection-for-referring-single-object-tracking",
+      "title": "Efficient Language-to-Vision Feature Injection for Referring Single-Object Tracking",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "指代单目标跟踪，高效特征注入",
+      "first_seen_at": "2026-09-01 22:49:21 UTC",
+      "updated_at": "2026-09-01 22:49:21 UTC"
+    },
+    {
+      "paper_id": "2608.29196v1",
+      "route": "202609/01/2608.29196v1-bayesian-optimized-superpixel-grabcut-for-traceable-optic-disc-segmentation",
+      "title": "Bayesian-Optimized Superpixel-GrabCut for Traceable Optic Disc Segmentation",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "视盘分割，超像素与GrabCut",
+      "first_seen_at": "2026-09-01 22:49:21 UTC",
+      "updated_at": "2026-09-01 22:49:21 UTC"
+    },
+    {
+      "paper_id": "2608.29759v1",
+      "route": "202609/01/2608.29759v1-syncrash-a-multi-stage-pipeline-for-zero-shot-accident-detection-and-localization-in-traffic-surveillance-video",
+      "title": "SynCrash: A Multi-Stage Pipeline for Zero-Shot Accident Detection and Localization in Traffic Surveillance Video",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "使用YOLO目标检测与物理约束头进行空间定位",
+      "first_seen_at": "2026-09-01 22:49:21 UTC",
+      "updated_at": "2026-09-01 22:49:21 UTC"
+    },
+    {
+      "paper_id": "2608.29923v1",
+      "route": "202609/01/2608.29923v1-towards-continual-test-time-adaptation-of-vision-language-models-in-open-vocabulary-semantic-segmentation",
+      "title": "Towards Continual Test-Time Adaptation of Vision-Language Models in Open-Vocabulary Semantic Segmentation",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "直接面向开放词汇语义分割任务",
+      "first_seen_at": "2026-09-01 22:49:21 UTC",
+      "updated_at": "2026-09-01 22:49:21 UTC"
+    },
+    {
+      "paper_id": "2608.29929v1",
+      "route": "202609/01/2608.29929v1-evaluating-2d-and-3d-aware-vision-foundation-models-for-vehicle-attribute-recognition",
+      "title": "Evaluating 2D and 3D-Aware Vision Foundation Models for Vehicle Attribute Recognition",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "基准测试车辆属性识别中的视觉识别算法",
+      "first_seen_at": "2026-09-01 22:49:21 UTC",
+      "updated_at": "2026-09-01 22:49:21 UTC"
+    },
+    {
+      "paper_id": "2608.30129v1",
+      "route": "202609/01/2608.30129v1-efficient-and-high-quality-depth-estimation-via-pixel-space-diffusion-with-linear-attention",
+      "title": "Efficient and High-Quality Depth Estimation via Pixel-Space Diffusion with Linear Attention",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "单目深度估计的高效扩散方法，属于核心计算机视觉主题",
+      "first_seen_at": "2026-09-01 22:49:21 UTC",
+      "updated_at": "2026-09-01 22:49:21 UTC"
+    },
+    {
+      "paper_id": "2608.30183v1",
+      "route": "202609/01/2608.30183v1-conca-concentration-aware-channel-attention-for-fine-grained-visual-recognition",
+      "title": "ConCA: Concentration-Aware Channel Attention for Fine-Grained Visual Recognition",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "直接面向细粒度视觉识别提出注意力方法",
+      "first_seen_at": "2026-09-01 22:49:21 UTC",
+      "updated_at": "2026-09-01 22:49:21 UTC"
+    },
+    {
+      "paper_id": "2608.30355v1",
+      "route": "202609/01/2608.30355v1-seeing-the-unseen-camouflaged-object-detection-beyond-the-visible-spectrum",
+      "title": "Seeing the Unseen: Camouflaged Object Detection Beyond the Visible Spectrum",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "直接面向伪装目标检测任务",
+      "first_seen_at": "2026-09-01 22:49:21 UTC",
+      "updated_at": "2026-09-01 22:49:21 UTC"
+    },
+    {
+      "paper_id": "2608.30400v1",
+      "route": "202609/01/2608.30400v1-real-time-scene-adaptive-tone-mapping-for-high-dynamic-range-object-detection",
+      "title": "Real-Time Scene-Adaptive Tone Mapping for High-Dynamic Range Object Detection",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "直接面向高动态范围目标检测的色调映射方法",
+      "first_seen_at": "2026-09-01 22:49:21 UTC",
+      "updated_at": "2026-09-01 22:49:21 UTC"
+    },
+    {
+      "paper_id": "2608.30603v1",
+      "route": "202609/01/2608.30603v1-diffsac-diffusion-guided-sampling-for-consensus-based-robust-estimation",
+      "title": "DiffSAC: Diffusion-guided Sampling for Consensus-based Robust Estimation",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "解决计算机视觉核心的鲁棒估计问题",
+      "first_seen_at": "2026-09-01 22:49:21 UTC",
+      "updated_at": "2026-09-01 22:49:21 UTC"
+    },
+    {
+      "paper_id": "2608.29112v1",
+      "route": "202609/01/2608.29112v1-nfad-nuisance-filtered-anomaly-detection-under-distribution-shift",
+      "title": "NFAD: Nuisance-Filtered Anomaly Detection Under Distribution Shift",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "面向工业检测的分布偏移下异常检测，属应用计算机视觉",
+      "first_seen_at": "2026-09-01 22:49:21 UTC",
+      "updated_at": "2026-09-01 22:49:21 UTC"
+    },
+    {
+      "paper_id": "2608.29183v1",
+      "route": "202609/01/2608.29183v1-foundational-feature-fusion-for-conditional-flow-matching-in-6d-pose-estimation",
+      "title": "Foundational feature fusion for conditional flow matching in 6D pose estimation",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "基础模型特征融合用于姿态估计",
+      "first_seen_at": "2026-09-01 22:49:21 UTC",
+      "updated_at": "2026-09-01 22:49:21 UTC"
+    },
+    {
+      "paper_id": "2608.29475v1",
+      "route": "202609/01/2608.29475v1-seeing-through-extreme-visual-sparsity-surface-understanding-from-a-single-random-visual-patch",
+      "title": "Seeing Through Extreme Visual Sparsity: Surface Understanding from a Single Random Visual Patch",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "面向稀疏视觉输入下的表面材质识别",
+      "first_seen_at": "2026-09-01 22:49:21 UTC",
+      "updated_at": "2026-09-01 22:49:21 UTC"
+    },
+    {
+      "paper_id": "2608.29626v1",
+      "route": "202609/01/2608.29626v1-splg-mamba-structure-preserving-local-global-mamba-network-for-salient-object-detection-in-optical-remote-sensing-images",
+      "title": "SPLG-Mamba: Structure-Preserving Local-Global Mamba Network for Salient Object Detection in Optical Remote Sensing Images",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "显著目标检测中的密集预测与图像分割技术相关。",
+      "first_seen_at": "2026-09-01 22:49:21 UTC",
+      "updated_at": "2026-09-01 22:49:21 UTC"
+    },
+    {
+      "paper_id": "2608.30279v1",
+      "route": "202609/01/2608.30279v1-motion-saliency-complementary-masked-modeling-for-point-cloud-video-understanding",
+      "title": "Motion-Saliency Complementary Masked Modeling for Point Cloud Video Understanding",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "点云视频自监督表示学习，面向3D动态场景理解",
+      "first_seen_at": "2026-09-01 22:49:21 UTC",
+      "updated_at": "2026-09-01 22:49:21 UTC"
+    },
+    {
+      "paper_id": "2608.31052v1",
+      "route": "202609/01/2608.31052v1-segmentation-of-bovid-dentition-under-imperfect-annotations-a-comparative-study-of-convolutional-and-attention-models",
+      "title": "Segmentation of Bovid Dentition Under Imperfect Annotations: A Comparative Study of Convolutional and Attention Models",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "分割架构的比较研究",
+      "first_seen_at": "2026-09-01 22:49:21 UTC",
+      "updated_at": "2026-09-01 22:49:21 UTC"
+    },
+    {
+      "paper_id": "2608.31074v1",
+      "route": "202609/01/2608.31074v1-real-time-video-anomaly-detection-using-yolo-pose-estimation-and-clip-based-semantic-scoring",
+      "title": "Real-Time Video Anomaly Detection Using YOLO Pose Estimation and CLIP-Based Semantic Scoring",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "使用YOLO姿态估计进行人员检测与关键点提取的视频异常检测",
+      "first_seen_at": "2026-09-01 22:49:21 UTC",
+      "updated_at": "2026-09-01 22:49:21 UTC"
+    },
+    {
+      "paper_id": "2608.28698v1",
+      "route": "202609/01/2608.28698v1-state-conditioned-visual-evidence-retrieval-for-fine-grained-perception-in-document-vision-language-models",
+      "title": "State-Conditioned Visual Evidence Retrieval for Fine-Grained Perception in Document Vision-Language Models",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "面向文档VLM的细粒度视觉证据检索",
+      "first_seen_at": "2026-09-01 22:49:21 UTC",
+      "updated_at": "2026-09-01 22:49:21 UTC"
+    },
+    {
+      "paper_id": "2608.29237v1",
+      "route": "202609/01/2608.29237v1-agricam-a-track-mounted-crop-pollination-monitoring-robot",
+      "title": "AGRICAM: A Track-Mounted Crop Pollination Monitoring Robot",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "面向传粉者行为监测的计算机视觉与深度学习机器人系统",
+      "first_seen_at": "2026-09-01 22:49:21 UTC",
+      "updated_at": "2026-09-01 22:49:21 UTC"
+    }
+  ]
+}

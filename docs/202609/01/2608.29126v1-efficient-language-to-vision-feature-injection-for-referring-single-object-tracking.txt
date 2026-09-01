@@ -1,0 +1,537 @@
+Title: Efficient Language-to-Vision Feature Injection for Referring Single-Object Tracking
+
+URL Source: https://arxiv.org/pdf/2608.29126v1
+
+Published Time: Tue, 01 Sep 2026 00:34:25 GMT
+
+Number of Pages: 16
+
+Markdown Content:
+# Efficient Language-to-Vision Feature Injection for Referring Single-Object Tracking 
+
+Han Wang 1,2 , Yuxuan Liu 1,2 , Yuhan Sun 1,2 , Jian Yang 1,2 , Xiaotong Xu 1,2 ,Yixuan Lv 1, Zhuang Zhou 1, Shengyang Li 1,2 *1Technology and Engineering Center for Space Utilization, Chinese Academy of Sciences, 
+
+> 2
+
+University of Chinese Academy of Sciences 
+
+Abstract 
+
+Referring single-object tracking enables language-grounded target initialization and subsequent tracking by jointly leveraging semantic cues and visual templates. The core difficulty is to use language differently across stages: it is indispensable for grounding but can induce semantic drift during tracking when overemphasized. Meanwhile, current methods often require costly vision-language alignment training. We present LVTrack, a pure transformer framework that introduces a mode-conditioned Gated Feature Injector to adaptively regulate textual guidance and alleviate semantic drift. Together with targeted adaptations, it directly harnesses a frozen vision-language pretrained model, greatly reducing training cost and preserving strong language understanding. To further improve temporal localization, LVTrack integrates hybrid relative-absolute positional encodings with a lightweight memory mechanism and optimizes autoregressive box prediction using a Gaussian-smoothed KL loss. Extensive exper-iments on standard benchmarks demonstrate that LVTrack achieves strong performance. 
+
+1 Introduction 
+
+Recent single-object tracking (SOT) methods have increasingly explored natural-language (NL) refer-ring expressions as a flexible interface for target specification (Zhou et al., 2023; Ma et al., 2024; Li et al., 2025). Compared with conventional SOT (Li et al., 2018; Cui et al., 2022), referring SOT (RSOT) enables more intuitive human interaction and improves robustness in challenging scenarios by leveraging semantic cues beyond visual tem-plate. RSOT is commonly decoupled into two sub-tasks: (i) visual grounding and (ii) visual track-ing. Recent works have sought to strengthen the 
+
+> *
+
+Corresponding author Language Backbone   
+
+> Visual
+> Backbone
+> Language
+> Template
+> Search Region
+> Language
+> Template
+> Language Backbone
+> Visual Backbone
+> Visual Backbone
+> Injector
+> Share
+> (a) Previous methods
+> Multimodal Interaction Heads
+> Encoder Decoder
+> (b) Ours
+> Search Region
+
+Figure 1: Architectural comparison between LVTrack and prior frameworks. LVTrack performs discrete-token autoregressive box prediction and relies on a fully frozen VLP backbone, injecting textual cues into visual fea-tures via a lightweight injector. Leveraging the pre-trained backbone obviates costly vision–language align-ment training, substantially reducing training cost. 
+
+coupling between grounding and tracking through end-to-end multimodal reasoning, typically initial-izing the language backbone with BERT (Devlin et al., 2019) alongside a dedicated visual feature extractor. By jointly modeling and aligning visual and textual representations during training, a sin-gle model can localize the object from either a language description or an image template. How-ever, robust vision–language alignment generally hinges on large-scale image–text contrastive data and long-horizon pretraining (Cherti et al., 2023), whereas existing approaches are trained primarily on tracking and grounding datasets whose scale is insufficient to support learning alignment at a general-purpose level. Large-scale vision–language pretraining (VLP) models (e.g., CLIP (Radford et al., 2021), SigLIP (Zhai et al., 2023)) acquire strong cross-modal alignment and generalizable priors via im-age–sentence contrastive learning. However, their alignment lacks explicit instance-level binding and spatial selection within an image, and thus can-not directly support object-level discrimination and arXiv:2608.29126v1 [cs.CV] 29 Aug 2026 localization under referring expressions. Conse-quently, directly feeding visual and language back-bone features into a learnable multimodal inter-action encoder typically still requires end-to-end optimization of the backbone or a high-capacity fu-sion module (Zhong et al., 2022; Li et al., 2022a), incurring substantial training cost and exacerbat-ing overfitting on limited tracking data. To address this, we freeze the VLP backbone and introduce a lightweight feature injector that performs con-ditional fusion via cross-attention (Fig. 1), selec-tively aggregating language evidence at each spatial position based on similarity to produce language-conditioned visual representations and strengthen target cues. This design achieves instance-level alignment with few trainable parameters, reducing training cost without sacrificing the generalization benefits of VLP. Another major challenge lies in balancing lin-guistic guidance and visual references. The ini-tial language description specifies the target, but may not provide reliable cues for subsequent frame-by-frame tracking. Thus, over-reliance on lin-guistic priors can induce semantic drift toward se-mantically similar distractors (Shao et al., 2024), whereas excessive suppression of language cues forfeits their complementary robustness benefits. To address this issue, we introduce a Gated Fea-ture Injector. The injector employs amplitude-calibrated, mode-conditioned gating, enforcing conservative textual injection for tracking while allowing stronger language-vision coupling for grounding. A magnitude-aware regularizer adap-tively calibrates the gating parameters by constrain-ing the relative gating-response norm across modes. This asymmetric fusion suppresses ambiguity-induced linguistic interference without degrading grounding capability, improving temporal stability. Although discretizing coordinates into categor-ical tokens enables autoregressive visual localiza-tion (Chen et al., 2023b; Jiang et al., 2026), stan-dard cross-entropy is suboptimal because it ignores the spatial topology among bins and penalizes near and distant errors equally. To address this, we in-troduce a Gaussian-Smoothed KL loss (GS-KL), which replaces one-hot labels with distance-aware Gaussian soft targets. By injecting spatial priors into token classification, GS-KL reduces quantiza-tion ambiguity and equips autoregressive prediction with regression-like distance sensitivity, enabling more robust and fine-grained localization. To improve geometric reasoning and localization accuracy, we adopt a seq2seq-style (Chen et al., 2022) encoder-decoder architecture with hybrid positional modeling, combining learnable 2D ab-solute embeddings with 2D RoPE-based relative geometry inside attention (Su et al., 2024). We further introduce a lightweight memory module that carries object-specific appearance cues across frames by extracting fixed-length tokens from the previous target region as temporal priors for next-frame localization. Motivated by these observations, we present a unified RSOT framework. Compared with prior methods, it requires substantially lower training cost while delivering strong performance across visual grounding, NL-initialized SOT, and NL+BBOX-initialized SOT. Our main contribu-tions are as follows: • We propose LVTrack, a new RSOT framework built on a frozen vision–language pretrained model, which significantly reduces training cost and improves generalization. • We introduce an amplitude-regularized, dual-mode Gated Feature Injector that calibrates textual injection to suppress semantic drift while preserving grounding capability. • An ordinal-aware GS-KL loss is introduced for autoregressive coordinate-token predic-tion, with hybrid positional encoding and ap-pearance memory to enhance tracking. • Extensive experiments on vision-language tracking and visual grounding benchmarks demonstrate the competitiveness of LVTrack. 
+
+2 Related Work 
+
+2.1 Language-assisted SOT 
+
+In language-assisted tracking, the object is typically specified in the first frame by a BBOX together with an accompanying language description. In this setting, language is often treated as an auxiliary cue that complements the visual template, extending conventional BBOX-only tracking to a multimodal formulation to improve object understanding and discriminability. SNLT (Feng et al., 2021) intro-duces language guidance into a Siamese tracking framework. VLT (Guo et al., 2022) learns adaptive vision-language representations via a ModaMixer module and an asymmetric search strategy. DU-Track (Li et al., 2025) leverages large language models to generate dynamic descriptions and fur-ther incorporates a dynamic update mechanism. Se-Patch Embedding 
+
+> MGFI
+> MGFI
+> 𝑥  𝑦  𝑤  ℎstart
+> LN
+> MSA
+> Patch Embedding
+
+… …
+
+> Transformer Block
+> Transformer Block
+
+… …
+
+> Transformer Block
+> Transformer Block
+
+… …   
+
+> Transformer Block
+> Transformer Block
+> … …
+> MLP Adapter  MLP Adapter
+> …
+> 0 1 𝑛 𝑡
+> …
+> 𝑥  𝑦  𝑤  ℎ end
+> RoI Align
+> …
+> Q
+> K
+> V
+> Cross Attention
+> Memory Gate
+> MLP
+> 0 1 … 𝑛 𝑠
+> Transformer Encoder
+> …0 1 𝑛 𝑠
+> Share Cross Attention
+> LN
+> MLP
+> LN
+> MSA
+> LN
+> MLP
+> Attention Gate
+> MLP
+> MLP Gate
+> Attention Gate
+> MLP
+> MLP Gate
+> Language Transformer Block
+> Visual Transformer Block
+> QKV
+> MGFI Memory Fusion
+
+… …            
+
+> 𝐹 𝑡−1 𝑠 𝐹 𝑡 𝑠 𝑅 𝑡−1
+> Tracking
+> Grounding
+> Template
+> Padding
+> Search image
+> ℒratio
+> “Trunk of the bird on the
+> top right”
+> Text Embedding
+> …
+> Natural Language
+> Grounding Tracking
+> Mode-prompt Token: 𝐸 mode Memory Token: ℳAbsolute Positional Embedding: 𝒫 abs LN: Layer Normalization MSA: Multi-Head Self-Attention
+> Transformer Decoder
+
+Figure 2: Framework of proposed LVTrack. LVTrack is an end-to-end vision-language tracker that leverages a frozen VLP backbone and MGFI to enable multimodal reasoning. A position-enhanced encoder models template and search tokens, while a masked decoder autoregressively predicts discretized tokens for the object box’s relative coordinates. (Residual connections in MGFI are omitted for clarity.) 
+
+qTrackv2 (Chen et al., 2023a) and SUTrack (Chen et al., 2025) concatenate NL and visual features and feed them into a unified encoder to enable cross-modal interaction, while also supporting ad-ditional modalities. Overall, incorporating NL cues generally improves performance by enhancing the model’s semantic awareness of the object. 
+
+2.2 Language-initialized SOT 
+
+Language-initialized SOT was first formulated and empirically validated in 2017 (Li et al., 2017). Early approaches typically adopted a two-stage pipeline, where visual grounding is performed to obtain an initial target localization, followed by conventional tracking in subsequent frames (Yang et al., 2020). TNL2K (Wang et al., 2021b) not only introduced a new benchmark, but also proposed an adaptive switching framework that alternates between language-driven global search and vision-based local matching. JointNLT (Zhou et al., 2023) took a step toward unification by presenting a joint framework with end-to-end modeling and train-ing. QueryNLT (Shao et al., 2024) further exploits historical visual evidence to suppress language de-scriptions that become misaligned over time, pro-ducing more precise cues for tracking. UVLTrack (Ma et al., 2024) improves performance through enhanced multimodal alignment and a modality-adaptive bounding-box head. MambaVLT (Liu et al., 2025) explores a Mamba-based VL tracker, leveraging state-space dynamics for spatiotempo-ral evolution. Despite recent progress, current ap-proaches still underexploit the generalization poten-tial of VLP models, often requiring costly training to establish effective vision-language alignment. 
+
+3 Method 
+
+3.1 Overall Framework 
+
+As illustrated in Fig. 2, LVTrack comprises three core components: (i) a multimodal backbone equipped with a feature injector, (ii) a spatiotem-porally enhanced transformer encoder, and (iii) an autoregressive localization decoder. Given a tem-plate image It, a search image Is, and a referring expression L, LVTrack aims to predict a normal-ized bounding box B ∈ [0 , 1] 4 for each search frame. We first extract textual, template and search features using a VLP model: 
+
+F L = ϕl(L), F t = ϕv (It), F s = ϕv (Is), (1) 
+
+where ϕl and ϕv denote the language and visual backbones. We adopt Perception Encoder (PE) (Bolya et al., 2026) as the frozen backbone, a CLIP-style model with stronger performance. Because intermediate ViT layers preserve richer spatial cues (Raghu et al., 2021), we use only the first 10 of the 12 layers, which yields better performance (see App. C for details on the ViT layer selection). LVTrack supports three operational modes: template-only tracking S, grounding G, and joint tracking T . These modes correspond to template-based tracking, language-based visual grounding, and joint language-template tracking, respectively. The textual feature is injected into the search fea-ture F s via the Mode-Conditioned Gated Feature Injector (MGFI). Next, the template features and the text-injected search features are each passed through a Multilayer Perceptron (MLP) adapter to obtain ˜F t ∈ RNt×D and ˜F s ∈ RNs×D, where Nt
+
+and Ns are the template and search token counts, and D is the feature dimension. Then, ˜F t and ˜F s
+
+are fed into an 8-layer transformer encoder for fea-ture interaction, and a 4-layer transformer decoder autoregressively predicts the normalized object co-ordinates from the search tokens. 
+
+3.2 Mode-Conditioned Gated Feature Injector 
+
+Unlike prior approaches that perform multimodal interaction by concatenating visual and language tokens in a joint encoder, our method injects textual cues into visual representations via cross-attention modules inserted into selected ViT layers, condi-tioned on the task mode m ∈ {G , T } . By freezing the VLP backbone and training only lightweight injectors, this design yields instance-grounded vi-sual features while preserving pretrained general-ization. However, indiscriminate injection of tex-tual cues F L into the visual stream risks semantic drift, where the tracker becomes susceptible to se-mantically similar distractors. To reconcile the tension between the visual dominance required for tracking and the linguistic dependence of ground-ing, we introduce the MGFI. 
+
+Gated injection mechanism. The architecture of MGFI is illustrated on the right side of Fig. 2. Let f sn denote the intermediate feature of the search image Is at visual layer n, and let τ (n) be the mapping function that retrieves the corresponding textual layer index (since the visual and language backbones have different depths, τ aligns layers by their relative depth). MGFI aggregates linguistic se-mantics from f Lτ (n) via Multi-Head Cross-Attention (MHCA) and injects them into the visual stream through a learnable channel-wise gate λ. We equiv-alently rewrite the update as a learnable perturba-tion applied to the frozen visual backbone:                                 
+
+> ˆfsn=fsn+λm
+> attn ⊙MHCA n
+> 
+> fsn, f Lτ(n), f Lτ(n)
+> 
+> ,(2)
+> ∆mn=
+> ˆfsn−fsn
+> 
+> +λm
+> mlp ⊙MLP n( ˆfsn),(3)
+> ˜fsn=fsn+ ∆ mn,(4)
+
+where ⊙ denotes the channel-wise Hadamard prod-uct, λ(·) = tanh( γ(·)) controls the injection am-plitude, ˜f sn denotes the language-enhanced visual feature at layer n, and we initialize γ = 0 ∈ RD.This perturbation view makes the drift mecha-nism explicit: language injection modifies the vi-sual feature consumed by the downstream predic-tor. The gate norms therefore control the maximum language-induced perturbation in tracking, mitigat-ing drift toward semantically similar distractors. We provide the detailed bound in App. D. 
+
+Dual-mode conditioning and regularization. 
+
+A key challenge in unified RSOT is to calibrate textual conditioning under task-dependent reliance on language. For grounding, the expression serves as the primary localization cue. For tracking, it provides complementary semantic guidance, but predictions must remain anchored to instance-level visual evidence from the template and temporal context. MGFI addresses this challenge through a shared-yet-decoupled fusion design: the MHCA module is reused across modes to promote a con-sistent cross-modal fusion geometry and improve efficiency, while mode-specific gates γm and MLP branches control the strength and form of textual injection. This design preserves strong language-vision coupling for grounding and applies cali-brated, conservative injection for tracking. Since residual magnitudes vary across layers and samples, a relative gate constraint is more stable than an absolute threshold. We introduce an Ampli-tude Ratio Loss Lratio :        
+
+> Lratio = max
+> 
+> 0,log ∥λT
+> attn ∥ − log ∥λG
+> attn ∥ − log ρ
+> 
+> ,(5)
+
+where ρ ∈ (0 , 1) is a decay factor, and a small constant ϵ = 10 −8 is added inside each logarithm in implementation to prevent log 0 at initialization. This enforces ∥λT
+
+> attn
+
+∥ ≤ ρ ∥λG
+
+> attn
+
+∥, formalizing a vision-anchored tracking regime in which lan-guage acts as a calibrated semantic cue rather than a dominant signal. This yields a principled fusion mechanism that resists semantic drift in tracking while preserving language-sensitive grounding. 
+
+3.3 Spatiotemporal Tracking Modeling Memory fusion. The transformer encoder inte-grates cross-frame appearance consistency with geometric alignment. Given the MGFI-enhanced search feature ˜F s, temporal priors are first injected via a dynamic appearance memory M built by RoI Align over the predicted box on historical fea-ture maps, yielding memory tokens M ∈ RK×D.Memory fusion is implemented by cross-attention: ˆF sm = λmem ⊙ MHCA   ˜F s, M, M, (6)       
+
+> ˜Fsm = ˜Fs+ MLP( ˆFsm ),(7)
+
+where λmem = tanh( γmem ) is a learnable channel-wise gate, initialized with γmem = 0 at start. In addition, M is updated at inference only when the prediction confidence exceeds a threshold τmem to avoid noisy accumulation. 
+
+Encoder-decoder architecture. The encoder input is defined as       
+
+> Sin = [ Emode (m),˜Ft,˜Fsm ],(8)
+
+where Emode ∈ R3×D parameterizes three learn-able mode prompts. To preserve spatial coherence between template and search tokens, we introduce a shared hybrid positional scheme that combines a learnable 2D absolute coordinate anchor with 2D Axial RoPE. The shared absolute embedding aligns template and search features under a com-mon coordinate system, while 2D RoPE injects relative geometric bias and remains robust to mis-matched token-grid scales. Finally, a SeqTrack-style autoregressive decoder (Chen et al., 2023b), also equipped with RoPE, predicts discretized co-ordinate tokens from the encoded search features. This design couples mode-aware feature interac-tion with geometry-consistent localization; further positional modeling details are provided in App. E. 
+
+3.4 Training Objectives Unified training. To jointly optimize tracking and grounding within a single model, training fol-lows a unified hybrid sampling scheme, drawing mini-batches from the three data sources (tracking, joint tracking and grounding) with probabilities 
+
+[0 .45 , 0.40 , 0.15] . Task decoupling is achieved by dynamic input masking under the same architecture. For grounding samples, the template tokens in the input sequence Sin are explicitly masked, prevent-ing appearance-based cues and forcing language-only localization from scratch. A substantial frac-tion of template-only tracking data is included dur-ing training, which empirically mitigates language-dominated drift and strengthens the model’s ability to track based on the visual template. 
+
+Gaussian-smoothed KL loss. Autoregressive localization discretizes continuous coordinates into categorical tokens, but standard cross-entropy ig-nores the ordinal structure of coordinate bins and penalizes near-miss and far-off predictions equally Predicted Distribution  
+
+> Cross Entropy Target
+> GS-KL Target
+> Zero tolerance
+> BIN index
+> Distance awareness
+> Prediction for 𝑥
+
+Figure 3: Comparison between cross-entropy and the proposed GS-KL loss for discretized coordinate predic-tion. GS-KL replaces the one-hot target with a Gaussian-smoothed soft target, assigning higher probability mass to bins closer to the ground truth and making token clas-sification distance-aware. 
+
+(Li et al., 2020). We therefore propose a Gaussian-smoothed KL (GS-KL) loss, which replaces the one-hot target with a distance-aware soft distribu-tion over neighboring bins (Fig. 3). For each coor-dinate head i ∈ { 1, 2, 3, 4} with ground-truth bin 
+
+yi, the target distribution is defined as:      
+
+> Ti(k) = exp
+> 
+> −(k−yi)2
+> 2σ2
+> P
+> jexp
+> 
+> −(j−yi)2
+> 2σ2
+> .(9)
+
+where σ controls the smoothing radius. Given the predicted distribution Pi, the localization loss is:      
+
+> Lloc =
+> 4X
+> i=1
+> DKL (Ti∥Pi).(10)
+
+By assigning larger supervision weights to bins closer to the ground truth, GS-KL injects spatial ordinality into token classification, alleviates quan-tization ambiguity, and provides regression-like localization sensitivity. The overall objective is:      
+
+> L=Lloc +λratio Lratio .(11)
+
+4 Experiments 
+
+4.1 Implementation Details Network configuration. We adopt PE-Base (Bolya et al., 2026) as the backbone and keep all its parameters frozen. For the MGFI, modules are inserted into the visual layers {5, 6, 7, 8, 9, 10 },each injecting language features from layers 
+
+{14 , 16 , 18 , 20 , 22 , 24 }, respectively. The default input resolutions for the search and template im-ages are 256 × 256 and 128 × 128 , while the high-resolution variant uses 384 × 384 and 192 × 192 ,respectively. Both the tracking encoder and de-coder use an embedding dimension of D = 256 ,Table 1: Comparison of our method with state-of-the-art approaches on TNL2k, LaSOT and OTB99 datasets. The best and second-best results are highlighted in bold and underlined respectively.                                                                                                                                                                                                           
+
+> Tracker Initialize TNL2K LaSOT OTB99 AUC Prec NPrec AUC Prec NPrec AUC Prec NPrec TNL2K-II (Wang et al., 2021b) NL+BBOX 41.7 42.0 50.0 51.0 55.0 -68.0 88.0 -JointNLT (Zhou et al., 2023) NL+BBOX 56.9 58.1 73.6 60.4 63.6 69.4 65.3 85.6 79.5 QueryNLT (Shao et al., 2024) NL+BBOX 57.8 58.7 75.6 59.9 63.5 69.6 66.7 88.2 82.4 UVLTrack-B (Ma et al., 2024) NL+BBOX 63.1 66.7 -69.4 75.9 -69.3 89.9 -DUTrack-256 (Li et al., 2025) NL+BBOX 64.9 70.6 82.9 73.0 81.1 83.8 70.9 93.9 -DUTrack-384 (Li et al., 2025) NL+BBOX 65.6 71.9 83.2 74.1 82.9 84.9 71.3 95.7 -MambaVLT (Liu et al., 2025) NL+BBOX 66.5 69.9 90.9 66.6 71.0 77.3 72.2 94.4 88.1 SAVLT-B (Zhao et al., 2025) NL+BBOX 66.4 71.4 84.3 73.0 80.5 85.9 70.4 92.2 -
+> LVTrack-256 NL+BBOX 64.7 68.8 84.9 69.6 76.0 81.3 71.7 94.8 88.7
+> LVTrack-384 NL+BBOX 66.5 70.7 86.8 72.7 78.5 82.9 72.4 95.3 88.9
+> TNL2K-I (Wang et al., 2021b) NL 11.4 6.4 11.0 51.1 49.3 -19.0 24.0 -CTRNLT (Li et al., 2022c) NL 14.0 9.0 -52.0 51.0 -53.0 72.0 -JointNLT (Zhou et al., 2023) NL 54.6 55.0 70.6 56.9 59.3 64.5 59.2 77.6 -QueryNLT (Shao et al., 2024) NL 53.3 53.0 70.4 54.2 55.0 62.5 61.2 81.0 73.9 UVLTrack-B (Ma et al., 2024) NL 55.7 57.2 -57.2 61.0 -60.1 79.1 -MambaVLT (Liu et al., 2025) NL 58.4 58.9 80.9 55.8 57.2 63.7 58.9 79.2 72.0 SAVLT-B (Zhao et al., 2025) NL 57.1 59.8 73.1 62.8 67.9 73.6 61.7 81.2 -
+> LVTrack-256 NL 57.6 58.1 76.7 58.7 61.9 68.3 63.3 82.9 75.9
+> LVTrack-384 NL 58.7 59.9 79.4 61.3 64.5 71.2 63.6 83.0 76.3
+
+with 8 and 4 layers, respectively. We use 64 mem-ory tokens, and set the decoder discretization to 
+
+BINS = 4000 .
+
+Training details. We train on the training splits of OTB99 (Li et al., 2017), LaSOT (Fan et al., 2019), TNL2K (Wang et al., 2021b), Ref-COCOg (Mao et al., 2016), and GOT-10k (Huang et al., 2019), and evaluate on the official valida-tion/test splits of the first four datasets. Training is performed with AdamW (Loshchilov and Hut-ter, 2019) using a learning rate of 2 × 10 −4 and a batch size of 192 , following a cosine-annealing schedule with 20 warmup epochs for a total of 80 
+
+epochs. Hyperparameters are set to σ = 4 for GS-KL, ρ = 0 .6 for MGFI decay factor, λratio = 0 .01 
+
+for the amplitude ratio loss, and τmem = 0 .03 for memory update. More discussion on hyperparame-ters is provided in App. B. 
+
+Evaluation metrics. Following standard proto-cols, we report AUC, Precision (Prec), and Nor-malized Precision (NPrec) for tracking, measuring overlap quality and center-based localization accu-racy. For grounding, we report Top-1 accuracy on RefCOCOg val set at an IoU threshold of 0.5. 
+
+4.2 Efficiency Analysis 
+
+Training efficiency is a core advantage of our ar-chitecture. By leveraging a frozen VLP model, we avoid the additional vision–language alignment fine-tuning stage commonly required in prior work, 
+
+Table 2: Comparison of training budget and efficiency.              
+
+> Metric JointNLT UVLTrack SAVLT Ours
+> Trainable parameters 153M 169M 129M 100M
+> Training epochs 300 300 300 80
+> Samples per epoch 60K 30K 60K 30K
+
+and keep a large fraction of parameters fixed. Tab. 2 summarizes the resulting savings. LVTrack opti-mizes only 100M parameters and reaches its best performance within 80 epochs, whereas strong baselines such as SAVLT and UVLTrack are typi-cally trained for up to 300 epochs. Combined with a lighter schedule of 30K samples per epoch, this substantially reduces the total number of optimiza-tion steps and overall compute. In our setup (8 NVIDIA RTX 4090 GPUs, bfloat16), the LVTrack-256 model converges in approximately 2 hours. Meanwhile, LVTrack-256 runs at about 40 FPS for tracking (22 FPS for LVTrack-384), comparable to prior methods. 
+
+4.3 Comparison with State-of-the-art 
+
+LVTrack is compared with recent vision-language trackers under two initialization protocols (Tab. 1): NL (language-only initialization) and NL+BBOX (language plus a first-frame box). 
+
+NL-initialized performance. NL-only track-ing requires localizing the object in the first frame purely from the referring expression, thus di-rectly reflecting grounding quality and its coupling with temporal tracking. LVTrack-384 achieves the best AUC and Prec on TNL2K (58.7/59.9), the best results on OTB99 across all metrics (63.6/83.0/76.3), and the second-best results on LaSOT (61.3/64.5/71.2). Compared with strong NL trackers such as MambaVLT and SAVLT-B, LVTrack shows stronger overall performance across datasets, and its 256-resolution variant also remains highly competitive, ranking second on OTB99 (63.3/82.9/75.9) and achieving 57.6 AUC on TNL2K. Although SAVLT-B obtains the high-est LaSOT scores, LVTrack delivers more balanced performance across datasets. These results show that LVTrack effectively transfers pretrained knowl-edge to language-only initialization and maintains robust temporal localization in complex scenarios. 
+
+NL+BBOX-initialized performance. When a visual template is available, appearance cues dom-inate and language mainly serves as auxiliary se-mantics. LVTrack-384 remains competitive with specialized NL+BBOX trackers, obtaining the best AUC on TNL2K (66.5), the best AUC and NPrec on OTB99 (72.4/88.9), and the second-best OTB99 Prec (95.3), while LVTrack-256 also maintains strong performance. On LaSOT, DUTrack per-forms best under this protocol, benefiting from an NL+BBOX-specific design, but it does not support NL-only grounding-style initialization. In contrast, LVTrack achieves competitive NL+BBOX perfor-mance while retaining strong NL-initialized track-ing ability, showing that the proposed dual-mode gating can exploit the visual template without dis-carding useful language cues. Together with its much lower training cost, these results demonstrate the effectiveness and practicality of LVTrack across different initialization protocols. 
+
+Table 3: Visual grounding comparison on the Ref-COCOg validation set.       
+
+> Method VLTVG JointNLT QueryNLT UVLTrack Ours
+> Acc. 72.98 70.07 72.00 73.86 74.88
+
+Visual grounding performance. To further as-sess pure language understanding and object local-ization, we compare on the RefCOCOg validation set. Visual grounding requires localizing the re-ferred object in a single image solely from text, serving as the basis of NL-initialized tracking and a key indicator of multimodal alignment quality. As shown in Tab. 3, LVTrack-256 achieves 74.88% accuracy, surpassing all competitors. Notably, this 
+
+Table 4: Ablation study on LaSOT (AUC), OTB99 (AUC), and RefCOCOg (Accuracy). Tracking is evalu-ated under the NL-initialized setting.                      
+
+> Model LaSOT OTB99 RefCOCOg LVTrack 58.7 63.3 74.88
+> w/o GS-KL Loss 56.4 59.6 70.92 w/o Amplitude Ratio Loss 58.3 60.2 71.46 w/o Dual Mode Fusion 57.7 58.7 71.14 w/o Memory Fusion 57.3 60.3 73.70 w/o 2D RoPE 55.3 58.1 71.72
+
+result is obtained using the same unified model deployed for tracking, rather than re-training a ded-icated grounding model. This confirms stronger language understanding in our architecture and shows that MGFI constrains language reliance dur-ing tracking without degrading grounding capabil-ity. 
+
+4.4 Ablation Study 
+
+We conduct ablations on LaSOT, OTB99, and Ref-COCOg. All tracking results are reported under the NL-initialized setting with LVTrack-256. Detailed results are summarized in Tab. 4. 
+
+GS-KL loss. We compare the proposed GS-KL loss with standard cross-entropy (CE). As shown in Tab. 4, removing GS-KL consistently degrades performance across all benchmarks. The training dynamics in Fig. 4 further indicate both a higher asymptotic accuracy and faster convergence: GS-KL yields more stable optimization and opens a larger margin over CE in early training. This vali-dates that, under next-token prediction for localiza-tion, distance-aware soft targets effectively mitigate quantization error induced by coordinate discretiza-tion, enabling pixel-level fine-grained localization rather than coarse categorical classification. Epoch       
+
+> Accuracy
+> AUC
+> Epoch
+> GS-KL Loss Cross Entropy Loss
+> 59.1
+> 69.0
+> 72.8 74.9
+> 44.8
+> 62.1
+> 69.0 70.9
+> 46.5
+> 52.4
+> 56.1 56.4
+> 49.8
+> 53.7
+> 57.5 58.7 RefCOCOg LaSOT
+
+Figure 4: Comparison of GS-KL loss and cross-entropy loss across training epochs. The left panel reports grounding accuracy on RefCOCOg, and the right panel reports NL-initialized tracking performance on LaSOT. 
+
+MGFI. The injection module is designed to reconcile language-sensitive grounding with vision-anchored tracking. Removing the am-plitude ratio loss consistently degrades La-# 0001  # 1000  # 2200  # 3560         
+
+> # 0001 # 0230 # 0750 # 1300
+> (a) NL: “ brown cattle walking among other cattle on the farm land .”
+> (b) NL: “ white cat moving around a toy tiger on the blanket .” GT JointNLT UVLTrack Ours
+
+Figure 5: Tracking visualizations under NL initialization. (a) shows the cattle-13 sequence and (b) shows the cat-3 
+
+sequence from LaSOT. 
+
+SOT/OTB99/RefCOCOg by -0.4/-3.1/-3.42, with the larger drop on OTB99 indicating increased susceptibility to similar distractors. This verifies that regulating tracking-mode injection suppresses language-dominated drift while preserving useful textual guidance. Further removing dual-mode fu-sion causes larger losses (-1.0/-4.6/-3.74), confirm-ing that mode-specific fusion is necessary to cal-ibrate textual injection under different language reliance. Fig. 6 visualizes this modulation effect. As MGFI is progressively applied across layers, ac-tivations evolve from diffuse salient regions to expression-relevant target regions, showing that MGFI sharpens spatial selectivity and reduces dis-tractor responses. (a) NL: “ bird on the left .”     
+
+> (b) NL: “ the black and white dog .”
+> Layer 5 Layer 7 Layer 10
+> Layer 5 Layer 7 Layer 10
+
+Figure 6: Feature map visualizations as language is progressively injected. The panel includes the input image and feature-magnitude heatmaps from layers 5, 7, and 10 of the visual backbone. 
+
+Memory fusion. The temporal memory mod-ule improves feature robustness by leveraging his-torical information. It mainly affects long-term tracking, with AUC drops of 1.4 and 3 points on LaSOT and OTB99, respectively, while having a smaller impact on grounding. This suggests that a dynamically updated appearance memory effec-tively handles deformation and occlusion, strength-ening persistent localization in complex temporal scenarios. 
+
+Positional embedding. Removing 2D RoPE from both the encoder and decoder (using only learnable absolute embeddings) yields a consis-tent and notable drop on all benchmarks (Tab. 4), suggesting that absolute positions alone are insuffi-cient to capture relative geometry and cross-frame transformations. In contrast, 2D RoPE injects rel-ative inductive bias into attention, improving spa-tial topology preservation and localization stability. It is also more extensible to resolution changes, particularly when template and search have mis-matched sizes. Notably, our backbone (PE) already adopts RoPE, and keeping 2D RoPE in the down-stream encoder-decoder maintains positional-code consistency and better inherits its geometric prior. 
+
+Qualitative results. Fig. 5 compares three representative referring trackers. In sequence (a), LVTrack is the only method that precisely local-izes the described “brown cattle” in the first-frame grounding stage; JointNLT and UVLTrack produce boxes that partially cover the object but also in-clude distractors. As clutter increases in subsequent frames, both baselines drift, whereas LVTrack re-mains locked onto the object. In sequence (b), only UVLTrack and LVTrack initialize correctly, yet UVLTrack later switches to a similar cat and, under overlap, fails to isolate a single instance, enclosing both cats in one box. LVTrack consistently tracks the correct individual throughout. 
+
+5 Conclusion 
+
+We present LVTrack, an efficient referring single-object tracking framework that unifies grounding and tracking in an autoregressive formulation. A mode-conditioned gated feature injector adaptively calibrates textual guidance, enabling language-sensitive grounding while mitigating language-dominated drift in tracking. Together with GS-KL supervision, hybrid positional encoding, and ap-pearance memory, LVTrack improves localization accuracy and temporal robustness. These designs make it possible to directly leverage a frozen vision-language pretrained backbone for RSOT, achieving strong benchmark performance with substantially reduced training cost. Limitations 
+
+Although LVTrack provides two input-resolution variants, the current implementation still relies on fixed input resolutions and has not fully ex-plored the potential of the architecture for arbitrary-resolution inputs. In addition, this work mainly studies language guidance provided at initializa-tion, while practical scenarios may involve dynam-ically updated user instructions or additional con-straints during tracking. Future work could inves-tigate arbitrary-resolution tracking and interactive language guidance to further broaden the applica-bility of LVTrack. 
+
+Acknowledgements 
+
+This work was financially supported by the Science and Technology Support Special Project 3 (Project No. Y4030221WY). The authors would like to express sincere gratitude for the funding support. 
+
+References 
+
+Daniel Bolya, Po-Yao Huang, Peize Sun, Jang Hyun Cho, Andrea Madotto, Chen Wei, Tengyu Ma, Jiale Zhi, Jathushan Rajasegaran, Hanoona Bangalath, Junke Wang, Marco Monteiro, Hu Xu, Shiyu Dong, Nikhila Ravi, Shang-Wen Li, Piotr Dollar, and Christoph Feichtenhofer. 2026. Perception encoder: The best visual embeddings are not at the output of the network. Advances in Neural Information Pro-cessing Systems , 38:60884–60937. Ting Chen, Saurabh Saxena, Lala Li, David J Fleet, and Geoffrey Hinton. 2022. Pix2seq: A language model-ing framework for object detection. In International Conference on Learning Representations .Xin Chen, Ben Kang, Wanting Geng, Jiawen Zhu, Yi Liu, Dong Wang, and Huchuan Lu. 2025. Sutrack: Towards simple and unified single object tracking. In Proceedings of the AAAI Conference on Artificial Intelligence , volume 39, pages 2239–2247. Xin Chen, Ben Kang, Jiawen Zhu, Dong Wang, Houwen Peng, and Huchuan Lu. 2023a. Unified sequence-to-sequence learning for single-and multi-modal visual object tracking. Xin Chen, Houwen Peng, Dong Wang, Huchuan Lu, and Han Hu. 2023b. Seqtrack: Sequence to sequence learning for visual object tracking. In Proceedings of the IEEE/CVF conference on computer vision and pattern recognition , pages 14572–14581. Xin Chen, Bin Yan, Jiawen Zhu, Dong Wang, Xiaoyun Yang, and Huchuan Lu. 2021. Transformer track-ing. In Proceedings of the IEEE/CVF conference on computer vision and pattern recognition , pages 8126–8135. Mehdi Cherti, Romain Beaumont, Ross Wightman, Mitchell Wortsman, Gabriel Ilharco, Cade Gordon, Christoph Schuhmann, Ludwig Schmidt, and Jenia Jitsev. 2023. Reproducible scaling laws for con-trastive language-image learning. In Proceedings of the IEEE/CVF conference on computer vision and pattern recognition , pages 2818–2829. Yutao Cui, Cheng Jiang, Limin Wang, and Gangshan Wu. 2022. Mixformer: End-to-end tracking with iterative mixed attention. In Proceedings of the IEEE/CVF conference on computer vision and pat-tern recognition , pages 13608–13618. Jacob Devlin, Ming-Wei Chang, Kenton Lee, and Kristina Toutanova. 2019. Bert: Pre-training of deep bidirectional transformers for language understand-ing. In Proceedings of the 2019 conference of the North American chapter of the association for com-putational linguistics: human language technologies, volume 1 (long and short papers) , pages 4171–4186. Heng Fan, Liting Lin, Fan Yang, Peng Chu, Ge Deng, Sijia Yu, Hexin Bai, Yong Xu, Chunyuan Liao, and Haibin Ling. 2019. Lasot: A high-quality benchmark for large-scale single object tracking. In Proceedings of the IEEE/CVF conference on computer vision and pattern recognition , pages 5374–5383. Yuxin Fang, Quan Sun, Xinggang Wang, Tiejun Huang, Xinlong Wang, and Yue Cao. 2024. Eva-02: A visual representation for neon genesis. Image and Vision Computing , 149:105171. Qi Feng, Vitaly Ablavsky, Qinxun Bai, and Stan Sclaroff. 2021. Siamese natural language tracker: Tracking by natural language descriptions with siamese trackers. In Proceedings of the IEEE/CVF conference on computer vision and pattern recogni-tion , pages 5851–5860. Mingzhe Guo, Zhipeng Zhang, Heng Fan, and Liping Jing. 2022. Divert more attention to vision-language tracking. Advances in Neural Information Processing Systems , 35:4446–4460. Lianghua Huang, Xin Zhao, and Kaiqi Huang. 2019. Got-10k: A large high-diversity benchmark for generic object tracking in the wild. IEEE transac-tions on pattern analysis and machine intelligence ,43(5):1562–1577. Qing Jiang, Junan Huo, Xingyu Chen, Yuda Xiong, Zhaoyang Zeng, Yihao Chen, Tianhe Ren, Junzhi Yu, and Lei Zhang. 2026. Detect anything via next point prediction. In Proceedings of the IEEE/CVF Confer-ence on Computer Vision and Pattern Recognition ,pages 25472–25483. Bo Li, Wei Wu, Qiang Wang, Fangyi Zhang, Junliang Xing, and Junjie Yan. 2019. Siamrpn++: Evolution of siamese visual tracking with very deep networks. In Proceedings of the IEEE/CVF conference on com-puter vision and pattern recognition , pages 4282– 4291. Bo Li, Junjie Yan, Wei Wu, Zheng Zhu, and Xiaolin Hu. 2018. High performance visual tracking with siamese region proposal network. In Proceedings of the IEEE conference on computer vision and pattern recognition , pages 8971–8980. Liunian Harold Li, Pengchuan Zhang, Haotian Zhang, Jianwei Yang, Chunyuan Li, Yiwu Zhong, Lijuan Wang, Lu Yuan, Lei Zhang, Jenq-Neng Hwang, Kai-Wei Chang, and Jianfeng Gao. 2022a. Grounded language-image pre-training. In Proceedings of the IEEE/CVF conference on computer vision and pat-tern recognition , pages 10955–10965. Xiang Li, Wenhai Wang, Lijun Wu, Shuo Chen, Xi-aolin Hu, Jun Li, Jinhui Tang, and Jian Yang. 2020. Generalized focal loss: Learning qualified and dis-tributed bounding boxes for dense object detection. 
+
+Advances in neural information processing systems ,33:21002–21012. Xiaohai Li, Bineng Zhong, Qihua Liang, Zhiyi Mo, Jian Nong, and Shuxiang Song. 2025. Dynamic updates for language adaptation in visual-language tracking. In Proceedings of the Computer Vision and Pattern Recognition Conference , pages 19165–19174. Yanghao Li, Hanzi Mao, Ross Girshick, and Kaiming He. 2022b. Exploring plain vision transformer back-bones for object detection. In European conference on computer vision , pages 280–296. Springer. Yihao Li, Jun Yu, Zhongpeng Cai, and Yuwen Pan. 2022c. Cross-modal target retrieval for tracking by natural language. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recog-nition , pages 4931–4940. Zhenyang Li, Ran Tao, Efstratios Gavves, Cees GM Snoek, and Arnold WM Smeulders. 2017. Tracking by natural language specification. In Proceedings of the IEEE conference on computer vision and pattern recognition , pages 6495–6503. Liting Lin, Heng Fan, Zhipeng Zhang, Yong Xu, and Haibin Ling. 2022. Swintrack: A simple and strong baseline for transformer tracking. Advances in Neural Information Processing Systems , 35:16743– 16754. Kaiwen Liu, Jin Gao, Haowei Liu, Liang Li, Bing Li, and Weiming Hu. 2022. Exploring motion informa-tion for distractor suppression in visual tracking. In 
+
+Proceedings of the IEEE/CVF conference on com-puter vision and pattern recognition , pages 1924– 1932. Xinqi Liu, Li Zhou, Zikun Zhou, Jianqiu Chen, and Zhenyu He. 2025. Mambavlt: Time-evolving multi-modal state space model for vision-language tracking. In Proceedings of the Computer Vision and Pattern Recognition Conference , pages 8731–8741. Ilya Loshchilov and Frank Hutter. 2019. Decoupled weight decay regularization. In International Confer-ence on Learning Representations .Yinchao Ma, Yuyang Tang, Wenfei Yang, Tianzhu Zhang, Jinpeng Zhang, and Mengxue Kang. 2024. Unifying visual and vision-language tracking via con-trastive learning. In Proceedings of the AAAI Con-ference on Artificial Intelligence , volume 38, pages 4107–4116. Junhua Mao, Jonathan Huang, Alexander Toshev, Oana Camburu, Alan L Yuille, and Kevin Murphy. 2016. Generation and comprehension of unambiguous ob-ject descriptions. In Proceedings of the IEEE con-ference on computer vision and pattern recognition ,pages 11–20. Alec Radford, Jong Wook Kim, Chris Hallacy, Aditya Ramesh, Gabriel Goh, Sandhini Agarwal, Girish Sas-try, Amanda Askell, Pamela Mishkin, Jack Clark, Gretchen Krueger, and Ilya Sutskever. 2021. Learn-ing transferable visual models from natural language supervision. In International conference on machine learning , pages 8748–8763. PmLR. Maithra Raghu, Thomas Unterthiner, Simon Kornblith, Chiyuan Zhang, and Alexey Dosovitskiy. 2021. Do vision transformers see like convolutional neural net-works? Advances in neural information processing systems , 34:12116–12128. Yanyan Shao, Shuting He, Qi Ye, Yuchao Feng, Wenhan Luo, and Jiming Chen. 2024. Context-aware integra-tion of language and visual references for natural language tracking. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recog-nition , pages 19208–19217. Jianlin Su, Murtadha Ahmed, Yu Lu, Shengfeng Pan, Wen Bo, and Yunfeng Liu. 2024. Roformer: En-hanced transformer with rotary position embedding. 
+
+Neurocomputing , 568:127063. Michael Tschannen, Alexey Gritsenko, Xiao Wang, Muhammad Ferjad Naeem, Ibrahim M. Alabdul-mohsin, Nikhil Parthasarathy, Talfan Evans, Lu-cas Beyer, Ye Xia, Basil Mustafa, Olivier H’enaff, Jeremiah Harmsen, Andreas Steiner, and Xiao-Qi Zhai. 2025. Siglip 2: Multilingual vision-language encoders with improved semantic understanding, lo-calization, and dense features. Ning Wang, Wengang Zhou, Jie Wang, and Houqiang Li. 2021a. Transformer meets tracker: Exploiting temporal context for robust visual tracking. In Pro-ceedings of the IEEE/CVF conference on computer vision and pattern recognition , pages 1571–1580. Xiao Wang, Xiujun Shu, Zhipeng Zhang, Bo Jiang, Yaowei Wang, Yonghong Tian, and Feng Wu. 2021b. Towards more flexible and accurate object tracking with natural language: Algorithms and benchmark. In Proceedings of the IEEE/CVF conference on com-puter vision and pattern recognition , pages 13763– 13773. Zhengyuan Yang, Tushar Kumar, Tianlang Chen, Jing-song Su, and Jiebo Luo. 2020. Grounding-tracking-integration. IEEE Transactions on Circuits and Sys-tems for Video Technology , 31(9):3433–3443. Botao Ye, Hong Chang, Bingpeng Ma, Shiguang Shan, and Xilin Chen. 2022. Joint feature learning and rela-tion modeling for tracking: A one-stream framework. In European conference on computer vision , pages 341–357. Springer. Xiaohua Zhai, Basil Mustafa, Alexander Kolesnikov, and Lucas Beyer. 2023. Sigmoid loss for language image pre-training. In Proceedings of the IEEE/CVF international conference on computer vision , pages 11975–11986. Zhipeng Zhang, Yihao Liu, Xiao Wang, Bing Li, and Weiming Hu. 2021. Learn to match: Automatic matching network design for visual tracking. In Pro-ceedings of the IEEE/CVF international conference on computer vision , pages 13339–13348. Jie Zhao, Xin Chen, Shengming Li, Chunjuan Bo, Dong Wang, and Huchuan Lu. 2025. Self-adaptive vision-language tracking with context prompting. IEEE Transactions on Image Processing , 34:8046–8058. Yiwu Zhong, Jianwei Yang, Pengchuan Zhang, Chun-yuan Li, Noel Codella, Liunian Harold Li, Luowei Zhou, Xiyang Dai, Lu Yuan, Yin Li, and Jianfeng Gao. 2022. Regionclip: Region-based language-image pretraining. In Proceedings of the IEEE/CVF conference on computer vision and pattern recogni-tion , pages 16793–16803. Li Zhou, Zikun Zhou, Kaige Mao, and Zhenyu He. 2023. Joint visual grounding and tracking with natural lan-guage specification. In Proceedings of the IEEE/CVF conference on computer vision and pattern recogni-tion , pages 23151–23160. 
+
+A Inference Details 
+
+At inference, LVTrack adopts lightweight robust-ness heuristics to mitigate semantic drift and stabi-lize autoregressive tracking. Under NL initializa-tion, the first frame is localized in grounding mode from the referring expression to obtain the initial box and build the template; this step is skipped when the initial bounding box is provided. Subse-quent frames are processed in tracking mode within a local search region using autoregressive decod-ing. During inference, memory updates are con-trolled by prediction confidence to avoid refreshing the appearance memory with unreliable target fea-tures. Specifically, for each coordinate head in 
+
+{x, y, w, h }, we take the top-1 softmax probability as the confidence score, denoted as {cx, c y, c w, c h}.The memory is updated only when the aggregated confidence is sufficiently high, which provides a simple reliability criterion for template refresh and reduces error accumulation under occlusion or dis-tractors. In addition, spatial directive words in the expres-sion (e.g., up/left/center) typically describe only the first-frame location and may mislead temporal tracking. Thus, we keep the original expression Lg
+
+only for first-frame grounding, and apply directive stripping to obtain Lt = R(Lg) for subsequent frames, re-encoding language features for MGFI. The same preprocessing is used during training. Finally, following SeqTrack, we apply a Hanning-window penalty to the center-coordinate distribu-tion to bias predictions toward the search-window center, suppressing spurious large jumps (Chen et al., 2023b; Liu et al., 2022). 
+
+B Hyperparameter Analysis 
+
+ViT layer selection. LVTrack extracts visual em-beddings from an intermediate layer of the frozen VLP ViT rather than the final layer. This is be-cause CLIP-style contrastive pretraining primar-ily optimizes global image-text alignment: in the last few transformer blocks, information is progres-sively compressed into a global representation, and emerging “global” tokens attract attention from most patch tokens, making the network behave like a global-information decoder (Bolya et al., 2026; Li et al., 2022b). While beneficial for classification-level semantics, this late-stage aggregation weak-ens patch-level distinctiveness and disrupts spatial correspondence, which is detrimental to tracking and other localization-sensitive tasks that rely on stable local geometry. In this ablation, we isolate the effect of the ViT output depth by changing 
+
+only the tapped backbone layer and keeping all other components and hyperparameters fixed; the MGFI stack uses the same number of modules and is shifted accordingly to stay aligned with the se-lected output depth. Tab. 5 confirms this behavior: using the 10th layer (out of 12) yields the best over-all performance across both tracking and grounding (e.g., 58.7/63.3 AUC on LaSOT/OTB99 and 74.88 accuracy on RefCOCOg), outperforming a shal-lower (9th) or deeper (11th) choice. Overly shallow output features lack semantic understanding, even though they may preserve stronger spatial cues. We therefore choose layer 10 as the default output, as it provides a better balance between grounding and tracking performance. 
+
+Decay factor ρ in the amplitude ratio loss. The amplitude ratio loss explicitly enforces a vision-first, language-secondary fusion hierarchy by con-straining the tracking-mode gate magnitude to be Table 5: Hyperparameter analysis on LaSOT (AUC), OTB99 (AUC), and RefCOCOg (Accuracy). Tracking is evaluated under the NL-initialized setting. Data sampling ratio is reported as a three-number tuple, denoting the proportions of tracking, joint tracking, and grounding samples, respectively.                                               
+
+> Experiment Parameter LaSOT OTB99 RefCOCOg ViT layers 956.3 60.8 71.18 10 58.7 63.3 74.88
+> 11 56.6 58.7 71.64 Decay factor ρin Lratio
+> 0.5 57.6 60.4 74.20 0.6 58.7 63.3 74.88
+> 0.7 58.2 61.1 73.88 Bandwidth σin Lloc
+> 257.3 62.3 74.66 458.7 63.3 74.88
+> 657.1 61.2 74.48 Data sampling ratio [0.40, 0.50, 0.10] 58.3 61.6 72.12 [0.45, 0.40, 0.15] 58.7 63.3 74.88 [0.40, 0.35, 0.25] 57.6 61.4 74.94
+
+approximately a scaled version of the grounding-mode magnitude, i.e., λT ≈ ρ · λG . Tab. 5 shows that ρ = 0 .6 achieves the best balance across tasks. When ρ is smaller (0.5), the constraint is overly strict, suppressing linguistic guidance too aggres-sively. This slightly harms grounding and also weakens NL-initialized tracking, where first-frame localization quality is critical. When ρ is larger (0.7), the constraint becomes too loose, allowing stronger language influence during tracking and increasing susceptibility to language-dominated drift, which is reflected by a noticeable drop on OTB99 (63.3 → 61.1). Notably, relaxing the am-plitude constraint also reduces grounding perfor-mance. We attribute this to the training dynamics on tracking samples, where ambiguous language cues that are insufficiently constrained act as dis-tractors and encourage the model to down-weight linguistic signals. Since tracking and grounding share the same cross-attention layer, this reduced reliance on language transfers to grounding and degrades its accuracy. 
+
+Bandwidth σ in the GS-KL localization loss. 
+
+We further study the bandwidth σ in the GS-KL objective, which controls the tolerance radius on the discrete bin lattice and thus the strength of distance-aware supervision. As reported in Tab. 5, σ = 4 achieves the best overall performance on both tracking and grounding, outperforming smaller ( σ = 2 ) and larger ( σ = 6 ) bandwidths. With a small bandwidth ( σ = 2 ), the target dis-tribution becomes sharply peaked and the objec-tive approaches a cross-entropy-like regime, offer-ing limited tolerance for near-miss bins and thus weaker distance-aware supervision, which exacer-bates discretization ambiguity. With a large band-width ( σ = 6 ), the target is overly diffuse, weak-ening fine-grained corrective gradients and hurting precise coordinate refinement, reflected by drops in both tracking AUC and grounding accuracy. Over-all, σ = 4 provides the best trade-off between lo-cality and sharpness, and is adopted as the default. 
+
+Unified sampling ratios. We adopt a unified hybrid sampling scheme over three data sources (tracking, joint tracking, grounding). The data sampling ratio is crucial for training our model and serves as an effective mechanism to balance grounding and tracking. A proper proportion of template-only tracking samples mitigates language-dominated drift during tracking, whereas an ex-cessive grounding ratio can exacerbate this is-sue. Tab. 5 indicates that the default ratio 
+
+[0 .45 , 0.40 , 0.15] provides the strongest tracking performance while maintaining high grounding ac-curacy. Reducing the grounding proportion to 0.10 
+
+([0 .40 , 0.50 , 0.10] ) degrades RefCOCOg accuracy (72.12) and also hurts NL-initialized tracking, con-sistent with the fact that NL-only tracking hinges on first-frame grounding quality and its coupling with temporal tracking. Conversely, increasing the grounding proportion to 0.25 ([0 .40 , 0.35 , 0.25] )yields a marginal gain on RefCOCOg (74.94) but reduces tracking AUC (e.g., LaSOT 58.7 → 57.6), suggesting that over-emphasizing grounding can bias optimization toward language-dominant cues and weaken the tracker’s reliance on visual tem-plate consistency. Overall, [0 .45 , 0.40 , 0.15] is a robust operating point that best preserves the in-tended tracking-grounding trade-off under unified training. 
+
+C Backbone Selection Rationale 
+
+A key factor behind LVTrack’s strong performance is its use of a vision-language pretrained model. In this section, we compare different VLP back-bones within LVTrack and justify our final choice of PE as the backbone. Tab. 6 reports results for three base-scale VLP models under an iden-tical LVTrack pipeline, where we replace only the backbone while keeping the architecture, training schedule, and all hyperparameters fixed. Because PE uses a 24-layer text encoder while SigLIP 2 and CLIP use 12 layers, we align MGFI by in-jecting language features from the last six text layers, namely [14 , 16 , 18 , 20 , 22 , 24] for PE and 
+
+[7 , 8, 9, 10 , 11 , 12] for SigLIP 2/CLIP. All three backbones share a 12-layer visual encoder, and the visual injection depths are kept consistent across models. Under this controlled setting, PE yields the best performance across both grounding and tracking. We believe PE performs better mainly for the fol-lowing reasons. First and most importantly, PE is originally trained with progressive resolutions and 2D RoPE, which is crucial because our template and search regions have different sizes while the backbone remains frozen. The relative positional modeling of RoPE helps maintain spatial consis-tency across resolutions, improving robustness to resolution changes. Second, its deeper 24-layer text encoder offers stronger semantic parsing and compositional understanding, which is evidenced by the clear gain on RefCOCOg and yields more re-liable NL-only initialization for tracking. Third, PE adopts improved training strategies and a stronger data engine, leading to higher robustness and better generalization under long-term tracking challenges such as occlusion, distractors, and appearance vari-ation. This is particularly important for LVTrack, where the same frozen backbone must process tem-plate and search at different resolutions. Moreover, our encoder-decoder also uses 2D RoPE, and choos-ing a backbone that already employs RoPE makes the overall positional modeling more consistent, which empirically leads to better performance. In contrast, CLIP and SigLIP2 mainly rely on absolute position embedding interpolation without RoPE, and typically exhibit weaker multi-resolution adapt-ability. However, the advantage of LVTrack should not be viewed as a direct benefit of using PE as the backbone. In our preliminary experiments, we also applied PE to prior feature-concatenation-based trackers. Specifically, we replaced both their vi-sual backbone and BERT-based text encoder with PE, while keeping the original pipeline of concate-nating visual and textual features before feature modeling. After retraining, these models showed degraded tracking performance. This suggests that frozen VLP representations are not naturally aligned with the requirements of RSOT. LVTrack addresses this issue by introducing MGFI, where mode-conditioned dual injection applies control-lable feature-map perturbations to bridge this gap. Along with the use of shallower ViT features and task-oriented optimization designs, LVTrack en-ables frozen VLP models to be effectively incorpo-rated into RSOT. 
+
+D MGFI Perturbation Analysis 
+
+This section provides the perturbation bound for MGFI. Language injection modifies the visual fea-ture consumed by the downstream predictor. Let 
+
+z = h(f ) denote the decoder outputs as a func-tion of the visual feature f . With f ≜ f sn and 
+
+∆T ≜ ∆T 
+
+> n
+
+, and assuming h is locally Lh-Lipschitz, the joint-tracking-mode deviation is bounded by the perturbation magnitude:              
+
+> zT−zno-inj =h(f+ ∆ T)−h(f)
+> ≤Lh∆T.(12)
+
+For brevity, An denotes the MHCA residual at layer 
+
+n computed from (f sn, f Lτ (n)), and M mn denotes the mode-m MLP residual at the same layer. By trian-gle inequality,                    
+
+> ∆T
+> n≤λT
+> attn ⊙An+λT
+> mlp ⊙MT
+> n
+> ≤λT
+> attn ∞An+λT
+> mlp ∞MT
+> n,(13)
+
+which shows that the gate norms directly upper-bound the maximum impact of language on track-ing decisions. 
+
+E Positional Encoding and Position Modeling Details 
+
+In LVTrack, to effectively capture the geometric structure of visual objects and establish precise spatial correspondence between the template and the search region, we propose a hybrid positional encoding scheme. This scheme combines a shared 2D absolute positional encoding ( Pabs ) with a 2D Table 6: Backbone comparison under an identical LVTrack setting on LaSOT (AUC), OTB99 (AUC), and RefCOCOg (Accuracy). We replace only the frozen VLP backbone (all base-scale) while keeping the architecture and training protocol unchanged.                               
+
+> Backbone RefCOCOg LaSOT OTB99 Accuracy AUC Prec NPrec AUC Prec NPrec PE (Bolya et al., 2026) 74.88 58.7 61.9 68.3 63.3 82.9 75.9
+> SigLIP 2 (Tschannen et al., 2025) 70.35 56.9 59.7 66.5 62.1 81.6 74.1 CLIP (Radford et al., 2021) 70.86 56.7 58.8 66.0 61.6 80.3 73.7
+
+axial rotary positional embedding ( PRoPE ). This section details the mathematical formulation and implementation, followed by a theoretical analysis of its advantages in visual tracking tasks. 
+
+Table 7: Ablation results of using different forms of po-sitional encoding on RefCOCOg, LaSOT, and OTB99. 
+
+1D Pabs denotes a single 1D absolute positional embed-ding table with length equal to the total token sequence, i.e., the positional coordinates of template and search tokens are not defined under a shared coordinate system. 
+
+1D PRoPE is defined analogously.                          
+
+> Positional Encoding RefCOCOg LaSOT OTB99 Accuracy AUC Prec AUC Prec 2D Pabs , 2D PRoPE 74.88 58.7 61.9 63.3 82.9
+> 1D Pabs , 2D PRoPE 74.24 57.8 61.7 61.2 80.8 1D Pabs , 1D PRoPE 74.12 57.2 60.8 59.8 79.8
+
+E.1 2D Absolute Positional Encoding with Shared Coordinate System 
+
+Unlike traditional approaches that flatten image patches into 1D sequences and use learnable 1D embeddings, we explicitly maintain the 2D grid structure and enforce a shared canonical token-grid coordinate system between the template and the search region. 
+
+Formulation. Let Pabs ∈ RHgrid ×Wgrid ×D be a learnable parameter grid, where Hgrid and Wgrid 
+
+correspond to the feature map dimensions of the search region ( 16 × 16 tokens in our model), and 
+
+D is the feature dimension. For the search region, the spatial dimensions typically align with the grid size. Thus, the positional encoding P s is directly indexed from the grid:           
+
+> Ps
+> (i,j )=Pabs [i, j ],for 0≤i < H grid ,0≤j < W grid .
+> (14)
+
+For the template, since its resolution is typically smaller than the search region ( 8 × 8 tokens in our model), we do not learn a separate set of em-beddings. Instead, to ensure geometric continuity and consistency, we derive the template position codes via bilinear interpolation from Pabs . Let Φ( ·)
+
+denote the interpolation function:      
+
+> Pt= Φ( Pabs ,size = ( Ht, W t)) ,(15)
+
+where (Ht, W t) are the dimensions of the template feature map. This implies that the positional dis-tribution of the template is treated as a resampled subset of the search region’s coordinate system. 
+
+E.2 2D Axial Rotary Positional Embedding 
+
+To enhance the model’s perception of relative posi-tions—crucial for handling object translation and deformation—we apply 2D RoPE to the query and key vectors in the attention layers (Fang et al., 2024). 
+
+Formulation. Standard RoPE is defined for 1D sequences. To adapt it for 2D images, we split the feature channels D into two halves to encode the y-axis (height) and x-axis (width) information, respectively. For a feature vector x ∈ RD at spatial index (h, w ), we decompose it as x = [ x(h)|| x(w)],where x(h), x(w) ∈ RD/ 2. We apply the standard rotary transformation to each half. Taking the x-axis component as an example, for the k-th pair of elements, the rotation angle is θk · w, with θk =10000 −2k/ (D/ 2) . The transformation is defined as:         
+
+> RoPE 1D (x(w), w ) =
+> cos( wθ k)−sin( wθ k)sin( wθ k)cos( wθ k)
+> x(w)2k
+> x(w)2k+1
+> !
+> .
+> (16)
+
+The final 2D relative position injection is the con-catenation of the transformed parts:    
+
+> ˜q(h,w )=Concat (RoPE 1D (q(h), h ),RoPE 1D (q(w), w )) .
+> (17)
+
+This operation is applied independently to the to-kens of the template and the search region, preserv-ing their respective intra-frame local topology. As shown in Tab. 7, our “2D Pabs + 2D PRoPE "scheme achieves the best performance. The experi-mental results show that 1D PRoPE performs signif-Table 8: Comparison with state-of-the-art trackers under BBOX initialization on TNL2K, LaSOT, and OTB99. The best and second-best results are highlighted in bold and underlined, respectively.                                                                                                                           
+
+> Tracker Initialize TNL2K LaSOT OTB99 AUC Prec NPrec AUC Prec NPrec AUC Prec NPrec SiamRPN++ (Li et al., 2019) BBOX 41.3 41.2 48.0 49.6 49.1 56.9 ---AutoMatch (Zhang et al., 2021) BBOX 47.2 43.5 -58.3 59.9 67.4 ---TrDiMP (Wang et al., 2021a) BBOX 52.3 52.8 -63.9 61.4 ----TransT (Chen et al., 2021) BBOX 50.7 51.7 -64.9 69.0 73.8 ---SwinTrack-B (Lin et al., 2022) BBOX -57.1 -69.6 74.1 78.6 ---OSTrack-256 (Ye et al., 2022) BBOX 54.3 --69.1 75.2 78.7 ---UVLTrack-B (Ma et al., 2024) BBOX 62.7 65.4 -69.4 74.9 -69.3 90.1 84.3 MambaVLT (Liu et al., 2025) BBOX 63.3 65.8 87.5 65.0 69.5 76.6 71.6 92.9 87.4 SAVLT-B (Zhao et al., 2025) BBOX 63.3 67.3 80.3 70.6 76.4 82.1 70.2 90.8 -
+> LVTrack-256 BBOX 61.5 64.0 79.7 66.2 69.8 78.1 70.1 93.8 87.6
+> LVTrack-384 BBOX 62.9 66.3 80.4 68.0 71.3 78.9 71.0 93.9 87.8
+
+icantly worse than 2D PRoPE . This is because 1D encoding destroys the 2D neighborhood structure of images. In a 1D sequence, index k is adjacent to k + 1 , but far from k + W (vertical neighbor). 2D RoPE makes the attention score explicitly de-pendent on relative offsets along both spatial axes, which better preserves the 2D neighborhood struc-ture than 1D sequence encoding. This property is vital for tracking, as the object translates within the search region. 2D RoPE ensures that the relative geometric structure between feature points remains translation-consistent regardless of the object’s ab-solute position, thereby enhancing robustness. In summary, our hybrid strategy leverages Pabs 
+
+to provide a globally unified coordinate reference and PRoPE to preserve translation-invariant local geometry, facilitating effective feature interaction between the template and the search region. 
+
+F BBOX-initialized Tracking Performance 
+
+Although LVTrack is mainly designed for NL-initialized and NL+BBOX-initialized settings, it also supports the conventional BBOX-initialized protocol. This flexibility stems from the language-injection architecture, which allows linguistic con-ditioning to be cleanly enabled or omitted with-out altering the core tracking pipeline. In the BBOX-initialized setting ( m = S), the first-frame ground-truth box is used to initialize tracking, and the injector is bypassed so that the model runs without relying on linguistic cues. Tab. 8 com-pares LVTrack with representative box-initialized trackers and three recent vision-language trackers (UVLTrack-B, MambaVLT, and SAVLT-B) under the same initialization. Overall, LVTrack achieves competitive per-formance across TNL2K, LaSOT, and OTB99. LVTrack-384 obtains the second-best AUC and NPrec on TNL-2K (62.9/80.4), the second-best NPrec on LaSOT (78.9), and the second-best AUC on OTB99 (71.0), while achieving the best Prec and NPrec on OTB99 (93.9/87.8). LVTrack-256 also performs strongly, ranking second on OTB99 Prec and NPrec (93.8/87.6). Although SAVLT-B leads on LaSOT under the pure BBOX protocol, LVTrack remains competitive with recent vision-language trackers and surpasses most earlier siame-se/transformer baselines. These results confirm that LVTrack is not restricted to language-driven initialization and provides good support for box-initialized tracking as well. 
+
+G More Visualizations 
+
+We present more tracking visualizations and com-parative results in Fig. 7, which demonstrate the tracking performance under challenging conditions such as occlusion and appearance variations. In Fig. 7(a), LVTrack accurately localizes the target “kangaroo”, whereas the competing trackers fail to perform correct language-guided grounding and instead drift to nearby persons. In Fig. 7(b), LV-Track remains robust to a flying kite whose ap-pearance and shape vary continuously over time, demonstrating its strong high-level semantic under-standing and adaptation capability. Fig. 7(c) further illustrates a challenging scenario with severe dis-tractors and occlusion, where the target is almost completely lost. When the “squirrel” reappears, LVTrack successfully re-localizes and locks onto the target, showing its effective use of language cues and strong robustness against interference. # 0001  # 0550  # 1498  # 1890 
+
+(a) NL: “ kangaroo fighting with another one on the grass .” 
+
+(b) NL: “ kite played by a person in a basketball court .” 
+
+GT  JointNLT  UVLTrack  Ours       
+
+> # 0140 # 0700 # 1500 # 2200
+> # 0001 # 0260 # 0450 # 0680
+
+(c) NL: “squirrel playing with a cat .” Figure 7: Additional Visualizations under NL Initialization.
