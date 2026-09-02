@@ -41,17 +41,17 @@
 <section class="dpr-home-dashboard-card dpr-home-report-card">
   <div class="dpr-home-dashboard-header">
     <div>
-      <span class="dpr-home-dashboard-kicker">2026-09-01</span>
+      <span class="dpr-home-dashboard-kicker">2026-09-02</span>
       <h3 class="dpr-home-dashboard-title">今日汇总</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">共 22 篇</strong>
+    <strong class="dpr-home-dashboard-count">共 10 篇</strong>
   </div>
   <dl class="dpr-home-dashboard-stats">
     <div class="dpr-home-dashboard-stat"><dt>累计更新</dt><dd>1 次</dd></div>
-    <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>13</dd></div>
-    <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>9</dd></div>
+    <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>6</dd></div>
+    <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>4</dd></div>
   </dl>
-  <p class="dpr-home-dashboard-body">最近更新：2026-09-01 22:49:21 UTC<br>状态：成功</p>
+  <p class="dpr-home-dashboard-body">最近更新：2026-09-02 22:13:29 UTC<br>状态：成功</p>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-brief-card">
   <div class="dpr-home-dashboard-header">
@@ -62,7 +62,7 @@
     <strong class="dpr-home-dashboard-count">AI</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<p>今日共读22篇论文，精读13篇、速读9篇，聚焦高分辨率检测与通用感知前沿。最值得关注的是两篇满分精读：可变粒度分词用于高分辨率目标检测，以及无背景类无关检测学习，均突破传统架构限制。建议优先研读这两篇核心方法，再以速读中的异常检测与6D姿态估计作为扩展视角。</p>
+<p>今日精读聚焦零样本航拍分割与几何特征构建方法，速读覆盖多目标跟踪、跨视角自监督及卫星海面实例分割。最值得关注的是“限制式推理引导”在不训练条件下提升航拍分割精度（10分）及结构化图像的鲁棒几何特征框架（9分）。普通读者可优先参考两篇高分精读思路，并留意MariSat数据集对海事遥感应用的新增价值。</p>
   </div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-deep-card">
@@ -71,12 +71,12 @@
       <span class="dpr-home-dashboard-kicker">今日累计</span>
       <h3 class="dpr-home-dashboard-title">精读推荐</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">13 篇</strong>
+    <strong class="dpr-home-dashboard-count">6 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Variable-Granularity Tokenization for High-Resolution Object Detection">Variable-Granularity Tokenization for High-Resolution Object Detection</span></li><li><span class="dpr-home-dashboard-paper-title" title="Background-Free Objectness Learning for Class-Agnostic Detection">Background-Free Objectness Learning for Class-Agnostic Detection</span></li><li><span class="dpr-home-dashboard-paper-title" title="NBS: No Bias Stereo">NBS: No Bias Stereo</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Restrict, Don&#x27;t Retrain: Inference-Time VLM Guidance for Zero-Shot Aerial Segmentation">Restrict, Don&#x27;t Retrain: Inference-Time VLM Guidance for Zero-Shot Aerial Segmentation</span></li><li><span class="dpr-home-dashboard-paper-title" title="Beyond Landmark Extraction: A Framework for Robust Geometric Feature Construction in Structured Image Classification">Beyond Landmark Extraction: A Framework for Robust Geometric Feature Construction in Structured Image Classification</span></li><li><span class="dpr-home-dashboard-paper-title" title="Low-Quality Face Recognition using Center Aligned Representations and Local Margin Constraints">Low-Quality Face Recognition using Center Aligned Representations and Local Margin Constraints</span></li></ul>
   </div>
-  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">cv <strong>13</strong></span></div>
+  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">cv <strong>6</strong></span></div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-skim-card">
   <div class="dpr-home-dashboard-header">
@@ -84,12 +84,12 @@
       <span class="dpr-home-dashboard-kicker">今日累计</span>
       <h3 class="dpr-home-dashboard-title">速读推荐</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">9 篇</strong>
+    <strong class="dpr-home-dashboard-count">4 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="NFAD: Nuisance-Filtered Anomaly Detection Under Distribution Shift">NFAD: Nuisance-Filtered Anomaly Detection Under Distribution Shift</span></li><li><span class="dpr-home-dashboard-paper-title" title="Foundational feature fusion for conditional flow matching in 6D pose estimation">Foundational feature fusion for conditional flow matching in 6D pose estimation</span></li><li><span class="dpr-home-dashboard-paper-title" title="Seeing Through Extreme Visual Sparsity: Surface Understanding from a Single Random Visual Patch">Seeing Through Extreme Visual Sparsity: Surface Understanding from a Single Random Visual Patch</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Beyond the Image Plane: World-Grounded Queries for Multi-Object Tracking">Beyond the Image Plane: World-Grounded Queries for Multi-Object Tracking</span></li><li><span class="dpr-home-dashboard-paper-title" title="Revisiting Cross-View Completion: Self-Supervised Pre-Training via Reconstruction Error Comparison">Revisiting Cross-View Completion: Self-Supervised Pre-Training via Reconstruction Error Comparison</span></li><li><span class="dpr-home-dashboard-paper-title" title="MariSat: A Maritime Dataset for Instance Segmentation of Objects in Satellite and Aerial Images">MariSat: A Maritime Dataset for Instance Segmentation of Objects in Satellite and Aerial Images</span></li></ul>
   </div>
-  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">cv <strong>9</strong></span></div>
+  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">cv <strong>4</strong></span></div>
 </section>
 </div>
 

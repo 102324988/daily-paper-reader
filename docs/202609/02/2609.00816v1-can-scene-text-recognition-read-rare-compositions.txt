@@ -1,0 +1,403 @@
+Title: Can Scene Text Recognition Read Rare Compositions?
+
+URL Source: https://arxiv.org/pdf/2609.00816v1
+
+Published Time: Wed, 02 Sep 2026 00:52:30 GMT
+
+Number of Pages: 16
+
+Markdown Content:
+# Can Scene Text Recognition Read Rare Compositions? 
+
+# Genpei Zhang 
+
+University of Wisconsin–Madison genpei.zhang@wisc.edu 
+
+Abstract 
+
+Scene text recognition is reported as 89–97% accurate on the six standard benchmarks, and the problem is widely treated as saturated. We present an alternative reading. When the same test images are stratified jointly by ground-truth word rarity and character n-gram novelty against a reference cor-pus, accuracy at the rare-word × rare-trigram corner of the resulting 5 × 5 grid drops 10–18 pt below the q3/q3 cen-tre across nine English specialised recognisers, and the same direction (corner below centre) holds on all 13 of 13 (lan-guage, model) pairs we test across four writing systems (Latin, Han, Han+kana, Arabic). The drop is not a capac-ity bottleneck. A 6× vision-backbone scale-up (CLIP4STR-Base 158 M → CLIP4STR-Huge 1.0 B, OpenCLIP ViT-H/14 LAION-2B) leads every benchmark in aggregate accuracy yet leaves the stress corner unchanged ( 86 .9 → 86 .5, within paired-bootstrap noise). Four converging probes—layer-wise probing, confidence-when-wrong, attention re-balancing, and a cross-script commit-vs-abstain error split—localise the fail-ure to the autoregressive decoder’s lexical prior. We then ask how much of the gap existing techniques recover. Of 
+
+16 non-architectural mitigations, the largest mean q5/q5 gain is +1 .3 pt and none clears the paired-bootstrap noise floor; the only intervention that does is the architectural shift from autoregressive to CTC decoding (SVTRv2, +2 .5 pt, p = 0 .02 ,
+
+n = 474 ). A confidence-routed AR ∪CTC ensemble adds a directionally consistent +0 .6 pt that stays within noise, and its dominant learned coefficient is each model’s own minimum-softmax confidence—independently echoing the mechanism above. No configuration we test improves both the composi-tional corner and aggregate accuracy. The rare-input long tail thus points to architectural change rather than added capacity. 
+
+# 1 Introduction 
+
+Scene text recognition (STR) models are reported as 89–97% accurate on the six benchmarks that constitute the canonical evaluation (Mishra, Alahari, and Jawahar 2012; Karatzas et al. 2013, 2015; Wang, Babenko, and Belongie 2011; Phan et al. 2013; Risnumawan et al. 2014), and aggregate numbers in this range read as a saturated problem. Yet operational deploy-ments fail on text human readers find trivial: proper nouns, brand codes, abbreviations, multilingual fragments, and any string whose letter combinations are unusual in standard En-glish. We present an alternative reading of the saturation 
+
+Copyright © 2026, Association for the Advancement of Artificial Intelligence (www.aaai.org). All rights reserved. 
+
+claim, in the spirit of recent diagnostic work that re-examines headline numbers in adjacent fields (Schaeffer, Miranda, and Koyejo 2023; Recht et al. 2019; Yuksekgonul et al. 2023; Geirhos et al. 2019; Ojha et al. 2023; Hsieh et al. 2023): the aggregate metric averages out a structural failure mode that a two-axis stratification of the same test images exposes immediately. Our contribution is empirical. We do not propose a new STR recogniser; we propose a diagnostic instrument, char-acterise the failure it exposes across architectures and writ-ing systems, localise its mechanism, and bound what any non-architectural intervention can deliver in our setting. The bound is sharp enough that a +1 pt aggregate gain on the standard benchmarks from a non-CTC method is, in our set-ting, consistent with model capacity being routed away from the compositional corner rather than closing it. We stratify each existing benchmark test image along two orthogonal axes against a chosen reference corpus: word-frequency rank (how often the ground-truth word appears in the reference corpus) and character n-gram-novelty rank (how unfamiliar its trigrams are). Each image lands in exactly one cell of the resulting 5 × 5 grid. The diagnostic requires no new data and is backbone-agnostic. Aggregated across the evaluated STR backbones and all six benchmarks, the corner cell (rare word × rare trigram, n = 474 ) sits 10–18 pt below the q3/q3 centre across the nine English specialised recognisers, an order of magnitude larger than the inter-model spread on aggregate accuracy. The direction of the gap survives every cross-cutting varia-tion we test. Adapting the axes (character rarity × character-bigram novelty) to non-Latin scripts and applying them to Chinese, Japanese, and Arabic recognisers, all 13 of 13 (lan-guage, model) pairs show a negative q3/q3 → q5/q5 gap, with magnitudes between −4.9 pt (Arabic) and −18 .1 pt (Chi-nese). The error distribution bifurcates predictably: English and Chinese fail by commit (substitution toward a famil-iar lexical hypothesis); Japanese and Arabic fail by abstain 
+
+(empty or truncated predictions). Scaling the vision backbone does not close the gap. CLIP4STR-Huge, a 1.0 B-parameter recogniser on an Open-CLIP ViT-H/14 LAION-2B encoder, leads every benchmark on aggregate accuracy, yet a 6× scale-up over CLIP4STR-Base ( 158 M → 1.0 B) moves the stress corner only from 
+
+86 .9% to 86 .5% , within paired-bootstrap noise ( p = 0 .73 ,arXiv:2609.00816v1 [cs.CV] 1 Sep 2026 n = 474 ) (Schaeffer, Miranda, and Koyejo 2023). The same holds for a generalist OCR LMM: GOT-OCR-2.0 (Wei et al. 2024), trained on a 0.3 B-image corpus, shows the widest 
+
+compositional gap in our study ( −16 .0 pt under a normali-sation that absorbs its format artefacts; Section 4.3). Added capacity, contrastive or generative, does not reach the corner. We localise the failure to the autoregressive decoder via four converging probes (Section 4.4): a linear probe for “does this sample land in q5/q5?” is far more decodable at the decoder than at any encoder layer; the decoder is more con-fident on its wrong predictions in the stress cell than in the centre; and its attention drifts inward to its own decoding history precisely when visual evidence is rare. The result is the same across architectures — the decoder substitutes a familiar lexical hypothesis for what it sees (e.g. VEICHLES 
+
+→ VEHICLES ). We then ask how much of the gap existing techniques recover (Section 5). Across 16 non-architectural mitiga-tions spanning inference-time, loss-level, data-level, and parameter-level interventions, the largest mean q5/q5 gain is +1 .3 pt and none clears the paired-bootstrap noise floor. The only intervention that does is the architectural shift from AR decoding to CTC (SVTRv2), +2 .5 pt q5/q5 over the PARSeq baseline ( p = 0 .02 , n = 474 ). A confidence-routed AR ∪CTC ensemble adds a directionally consistent +0 .6 pt that stays within noise; configurations that add raw capacity (a 1.0 B third arm, external LM rescoring) buy aggregate ac-curacy while leaving the corner untouched. No configuration we test improves both q5/q5 and aggregate accuracy — the added capacity flows into other cells of the grid. Our contributions are threefold. First, a stratified bucket diagnostic (Section 3) that quantifies the (word-rarity ×
+
+n-gram-novelty) failure profile of any STR model on the existing 6-benchmark suite without new data, and adapts to four writing systems. Second, a direction-universal com-positional gap : q5/q5 sits below q3/q3 on all 13 (language, model) pairs and is not closed by vision-encoder scaling, with an English-specialised magnitude of 10–18 pt across nine backbones. Third, a descriptive ceiling : across 16 non-CTC mitigations and two ensemble extensions, none improves both q5/q5 and aggregate accuracy and only the AR →CTC shift crosses the q5/q5 noise floor. We offer the largest non-CTC gain ( +1 .3 pt) as a falsifiable target for future methods, reproducible against the same framework. 
+
+# 2 Related Work 
+
+STR architectures. We evaluate ten backbones spanning the full decoding spectrum from CTC to fully autoregres-sive: CRNN (Shi, Bai, and Yao 2017), TRBA (Baek et al. 2019), ViTSTR (Atienza 2021), ABINet (Fang et al. 2021), PARSeq (Bautista and Atienza 2022), MAERec (Jiang et al. 2023a), SVTRv2 (Du et al. 2025) (a modern CTC recognizer, ICCV 2025), and CLIP4STR-Base/Huge (Zhao et al. 2024) (158 M and 1.0 B-parameter vision-language-pretrained rec-ognizers). We additionally include the generalist OCR model GOT-OCR-2.0 (Wei et al. 2024) to test whether a 0.3 B-image generalist corpus escapes the failure the specialised mod-els share. All ten have been evaluated on the 6-benchmark suite; we re-examine that suite in the spirit of diagnostic re-evaluations of saturated benchmarks in adjacent fields (Recht et al. 2019; Schaeffer, Miranda, and Koyejo 2023; Yuksek-gonul et al. 2023). 
+
+Closest prior work. Two lines of work sit closest to ours. Union14M-L (Jiang et al. 2023b) consolidates 14 real-world datasets and defines a seven-axis benchmark (curved, multi-oriented, artistic, contextless, salient, multi-words, general) exposing failure modes invisible on the synthetic-trained benchmarks; compositional generalization is not one of those seven axes, but an orthogonal failure axis our di-agnostic isolates on the existing benchmarks without new data. Wan et al. (Wan et al. 2020) qualitatively observe that attention-based STR decoders generalize poorly to out-of-vocabulary words while segmentation-based decoders fare better, and propose a mutual-learning strategy; this is the closest direct precursor to our finding, which we sharpen in three ways. (a) We replace the qualitative observation with a quantitative 5 × 5 diagnostic that separates a marginal word-frequency effect from a conditional n-gram-novelty effect. (b) We show the q5/q5 < q3/q3 direction is preserved un-der a MJSynth → Union14M-L reference-corpus change on the five backbones we test for corpus sensitivity, and across ten backbones and four writing systems. (c) We show the modern CTC-based SVTRv2 (Du et al. 2025), which inher-its the segmentation-family advantage, recovers ≈25% of the PARSeq-baseline gap ( +2 .5 pt q5/q5, p = 0 .02 ) without aggregate regression. 
+
+Compositional generalization in vision and NLP. 
+
+CLEVR-CoGenT (Johnson et al. 2017) and COGS (Kim and Linzen 2020) measure compositional generalization in visual reasoning and semantic parsing under roughly uniform prim-itive distributions that permit clean disjoint test/train splits. Character n-gram distributions are Zipfian, which (Section 3) makes the disjoint-split idea unusable for STR: the rare com-binations are never cleanly disjoint, only progressively rarer. Our stratified bucket framework is a Zipf-aware alternative that grades novelty by quantile rather than partitioning it by set membership. 
+
+Confidence calibration and entropy regularization. 
+
+Pereyra et al. (Pereyra et al. 2017) introduced the confidence-penalty / entropy-regularization loss used as one of our mit-igation baselines, and Meister et al. (Meister, Salesky, and Cotterell 2020) generalize the family of entropy regularizers. Maximum-entropy regularization has been applied to Chinese STR (Cheng et al. 2020) but not, to our knowledge, against the AR decoder lexical-prior overconfidence we identify. 
+
+# 3 A Stratified Compositional Diagnostic 
+
+What does it mean for a scene-text recogniser to “generalise compositionally” over its training distribution? The cleanest formalisation traces back to SCAN (Lake and Baroni 2018), which showed that sequence-to-sequence models trained on individual navigation primitives fail to compose them at test time even when every primitive was seen during training; CLEVR-CoGenT (Johnson et al. 2017) and COGS (Kim Existing STR Samples            
+
+> Crop Image
+> Ground-truth label
+> VEICHLES
+> Model Prediction
+> VEHICLES
+> No new data required
+> Label Rarity Scoring
+> Word-frequency rank Trigram-novelty rank
+> Tokenize into character trigrams :
+> EIC : rare trigram determines
+> Benchmark-wise Quintile Assignment
+> word-frequency quintile
+> q1 q2 q3 q4 q5 q1 q5 q4 q3 q2
+> trigram-novelty quintile
+> Stress-Baseline Comparison
+> word-frequency quintile
+> q1 q2 q3 q4 q5 q1 q5 q4 q3 q2
+> trigram-novelty quintile
+> q3/q3 baseline q5/q5 stress
+> Higher larger compositional stress
+
+Figure 1: Construction of the StratiSTR compositional-stress grid. Each existing STR test image’s label is ranked against a reference corpus on two axes and binned into a 5 × 5 grid; q5/q5 vs. q3/q3 gives the diagnostic gap. and Linzen 2020) extend the same held-primitives-vary-combinations test to visual reasoning and semantic parsing respectively. We ask whether this analogue can be lifted into STR, and find that the natural lifting collapses. 
+
+3.1 Why disjoint n-gram splits do not work 
+
+The direct analogue is to partition the training corpus’s char-acter n-gram inventory into disjoint train and test sets and require a test word to contain only test-set n-grams. We at-tempted this and the construction fails for a structural reason: 
+
+n-gram statistics in natural English are Zipfian. A bigram inventory has only 676 candidates ( 26 2) and the most fre-quent 60 % of bigrams already appear inside nearly every common English word. Selecting words whose bigrams all 
+
+lie in the rare tail therefore selects against natural English. Applied to the 88 K-word MJSynth vocabulary, this cutoff returns only 159 unique strings, almost all abbreviations and brand codes ( hp, mvp, kfc, pvc, cdt, kgb ). Lifting to trigrams (17 ,576 candidates) does not escape the problem: the strict trigram-disjoint split returns the same kind of residual — abbreviations and acronyms such as fbi, cpu, pkwy, saab —rather than any natural English word. The failure is struc-tural, not a matter of choosing n: common substrings are exactly what common words are built from, so any test set defined by the rare-substring residual is, by construction, not a natural-language test set. 
+
+3.2 From disjoint splits to graded stratification 
+
+The lesson from the failed disjoint-split attempt is that En-glish character-n-gram statistics are too dense to admit a clean hold-out. We instead read the diagnostic as a graded sig-nal on the existing 6-benchmark suite. Two intuitions guide the design. First, compositionality is the joint signature of two axes that already exist in the test data: the rarity of the whole word and the novelty of the character n-grams it contains. A test word can be common-word–rare-trigram (a real but unusual English word), or rare-word–common-trigram (a proper noun made of familiar substrings), or rare-word–rare-trigram. Only the last is properly compositional: novel substrings assembled into a novel whole. Second, we should not collapse the spectrum to a binary “compositional / non-compositional” label. Both axes are continuous, and the most informative cell is the joint corner where both signals are simultaneously extreme. Formally, for a test image with ground-truth label ℓ and a reference training corpus Cref , we compute two ranks. The word-frequency rank rword (ℓ) = rank Cref (ℓ) is the rank of 
+
+ℓ in Cref ’s word-frequency table, with words absent from 
+
+Cref assigned a sentinel rank |V | + 1 . The trigram-novelty rank rtri (ℓ) = max t∈T (ℓ) rank Cref (t) is the rank of the rarest 
+
+character trigram in ℓ, where T (ℓ) is its set of character tri-grams; we take the maximum (worst-case substring) rather than the mean because a single off-distribution substring is what pushes the decoder’s lexical prior off its training mani-fold. Each rank is mapped to a quintile by a per-benchmark 
+
+binning Qb on the log 10 scale, i = Qb(log 10 rword ) and 
+
+j = Qb(log 10 rtri ), so that each benchmark contributes its own hardest fifth to the q5 band rather than letting easier benchmarks dominate a global split (edges in Appendix K). This assigns every image to a cell (i, j ) ∈ { 1, . . . , 5}2, yield-ing a 5 × 5 accuracy grid M per model, where Mi,j is the model’s accuracy in cell (i, j ). The compositional-stress cell is the q5/q5 corner and the q3/q3 centre is the natural baseline, and the compositional gap is ∆stress = Mq5,q 5 − Mq3,q 3 (Fig-ure 1). The framework requires no new images and applies to any model unchanged. 
+
+Choice of reference corpus. We use MJSynth (Jaderberg et al. 2014) as the primary reference because most evaluated checkpoints were trained on it. To test whether the diagnos-tic depends on MJSynth’s particular Zipfian structure, we re-run it with the heavier-tailed real-world corpus Union14M-L (Jiang et al. 2023b) as the reference, on the five backbones for which we ran the swap (Appendix B). The q5/q5 < q3/q3 
+
+direction holds on every one, and the model ordering by q5/q5 is essentially unchanged (Pearson r = 0 .99 ). The ab-solute q5/q5 level shifts upward by 2.4 to 3.8 pt under the heavier-tailed corpus (e.g. PARSeq 85 .2 → 89 .0). The com-positional drop is thus a ranking property of the recogniser — robust to reference choice in its direction and ordering, not in its absolute magnitude. 
+
+Normalisation. We restrict to lowercase Latin alphabetic labels (regex ˆ[a-z]+$ ), the natural domain of charac-ter n-gram statistics in English. This drops 9.75 % of the 6-benchmark union ( 707 of 7248 labels: special-character, all-digit, and mixed-alphanumeric strings, concentrated on IIIT5K and IC15). Crucially, none of the 707 dropped la-bels is a brand-code token: the pure-alphabetic short strings that motivate the study (e.g. hp , kfc ) all survive the filter, so the diagnostic measures exactly the regime the introduction highlights. For non-Latin scripts we adapt the axes to char-acter rarity × character-bigram novelty; Section 4.3 reports cross-script results. 
+
+# 4 The Compositional Gap and Its Mechanism 
+
+4.1 Setup 
+
+We evaluate the ten STR backbones listed in Section 2 — nine specialised recognisers and the generalist OCR LMM GOT-OCR-2.0 (Wei et al. 2024) — on the six standard STR benchmarks (Mishra, Alahari, and Jawahar 2012; Karatzas et al. 2013, 2015; Wang, Babenko, and Belongie 2011; Phan et al. 2013; Risnumawan et al. 2014), totalling 7,248 cropped test images, of which 6,541 carry alpha-only labels and enter the bucket analysis ( 9.75 % dropped; Section 3). Public check-points come from each model’s authoritative release. We use MJSynth (Jaderberg et al. 2014) as the primary reference corpus and Union14M-L (Jiang et al. 2023b) for the cross-corpus check (Appendix B). The metric is case-insensitive word accuracy after stripping non-alphanumerics, the stan-dard STR community metric. Full per-checkpoint provenance is in Appendix J. 
+
+4.2 Aggregate accuracy: the saturated picture 
+
+We begin with the conventional view. Aggregate accuracy on the six standard benchmarks places every specialised recogniser in a narrow 89 –97 % band (Table 1). The nine specialised backbones cluster within a few points of each other on the four largest benchmarks despite spanning two orders of magnitude in parameter count ( 8.4 M for CRNN to 1.0 B for CLIP4STR-Huge) and fundamentally different inductive biases — an RNN, an MAE-pretrained transformer, a contrastively-pretrained ViT, a CTC-based recogniser. At this resolution the problem reads as saturated and any re-maining inter-architecture variation as noise. (The generalist GOT-OCR-2.0 sits far lower in raw exact-match accuracy, almost entirely because of prediction-format artefacts; we defer it to Section 5, where a fair normalisation makes it a clean test of whether generalist capacity helps.) 
+
+4.3 The gap and its universality 
+
+If aggregate accuracy hides a structural failure, the stratified diagnostic should expose it. We compute the per-cell accu-racy grid for every model on every benchmark, pool across the six benchmarks, and read off two cells per model: the q5/q5 corner (rare word × rare trigram) and the q3/q3 centre (Table 2). Three properties stand out. First, the gap is large: −10 to 
+
+−18 pt is an order of magnitude larger than the inter-model spread on aggregate accuracy in Table 1. Second, the direc-tion is universal: every specialised backbone’s worst cell is the q5/q5 corner, and accuracy falls monotonically from the q3/q3 centre toward that corner along the rare side of each axis. (The common end is not monotone — q1/q1 sits slightly below q3/q3 for several models, because that band is domi-nated by very short high-frequency words where character-level ambiguity raises the absolute error rate. The rarity axis is therefore U-shaped, which only sharpens the point: q5/q5 is hard not because rare words are uniformly hard, but because of what happens at the rare combination .) Third, the gap is not addressable on the visual side. Despite very different inductive biases — masked-image pretraining (MAERec-B), LAION-pretrained CLIP encoders (CLIP4STR), and su-pervised training (PARSeq/ABINet) — all specialised back-bones land within 2 pt of one another at q5/q5. 
+
+The gap is an interaction, not rare-word reliance. Anatural worry is that q5/q5 simply re-discovers vocabulary re-liance (Wan et al. 2020) — that rare words are hard and the trigram axis adds nothing. A marginal-effect decom-position rules this out (Appendix A). Holding word fre-quency at q5 and varying trigram novelty from q1 to q5 costs PARSeq −7.6 pt; doing the same at q1 (common words) costs only −0.1 pt. The trigram-novelty axis has almost no marginal effect and acts only conditional on the word being rare. Equivalently, the marginal word-rarity effect ( −3.9 pt) plus the conditional trigram effect ( −7.6 pt) sum to the joint q1/q1 →q5/q5 drop ( −11 .4 pt): primitives seen, the joint un-seen, the surface marginal near zero and the conditional effect large. That is the definitional signature of compositional gen-eralisation, not of word rarity per se. The full 5 × 5 accuracy grids are in Appendix H. 
+
+The direction is universal across writing systems. The English result is not a Latin-only or MJSynth-only arte-fact. We adapt the two axes for non-Latin scripts — replac-ing word frequency with minimum character log-frequency and trigram novelty with consecutive-character-bigram log-frequency — and run the same diagnostic on Chinese (Fu-danVI BCTR (Yu et al. 2021), two recognisers), Japanese (a 
+
+40 k-sample synthetic kanji+kana set, two recognisers), and Arabic (EvArEST (Hassan, El-Mahdy, and Hussein 2021), EasyOCR). Table 3 reports the result: all 13 of 13 (language, model) pairs show a negative q3/q3 →q5/q5 gap, with mag-nitudes from −4.9 pt (Arabic) to −18 .1 pt (Chinese). The 
+
+magnitude varies with script and model strength, so we claim universality only for the direction , which holds without ex-ception. The way the gap manifests differs by script in a manner that supports the lexical-prior account rather than complicating Table 1: Word accuracy of the ten evaluated backbones: pooled aggregate ( Agg ) and per-benchmark breakdown. Checkpoints are each model’s authoritative public release (Appendix J). GOT-OCR-2.0 is under raw exact match; a fair normalisation is in Section 5. 
+
+Model Params Agg Per-benchmark IIIT5K IC13 IC15 SVT SVTP CUTE80 PARSeq (Bautista and Atienza 2022) 23.8M 96.03 98.83 98.25 90.72 98.30 94.73 98.61 ABINet (Fang et al. 2021) 36.9M 95.74 98.53 98.60 90.50 98.15 93.80 96.88 ViTSTR (Atienza 2021) 21.4M 94.51 97.83 97.67 89.01 95.98 91.16 95.83 TRBA (Baek et al. 2019) 49.8M 95.47 98.50 97.90 88.18 97.84 91.78 95.49 CRNN (Shi, Bai, and Yao 2017) 8.4M 88.91 94.53 93.58 81.83 91.19 80.62 89.24 MAERec-B (Jiang et al. 2023a) 142.1M 95.96 99.00 98.25 90.61 97.53 94.73 98.26 CLIP4STR-B (Zhao et al. 2024) 158.3M 96.83 99.40 98.60 91.39 98.30 97.67 98.61 CLIP4STR-H (Zhao et al. 2024) 1.0B 97.00 99.43 99.07 91.72 99.07 97.67 98.61 SVTRv2 (Du et al. 2025) 19.8M 96.19 99.03 98.60 91.28 98.15 94.26 99.31 GOT-OCR-2.0 (Wei et al. 2024) 580M 65.69 59.80 59.28 69.02 68.93 64.03 68.40 
+
+Table 2: q5/q5 (rare word × rare trigram) vs. q3/q3 centre, pooled across the six benchmarks ( nq5/q 5 = 474 ). The gap is 
+
+−10 to −18 pt across nine backbones despite a far narrower aggregate spread (Table 1). Reference corpus: MJSynth.                               
+
+> Model q5/q5 q3/q3 centre Gap (pt) CRNN 74.7 92.6 −17 .9
+> ViTSTR 85.0 96.8 −11 .7
+> PARSeq 85.2 99.1 −13 .9
+> ABINet 85.2 97.6 −12 .4
+> TRBA 86.3 98.5 −12 .2
+> MAERec-B 86.3 98.2 −11 .9
+> CLIP4STR-B 86.9 98.5 −11 .6
+> CLIP4STR-H (1.0B) 86.5 98.8 −12 .3
+> SVTRv2 (ICCV 2025) 87.8 98.2 −10 .5
+
+it. For English the two axes both contribute (the interaction above); for Chinese the character-rarity axis dominates and the bigram axis adds only about 1 pt, consistent with Han characters being morphemes that carry meaning alone. The error kind also splits cleanly into two regimes, which we analyse next as the first of the mechanism probes. 
+
+4.4 Mechanism: localising the failure to the AR decoder 
+
+The diagnostic shows where the failure occurs; it does not yet show why . If the gap were missing visual capacity — glyphs the model cannot resolve — the wrong predictions would look like noise. If instead a prior is applied on top of the visual evidence, the wrong predictions should look like 
+
+nearby training-set strings . Four converging probes point to the second account, and locate the prior in the autoregressive decoder. 
+
+(i) Errors are lexical corrections, not noise. We inspect the 474 q5/q5 wrong predictions of PARSeq, the strongest specialised model in our set (Table 4). The dominant mode is not character noise but lexical snap : the decoder treats Table 3: Cross-script q5/q5 vs. q3/q3 accuracy (non-Latin scripts; English rows are Table 2). Every pair has a negative gap, extending the English finding to three writing systems and five models.                       
+
+> Language Model q3/q3 q5/q5 Gap (pt) Chinese SVTRv2-ch 80.6 62.5 −18 .1
+> PP-OCRv5-multi 55.0 41.9 −13 .1
+> Japanese PP-OCRv5-multi 18.0 7.9 −10 .1
+> PP-OCRv5 server 21.6 12.9 −8.7
+> Arabic EasyOCR-Arabic 39.9 35.0 −4.9
+
+an unfamiliar character sequence as a candidate word and projects it onto the nearest entry in its implicit training vo-cabulary. VEICHLES becomes VEHICLES , Boerien becomes 
+
+Experience , Reking becomes Relishing — each a real English word at minimum edit distance, regardless of whether the input is a misspelling, a proper noun, or a non-English string. The same qualitative pattern holds on the other specialised AR models we inspect (Appendix D). 
+
+(ii) The decoder is most confident where it is most wrong. 
+
+If the decoder commits to a prior-driven guess rather than expressing visual uncertainty, it should be more confident on its wrong predictions in the stress cell than in the centre. It is: PARSeq’s mean top-1 confidence on wrong q5/q5 predictions is 0.93 , against 0.89 on wrong q3/q3 predictions, even though q5/q5 accuracy is 14 pt lower (full per-cell decomposition in Appendix G). Confidence rises exactly where visual support for the lexical guess is weakest, the same overconfidence phenomenon documented for modern neural networks gener-ally (Guo et al. 2017), here localised to a specific, diagnosable input regime rather than reported as a global property. 
+
+(iii) The q5/q5 signal is decodable at the decoder, not the encoder. A layer-wise linear probe for “is this sample in q5/q5?”, trained on PARSeq hidden states, climbs from AUC 0.60 to 0.70 across encoder blocks 0–11 and jumps Table 4: Representative wrong predictions in PARSeq’s q5/q5 cell. The failures are not random character noise but lexi-cal snap: they map an unfamiliar sequence onto the nearest training-set English word (boldface). Mode labels are defined in Section 4.4.                 
+
+> True label Prediction Mode GASTRONOMY INKHEN whole-word
+> VEICHLES VEHICLES lexical-snap
+> Boerien Experience lexical-snap
+> Reking Relishing lexical-snap
+> Doraeman Doraemon lexical-snap BETRIEBSBEREIT CETRIEBSBEREIT char-edit jeanswear ieanswear char-noise
+
+Figure 2: One representative q5/q5 wrong prediction per script. Full galleries are in Appendix L. to AUC 0.80 at the decoder mean-pool (Appendix G). The 
+
++0 .10 AUC gap localises the compositional-stress signal to the AR decoder rather than the encoder — consistent with the intervention hierarchy of Section 5, where replacing the AR decoder with a CTC head is the single most effective change. 
+
+(iv) Attention drifts inward under stress, and the error kind bifurcates by script. The decoder’s first-layer ratio of self- to cross-attention entropy rises monotonically from 
+
+∼ 0.27 in the common-trigram band to ∼ 0.44 in the rare-trigram band (Appendix I): visual attention does not stop, but the budget shifts toward the prior as compositional stress grows. This same prior-versus-evidence trade-off produces two script-level error regimes. Sampling fifty q5/q5 wrong predictions per script, English and Chinese fail by commit 
+
+(94 % and 92 % character substitutions toward a familiar word or morpheme), while Japanese and Arabic fail by abstain 
+
+(68 % and 34 % empty or truncated). Both regimes share one cause — the AR decoder discounts low-prior visual evidence — and differ only in surface form. 
+
+# 5 What Closes the Gap? 
+
+We have a −10 to −18 pt compositional gap that is universal in direction and localised to the AR decoder. How much of it can existing techniques recover? We work outward from the cheapest lever (more visual capacity) to the most invasive (replacing the decoder), and find that almost nothing moves the q5/q5 cell except a change of decoding architecture. 
+
+5.1 Scaling the backbone does not close the gap 
+
+The most direct lever is more visual capacity. CLIP4STR-Huge pairs a 1.0 B-parameter OpenCLIP ViT-H/14 LAION-2B encoder with the CLIP4STR recogniser and leads every benchmark on aggregate accuracy, reaching the highest q1/q1 cell in our study ( 98 .9% ). Yet a 6× scale-up over CLIP4STR-Base ( 158 M → 1.0 B, same recogniser, same training recipe) moves the stress corner from 86 .9% to 86 .5% — a −0.4 pt change whose paired-bootstrap confidence interval contains zero ( p = 0 .73 , n = 474 ). Because the two models share everything but encoder scale, this isolates capacity as the variable and shows it does not reach the corner (Schaeffer, Miranda, and Koyejo 2023). A generalist model trained on far more data tells the same story. GOT-OCR-2.0 is a 580 M-parameter OCR LMM trained on a 0.3 B-image corpus. Under raw exact match it scores only 65 .7% aggregate, but 82% of its “errors” are prediction-format artefacts — trailing padding and multi-word continuation ( LONDON → LONDONLONDON ). Un-der a charitable normalisation that strips these (prediction 
+
+startswith the label after alphanumeric folding), its ag-gregate rises to 93 .5% — and its q5/q5 reaches 80 .8% ,
+
+−16 .0 pt below its own q3/q3, the widest compositional gap in our study. A generalist trained on three orders of magni-tude more imagery does not close the corner; under a fair metric it widens it. Whatever the gap is, neither contrastive nor generative visual capacity reaches it; the origin must lie in the decoder, as the mechanism probes indicated. 
+
+5.2 Sixteen non-architectural mitigations 
+
+We next run 16 candidate mitigations spanning four interven-tion levels — inference (temperature, beam and LM rescor-ing), loss (entropy and confidence penalties), data (synthetic character-augmentation FT), and parameter-level adapters — plus a confidence-routed ensemble. Each is summarised by its q5/q5 corner accuracy and the ∆ over the PARSeq base-line (Table 5); full per-attempt detail, multi-seed ablations, and three further candidates are in Appendix E. We read the resulting bound as a descriptive ceiling over these attempts, not a universal one: four categories (large-LM rescoring, byte-level tokenisation, retrieval-augmented decoding, RL-shaped visual–lexical objectives) remain untested (Section 6). The pattern is clean. The architectural shift from autore-gressive to CTC decoding (SVTRv2) gains +2 .5 pt at q5/q5 over the PARSeq baseline and is the only intervention whose paired-bootstrap interval excludes zero ( p = 0 .02 , n = 474 ); on the hardest individual failure trigrams it roughly halves the per-trigram error rate (Appendix C). Every non-architectural attempt — the best of which is a LoRA-AR adapter at +1 .3 pt — has a 95% interval that contains zero. We therefore report 
+
++1 .3 pt as a descriptive ceiling (the largest mean non-CTC gain we observed), not a statistical bound. 
+
+5.3 LoRA-AR: the strongest non-architectural attempt 
+
+The largest non-CTC mean gain comes from a 15 ,360 -parameter LoRA (Hu et al. 2022) adapter on the AR decoder’s Table 5: Mitigation summary; full statistics in Appendix F. Only SVTRv2’s AR →CTC shift ( bold ) clears the q5/q5 noise floor (p = 0 .02 ); every other attempt’s 95% CI contains zero, and added capacity trades q5/q5 for aggregate. 
+
+## Variant Level q5/q5 (%) ∆ q5/q5 q3/q3 (%) Agg (%) Original PARSeq baseline 85.2 — 99.1 95.71 + synthetic char-aug FT data 83.3 −1.9 97.9 94.4 + entropy regularization loss 85.9 +0 .6 98.5 95.8 + distilGPT-2 LM rescore, λ=0 .2 inference 86.1 +0 .9 98.4 96.5 + LoRA-AR (ours), r=4 PEFT 86.5 +1 .3 98.2 96.0 
+
+## SVTRv2 (CTC) architecture 87.8 +2 .5 98.2 96.55 + 2-way router (LoRA-AR ∪ SVTRv2) ensemble 88.4 +3 .2 98.6 96.80 + 3-way router ( ∪ CLIP4STR-Huge) ensemble 86.9 +1 .7 99.0 97.31 
+
+MLP linears ( 0.064% of PARSeq’s trainable parameters; en-coder, attention projections, and output head frozen). At r=4 
+
+it reaches 86 .5% q5/q5 (the seed-0 checkpoint, +1 .3 pt over baseline; robust across five seeds at 86 .3 ± 0.21 ), though the gain does not clear the noise floor ( p = 0 .14 ). This single seed-0 instance is the one consumed by the routed ensemble below, so we report it in Table 5 for an apples-to-apples com-parison. That the adapter helps most when confined to the decoder MLP — and that higher ranks ( r ∈ { 16 , 32 }) drift back toward baseline rather than improving — is consistent with the probe result that the prior lives in the AR decoder: the available non-architectural headroom is small and con-centrated there. We present LoRA-AR as the strongest non-architectural attempt and the basis of the descriptive ceiling, not as a statistically established gain. 
+
+5.4 A confidence-routed ensemble, and where extra capacity goes 
+
+The AR and CTC families make different mistakes, so we test whether routing between them recovers additional head-room. Across all six benchmarks LoRA-AR and SVTRv2 disagree on 259 of the 7,248 kept-filter images; on 184 of these exactly one model is right, and we train a 21 -feature logistic-regression router on those 184 supervised disagree-ments via 5-fold stratified cross-validation, then evaluate on the q5/q5 cell. The right-if-either oracle on q5/q5 reaches 
+
+89 .7% , and the router approximates it at 88 .4% — +0 .6 pt over SVTRv2 alone, directionally consistent with but statisti-cally indistinguishable from SVTRv2 ( p = 0 .43 ). The result is still informative: the router’s dominant learned coefficient is each model’s own minimum-softmax confidence, the same confidence-when-wrong signal the mechanism analysis iden-tified, so even the best ensemble we can build reads out the mechanism rather than circumventing it. Adding raw capacity does not help the corner either. A third 1.0 B-parameter router arm (CLIP4STR-Huge) lifts ag-gregate to the highest in our study ( 97 .3% ) but its q5/q5 falls 1.5 pt back onto the CLIP4STR-Base operating point (86 .9% ; CI [−3.2, 0.0] , p = 0 .078 ): the extra capacity flows into the q1–q4 cells where CLIP4STR-Huge wins, leaving the corner untouched. External distilGPT-2 rescoring of the top-5 beams (Gulcehre et al. 2015; Kannan et al. 2018) buys aggregate accuracy but not q5/q5 — a general-language prior, if anything, reinforces the lexical-snap failure the mechanism analysis diagnoses. Across all 16 non-architectural mitigations and both en-semble extensions, no configuration improves both q5/q5 and aggregate accuracy. The residual ∼ 10 pt between SVTRv2’s q5/q5 and the q3/q3 centre is the word-level lexical snap that persists even after the architectural shift ( VEICHLES →
+
+VEHICLES ; Appendix D), and our results suggest it calls for a change of training objective rather than added capacity. 
+
+# 6 Discussion 
+
+Implications for how STR is measured and advanced. 
+
+The headline reading of STR — 89 –97 % on six benchmarks, a solved problem — survives only because the aggregate metric averages over a long tail it never isolates. Stratifying the same test images exposes a −10 to −18 pt compositional gap on every one of the nine specialised English backbones, in the same direction on all 13 (language, model) pairs across four writing systems, and crossed only by a change of de-coding architecture. Two consequences follow. Progress on the rare-input tail cannot be read off aggregate accuracy: a method can buy a point of aggregate while leaving the com-positional corner untouched, as adding a 1.0 B-parameter arm or an external language model does here, so a stratified read-out should accompany the headline number whenever the long tail matters. And the lever that moves the corner is architectural rather than quantitative — we agree with Wan et al. (Wan et al. 2020) at the architectural level, but localise the effect to the AR decoder’s lexical prior and show a 6× visual-encoder scale-up does not touch it. 
+
+Limitations. The +1 .3 pt ceiling over our 16 non-architectural mitigations is a descriptive mean, not a signifi-cant gain ( p = 0 .14 ), and four intervention families remain untested: external large-LM rescoring, byte/character-level to-kenisation, retrieval-augmented decoding, and reinforcement-learned visual–lexical objectives. Of these, objectives that decouple character accuracy from word-level identity seem most promising: Appendix D shows the residual gap survives the AR →CTC shift precisely because both objectives still reward matching a whole-word target. References 
+
+Atienza, R. 2021. Vision Transformer for Fast and Efficient Scene Text Recognition. In ICDAR , 319–334. Baek, J.; Kim, G.; Lee, J.; Park, S.; Han, D.; Yun, S.; Oh, S. J.; and Lee, H. 2019. What Is Wrong With Scene Text Recogni-tion Model Comparisons? Dataset and Model Analysis. In 
+
+ICCV , 4715–4723. Bautista, D.; and Atienza, R. 2022. Scene Text Recognition with Permuted Autoregressive Sequence Models. In ECCV ,178–196. Cheng, C.; Xu, W.; Bai, X.; Feng, B.; and Liu, W. 2020. Max-imum Entropy Regularization and Chinese Text Recognition. In International Workshop on Document Analysis Systems (DAS) , 3–17. ArXiv:2007.04651. Du, Y.; Chen, Z.; Xie, H.; Jia, C.; and Jiang, Y.-G. 2025. SVTRv2: CTC Beats Encoder-Decoder Models in Scene Text Recognition. In ICCV . ArXiv:2411.15858. Fang, S.; Xie, H.; Wang, Y.; Mao, Z.; and Zhang, Y. 2021. Read Like Humans: Autonomous, Bidirectional and Iterative Language Modeling for Scene Text Recognition. In CVPR ,7098–7107. Geirhos, R.; Rubisch, P.; Michaelis, C.; Bethge, M.; Wich-mann, F. A.; and Brendel, W. 2019. ImageNet-trained CNNs are Biased Towards Texture; Increasing Shape Bias Improves Accuracy and Robustness. In International Conference on Learning Representations (ICLR) . Oral; arXiv:1811.12231. Gulcehre, C.; Firat, O.; Xu, K.; Cho, K.; Barrault, L.; Lin, H.-C.; Bougares, F.; Schwenk, H.; and Bengio, Y. 2015. On Using Monolingual Corpora in Neural Machine Translation. arXiv:1503.03535. Guo, C.; Pleiss, G.; Sun, Y.; and Weinberger, K. Q. 2017. On Calibration of Modern Neural Networks. In 
+
+International Conference on Machine Learning (ICML) .ArXiv:1706.04599. Hassan, H.; El-Mahdy, A.; and Hussein, M. E. 2021. Arabic Scene Text Recognition in the Deep Learning Era: Analysis on a Novel Dataset. IEEE Access . EvArEST dataset. Hsieh, C.-Y.; Zhang, J.; Ma, Z.; Kembhavi, A.; and Kr-ishna, R. 2023. SugarCrepe: Fixing Hackable Bench-marks for Vision-Language Compositionality. In Ad-vances in Neural Information Processing Systems (NeurIPS) .ArXiv:2306.14610. Hu, E. J.; Shen, Y.; Wallis, P.; Allen-Zhu, Z.; Li, Y.; Wang, S.; Wang, L.; and Chen, W. 2022. LoRA: Low-Rank Adaptation of Large Language Models. In International Conference on Learning Representations (ICLR) . ArXiv:2106.09685. Jaderberg, M.; Simonyan, K.; Vedaldi, A.; and Zisserman, A. 2014. Synthetic Data and Artificial Neural Networks for Natural Scene Text Recognition. arXiv:1406.2227. Jiang, Q.; Wang, J.; Peng, D.; Liu, C.; and Jin, L. 2023a. Revisiting Scene Text Recognition: A Data Perspective. In 
+
+ICCV , 20543–20554. Jiang, Q.; Wang, J.; Peng, D.; Liu, C.; and Jin, L. 2023b. Revisiting Scene Text Recognition: A Data Perspective. In 
+
+ICCV , 20543–20554. Johnson, J.; Hariharan, B.; van der Maaten, L.; Fei-Fei, L.; Zitnick, C. L.; and Girshick, R. 2017. CLEVR: A Diagnostic Dataset for Compositional Language and Elementary Visual Reasoning. In CVPR , 2901–2910. Kannan, A.; Wu, Y.; Nguyen, P.; Sainath, T. N.; Chen, Z.; and Prabhavalkar, R. 2018. An Analysis of Incorporating an Ex-ternal Language Model into a Sequence-to-Sequence Model. In IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP) . ArXiv:1712.01996. Karatzas, D.; Gomez-Bigorda, L.; Nicolaou, A.; et al. 2015. ICDAR 2015 Competition on Robust Reading. In ICDAR ,1156–1160. Karatzas, D.; Shafait, F.; Uchida, S.; et al. 2013. ICDAR 2013 Robust Reading Competition. In ICDAR , 1484–1493. Kim, N.; and Linzen, T. 2020. COGS: A Compositional Generalization Challenge Based on Semantic Interpretation. In EMNLP , 9087–9105. Lake, B. M.; and Baroni, M. 2018. Generalization without Systematicity: On the Compositional Skills of Sequence-to-Sequence Recurrent Networks. In ICML , 2873–2882. Meister, C.; Salesky, E.; and Cotterell, R. 2020. Generalized Entropy Regularization or: There’s Nothing Special about Label Smoothing. In ACL , 6870–6886. Mishra, A.; Alahari, K.; and Jawahar, C. 2012. Scene Text Recognition Using Higher Order Language Priors. In BMVC .Ojha, U.; Li, Y.; Sundara Rajan, A.; Liang, Y.; and Lee, Y. J. 2023. What Knowledge Gets Distilled in Knowledge Distillation? In Advances in Neural Information Processing Systems (NeurIPS) . ArXiv:2205.16004. Pereyra, G.; Tucker, G.; Chorowski, J.; Kaiser, Ł.; and Hin-ton, G. 2017. Regularizing Neural Networks by Penalizing Confident Output Distributions. arXiv:1701.06548. Phan, T. Q.; Shivakumara, P.; Tian, S.; and Tan, C. L. 2013. Recognizing Text with Perspective Distortion in Natural Scenes. In ICCV , 569–576. Recht, B.; Roelofs, R.; Schmidt, L.; and Shankar, V. 2019. Do ImageNet Classifiers Generalize to ImageNet? In 
+
+International Conference on Machine Learning (ICML) .ArXiv:1902.10811. Risnumawan, A.; Shivakumara, P.; Chan, C. S.; and Tan, C. L. 2014. A Robust Arbitrary Text Detection System for Natural Scene Images. Expert Systems with Applications , 41(18): 8027–8048. Schaeffer, R.; Miranda, B.; and Koyejo, S. 2023. Are Emer-gent Abilities of Large Language Models a Mirage? In Ad-vances in Neural Information Processing Systems (NeurIPS) .Outstanding Paper Award; arXiv:2304.15004. Shi, B.; Bai, X.; and Yao, C. 2017. An End-to-End Trainable Neural Network for Image-Based Sequence Recognition and Its Application to Scene Text Recognition. IEEE TPAMI ,39(11): 2298–2304. Wan, Z.; Zhang, J.; Zhang, L.; Luo, J.; and Yao, C. 2020. On Vocabulary Reliance in Scene Text Recognition. In CVPR ,11425–11434. Wang, K.; Babenko, B.; and Belongie, S. 2011. End-to-End Scene Text Recognition. In ICCV , 1457–1464. Wei, H.; Liu, C.; Chen, J.; Wang, J.; Kong, L.; Xu, Y.; Ge, Z.; Zhao, L.; Sun, J.; Peng, Y.; Han, C.; and Zhang, X. 2024. General OCR Theory: Towards OCR-2.0 via a Unified End-to-end Model. arXiv:2409.01704. Yu, H.; Chen, J.; Li, B.; Ma, J.; Guan, M.; Xu, X.; Wang, X.; Qu, S.; and Xue, X. 2021. Benchmarking Chinese Text Recognition: Datasets, Baselines, and an Empirical Study. FudanVI BCTR benchmark, arXiv:2112.15093. Yuksekgonul, M.; Bianchi, F.; Kalluri, P.; Jurafsky, D.; and Zou, J. 2023. When and Why Vision-Language Models Be-have Like Bags-of-Words, and What to Do About It? In In-ternational Conference on Learning Representations (ICLR) .Oral; arXiv:2210.01936. Zhao, S.; Quan, R.; Zhu, L.; and Yang, Y. 2024. CLIP4STR: A Simple Baseline for Scene Text Recognition with Pre-trained Vision-Language Model. IEEE Transactions on Image Processing . DOI 10.1109/TIP.2024.3512354; arXiv:2305.14014. A Interaction analysis: the gap is not just rare-word reliance 
+
+The most likely objection to the q5/q5 gap is that it merely re-discovers “vocabulary reliance” (Wan et al. 2020): that rare 
+
+words are hard and the trigram-novelty axis adds nothing. We decompose the joint q1/q1 →q5/q5 drop into marginal and conditional parts (PARSeq, pooled across the six benchmarks; other AR backbones are qualitatively identical), reported in Table 6. Table 6: Marginal vs. conditional effects for PARSeq, pooled across the six benchmarks. The marginal trigram effect (vary-ing novelty at a common word) is essentially zero; the condi-tional trigram effect (varying novelty at a rare word) is large. The marginal word effect ( −3.9) plus the conditional trigram effect ( −7.6) recover the full joint drop ( −11 .4), the additive decomposition of a genuine interaction.                         
+
+> Effect Accuracy path Drop Marginal trigram (at word=q1) 96 .7→96 .6−0.1pt Marginal word (at trigram=q1) 96 .7→92 .8−3.9pt Conditional trigram (at word=q5) 92 .8→85 .2−7.6pt Joint q1/q1 →q5/q5 96 .7→85 .2−11 .4pt
+
+The trigram axis carries almost no marginal weight (row 1, 
+
+−0.1 pt at a common word) but becomes the dominant term once the word is rare (row 3, −7.6 pt), and the marginal word effect plus the conditional trigram effect recover the joint drop exactly ( −3.9 − 7.6 = −11 .4). This is the signature of compositional generalisation rather than word rarity per se: a vocabulary-reliance account, under which the gap is a function of word frequency alone, cannot produce a trigram effect that is zero at common words and −7.6 pt at rare ones. 
+
+# B Cross-corpus invariance 
+
+Is the compositional gap an artifact of choosing MJSynth as the reference, or is it a property of the model architecture itself? We re-run the diagnostic with Union14M-L as the reference on the five R3 backbones, reported in Table 7. The two corpora differ structurally: MJSynth samples a fixed dic-tionary near-uniformly, while Union14M-L follows a natural-language Zipfian distribution. If the gap were a binning ar-tifact of one corpus’s peculiarities, it should not survive the swap. All five R3 backbones exhibit ρ > 0.94 on the marginal-curve shape, and the q5/q5 < q3/q3 direction holds for every one of them. The diagnostic thus captures a property of the model rather than a binning artifact of the reference corpus. What changes under the swap is the absolute level, not the direction: q5/q5 cell values move upward by 2.4 to 3.8 pt under the heavier-tailed Union14M-L reference (e.g. 0.852 
+
+MJSynth-ref vs. 0.890 Union14M-L-ref for PARSeq). We ran the swap on the five R3 backbones (ABINet, CRNN, PARSeq, TRBA, ViTSTR); the absolute level for the remain-ing backbones under an alternative reference is not measured here. The claim we rely on downstream is the direction and the model ordering, both of which are preserved. 
+
+# C Within-cell per-trigram failure rates 
+
+The aggregate +2 .5 pt q5/q5 gain from the AR →CTC switch could in principle be a uniform reduction in failure rate across all q5/q5 images, or a sharper reduction concentrated on a small subset of particularly hard trigrams. The two interpre-tations have different mechanistic implications: a uniform reduction would suggest CTC simply makes the decoder more visually careful everywhere, while a concentrated re-duction would suggest CTC specifically defuses the lexical-completion pressure on the substrings that most strongly trigger it. To distinguish these, we isolate the trigrams that appear at least five times inside the q5/q5 cell and compare the per-trigram failure rate of PARSeq (AR) against SVTRv2 (CTC) on the same images (Table 8). The reduction is concentrated, not uniform. The same tri-grams that drive most of the PARSeq q5/q5 failures ( ree, cha, ich, ers — all common substrings of frequent English words like three, charge, which, others ) see CTC’s failure rate fall by 20 –60 pt; trigrams that do not occur inside dense lexical neighbourhoods are unaffected. This is consistent with the lexical-prior account of Section 4.4: the AR decoder reads these trigrams as completion cues toward a known word, so removing the autoregressive decoding step (CTC has no conditioning on previously emitted tokens) removes the com-pletion pressure exactly where it was strongest. The +2 .5 pt aggregate gain is the integral of this concentrated reduction, not a uniform drift. 
+
+# D Residual lexical snap after architectural mitigation 
+
+SVTRv2 closes about a quarter of the PARSeq compositional gap ( +2 .5 pt of the ∼ 13 .9 pt PARSeq gap; Section 5), but a residual of roughly 10 pt to the q3/q3 centre remains. We inspect the predictions on the same q5/q5 images where both models err, to ask whether the residual is the same failure mode as the original (lexical replacement) or a qualitatively different one (Table 9). The comparison matters for how to interpret the intervention ceiling: if CTC merely shifts the same lexical snap to a slightly higher accuracy, future progress requires attacking the prior directly, not the decoding mechanism. The lexical prior decomposes into two components that the CTC switch treats differently. The first is character-level peakiness — per-position output sharply peaked toward char-acters completing a familiar substring; CTC’s removal of the autoregressive conditioning defuses this, which is why 
+
+GASTRONOMY → INKHEN (a confident unrelated word) becomes GASTRUNUMY (a per-character near-miss that no longer commits to a whole-word replacement). The second is word-level lexicon snap: when the input visually evokes a specific English word — VEICHLES reads as VEHICLES at the whole-string level, not at the per-character level — both architectures make the same substitution. CTC, like the AR decoder, is trained against ground-truth English words and inherits the same end-of-string lexical attractor; its decoding does not condition on previous tokens, but its training objec-tive still rewards matching the word-level target. The residual 
+
+∼ 10 pt is dominated by this second component, which is Table 7: Marginal-accuracy curve along the trigram-novelty axis (aggregated across six benchmarks) for each of the five R3 backbones on which we ran the corpus swap, under two structurally different reference training corpora. The Pearson correlation between the two 5-point curves exceeds 0.94 for every model, indicating the shape of the marginal-novelty profile is preserved across reference corpora. The absolute q5/q5 level is not preserved: it shifts upward by 2.4–3.8 pt under the heavier-tailed Union14M-L (see text). This is a curve-shape and model-ordering invariance, not an absolute-level invariance.                    
+
+> Model MJSynth-ref q1 →q5 Union14M-L-ref q1 →q5 Pearson ρ
+> ABINet 97-97-96-96-93 97-96-97-96-92 0.967
+> CRNN 94-91-89-88-82 94-91-92-86-81 0.961
+> PARSeq 97-97-97-97-93 97-97-98-96-92 0.947
+> TRBA 97-96-97-96-92 97-97-97-95-92 0.950
+> ViTSTR 96-96-95-94-91 97-96-96-93-91 0.945
+
+Table 8: Within q5/q5 ( n = 474 ), per-trigram fraction of images mis-recognised for trigrams with at least five q5/q5 occurrences. SVTRv2 (CTC) approximately halves the fail-ure rate on the dominant failure trigrams of PARSeq (AR).                            
+
+> Trigram PARSeq (%) SVTRv2 (%) Reduction
+> ree 100 40 −60 pt
+> cha 78 44 −34 pt
+> off 60 40 −20 pt
+> ich 67 33 −34 pt
+> ers 40 20 −20 pt
+> wor 40 20 −20 pt
+
+Table 9: q5/q5 wrong predictions, PARSeq and SVTRv2 side by side. Where PARSeq produces a whole-word replacement (GASTRONOMY → INKHEN ), SVTRv2 instead produces a per-character near-miss ( GASTRUNUMY ) — the character-level peakiness has weakened. But on inputs that visually evoke a specific familiar word (boldface rows), both architec-tures snap to the same lexical replacement.               
+
+> True label PARSeq prediction SVTRv2 prediction GASTRONOMY INKHEN GASTRUNUMY Verbandstoffe Verbandsteffe Verbandsteffe
+> VEICHLES VEHICLES VEHICLES Boerien Experience Experience Reking Relishing Relishing
+> DARUE DARLIE DARLIE
+
+why mitigations that touch only the decoding mechanism (LoRA-AR, ensembling, beam rescoring) cap out where they do. Closing the residual likely requires changes to the training objective itself — character-level supervision that does not reward word-level identity, or explicit penalties on confident lexical replacements — rather than added capacity or decoder modification. 
+
+# E Mitigation methodology and statistics 
+
+All non-CTC mitigations start from the public PARSeq check-point, use batch size 128 , learning rate 10 −5, AdamW opti-miser, and run for 4,000 iterations. The synthetic character-augmentation fine-tune uses a 500 K-image PIL-rendered set built by character augmentation (random adjacent swap, adjacent-pair shuffle, single-char insertion) over the MJSynth vocabulary. Inference-time temperature is swept on T ∈{1.0, 1.5, 2.0, 3.0, 5.0}.LoRA-AR rank ablation: r ∈ { 2, 4, 8, 16 , 32 }, three to five seeds each. r = 4 q5/q5 = 86 .3 ± 0.21 (five seeds, mean ± sample stdev; the seed-0 instance at 86 .5 is the one consumed by the router in Section 5); r = 2 (7,680 
+
+trainable params) gives 86 .2 ± 0.12 ; r ∈ { 16 , 32 } regress to baseline. We attribute the improvement to LoRA’s implicit regularisation preventing decoder drift on the common cells; the rank ablation identifies r = 4 as the sweet spot. A naive combination of LoRA-AR with the curriculum schedule (M1 +M3 hybrid) is anti-synergistic : the curricu-lum’s harder late-stage samples exceed the low-rank adapter’s capacity and the q5/q5 gain collapses to 0. We note this as a methodological warning against stacking individually-helpful interventions. The 3-way confidence-routed ensemble (LoRA-AR ∪
+
+SVTRv2 ∪ CLIP4STR-Huge) uses 24 per-prediction confi-dence features (max-softmax min/mean, margin, entropy, log-prob, length, plus pairwise prediction-equality flags) across 3
+
+base models. Three independent binary classifiers (one per model: P (model correct | features )) are trained via 5-fold cross-validation. At inference, the argmax router picks the candidate with highest predicted P-correct. The router routes 
+
+67 .2% of samples to LoRA-AR, 26 .4% to SVTRv2, 6.3% to CLIP4STR-Huge. External LM rescoring uses distilGPT-2 ( 82 M params, HF 
+
+distilgpt2 ). For each PARSeq+LoRA test image we run beam search ( K = 5 ) to obtain candidate strings {sk} with AR log-probabilities log pAR (sk). Each candidate is prepended with a leading space and tokenised by the GPT-2 byte-level BPE tokenizer; the LM sequence log-probability is computed by summing log-probs of the next-token targets. The final pick is arg max k[log pAR (sk) + λ log pLM (sk)] with λ swept over {0, 0.05 , 0.10 , 0.20 , 0.30 , 0.50 , 1.0, 2.0}.
+
+# F Statistical methodology 
+
+The q5/q5 cell pooled across the six benchmarks contains 
+
+n = 474 samples, where a +0 .6 pt difference is roughly three images. At this sample size only large effects clear the noise floor, and the load-bearing claims in the paper must be checked for whether the direction in the point estimate survives paired-bootstrap resampling. We compute paired-bootstrap 95 % confidence intervals on q5/q5 deltas for ev-ery comparison that load-bears in Sections 4.3 and 5, using 
+
+10 ,000 resamples of the 474 -image cell (Table 10). With one exception, the q5/q5 comparisons in this paper should be read as directional rather than significance-tested. The exception is the AR →CTC architectural shift (SVTRv2 vs. PARSeq, p = 0 .02 ), which we report in Section 5 as the only intervention to clear the noise floor on q5/q5. Two related claims also pass: a 6× scale-up within the CLIP4STR family produces a ∆ whose CI is tightly centred around zero ([−2.3, +1 .5] , p = 0 .73 ), which we read as positive evidence that scale does not help the corner; the 3-way vs. 2-way router comparison is marginally significant ( p = 0 .078 , CI touches 0), reported as such rather than as “significant”. For everything else we rely on the direction and consistency of the gap across 13 (language, model) pairs, ten backbones, and four writing systems, not on any single between-model delta — the same modesty pattern as (Schaeffer, Miranda, and Koyejo 2023; Recht et al. 2019). 
+
+# G Probing and confidence analysis 
+
+This appendix collects the two quantitative mechanism probes summarised in Section 4.4: the layer-wise probe that localises the q5/q5 signal to the decoder, and the per-cell confidence decomposition that shows the decoder is most confident where it is most wrong. We train a per-layer logistic regression probe: given the encoder block-k [CLS] token (12 blocks total) or the mean-pooled decoder hidden state, predict the binary label ”does this sample fall in the q5/q5 cell?”. The probe is L2-regularised LR with class-weight balancing; train/test split is 80/20 stratified by (benchmark, label). Balanced accuracy and AUC are reported on held-out test (Table 11). 
+
+Confidence when wrong. We measure PARSeq’s mean per-position top-1 confidence (softmax-max) in three diag-nostic cells, decomposed by correctness (Table 12). The load-bearing quantity is Conf |wrong: in the q5/q5 cell the model’s confidence on its wrong predictions is higher than in the q3/q3 centre, even though q5/q5 accuracy is far lower — the quan-titative signature of a decoder committing to a prior-driven guess rather than expressing visual uncertainty. The entire q5 row of the trigram-novelty axis shows ele-vated wrong-confidence (range 0.890 –0.953 ), with q5/q5 at the high end: confident replacement of rare visual content with familiar lexical content, the quantitative counterpart of the qualitative errors in Table 4. 
+
+# H Stratified accuracy heatmaps 
+
+This appendix collects the full set of 5 × 5 stratified accu-racy heatmaps. Figure 3 shows the basic diagnostic signature on PARSeq and CRNN (referenced from Section 4.3): the q1–q4 word-frequency columns remain near-saturated while accuracy collapses in the top-right compositional-stress cor-ner. Figure 4 shows the scaling comparison referenced from Section 5. The scaling comparison shows that more visual capacity does not move the corner: at q5/q5, CLIP4STR-H (1.0 B) matches CLIP4STR-Base (158 M) to within paired-bootstrap  
+
+> (a) PARSeq, q5/q5 = 85.2% (b) CRNN, q5/q5 = 74.7%
+
+Figure 3: 5 × 5 stratified bucket accuracy grids for PARSeq and CRNN, pooled across the six benchmarks. Cell values are case-insensitive word accuracy; the q1–q4 word-frequency columns stay near-saturated for both models, and accuracy collapses only in the top-right (rare word × rare trigram) cell. noise and sits below SVTRv2 (19.8 M), while the confidence-routed ensemble adds a small, within-noise +0 .6 pt over SVTRv2. 
+
+# I Decoder attention-entropy ratio (Figure) 
+
+Figure 5 reports the cell-resolved PARSeq decoder self/cross attention-entropy ratio, the third converging probe discussed in Section 4.4. The ratio rises monotonically from common to rare trigrams, indicating attention drifts inward to the de-coder’s own decoding history precisely when visual evidence is rare. 
+
+# J Reproducibility 
+
+Code and data. All scripts and per-benchmark prediction CSVs are released at [anonymised] for double-blind review; URL will be added on acceptance. We include the LMDB SHA-256 sums of the six benchmark images, the per-corpus quintile boundary values, and the random seeds for every multi-seed ablation. 
+
+Hyperparameters. All non-CTC mitigations start from the public PARSeq checkpoint, batch 128, learning rate 10 −5,AdamW, 4,000 iterations. Synthetic character-augmentation FT: 500 K PIL-rendered images. Temperature sweep: T ∈{1.0, 1.5, 2.0, 3.0, 5.0}. LoRA-AR: rank ∈ { 2, 4, 8, 16 , 32 },three to five seeds each. 
+
+Confidence-routed ensemble. 21 per-prediction conf fea-tures (max-softmax min/mean/geomean, sequence log-prob, margin-min, entropy mean, length, pairwise differences). Trained via 5-fold stratified CV on the 184 disagreement samples. Threshold 0.5. The 3-way variant uses 24 features over 3 models. 
+
+LM rescore. distilGPT-2 (82 M params), top-5 beam PARSeq+LoRA candidates, λ ∈{0, 0.05 , 0.10 , 0.20 , 0.30 , 0.50 , 1.0, 2.0} on log pAR +
+
+λ log pLM .
+
+Compute. All inference and mitigation training runs use NVIDIA L40 / A100 GPUs (24 GB / 40 GB respectively). Total compute: ∼420 GPU-hours across the 16 mitigations plus all ensembles and ablations. Per-experiment breakdown is in the released reports/. Table 10: Paired-bootstrap 95% confidence intervals for the load-bearing q5/q5 comparisons in the paper ( n = 474 , 10 ,000 
+
+resamples). Only the AR →CTC architectural shift (SVTRv2 vs. PARSeq) clears the noise floor; every non-architectural comparison has a CI that contains 0.                                                   
+
+> Comparison ∆q5/q5 95% CI pVerdict SVTRv2 vs. PARSeq +2 .53 [+0 .42 ,+4 .64] 0.020 significant
+> LoRA-AR vs. PARSeq +1 .27 [−0.21 ,+2 .95] 0.14 within noise CLIP4STR-Huge vs. PARSeq +1 .27 [−1.05 ,+3 .59] 0.32 within noise CLIP4STR-Huge vs. CLIP4STR-Base −0.42 [−2.32 ,+1 .48] 0.73 within noise CLIP4STR-Huge vs. SVTRv2 −1.27 [−2.95 ,+0 .42] 0.19 within noise Router (2-way) vs. SVTRv2 +0 .63 [−0.63 ,+1 .90] 0.43 within noise Router (3-way) vs. SVTRv2 −0.84 [−2.11 ,+0 .42] 0.26 within noise Router (3-way) vs. Router (2-way) −1.48 [−3.16 ,0.00] 0.078 marginal
+> (a) SVTRv2 (19.8M, ICCV 2025), q5/q5 = 87.8%
+> (b) CLIP4STR-H (1.0B, OpenCLIP ViT-H/14), q5/q5 = 86.5%
+> (c) Router (LoRA-AR ∪SVTRv2), q5/q5 = 88.4%
+
+Figure 4: Scaling the vision backbone does not close the compositional gap. Despite leading every benchmark on aggregate accuracy and achieving the highest q1/q1 cell value (98.9%) of any model in our study, CLIP4STR-H’s q5/q5 cell (86.5%) matches the 158 M-parameter CLIP4STR-Base within noise and sits below SVTRv2 (87.8%). The routed ensemble adds a within-noise +0 .6 pt over SVTRv2 ( p = 0 .43 ). Table 11: Layer-wise q5/q5 probing on PARSeq. The decoder mean-pool is substantially more predictive than any encoder block, identifying the AR decoder as the locus of the lexical-context signal.             
+
+> Probe site Bal. accuracy AUC Encoder block 0 0.580 0.600 Encoder block 5 0.563 0.604 Encoder block 10 0.625 0.664 Encoder block 11 0.636 0.704 Decoder (mean-pool) 0.728 0.801
+
+# K Quintile boundary values 
+
+Quintile edges are computed per-benchmark on log 10 (rank )
+
+of the relevant axis (word-frequency or trigram-novelty) against the MJSynth reference. Table 13 reports the four edges per benchmark. The edges differ across benchmarks — e.g. the word-frequency e4 ranges from 3.45 (IC15) to 3.62 
+
+(IIIT5K) — which is why we bin per-benchmark before pool-ing rather than on a single global axis: a global split would let the easier benchmarks dominate the q5 band. These edges are sufficient to reproduce the cell assignment for any label. Table 12: PARSeq’s mean per-position top-1 confidence in three diagnostic cells, decomposed by correctness. Conf |wrong in the q5/q5 cell ( 0.933 ) exceeds that in the q3/q3 centre ( 0.890 ) by 4.3 pt, even though q5/q5 accuracy is 14 pt lower. The model commits to a confident guess pre-cisely where the visual evidence supports the lexical prior least.                     
+
+> Cell nAccuracy Mean conf Conf |correct Conf |wrong q1/q1 258 0.965 0.990 0.994 0.895 q3/q3 347 0.991 0.997 0.998 0.890 q5/q5 474 0.850 0.984 0.993 0.933
+
+# L Cross-script details 
+
+This appendix expands the cross-script analysis of Sec-tion 4.4. Figure 6 quantifies the two error regimes; the gal-leries that follow show representative q5/q5 wrong predic-tions per script. Of 50 sampled q5/q5 wrong predictions per script, English and Chinese fail by lexical commit (substitution toward a fa-miliar token, 94 % and 92 % of failures respectively); Japanese and Arabic fail by visual abstain (empty or truncated predic-Figure 5: Cell-resolved PARSeq decoder self/cross attention-entropy ratio. The ratio rises monotonically from 0.27 –0.34 
+
+in the common-trigram row to 0.38 –0.44 in the rare-trigram row, with the strongest values in the upper right (rare word 
+
+× rare trigram). Table 13: Quintile edge values on log 10 (rank ) for the two di-agnostic axes, per benchmark. Each row gives the four edges that divide the benchmark’s log 10 axis into five quintiles.                                                            
+
+> Benchmark Axis e1e2e3e4
+> IIIT5K word-freq 1.20 2.05 2.81 3.62 trigram-nov 1.40 2.30 3.10 4.05 IC13 word-freq 1.15 1.95 2.75 3.55 trigram-nov 1.30 2.20 3.00 3.95 IC15 word-freq 1.05 1.85 2.60 3.45 trigram-nov 1.20 2.10 2.95 3.85 SVT word-freq 1.10 1.90 2.65 3.50 trigram-nov 1.30 2.15 3.00 3.85 SVTP word-freq 1.10 1.90 2.70 3.55 trigram-nov 1.25 2.15 3.00 3.85 CUTE80 word-freq 1.15 1.95 2.75 3.60 trigram-nov 1.30 2.20 3.00 3.90
+
+tions, 68 % and 34 % respectively). The four galleries below display representative q5/q5 wrong predictions for each writing system. Each sample comes from the language’s strongest recogniser on the rel-evant benchmark, and the right-most column annotates the failure mode. The English and Chinese galleries (Figures 7 and 8) are dominated by commit failures; the Japanese and Arabic galleries (Figures 9 and 10) are dominated by abstain 
+
+failures. Figure 6: Cross-script q5/q5 error-mode bifurcation. Stack of fifty sampled wrong predictions per script, categorised by edit distance from the ground truth. Both regimes are consistent with the lexical-prior account; relative weight depends on training-corpus lexical density. 
+
+Figure 7: English / Latin q5/q5 failures (PARSeq). All shown examples are commit -type errors: the AR decoder snaps to the nearest familiar English word ( VEHICLES , Ex-perience , Relishing , Doraemon ) or applies a 1-character edit toward a more common form. Failures are systematic, not random character noise. 
+
+Figure 8: Chinese / Han q5/q5 failures (SVTRv2-ch). The failure mode is per-character substitution toward a more com-mon visually similar character; rare characters in the ground truth are systematically replaced by their high-frequency lookalikes (see the rightmost column). The model commits to the most lexically familiar glyph in the local neighbourhood. Figure 9: Japanese / Han + kana q5/q5 failures (PP-OCRv5-multi mobile). The dominant failure mode is ab-stain : the recogniser returns an empty prediction on rare-kanji strings (top four rows). When it does commit, rare Japanese kanji are replaced by visually similar simplified-Chinese char-acters (bottom four rows; see rightmost column for per-row annotations). 
+
+Figure 10: Arabic / RTL q5/q5 failures (EasyOCR Ara-bic). Mixed regime: roughly one third of failures are pure 
+
+abstain (empty predictions on rare verb forms and isolated function words); the remainder are single-character edits, near-substitutions, or hamza drops (see annotations in right-most column). The smaller Arabic alphabet ( 28 root letters) produces fewer “rare-character” partitions, which we suggest is why the gap magnitude is smaller in Arabic ( −4.9 pt) than in Han-script benchmarks ( −10 to −18 pt).

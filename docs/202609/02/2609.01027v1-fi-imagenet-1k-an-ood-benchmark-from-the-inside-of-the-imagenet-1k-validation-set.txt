@@ -1,0 +1,773 @@
+Title: Fi-ImageNet-1k: An OOD Benchmark From the Inside of the ImageNet-1k Validation Set
+
+URL Source: https://arxiv.org/pdf/2609.01027v1
+
+Published Time: Wed, 02 Sep 2026 01:08:55 GMT
+
+Number of Pages: 21
+
+Markdown Content:
+# Fi-ImageNet-1k: An OOD benchmark From the Inside of the ImageNet-1k validation set 
+
+## Ruslan Rozumnyi, Matˇ ej Such´ anek, Tom´ aˇ s Voj´ ıˇ r, Kl´ ara Janouˇ skov´ a, Jiˇ r´ ı Matas Visual Recognition Group Department of Cybernetics Faculty of Electrical Engineering Czech Technical University in Prague 
+
+## Abstract 
+
+Out-of-distribution (OOD) detection predicts whether a test image belongs to none of the predefined classes. To evaluate this task, benchmarks need images from outside the in-distribution (ID) data; typically, these are defined or collected in an ad hoc fashion. Since no ground truth is perfect, ID-labeled datasets themselves contain a natu-ral source of OOD images. We exploit such annotation er-rors and present FI-I MAGE NET -1 K, an OOD dataset built from ImageNet-1k validation images that the recent ReIma-geNet reannotation effort assigned to no ImageNet-1k class. Each image was examined by expert human annotators sup-ported by evidence from MLLMs, VLMs, and reverse image search, comparing it against all visually similar ID classes. We keep only images that could be assigned a specific class 
+
+outside the ImageNet-1k label space. The resulting FI-I MAGE NET -1 K, with 655 images from 522 classes, is substantially more challenging than any commonly used OOD dataset. No evaluated combination of classifier and OOD detector achieves a false positive rate below 51% at 95% true positive rate (FPR@95). Compared to the recent NINCO, our dataset is 3.8× more challenging in the FPR@95 metric for state-of-the-art supervised OOD detection methods. The dataset will be released upon ac-ceptance. 
+
+## 1. Introduction 
+
+Open-set detection entails the task of identifying, at test time, images that belong to none of a predefined set of training classes 1. The term out-of-distribution (OOD) de-tection is often used interchangeably, especially when the OOD data share visual similarities to images from the pre-defined classes. OOD detection is a prerequisite for deploy-
+
+> 1
+
+Unless zero-shot detection is considered. iNaturalist-Plants OpenImage-O 360OpenSet CLEAN-OOD COOD NINCO ImageNet-O ImageNet-OOD Textures Places SSB easy SSB hard Species IN1k-OOD                
+
+> Fi-ImageNet-1k
+> 1.2 ViM
+> 5.8 Maha++
+> 11.9 E+ReAct
+> 12.2 Maha++
+> 13.8 Maha++
+> 16.9 Maha++
+> 18.0 Maha++
+> 18.8 NECO
+> 21.2 Maha++
+> 25.3 NNGuide
+> 30.0 NECO
+> 33.1 ViM
+> 40.2 Maha
+> 48.2 NAC
+> 65.0 Maha++
+
+Figure 1. Results for the best-performing EVA02-L model on pop-ular OOD benchmarks that use ImageNet-1k as the in-distribution data, using FPR@95 ( ↓), in %. Bars show the best (right, in gray) of the 21 post-hoc OOD detectors on a given benchmark. Even for the per-dataset top choice, the FPR@95 on the F I-I MAGE NET -1 K
+
+benchmark is 1.3× higher than on the hardest of the other bench-marks (IN1k-OOD) and 3.8× higher than on recent NINCO. 
+
+ing models safely in the real world, where inputs cannot be guaranteed to originate from a fixed set of classes [19]. Yet, OOD detection has not been an integral compo-nent of state-of-the-art models for classification tasks, such as EVA-02 [14] and ConvNeXt V2 [32]. This also holds for detection methods based on zero-shot vision–language models (VLMs), such as CLIP [40] and SigLIP 2 [47], which are deployed without a mechanism for recognizing inputs that fall outside their respective label space [34, 53]. Both in the OOD research and image classification do-mains one dataset stands out – ImageNet [11], the standard reference for visual recognition evaluation, from closed-set classification and segmentation to detection. This carries 1arXiv:2609.01027v1 [cs.CV] 1 Sep 2026 black-necked stork black stork      
+
+> caracal lynx
+> manta ray electric ray
+> mandrill siamang
+> hyrax marmot
+> emperor tamarin titi monkey
+> greater amberjack northern pike
+> USB stick lipstick
+> boxing kit punching bag
+> clarinet oboe
+> pistol revolver
+> bidet sink
+> electric kettle jug
+> painted eggplants maraca Figure 2. The FI-I MAGE NET -1 Kdataset – 14 examples from the 655 OOD images. The new human- and MLLM-verified OOD labels, none in the ImageNet-1k class space, are in green. The original ImageNet-1k labels in red. More examples are in the supplementary material (Fig. A5).
+
+over to OOD detection: the ImageNet-1k validation set [42] is the in-distribution (ID) reference of the most popular large-scale OOD benchmarks [5, 22, 48, 57]. These benchmarks adopt a similar approach to the con-struction of their OOD part. First, the set of OOD la-bels is defined, often arbitrarily, and OOD images are then drawn from an image pool collected independently of the ID data. For example, ImageNet-O [20] collects ImageNet-21k images from classes not inside ImageNet-1k, for which ResNet50 [17] reports high confidence of an ImageNet-1k class, thus aiming at difficult examples. Alternatively, whole existing datasets can be used as OOD whenever their label space does not intersect the ID dataset labels. The disjoint label sets are more easily obtained for far-OOD datasets, but for near- or fine-grained OOD datasets the risk of label contamination is greatly increased. For instance, Textures [10], collected for texture recognition, is used this way for both CIFAR [25] and ImageNet-1k ID datasets. The quality of data used for OOD benchmarking has also drawn attention. NINCO [5] inspected existing OOD benchmarks based on ImageNet-1k and identified in-distribution samples in a subset of each. ImageNet-1k, the source of in-distribution data, has been the subject of even more analyses: Beyer et al . [4] assessed multi-label anno-tations of the validation set and found many of the original labels at odds with careful human judgment. Northcutt et al . [37] estimated the level of label errors on several bench-marks and report ∼6% on the ImageNet-1k validation set. Recently, ReImageNet [50] reannotated all 50,000 val-idation images with human experts and state-of-the-art LLMs. We take advantage of this initiative and introduce FI-I MAGE NET -1 K, an OOD benchmark of 655 images that, although originally labeled ID, depict concepts not repre-sented in ImageNet-1k. Its construction process follows a three-stage protocol (Sec. 3) built on per-image evidence: an open-vocabulary MLLM description, a reverse image search, the original ImageNet-1k label, and visual checks against the ImageNet-1k classes a VLM ranks closest to the image and those empirically confusable with its original la-bel under ReImageNet’s reannotation. An image is admit-ted only when this evidence converges on a clearly identifi-able object whose unambiguous fine-grained label lies out-side the 1000-class space. The origin of the images – they passed a human-based verification during ImageNet collec-tion – guarantees they are visually difficult to classify in the context of the 1000 ID classes, making them very suitable for OOD benchmarking. Experiments conducted using a wide range of models [14, 58] paired with OOD post-hoc methods [36, 41, 51] confirm that F I-I MAGE NET -1 K is significantly more chal-lenging than existing datasets [5, 10, 48, 57] (see also Fig. 1). In summary, our contributions are: 1. F I-I MAGE NET -1 K, an extremely challenging OOD benchmark of 655 images from the inside of the ImageNet-1k dataset. 2. An extensive evaluation of supervised classifiers and zero-shot VLMs under both post-hoc scoring and VLM prompting (including negative-label prompting), which, as a side effect, confirms F I-I MAGE NET -1 K difficulty. 3. A novel approach for constructing an OOD dataset from label errors inside the ID data itself, verified per image by an MLLM description, reverse image search, and a VLM shortlist of the closest ID classes. 24. Verified labels with fine-grained categorization, where applicable, for every F I-I MAGE NET -1 K image, support-ing future zero-shot and open-vocabulary OOD research beyond a binary ID/OOD (see Fig. 2 for examples). 
+
+## 2. Related Work 
+
+OOD detection and the study of ImageNet-1k (IN-1k) label quality have developed apart: the first takes the validation labels as a clean in-distribution reference, the second doc-uments how often those labels are wrong. F I-I MAGE NET -1K sits at their intersection, turning verified label errors into near-boundary OOD samples. 
+
+2.1. OOD detection methods 
+
+Post-hoc OOD detection. Most OOD detectors leave training untouched and score a pretrained classifier at test time. They differ mainly in what intermediate outputs of the networks are utilized for OOD detection. This di-vides them into four groups: Logit-based scores use the classifier output alone – the maximum softmax probabil-ity (MSP) [19] is the canonical baseline, and MaxLogit and KL-Matching [21], Energy [28] and GEN [29] refine the same readout. Activation- and weight-based scores first rectify the penultimate activations or sparsify the classifier weights, then apply an energy-style readout (ReAct [45], DICE [44], ASH [12], SCALE [55]). Feature-based scores flag inputs that fall far from the ID training statistics: the Mahalanobis distance [26] and its relative variant [41], both recently strengthened by fitting on ℓ2-normalized fea-tures (Mahalanobis++ and relative Mahalanobis++ [36]); k-nearest neighbors [46]; similarity to the class-mean feature, plain cosine or softmax-scaled, the class-centroid coun-terparts of the CLIP-side scores [5]; and scores reading the decision geometry directly (fDBD [27], NECO [1], NAC [30]). Hybrid scores combine features with logits (ViM [51], NNGuide [39]). We evaluate all twenty-one of them on F I-I MAGE NET -1 K (Sec. 4.2). 
+
+OOD detection with VLMs. CLIP-style models replace the supervised classification head with a dot product be-tween the image embedding and a class-name embed-ding [40]; OOD detectors then operate on these similarities rather than on classifier logits. MCM [34] scores an im-age by its softmax-scaled similarity to the ID class-name embeddings alone. Negative-label methods add a second, disjoint vocabulary: NegLabel [23] scores an image by the share of its text similarity that falls on the ID names rather than on a pool of negative labels (Eq. (3)), so an image matching a negative more strongly than any ID name is flagged OOD. Its negatives come from WordNet [33], a lex-ical database that groups English words into sets of syn-onyms ( synsets ) linked by semantic relations such as hyper-nymy; NegLabel’s NegMining step keeps the entries least similar to the ID class names, ensuring each negative refers to a concrete visual concept while remaining far from every ID class. Later methods keep the scoring rule and revise the vocabulary. EOE [7] replaces the lexicon with categories an LLM generates as plausible outliers for the given ID set and adds a penalty term to Eq. (3) of NegLabel. 
+
+2.2. Benchmarks and datasets 
+
+OOD benchmarks for ImageNet. ImageNet-scale bench-marks take the ImageNet-1k validation set as the ID refer-ence and pair it with OOD images sourced from elsewhere. OpenOOD [56, 59] standardized the evaluation, gathering sets such as SSB [48], NINCO [5], iNaturalist [22], and Textures [10]. ImageNet-O [20] mines natural adversarial images. ImageNet-OOD [57] draws semantic-shift exam-ples from ImageNet-21k. NINCO and ImageNet-OOD ad-ditionally inspect every image to remove ID contamination shown to distort the popular sets [5], yet both of them im-port out-of-distribution images from outside the ImageNet-1k pipeline, potentially introducing a covariate shift that a detector can exploit. 
+
+ImageNet label quality. A substantial body of work out-side OOD detection shows that ImageNet-1k labels are far from error-free. Multi-label reannotation reveals that many original labels conflict with careful human judg-ment [4], and the estimated error rate is high enough to change model rankings once corrected [37]. Most recently, ReImageNet [50] reannotated all 50,000 validation images, flagging 2597 as unassigned to any of the 1000 classes. OOD detection has so far ignored these findings, treat-ing the validation labels as a clean in-distribution refer-ence. FI-I MAGE NET -1 K treats them as a useful signal, starting from ReImageNet’s unassigned images and verify-ing, through the protocol of Sec. 3, which of them depict a genuine object from outside the IN-1k label space. 
+
+## 3. Benchmark Construction 
+
+We construct F I-I MAGE NET -1 K from the ImageNet-1k val-idation images that ReImageNet reannotation [50] did not assign to any of the 1000 classes. However, not being as-signed to an ImageNet-1k class is a necessary, but not a sufficient condition for being considered an OOD. In fact, a subset of the unassigned images is labeled as “uncertain”, not as “no ImageNet-1k class”. We decided that, to declare an image as OOD, we have to be highly confident in its class (outside IN-1k). The rest of the section describes the label-ing effort of the ReImageNet rejected images, the candidate pool, the evidence available to the annotators, and the three stages of the annotation process. The proposed annotation pipeline is illustrated in Fig. 3. In Stage 1, two annotators label every candidate inde-pendently based on the provided per-image evidence. In Stage 2, agreements between the two annotators are ac-cepted as final and skip Stage 3, while disagreements are 3annotators review this evidence P E R - I M A G E E V I D E N C E           
+
+> AMLLM evidence prompt (Closed-World + Open-World)
+> Evaluate if the main subject belongs to one of the provided classes. If you are not sure or the subject does not belong to the provided list, you must state “nothing from provided classnames” and provide your top-1 alternative...
+> GPT 5.4
+> nothing from provided classnames, Denison barb
+> BImage Reverse Search
+> AI overview “Species Identification: The image shows a
+> Denison barb (Dawkinsia denisonii ,syn. Sahyadria denisonii or Puntius denisonii ), also known as the red-line torpedo barb or roseline shark”
+
+exact match visual matches  
+
+> 1
+
+Evidence assessment  
+
+> 12
+> annotators inspect an image
+
+Verdict:      
+
+> a) OOD (+ label) b) ID
+> c) ambiguous
+> 3
+
+Joint revision   
+
+> A third annotator joins to help reach the final verdict
+> 123
+
+Figure 3. The OOD annotation pipeline. Top: the five sources of per-image evidence an annotator sees, shown here for a Denison barb 
+
+annotated originally as electric ray . Bottom: the three-stage protocol. 655 images are admitted under consensus and form F I-I MAGE NET -1K; images resolved as ID amend in-distribution data, while ambiguous images are excluded from our experiments. 
+
+passed to a third annotator for resolution. Images are la-beled only if the consensus among annotators is reached; otherwise, they are marked ambiguous .
+
+Candidate pool. ReImageNet reannotated all 50,000 vali-dation images, correcting numerous labeling errors [50]. In addition, their annotators were allowed to flag ambiguous images as “uncertain” or “no ImageNet-1k class”. How-ever, they did not propose an alternative label for such im-ages. Therefore, we tasked our annotators with reviewing these samples and finding solid evidence for the decisions. 
+
+Per-image evidence. Given an image, the annotators were provided with five independent sources of evidence (Fig. 3, top): (A) an open-vocabulary description generated by GPT-5.4 through the OpenAI API (adapted from [24]; the full prompt is given in Sec. G of the supplementary mate-rial), prompted with the possibility to output either one of the ImageNet-1k classes (closed-world) or an open-world prediction; (B) reverse image search services, used to re-cover an exact match with provenance or to identify the most plausible fine-grained category; (C) the original Ima-geNet-1k label, which indicates the ID class the image was originally confused with; (D) the ImageNet-1k classes that a VLM ranks closest to the image, presented for visual com-parison; (E) a list of easily confusable ImageNet-1k classes, obtained by observing to which labels ReImageNet annota-tors often re-assigned images of the original class. The last two sources address different failure modes. (D) shows which ID classes the image resembles in fea-ture space, regardless of coarse category – a model-driven, image-level check. (E) lists the ID classes that previous an-notators frequently confused with the original label. Fig-ure 3 shows an example of a Denison barb annotated orig-inally as electric ray that must pass the comparison against classes from both (D) and (E) before it is admitted as OOD. 
+
+Stage 1: evidence assessment. Two annotators, with prior large-scale annotation experience and acquired knowledge of the full ImageNet-1k label space, labeled all images in-dependently, issuing one of three verdicts: (a) OOD : the depicted object lies outside the 1000-class space and no ob-ject of any ImageNet-1k class is visible anywhere in the image; the annotator proposes an OOD label; (b) ID : the image contains a valid ImageNet-1k object; (c) ambigu-ous : an object is visible but cannot be resolved to a single label with the available evidence; or the image is corrupted, object-free, or too degraded to judge. Furthermore, the annotators were also asked to flag an 4image as fine-grained when the depicted object is a close sibling of its original ImageNet-1k class, e.g ., a different breed, a congeneric species, or a near-identical instrument. 
+
+Stage 2: consensus. The two independent verdicts are compared. When the annotators agree, the verdict is final and the image skips Stage 3: agreed OOD images are ad-mitted, agreed ID images are returned to the ID data, and agreed ambiguous images are excluded from our experi-ments. Only the images on which the two annotators dis-agree are promoted to Stage 3. 
+
+Stage 3: joint revision. A third annotator with the same training joins the first two, and all three review the disputed images together. An image receives a verdict only if the three annotators reach full consensus; if they do not, the image is marked ambiguous and excluded. 
+
+Outcome. The protocol verified 2597 images, of which 2123 were marked by ReImageNet as “uncertain” and 474 as “no ImageNet-1k class”. Of all images, 655 (25.2%) were identified as OOD with a verified label. They cover 522 distinct concepts and are further divided into 358 fine-grained instances (54.7%) and 297 ordinary. Next, 962 (37.0%) were found to depict a concept from ReImageNet, returned to the ID pool and subsequently reported to the au-thors. For the rest, 980 (37.7%), our annotators could not commit to a label, and such images were omitted from our experiments. Analyzing the two subsets (“no ImageNet-1k class” vs. “uncertain”) of the candidate pool: the 474 images initially declared outside ImageNet split into 205 (43.2%) certified OOD, 197 (41.6%) containing a valid ImageNet-1k object, and 72 (15.2%) remaining ambiguous. Of the 2123 “un-certain” images, just 450 (21.2%) were certified OOD, 765 (36.0%) were resolved to an ImageNet-1k class, and 908 (42.8%) remained ambiguous – the “uncertain” flag was thus weaker evidence of OOD content. In contrast, the fine-grained share of the certified OOD images is nearly the same between the two flags: 117/205 (57.1%) for outside IN-1k, 241/450 (53.6%) for “uncertain”. 
+
+## 4. Experiments 
+
+We evaluated F I-I MAGE NET -1 K using two main method-ologies – supervised models trained or fine-tuned on ImageNet-1k and zero-shot VLMs. Each model is evaluated with a set of post-hoc OOD detectors. We first test whether the benchmark remains difficult under varying backbone architectures and OOD detectors for both methodologies (Secs. 4.2 and 4.3). Next, we extend the OOD detection suite for the VLMs with methods based on negative labels to isolate the role of the textual vocabulary (Sec. 4.4), com-pare F I-I MAGE NET -1 K with existing ImageNet-scale OOD benchmarks (Sec. 4.5), and quantify the effect of the num-ber of test images (Sec. 4.6). 
+
+4.1. Evaluation Setup 
+
+Models. The supervised family consists of eight public backbones fine-tuned on ImageNet-1k for a classification task. The backbones are chosen for diversity, and they differ in the supervision and pre-training regime they re-ceive beyond ImageNet-1k fine-tuning, since a larger pre-training corpus is known to improve OOD detection [5]. ResNet50 [17] is trained on ImageNet-1k labels only. ViT-B/16-384 [13], ConvNeXt-B [32] and SwinV2-B-256 [31] are pre-trained on ImageNet-21k labels and fine-tuned on ImageNet-1k. ConvNeXtV2-L [54] and EVA02-L-448 [14] use self-supervision for pre-training (FCMAE [54] via masked image modeling [2, 18]), then fine-tuned on ImageNet-21k and ImageNet-1k. DINOv2-g/14 [38] and DINOv3-7B [43] are also pre-trained in a self-supervised manner on LVD-142M [38] and LVD-1689M [43], respec-tively, and kept frozen; we train only a linear probe on the ImageNet-1k training split. The zero-shot family consists of eight text-image con-trastive VLMs without any ImageNet-specific adaptation or fine-tuning. Models, their sizes and ImageNet-1k top-1 ac-curacies are listed in Tab. 1. 
+
+OOD Detectors. For the supervised methods, we combine them with the 21 post-hoc OOD detectors of Sec. 2.1, cov-ering four groups: i) five logit-based (MSP, MaxLogit, KL-Matching, Energy, GEN), ii) four activation- and weight-based (Energy+ReAct, ASH-S, SCALE, DICE), iii) ten feature-based (Mahalanobis, relative Mahalanobis, Maha-lanobis++, relative Mahalanobis++, k-NN, cosine, MCM, fDBD, NECO, NAC), and iv) two hybrid (ViM, NNGuide). For the VLMs, we consider two detector types: logit-based and vocabulary-based. Let h(x) be the ℓ2-normalized embedding of an image x and t the ℓ2-normalized embed-ding of a text label, both produced by the VLM in its shared image-text space. A label embedding is the average over the eight prompt templates of [40, 49], listed in Sec. G of the supplementary material. Every VLM score used in this paper is built from the temperature-scaled, exponentiated cosine similarity 
+
+a(x, t ) = exp  h(x)⊤t/τ  , (1) which plays the role of the exponentiated logit of a super-vised classifier. Following NegLabel [23], we use the tem-perature τ =0 .01 . Let {tc}Cc=1 be a set of embeddings com-puted for the C=1000 ID class names, the standard zero-shot classifier assigns to x the softmax posterior 
+
+p(c | x) = a(x, t c)
+
+XCc=1 a(x, t c)
+
+. (2) The logit-based detectors are the usual post-hoc scores of a classifier, computed from the zero-shot logits 5h(x)⊤tc/τ or from the posterior of Eq. (2): MCM [34], which is max c p(c | x), MaxLogit, Energy, GEN, Entropy and Margin all operate on image-level logits, while GL-MCM [35] incorporates into MCM the maximum softmax over the patch-level logits. 
+
+Vocabulary-based detectors – NegLabel [23], EOE [7], and our variant of NegLabel with LLM-generated nega-tives adopted from EOE – extend the ID label set with 
+
+M negative (OOD) labels with corresponding embeddings 
+
+{ˆtm}Mm=1 , whose similarities to x are added only to the de-nominator. An image is then scored by the share of its total similarity that falls on the ID names, 
+
+s(x) = 
+
+XCc=1 a(x, t c)
+
+XCc=1 a(x, t c) + XMm=1 a(x, ˆtm)
+
+, (3) so that images more similar to negative labels have a lower score s(x) and are flagged as OOD. 
+
+Data. In all experiments, we evaluate the described OOD benchmarks against the same in-distribution dataset, con-sisting of 48,365 ImageNet-1k validation images, which are not in F I-I MAGE NET -1 K and were not flagged as ambigu-ous (Sec. 3). 
+
+Metrics. Detectors assign a scalar to all images, where a larger value indicates an in-distribution sample. We follow the standard evaluation metrics for the OOD detection task, specifically: i) false positive rate at 95% true positive rate (FPR@95), which is the fraction of OOD images accepted as ID at the threshold that correctly classifies 95% of the ID data; and ii) area under the receiver operating character-istic curve (AUROC), which is a threshold-free metric and measures ranking quality over all operating points. 
+
+4.2. Post-hoc Supervised OOD Detection 
+
+We observe (Tab. 1) that at 95% true positive rate, every su-pervised configuration accepts most F I-I MAGE NET -1 K im-ages as ID. The best result is 64.4% FPR@95, achieved by the DINOv3-7B linear probe with relative Mahalanobis++; and the worst reached 80.2% (for ResNet50). Overall, the Mahalanobis-family score is the best OOD detector for six of the eight backbone models, all six with Mahalanobis++ or its relative variant [36], yet the gain over the second-best OOD detector is marginal – 2.1 points (ResNet50) and 2.8 points for DINOv3-7B. The complete per-detector break-down is available in Tab. A1 of the supplementary material. Neither a stronger backbone nor a better post-hoc method can sufficiently address the challenge of F I-I MAGE NET -1K.
+
+4.3. Zero-Shot VLMs as OOD Detectors 
+
+The results for the seven logit-based OOD detectors are pro-vided in Tab. 1. The best FPR@95 ranges from 87.0% 
+
+Table 1. Post-hoc OOD detection on F I-I MAGE NET -1 K. For every model, the best detector (out of the 21 post-hoc detectors for the supervised models and the 7 logit-based detectors for the zero-shot VLMs, Sec. 4.1) in terms of FPR@95 and AUROC is shown in gray. Top-1 – classification accuracy on the rean-notated ImageNet-1k validation set (ReImageNet [50]); for the VLMs it is the zero-shot accuracy obtained with the text labels of the ImageNet-1k classes. Linear probes on a frozen backbone are marked by †. Bold: best column value within each group. Model Params Top-1 FPR@95 ↓ AUROC ↑
+
+Supervised pre-trained models 
+
+ResNet50 25.6M 84.9 80.2 rMaha++ 74.2 rMaha++ 
+
+SwinV2-B-256 87.9M 89.2 73.3 NAC 77.9 rMaha++ 
+
+ConvNeXt-B 88.6M 89.1 69.2 rMaha++ 80.3 rMaha++ 
+
+ViT-B/16-384 86.9M 89.3 69.0 Maha++ 81.4 Maha 
+
+DINOv2-g/14 † 1.1B 89.1 68.7 ViM 77.5 GEN 
+
+ConvNeXtV2-L 198.0M 90.3 67.8 rMaha++ 83.1 Maha++ 
+
+EVA02-L-448 305.1M 91.5 65.0 Maha++ 84.2 rMaha++ 
+
+DINOv3-7B † 6.7B 90.1 64.4 rMaha++ 81.0 MCM 
+
+Zero-shot vision–language models 
+
+CLIP-B/16 149.6M 73.5 87.0 GL-MCM 69.1 GL-MCM 
+
+CLIP-L/14 427.9M 81.3 84.0 GL-MCM 72.7 Entropy 
+
+AIMv2-L 436.7M 83.2 82.9 Entropy 76.6 Entropy 
+
+MetaCLIP2-H/14 1.9B 86.6 76.3 GL-MCM 79.8 GL-MCM 
+
+PE-Core-L/14 671.1M 88.4 76.2 Entropy 80.0 Entropy 
+
+OpenCLIP-H/14 986.7M 88.5 72.5 Entropy 81.1 GEN 
+
+SigLIP-SO400M 878.0M 87.8 71.8 GL-MCM 80.3 Entropy 
+
+SigLIP2-g 1.9B 88.6 71.8 Entropy 81.0 Entropy 
+
+(CLIP-B/16) to 71.8% (SigLIP2-g and SigLIP-SO400M). GL-MCM, the only detector in the pool that reads patch-level similarities in addition to the pooled image embed-ding, is the best detector for four of the eight VLMs, sug-gesting that local evidence carries an OOD signal the global embedding misses. WordNet-based NegLabel (Tab. 2, column WN) im-proves on the best logit-space OOD detector for six of the eight VLMs, by 1.4 (PE-Core-L/14, OpenCLIP-H/14) to 8.7 points (CLIP-L/14). This experiment suggests that the size and selection of the negative (OOD) textual vocabulary is the crucial aspect for OOD performance in VLMs, and we provide further analysis below. 
+
+4.4. Zero-Shot with Negative-Label Vocabularies 
+
+We incorporate the negative (OOD) vocabulary into the zero-shot methods using the NegLabel [23] score of Eq. (3). With the model and the ID names fixed, the negative vocab-ulary {ˆtj }Mj=1 is the only free component of Eq. (3); this section analyzes its impact. We compare four vocabulary construction techniques ap-plied to zero-shot VLMs’ output. The comparison is shown in Tab. 2. EOE [7] performs the construction by asking an 6Table 2. VLMs with negative vocabularies on F I-I MAGE NET -1K. FPR@95 (%, ↓) per VLM; the columns differ only in the neg-ative vocabulary of Sec. 4.4. logit-sp. is the best of the seven logit-space detectors of Tab. 1 (column copied from Tab. 1). EOE [7]: LLM-generated outlier categories. NegLabel [23] with four vo-cabularies: its NegMined WordNet lexicon ( WN , M =5000 ), our LLM-generated near siblings of every ID class ( GPT ), the union of WN and GPT lexicons ( WN+GPT ), and the 522 distinct OOD labels of F I-I MAGE NET -1 K itself ( oracle ), a lower bound on FPR@95 rather than a detector. EOE and GPT are means over 30 and 10 generations of GPT API, respectively. Bold: best de-ployable vocabulary per row. NegLabel Model logit-sp. EOE WN GPT WN+GPT oracle CLIP-B/16 [40] 87.0 79.7 80.2 73.4 71.7 33.6 CLIP-L/14 [40] 84.0 74.7 75.3 63.3 62.9 21.5 AIMv2-L [15] 82.9 72.2 75.1 60.6 62.1 15.1 PE-Core-L/14 [6] 76.2 66.7 74.8 55.5 55.5 8.2 MetaCLIP2-H/14 [9] 76.3 69.0 77.3 55.1 56.8 9.2 OpenCLIP-H/14 [8] 72.5 68.2 71.1 53.6 54.4 8.7 SigLIP-SO400M [58] 71.8 66.6 74.0 55.6 55.8 7.8 SigLIP2-g [47] 71.8 64.6 68.9 51.3 51.2 6.0 Mean 77.8 70.2 74.6 58.6 58.8 13.8 
+
+LLM to generate plausible outlier categories for the ID set and adds a penalty term to Eq. (3). In our evaluation, we follow the default setting from the EOE paper [7] and use 500 categories with a fine-grained prompt, the strongest of the three prompts on F I-I MAGE NET -1 K (for performance using all three prompts proposed by EOE see Tab. A4 of the supplementary material). The remaining methods use NegLabel with different vocabulary pools. 
+
+WN is the original WordNet lexicon [33], comprising 79,403 head lemmas of all noun and adjective synsets, re-duced by NegMining to M candidates. We use M =5000 ,which beats the default ( M =10 ,000 ) for seven of the eight VLMs on F I-I MAGE NET -1 K (see Fig. A2 of the supple-mentary material for the ablation on M ). 
+
+GPT , our variant, replaces both the lexicon and NegMin-ing: we prompt the LLM once per ID class to generate 20 fine-grained near siblings for that class, discard any sibling that is itself an ID class name, and concatenate the per-class lists into a single pool of unique ≈19,600 labels. 
+
+WN+GPT is the union of the WordNet lexicon, rep-resenting far-OOD concepts, and negative vocabulary ob-tained from the GPT method described above, representing near-fine-grained concepts; ≈24,600 labels in total. The oracle forms the vocabulary from the correct OOD labels of F I-I MAGE NET -1 K. It serves as our empirical lower bound for FPR@95 rather than as a detector, and it tests whether the VLM can separate the images once the right labels are available. Table 2 supports four observations. First, every nega-tive vocabulary improves on the best logit-space detector (logit-sp. , copied from Tab. 1), by 3.2 points (WN) to 19.2 points (GPT) on average, demonstrating the importance of negative vocabulary modeling. Next, GPT-mined negative labels beat both WordNet and EOE for every tested VLM and reduce the mean from 74.6% (WN) to 58.6%, by 6.8 points on CLIP-B/16 up to 22.2 on MetaCLIP2-H/14. EOE is second for every VLM (mean 70.2%), but only with its fine-grained prompt; the other two fall to the MCM level. What separates the GPT-mined from WordNet is where the negatives come from, not their amount: as WordNet is a general-purpose lexicon whose entries are selected only for being far from every ID name, it is unlikely to contain the near sibling that a given F I-I MAGE NET -1 K image ac-tually depicts. Prompting per ID class produces those near siblings directly, which seems to be the superior approach for our benchmark. Combining the two vocabularies confirms this: the union 
+
+WN+GPT changes the mean by 0.2 points over GPT alone (58.8% vs. 58.6%) and helps only three of the eight VLMs. Therefore, WordNet’s contribution on F I-I MAGE NET -1 K is limited once fine-grained negatives per class ( e.g ., mined with GPT) are present. Table A5 of the supplementary ma-terial presents the results of all four vocabularies on other OOD datasets, where the combination of WN and GPT out-performs its parts for several datasets, most notably NINCO and ImageNet-OOD. The oracle reduces the mean FPR@95 to 13.8%, with five VLMs below 10% – given the correct negative vocabu-lary, the feature representation of current VLMs is sufficient to solve F I-I MAGE NET -1 K. The limiting factor is thus vo-cabulary coverage: the 45-point gap between the best de-ployable pool (58.6%) and the oracle shows that current methods for mining, or otherwise modeling, the OOD vo-cabulary remain far behind, and automatic construction of negative prompts is still an unresolved challenge. 
+
+4.5. Comparison to Existing OOD Benchmarks 
+
+Table 3 compares F I-I MAGE NET -1 K and ImageNet-scale OOD benchmarks of Sec. 2.2 using EVA02-L-448, the su-pervised backbone with the best accuracy on ReImageNet (Tab. 1), and the same pool of 21 OOD detectors. The first 11 rows report each dataset in full size. However, these are known to contain images of ImageNet-1k classes [5]. Thus, a detector that correctly accepts such an image is pe-nalized, inflating its FPR@95. We therefore report three benchmarks in which this contamination has been removed. CLEAN-OOD is our aggregation of cleaned data from subsets of standard OOD datasets that the NINCO team annotated to quantify the contamination of those datasets with ImageNet-1k classes. We union the 11 surviving sub-samples into a single set of 2715 images. NINCO [5] 7Table 3. FI-I MAGE NET -1 K vs. popular OOD benchmarks. 
+
+FPR@95 (%, ↓) and AUROC (%, ↑) of EVA02-L-448 with the best of the 21 post-hoc detectors per dataset, named in gray; n is the number of OOD images. CLEAN-OOD is the union of the cleaned subsets of the 11 datasets above it [5]. F I-I MAGE NET -1 K
+
+is the most difficult of the 14 datasets. Dataset n FPR@95 ↓ AUROC ↑
+
+iNat-OOD Plants [22] 10 000 1.2 ViM 99.8 ViM 
+
+OpenImage-O [51] 17 632 5.8 Maha++ 98.8 Maha++ 
+
+360OpenSet [3] 11 800 11.9 E+ReAct 97.0 Maha++ 
+
+COOD [16] 10 350 13.8 Maha++ 96.6 Maha++ 
+
+ImageNet-O [20] 2 000 18.0 Maha++ 95.8 Maha++ 
+
+Textures [10] 5 640 21.2 Maha++ 94.1 Maha++ 
+
+Places [22] 10 000 25.3 NNGuide 94.6 ViM 
+
+SSB easy [48] 50 000 30.0 NECO 92.1 Maha++ 
+
+SSB hard [48] 49 000 33.1 ViM 92.7 ViM 
+
+Species [21] 10 000 40.2 Maha 88.4 ViM 
+
+IN1k-OOD [52] 50 000 48.2 NAC 83.3 GEN 
+
+CLEAN-OOD [5] 2 715 12.2 Maha++ 97.4 Maha++ 
+
+NINCO [5] 5 879 16.9 Maha++ 96.7 Maha++ 
+
+ImageNet-OOD [57] 31 802 18.8 NECO 96.2 NECO 
+
+FI-I MAGE NET -1 K 655 65.0 Maha++ 84.2 rMaha++ 
+
+and ImageNet-OOD [57] are the two published bench-marks whose construction explicitly targets ID contamina-tion, making them the most directly comparable baselines. The best FPR@95 on the 11 full OOD datasets ranges from 1.2% to 48.2%; F I-I MAGE NET -1 K reaches 65.0%, 16.8 points above the hardest of them. The gap to the cu-rated benchmarks is larger: CLEAN-OOD, NINCO and ImageNet-OOD reach 12.2%, 16.9% and 18.8%, respec-tively; i.e ., F I-I MAGE NET -1 K has 3.8× the FPR@95 of NINCO and 3.5× that of ImageNet-OOD. Its AUROC is comparable to the most difficult IN1k-OOD dataset (within a percentage point), a much smaller margin than in FPR@95. Since we report the best achieved results for each dataset, the performance gap is not attributable to a single method with unfavorable performance on F I-I MAGE NET -1K. Per-model results on the full datasets are in Tab. A2 of the supplementary material. 
+
+4.6. Effect of the OOD Dataset Size 
+
+The compared OOD dataset sizes range from 655 images in FI-I MAGE NET -1 K to tens of thousands. Dataset size affects the accuracy of the FPR@95 estimate, but not its expected value. For a fixed model–detector pair, let s(x) be the ID score and t95 the threshold that accepts 95% of the ID set. Given an OOD dataset D = {xi}ni=1 , let 
+
+Zi =
+
+(
+
+1, if s(xi) ≥ t95 ,
+
+0, otherwise, (4) indicate that xi is wrongly accepted as ID; the empirical FPR@95 is then the sample mean bpD = 1
+
+> n
+
+Pni=1 Zi. For image-level sampling, Zi ∼ Bernoulli( pD ), where pD is the population FPR of dataset D. Conditional on the ID threshold, the expectation and the variance of the sample mean over n images are 
+
+E[bpD ] = pD , Var[ bpD ] = pD (1 − pD )
+
+n . (5) Hence, bpD is unbiased for every n, and since pD (1 − pD ) ≤
+
+0.25 , its standard error is at most 1/(2 √n). For n = 655 
+
+this bound is 1.95 points, giving a 95% confidence half-width for bpD below 3.9 points. This is far below the 16.8-point gap between F I-I MAGE NET -1 K and the hardest full dataset in Tab. 3 (12.0 points for the fixed EVA02-L-448 and relative Mahalanobis++ pair of Fig. 1). In Sec. C of the supplementary material, we confirm this by re-evaluating every compared dataset on 1000 random 655-image subsets of itself: the subset mean reproduces the full-set FPR@95 to within 0.13 points, while the sampling standard deviation is only 1.39–1.80 points, compared with a 12.7–16.4-point spread across datasets (Tab. A6). 
+
+## 5. Conclusions 
+
+We introduced F I-I MAGE NET -1 K, an OOD benchmark. It consists of images that ReImageNet did not assign to any of the 1000 classes. The images were validated by a three-stage process combining human judgment with evidence from an open-vocabulary MLLM, reverse image search, the original label, and the ID classes closest to the image. The result is 655 OOD images from 522 classes, each with a verified label. The construction is a general recipe for building OOD benchmarks from images of established ID datasets with label errors: collect the unassigned or mislabeled images, gather complementary evidence about their content, and compare them against their most plausible ID classes. FI-I MAGE NET -1 K is more challenging than the com-monly used OOD benchmarks: neither combination of eight backbones paired with 21 post-hoc detectors nor eight zero-shot VLMs achieved FPR@95 below 51%. Even when se-lecting the best-performing detector for each standard OOD dataset, including for ours F I-I MAGE NET -1 K, the perfor-mance gap is 16.8 percentage points above IN1k-OOD, the hardest of the 14 prior OOD datasets (Fig. 1). Given the benchmark labels as negatives, NegLabel paired with SigLIP2-g reaches FPR@95 of 6.0%: the rep-resentation suffices, and the negative vocabulary is the bot-tleneck. LLM-generated per-class siblings, the best deploy-able vocabulary, reach 51.3%; closing the remaining gap to the oracle with an automatically constructed vocabulary is an open problem that F I-I MAGE NET -1 K makes measur-able. 8References 
+
+[1] Mou¨ ın Ben Ammar, Nacim Belkhir, Sebastian Popescu, An-toine Manzanera, and Gianni Franchi. NECO: Neural col-lapse based out-of-distribution detection. In International Conference on Learning Representations (ICLR) , 2024. 3 [2] Hangbo Bao, Li Dong, Songhao Piao, and Furu Wei. BEiT: BERT pre-training of image transformers. In International Conference on Learning Representations (ICLR) , 2022. 5 [3] Abhijit Bendale and Terrance E. Boult. Towards open set deep networks. In IEEE Conference on Computer Vision and Pattern Recognition (CVPR) , 2016. 8 [4] Lucas Beyer, Olivier J. H´ enaff, Alexander Kolesnikov, Xi-aohua Zhai, and A¨ aron van den Oord. Are we done with ImageNet? arXiv preprint arXiv:2006.07159 , 2020. 2, 3 [5] Julian Bitterwolf, Maximilian Mueller, and Matthias Hein. In or out? Fixing imagenet out-of-distribution detection eval-uation. In International Conference on Machine Learning (ICML) , 2023. 2, 3, 5, 7, 8, 12, 13 [6] Daniel Bolya, Po-Yao Huang, Peize Sun, Jang Hyun Cho, Andrea Madotto, et al. Perception encoder: The best vi-sual embeddings are not at the output of the network. arXiv preprint arXiv:2504.13181 , 2025. 7 [7] Chentao Cao, Zhun Zhong, Zhanke Zhou, Yang Liu, Tongliang Liu, and Bo Han. Envisioning outlier exposure by large language models for out-of-distribution detection. In International Conference on Machine Learning (ICML) ,2024. 3, 6, 7, 15, 19 [8] Mehdi Cherti, Romain Beaumont, Ross Wightman, Mitchell Wortsman, Gabriel Ilharco, Cade Gordon, Christoph Schuh-mann, Ludwig Schmidt, and Jenia Jitsev. Reproducible scaling laws for contrastive language-image learning. In 
+
+IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) , 2023. 7 [9] Yung-Sung Chuang, Yang Li, Dong Wang, Ching-Feng Yeh, Kehan Lyu, et al. MetaCLIP 2: A worldwide scaling recipe. 
+
+arXiv preprint arXiv:2507.22062 , 2025. 7 [10] Mircea Cimpoi, Subhransu Maji, Iasonas Kokkinos, Sammy Mohamed, and Andrea Vedaldi. Describing textures in the wild. In IEEE Conference on Computer Vision and Pattern Recognition (CVPR) , 2014. 2, 3, 8 [11] Jia Deng, Wei Dong, Richard Socher, Li-Jia Li, Kai Li, and Li Fei-Fei. ImageNet: A large-scale hierarchical im-age database. In IEEE Conference on Computer Vision and Pattern Recognition (CVPR) , 2009. 1 [12] Andrija Djurisic, Nebojsa Bozanic, Arjun Ashok, and Rosanne Liu. Extremely simple activation shaping for out-of-distribution detection. In International Conference on Learning Representations (ICLR) , 2023. 3 [13] Alexey Dosovitskiy, Lucas Beyer, Alexander Kolesnikov, Dirk Weissenborn, Xiaohua Zhai, Thomas Unterthiner, Mostafa Dehghani, Matthias Minderer, Georg Heigold, Syl-vain Gelly, Jakob Uszkoreit, and Neil Houlsby. An image is worth 16x16 words: Transformers for image recognition at scale. In International Conference on Learning Representa-tions (ICLR) , 2021. 5 [14] Yuxin Fang, Quan Sun, Xinggang Wang, Tiejun Huang, Xin-long Wang, and Yue Cao. EVA-02: A visual representation for neon genesis. Image and Vision Computing , 2024. 1, 2, 5[15] Enrico Fini, Mustafa Shukor, Xiujun Li, Philipp Dufter, Michal Klein, et al. Multimodal autoregressive pre-training of large vision encoders. In IEEE/CVF Conference on Com-puter Vision and Pattern Recognition (CVPR) , 2025. 7 [16] Ido Galil, Mohammed Dabbah, and Ran El-Yaniv. A frame-work for benchmarking class-out-of-distribution detection and its application to ImageNet. In International Conference on Learning Representations (ICLR) , 2023. 8 [17] Kaiming He, Xiangyu Zhang, Shaoqing Ren, and Jian Sun. Deep residual learning for image recognition. In IEEE Conference on Computer Vision and Pattern Recognition (CVPR) , 2016. 2, 5 [18] Kaiming He, Xinlei Chen, Saining Xie, Yanghao Li, Piotr Doll´ ar, and Ross Girshick. Masked autoencoders are scal-able vision learners. In IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) , 2022. 5 [19] Dan Hendrycks and Kevin Gimpel. A baseline for detect-ing misclassified and out-of-distribution examples in neural networks. In International Conference on Learning Repre-sentations (ICLR) , 2017. 1, 3 [20] Dan Hendrycks, Kevin Zhao, Steven Basart, Jacob Stein-hardt, and Dawn Song. Natural adversarial examples. In 
+
+IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) , 2021. 2, 3, 8 [21] Dan Hendrycks, Steven Basart, Mantas Mazeika, Andy Zou, Joe Kwon, Mohammadreza Mostajabi, Jacob Steinhardt, and Dawn Song. Scaling out-of-distribution detection for real-world settings. In International Conference on Machine Learning (ICML) , 2022. 3, 8 [22] Rui Huang and Li Yixuan. MOS: Towards scaling out-of-distribution detection for large semantic space. In Proceed-ings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) , pages 8710–8719, 2021. 2, 3, 8[23] Xue Jiang, Feng Liu, Zhen Fang, Hong Chen, Tongliang Liu, Feng Zheng, and Bo Han. Negative label guided OOD de-tection with pretrained vision-language models. In Inter-national Conference on Learning Representations (ICLR) ,2024. 3, 5, 6, 7 [24] Nikita Kisel, Illia Volkov, Klara Janouskova, and Jiri Matas. Multimodal large language models as image classifiers. 
+
+arXiv preprint arXiv:2603.06578 , 2026. 4, 20 [25] Alex Krizhevsky. Learning multiple layers of features from tiny images. Technical report, University of Toronto, 2009. 2[26] Kimin Lee, Kibok Lee, Honglak Lee, and Jinwoo Shin. A simple unified framework for detecting out-of-distribution samples and adversarial attacks. In Advances in Neural In-formation Processing Systems (NeurIPS) , 2018. 3 [27] Litian Liu and Yao Qin. Fast decision boundary based out-of-distribution detector. In International Conference on Ma-chine Learning (ICML) , 2024. 3 [28] Weitang Liu, Xiaoyun Wang, John Owens, and Li Yixuan. Energy-based out-of-distribution detection. In Advances in Neural Information Processing Systems (NeurIPS) , 2020. 3 
+
+9[29] Xixi Liu, Yaroslava Lochman, and Christopher Zach. GEN: Pushing the limits of softmax-based out-of-distribution de-tection. In IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) , 2023. 3 [30] Yibing Liu, Chris Xing Tian, Haoliang Li, Lei Ma, and Shiqi Wang. Neuron activation coverage: Rethinking out-of-distribution detection and generalization. In International Conference on Learning Representations (ICLR) , 2024. 3 [31] Ze Liu, Han Hu, Yutong Lin, Zhuliang Yao, Zhenda Xie, Yixuan Wei, Jia Ning, Yue Cao, Zheng Zhang, Li Dong, Furu Wei, and Baining Guo. Swin transformer v2: Scal-ing up capacity and resolution. In IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) , 2022. 5 [32] Zhuang Liu, Hanzi Mao, Chao-Yuan Wu, Christoph Feicht-enhofer, Trevor Darrell, and Saining Xie. A convnet for the 2020s. In IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) , 2022. 1, 5 [33] George A. Miller. WordNet: A lexical database for english. 
+
+Communications of the ACM , 38(11):39–41, 1995. 3, 7, 17 [34] Yifei Ming, Ziyang Cai, Jiuxiang Gu, Yiyou Sun, Wei Li, and Yixuan Li. Delving into out-of-distribution detection with vision-language representations. In Advances in Neural Information Processing Systems (NeurIPS) , 2022. 1, 3, 6 [35] Atsuyuki Miyai, Qing Yu, Go Irie, and Kiyoharu Aizawa. GL-MCM: Global and local maximum concept matching for zero-shot out-of-distribution detection. International Jour-nal of Computer Vision (IJCV) , 2025. 6, 17 [36] Maximilian M¨ uller and Matthias Hein. Mahalanobis++: Im-proving OOD detection via feature normalization. In Inter-national Conference on Machine Learning (ICML) , 2025. 2, 3, 6 [37] Curtis G. Northcutt, Anish Athalye, and Jonas Mueller. Per-vasive label errors in test sets destabilize machine learning benchmarks. In Advances in Neural Information Processing Systems (NeurIPS) Datasets and Benchmarks Track , 2021. 2, 3 [38] Maxime Oquab, Timoth´ ee Darcet, Th´ eo Moutakanni, Huy V. Vo, Marc Szafraniec, Vasil Khalidov, Pierre Fernandez, Daniel Haziza, Francisco Massa, Alaaeldin El-Nouby, et al. DINOv2: Learning robust visual features without supervi-sion. Transactions on Machine Learning Research , 2024. 5 [39] Jaewoo Park, Yoon Gyo Jung, and Andrew Beng Jin Teoh. Nearest neighbor guidance for out-of-distribution detection. In IEEE/CVF International Conference on Computer Vision (ICCV) , 2023. 3 [40] Alec Radford, Jong Wook Kim, Chris Hallacy, Aditya Ramesh, Gabriel Goh, Sandhini Agarwal, Girish Sastry, Amanda Askell, Pamela Mishkin, Jack Clark, Gretchen Krueger, and Ilya Sutskever. Learning transferable visual models from natural language supervision. In International Conference on Machine Learning (ICML) , 2021. 1, 3, 5, 7, 19 [41] Jie Ren, Stanislav Fort, Jeremiah Liu, Abhijit Guha Roy, Shreyas Padhy, and Balaji Lakshminarayanan. A simple fix to mahalanobis distance for improving near-OOD detection. 
+
+arXiv preprint arXiv:2106.09022 , 2021. 2, 3 [42] Olga Russakovsky, Jia Deng, Hao Su, Jonathan Krause, San-jeev Satheesh, Sean Ma, Zhiheng Huang, Andrej Karpathy, Aditya Khosla, Michael Bernstein, Alexander C. Berg, and Li Fei-Fei. ImageNet large scale visual recognition chal-lenge. International Journal of Computer Vision (IJCV) , 115 (3):211–252, 2015. 2 [43] Oriane Sim´ eoni, Huy V. Vo, Maximilian Seitzer, Federico Baldassarre, Maxime Oquab, et al. DINOv3. arXiv preprint arXiv:2508.10104 , 2025. 5 [44] Yiyou Sun and Yixuan Li. DICE: Leveraging sparsification for out-of-distribution detection. In European Conference on Computer Vision (ECCV) , 2022. 3 [45] Yiyou Sun, Chuan Guo, and Yixuan Li. ReAct: Out-of-distribution detection with rectified activations. In Advances in Neural Information Processing Systems (NeurIPS) , 2021. 3[46] Yiyou Sun, Yifei Ming, Xiaojin Zhu, and Yixuan Li. Out-of-distribution detection with deep nearest neighbors. In In-ternational Conference on Machine Learning (ICML) , 2022. 3[47] Michael Tschannen, Alexey Gritsenko, Xiao Wang, Muham-mad Ferjad Naeem, Ibrahim Alabdulmohsin, et al. SigLIP 2: Multilingual vision-language encoders with improved se-mantic understanding, localization, and dense features. arXiv preprint arXiv:2502.14786 , 2025. 1, 7 [48] Sagar Vaze, Kai Han, Andrea Vedaldi, and Andrew Zisser-man. Open-set recognition: A good closed-set classifier is all you need? In International Conference on Learning Rep-resentations (ICLR) , 2022. 2, 3, 8 [49] Illia Volkov, Nikita Kisel, Klara Janouskova, and Jiri Matas. Image recognition with vision and language embeddings of VLMs. In 36th British Machine Vision Conference 2025, BMVC 2025, Sheffield, UK, November 24-27, 2025 . BMVA, 2025. 5, 19 [50] Illia Volkov, Nikita Kisel, Tetiana Mishkina, Klara Janouskova, and Jiri Matas. Doomed to re-annotate, for-ever: The ImageNet story. arXiv preprint arXiv:2608.13783 ,2026. 2, 3, 4, 6, 20 [51] Haoqi Wang, Zhizhong Li, Litong Feng, and Wayne Zhang. ViM: Out-of-distribution with virtual-logit matching. In 
+
+IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) , 2022. 2, 3, 8 [52] Haotao Wang, Aston Zhang, Yi Zhu, Shuai Zheng, Mu Li, Alex Smola, and Zhangyang Wang. Partial and asymmetric contrastive learning for out-of-distribution detection in long-tailed recognition. In International Conference on Machine Learning (ICML) , 2022. 8 [53] Haisong Wang, Yiwei Li, Huadong Yao, and Xiaomeng Li. CLIPN for zero-shot OOD detection: Teaching CLIP to say no. In Proceedings of the IEEE/CVF International Confer-ence on Computer Vision (ICCV) , pages 1802–1812, 2023. 1[54] Sanghyun Woo, Shoubhik Debnath, Ronghang Hu, Xinlei Chen, Zhuang Liu, In So Kweon, and Saining Xie. Con-vNeXt V2: Co-designing and scaling convnets with masked autoencoders. In IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) , 2023. 5 [55] Kai Xu, Rongyu Chen, Gianni Franchi, and Angela Yao. Scaling for training time and post-hoc out-of-distribution de-
+
+10 tection enhancement. In International Conference on Learn-ing Representations (ICLR) , 2024. 3 [56] Jingkang Yang, Pengyun Wang, Dejian Zou, Zitang Zhou, et al. OpenOOD: Benchmarking generalized out-of-distribution detection. In Advances in Neural Information Processing Systems (NeurIPS) , 2022. 3 [57] William Yang, Byron Zhang, and Olga Russakovsky. ImageNet-OOD: Deciphering modern out-of-distribution de-tection algorithms. arXiv preprint arXiv:2310.01755 , 2023. 2, 3, 8 [58] Xiaohua Zhai, Basil Mustafa, Alexander Kolesnikov, and Lucas Beyer. Sigmoid loss for language image pre-training. In IEEE/CVF International Conference on Computer Vision (ICCV) , 2023. 2, 7 [59] Jingyang Zhang, Jingkang Yang, Pengyun Wang, et al. OpenOOD v1.5: Enhanced benchmark for out-of-distribution detection. arXiv preprint arXiv:2306.09301 ,2023. 3 
+
+11 Fi-ImageNet-1k: An OOD benchmark From the Inside of the ImageNet-1k validation set 
+
+# Supplementary Material 
+
+Throughout the supplementary material, we use the same ID set, OOD set, and ID-anchored FPR@95 threshold as in the main paper. Section A provides the complete eval-uation results, Sec. B analyzes the negative-vocabulary de-sign, Sec. C studies the effect of OOD sample size, Sec. D shows more examples from our dataset, Sec. E extends our study of supervised models, and Secs. F and G document implementation details, model checkpoints, and prompts. 
+
+## A. Full Evaluation Results 
+
+Table A1 expands Tab. 1 to all 21 post-hoc detectors. AMahalanobis-family score is the best detector or within 2.3 points of it for every backbone. The activation- and weight-reshaping scores are the weakest group. The lowest ob-served FPR@95 is 64.4%. No model–detector configura-tion attains a lower value, indicating that the benchmark re-mains difficult across all evaluated detector–backbone pairs. Table A2 expands Tab. 3 to all eight supervised mod-els of Tab. 1: the six fine-tuned classifiers and the two linear probes on frozen backbones. In terms of FPR@95, FI-I MAGE NET -1 K is the most difficult evaluated dataset for every model in Tab. A2, with margins of 7.1 (ResNet50) to 18.2 points (SwinV2-B-256). EVA02-L-448, the model that performs best on other datasets, achieves mean FPR@95 of 21.2% on other datasets, but 65.0% on ours. Table A3 compares popular OOD datasets in full size (Tab. 3) with their “clean” sub-samples, as constructed by NINCO [5]. Cleaning lowers FPR@95 on all 11 datasets (22.6% to 12.2% on average), varying from 0.7 points down on iNat-OOD Plants to 25.1 on Species and 22.7 on SSB easy (0.3 percent subset). 
+
+Table A1. All 21 post-hoc detectors on F I-I MAGE NET -1 K. Performance of every supervised classifier of Tab. 1 with every detector, as FPR@95 (%, ↓) / AUROC (%, ↑). Per model, the best FPR@95 is in bold and the best AUROC underlined; Tab. 1 reports only the best per column (model). Groups: logit-based, activation- and weight-based, feature-based, hybrid. † marks a linear probe on a frozen backbone. Detector ResNet50 SwinV2-B-256 ConvNeXt-B ConvNeXtV2-L ViT-B/16-384 DINOv2-g/14 † EVA02-L-448 DINOv3-7B †
+
+MSP 85.8 / 71.8 78.0 / 71.7 78.0 / 73.7 77.3 / 73.5 78.3 / 75.5 79.1 / 75.7 70.5 / 74.4 80.2 / 75.3 
+
+MaxLogit 87.0 / 71.8 73.6 / 70.8 73.1 / 72.8 71.5 / 71.5 74.4 / 78.6 72.1 / 77.3 67.8 / 72.0 71.6 / 79.4 
+
+KL-Match. 84.6 / 70.0 82.0 / 72.4 82.0 / 74.3 78.6 / 76.3 80.0 / 73.8 78.2 / 75.1 75.4 / 80.1 78.2 / 75.2 
+
+Energy 88.9 / 71.5 73.4 / 69.1 70.8 / 71.6 69.9 / 70.8 74.5 / 78.3 71.1 / 77.0 67.2 / 68.9 70.8 / 79.2 
+
+GEN 86.3 / 71.4 77.3 / 72.8 74.2 / 75.5 71.0 / 75.1 76.0 / 79.2 73.9 / 77.5 67.0 / 77.9 73.1 / 79.6 
+
+E+ReAct 96.9 / 54.5 75.7 / 70.7 71.1 / 72.8 70.5 / 72.1 78.5 / 76.2 71.1 / 77.1 66.7 / 70.4 71.1 / 79.3 
+
+ASH-S 86.4 / 70.4 95.1 / 62.3 95.9 / 55.7 86.7 / 66.9 95.7 / 56.0 96.3 / 47.6 87.2 / 65.4 94.2 / 52.1 
+
+SCALE 86.3 / 71.9 93.7 / 46.7 77.7 / 72.0 73.9 / 75.0 70.8 / 80.4 71.6 / 77.0 68.2 / 63.9 72.5 / 78.3 
+
+DICE 88.4 / 66.0 88.4 / 51.7 94.4 / 45.6 86.1 / 65.3 97.3 / 47.3 95.4 / 45.3 84.7 / 58.2 88.1 / 64.8 
+
+Maha 91.0 / 61.5 84.6 / 74.1 79.7 / 76.4 75.6 / 81.2 69.2 / 81.4 69.9 / 74.4 66.7 / 83.3 93.0 / 70.8 
+
+rMaha 83.7 / 73.0 81.7 / 76.0 76.3 / 79.0 67.9 / 82.1 70.2 / 81.2 69.3 / 75.4 66.4 / 83.9 70.2 / 80.0 
+
+Maha++ 82.3 / 70.4 76.5 / 77.0 70.7 / 79.9 68.2 / 83.1 69.0 / 80.3 70.1 / 74.1 65.0 / 83.8 74.8 / 76.3 
+
+rMaha++ 80.2 / 74.2 75.6 / 77.9 69.2 / 80.3 67.8 / 82.7 70.5 / 81.1 69.5 / 75.4 65.0 / 84.2 64.4 / 80.6 
+
+k-NN 91.5 / 54.1 85.5 / 66.3 81.4 / 71.6 78.6 / 76.9 83.5 / 69.5 76.0 / 67.2 75.3 / 78.3 84.0 / 73.7 
+
+cosine 86.1 / 66.5 80.8 / 74.4 76.8 / 78.0 71.1 / 81.8 78.5 / 77.8 70.7 / 73.3 67.9 / 83.3 67.5 / 80.8 
+
+MCM 83.1 / 71.3 80.8 / 75.4 76.6 / 78.2 70.7 / 81.8 77.7 / 78.1 70.4 / 73.4 67.9 / 83.2 67.2 / 81.0 
+
+fDBD 89.3 / 66.6 82.6 / 70.0 78.9 / 72.6 79.5 / 75.8 78.8 / 78.2 73.6 / 77.1 71.6 / 80.4 82.1 / 74.5 
+
+NECO 87.5 / 71.8 81.1 / 63.0 77.6 / 67.0 77.3 / 68.3 74.4 / 75.8 71.8 / 71.7 71.8 / 65.7 78.6 / 76.6 
+
+NAC 96.6 / 55.0 73.3 / 67.5 72.4 / 71.4 69.2 / 68.0 73.0 / 79.2 74.8 / 71.0 66.9 / 70.0 78.2 / 68.6 
+
+ViM 87.0 / 71.4 82.7 / 74.1 77.7 / 76.8 77.6 / 80.2 73.9 / 79.5 68.7 / 77.4 68.2 / 81.9 79.8 / 79.4 
+
+NNGuide 88.9 / 71.6 81.8 / 73.2 75.7 / 78.1 72.7 / 80.2 79.4 / 75.2 73.6 / 74.2 72.4 / 81.1 75.4 / 78.8 
+
+12 Table A2. Every supervised classifier on every OOD dataset. Best FPR@95 (%, ↓) / AUROC (%, ↑) of the 21 post-hoc detectors, taken per model and dataset, the two metrics selected independently. Table 3 reports only on EVA02-L-448 (see also Fig. 1). † marks a linear probe on a frozen backbone. 
+
+Dataset ResNet50 SwinV2-B-256 ConvNeXt-B ConvNeXtV2-L ViT-B/16-384 DINOv2-g/14 † EVA02-L-448 DINOv3-7B † Mean iNat-OOD Plants 31.4 / 93.8 1.3 / 99.6 1.7 / 99.5 0.8 / 99.8 1.5 / 99.7 0.9 / 99.6 1.2 / 99.8 1.4 / 99.6 5.0 / 98.9 
+
+OpenImage-O 44.9 / 91.9 9.7 / 98.0 8.5 / 98.2 5.5 / 98.8 9.8 / 98.1 10.0 / 97.8 5.8 / 98.8 8.6 / 97.9 12.8 / 97.4 
+
+360OpenSet 55.0 / 86.9 19.5 / 95.5 17.4 / 95.8 12.8 / 96.9 15.8 / 96.5 15.6 / 95.9 11.9 / 97.0 16.5 / 95.5 20.6 / 95.0 
+
+COOD 56.8 / 86.4 24.3 / 93.6 20.8 / 94.9 15.3 / 96.4 20.9 / 95.2 21.3 / 94.3 13.8 / 96.6 22.2 / 94.3 24.4 / 94.0 
+
+ImageNet-O 69.2 / 79.5 38.4 / 91.5 32.8 / 93.2 22.7 / 94.7 31.9 / 93.6 30.6 / 93.4 18.0 / 95.8 30.6 / 92.6 34.2 / 91.8 
+
+Textures 33.7 / 91.2 28.0 / 92.6 24.1 / 93.9 22.0 / 94.0 22.3 / 94.0 25.4 / 94.1 21.2 / 94.1 22.4 / 94.5 24.9 / 93.5 
+
+Places 64.9 / 84.9 35.2 / 89.9 41.1 / 90.6 30.4 / 94.2 41.8 / 91.0 27.1 / 93.2 25.3 / 94.6 17.8 / 95.7 35.5 / 91.8 
+
+SSB easy 67.6 / 81.5 45.5 / 87.5 43.6 / 89.1 34.7 / 90.9 40.6 / 89.6 46.1 / 88.4 30.0 / 92.1 41.8 / 88.6 43.7 / 88.5 
+
+SSB hard 73.1 / 78.3 47.6 / 85.9 46.9 / 86.8 41.8 / 88.8 49.9 / 87.8 48.5 / 83.7 33.1 / 92.7 51.4 / 85.5 49.0 / 86.2 
+
+Species 63.7 / 79.9 50.2 / 83.3 46.5 / 84.7 36.4 / 88.5 41.6 / 87.9 50.0 / 80.4 40.2 / 88.4 49.0 / 87.4 47.2 / 85.1 
+
+IN1k-OOD 63.7 / 75.7 55.0 / 81.6 52.2 / 83.8 51.6 / 83.5 60.8 / 82.2 60.5 / 81.6 48.2 / 83.3 53.0 / 81.5 55.6 / 81.6 
+
+CLEAN-OOD 51.6 / 87.6 23.3 / 94.4 18.7 / 95.6 12.0 / 97.4 18.9 / 96.0 18.1 / 94.7 12.2 / 97.4 17.8 / 95.5 21.6 / 94.8 
+
+NINCO 59.4 / 86.5 32.0 / 92.8 26.3 / 94.7 17.0 / 96.6 24.2 / 95.6 29.3 / 92.5 16.9 / 96.7 18.1 / 96.0 27.9 / 93.9 
+
+ImageNet-OOD 64.1 / 85.6 36.5 / 91.3 35.5 / 93.2 25.7 / 94.5 33.5 / 93.3 40.7 / 91.5 18.8 / 96.2 38.4 / 90.0 36.6 / 91.9 
+
+Mean 57.1 / 85.0 31.9 / 91.3 29.7 / 92.4 23.5 / 93.9 29.5 / 92.9 30.3 / 91.5 21.2 / 94.5 27.8 / 92.5 31.4 / 91.7 
+
+FI-I MAGE NET -1 K 80.2 / 74.2 73.3 / 77.9 69.2 / 80.3 67.8 / 83.1 69.0 / 81.4 68.7 / 77.5 65.0 / 84.2 64.4 / 81.0 69.7 / 79.9 
+
+Table A3. The eleven popular OOD datasets in full size and as cleaned sub-samples. Extension of Tab. 3 to all eleven datasets. Each line pairs the full dataset with the manually cleaned sub-sample of the same dataset released by NINCO [5], which draws 400 images per dataset and removes every image containing an ImageNet-1k object; n is the number of OOD images in each. Values are the best FPR@95 (%, ↓) and AUROC (%, ↑) of EVA02-L-448 of its 21 post-hoc detectors, selected independently per dataset and metric, with the best-performing detector named in gray. The % column is the sub-sample as a fraction of the full dataset (in percents). The ∆ is sub-sample minus full for each metric. 
+
+Full dataset clean sub-sample by NINCO ∆
+
+Dataset n FPR@95 ↓ AUROC ↑ n % FPR@95 ↓ AUROC ↑ FPR AUROC iNat-OOD Plants 10 000 1.2 ViM 99.8 ViM 383 3.8 0.5 ViM 99.8 ViM −0.7 +0.0 OpenImage-O 17 632 5.8 Maha++ 98.8 Maha++ 368 2.1 4.3 NECO 99.0 Maha++ −1.5 +0.2 360OpenSet 11 800 11.9 E+ReAct 97.0 Maha++ 236 2.0 7.2 NECO 97.9 Maha++ −4.7 +0.9 COOD 10 350 13.8 Maha++ 96.6 Maha++ 212 2.0 9.0 GEN 98.0 Maha++ −4.8 +1.4 ImageNet-O 2 000 18.0 Maha++ 95.8 Maha++ 309 15.4 12.3 Maha++ 96.8 NECO −5.7 +1.0 Textures 5 640 21.2 Maha++ 94.1 Maha++ 288 5.1 9.7 Maha++ 98.3 Maha++ −11.5 +4.2 Places 10 000 25.3 NNGuide 94.6 ViM 153 1.5 9.2 Maha++ 98.3 ViM −16.1 +3.7 SSB easy 50 000 30.0 NECO 92.1 Maha++ 151 0.3 7.3 GEN 98.6 NECO −22.7 +6.5 SSB hard 49 000 33.1 ViM 92.7 ViM 208 0.4 24.0 Energy 94.4 Maha++ −9.1 +1.7 Species 10 000 40.2 Maha 88.4 ViM 172 1.7 15.1 Maha++ 97.4 ViM −25.1 +9.0 IN1k-OOD 50 000 48.2 NAC 83.3 GEN 235 0.5 35.7 NAC 91.3 Maha++ −12.5 +8.0 FI-I MAGE NET -1 K 655 65.0 Maha++ 84.2 rMaha++ 655 100.0 65.0 Maha++ 84.2 rMaha++ — —
+
+13 1 5 10 15 20 GPT-mined negatives per ID class k
+
+> 50 55 60 65 70 75 80 85 FPR@95 (%)
+> 58.6 mean over 8 VLMs
+
+Figure A1. GPT-generated per ID class siblings. FPR@95 (%, 
+
+↓) on F I-I MAGE NET -1 K of NegLabel with GPT-mined per-class siblings as a function of the number k of negatives kept per ID class (gray: the eight VLMs; blue: mean). 10 2 10 3 10 4 10 5   
+
+> WordNet NegMining prefix size M
+> 70 75 80 85 FPR@95 (%)
+> M= 5k (used)
+> M= 10k (default) mean over 8 VLMs
+
+Figure A2. WordNet negative pool size. FPR@95 (%, ↓) on FI-I MAGE NET -1 K of NegLabel with the NegMined WordNet lex-icon as a function of the pool size M (farthest labels first, log scale; gray: the eight VLMs; blue: mean). The default M =10 ,000 
+
+by NegLabel lies past the optimum for every model; Tab. 2 uses 
+
+M =5000 , the mean of the per-model optima. 
+
+## B. Ablation Study: Negative Vocabulary 
+
+The following experiments produce analyses of negative vo-cabulary construction. 
+
+GPT-generated negative siblings per class (Fig. A1). 
+
+FPR@95 decreases monotonically with the growing num-ber of negative labels (“siblings”) requested from GPT-5.4 for every VLM. Each GPT-5.4 generation of negative sib-lings yields 20 of them per ID class. The FPR@95 stan-dard deviation between runs requesting 20 negative labels is 1.0–1.5 points. Merging all ten generations yields 26–138 unique candidates per ID class (73.6 on average). We keep 
+
+k of them, chosen in random order so that k controls only the negative vocabulary size, not a quality ranking in which GPT generates them. On other OOD datasets, more nega-tives help monotonically (NINCO: 49.9% at k=5 , 40.6% at k=60 ). On F I-I MAGE NET -1 K FPR@95 flattens near 59% for k=20 –40 (Fig. A3) and rises to 60.9% with all candidates. Therefore, the NegLabel GPT experiment from Tab. 2 uses 20 negative siblings per ID class. 
+
+WordNet negative pool size (Fig. A2). 
+
+For F I-I MAGE NET -1 K, performance is best for WordNet prefixes containing approximately 1,000–15,000 labels, de-pending on the VLM. Seven of the eight model-specific op-tima occur at or below 5,000 labels. Table 2 uses the fixed value M =5 ,000 , whereas the original NegLabel configura-tion uses M =10 ,000 .
+
+Combining the two vocabularies (Tabs. 2 and A5). Only the WordNet prefix varies here, in whether it is added to the per-class siblings and at which size M ; the score, ID names, templates and the budget of 20 siblings per class are fixed. On F I-I MAGE NET -1 K the union gives 58.8% against 58.6% for the siblings alone, and M =20 ,000 raises it to 5 10 20 40 all   
+
+> pooled negatives kept per ID class k(random order) 40 45 50 55 60 65 70 FPR@95 (%)
+> ours NINCO ImageNet-OOD popular OOD (mean of 11)
+
+Figure A3. Size of the merged per-ID class negative pool. 
+
+NegLabel FPR@95 (%, ↓; mean over the eight VLMs) with k
+
+negatives kept per ID class from the merged negative pool of all ten GPT-5.4 generations; “all” keeps every candidate (73.6 per ID class on average). More negatives keep helping on popular OOD datasets (dashed) but not on F I-I MAGE NET -1 K (solid). 
+
+62.8%; on NINCO it lowers FPR@95 from 50.4% to 40.7% and on ImageNet-OOD from 55.5% to 53.6%. WordNet therefore helps separate OOD images far from ImageNet-1k, not near-OOD ones of F I-I MAGE NET -1 K.
+
+Negative-label vocabularies on other OOD datasets (Tab. A5). Table A5 evaluates the vocabularies of Tab. 2 on the eleven popular OOD datasets, NINCO and ImageNet-OOD. Which mined vocabulary is best depends on how far the dataset lies from ImageNet-1k content: Word-Net wins on five sets unrelated to ImageNet-1k ( e.g ., iNat-OOD Plants, Textures, Places), the union wins on 14 Table A4. EOE’s three released prompts across OOD datasets. 
+
+FPR@95 (%, ↓) of EOE with each of the three prompts released by [7], at 500 generated categories: mean over the eight VLMs and 30 independent GPT-5.4 generations, ± the standard deviation over the generations of the mean. Best prompt per row in bold , or underlined when it does not beat MCM. No prompt dominates everywhere: the fine-grained prompt that the main paper uses wins on F I-I MAGE NET -1 K and on the near-OOD sets, and loses to the other two on scene- and texture-like data.                                                                                                                            
+
+> Dataset MCM far-OOD near-OOD fine-grained
+> FI-I MAGE NET -1 K79.7 78.4 ±6.7 83.4 ±2.9 70.2 ±7.8
+> fine-grained split 83.1 85.2 ±13.1 94.9 ±4.8 71.4 ±15.8
+> ordinary split 75.6 70.1 ±2.5 69.4 ±3.1 68.8 ±3.8
+> NINCO 60.9 55.2 ±11.0 61.7 ±6.3 46.8 ±11.1
+> ImageNet-OOD 65.7 59.6 ±4.5 57.0 ±3.8 60.0 ±6.7
+> CLEAN-OOD 53.1 47.7 ±5.8 48.7 ±5.0 43.6 ±8.7
+> iNat-OOD Plants 41.8 33.9 ±11.2 30.8 ±9.9 29.8 ±15.2
+> OpenImage-O 44.9 38.8 ±5.9 36.9 ±5.2 36.8 ±7.8
+> Textures 55.3 57.9 ±7.0 57.4 ±3.7 58.9 ±3.2
+> 360OpenSet 57.7 43.0 ±7.6 39.8 ±6.3 39.6 ±11.6
+> Places 58.7 54.7 ±10.8 54.4 ±9.6 66.9 ±5.1
+> COOD 59.2 52.2 ±6.0 53.2 ±4.7 45.9 ±9.1
+> ImageNet-O 60.8 56.1 ±4.5 54.4 ±3.6 55.6 ±4.7
+> SSB easy 66.7 65.3 ±3.8 63.3 ±2.3 67.1 ±3.7
+> Species 77.8 73.1 ±9.1 79.9 ±4.8 64.0 ±14.7
+> SSB hard 78.2 74.7 ±8.9 80.4 ±4.4 67.1 ±9.7
+> IN1k-OOD 82.0 82.4 ±12.8 92.8 ±5.9 67.0 ±17.0
+
+the remaining eight, including every ImageNet-1k-derived set (SSB, IN1k-OOD, ImageNet-O, ImageNet-OOD) and NINCO, and the per-class siblings alone win only on FI-I MAGE NET -1 K, whose OOD images lie closest to the ID classes. In the mean over the thirteen OOD datasets, the union is best, 46.8% against 47.2% for WordNet and 58.3% for the siblings. Nevertheless, the oracle bounds all of them at 4.9–37.4%, indicating that detection is limited by vocab-ulary selection rather than by the scoring function. 
+
+EOE prompt style (Tab. A4). The three EOE prompts differ by about 13 FPR@95 points on F I-I MAGE NET -1K. Only the fine-grained prompt improves substantially on MCM, the vocabulary-free baseline (79.7%), reaching 70.2% at 500 negative classes (the far-OOD prompt gains 1.3 points, the near-OOD prompt loses 3.7), and it is also best on NINCO and CLEAN-OOD. On the contrary, on Places it is 12.5 points worse than the near-OOD prompt and on ImageNet-OOD 3.0 worse. The prompt thus con-trols which kind of OOD the vocabulary covers. While the main-paper result uses the fine-grained prompt, which per-forms best on F I-I MAGE NET -1 K, Tab. A4 reports on all three prompts. EOE is also the least stable vocabulary: its standard deviation across generations at 500 negatives is 7.8 points. 
+
+Table A5. Negative vocabularies for FI-I MAGE NET -1 K.
+
+FPR@95 (%, ↓) of NegLabel with the four vocabularies of Tab. 2, as a mean over the eight VLMs, on the eleven popular OOD datasets at full size (Tab. A3), on NINCO and ImageNet-OOD, and on F I-I MAGE NET -1 K. Best of the three mined vocabularies in bold . oracle (gray) is a non-deployable empirical lower bound on FPR@95 and exists only for the datasets with labels available for every image. Dataset n WN GPT WN+GPT oracle iNat-OOD Plants 10 000 1.2 40.4 5.2 –OpenImage-O 17 632 29.6 55.9 35.3 –360OpenSet 11 800 25.7 47.4 25.6 4.9 
+
+COOD 10 350 36.0 50.0 33.7 9.5 
+
+ImageNet-O 2 000 57.6 53.4 47.6 19.0 
+
+Textures 5 640 66.4 72.4 67.9 7.5 
+
+Places 10 000 47.7 73.4 63.1 –SSB easy 50 000 67.8 66.0 61.8 37.4 
+
+SSB hard 49 000 62.3 61.8 57.6 22.9 
+
+Species 10 000 43.0 68.8 56.0 –IN1k-OOD 50 000 65.4 63.1 60.9 21.7 
+
+NINCO 5 879 44.9 50.4 40.7 5.3 
+
+ImageNet-OOD 31 802 66.3 55.5 53.6 17.0 
+
+mean 47.2 58.3 46.8 16.1 
+
+FI-I MAGE NET -1 K 655 74.6 58.6 58.8 13.8 
+
+## C. Ablation Study: Size of the OOD Dataset 
+
+Section 4.6 argues that, for a fixed model, detector, ID set, and ID-derived threshold, the OOD sample size affects the precision of FPR@95 but not its expected value. The deci-sion threshold is the 5th percentile of the 48,365 ID scores and is independent of the OOD set. To test this empiri-cally, we draw 1000 random 655-image subsets, matching the size of F I-I MAGE NET -1 K, from each of the 14 external OOD datasets in Tab. 3. We repeat the experiment for all eight supervised backbones. For each combination of back-bone and dataset, the detector with the lowest FPR@95 on the full dataset is selected once and then kept fixed across all draws. 
+
+Unbiasedness (Tab. A6 and Fig. A4). For a fixed detector and ID-derived threshold, the sample FPR@95 is an unbi-ased estimator of the full-dataset rate. At n=655 , the mean over the draws differs from the full-dataset rate by at most 0.13 points across all 112 combinations of backbone and dataset, even when a draw retains only 1.3% of the dataset. The draws are sampled without replacement from a fi-nite dataset of size N . Consequently, the standard deviation predicted using Eq. (5) has to be multiplied by the finite-population correction 
+
+r N − nN − 1 .
+
+15 Table A6. Sub-sampling other OOD datasets down to the size of F I-I MAGE NET -1 K. Each dataset is re-evaluated on 1000 random draws of 655 images without replacement, with the ID set and the detector fixed across draws (EVA02-L-448 with its per-dataset best of the 21 post-hoc detectors, named in gray). full : FPR@95 (%, ↓) on all images; mean , bias : average FPR@95 over the draws and its signed difference from full ; std : standard deviation over the draws. closed form : the standard error per Eq. (5) (square root of the variance) where bpD := full times the correction factor p(N −n)/(N −1) that Eq. (5) omits (for F I-I MAGE NET -1 K, bpD becomes 0.65 from the only pass). ρ: Spearman correlation between the detector ranking on a draw and on the full set. Sub-sampling to 655 images thus shifts neither FPR@95 nor the ranking, with sampling noise below 2 points. The noise spans 1.39–1.80 points against a 12.7–16.4-point spread across datasets over the eight backbones of Tab. 1 evaluated in Sec. C. 
+
+Dataset N 655 /N (%) full 1000 random draws of 655 samples mean bias std closed form ρ
+
+iNat-OOD Plants 10 000 6.6 1.21 ViM 1.21 0.00 0.43 0.41 0.970 OpenImage-O 17 632 3.7 5.78 Maha++ 5.81 +0.03 0.90 0.89 0.977 360OpenSet 11 800 5.6 11.95 E+ReAct 12.01 +0.06 1.21 1.23 0.969 COOD 10 350 6.3 13.82 Maha++ 13.81 −0.01 1.30 1.31 0.952 ImageNet-O 2 000 32 .8 18.00 Maha++ 18.06 +0.06 1.23 1.23 0.974 Textures 5 640 11 .6 21.18 Maha++ 21.12 −0.06 1.47 1.50 0.977 Places 10 000 6.6 25.27 NNGuide 25.24 −0.03 1.68 1.64 0.984 SSB easy 50 000 1.3 30.04 NECO 30.11 +0.07 1.77 1.78 0.957 SSB hard 49 000 1.3 33.13 ViM 33.18 +0.05 1.82 1.83 0.978 Species 10 000 6.6 40.25 Maha 40.26 +0.01 1.85 1.85 0.978 IN1k-OOD 50 000 1.3 48.17 NAC 48.16 −0.01 1.89 1.94 0.985 NINCO 5 879 11 .1 16.89 Maha++ 16.90 +0.01 1.36 1.38 0.980 ImageNet-OOD 31 802 2.1 18.80 NECO 18.74 −0.06 1.52 1.51 0.957 CLEAN-OOD 2 715 24 .1 12.15 Maha++ 12.19 +0.04 1.09 1.11 0.955 
+
+FI-I MAGE NET -1 K 655 100 65.0 Maha++ – – – 1.86 –Since this factor is always at most one, that value still re-mains a conservative upper bound. The observed standard deviation agrees with the finite-population-corrected value to within 0.10 points. Across all values of n in Fig. A4, the mean remains centered on the full-dataset rate while the uncertainty band narrows approximately as 1/√n.The analytical standard deviation of 1.86 percentage points reported for F I-I MAGE NET -1 K in Tab. A6 justifies a distinct interpretation. Because no larger finite pool of FI-I MAGE NET -1 K images is available from which to per-form sub-sampling, this quantity is instead a plug-in esti-mate derived from Eq. (5), computed with n=655 and the observed FPR@95 of 65.0%. Consequently, it quantifies uncertainty under an assumption of independent sampling from the underlying OOD-generating distribution, rather than the variability induced by sub-sampling a fixed bench-mark dataset. 
+
+Resolution of a 655-image draw. For the ranking analy-sis, we evaluate all 21 detectors on every draw and compare their ranking with the ranking on the full dataset. The mean Spearman correlation ranges from 0.95 to 1.00 for all com-binations of backbone and dataset, and from 0.952 to 0.985 for EVA02-L-448 in Tab. A6. A 655-image draw therefore largely preserves the detector ranking, although it may not reliably distinguish its top entries. For F I-I MAGE NET -1 K,the two best detectors differ by at most 2.6 points across the eight backbones, which is comparable to the sampling un-certainty. Tables 1 and 3 therefore report the strongest result from the evaluated pool rather than a definitive ranking of its top detectors. 
+
+Dataset effect vs. sampling noise. As summarized in Sec. 4.6, the between-dataset spread ranges from 12.7 to 16.4 points across the eight backbones. This is between 7.1 and 11.0 times the mean sampling standard deviation of a 655-image draw, which ranges from 1.39 to 1.80 points. Thus, for the models and datasets evaluated, the choice of OOD dataset has a substantially larger effect than the sam-pling variation associated with using 655 images. In par-ticular, the 16.8-point gap between F I-I MAGE NET -1 K and the hardest external dataset (Tab. A6) is approximately nine times the 1.86-point plug-in standard deviation estimated in Sec. 4.6. 
+
+## D. Additional Dataset Examples 
+
+Following on Fig. 2, Fig. A5 presents 42 additional exam-ples from F I-I MAGE NET -1 K. For visual balance, half of the displayed examples are animals; overall, animals consti-tute 58.0% of the complete dataset (based on intersection of the original ImageNet-1k labels and the respective WordNet 16 160 320 655 1,280 2,560 5,000 10,000  
+
+> OOD images kept in the evaluation, n
+> 020 40 60 80 FPR@95 (%)
+> iNat-OOD Plants ( N=10,000) NINCO ( N=5,879) ImageNet-OOD ( N=31,802) Places ( N=10,000) SSB hard ( N=49,000) IN1k-OOD ( N=50,000)
+
+Figure A4. FPR@95 on random subsets and full OOD datasets. 
+
+Six datasets from Tab. 3, each evaluated on 1000 random n-image draws using EVA02-L-448. For each dataset, the best of the 21 post-hoc detectors is selected on the full dataset and then fixed across all draws; the ID set is also fixed. The plot shows the mean FPR@95 (%, ↓) over the draws, with bands indicating ±2 stan-dard deviations. Dotted lines show the full-dataset values, the solid black line shows F I-I MAGE NET -1 K as a fixed reference, and the gray vertical line marks n=655 . The mean remains centered on the full-dataset value at every n.
+
+subtree [33]). Many certified labels are semantically close to the original class, such as tayra versus weasel , black-footed cat versus lynx , concert tuba versus French horn , and 
+
+diesel locomotive versus electric locomotive ; these exam-ples illustrate the fine-grained failure mode. The remaining examples illustrate a broader semantic mismatch, in which the depicted concept has no close ImageNet-1k class and the original label reflects a scene-, material-, shape-, or con-textual association: cloud-filled sky labeled as wool , small waterfall as valley , hexagonal pattern as honeycomb .Because all images originate from the ImageNet-1k col-lection pipeline, the benchmark is designed to minimize systematic differences in style, resolution, and capture con-ditions between ID and OOD data. This shared origin does not eliminate all covariate differences, but it makes seman-tic category mismatch a more salient component of the eval-uation. 
+
+## E. Additional Supervised Models 
+
+Table A7 expands the supervised evaluation from the eight representative models in Tab. 1 to 30 classifiers, cover-ing parameter counts from 5.3M to 6.7B, eight architecture families, and five pre-training regimes. For each classifier, we report the best FPR@95 over the same 21 post-hoc de-tectors used in the main paper. The lowest value is 64.4%, obtained by the DINOv3-7B linear probe with relative Ma-halanobis++. Thus, even the strongest of the evaluated model and detector combinations accepts almost two thirds of the F I-I MAGE NET -1 K images as ID at the threshold that accepts 95% of the ID set. None of the 22 additional classi-fiers improves on this minimum. The expanded evaluation therefore shows that the high FPR@95 on F I-I MAGE NET -1K is not specific to the representative architectures selected for the main paper. Pre-training nevertheless has a measurable effect within the evaluated model families. Out of the 26 models, the mean best FPR@95 decreases from 79.0% for ImageNet-1k-only training to 75.4% for JFT noisy-student pre-training and 73.7% for both ImageNet-21k pre-training and CLIP checkpoints with an intermediate ImageNet-12k stage. All seven matched model pairs favor ImageNet-21k over ImageNet-1k pre-training, with an average reduction of 4.7 percentage points. Reannotated Top-1 is correlated with FPR@95 ( ρ=−0.61 ), but does not fully determine it. Adding an ImageNet-12k stage between CLIP pre-training and ImageNet-1k fine-tuning improves FPR@95 by 3.4 points while changing Top-1 by only 0.1 to 0.6 points. 
+
+## F. Implementation Details 
+
+Checkpoints. Table A8 lists every evaluated model, super-vised and zero-shot, with its identifying checkpoint. The DINOv2-g/14 and DINOv3-7B probes are single linear lay-ers on the frozen 1536- and 4096-dimensional final embed-dings, trained with cross-entropy on the ImageNet-1k train-ing split. 
+
+Zero-shot scoring. Every label, ID or negative, is encoded with the eight templates of Sec. G and the ℓ2-normalized template embeddings are averaged; image and text embed-dings are compared by cosine similarity, scaled by 1/τ with 
+
+τ =0 .01 . MCM is the maximum softmax over the ID names; MaxLogit, Energy, GEN, Entropy and Margin are com-puted from the same scaled similarities. For EOE, we use the penalty weight of β=0 .25 as in the release; sweeping 
+
+β ∈ { 0, 0.25 , 0.5, 1} moves FPR@95 on F I-I MAGE NET -1K by at most 1–2 points. GL-MCM [35] amends MCM with the maximum softmax over the patch-token logits, us-ing weight λ=1 , of a second forward pass in which the last block’s attention output is replaced by its value branch. 17 Table A7. Supervised methods - performance on F I-I MAGE NET -1 K (nOOD = 655 , nID = 48 ,365 ). Best FPR@95 ( ↓) and AUROC (↑) per model of the same 21 post-hoc detectors as Tab. 1; grey text names the best-performing detector. Pre-training names the corpus or objective seen before the ImageNet-1k fine-tune (SSL rows are frozen backbones with a linear probe). The Top-1 is multi-label top-1 on the reannotated ID split, both as in Tab. 1. Bars are a reading aid drawn from a 64.4-point baseline (shorter is better); they encode the same number reported on the right. Gray shading: models from Tab. 1. For space reasons, the main paper reports only this representative subset of the models. † marks a linear probe on a frozen backbone, as in Tab. 1. Checkpoints are in Tab. A8. 
+
+Model Pre-training Params Top-1 FPR@95 ↓ AUROC ↑
+
+EffNet-B0 ImageNet-1k 5.3M 81.6 82.9 Energy 72.5 rMaha++ 
+
+BiT-s ImageNet-1k 44.5M 81.8 82.4 rMaha 74.0 rMaha 
+
+DeiT3-B-224 ImageNet-1k 86.6M 87.1 80.8 rMaha++ 74.0 rMaha++ 
+
+XCiT-M-224 ImageNet-1k 84.4M 85.7 80.5 rMaha++ 73.3 rMaha++ 
+
+ResNet50 ImageNet-1k 25.6M 84.9 80.2 rMaha++ 74.2 rMaha++ 
+
+ViT-B-384 ImageNet-1k 86.9M 84.6 79.7 rMaha++ 74.6 rMaha 
+
+DeiT3-B-224-21k ImageNet-21k 86.6M 88.9 79.5 NAC 77.3 rMaha++ 
+
+DeiT3-B-384 ImageNet-1k 86.9M 88.1 78.6 rMaha++ 75.5 rMaha++ 
+
+XCiT-M-224-d ImageNet-1k 84.4M 87.7 78.2 Maha++ 74.8 rMaha++ 
+
+ViT-B-384-l2b CLIP 86.9M 89.6 77.1 Maha++ 78.9 rMaha++ 
+
+ViT-B-384-oai CLIP 86.9M 89.1 77.1 rMaha++ 78.4 rMaha++ 
+
+DeiT3-B-384-21k ImageNet-21k 86.9M 89.6 77.1 rMaha++ 78.4 rMaha++ 
+
+SwinV2-B-256 ImageNet-1k 87.9M 87.6 76.9 rMaha++ 74.1 rMaha++ 
+
+EffNetV2-M ImageNet-1k 54.1M 88.3 76.9 rMaha++ 76.5 rMaha++ 
+
+ConvNeXt-B ImageNet-1k 88.6M 87.6 76.0 rMaha++ 74.2 rMaha++ 
+
+BiT-m ImageNet-21k 44.5M 86.0 75.4 rMaha 78.2 rMaha++ 
+
+EffNet-b7-ns JFT-300M (ns) 66.3M 89.6 75.4 rMaha++ 77.2 rMaha++ 
+
+EffNetV2-M-21k ImageNet-21k 54.1M 89.2 75.1 rMaha++ 79.6 rMaha++ 
+
+EffNet-b7 ImageNet-1k 66.3M 88.1 74.5 rMaha++ 77.7 rMaha++ 
+
+ConvNeXt-T-21k ImageNet-21k 28.6M 87.6 74.0 NAC 77.6 Maha++ 
+
+ViT-B-384-oai-12k CLIP +ImageNet-12k 86.9M 89.7 73.9 NAC 81.0 rMaha++ 
+
+ViT-B-384-l2b-12k CLIP +ImageNet-12k 86.9M 89.8 73.4 rMaha++ 81.1 rMaha++ 
+
+SwinV2-B-256-21k ImageNet-21k 87.9M 89.2 73.3 NAC 77.9 rMaha++ 
+
+ViT-B-224-21k ImageNet-21k 86.6M 87.7 70.7 rMaha++ 80.1 Maha 
+
+ConvNeXt-B-21k ImageNet-21k 88.6M 89.1 69.2 rMaha++ 80.3 rMaha++ 
+
+ViT-B-384-21k ImageNet-21k 86.9M 89.3 69.0 Maha++ 81.4 Maha 
+
+DINOv2-g/14 † SSL (LVD-142M) 1.1B 89.1 68.7 ViM 77.5 GEN 
+
+ConvNeXtV2-L FCMAE +ImageNet-21k 198.0M 90.3 67.8 rMaha++ 83.1 Maha++ 
+
+EVA02-L-448 MIM +ImageNet-21k 305.1M 91.5 65.0 Maha++ 84.2 rMaha++ 
+
+DINOv3-7B † SSL (LVD-1689M) 6.7B 90.1 64.4 rMaha++ 81.0 MCM 
+
+Table A8. Checkpoints of all evaluated models. Top: the 30 supervised classifiers of Tab. A7, which include the eight of Tab. 1, as timm 
+
+checkpoints with explicit tags; † marks a frozen backbone with a linear probe trained on the ImageNet-1k training split. Bottom: the eight zero-shot VLMs of Tab. 1 as open clip architecture / pre-training pairs with their input resolution, except AIMv2-L (Hugging Face). 
+
+Supervised classifiers 
+
+Model timm checkpoint Model timm checkpoint ViT-B-384-l2b-12k vit base patch16 clip 384.laion2b ft in12k in1k EffNet-b7-ns tf efficientnet b7.ns jft in1k 
+
+ViT-B-384-oai-12k vit base patch16 clip 384.openai ft in12k in1k ViT-B-384 vit base patch16 384.augreg in1k 
+
+ViT-B-384-l2b vit base patch16 clip 384.laion2b ft in1k SwinV2-B-256 swinv2 base window16 256.ms in1k 
+
+ViT-B-384-oai vit base patch16 clip 384.openai ft in1k DeiT3-B-384 deit3 base patch16 384.fb in1k 
+
+ViT-B-384-21k vit base patch16 384.augreg in21k ft in1k DeiT3-B-224 deit3 base patch16 224.fb in1k 
+
+ViT-B-224-21k vit base patch16 224.augreg in21k ft in1k XCiT-M-224 xcit medium 24 p16 224.fb in1k 
+
+SwinV2-B-256-21k swinv2 base window12to16 192to256.ms in22k ft in1k XCiT-M-224-d xcit medium 24 p16 224.fb dist in1k 
+
+DeiT3-B-384-21k deit3 base patch16 384.fb in22k ft in1k ConvNeXt-B convnext base.fb in1k 
+
+DeiT3-B-224-21k deit3 base patch16 224.fb in22k ft in1k BiT-s resnetv2 101x1 bit 
+
+ConvNeXt-B-21k convnext base.fb in22k ft in1k EffNetV2-M tf efficientnetv2 m.in1k 
+
+ConvNeXt-T-21k convnext tiny.fb in22k ft in1k 384 EffNet-b7 tf efficientnet b7.ra in1k 
+
+BiT-m resnetv2 101x1 bit.goog in21k ft in1k EffNet-B0 efficientnet b0.ra in1k 
+
+EffNetV2-M-21k tf efficientnetv2 m.in21k ft in1k ResNet50 resnet50.a1 in1k 
+
+ConvNeXtV2-L convnextv2 large.fcmae ft in22k in1k 384 DINOv2-g/14 † dinov2 vitg14 + linear probe EVA02-L-448 eva02 large patch14 448.mim m38m ft in22k in1k DINOv3-7B † dinov3 vit7b16 + linear probe 
+
+Zero-shot vision–language models 
+
+Model open clip checkpoint, resolution Model open clip checkpoint, resolution MetaCLIP2-H/14 ViT-H-14-worldwide-378 / metaclip2 worldwide , 378 px CLIP-B/16 ViT-B-16-quickgelu / openai , 224 px OpenCLIP-H/14 ViT-H-14-378-quickgelu / dfn5b , 378 px CLIP-L/14 ViT-L-14-336-quickgelu / openai , 336 px SigLIP-SO400M ViT-SO400M-14-SigLIP-384 / webli , 384 px AIMv2-L apple/aimv2-large-patch14-224-lit , 224 px SigLIP2-g ViT-gopt-16-SigLIP2-384 / webli , 384 px PE-Core-L/14 PE-Core-L-14-336 / meta , 336 px 
+
+18 G. Prompts 
+
+Zero-shot classification prompt templates. Every label is encoded with the eight prompt templates “{} ”, “a photo of a {} .” , “a bad photo of a {} .” , “a photo of many {} .” ,
+
+“a photo of the large {} .” , “a photo of the small {} .” , “a cropped photo of a {} .” and “a close-up photo of a {} .” ;that is, the bare name and seven of the OpenAI ImageNet templates [40], the ensemble adopted also by [49]. 
+
+EOE OOD method. We use the three prompts released with EOE [7]. In each, [ID names] stands for the semicolon-separated list of the 1000 ID class names. 
+
+Far-OOD: “I have gathered images of 1000 distinct cate-gories: [ID names] . Summarize what broad categories these categories might fall into based on visual features. Now, I am looking to identify 500 classes that visually resemble these broad categories but have no direct relation to these broad categories. Please list these 500 categories for me.” 
+
+Near-OOD: “Given the image categories: [ID names] .Please suggest visually similar categories that are not directly related or belong to the same primary group as these cate-gories. Provide suggestions that share visual characteristics but are from broader and different domains than these cate-gories. List 500 such categories.” 
+
+Fine-grained: “I have a dataset containing 1000 different species of object. I need a list of 500 distinct object species that are NOT present in my dataset, and ensure there are no repetitions in the list you provide. For context, the species in my dataset are: [ID names] .” 
+
+Output format (all three): “Output ONLY a single JSON ob-ject with one key "categories" mapping to a list of ex-actly 500 strings. Each string is a concrete, photographable category name, lowercase, at most 3 words. No duplicates. Add nothing else.” 
+
+19 GPT-5.4 prompt for NegLabel used to obtain ID siblings in Tab. 2 . The mining over the 1000 distinct ID class names (14 names are shared by classes merged in ReImageNet [50]) is repeated ten times using the following prompt: 
+
+“You are building a hard-negative label vocabulary for open-set image recognition. The in-distribution (ID) label space is ImageNet-1k. For EACH ID class name I give you, produce 20 real-world category names that are EASILY VISUALLY CONFUSED with it in a photograph – similar shape, texture, colour, or typical setting – but that are NOT the same cate-gory and are NOT themselves one of the 1000 ImageNet-1k classes. The goal is the ‘just outside the class boundary’ shell: cate-gories a strong image classifier could plausibly mistake for the ID class, yet that genuinely lie outside it. These become neg-ative labels, so precision at the boundary matters more than diversity. Rules: (1) Concrete, photographable nouns, at most 3 words each, lowercase. (2) For living things, give SIBLING species/breeds at the SAME taxonomic granularity (e.g. “ger-man shepherd” → “dutch shepherd”, “bohemian shepherd”; NOT the parent “dog”, NOT a coarser or finer level, NOT the class itself). (3) For man-made objects, give visually adjacent object types (e.g. “cash machine” → “ticket kiosk”, “self-service terminal”). (4) No synonyms, plurals, or spelling vari-ants of the target class. (5) No duplicates within a class’s list. (6) Do NOT output any of the 20 neighbours as an exist-ing ImageNet-1k class name. (7) Aim for the near boundary, never far-away/unrelated objects. Output ONLY a single JSON object mapping each input class name (verbatim, exactly as given, including any parenthetical disambiguation) to its list of 20 strings. Return every class in the input; add nothing else.” 
+
+Labels that match an ImageNet-1k class name or one of its WordNet synonyms are removed, resulting in 19,597– 19,632 labels per generation. 
+
+Annotation evidence for GPT-5.4. The open-vocabulary description shown to the annotators – evidence source (A) of Fig. 3. It is produced with GPT-5.4 through the Ope-nAI API, adapted from the MLLM pipeline of [24]. The model must either commit to one of the 1000 ImageNet-1k class names (closed world) or state that the subject is not in the list and give a free-form fine-grained label (open world). [ID names] stands for the semicolon-separated list of the 1000 ImageNet-1k class names. 
+
+“You are an expert image classifier. You are provided with a list of allowed class names separated by semicolons (;). Classification Rules: Determine the Main Subject: Focus only on the single most dominant and relevant object in the image, even if multiple subjects are present. List Matching: Evaluate if the main subject belongs to one of the provided class names. Handling ‘Not in List’ (Fine-Grained Alternative): If you are not sure or the subject does not belong to the provided list, you must state “nothing from provided classnames” and provide your top-1 alternative. Alternative Rule 1: This alternative must be the most fine-grained, specific natural-language label possible (e.g., “golden retriever puppy”, “1950s red convertible”, “blue mor-pho butterfly”, “ceramic coffee mug with floral pattern”). Avoid generic terms like “dog”, “car”, or “bird”. Reflect detailed visual distinctions like species, make/model, style, color, or material. Alternative Rule 2: If the dominant object cannot be clearly identified, return a concise descriptive label of its appearance (e.g., “abstract metal sculpture”, “blurry human silhouette”). Output Rules: Return exactly one output per image. Do not include explanations, reasoning, conversational filler, or any extra text whatsoever. Strictly format your output matching ONE of the following two templates: Format A (Match from list): ClassName Format B (No match from list): nothing from provided class-names, [FineGrainedAlternative] Allowed class names (semicolon-separated): [ID names] ”
+
+20 Asiatic black bear cub American black bear 
+
+black-footed cat lynx 
+
+ocelot jaguar 
+
+kudu antelope gazelle 
+
+white-nosed coati badger 
+
+raccoon dog coyote 
+
+tayra weasel 
+
+mongoose lemur mongoose 
+
+quoll wombat 
+
+hedgehog porcupine 
+
+ring-necked pheasant black grouse 
+
+common kingfisher American dipper 
+
+great blue heron little blue heron 
+
+leopard gecko banded gecko 
+
+Galapagos land iguana green iguana 
+
+giant tortoise mud turtle 
+
+French angelfish clownfish 
+
+dolphin snoek fish 
+
+four-spot orb weaver barn spider 
+
+red velvet mite tick 
+
+darkling beetle dung beetle 
+
+concert tuba French horn 
+
+pear cactus fruits fig 
+
+strawberry tree fruit strawberry 
+
+cherry tomato orange 
+
+breadfruit tree jackfruit 
+
+swiss knife drumstick 
+
+walnut nutcracker can opener 
+
+UV curing lamp tool kit 
+
+altimeter barometer 
+
+spectrophotometer projector 
+
+payment terminal hand-held computer 
+
+walkie-talkie radio 
+
+overvoltage protector modem 
+
+power adapter joystick 
+
+lounge chair rocking chair 
+
+range hood dishwasher 
+
+mead bottle wine bottle 
+
+diesel locomotive electric locomotive 
+
+hexagonal pattern honeycomb 
+
+small waterfall valley 
+
+cloud-filled sky wool 
+
+Figure A5. Additional F I-I MAGE NET -1 K examples. 42 OOD images with the certified OOD label, none of which is in the ImageNet-1k class space, and the original ImageNet-1k label the image was collected under. The top three rows show animals, the bottom three the remaining classes. 
+
+21

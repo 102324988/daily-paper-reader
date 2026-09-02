@@ -1,0 +1,393 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-09-02T22:05:54.122437+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 8,
+    "deep_cap": 6,
+    "deep_selected": 6,
+    "quick_candidates": 4,
+    "quick_skim_target": 11,
+    "quick_selected": 4
+  },
+  "deep_dive": [
+    {
+      "id": "2609.00628v1",
+      "source": "arxiv",
+      "title": "Restrict, Don't Retrain: Inference-Time VLM Guidance for Zero-Shot Aerial Segmentation",
+      "abstract": "Global welfare often depends on the correct interpretation of aerial and satellite imagery. Acting on such imagery (mapping flooded ground, crop extent, or damaged infrastructure) demands pixel-level segmentation to ensure perfect class localization. Pretrained general foundation models, when applied directly, often miss important features and cannot always find all the classes belonging to a given scene, overlooking smaller objects that matter most. We use a single consumer-grade GPU running a vision-language model (VLM) to supply this missing guidance, improving segmentation while producing structured, auditable evidence that drives the result and can be inspected on its own. We fuse three approaches: the frozen foundation model that labels every pixel, and two queries to a VLM, one to choose the classes that matter, and one to locate the small objects the base model misses. Evaluating across four aerial datasets, we see consistent gains at each stage where the base model is competent.",
+      "authors": [
+        "Teresa DiMeola",
+        "Charles Walter",
+        "Hong Xiao"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-09-01T03:07:38+00:00",
+      "link": "https://arxiv.org/pdf/2609.00628v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 10.0,
+      "llm_evidence_en": "Zero-shot aerial segmentation guided by a VLM at inference time",
+      "llm_evidence_cn": "推理时VLM引导的零样本航空影像分割",
+      "llm_evidence": "推理时VLM引导的零样本航空影像分割",
+      "canonical_evidence": "推理时VLM引导的零样本航空影像分割",
+      "llm_tldr_en": "Zero-shot aerial segmentation is improved by a consumer-GPU VLM that guides a frozen foundation model at inference time, adding auditable evidence and recovering classes and small objects.",
+      "llm_tldr_cn": "航空与卫星影像的像素级分割对洪灾制图、作物范围识别等应用很重要，但预训练基础模型直接使用时会漏掉小目标或部分类别。该工作提出推理时用单张消费级GPU上的视觉语言模型来提供引导信号，在不重训冻结基础模型的情况下提升分割结果，并生成结构化、可审计的证据。三路融合的方式验证了VLM约束可作为航空场景零样本分割的实用补充。",
+      "llm_tldr": "航空与卫星影像的像素级分割对洪灾制图、作物范围识别等应用很重要，但预训练基础模型直接使用时会漏掉小目标或部分类别。该工作提出推理时用单张消费级GPU上的视觉语言模型来提供引导信号，在不重训冻结基础模型的情况下提升分割结果，并生成结构化、可审计的证据。三路融合的方式验证了VLM约束可作为航空场景零样本分割的实用补充。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "image segmentation techniques",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2609.00634v1",
+      "source": "arxiv",
+      "title": "Beyond Landmark Extraction: A Framework for Robust Geometric Feature Construction in Structured Image Classification",
+      "abstract": "Much of the literature on structured image recognition has disproportionately focused on the comparison of classification algorithms. Rather than investigating which classifier performs best, this paper instead asks: what should a classifier know before it ever makes a prediction? In structured vision problems such as gesture recognition, facial expression categorization, and medical image analysis, discriminative information lies less in individual pixels and more in spatial relationships between semantic parts. Raw pixel spaces are high-dimensional, sensitive to nuisance variation, and often obfuscate the geometric structures that make visual tasks interpretable. Landmark extraction provides one form of dimension reduction, but it does not by itself determine the information preserved. This paper studies the post-landmark feature map as the central object of analysis and proposes a systematic framework for constructing and interpreting landmark-derived representations as an, informed, feature-based ``dimension reduction'' step. Using static hand gesture recognition as a case study, we evaluate coordinate, distance, angle, and hybrid representations through perturbation and ablation experiments. The results show that visually variable data exposes substantial gaps between raw coordinate features and their geometrically invariant counterparts, while hybrid representations achieve the strongest overall performance by combining complementary geometric components. These findings frame feature construction as a fundamental modeling decision and ultimately suggests that the question of what representation should a classifier learn from is one worth asking. The code used for feature construction and evaluation is available at https://github.com/ShivMaureeCWRU/Feature_based_dimension_reduction",
+      "authors": [
+        "Saravana Mauree",
+        "Sakshi Arya"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-01T03:10:55+00:00",
+      "link": "https://arxiv.org/pdf/2609.00634v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Geometric feature construction for structured visual classification; direct feature-extraction contribution",
+      "llm_evidence_cn": "为结构化图像分类构建几何特征，直接属于计算机视觉特征提取研究",
+      "llm_evidence": "为结构化图像分类构建几何特征，直接属于计算机视觉特征提取研究",
+      "canonical_evidence": "为结构化图像分类构建几何特征，直接属于计算机视觉特征提取研究",
+      "llm_tldr_en": "Argues structured image classification should focus not on comparing classifiers but on pre-classification features. Proposes a framework that goes beyond landmark extraction, constructing robust geometric features from semantic-part spatial relationships for gesture, expression, and medical image analysis.",
+      "llm_tldr_cn": "手势、表情和医学图像等结构化分类的判别信息常存在于部件间的空间关系，而原始像素既高维又易受干扰。该文反对只比较分类算法，主张在分类前建立恰当的几何特征表示。提出的框架在关键点提取基础上进一步构造稳健的几何特征，强调空间关系对可解释性和泛化性的作用。该思路可用于多种结构化视觉识别任务，对特征工程与表征学习均有参考价值。",
+      "llm_tldr": "手势、表情和医学图像等结构化分类的判别信息常存在于部件间的空间关系，而原始像素既高维又易受干扰。该文反对只比较分类算法，主张在分类前建立恰当的几何特征表示。提出的框架在关键点提取基础上进一步构造稳健的几何特征，强调空间关系对可解释性和泛化性的作用。该思路可用于多种结构化视觉识别任务，对特征工程与表征学习均有参考价值。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "feature extraction in computer vision",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2609.01014v1",
+      "source": "arxiv",
+      "title": "Low-Quality Face Recognition using Center Aligned Representations and Local Margin Constraints",
+      "abstract": "Low-quality face recognition (LQFR) remains challenging due to the difficulty of matching degraded query (probe) images against low-quality (LQ) enrollment (gallery) imagery and the scarcity of training data for large-scale models. While recent face recognition (FR) models perform well on high-quality (HQ) imagery, their accuracy drops significantly on LQ images with extremely low signal-to-noise ratio (SNR). Moreover, fine-tuning HQ-pretrained models on LQ data often improves LQ recognition at the expense of HQ generalization. This trade-off becomes more pronounced in modern evaluation settings spanning multiple datasets with varying image quality levels. To address these limitations, we propose a unified framework that combines three main components: (1) Local Probability Margin (LPM), which estimates per-sample difficulty directly from the model's discriminative landscape; (2) Nested Attention Module (NAM), a new low-rank adapter module that embeds a self-attention mechanism within selected transformer layers; and (3) Quality Gating Protocol (QGP), where an off-the-shelf image quality estimator modulates the adapter contribution at test time, enabling a single model to handle the full quality spectrum without sacrificing HQ performance. Experiments on surveillance (TinyFace, SurvFace) and standard (IJB-B, IJB-C) face recognition benchmarks demonstrate consistent gains in both identification and verification. Code and models will be released at github.com/candllq/nam.",
+      "authors": [
+        "Vedat Can Dilaver",
+        "Benjamin S. Riggan"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-01T10:04:12+00:00",
+      "link": "https://arxiv.org/pdf/2609.01014v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Face recognition algorithm for extremely low-quality probe/gallery images; direct visual recognition topic",
+      "llm_evidence_cn": "低质量人脸识别算法，直接属于视觉识别算法研究",
+      "llm_evidence": "低质量人脸识别算法，直接属于视觉识别算法研究",
+      "canonical_evidence": "低质量人脸识别算法，直接属于视觉识别算法研究",
+      "llm_tldr_en": "Addresses face recognition at extremely low SNR. Proposes a unified LQFR framework with center-aligned representations and local margin constraints so degraded probe/gallery matching improves without sacrificing high-quality generalization.",
+      "llm_tldr_cn": "低质量人脸识别常因视频或监控图像信噪比极低而失效，直接在低质量数据上微调又会牺牲高质量泛化。为此，本文提出统一框架，将中心对齐表示学习与局部边界约束相结合，使模型在低质量和高质量样本上都能学到判别性表示。该方法面向多数据集、多质量水平的现代评测，旨在缓解低质量精度与高质量泛化之间的权衡，为真实场景人脸识别提供更稳健的基线支撑。",
+      "llm_tldr": "低质量人脸识别常因视频或监控图像信噪比极低而失效，直接在低质量数据上微调又会牺牲高质量泛化。为此，本文提出统一框架，将中心对齐表示学习与局部边界约束相结合，使模型在低质量和高质量样本上都能学到判别性表示。该方法面向多数据集、多质量水平的现代评测，旨在缓解低质量精度与高质量泛化之间的权衡，为真实场景人脸识别提供更稳健的基线支撑。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "visual recognition algorithms",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2609.01172v1",
+      "source": "arxiv",
+      "title": "Monocular Depth Estimation from a Single Image: Progress and Opportunities",
+      "abstract": "Monocular depth estimation has long stood as a fundamental challenge in computer vision, enabling a wide range of applications including 3D reconstruction, robotics, autonomous driving, and augmented reality. This survey traces the field's evolution from early learning-based methods to the emergence of transformative foundation models. We begin by framing the problem, distinguishing between relative and metric depth estimation, and highlighting the key challenges that have shaped a decade of research. We then present common problem formulations and introduce the most widely used datasets, covering indoor, outdoor, and synthetic data. Following this, we review major advances prior to the foundation model era, distilling core insights from influential methods that contributed to improvements in accuracy, efficiency, and robustness. The survey then turns to the recent surge of foundation-model-based approaches, categorizing them into discriminative and generative paradigms and emphasizing the critical roles of large-scale pretraining (e.g., DINOv3) and synthetic data. We compare representative models using both quantitative benchmarks and qualitative examples, and discuss natural extensions to video-based depth estimation. Further, to illustrate real-world impact, we highlight the integration of depth estimation into applications such as visual SLAM, content generation, and robot perception. Finally, we outline open challenges and promising research directions as the field advances further into the era of foundation models.",
+      "authors": [
+        "Muxin Liu",
+        "Xiaoyang Lyu",
+        "Yang-Tian Sun",
+        "Yi-Hua Huang",
+        "Ziyi Yang",
+        "Peng Dai",
+        "Xiaojuan Qi"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-01T12:48:10+00:00",
+      "link": "https://arxiv.org/pdf/2609.01172v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "State-of-the-art survey of monocular depth estimation from early methods to foundation models",
+      "llm_evidence_cn": "单目深度估计前沿综述，梳理从早期方法到基础模型的最新进展与机遇",
+      "llm_evidence": "单目深度估计前沿综述，梳理从早期方法到基础模型的最新进展与机遇",
+      "canonical_evidence": "单目深度估计前沿综述，梳理从早期方法到基础模型的最新进展与机遇",
+      "llm_tldr_en": "Survey of monocular depth estimation: frames relative vs metric depth, reviews datasets, formulations and advances from early learning to foundation models, and highlights opportunities across 3D reconstruction, robotics, autonomy, and AR.",
+      "llm_tldr_cn": "单目深度估计在三维重建、自动驾驶与增强现实等任务中至关重要。该综述从问题设定出发，区分相对深度与度量深度，系统介绍室内、室外及合成数据等常用数据集。文章回顾了基础模型时代之前的重要方法进展并提炼核心洞察，最后讨论基础模型带来的新机会与开放挑战，为领域提供一份结构与线索清晰的里程碑式总结。",
+      "llm_tldr": "单目深度估计在三维重建、自动驾驶与增强现实等任务中至关重要。该综述从问题设定出发，区分相对深度与度量深度，系统介绍室内、室外及合成数据等常用数据集。文章回顾了基础模型时代之前的重要方法进展并提炼核心洞察，最后讨论基础模型带来的新机会与开放挑战，为领域提供一份结构与线索清晰的里程碑式总结。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "Search for state of the art in computer vision",
+      "matched_requirement_id": "req-9",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.30621v1",
+      "source": "arxiv",
+      "title": "Cost-efficient Active Learning for Referring Image Segmentation and Grounding",
+      "abstract": "Collecting natural-language referring expressions along with region annotations, such as masks or boxes, is a major bottleneck in visual grounding (VG), as annotators must write descriptions that distinguish target regions from visually similar ones. We tackle this by formulating active learning (AL) for VG under the realistic setting where only raw images are available without accompanying text. Since ground-truth text is unavailable, sample selection must estimate which images contain ambiguous regions that would require discriminative referring expressions. To address this, we generate auxiliary region-text pairs using foundation models, and introduce Referred Region Ambiguity, a new acquisition function that measures whether the model's confidence collapses onto a single region or disperses across multiple candidates. It allows our method to prioritize images with strong cross-region competition, which are more informative due to their visual ambiguity. We also design a referring-expression annotation interface that helps annotators quickly focus on writing discriminative language with a few clicks. Experiments on RIS and REC benchmarks show that our AL framework consistently outperforms several AL baselines, while a user study shows up to 1.6X faster description labeling of ours.",
+      "authors": [
+        "Junbeom Hong",
+        "Seonghoon Yu",
+        "Hyung Rok Jung",
+        "Sundong Kim",
+        "Jeany Son"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-08-31T11:29:28+00:00",
+      "link": "https://arxiv.org/pdf/2608.30621v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "active learning for referring image segmentation and grounding",
+      "llm_evidence_cn": "面向指代图像分割与视觉定位的主动学习方法",
+      "llm_evidence": "面向指代图像分割与视觉定位的主动学习方法",
+      "canonical_evidence": "面向指代图像分割与视觉定位的主动学习方法",
+      "llm_tldr_en": "To cut annotation costs for referring image segmentation and grounding without available text, this work generates auxiliary region-text pairs with foundation models and selects ambiguous samples via Referred Region Ambiguity, improving active learning efficiency.",
+      "llm_tldr_cn": "视觉定位和指代分割需要大量人工编写自然语言表达并标注掩码，成本高昂；现实主动学习中原始图像往往没有配套文本。本文提出用基础模型生成辅助区域-文本对，再基于指称区域模糊度采集含歧义区域的样本，从而在缺少文本真值时也能挑选信息量大的图像。该方法面向指代分割与视觉定位任务，有望显著降低语言和区域标注的获取成本。",
+      "llm_tldr": "视觉定位和指代分割需要大量人工编写自然语言表达并标注掩码，成本高昂；现实主动学习中原始图像往往没有配套文本。本文提出用基础模型生成辅助区域-文本对，再基于指称区域模糊度采集含歧义区域的样本，从而在缺少文本真值时也能挑选信息量大的图像。该方法面向指代分割与视觉定位任务，有望显著降低语言和区域标注的获取成本。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "image segmentation techniques",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2609.00816v1",
+      "source": "arxiv",
+      "title": "Can Scene Text Recognition Read Rare Compositions?",
+      "abstract": "Scene text recognition is reported as 89--97% accurate on the six standard benchmarks, and the problem is widely treated as saturated. We present an alternative reading. When the same test images are stratified jointly by ground-truth word rarity and character n-gram novelty against a reference corpus, accuracy at the rare-word x rare-trigram corner of the resulting 5x5 grid drops 10--18 pt below the q3/q3 centre across nine English specialised recognisers, and the same direction (corner below centre) holds on all 13 of 13 (language, model) pairs we test across four writing systems (Latin, Han, Han+kana, Arabic). The drop is not a capacity bottleneck. A 6x vision-backbone scale-up (CLIP4STR-Base 158M -> CLIP4STR-Huge 1.0B, OpenCLIP ViT-H/14 LAION-2B) leads every benchmark in aggregate accuracy yet leaves the stress corner unchanged (86.9 -> 86.5, within paired-bootstrap noise). Four converging probes--layer-wise probing, confidence-when-wrong, attention re-balancing, and a cross-script commit-vs-abstain error split--localise the failure to the autoregressive decoder's lexical prior. We then ask how much of the gap existing techniques recover. Of 16 non-architectural mitigations, the largest mean q5/q5 gain is +1.3 pt and none clears the paired-bootstrap noise floor; the only intervention that does is the architectural shift from autoregressive to CTC decoding (SVTRv2, +2.5 pt, p=0.02, n=474). A confidence-routed AR-CTC ensemble adds a directionally consistent +0.6 pt that stays within noise, and its dominant learned coefficient is each model's own minimum-softmax confidence--independently echoing the mechanism above. No configuration we test improves both the compositional corner and aggregate accuracy. The rare-input long tail thus points to architectural change rather than added capacity.",
+      "authors": [
+        "Genpei Zhang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-01T07:16:42+00:00",
+      "link": "https://arxiv.org/pdf/2609.00816v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "scene text recognition benchmark analysis of rare word and n-gram combinations",
+      "llm_evidence_cn": "场景文字识别的稀有词汇与n-gram组合评测",
+      "llm_evidence": "场景文字识别的稀有词汇与n-gram组合评测",
+      "canonical_evidence": "场景文字识别的稀有词汇与n-gram组合评测",
+      "llm_tldr_en": "Shows scene text recognition accuracy at rare-word and rare-trigram combinations drops 10-18 points below the typical cell across nine English recognizers and 13 language-model pairs in four writing systems, and scale-up does not remove the gap.",
+      "llm_tldr_cn": "场景文字识别在标准基准上平均准确率很高，但已有结论被平均掩盖。本文将同一批测试图像按真实词频和字符n-gram新颖度联合分层，发现稀有词与稀有trigram组合的角落准确率相对中心约下降10到18个百分点，该现象在四个书写系统中的13种语言和模型组合上全部出现。进一步扩大视觉主干规模不能消除差距，说明这不是容量瓶颈而是数据分布尾部问题。因此场景文字识别研究应更多关注稀有组合的稳健评测与改进。",
+      "llm_tldr": "场景文字识别在标准基准上平均准确率很高，但已有结论被平均掩盖。本文将同一批测试图像按真实词频和字符n-gram新颖度联合分层，发现稀有词与稀有trigram组合的角落准确率相对中心约下降10到18个百分点，该现象在四个书写系统中的13种语言和模型组合上全部出现。进一步扩大视觉主干规模不能消除差距，说明这不是容量瓶颈而是数据分布尾部问题。因此场景文字识别研究应更多关注稀有组合的稳健评测与改进。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "visual recognition algorithms",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2609.00924v1",
+      "source": "arxiv",
+      "title": "Beyond the Image Plane: World-Grounded Queries for Multi-Object Tracking",
+      "abstract": "Monocular videos record 3D scenes as sequences of 2D image-plane projections, obscuring depth and spatial relationships. Multi-object trackers localize and associate objects primarily using appearance and geometry observed only in the image plane, inheriting these ambiguities. To address this limitation, we introduce PLANET, an end-to-end multi-object tracker designed to move beyond the image plane. As an enabling step, we lift existing 2D tracking datasets into 3D. We then form world-grounded queries by embedding reconstructed 3D scene geometry into the features and positional encodings used during query formation. An auxiliary 3D location prediction task further encourages the queries to encode object positions during training. A complementary dual-resolution temporal memory preserves this evidence across longer temporal gaps. As a result, PLANET achieves state-of-the-art performance across three diverse benchmarks.",
+      "authors": [
+        "Orcun Cetintas",
+        "Guillem Brasó",
+        "Tim Meinhardt",
+        "Laura Leal-Taixé"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-09-01T08:48:14+00:00",
+      "link": "https://arxiv.org/pdf/2609.00924v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Multi-object tracking method PLANET moving beyond the image plane with world-grounded queries.",
+      "llm_evidence_cn": "提出基于世界接地查询的多目标跟踪方法PLANET。",
+      "llm_evidence": "提出基于世界接地查询的多目标跟踪方法PLANET。",
+      "canonical_evidence": "提出基于世界接地查询的多目标跟踪方法PLANET。",
+      "llm_tldr_en": "Multi-object tracking in monocular videos inherits depth and spatial ambiguity from image-plane observations. PLANET lifts 2D tracking data to 3D, embeds reconstructed scene geometry into query features and positions, and adds an auxiliary 3D location task, yielding more geometry-aware tracking.",
+      "llm_tldr_cn": "多目标跟踪通常只在二维图像平面上利用外观和几何线索，难以处理单目视频中的深度与空间关系歧义。文中提出端到端跟踪器PLANET，先将现有2D跟踪数据提升到3D表示，再在查询特征和位置编码中嵌入重建的3D场景几何，并引入辅助3D位置预测任务。实验表明世界接地查询能改善目标定位与关联，为单目多目标跟踪提供了超越图像平面的新思路。",
+      "llm_tldr": "多目标跟踪通常只在二维图像平面上利用外观和几何线索，难以处理单目视频中的深度与空间关系歧义。文中提出端到端跟踪器PLANET，先将现有2D跟踪数据提升到3D表示，再在查询特征和位置编码中嵌入重建的3D场景几何，并引入辅助3D位置预测任务。实验表明世界接地查询能改善目标定位与关联，为单目多目标跟踪提供了超越图像平面的新思路。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "visual tracking surveys",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2608.29852v1",
+      "source": "arxiv",
+      "title": "MariSat: A Maritime Dataset for Instance Segmentation of Objects in Satellite and Aerial Images",
+      "abstract": "Automated maritime surveillance from satellite and aerial imagery requires large, precisely annotated datasets, which remain scarce for the instance-segmentation task, particularly for small vessels in cluttered port environments. We present MariSat, a new benchmark dataset of 1260 aerial and satellite images covering diverse port and coastal scenes, annotated at the pixel level for eight maritime object classes (sailboat, yacht, jet-ski, fishing boat, cruise ship, military vessel, tugboat and cargo ship). The dataset was produced through a semi-automatic annotation pipeline combining the textpromptable segmentation model SAM 3 with a cascade of geometric and colorimetric post-processing filters, followed by a manual correction and quality-control pass performed with the CVAT annotation platform. We describe the image-collection methodology, the annotation and correction process, and the resulting data organization. We also report class-wise statistics for the training, validation, and test splits. MariSat has already been used to fine-tune and benchmark segmentation and detection models (SAM 3 and YOLO11) for real-time maritime monitoring. We report detailed quantitative and per-class results for both tasks. The MariSat dataset is publicly available on GitHub : https://github.com/amirabbes/P2M-Maritime-Segmentation",
+      "authors": [
+        "Amir Abbes",
+        "Ines Harrabi",
+        "Lucas Justin Yirepoa Kinda",
+        "Rim Trabelsi",
+        "Adnane Cabani",
+        "Fatma Abdelkefi"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-30T15:31:39+00:00",
+      "link": "https://arxiv.org/pdf/2608.29852v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "new instance segmentation benchmark for maritime satellite and aerial images",
+      "llm_evidence_cn": "海事卫星与航空图像的实例分割数据集构建",
+      "llm_evidence": "海事卫星与航空图像的实例分割数据集构建",
+      "canonical_evidence": "海事卫星与航空图像的实例分割数据集构建",
+      "llm_tldr_en": "Presents MariSat, a 1260-image benchmark with pixel-level instance annotations for eight maritime classes in satellite and aerial scenes, created using SAM 3 with geometric and colorimetric filters plus manual correction.",
+      "llm_tldr_cn": "海上遥感监视的实例分割研究受限于高质量标注数据，特别是杂乱港口环境中的小船只目标。本文发布MariSat数据集，包含1260幅航空与卫星图像，覆盖多样化港口和近岸场景，并对八类海事目标（帆船、游艇、摩托艇、渔船、游轮、军舰、拖船、货船）进行像素级实例标注。数据通过SAM 3文本提示分割结合几何与比色后处理，再经人工校正的半自动流程产生。该数据集为小船舶密集场景的实例分割算法研究和评测提供了新资源。",
+      "llm_tldr": "海上遥感监视的实例分割研究受限于高质量标注数据，特别是杂乱港口环境中的小船只目标。本文发布MariSat数据集，包含1260幅航空与卫星图像，覆盖多样化港口和近岸场景，并对八类海事目标（帆船、游艇、摩托艇、渔船、游轮、军舰、拖船、货船）进行像素级实例标注。数据通过SAM 3文本提示分割结合几何与比色后处理，再经人工校正的半自动流程产生。该数据集为小船舶密集场景的实例分割算法研究和评测提供了新资源。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "image segmentation techniques",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2609.01530v1",
+      "source": "arxiv",
+      "title": "Revisiting Cross-View Completion: Self-Supervised Pre-Training via Reconstruction Error Comparison",
+      "abstract": "Self-supervised pre-training via cross-view completion learns strong features for 3D vision from co-visible regions of image pairs. However, the reference view provides little information for reconstructing non-co-visible patches, implicitly yielding a monocular training signal in these regions. We introduce Gekko, which turns this limitation into a useful signal. The relative improvement of the cross-view reconstruction error over a masked-autoencoder error is a self-supervised proxy for co-visibility: large improvements indicate co-visible regions, negligible ones non-co-visible areas. Gekko is a network, trained from scratch, that jointly performs cross-view completion, masked autoencoding, and per-pixel prediction of this relative improvement, providing an additional binocular signal for all masked regions without any ground-truth 3D annotation. Under identical architectures and training data, Gekko consistently outperforms CroCo on zero-shot correspondence estimation, relative pose estimation, and pointmap regression, with up to 6 times higher accuracy at the strictest relative-pose threshold and a 22% drop in end-point error on ETH3D. The extra channel it learns is itself a strong co-visibility detector on unseen scenes, and Gekko's frozen features outperform released cross-view backbones of comparable or larger size. It can also be trained directly from raw videos with a simple stride-based curriculum, removing the cumbersome 3D preprocessing prior methods require while matching models trained on curated data. Code and pre-trained models are publicly available.",
+      "authors": [
+        "Thibaut Loiseau",
+        "Guillaume Bourmaud",
+        "Vincent Lepetit"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-01T16:57:46+00:00",
+      "link": "https://arxiv.org/pdf/2609.01530v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Self-supervised pre-training that learns visual features for 3D tasks",
+      "llm_evidence_cn": "跨视角补全式自监督预训练以学习三维视觉特征",
+      "llm_evidence": "跨视角补全式自监督预训练以学习三维视觉特征",
+      "canonical_evidence": "跨视角补全式自监督预训练以学习三维视觉特征",
+      "llm_tldr_en": "Gekko turns non-co-visible regions in cross-view completion into a co-visibility proxy by comparing reconstruction errors, jointly training with masked autoencoding to learn 3D visual features.",
+      "llm_tldr_cn": "跨视角补全的自监督预训练依赖双视图共视区域学习三维特征，但参考视图无法帮助重建非共视区域，会隐式留下单目信号。Gekko把这种限制转成可用信号：以跨视角重建误差相对掩码自编码误差的相对下降作为共视性的自监督代理，改进越大说明越可能是共视区。网络从零开始联合执行跨视角补全、掩码自编码与逐像素共视性预测，从而在自监督框架内更充分地学习三维视觉特征。",
+      "llm_tldr": "跨视角补全的自监督预训练依赖双视图共视区域学习三维特征，但参考视图无法帮助重建非共视区域，会隐式留下单目信号。Gekko把这种限制转成可用信号：以跨视角重建误差相对掩码自编码误差的相对下降作为共视性的自监督代理，改进越大说明越可能是共视区。网络从零开始联合执行跨视角补全、掩码自编码与逐像素共视性预测，从而在自监督框架内更充分地学习三维视觉特征。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "feature extraction in computer vision",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2609.01027v1",
+      "source": "arxiv",
+      "title": "Fi-ImageNet-1k: An OOD Benchmark From the Inside of the ImageNet-1k Validation Set",
+      "abstract": "Out-of-distribution (OOD) detection predicts whether a test image belongs to none of the predefined classes. To evaluate this task, benchmarks need images from outside the in-distribution (ID) data; typically, these are defined or collected in an ad hoc fashion. Since no ground truth is perfect, ID-labeled datasets themselves contain a natural source of OOD images. We exploit such annotation errors and present Fi-ImageNet-1k, an OOD dataset built from ImageNet-1k validation images that the recent ReImageNet reannotation effort assigned to no ImageNet-1k class. Each image was examined by expert human annotators supported by evidence from MLLMs, VLMs, and reverse image search, comparing it against all visually similar ID classes. We keep only images that could be assigned a specific class outside the ImageNet-1k label space.   The resulting Fi-ImageNet-1k, with 655 images from 522 classes, is substantially more challenging than any commonly used OOD dataset. No evaluated combination of classifier and OOD detector achieves a false positive rate below 51% at 95% true positive rate (FPR@95). Compared to the recent NINCO, our dataset is 3.8x more challenging in the FPR@95 metric for state-of-the-art supervised OOD detection methods.",
+      "authors": [
+        "Ruslan Rozumnyi",
+        "Matěj Suchánek",
+        "Tomáš Vojíř",
+        "Klára Janoušková",
+        "Jiří Matas"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-01T10:23:40+00:00",
+      "link": "https://arxiv.org/pdf/2609.01027v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "OOD detection benchmark derived from ImageNet-1k validation set to evaluate visual recognition",
+      "llm_evidence_cn": "从ImageNet-1k验证集构建的OOD检测基准，用于视觉识别评测",
+      "llm_evidence": "从ImageNet-1k验证集构建的OOD检测基准，用于视觉识别评测",
+      "canonical_evidence": "从ImageNet-1k验证集构建的OOD检测基准，用于视觉识别评测",
+      "llm_tldr_en": "Fi-ImageNet-1k builds an OOD benchmark from ImageNet-1k validation images dropped in ReImageNet, expert-verified by MLLMs, VLMs, and reverse search, providing a natural OOD source inside the ID set.",
+      "llm_tldr_cn": "OOD检测需要在预定义类别之外识别未知图像，现有基准常以临时方式构造外部图像。本文发现ImageNet-1k验证集内部的标注噪声本身就是天然的OOD来源，基于最近的ReImageNet重标注结果构建Fi-ImageNet-1k基准，并由专家注释者借助MLLM、VLM和反向图像搜索逐图核验。该基准从ID数据集内部生成更干净的OOD评测集，有助于更可靠地评估模型的不确定性推理与开放类别识别能力。",
+      "llm_tldr": "OOD检测需要在预定义类别之外识别未知图像，现有基准常以临时方式构造外部图像。本文发现ImageNet-1k验证集内部的标注噪声本身就是天然的OOD来源，基于最近的ReImageNet重标注结果构建Fi-ImageNet-1k基准，并由专家注释者借助MLLM、VLM和反向图像搜索逐图核验。该基准从ID数据集内部生成更干净的OOD评测集，有助于更可靠地评估模型的不确定性推理与开放类别识别能力。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "visual recognition algorithms",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}
