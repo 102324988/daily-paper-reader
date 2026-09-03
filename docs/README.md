@@ -41,17 +41,17 @@
 <section class="dpr-home-dashboard-card dpr-home-report-card">
   <div class="dpr-home-dashboard-header">
     <div>
-      <span class="dpr-home-dashboard-kicker">2026-09-02</span>
+      <span class="dpr-home-dashboard-kicker">2026-09-03</span>
       <h3 class="dpr-home-dashboard-title">今日汇总</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">共 10 篇</strong>
+    <strong class="dpr-home-dashboard-count">共 3 篇</strong>
   </div>
   <dl class="dpr-home-dashboard-stats">
     <div class="dpr-home-dashboard-stat"><dt>累计更新</dt><dd>1 次</dd></div>
-    <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>6</dd></div>
-    <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>4</dd></div>
+    <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>3</dd></div>
+    <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>0</dd></div>
   </dl>
-  <p class="dpr-home-dashboard-body">最近更新：2026-09-02 22:13:29 UTC<br>状态：成功</p>
+  <p class="dpr-home-dashboard-body">最近更新：2026-09-03 23:05:03 UTC<br>状态：成功</p>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-brief-card">
   <div class="dpr-home-dashboard-header">
@@ -62,7 +62,9 @@
     <strong class="dpr-home-dashboard-count">AI</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<p>今日精读聚焦零样本航拍分割与几何特征构建方法，速读覆盖多目标跟踪、跨视角自监督及卫星海面实例分割。最值得关注的是“限制式推理引导”在不训练条件下提升航拍分割精度（10分）及结构化图像的鲁棒几何特征框架（9分）。普通读者可优先参考两篇高分精读思路，并留意MariSat数据集对海事遥感应用的新增价值。</p>
+<p>今日精读视觉Transformer对比学习与目标跟踪两篇高分论文，聚焦自监督表征与外观学习。</p>
+<p>最值得关注：CoViT通过实例对应对比学习提升ViT表征；跟踪新范式利用特权目标外观离线学习运动线索。</p>
+<p>建议普通读者先从CoViT理解自监督视觉基础，再跟进跟踪方法中的外观建模差异。</p>
   </div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-deep-card">
@@ -71,12 +73,12 @@
       <span class="dpr-home-dashboard-kicker">今日累计</span>
       <h3 class="dpr-home-dashboard-title">精读推荐</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">6 篇</strong>
+    <strong class="dpr-home-dashboard-count">3 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Restrict, Don&#x27;t Retrain: Inference-Time VLM Guidance for Zero-Shot Aerial Segmentation">Restrict, Don&#x27;t Retrain: Inference-Time VLM Guidance for Zero-Shot Aerial Segmentation</span></li><li><span class="dpr-home-dashboard-paper-title" title="Beyond Landmark Extraction: A Framework for Robust Geometric Feature Construction in Structured Image Classification">Beyond Landmark Extraction: A Framework for Robust Geometric Feature Construction in Structured Image Classification</span></li><li><span class="dpr-home-dashboard-paper-title" title="Low-Quality Face Recognition using Center Aligned Representations and Local Margin Constraints">Low-Quality Face Recognition using Center Aligned Representations and Local Margin Constraints</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="CoViT: Instance-Correspondence Contrastive Learning for Vision Transformer">CoViT: Instance-Correspondence Contrastive Learning for Vision Transformer</span></li><li><span class="dpr-home-dashboard-paper-title" title="Learning to Track from Privileged Target Appearances">Learning to Track from Privileged Target Appearances</span></li><li><span class="dpr-home-dashboard-paper-title" title="Learning CNN Filters via Generalized Stein&#x27;s Method">Learning CNN Filters via Generalized Stein&#x27;s Method</span></li></ul>
   </div>
-  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">cv <strong>6</strong></span></div>
+  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">cv <strong>3</strong></span></div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-skim-card">
   <div class="dpr-home-dashboard-header">
@@ -84,12 +86,12 @@
       <span class="dpr-home-dashboard-kicker">今日累计</span>
       <h3 class="dpr-home-dashboard-title">速读推荐</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">4 篇</strong>
+    <strong class="dpr-home-dashboard-count">0 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Beyond the Image Plane: World-Grounded Queries for Multi-Object Tracking">Beyond the Image Plane: World-Grounded Queries for Multi-Object Tracking</span></li><li><span class="dpr-home-dashboard-paper-title" title="Revisiting Cross-View Completion: Self-Supervised Pre-Training via Reconstruction Error Comparison">Revisiting Cross-View Completion: Self-Supervised Pre-Training via Reconstruction Error Comparison</span></li><li><span class="dpr-home-dashboard-paper-title" title="MariSat: A Maritime Dataset for Instance Segmentation of Objects in Satellite and Aerial Images">MariSat: A Maritime Dataset for Instance Segmentation of Objects in Satellite and Aerial Images</span></li></ul>
+<p class="dpr-home-dashboard-empty">今日暂无推荐。</p>
   </div>
-  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">cv <strong>4</strong></span></div>
+
 </section>
 </div>
 

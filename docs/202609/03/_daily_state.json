@@ -1,0 +1,57 @@
+{
+  "date": "20260903",
+  "date_label": "",
+  "generated_at": "2026-09-03 23:05:03 UTC",
+  "recommend_exists": true,
+  "run_count": 1,
+  "papers": [
+    {
+      "paper_id": "2609.01787v1",
+      "route": "202609/03/2609.01787v1-covit-instance-correspondence-contrastive-learning-for-vision-transformer",
+      "title": "CoViT: Instance-Correspondence Contrastive Learning for Vision Transformer",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "为视觉Transformer注入实例感知的自监督表征学习，属于计算机视觉特征提取。",
+      "first_seen_at": "2026-09-03 23:05:03 UTC",
+      "updated_at": "2026-09-03 23:05:03 UTC"
+    },
+    {
+      "paper_id": "2609.02471v1",
+      "route": "202609/03/2609.02471v1-learning-to-track-from-privileged-target-appearances",
+      "title": "Learning to Track from Privileged Target Appearances",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "视觉跟踪方法与知识蒸馏训练框架，与视觉跟踪研究主题高度相关。",
+      "first_seen_at": "2026-09-03 23:05:03 UTC",
+      "updated_at": "2026-09-03 23:05:03 UTC"
+    },
+    {
+      "paper_id": "2609.02875v1",
+      "route": "202609/03/2609.02875v1-learning-cnn-filters-via-generalized-steins-method",
+      "title": "Learning CNN Filters via Generalized Stein's Method",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "从统计角度学习CNN卷积滤波器以支撑特征提取",
+      "first_seen_at": "2026-09-03 23:05:03 UTC",
+      "updated_at": "2026-09-03 23:05:03 UTC"
+    }
+  ]
+}

@@ -1,0 +1,54 @@
+{
+  "label": "2026-09-03",
+  "date": "2026-09-03",
+  "generated_at": "2026-09-03T23:05:05",
+  "count": 3,
+  "papers": [
+    {
+      "paper_id": "202609/03/2609.01787v1-covit-instance-correspondence-contrastive-learning-for-vision-transformer",
+      "section": "deep",
+      "title_en": "CoViT: Instance-Correspondence Contrastive Learning for Vision Transformer",
+      "authors": "Yisen Wang, Zhirong Wu, Limin Wang",
+      "date": "2026-09-01",
+      "pdf": "https://arxiv.org/pdf/2609.01787v1",
+      "score": "8.0",
+      "evidence": "为视觉Transformer注入实例感知的自监督表征学习，属于计算机视觉特征提取。",
+      "tldr": "视觉Transformer擅长语义理解，但难以区分不同实例（如两只狗产生相同嵌入），限制了其在检测、分割等实例级任务中的表现。为此提出CoViT，一种自监督对比学习框架，通过注意力引导掩码生成实例前景锚点，并利用最难正负样本挖掘构造对比三元组，压缩实例内差异、扩大实例间间隔，使纯ViT在不增加解码器或标签的情况下获得实例感知能力，在多个实例级任务上稳定提升超过2 AP。",
+      "tags": "query:cv",
+      "abstract_en": "Vision Transformers (ViT) excel in semantic understanding but fail to discriminate between object instances (e.g., identical embeddings for two dogs), limiting their use in instance-level tasks such as object detection and instance segmentation. We propose Contrastive Vision Transformer (CoViT), a self-supervised learning framework that injects instance-awareness into ViT through geometry-guided contrastive learning. CoViT uniquely coordinates ViT's attention maps and embeddings by constructing triplets: (1) Attention-guided masking: Refine multi-head attention via adaptive thresholding and morphological operations to generate instance masks, identifying foreground anchors; (2) Hardest contrastive mining: For each anchor, computing pairwise embedding similarities to select the intra-instance hardest positive (least similar patch within its mask) and inter-instance hardest negative (most similar patch from other instances), with intra-instance regions masked during negative search. These triplets drive a contrastive loss that simultaneously compresses intra-instance variance and expands inter-instance margins, forcing ViT to discern subtle geometric and appearance differences between instances. CoViT consistently achieves stable performance gains of over 2 AP points across multiple instance-level perception tasks by using ViT as backbone architecture. Notably, CoViT requires no extra decoders or labels, demonstrating that a pure ViT can learn instance-aware representations via inherent attention priors and targeted contrastive constraints. Code and models will be released.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202609/03/2609.02471v1-learning-to-track-from-privileged-target-appearances",
+      "section": "deep",
+      "title_en": "Learning to Track from Privileged Target Appearances",
+      "authors": "Xin Chen, Jiao Xu, Dong Wang, Huchuan Lu, Kede Ma",
+      "date": "2026-09-02",
+      "pdf": "https://arxiv.org/pdf/2609.02471v1",
+      "score": "8.0",
+      "evidence": "视觉跟踪方法与知识蒸馏训练框架，与视觉跟踪研究主题高度相关。",
+      "tldr": "视觉跟踪中目标模板在定位准确性和外观新鲜度间存在权衡，而在推理时无法获得精确的当前帧目标框。作者提出PATT，一种基于教师-学生框架的训练方法，利用训练阶段特有的未来帧精确目标裁剪监督，让学生跟踪器预测教师搜索表示，并通过可靠性权重过滤不可靠监督信号。在七个基准测试和两种模型规模下均取得一致提升，推理时无需额外开销。",
+      "tags": "query:cv",
+      "abstract_en": "Target templates define what a visual tracker searches for, yet the templates available at inference trade off localization certainty with appearance freshness: the initial ground-truth template is exact but becomes stale, whereas recent templates better reflect the current appearance but are cropped from uncertain predictions. We quantify this bottleneck with a non-deployable oracle that supplies an exact current-frame target crop, improving AUC on LaSOT by 15.2 percentage points. This gap reveals a training-only opportunity: frame-level ground truths provide exact current- and future-frame target crops, although such crops are unavailable at deployment. We introduce Privileged Appearance Transfer for Tracking (PATT), a teacher-student training framework that transfers these privileged appearances to a deployable tracker through multi-level representation prediction. The privileged teacher observes exact target crops from past, current, and future frames, whereas the student receives only past-frame templates and learns to predict the teacher's search representations. To avoid transferring unreliable teacher signals, PATT weights this transfer by the teacher's relative localization advantage over the student and its absolute localization accuracy. After training, the teacher, latent predictor, reliability weights, and privileged crops are removed, leaving standard student-only inference. Across seven benchmarks at two model scales, PATT achieves consistent gains under both long- and short-term tracking protocols.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202609/03/2609.02875v1-learning-cnn-filters-via-generalized-steins-method",
+      "section": "deep",
+      "title_en": "Learning CNN Filters via Generalized Stein's Method",
+      "authors": "Guang Yang, Wei Shi, Yuan Cao, Long Feng",
+      "date": "2026-09-02",
+      "pdf": "https://arxiv.org/pdf/2609.02875v1",
+      "score": "8.0",
+      "evidence": "从统计角度学习CNN卷积滤波器以支撑特征提取",
+      "tldr": "卷积神经网络依赖卷积滤波器的质量，但传统学习算法仅依赖反向传播和梯度优化，缺乏统计理论支撑。本文从统计学视角，借助推广的Stein公式，将CNN形式化为带矩阵输入的广义指标模型，把卷积滤波器视为指标向量，并提出基于奇异值分解的估计方法。理论证明该估计达到与已知链接函数的广义线性模型相当的最优收敛率。仿真和真实数据表明方法优于深度学习算法Adam，且能推广至非线性降维与表示学习。",
+      "tags": "query:cv",
+      "abstract_en": "Convolutional Neural Networks (CNNs) have undoubtedly revolutionized image data analysis and the field of computer vision. As the cornerstone of CNNs, the convolution operation enables the networks to extract abstract features and uncover hidden relationships in the image data. This paper considers the problem of estimating convolution filters from a statistical perspective using a classical tool --- Stein's formula. We first formulate CNNs into a general index model with matrix-valued input, where convolution filters can be viewed as index vectors. Furthermore, we propose a novel singular value decomposition (SVD) based approach to accurately learn the convolution filters based on a generalized version of the first-order Stein's formula. Theoretical analysis suggests that our estimation achieves an optimal convergence rate, comparable to that of generalized linear models where the link function is known. Extensive simulation studies and real data analyses demonstrate that our approach outperforms popular deep learning algorithms, such as Adam. Notably, our method extends beyond filter estimation and can be applied to nonlinear dimension reduction, providing a viable pathway for representation learning.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

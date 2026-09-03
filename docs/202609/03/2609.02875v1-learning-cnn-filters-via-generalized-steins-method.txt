@@ -1,0 +1,1902 @@
+Title: Learning CNN Filters via Generalized Stein's Method
+
+URL Source: https://arxiv.org/pdf/2609.02875v1
+
+Published Time: Thu, 03 Sep 2026 01:31:17 GMT
+
+Number of Pages: 32
+
+Markdown Content:
+> Submitted to the Annals of Applied Statistics
+
+LEARNING CNN FILTERS VIA GENERALIZED STEIN’S METHOD 
+
+BY GUANG YANG 1,a , W EI SHI 2,b , Y UAN CAO 2,c AND LONG FENG *2,d    
+
+> 1Department of Statistics and Data Science, The Chinese University of Hong Kong, aguangyang@cuhk.edu.hk
+> 2School of Computing & Data Science, The University of Hong Kong, bshiwei1997@connect.hku.hk; cyuancao@hku.hk;
+> dlfeng@hku.hk
+
+Convolutional Neural Networks (CNNs) have undoubtedly revolutionized image data analysis and the field of computer vision. As the cornerstone of CNNs, the convolution operation enables the networks to extract abstract features and uncover hidden relationships in the image data. This paper considers the problem of estimating convolution filters from a statistical perspective using a classical tool — Stein’s formula. We first formulate CNNs into a general index model with matrix-valued input, where convolution filters can be viewed as index vectors. Furthermore, we propose a novel singular value decomposition (SVD) based approach to accurately learn the convolution filters based on a generalized version of the first-order Stein’s formula. Theoretical analysis suggests that our estimation achieves an optimal convergence rate, comparable to that of generalized linear models where the link function is known. Extensive simulation studies and real data analyses demonstrate that our approach outperforms popular deep learning algorithms, such as Adam. Notably, our method extends beyond filter estimation and can be applied to nonlinear dimension reduction, providing a viable pathway for representation learning. 
+
+1. Introduction. In recent years, machine learning techniques have experienced substantial growth and found widespread application in diverse fields, including computer vision (He et al., 2016; Voulodimos et al., 2018; Chai et al., 2021), natural language processing (Vaswani, 2017; Fathi and Shoja, 2018; Lauriola et al., 2022), and more. Convolutional Neural Network (CNN) is undoubtedly one of the most successful frameworks that revolutionized image data analysis and the field of computer vision. The success of CNN can be attributed to its intricate structure design, which incorporates convolution operations, pooling layers, and more. In particular, the convolution operation serves as the cornerstone of CNNs, enabling them to extract abstract features and capture hidden relationships from input data — a task that was challenging for conventional approaches. In practice, the parameters of CNNs, including convolutional filters, are learned via gradient descent algorithms, which have proven highly effective for large-scale natural image tasks. However, gradient-based training may encounter challenges in more demanding settings such as medical imaging. First, medical imaging data often have very limited sample size due to reasons such as high acquisition cost or privacy constraints. In contrast, deep learning models typically rely on large amounts of data for effective training, and may become unstable and prone to overfitting when data are scarce (Shen et al., 2017). Second, deep learning methods have achieved their greatest success in the domain of natural images, but medical images differ fundamentally from natural images. On one hand, the underlying signals of medical images are often subtle and less visually discernible, while the associated biological mechanisms are complex (Zhu et al., 2023) and require greater interpretability 
+
+> *
+
+Corresponding author. 
+
+Keywords and phrases: Multi-index model, Score function, Singular value decomposition, Dimension reduction, Representation learning. 
+
+1arXiv:2609.02875v1 [stat.AP] 2 Sep 2026 2
+
+(Rudin, 2019). On the other hand, medical imaging data tend to exhibit more uniform patterns due to standardized acquisition and preprocessing procedures, leading to more structured distributions that may be better exploited by statistical approaches. This paper is motivated by the problem of learning convolutional filters in CNNs, and proposes a statistical method to estimate filters in the first convolutional layer without training the full neural network, thereby providing an efficient method for learning convolutional representations. We begin by formulating CNNs into a generalized index model with matrix-valued inputs, where convolutional filters act as index vectors and subsequent components like pooling or fully-connected layers are incorporated into the unknown link function. Based on a generalized version of first-order Stein’s identity, we develop a novel singular value decomposition (SVD)-based approach to estimate the column space of convolutional filters without requiring knowledge of the link function. Theoretical analysis shows that the proposed estimator achieves an optimal convergence rate, matching that of generalized linear models where the link function is known. Comprehensive simulation studies show that our approach outperforms the widely used Adam algorithm. In real applications on brain MRI data, representations learned by our method can not only improve predictive performance, but also enhance interpretability. These results highlight the practical value of our approach beyond filter estimation, demonstrating its potential for nonlinear dimension reduction and providing a feasible route for representation learning using CNNs. The core contributions of this work are summarized as follows: • We reformulate the first convolutional layer of a CNN as a generalized index model with matrix-valued input and vector-valued indices. This provides a new statistical interpretation of CNN filters. • We derive and use a matrix-valued Stein’s identity for this CNN-induced index structure, leading to an SVD-based estimator of the filter column space. • We develop theory for the original estimator, the truncated estimator under heavy-tailed settings, and a practical Gaussian plug-in estimator with unknown covariance. • We demonstrate the method on ADNI brain MRI data, showing its value for representation learning, prediction, and interpretable feature discovery. Coupled with CNNs, our study is conducted under a fairly general framework in several senses: (i) we adopt a generalized index model that extends both single-index and multi-index models; (ii) it accommodates a broad class of distributions, including Gaussian designs and heavy-tailed settings; (iii) without assuming a known distribution, we investigate the practical scenario of Gaussian inputs with unknown covariance, supported by empirical evidence. 1.1. Related works. The index model is a classical statistical method which generalizes the linear regression to a nonlinear format from a different perspective than neural networks. Specifically, a multi-index model (MIM) usually takes the form of E(y|x) = 
+
+f (x⊤b1, . . . , x⊤bR), where b1, . . . , bR are the target index vectors, and f is an unknown multi-variate nonlinear function, also known as the link function. When R = 1 , the MIM reduces to the single index model (SIM), which leads to the index x⊤b and the function 
+
+f being univariate. Index models not only offer considerable adaptability by incorporating the nonlinear link function, but also avoid the curse of dimensionality by representing the outcome through a low-dimensional representation of the input. A classical line of research on index models is closely connected to sufficient dimension reduction, among which sliced inverse regression (SIR) (Li, 1991) is one of the most influential approaches. This framework has inspired a large body of extensions, including sliced average variance estimation (SAVE; Cook and Weisberg, 1991), and tensor-valued extensions such as TensorSIR (Ding and Cook, 2015). However, these methods typically rely on relatively strong probabilistic assumptions, LEARNING CNN FILTERS VIA GENERALIZED STEIN’S METHOD 3
+
+such as the linearity condition and constant variance condition, which are often satisfied only under elliptical or Gaussian-type distributions. Another line of research on learning index models is motivated by the classical Stein’s identity (Stein, 1981), which implies that, in the simplest setting where x follows a standard Gaussian distribution, the index vector b is proportional to E(x · y), regardless of the unknown link function f . Early works along this direction include average derivative estimation (ADE; Stoker, 1986) and principal Hessian directions (PHD; Li, 1992). More recently, Stein-based methods have been revisited and substantially extended to more general settings. For instance, Plan and Vershynin (2016) and Plan et al. (2017) considered SIM with sparse index vectors, and Balasubramanian et al. (2025) extended the framework to functional regression. Yang et al. (2017) and Goldstein et al. (2018) generalized the Gaussian input assumption to heavy-tailed or non-Gaussian scenarios, and Fan et al. (2023) studied implicit regularization in SIM. Nevertheless, most existing works are developed under relatively simple and idealized settings, typically focusing on SIM with vector-valued inputs and assuming that the input distribution is known. As a result, they provide limited practical guidance for handling complex real-world data such as imaging data. The rest of the paper is organized as follows. Section 2 introduces the ADNI dataset in detail. Section 3 establishes the connections between CNNs and index models, and present our SVD-based estimation. Section 4 provide theoretical analyses for estimating filters under different settings. Section 5 presents the ADNI data analysis, and Section 6 includes comprehensive simulation studies. Finally, Section 7 concludes with further discussions. 
+
+Notations. We use bold uppercase letters A, B to denote matrices, bold lowercase letters 
+
+a, b to denote vectors. We let vec (·) be the vectorization operator and vec −1(·) (·) be its inverse with the subscripts indicating the matrix size. For a vector v, ∥v∥q = ( P 
+
+> j
+
+|vj |q)1/q is the ℓq
+
+norm. For a matrix A, ∥A∥F =
+
+qP 
+
+> i,j
+
+A2 
+
+> i,j
+
+is the Frobenius norm, λmin (A) is the minimum eigenvalue of matrix A. Moreover, we let ⟨· , ·⟩ to denote the inner product. In addition, given two sequences {xn} and {yn}, we denote xn = O(yn) if |xn| ≤ C1|yn| for some absolute constant C1 and denote xn = Ω( yn) if |xn| ≥ C2|yn| for some absolute constant C2.
+
+2. The ADNI dataset. We analyze brain imaging data from the Alzheimer’s Disease Neuroimaging Initiative (ADNI 1), a study aimed at identifying and monitoring Alzheimer’s disease through clinical assessments, genetic analysis, imaging data, and more. Alzheimer’s disease is one of the most common causes of dementia among older adults, and is characterized by a progressive decline in cognitive functions, particularly memory, reasoning, and language abilities. It is associated with structural and functional changes in the brain, including cortical atrophy and the degeneration of specific regions. The primary goal of this work is to use CNNs to study brain imaging data, with ADNI serving as an illustrative example and cognitive test scores used as response variables. In particular, our study aims to learn effective convolutional representations of brain images that preserve important spatial and pattern information. These learned representations also facilitate dimension reduction, enabling the analysis of high-dimensional imaging data with limited sample sizes. We expect the proposed method to reduce reliance on gradient-based training, thereby lowering computational cost and improving stability, while also enhancing predictive performance and interpretability. 
+
+Brain MRI. For brain imaging data, we focus on magnetic resonance imaging (MRI), as explanatory variables. Each participant in the analysis has a T1-weighted MRI scan. The scans are carefully preprocessed prior to analysis using a standard pipeline that includes 
+
+> 1https://adni.loni.usc.edu/ 4
+
+spatial adaptive non-local means (SANLM) denoising (Manjón et al., 2010), resampling, bias correction, affine registration, unified segmentation, skull stripping, and cerebellum removal (Ashburner and Friston, 2005). This is followed by local intensity correction and spatial normalization into the Montreal Neurological Institute (MNI) atlas space. After preprocessing, each T1-weighted MRI scan is represented as a tensor and resized to 48 ×
+
+60 × 48 to improve computational and storage efficiency. As a result, we obtained 1,059 MRI scans from subjects who are cognitively normal (369), have mild cognitive impairment (401), or have Alzheimer’s disease (289). For each scan, we further extract 10 middle coronal slices (slices 25 through 34 out of the 60 coronal slices), which serve as a form of data augmentation derived from a single scan for each subject. This procedure increases the effective sample size, stabilizes model training, and improves the robustness of method comparisons. Finally, the resulting dataset contains 10,590 images of size 48 × 48 , on which we perform 10-fold cross-validation to compare predictive performance. 
+
+MMSE score. We use the Mini-Mental State Examination (MMSE) scores as response variables. The MMSE is a widely used clinical assessment for cognitive impairment, with scores ranging from 0 to 30. There are four cut-off levels of cognitive impairment with corresponding MMSE scores falling within the intervals of [0, 9], [10, 18], [19, 23] and [24, 30], respectively indicating severe, moderate, mild and no cognitive impairment (Tombaugh and McIntyre, 1992). As a cognitive assessment method, MMSE does not confirm any particular disease, but it is widely used as a diagnostic adjunct and provides an informative reference for the assessment of Alzheimer’s disease. In general, cognitively normal individuals tend to have scores close to 30, whereas individuals with cognitive impairment exhibit lower scores. Predicting MMSE scores from brain MRI is inherently nontrivial because MMSE reflects cognitive function only indirectly through structural brain changes that are usually subtle in imaging data. In addition, high inter-subject variability and limited sample sizes in neuroimaging further constrain achievable predictive accuracy, making it a more challenging yet important problem to investigate. We carry out two independent studies using the augmented dataset. In Section 5.1, we consider real MRI images along with simulated responses, where we can simulate the convolution filters and directly evaluate the filter estimation performance. In Section 5.2, we incorporate real MMSE scores as responses to showcase the prediction performance based on representations from our method under various downstream predictive models. 
+
+3. CNN, Index Model, and their connections. 
+
+3.1. CNN and Index Model. Let Xori ∈ RP1×P2 denote the original matrix-valued input, such as raw image data. In a typical convolutional neural network, the raw image usually first goes through a convolutional layer, and then proceeds to pooling and fully connected layers. We shall focus on the first convolutional layer and denote B1, . . . , BR ∈ Rd1×d2 as 
+
+R convolution filters in the first layer of a CNN. Then, the output of a convolutional neural network can be written as the following form 
+
+G(Xori ) = g(σ(Xori ⋆ B1), . . . , σ (Xori ⋆ BR)) .(1) Here ⋆ is a convolution operator to be discussed in detail later, σ(·) is a component-wise nonlinear activation function, such as ReLU (Rectified Linear Unit) or Sigmoid function. Furthermore, the multivariate function g incorporates the remaining structure of CNN, including pooling layers, fully-connected layers, and other components in a CNN. If we further combine g with the activation function σ, the CNN output (1) can be written as 
+
+G(Xori ) = f (Xori ⋆ B1, . . . , Xori ⋆ BR).(2) LEARNING CNN FILTERS VIA GENERALIZED STEIN’S METHOD 5
+
+We now turn our attention to the convolution operator ⋆. We shall first consider a non-overlapping convolution, further extensions to its overlapping version will be discussed later. Given any matrix M ∈ RP1×P2 and a filter B ∈ Rd1×d2 , where d1, d 2 are factors of P1, P 2
+
+respectively, the non-overlapping convolution is defined as (3) M ⋆ B ∈ Rp1×p2 , (M ⋆ B)j,k =
+
+D
+
+M d1,d 2 
+
+> j,k
+
+, B
+
+E
+
+.
+
+Here, (p1, p 2) = ( P1/d 1, P 2/d 2) and M d1,d 2 
+
+> j,k
+
+represents the (j, k )-th block of size d1 × d2
+
+in M for 1 ≤ j ≤ p1 and 1 ≤ k ≤ p2. With deep learning language, the stride size is set equal to the filter size under non-overlapping scenario. The convolution operation aims to extract feature information, thereby enhancing prediction in the subsequent layers. While through the non-overlapping design, dimension reduction can be achieved. Notably, the non-overlapping convolution, being the simplest case, has been extensively studied in the literature, for example, Brutzkus and Globerson (2017); Du et al. (2018); Cao and Gu (2019); Feng and Yang (2024). Let p = p1p2 be the total number of non-overlapping blocks and 
+
+d = d1d2 be the number of elements in each block. Now we consider a matrix reshaping operator that allows us to further connect the CNN and index models. Given any matrix M ∈ RP1×P2 , the operator R(d1,d 2) : RP1×P2 → Rp×d
+
+is defined as a mapping from M to 
+
+R(d1,d 2)(M ) = 
+
+h
+
+vec 
+
+
+
+M d1,d 2
+
+> 1,1
+
+
+
+, . . . , vec 
+
+
+
+M d1,d 2
+
+> p1,p 2
+
+i ⊤
+
+.(4) A key property holds for Xori ∈ RP1×P2 and B ∈ Rd1×d2 that vec (Xori ⋆ B) = R(d1,d 2)(Xori )vec (B).
+
+Figure 1 illustrates the transformation of convolution operation into matrix multiplication through the operator R(d1,d 2)(·). 
+
+> FIG 1. Transformation of convolution operation into matrix multiplication through the operator.
+
+Let X = R(d1,d 2)(Xori ) ∈ Rp×d be the reshaped input and br = vec (Br) ∈ Rd for r =1, . . . , R . Then we can rewrite (2) as 
+
+G(Xori ) = f (Xb 1, . . . , Xb R).(5) With a slight abuse of notation, we also use the same function notation f in (5). However, we shall note that the f in (5) is not identical to that in (2) as the inputs were reshaped. If we model certain outcome Y through the above formulation, we have (6) E(Y |X) = f (Xb 1, . . . , Xb R
+
+| {z }
+
+> p×R
+
+).6
+
+Model (6) clearly bears a resemblance to an MIM, although in fact they are different. In a standard MIM, the input is typically a vector, so each index is a scalar. In model (6), however, 
+
+X is a matrix of dimension p × d, which makes each index Xb r a p-dimensional vector. Consequently, the function in (6) is a more general function with an input dimension p × R.Let Θ = ( b1, . . . , bR) ∈ Rd×R denote the collection of convolutional filters. Then model (6) can be compactly written as E(Y |X) = f (XΘ).3.2. CNN filter estimation via Stein’s method and SVD. Based on model (6), we assume the relationship between Y and X is Y = f (XΘ) + ϵ, where the noise term ϵ is independent of X. We assume that ϵ is centered and sub-Gaussian, i.e. E[ϵ] = 0 and E[|ϵ|k] 1 
+
+> k
+
+≤ σ√k for all k ∈ N and an absolute constant σ > 0. Let Xi = R(d1,d 2)(Xori  
+
+> i
+
+) ∈ Rp×d and Yi ∈ R for 
+
+i ∈ [n] be n i.i.d. observations that follow Yi = f (XiΘ) + ϵi. Similar to index models, Θ
+
+is not identifiable when f is unknown. Specifically, it is identifiable only up to an invertible linear transformation, since any such transformation can be absorbed into f . Therefore, our goal is to learn the column space in Θ based on a generalized version of Stein’s identity. To get started, we shall first define the score function associated with the input X.DEFINITION 3.1. Let X ∈ Rp×d be a random matrix with density P : Rp×d → R. The score function S(X) : Rp×d → Rp×d associated with X is defined as 
+
+S(X) := −∇ X [log P (X)] = −∇ X P (X)/P (X).
+
+For any {j, k } ∈ [p] × [d], Sjk (X) is defined as the (j, k )-th element of S(X).Then we have the following generalized version of first-order Stein’s identity. LEMMA 3.2. Let f : Rp×R 7 → R be the link function. Let Z = XΘ. Suppose that the expectations E[Y S (X)] and E [∇Z f (XΘ)] both exist and are well-defined. Then we have 
+
+E[Y S (X)] = E [∇Z f (XΘ)] · Θ⊤.(7) Lemma 3.2 serves as the basis for our estimation of Θ. It shows that provided E[Y S (X)] 
+
+has rank R, the column space of Θ can be determined by the top R right singular vectors of E[Y S (X)] . With the sample version (1 /n ) Pni=1 YiS(Xi) being a natural estimate for 
+
+E[Y S (X)] , we propose the following SVD based estimation for Θ,
+
+ˆΘ = SVD v,R 
+
+1
+
+n
+
+> n
+
+X
+
+> i=1
+
+YiS(Xi)
+
+!
+
+,(8) where SVD v,R (M ) refers to the top R right singular vectors of a matrix M .We emphasize that this method is general as it applies to arbitrary distribution of input 
+
+X, provided that the score S(X) is known or well estimated. Moreover, this estimator does not rely on the link function f , therefore regardless of the complexity of subsequent pooling or fully connected layers in a CNN. Based on SVD, the proposed estimator aims to learn a compact set of informative convolutional directions rather than to reproduce every possibly redundant filter in a large CNN. This is consistent with empirical observations that CNNs often learn filters with substantial redundancy (Jaderberg et al., 2014; Wang et al., 2020). Therefore, the orthogonality of ˆΘ should be regarded as a basis-recovery feature of the estimator, rather than as a structural assumption on all practical CNN filters. Although the method is introduced to estimate filters in the first convolutional layer, in practice it serves as a representation learning method that efficiently extracts convolutional features without training the full CNN. The resulting convolutional features can then be used in downstream tasks and integrated with either statistical models or neural networks. Specifically, an applied researcher can use this method following steps below. LEARNING CNN FILTERS VIA GENERALIZED STEIN’S METHOD 7
+
+Step 1. Estimate the score function. Under a suitable parametric model for the input distribution, the score can be estimated by plug-in estimators. For example, under a Gaussian model, the empirical mean and covariance give an explicit estimate of the score function, as described in Section 4.3. 
+
+Step 2. Estimate filters. Compute (1 /n ) Pni=1 Yi ˆS(Xi) and perform SVD. The top right singular vectors form ˆΘ, and each column is reshaped into a convolutional filter ˆBr =vec −1(d1,d 2)( ˆΘ[: ,r ]).
+
+Step 3. Construct representations and fit downstream models. Apply the estimated filters to the original images to obtain convolutional feature maps, and then use these features in a downstream model such as linear regression, LASSO, FCN, or CNN. A notable advantage of the proposed method is its seamless integration with downstream statistical models, as the extracted features can be directly used as their inputs. This enables a natural combination of the representation power of CNN-based feature extraction with the strengths of classical statistical methods, including interpretability and inference. We also note that if the input distribution is completely unknown and no suitable parametric model is available, score estimation becomes a substantive problem. In such cases, nonparametric score estimation methods, such as Zhou et al. (2020), may provide an alternative, but their accuracy should be checked for the application at hand. 3.3. The truncated form. Under heavy-tailed data, the straightforward sample version 
+
+(1 /n ) Pni=1 YiS(Xi) may not be an optimal estimate for E[Y S (X)] due to a lack of concentration. In fact, not only can the input X be heavy-tailed, but the outcome Y or the score function S(X) could also exhibit heavy-tail behavior due to the unknown link function 
+
+f . These issues have been discussed in the literature, where the truncation argument has been proposed, as seen in works such as Catoni (2012); Minsker (2018); Yang et al. (2017). We adopt similar strategies and propose an improved estimator of the truncated form. We begin by introducing a class of non-decreasing functions ϕ : R → R satisfying 
+
+− log(1 − x + x2/2) ≤ ϕ(x) ≤ log(1 + x + x2/2) , x ∈ R.
+
+A straightforward function satisfying the upper and lower exponential-type bounds is 
+
+ϕ(x) = 
+
+ − log(1 − x + x2/2) , x < 0,
+
+log(1 + x + x2/2) , x ≥ 0.
+
+(9) It is a convenient choice as it attains these bounds tightly and modifies the original estimator only as much as needed to control extreme values, while other truncation functions with the same bounding properties could also be used. Figure 2 illustrates the function ϕ.We introduce a linear mapping ψ : Rp×d → Rp×d based on the non-decreasing function ϕ.For a given matrix X ∈ Rp×d, consider the spectral decomposition of its Hermitian dilation: 
+
+X∗ =
+
+ 0 XX⊤ 0
+
+
+
+= U ΣU ⊤.
+
+Further, define ˜X = U (ϕ ◦ Σ)U ⊤ and write it into block form as 
+
+˜X = U (ϕ ◦ Σ)U ⊤ =
+
+
+
+˜X11 
+
+|{z} 
+
+> p×p
+
+˜X12 
+
+|{z} 
+
+> p×d
+
+˜X21 
+
+|{z} 
+
+> d×p
+
+˜X22 
+
+|{z} 
+
+> d×d
+
+ ,8  
+
+> FIG 2. The plot of function ϕ.
+
+where ϕ ◦ Σ indicates that the function ϕ is applied element-wise on Σ. Then we define 
+
+ψ(X) = ˜X12 . Based on ψ, we introduce a new estimator ˜Θ for Θ with a truncated form 
+
+˜Θ = SVD v,R 
+
+1
+
+n
+
+> n
+
+X
+
+> i=1
+
+τ (YiS(Xi)) 
+
+!
+
+,(10) where τ (YiS(Xi)) = 1 /θ · ψ [θY iS(Xi)] , and θ > 0 is a thresholding parameter. In later analysis, we will provide theoretical analyses of ˜Θ and demonstrate its advantages over ˆΘ in (8) under heavy-tailed distributions. 
+
+4. Theoretical guarantees for filter estimation. 
+
+4.1. Theoretical guarantees for single filter estimation. In this section, we provide theoretical guarantees for estimating Θ with a single convolution filter. With R = 1 , we let b = vec (B) = Θ ∈ Rd be the target filter and denote the original and truncated version of the estimated filter as ˆb = ˆΘ and ˜b = ˜Θ, respectively. We assume that ∥b∥2 = 1 to avoid identifiability issues. We first consider the original estimator ˆb under sub-Gaussian input. To get started, we present necessary conditions below. ASSUMPTION 1. Suppose that Xi ∈ Rp×d, i ∈ [n] are i.i.d. observations. For any i ∈ [n],
+
+j ∈ [p] and k ∈ [d], assume that the score Sjk (Xi) is a sub-Gaussian random variable, i.e. 
+
+(E|Sjk (Xi)|q) 1 
+
+> q
+
+≤ L√q for q ≥ 1, where L is a positive constant. Assumption 1 requires that each entry of the score function S(X) is sub-Gaussian. Such an assumption is rather mild and can be satisfied by a wide range of random distributions. For example, when X follows a Gaussian distribution with entries Xjk ∼ N (μjk , σ 2
+
+> jk
+
+), it results in Sjk (X) = ( Xjk − μjk )/σ 2 
+
+> jk
+
+also being a Gaussian random variable, which is clearly sub-Gaussian. Moreover, when Xjk follows a heavier tailed Students’ t distribution, it can be easily verified that the score is bounded and inherently sub-Gaussian. This implies that even if the input X is not sub-Gaussian, the score could still potentially be sub-Gaussian. ASSUMPTION 2. Assume that there exists an absolute constant T > 0 such that 
+
+E[f (XΘ)2q] 12q ≤ T √q for all q ∈ N+.Assumption 2 requires that f (XΘ) is a sub-Gaussian random variable. This assumption is relatively mild. Clearly, Assumption 2 automatically holds when f ∈ Rp×R 7 → R is a bounded function. Moreover, when f is Lipschitz continuous and X is sub-Gaussian, it is easy to show that Assumption 2 could also be satisfied. LEARNING CNN FILTERS VIA GENERALIZED STEIN’S METHOD 9
+
+ASSUMPTION 3. Let Z = Xb . For any j ∈ [p], assume that E∇Zj f (Z) = Ω(1) .In Assumption 3, we assume that the derivative of the non-linear function f at Z = Xb 
+
+maintains a constant level. This assumption ensures identifiability by requiring that the function value f (Xb ) is adequately sensitive to perturbations around the true value b. This assumption is mild, as it merely assumes a constant scale of the derivatives in expectation. In practice, the assumption can be evaluated by inspecting the empirical singular value spectrum of the matrix 1
+
+> n
+
+Pni=1 YiS(Xi), which is supported when the leading singular value is significantly larger than the remaining spectrum, illustrated in the Supplementary Material. THEOREM 4.1. Suppose the model E(Yi|Xi) = f (Xib) for i ∈ [n]. Under Assumption 1 to 3, we have with probability at least 1 − δ that 
+
+∥ˆb − b∥2 = O
+
+r dn · log pd δ
+
+!
+
+.(11) Theorem 4.1 suggests that the ℓ2-convergence rate of ˆb is O
+
+pd log( pd )/n 
+
+
+
+under the sub-Gaussian setting. This rate is optimal up to a logarithmic factor. In fact, consider the simplest scenario where f is linear, meaning that E(Yi|Xi) = c⊤Xib, with c ∈ Rp being a known vector. In this case, the ℓ2-convergence rate of an OLS estimate of b, denoted as ˆbols ,is O
+
+pd/n 
+
+
+
+. Our rate in Theorem 4.1 matches with this OLS rate apart from a logarithmic factor, which confirms the optimality of (11). Now we focus on the truncated estimator, for which we can provide sharp error bounds even when both the outcomes and the scores exhibit heavy-tailed behavior. ASSUMPTION 4. Suppose the model E(Yi|Xi) = f (Xib) for i ∈ [n]. Assume that there exists an absolute constant M > 0 such that E(Y 4 
+
+> i
+
+) ≤ M and E(S4
+
+> jk
+
+(Xi)) ≤ M for all i ∈
+
+[n], j ∈ [p] and k ∈ [d].Assumption 4 relaxed the sub-Gaussian Assumption 1 to a bounded fourth-moment assumption on the outcome Y and the score S(X). Under this assumption, heavy-tailed inputs could be included. We note that similar assumptions have been studied in the literature, such as Yang et al. (2017); Fan et al. (2018, 2021, 2023). With the bounded moment assumption, we can present the theoretical results for the truncated estimator. THEOREM 4.2. Suppose the model E(Yi|Xi) = f (Xib) for i ∈ [n]. Suppose that Assumption 3 holds. Further assume Assumption 4 with constant M . Let θ =p2 log(2( p + d)/δ )/(nM pd ). Then, with probability at least 1 − δ, we have 
+
+∥˜b − b∥2 = O
+
+r dn · log p + dδ
+
+!
+
+.(12) By Theorem 4.2, the truncated estimator could achieve a convergence rate of 
+
+O
+
+pd log( p + d)/n 
+
+
+
+with a carefully chosen truncation parameter θ. In other words, even if both the outcome Yi and the score S(Xi) are heavy-tailed, a nearly optimal convergence rate could still be guaranteed under a bounded moment condition. On the other hand, it is worth noting that the bounded expectation assumption on f , referred to as Assumption 2, is not necessary in Theorem 4.2. In other words, the convergence can be guaranteed solely under the constant derivatives Assumption 3 and the bounded scores assumption 4. 10 
+
+4.2. Generalizations to multiple filters estimation. In this section, we consider general cases with R ≥ 2 filters in CNNs. Similar to Section 4.1, we study both the original and truncated versions of the estimator under sub-Gaussian and moment conditions, respectively. However, as previously discussed, when R ≥ 2, Θ is not identifiable with an unknown link function f . Thus, our goal is to learn the column space of Θ and prove the convergence of the estimators using the following distance measure 
+
+dist 
+
+
+
+Θ, ˆΘ
+
+
+
+= inf 
+
+> H∈HR
+
+Θ − ˆΘH F ,(13) where HR is the set of R × R orthogonal matrices. It is worth noting that when R = 1 , the column space distance dist 
+
+
+
+b, ˆb
+
+
+
+reduces to the vector distance ∥ˆb − b∥2 when ∥b∥2 = ∥ˆb∥2.In a multi-filter setting, we require assumptions similar to those used for single-filter estimation, with Assumption 3 replaced by Assumption 5 below. ASSUMPTION 5. Suppose that (Xi, Y i), i ∈ [n] are i.i.d. observations. Let σR be the 
+
+R-th largest singular value of E[YiS(Xi)] . Assume that there exists an absolute constant C
+
+such that σR ≥ Cpp/R .Assumption 5 imposes a lower bound of the non-zero singular values of E[YiS(Xi)] . This assumption can be viewed as an extension of Assumption 3 in a multiple filters scenario. For example, when each entry of E[∇Z f (XΘ)] is Ω(1 /√R) and the columns of E[∇Z f (XΘ)] 
+
+are nearly orthogonal, it is easy to show that all the R non-zero singular values of E[Y S (X)] 
+
+have a lower bound in scale of Ω( pp/R ). Similarly, in practice it can be also assessed by inspecting the empirical singular value spectrum of 1
+
+> n
+
+Pni=1 YiS(Xi), which is supported when the leading R singular values are clearly separated from the remaining spectrum. THEOREM 4.3. Suppose the model E(Yi|Xi) = f (XiΘ) for i ∈ [n]. Under Assumptioin 1, Assumption 2 and Assumption 5, with probability at least 1 − δ, we have 
+
+dist 
+
+
+
+Θ, ˆΘ
+
+
+
+= O
+
+r Rd n · log pd δ
+
+!
+
+.
+
+In this multiple filters case, we achieve a convergence rate of O
+
+pRd log( pd )/n 
+
+
+
+under the sub-Gaussian assumption. By replacing Assumption 3 with an SVD-type Assumption 5, Theorem 4.3 extends the near-optimal convergence rate stated in Theorem 4.1 to a multiple filter scenario. Moreover, we can eliminate the sub-Gaussian assumptions as detailed below. We now consider the truncated estimator without imposing the sub-Gaussian assumption. The following theorem extends Theorem 4.2 to the multiple-filter case. THEOREM 4.4. Suppose the model E(Yi|Xi) = f (XiΘ) for i ∈ [n]. Suppose that Assumption 5 holds. Further assume Assumption 4 with constant M . Let θ =p2 log(2( p + d)/δ )/(nM pd ). Then, with probability at least 1 − δ, we have 
+
+dist 
+
+
+
+Θ, ˜Θ
+
+
+
+= O
+
+r Rd n · log p + dδ
+
+!
+
+.
+
+Theorem 4.4 characterizes the convergence rate of the column space of ˜Θ for multiple filters under the general setting. Compared to Theorem 4.3, Theorem 4.4 further demonstrates that a sharp convergence rate can be guaranteed even when both the outcomes and the scores exhibit heavy-tailed behavior. LEARNING CNN FILTERS VIA GENERALIZED STEIN’S METHOD 11 
+
+4.3. Gaussian distribution with unknown Covariances. To estimate the convolution filters using our approach, a crucial step involves computing the score function, which requires the knowledge of the input distribution. Nevertheless, the input distributions are usually unknown in practice. When the input distribution has a specific parametric form, a natural solution is to use the plug-in estimator. This involves estimating the unknown parameters from the samples and then plugging them into the scores. In this section, we take Gaussian input as an example and demonstrate the convergence of the plug-in estimators. Let xi = vec (Xi) = vec  R(Xori  
+
+> i
+
+) be the vectorized image. Assume that xi ∼ N (μ, Σ)
+
+follows Gaussian distribution with unknown mean μ and covariance matrix Σ. Under such a Gaussian case, it is easy to show that the score function reduces to S(Xi) = 
+
+vec −1(p,d )(Σ−1xi), where vec −1(p,d )(·) is the inverse operation of transforming a matrix to a vector. Denote the sample mean and sample covariance matrix as ˆμ = (1 /n ) Pni=1 xi and 
+
+ˆΣ = (1 /n ) Pni=1 {xi − ˆμ}{ xi − ˆμ}⊤, respectively. By plugging the sample mean and sample covariance matrix into the score, we obtain the following estimator: (14) ˇΘ = SVD v,R 
+
+  ˇA , ˇA = vec −1(p,d )
+
+1
+
+n
+
+> n
+
+X
+
+> i=1
+
+Yi ˆΣ−1 (xi − ˆμ)
+
+!
+
+.
+
+ASSUMPTION 6. Suppose that the link function admits a first-order Taylor expansion of the form f (Z) = f (0p×R) + ⟨∇ f (0p×R), Z⟩ + h(Z)∥Z∥22 with lim ∥Z∥2→0 h(Z) = 0 .Assume that the remainder term is bounded, h(XiΘ) ≤ H for i ∈ [n] for some constant H.We now present the following theorem which provides a bound on the column space between ˇΘ and the original estimator ˆΘ, where the true mean and covariance are used. THEOREM 4.5. Suppose the model E(Yi|Xi) = f (XiΘ) for i ∈ [n]. Assume that xi =
+
+vec (Xi) ∼ N (0, Σ) with λmin (Σ) > 0. Let ˆΘ be the original estimator (8). Then under Assumption 6, we have the following holds with probability approaching 1, 
+
+dist 
+
+ ˇΘ, ˆΘ
+
+
+
+= O
+
+r Rd n
+
+!
+
+.(15) Theorem 4.5 shows that column space of the plug-in estimator converges to that of the original estimator at the rate O
+
+pRd/n 
+
+
+
+. In fact, under certain cases, the plug-in estimator may even outperform the original one. To illustrate, consider a natural case where Xi follows a zero-mean Gaussian distribution and f is linear, so that Yi = ⟨C, XiΘ⟩ + εi, where C ∈
+
+Rp×R is an unknown matrix. This model can be viewed as a low-rank trace regression of the form E(Yi|Xi) = tr (AX ⊤ 
+
+> i
+
+), where A = CΘ⊤ ∈ Rp×d is a low-rank matrix. Under this setting, ˇA in (14) reduces to the OLS estimate of A:
+
+ˇA = vec −1(p,d )
+
+1
+
+n
+
+> n
+
+X
+
+> i=1
+
+ˆΣ−1xiYi
+
+!
+
+= A + vec −1(p,d )
+
+1
+
+n
+
+> n
+
+X
+
+> i=1
+
+ˆΣ−1xiεi
+
+!
+
+.
+
+As a comparison, the original estimator ˆA with true mean and covariance becomes: 
+
+ˆA = vec −1(p,d )
+
+1
+
+n
+
+> n
+
+X
+
+> i=1
+
+Σ−1xiYi
+
+!
+
+= vec −1(p,d )
+
+
+
+Σ−1 ˆΣvec (A)
+
+
+
++ vec −1(p,d )
+
+1
+
+n
+
+> n
+
+X
+
+> i=1
+
+Σ−1xiεi
+
+!
+
+.
+
+By above derivation, ˇA could potentially provide a better estimation of A in comparison to ˆA. Particularly, when sample size n is small, Σ−1 ˆΣ might deviate from I and then the 12 
+
+estimation performance of ˆA could be impacted. Consequently, the plug-in estimator ˇΘ,which consists of the singular vectors of ˇA, might yield a smaller estimation error. This finding is further validated by an extensive simulation study presented in Section 6.3. 
+
+5. The ADNI data analysis. In this section, we evaluate the proposed estimators using brain MRI data from the ADNI dataset, which has been introduced in Section 2. We first consider simulated responses in Section 5.1, where we can directly evaluate the filter estimation performance. We then analyze the real MMSE scores in Section 5.2, where the quality of the learned convolutional representations is assessed through downstream prediction performance. 5.1. Simulated response. We regard MRI images as input Xori  
+
+> i
+
+and generate the responses Yi according to the following models (i) Single filter: Yi = f  Xori  
+
+> i
+
+⋆ B + εi.(ii) Multiple filters with R = 3 : Yi = f  Xori  
+
+> i
+
+⋆ B1, Xori  
+
+> i
+
+⋆ B2, Xori  
+
+> i
+
+⋆ B3
+
+ + εi.We consider four kinds of link functions f described as (I) to (IV) in Section 6, including linear, nonlinear, fully connected network (FCN) and convolutional neural network (CNN). The filters ( B; B1, B2, B3) are constructed as the singular vectors of a random matrix followed by reshaped into square matrices of size 4 × 4, which are fixed throughout all experiments. Consequently, the reshaped images Xi = R(4 ,4) (Xori ) ∈ R144 ×16 . The noise term εi is generated as Gaussian distribution N (0 , σ 2) with σ = 0 .1.To validate our approach in real data analysis, a key step involves understanding the distributions of the input. We follow the work of Lindquist (2008) and assume that Xori 
+
+> i
+
+follows a Gaussian distribution with unknown mean and covariance. We implement the plug-in estimator of our approach, and compare with CNNs trained using Adam (Kingma and Ba, 2015), one of the most widely used gradient descent algorithms for training neural networks. We reiterate that our approach does not require the knowledge of link functions while applying Adam necessitates specifying a neural network architecture. To approximate the link functions in a consistent manner, we employ a two-layer fully connected network. Moreover, for the neural network based link functions (FCN and CNN), we additionally include an architecture that matches the true underlying network for generation. Such an “oracle” specification naturally gives Adam an advantage in learning convolutional filters. We evaluate convolutional filter estimation using the column space distance metric defined in (13). We repeatedly simulate the responses using four of the five folds of the data, and report the average and standard deviation of the estimation errors in Figure 3. As shown in the figure, our method consistently achieves the smallest estimation errors across various link functions in both single and multiple filters scenarios, demonstrating its effectiveness even when the inputs are real MRI images with unknown distributions. Furthermore, these results suggest that Gaussian approximation can be sufficient for the MRI images in this application, providing practical support for the subsequent analysis with real MMSE responses. 5.2. Real MMSE response and representation learning . We further use real MMSE scores as the response variable. Since the true latent convolutional filters are unknown, direct comparison of estimation accuracy is not feasible. Instead, we evaluate performance from a representation learning perspective by examining predictive performance across different representations and predictive models. That is to say, we consider models of the form 
+
+ˆYi = f (h(Xori )) , where h denotes a representation function and f refers to the downstream predictive model. Specifically, the following representations are included. (1) Original features: h(Xori ) = Xori .LEARNING CNN FILTERS VIA GENERALIZED STEIN’S METHOD 13  
+
+> FIG 3. ADNI data analysis with simulated response. Filters estimation performance of the proposed plug-in estimator compared with Adam under different link functions.
+
+(2) Representations by our method: h(Xori ) = ( Xori ⋆ B1, . . . , Xori ⋆ BR), where Br are directly estimated by our method. (3) Representations by Adam: h(Xori ) = ( Xori ⋆ B1, . . . , Xori ⋆ BR), where Br are learned jointly with the full model by Adam. (4) Representations by TensorSIR: h(Xori ) = Γ⊤ 
+
+> 1
+
+Xori Γ2, where Γ1 and Γ2 are estimated using tensor-valued sliced inverse regression method proposed by Ding and Cook (2015). Accordingly, our procedure first estimates filters using the proposed method to obtain convolutional representations, and then trains the predictive models on these representations to perform prediction. For example, when the convolution filters Br are fixed to size 4 × 4,each convolution operation reduces the input dimension from 2,304 ( = 48 × 48 ) to 144 (= 12 × 12 ). Figure 4 illustrates the filters estimated by our method for R = 3 along with the corresponding convolutional representations of a sample image. For the gradient-based approach, we adopt the same convolutional architecture as in our method, with the only difference being that the filters are learned jointly with the full model via Adam. As a result, the two types of representations have the same dimensions given the same R. TensorSIR is an extension of sliced inverse regression for tensor-valued inputs and is therefore naturally applicable to matrix-valued imaging data. In this setting, Γ1 and Γ2 are estimated to perform two-way dimension reduction along the row and column directions, respectively. Based on the above representations, we consider both statistical models and neural networks as downstream predictive models, including the linear model, LASSO, a two-layer FCN, and a CNN. The architectures of the neural networks are kept the same as in the simulation studies. For each model type, we use a consistent architecture across different representations, although the number of parameters (or neurons) may vary depending on dimensions of representations. In particular, for the two types of low-dimensional representations with the same R, their predictive models are identical. We evaluate performance using 10-fold cross-validation, with 90% of the data used for training and 10% for testing in each fold. For methods involving convolutional representations, we select R ∈ { 1, 2, 3} based on a 20% validation split from the training portion of each fold. The model is then retrained on the full training portion using the optimal 
+
+R to make final predictions for the test portion. In implementation, inputs are vectorized for the first three models, while they are retained in matrix form for the CNN. Additional implementation details are provided in the Supplementary Material. Figure 5 presents the average prediction errors, measured by root mean square error (RMSE). The results show that, across a range of predictive models, the convolutional representations learned by our method consistently improve prediction accuracy, demonstrating the effectiveness and broad applicability of the proposed approach. 14                 
+
+> FIG 4. Visualization of the estimated filters and the low-dimensional representation for a sample image. The original 48 ×48 image is reduced by the proposed method using R= 3 estimated 4×4filters, producing three corresponding feature maps of size 12 ×12 .
+> FIG 5. Prediction performance of different representations across various predictive models.
+
+Moreover, when LASSO is used as the predictive model, the estimated sparse coefficients can be reshaped back to matrices with the original dimensions for interpretability. For the original features and TensorSIR representations, the coefficient matrix in each fold naturally serves as a saliency map. While for convolutional representations with R filters, the coefficients in each fold can be reshaped back to R corresponding coefficient matrices as salience maps. Each element in these matrices reflects the importance of convolutional representations, which correspond to local blocks in the original image rather than individual pixels. We aggregate these R maps into a single saliency map by taking the element-wise maximum, treating a location as important if it appears in any of the feature maps. For each type of representation, the final saliency map is obtained by intersecting the saliency maps across the 10 folds of cross-validation, with nonzero entries averaged over the folds. For TensorSIR, where the intersection is empty, we instead use a k-occurrence masks with k = 6 
+
+to produce an appropriately sparse map. We visualize these saliency maps in Figure 6 by overlaying them on a sample image to highlight the important regions identified by different methods. Note that the saliency map from the original features has size 48 × 48 whereas those from other representations have LEARNING CNN FILTERS VIA GENERALIZED STEIN’S METHOD 15 
+
+size 12 × 12 , so we zoom it back to the original dimension. The results show that, based on representations learned by our method, LASSO identifies regions primarily around the hippocampus. Its progressive atrophy is closely associated with early memory decline and is widely recognized as a key biomarker of Alzheimer’s disease (Rao et al., 2022; Disouky et al., 2026). While saliency maps from other representations also roughly cover these regions, those based on the original features (left subplot) appear overly dispersed, and those based on representations by Adam and TensorSIR (right two subplots) are comparatively weak or highlight less relevant regions, including spurious areas near the image boundaries. These findings suggest that our method integrates effectively with interpretable statistical models and enhances interpretability, making it particularly suitable for medical imaging analysis.  
+
+> FIG 6. Saliency maps from different representations when LASSO as predictive models.
+
+6. Simulation studies. We conduct comprehensive simulation studies to evaluate the performance of the proposed estimator. Both the single filter and multiple filters settings described as (i) and (ii) in Section 5.1 are considered, with the same convolutional filters and noise specifications. Throughout the simulations, the input image size is fixed at 28 × 28 and the filter size at 4 × 4, yielding reshaped images Xi = R(4 ,4) (Xori ) of size 49 × 16 . The sample size n ranges from 500 to 2500. We vary the distributions of input Xori  
+
+> i
+
+and link function f . First, we examine the following distributional settings of Xori :(1) with i.i.d. Gaussian entries, Xori  
+
+> jk
+
+∼ N (μ, σ 2), μ = 0 and σ = 1 .(2) with i.i.d. Student’s t entries: Xori  
+
+> jk
+
+∼ t(ν), ν = 5 .(3) with i.i.d. Gamma entries: Xori  
+
+> jk
+
+∼ Γ( α, β ) with α = 5 and β = 1 .(4) with correlated Gaussian entries. Specifically, we generate Xori by vec (Xori  
+
+> i
+
+) ∼N (μ, Σ). The mean vector μ has uniformly random integer entries ranging from [−5, 5] ,while the covariance matrix Σ has entries Σj,k = ρ|j−k|, with ρ = 0 .2.Furthermore, we consider the following types of link function f :(I) Linear: f (Z) = ⟨Z, C⟩, where C has i.i.d. Gaussian entries Cjk ∼ N (0 , 1) .(II) Nonlinear: f (Z) = ⟨Z + 3 sin( Z), C⟩, where C is defined the same as in (I). Here the function sin( Z) is applied element-wisely. (III) Fully connected network (FCN): f (Z) is a two-layer fully connected network. Thus the original output Yi is generated by a standard CNN with one non-overlapping convolutional layer and two fully connected layers. (IV) Convolutional neural network (CNN): f (Z) is a convolutional neural network. We defer to the Supplementary Material for a detailed description of the structure of the CNN and additional details on this simulation study. Next, we present the results for the multiple-filter setting. The single-filter setting, being a special case, is deferred to the Supplementary Material. 16 
+
+6.1. Comparison with Adam. In this subsection, we focus on the original estimator under the assumption that the input distribution is known. We acknowledge that the comparison with Adam has an inherent asymmetry: the proposed estimator uses distributional information, whereas Adam is a general optimization algorithm and does not explicitly use such information. Nevertheless, this comparison is meaningful as it illustrates how much can be gained in filter estimation when distributional structure is available and used statistically. The comparison with Adam is conducted following the same setup as in Section 5.1. Specifically, the link functions are approximated consistently using two-layer fully connected networks, and when fitting FCN and CNN link functions, both matched and mismatched architectures are incorporated. Figure 7 shows the convolution filter estimation performance of our method and Adam in the multiple-filter setting, based on 10 independent repetitions. In addition, computational efficiency comparisons are provided in the Supplementary Material, which clearly demonstrate the substantial advantage of the proposed method.               
+
+> FIG 7.Comparison of multiple filters estimation performance under different link functions and input distributions. LEARNING CNN FILTERS VIA GENERALIZED STEIN’S METHOD 17
+
+Figure 7 clearly shows that our approach consistently performs well and dominates Adam across various link functions and input distributions. In particular, even for the matched case where the neural network structures are correctly specified in cases (III) and (IV), our approach still exhibits significant advantages, especially when the sample size n is relatively small. As the sample size increases, the performance of Adam improves, leading to a decrease in filter estimation error. As mentioned, neural network training typically requires a large sample size to achieve desired performance. In applications such as medical imaging, where data are often limited, our approach can be particularly advantageous due to its much weaker dependence on sample size. 6.2. Effect of truncation. As discussed earlier, when the data explicit heavy-tailed behavior, the original estimator may not be optimal due to a lack of concentration on the expectation of Y S (X). In this subsection, we compare the performance of the original and the truncated version of the estimator under different distribution assumptions. For the truncated estimator, we apply the non-decreasing function ϕ(·) in (9). We consider the input with heavier-tailed distributions, such as the Student’s t and Gamma distributions. However, it is worth noting that while both of them can display heavy-tailed behavior, their scores differ. The score of a Student’s t distribution is bounded and inherently sub-Gaussian, whereas the score of a Gamma distribution remains heavy-tailed.    
+
+> FIG 8. The original estimator vs the truncated estimator under the Student’s tand Gamma distribution with different link functions.
+
+Figure 8 presents the estimation error of both the original and truncated estimators. It shows that the effect of truncation is relatively limited in the case of the Student’s t
+
+distribution, as the original and truncated estimators achieve similar estimation errors. In contrast, the truncated estimator generally achieves smaller estimation errors for the Gamma distribution case. This suggests the effect of truncation when handling heavy-tailed scores. 6.3. Performance of plug-in estimator. In this subsection, we consider the scenario where the input distribution is unknown. To illustrate the performance of the plug-in estimator, we focus on Gaussian distributions with unknown means and covariance matrices. Therefore, we revisit the case (4), where the input has correlated Gaussian entries, i.e., 18 
+
+Xori ∼ N (μ, Σ), with covariances Σi,j = ρ|i−j|. Two values of ρ are examined, namely 
+
+ρ = 0 .5 and ρ = 0 .8, representing different levels of correlation. We evaluate the performance of the plug-in estimator introduced in Section 4.3 by comparing it with the original estimator where the mean and covariance matrix are correctly specified. Figure 9 shows the estimation errors of both estimators for different ρ values.  
+
+> FIG 9. The original truth-based estimator vs the plug-in estimator under different covariance matrices.
+
+By Figure 9, we are surprised to find that the plug-in estimator performs no worse, in fact even better, than the original estimator, particularly when the sample size n increases. Indeed, as discussed in Section 4.3, in the Gaussian scenario, the plug-in estimator can be advantageous by offering reduced bias in linear models. This simulation further demonstrates that these advantages could extend beyond linear models, highlighting the adaptability of our approach when dealing with unknown parameters. 
+
+7. Discussions. Motivated by the problem of learning convolutional filters in CNNs, we propose a statistical method to estimate filters in the first convolutional layer without training the full neural network, thereby providing an efficient training-free approach for learning convolutional representations. Promising future directions include extensions to overlapping convolutions and, more broadly, to deeper architectures. Although our study focuses on non-overlapping convolutions, it is also possible to extend our approach to the overlapping case. Let ∗ denote a general convolution operator with row and column strides s1 and s2, respectively. Let B1, ..., BR ∈ Rd1×d2 be the filters in the first layer of a CNN. Assume that s1, s 2 are factors of P1 − d1, P 2 − d2 respectively. For any matrix M ∈ RP1×P2 and a filter B ∈ Rd1×d2 , the overlapping convolution is defined as 
+
+M ∗ B ∈ R˜p1×˜p2 , (M ∗ B)j,k =
+
+D ˜M d1,d 2,s 1,s 2 
+
+> j,k
+
+, B
+
+E
+
+,
+
+where ˜p1 = ( P1 − d1)/s 1 + 1 , ˜p2 = ( P2 − d2)/s 2 + 1 , and ˜M d1,d 2,s 1,s 2 
+
+> j,k
+
+denotes the (j, k )-th overlapping patch of size d1 × d2 for j ∈ [˜ p1] and k ∈ [˜ p2]. Similar to (4), define the reshaping operator ˜R(d1,d 2,s 1,s 2) : RP1×P2 → R(˜ p1 ˜p2)×(d1d2) as 
+
+˜R(d1,d 2,s 1,s 2)(M ) = 
+
+h
+
+vec 
+
+ ˜M d1,d 2,s 1,s 2
+
+> 1,1
+
+
+
+, . . . , vec 
+
+ ˜M d1,d 2,s 1,s 2
+
+> p1,p 2
+
+i ⊤
+
+.LEARNING CNN FILTERS VIA GENERALIZED STEIN’S METHOD 19 
+
+Denote ˜X = ˜R(d1,d 2,s 1,s 2)(Xori ) and br = vec (Br) ∈ Rd1d2 , the output can be written as 
+
+G(Xori ) = f (Xori ∗ B1, . . . , Xori ∗ BR) = f ( ˜Xb 1, ..., ˜Xb R).
+
+Assuming the model E(Y | ˜X) = f ( ˜Xb 1, ..., ˜Xb R), Stein’s identity can still be applied to estimate the column space of (b1, · · · , bR), provided that the score function S( ˜X) is carefully estimated, with particular attention to the dependence induced by overlapping patches. As for further extension to deep architectures, the intuition is that features produced by earlier layers can be treated as inputs to subsequent layers, to which the proposed method can be applied again to estimate the corresponding filters. In this sense, the method can be extended to deeper architectures in a sequential manner. However, this also points to the main challenges. Accurately estimating the score function of intermediate features is nontrivial, as they have undergone nonlinear transformations. Moreover, estimation errors may accumulate across layers, making it difficult to control the overall error, especially in deep architectures. Addressing these challenges remains an important direction for future research. Nevertheless, extending the method to multiple convolutional layers is promising, as it may provide a viable statistical alternative to gradient-based optimization methods that have long been used in modern neural network training. REFERENCES 
+
+Ashburner, J. and Friston, K. J. (2005). Unified segmentation. Neuroimage , 26(3):839–851. Balasubramanian, K., Müller, H.-G., and Sriperumbudur, B. K. (2025). Functional linear and single-index models: A unified approach via gaussian stein identity. Bernoulli , 31(2):973–1006. Brutzkus, A. and Globerson, A. (2017). Globally optimal gradient descent for a convnet with gaussian inputs. In 
+
+International conference on machine learning , pages 605–614. PMLR. Cao, Y. and Gu, Q. (2019). Tight sample complexity of learning one-hidden-layer convolutional neural networks. 
+
+Advances in Neural Information Processing Systems , 32. Catoni, O. (2012). Challenging the empirical mean and empirical variance: a deviation study. In Annales de l’IHP Probabilités et statistiques , volume 48, pages 1148–1185. Chai, J., Zeng, H., Li, A., and Ngai, E. W. (2021). Deep learning in computer vision: A critical review of emerging techniques and application scenarios. Machine Learning with Applications , 6:100134. Cook, R. D. and Weisberg, S. (1991). Discussion of sliced inverse regression for dimension reduction. Journal of the American Statistical Association , 86(414):328–332. Ding, S. and Cook, R. D. (2015). Tensor sliced inverse regression. Journal of Multivariate Analysis , 133:216–231. Disouky, A., Sanborn, M. A., Sabitha, K., Mostafa, M. M., Ayala, I. A., Bennett, D. A., Lu, Y., Zhou, Y., Keene, C. D., Weintraub, S., et al. (2026). Human hippocampal neurogenesis in adulthood, ageing and alzheimer’s disease. Nature .Du, S., Lee, J., Tian, Y., Singh, A., and Poczos, B. (2018). Gradient descent learns one-hidden-layer cnn: Don’t be afraid of spurious local minima. In International Conference on Machine Learning , pages 1339–1348. PMLR. Fan, J., Liu, H., and Wang, W. (2018). Large covariance estimation through elliptical factor models. Annals of statistics , 46(4):1383. Fan, J., Wang, K., Zhong, Y., and Zhu, Z. (2021). Robust high dimensional factor models with applications to statistical machine learning. Statistical science: a review journal of the Institute of Mathematical Statistics ,36(2):303. Fan, J., Yang, Z., and Yu, M. (2023). Understanding implicit regularization in over-parameterized single index model. Journal of the American Statistical Association , 118(544):2315–2328. Fathi, E. and Shoja, B. M. (2018). Deep neural networks for natural language processing. In Handbook of statistics , volume 38, pages 229–316. Elsevier. Feng, L. and Yang, G. (2024). Deep kronecker network. Biometrika , 111(2):707–714. Goldstein, L., Minsker, S., and Wei, X. (2018). Structured signal recovery from non-linear and heavy-tailed measurements. IEEE Transactions on Information Theory , 64(8):5513–5530. He, K., Zhang, X., Ren, S., and Sun, J. (2016). Deep residual learning for image recognition. In Proceedings of the IEEE conference on computer vision and pattern recognition , pages 770–778. Jaderberg, M., Vedaldi, A., and Zisserman, A. (2014). Speeding up convolutional neural networks with low rank expansions. arXiv preprint arXiv:1405.3866 .20 
+
+Kingma, D. P. and Ba, J. (2015). Adam: A method for stochastic optimization. International Conference on Learning Representations .Lauriola, I., Lavelli, A., and Aiolli, F. (2022). An introduction to deep learning in natural language processing: Models, techniques, and tools. Neurocomputing , 470:443–456. Li, K.-C. (1991). Sliced inverse regression for dimension reduction. Journal of the American Statistical Association , 86(414):316–327. Li, K.-C. (1992). On principal hessian directions for data visualization and dimension reduction: Another application of stein’s lemma. Journal of the American Statistical Association , 87(420):1025–1039. Lindquist, M. A. (2008). The statistical analysis of fmri data. Manjón, J. V., Coupé, P., Martí-Bonmatí, L., Collins, D. L., and Robles, M. (2010). Adaptive non-local means denoising of mr images with spatially varying noise levels. Journal of Magnetic Resonance Imaging ,31(1):192–203. Minsker, S. (2018). Sub-gaussian estimators of the mean of a random matrix with heavy-tailed entries. The Annals of Statistics , 46(6A):2871–2903. O’Rourke, S., Vu, V., and Wang, K. (2018). Random perturbation of low rank matrices: Improving classical bounds. Linear Algebra and its Applications , 540:26–59. Plan, Y. and Vershynin, R. (2016). The generalized lasso with non-linear observations. IEEE Transactions on information theory , 62(3):1528–1537. Plan, Y., Vershynin, R., and Yudovina, E. (2017). High-dimensional estimation with geometric constraints. 
+
+Information and Inference: A Journal of the IMA , 6(1):1–40. Rao, Y. L., Ganaraja, B., Murlimanju, B. V., Joy, T., Krishnamurthy, A., and Agrawal, A. (2022). Hippocampus and its involvement in alzheimer’s disease: a review. 3 Biotech , 12(2):55. Rudin, C. (2019). Stop explaining black box machine learning models for high stakes decisions and use interpretable models instead. Nature machine intelligence , 1(5):206–215. Shen, D., Wu, G., and Suk, H.-I. (2017). Deep learning in medical image analysis. Annual review of biomedical engineering , 19:221–248. Stein, C., Diaconis, P., Holmes, S., and Reinert, G. (2004). Use of exchangeable pairs in the analysis of simulations. Lecture Notes-Monograph Series , pages 1–26. Stein, C. M. (1981). Estimation of the mean of a multivariate normal distribution. The annals of Statistics , pages 1135–1151. Stoker, T. M. (1986). Consistent estimation of scaled coefficients. Econometrica: Journal of the Econometric Society , pages 1461–1481. Tombaugh, T. N. and McIntyre, N. J. (1992). The mini-mental state examination: a comprehensive review. Journal of the American Geriatrics Society , 40(9):922–935. Vaswani, A. (2017). Attention is all you need. arXiv preprint arXiv:1706.03762 .Vershynin, R. (2020). High-dimensional probability. University of California, Irvine , 10:11. Voulodimos, A., Doulamis, N., Doulamis, A., and Protopapadakis, E. (2018). Deep learning for computer vision: A brief review. Computational intelligence and neuroscience , 2018(1):7068349. Wang, J., Chen, Y., Chakraborty, R., and Yu, S. X. (2020). Orthogonal convolutional neural networks. In 
+
+Proceedings of the IEEE/CVF conference on computer vision and pattern recognition , pages 11505–11515. Xu, X. (2020). On the perturbation of the moore–penrose inverse of a matrix. Applied Mathematics and Computation , 374:124920. Yang, Z., Balasubramanian, K., and Liu, H. (2017). High-dimensional non-gaussian single index models via thresholded score function estimation. In International conference on machine learning , pages 3851–3860. PMLR. Zhou, Y., Shi, J., and Zhu, J. (2020). Nonparametric score estimators. In International Conference on Machine Learning , pages 11513–11522. PMLR. Zhu, H., Li, T., and Zhao, B. (2023). Statistical learning methods for neuroimaging data analysis with applications. 
+
+Annual review of biomedical data science , 6(1):73–104. LEARNING CNN FILTERS VIA GENERALIZED STEIN’S METHOD 21 
+
+SUPPLEMENTARY MATERIAL In the supplementary material, we provide additional experimental details, as well as theoretical proofs of the theorems and lemmas presented in Sections 3, Section 4.1 and Section 4.2. 
+
+S1. Experiment details. 
+
+S1.1. Additional results. In Section 6, we also consider single filter scenario Yi =
+
+f  Xori  
+
+> i
+
+⋆ B + εi, which is the counterpart of the multiple filters scenario. The results on single filter scenario including comparison to gradient descent, effect of truncation and performance of plug-in estimator, are shown in Figures S1-S3, respectively.  
+
+> FIG S1 . Comparison of single filter estimation performance under different link functions and input distributions.
+
+In addition, to compare computational efficiency, we report the time cost under the first setting of the single filter scenario in Table S1 for illustration. The results clearly demonstrate the substantial computational advantage of the proposed method. 22 
+
+FIG S2 . The original estimator vs the truncated estimator under the Student’s t and Gamma distribution with different link functions. 
+
+FIG S3 . The original truth-based estimator vs the plug-in estimator under different covariance matrices. 
+
+TABLE S1 
+
+Average computational time (in seconds) under the first case. The results for other cases are highly similar. 
+
+500 1000 1500 2000 2500 Proposed method 0.023 0.045 0.063 0.090 0.107 Adam 3.236 7.161 13.564 18.060 22.537 
+
+S1.2. Implementation. We present the specific neural network architectures used in the simulations for both data generation and model fitting. Since the matching architectures used LEARNING CNN FILTERS VIA GENERALIZED STEIN’S METHOD 23 
+
+for fitting mirror those in the generation stage, we omit their repetition and display only the mismatched counterparts. The FCN begins with a ReLU activation applied to the convolutional features, followed by two fully connected layers, where the first layer reduces the dimension of the flattened convolutional features by half. For an input of size 28 × 28 , a single 4 × 4 convolutional filter produces an output of size 7 × 7, leading to 49 nodes in the subsequent fully connected layer. Accordingly, the two fully connected layers have 49 → 24 nodes. For the mismatched network, the only change is that the first fully connected layer preserves the original dimension instead of halving it, so the two fully connected layers have 49 → 49 nodes. The CNN consists of a typical convolution layer, batch normalization layer, ReLU function and max-pooling layer, followed by two fully-connected layers of which the first one reduces the dimension by half. Similarly, the difference of mis-matching network is that the first fully-connected layer keeps the dimension rather than halving. The structures of networks used are shown in Figure S4.  
+
+> FIG S4 . Structures of networks used.
+
+For real applications, we use the same models for generation as in the simulation study to produce simulated responses, and we examine both matched and mismatched architectures for FCN and CNN link functions. For the analysis of real responses, both the FCN and CNN models employ three fully connected layers with identical widths to enhance model capacity. The training procedure follows exactly the same setup as in the simulation study. In addition, the ℓ1 regularization parameter in LASSO is tuned by 5-fold cross-validation over the range 
+
+[0 .01 , 0.1] with a step size of 0.01 .All neural network models were implemented in PyTorch. We used the Adam optimizer with its default settings and a batch size of 128. Each model was trained for up to 500 epochs with early stopping based on the training loss. In all experiments, our methods were executed on Intel Xeon Gold 5218R CPUs, while the Adam optimizer-based models were trained on NVIDIA GeForce RTX 3090 GPUs. S1.3. Signal strength detection. In practice, Assumptions 5 and 3 can be assessed by examining the empirical singular value spectrum of the matrix 1
+
+> n
+
+Pni=1 YiS(Xi).Specifically, we can compute the singular values ˆσ1 ≥ ˆσ2 ≥ · · · and inspect their decay pattern. The assumptions are supported when the leading R singular values are clearly separated from the remaining spectrum, i.e., there is a noticeable spectral gap between ˆσR
+
+and ˆσR+1 , indicating a stable low-rank signal structure. In contrast, a rapid decay without 24 
+
+a clear gap suggests that the effective signal strength is weak, and the column space may not be reliably identifiable. As Assumption 3 corresponds to the special case R = 1 , the same diagnosis reduces to checking whether the leading singular value is significantly larger than the remaining spectrum, consistent with a rank-one signal structure. We illustrate the diagnosis under the simulation settings in Section 6.3 and present in Figure S5 the singular values of matrices ˆA and its plug-in counterpart ˇA. The results show that the plug-in version closely matches the spectrum of ˆA and clear spectral gaps appear at the R-th singular value for both the single-filter case ( R = 1 ) and the multiple-filter case ( R = 3 ). Moreover, the presence of such spectral gaps can also serve as a practical tool for selecting R when the number of filters is treated as unknown or not pre-specified.             
+
+> FIG S5 . Singular values of ˆAand ˇAunder the simulation setting in Section 6.3 with sample size n= 2500 ,including both cases with R= 1 and R= 3 . The singular values are normalized by the largest singular value, and the first 10 values are displayed.
+
+S2. Proofs. In this section, we provide the proofs of the theorems and lemmas in Section 3, Section 4.1 and Section 4.2. S2.1. Proof of Lemma 3.2. In order to prove Lemma 3.2, we first present the following lemma as an extension of Non-Gaussian Stein’s Lemma (Stein et al., 2004). This version applies Stein’s Lemma to non-Gaussian random matrices. LEMMA S2.1. Let g : Rp×d → R be a continuously differentiable function and X ∈
+
+Rp×d be a random matrix with density P which is also continuously differentiable. Under the assumption that E[g(X) · Sij (X)] and E[∇Xij g(X)] are well-defined, we have 
+
+E[g(X) · Sij (X)] = E[∇Xij g(X)] .
+
+PROOF OF LEMMA S2.1 . We know Sij (X) = −∇ Xij P (X)/P (X). Thus, we have that 
+
+E[g(X) · Sij (X)] = 
+
+Z
+
+> Rp×d
+
+g(x)Sij (x)P (x)dx = −
+
+Z
+
+> Rp×d
+
+g(x)∇xij P (x)dx. LEARNING CNN FILTERS VIA GENERALIZED STEIN’S METHOD 25 
+
+By the integration by parts formula, we get 
+
+Z
+
+> Rp×d
+
+g(x)∇xij P (x)dx =
+
+Z
+
+> Rp×d
+
+∇xij 
+
+g(x)P (x)dx −
+
+Z
+
+> Rp×d
+
+∇xij g(x)P (x)dx 
+
+= −
+
+Z
+
+> Rp×d
+
+∇xij g(x)P (x)dx 
+
+= −E[∇Xij g(X)] .
+
+Combining two equations, we can obtain that 
+
+E[g(X) · Sij (X)] = E[∇Xij g(X)] .
+
+Next, we are ready to prove Lemma 3.2. 
+
+PROOF OF LEMMA 3.2 . By Lemma S2.1, assuming that the link function f : z 7 → f (z)
+
+and the score function S(X) satisfy the conditions stated in Lemma S2.1, we can get 
+
+E[Y · Sij (X)] = E[f (XΘ) · Sij (X)] = E{∇ Xij [f (XΘ)] } = E
+
+ ∂f ∂zi·
+
+(XΘ)
+
+
+
+· Θ⊤ 
+
+> j·
+
+,
+
+where zi· is the i-th row of z and Θj· is the j-th row of Θ. Let S·j (X) be the j-th column of S(X). We can get that for all j ∈ [d],
+
+E[Y · S·j (X)] = E [∇z f (XΘ)] · Θ⊤ 
+
+> j·
+
+.
+
+Then, combining all the vectors into a matrix, we obtain that 
+
+E[Y · S(X)] = E [∇z f (XΘ)] · Θ⊤.
+
+S2.2. Proof of Theorem 4.1. We first show the convergence rate of 1
+
+> n
+
+Pni=1 YiS(Xi) by the following lemma. LEMMA S2.2. Suppose the model E(Yi) = f (XiΘ) for i ∈ [n]. Under Assumption 1, Assumption 2 and Assumption 3, with probability at least 1 − δ, we have 
+
+1
+
+n
+
+> n
+
+X
+
+> i=1
+
+YiS(Xi) − E[Y S (X)] 
+
+> F
+
+= O
+
+r pd n · log pd δ
+
+!
+
+.
+
+PROOF OF LEMMA S2.2 . Since Sij (X) is a sub-Gaussian random variable, we can get that for any i ∈ [p], j ∈ [d], there exists a positive constant L such that (E|Sij (X)|k) 1 
+
+> k
+
+≤ L√k
+
+for k ≥ 1. We first prove that Y S ij (X) − E[Y S ij (X)] is a sub-exponential random variable. To simplify the notation, in the following proof, we denote f = f (XΘ) and s = Sij (X).Then, for k ≥ 1, we have that 
+
+E|Y s − E(Y s )|k 1 
+
+> k(i)
+
+= E|(f + ε)s − E(f s )|k 1
+
+> k
+> (ii )
+
+≤ (E|f s |k) 1 
+
+> k
+
++ ( E|εs |k) 1 
+
+> k
+
++ |E(f s )|
+
+> (iii )
+
+≤ (Ef 2k · Es2k) 12k + ( E|ε|k · E|s|k) 1 
+
+> k
+
++ ( Ef 2 · Es2) 1226 
+
+> (iv )
+
+≤ T √2k · L√2k + σε
+
+√k · L√k + T √2 · L√2
+
+> (v)
+
+≤ 4T Lk + σεLk 
+
+= (4 T + σε)Lk, 
+
+where (i) is by E(εs ) = Eε · Es = 0 , (ii ) is by Minkowski inequality, (iii ) is by Cauchy–Schwarz inequality and the independence of ε and X, (iv ) is by Assumption 1, Assumption 2 and the assumption of ϵ, (v) is by k ≥ 1. Thus, Y S ij (X) − E[Y S ij (X)] is a sub-exponential random variable and we can get 
+
+∥Y S ij (X) − E[Y S ij (X)] ∥ψ1 = sup 
+
+> k≥1
+
+1
+
+k
+
+
+
+E|Y S ij (X) − E[Y S ij (X)] |k
+
+ 1
+
+> k
+
+≤ 4T + σε.
+
+Then, by Bernstein’s inequality, for any t > 0, we have 
+
+P 1
+
+n
+
+> n
+
+X
+
+> k=1
+
+YkSij (Xk) − E[Y S ij (X)] ≥ t
+
+!
+
+≤ 2 · exp 
+
+
+
+−cn min 
+
+ t2
+
+K2 , tK
+
+ 
+
+,
+
+where K ≤ 4T + σε and c is a positive constant. Therefore, we can obtain that 
+
+P 1
+
+n
+
+> n
+
+X
+
+> k=1
+
+YkS(Xk) − E(Y S (X)) 
+
+> F
+
+≥ ppd · t
+
+!
+
+≤
+
+> p
+
+X
+
+> i=1
+> d
+
+X
+
+> j=1
+
+P 1
+
+n
+
+> n
+
+X
+
+> k=1
+
+YkSij (Xk) − E[Y S ij (X)] ≥ t
+
+!
+
+≤2pd · exp 
+
+
+
+−cn min 
+
+ t2
+
+K2 , tK
+
+ 
+
+.
+
+Letting t = 4T +σε√cn ·
+
+q
+
+log 2pd δ , we get 
+
+P 1
+
+n
+
+> n
+
+X
+
+> k=1
+
+YkS(Xk) − E(Y S (X)) 
+
+> F
+
+≥
+
+r pd cn (4 T + σε)
+
+r
+
+log 2pd δ
+
+!
+
+≤ δ. 
+
+Therefore, we can conclude that with probability at least 1 − δ,
+
+1
+
+n
+
+> n
+
+X
+
+> k=1
+
+YkS(Xk) − E(Y S (X)) 
+
+> F
+
+= O
+
+r pd n · log pd δ
+
+!
+
+.
+
+By Lemma S2.2, we utilize a modified Davis-Kahan theorem proposed in O’Rourke et al. (2018) to prove Theorem 4.1. 
+
+PROOF OF THEOREM 4.1 . To simplify the notation, we denote A = E[Y S (X)] , Ai =
+
+YiS(Xi), and ˆA = 1
+
+> n
+
+Pni=1 Ai. Then, by Theorem 4 in O’Rourke et al. (2018), we can get 
+
+sin Θ  ˆb, b ≤ 2 · ∥ ˆA − A∥op 
+
+∥A∥op 
+
+.LEARNING CNN FILTERS VIA GENERALIZED STEIN’S METHOD 27 
+
+Since ∥ ˆA − A∥op ≤ ∥ ˆA − A∥F and ∥A∥op ≥ C1
+
+√p, we can obtain that with probability 1 − δ,
+
+sin Θ  ˆb, b ≤ 2
+
+C1
+
+(4 T + σε)
+
+r dcn log 2pd δ .
+
+We can assume that cos Θ  ˆb, b = ⟨ˆb, b⟩ ≥ 0, otherwise we use −ˆb to replace ˆb. Then, 
+
+∥ˆb − b∥2 =
+
+q
+
+∥ˆb∥22 + ∥b∥22 − 2⟨ˆb, b⟩
+
+=
+
+q
+
+2 − 2 cos Θ  ˆb, b
+
+≤ √2 sin Θ  ˆb, b
+
+≤ 2√2
+
+C1
+
+(4 T + σε)
+
+r dcn log 2pd δ ,
+
+Thus, we have ∥ˆb − b∥2 = O(pd/n · log( pd/δ )) .S2.3. Proof of Theorem 4.2. We first get the following lemma to show the convergence rate of 1
+
+> n
+
+Pni=1 τ (YiS(Xi)) .LEMMA S2.3. Suppose the model E(Yi) = f (XiΘ) for i ∈ [n]. Under Assumption 4 and Assumption 3, with probability at least 1 − δ, letting 
+
+θ =
+
+s
+
+2 log(2( p + d)/δ )
+
+nM pd ,
+
+we have 
+
+1
+
+n
+
+> n
+
+X
+
+> i=1
+
+τ (YiS(Xi)) − E[Y S (X)] 
+
+> op
+
+= O
+
+r pd n · log p + dδ
+
+!
+
+.
+
+PROOF OF LEMMA S2.3 . For any u ∈ Rp such that ∥u∥2 = 1 , we have that 
+
+u⊤E[Y S (X)( Y S (X)) ⊤]u = E[Y 2 · u⊤S(X)S(X)⊤u]=
+
+> d
+
+X
+
+> j=1
+
+E[Y 2 · (S·,j (X)⊤u)2]
+
+≤
+
+> d
+
+X
+
+> j=1
+
+q
+
+E(Y 4) · E[( S·,j (X)⊤u)4],
+
+where the last inequality is by Cauchy–Schwarz inequality. And, for any j ∈ [d],
+
+E[( S·,j (X)⊤u)4] = E
+
+
+
+> p
+
+X
+
+> i=1
+
+Si,j (X)ui
+
+!4
+
+> (i)
+
+≤ E
+
+
+
+> p
+
+X
+
+> i=1
+
+S2 
+
+> i,j
+
+(X)
+
+!2 pX
+
+> i=1
+
+u2
+
+> i
+
+!2
+
+> (ii )
+
+≤ E
+
+"
+
+p
+
+> p
+
+X
+
+> i=1
+
+S4 
+
+> i,j
+
+(X)
+
+#28 
+
+> (iii )
+
+≤ M p 2,
+
+where (i) is by Cauchy-Schwarz inequality, (ii ) is by Cauchy-Schwarz inequality and 
+
+∥u∥2 = 1 , (iii ) is by ES4 
+
+> ij
+
+(X) ≤ M .Thus, we obtain that u⊤E[Y S (X)( Y S (X)) ⊤]u ≤ M pd , which implies that 
+
+∥E[Y S (X)( Y S (X)) ⊤]∥op ≤ M pd . Similarly, we can get ∥E[( Y S (X)) ⊤Y S (X)] ∥op ≤
+
+M pd . Therefore, by Corollary 3.1 in Minsker (2018), we can get that 
+
+P
+
+ 1
+
+θn 
+
+> n
+
+X
+
+> i=1
+
+ψ[θY iS(Xi)] − E[Y S (X)] 
+
+> op
+
+≥ t
+
+√n
+
+ ≤ 2( p + d)exp 
+
+
+
+−θt √n + θ2nM pd 
+
+2
+
+
+
+for any t > 0 and θ > 0. Setting θ = p2 log(2( p + d)/δ )/√nM pd and t =p2M pd log(2( p + d)/δ ), we have that 
+
+P
+
+ 1
+
+n
+
+> n
+
+X
+
+> i=1
+
+τ (YiS(Xi)) − E[Y S (X)] 
+
+> op
+
+≥
+
+r 2M pd n log 2( p + d)
+
+δ
+
+ ≤ δ, 
+
+which also means that with probability at least 1 − δ,
+
+1
+
+n
+
+> n
+
+X
+
+> i=1
+
+τ (YiS(Xi)) − E[Y S (X)] 
+
+> op
+
+= O
+
+r pd n · log p + dδ
+
+!
+
+.
+
+Then, similar to the proof of Theorem 4.1, we can also prove Theorem 4.2 by directly using the modified Davis-Kahan theorem. 
+
+PROOF OF THEOREM 4.2 . The proof is the same as that of Theorem 4.1. We can obtain that 
+
+∥˜b − b∥2 ≤ √2 sin Θ( ˜b − b)
+
+≤ 2√2 · ∥ 1
+
+> n
+
+Pni=1 τ (YiS(Xi)) − E[Y S (X)] ∥op 
+
+∥E[Y S (X)] ∥op 
+
+= O
+
+r dn · log p + dδ
+
+!
+
+.
+
+S2.4. Proof of Theorem 4.3. Based on Lemma S2.2 and a modified Davis–Kahan–Wedin sine theorem proposed in O’Rourke et al. (2018), we can prove Theorem 4.3 as follows. 
+
+PROOF OF THEOREM 4.3 . To simplify the notation, we denote A = E[Y S (X)] , Ai =
+
+YiS(Xi), and ˆA = 1
+
+> n
+
+Pni=1 Ai. According to Lemma S2.2, we have that with probability at least 1 − δ,
+
+∥ ˆA − A∥F = O
+
+r pd n · log pd δ
+
+!
+
+.
+
+Then, by Theorem 19 in O’Rourke et al. (2018), we can obtain that 
+
+∥ ˆΘ ˆO − Θ∥F ≤ 23/2∥ ˆA − A∥F
+
+σk
+
+= O
+
+r pd n · log pd δ
+
+!
+
+.LEARNING CNN FILTERS VIA GENERALIZED STEIN’S METHOD 29 
+
+S2.5. Proof of Theorem 4.4. Based on Lemma S2.3 and a modified Davis–Kahan–Wedin sine theorem proposed in O’Rourke et al. (2018), we can prove Theorem 4.4 as follows. 
+
+PROOF OF THEOREM 4.4 . To simplify the notation, we denote A = E[Y S (X)] and 
+
+˜A = 1
+
+> n
+
+Pni=1 τ (YiS(Xi)) . According to Lemma S2.3, we can get that with probability at least 1 − δ,
+
+∥ ˜A − A∥F = O
+
+r pd n · log p + dδ
+
+!
+
+.
+
+Then, by Theorem 19 in O’Rourke et al. (2018), we can obtain that 
+
+∥ ˜Θ ˜O − Θ∥F ≤ 23/2∥ ˜A − A∥F
+
+σk
+
+= O
+
+r pd n · log p + dδ
+
+!
+
+.
+
+S2.6. Proof of Theorem 4.5. 
+
+LEMMA S2.4. (Vershynin (2020), Covariance estimation). Let X be an n × p matrix whose rows xi are independent, mean zero, sub-gaussian random vectors in Rp with the same covariance matrix Σ. Denote ˆΣ = (1 /n )X⊤X as the sample covariance matrix. Then for any t ≥ 0 we have 
+
+ˆΣ − Σ op ≤ max( δ, δ 2), where δ = CLt 
+
+r pn
+
+(S1) 
+
+with probability at least 1 − 2 exp( −t2p). Here L = max( K, K 2) and K = max i ∥xi∥ψ2 .
+
+LEMMA S2.5. (Vershynin (2020)) Let X be an n × p matrix whose rows xi are independent isotropic random vectors in Rp. Assume that for some L ≥ 0, it holds almost surely for every i that ∥xi∥2 ≤ L√p. Then for every t ≥ 0, one has 
+
+√n − tL √p ≤ σmin (X) ≤ σmax (X) ≤ √n + tL √p
+
+with probability at least 1 − 2p · exp( −ct 2).
+
+LEMMA S2.6. (Xu (2020), Perturbation of inverse) For two matrices A, B ∈ Rp×p, we have 
+
+B−1 − A−1 
+
+> 2
+
+≤ ∥ A∥2∥B∥2 ∥B − A∥2(S2) LEMMA S2.7. Let x ∈ Rp be a sub-gaussian random vector with parameter σ, then with probability at least 1 − t for t ∈ (0 , 1) 
+
+∥x∥2 ≤ 4σ√p + 2 σplog(1 /t )(S3) 
+
+PROOF OF THEOREM 4.5 . According to Taylor’s theorem, f (XiΘ) can be expanded at the point a = 0p as follows with a function h : Rp×R → R
+
+f (XiΘ) = ⟨∇ f (0p×R), XiΘ⟩ + h(XiΘ)∥XiΘ∥
+
+= x⊤
+
+> iR
+
+X
+
+> r=1
+
+ br ⊗ ∇ f (0p×R)[: ,r ]
+
+ + h(XiΘ)∥XiΘ∥,30 
+
+with lim XiΘ→0 h(XiΘ) = 0 , where ∇f (0p×R)[: ,r ] is r-th column of ∇f (0p×R). Let Y =(Yi, . . . , Y n)⊤, X = ( x1, . . . , xn)⊤ and R = ( h(X1Θ)∥X1Θ∥, . . . , h (XnΘ)∥XnΘ∥),then we can write the model in a matrix form below 
+
+Y = X
+
+> R
+
+X
+
+> r=1
+
+ br ⊗ ∇ f (0p×R)[: ,r ]
+
+ + R + ε.(S4) Let S = ( S(x1), . . . , S (xn)) ⊤ be the full score matrix, it holds for gaussian distribution with zero mean and covariance Σ that S = XΣ−1. Therefore, we have the truth-based estimator by algebra vec 
+
+"
+
+1
+
+n
+
+> n
+
+X
+
+> i=1
+
+YiS(Xi)
+
+#
+
+= Σ−1 ˆΣ
+
+> R
+
+X
+
+> r=1
+
+ br ⊗ ∇ f (0p×R)[: ,r ]
+
+ + 1
+
+n Σ−1X⊤(R + ε).(S5) If we replace Σ by ˆΣ, we can directly get the plug-in estimator below vec 
+
+"
+
+1
+
+n
+
+> n
+
+X
+
+> i=1
+
+Yi ˆS(Xi)
+
+#
+
+=
+
+> R
+
+X
+
+> r=1
+
+ br ⊗ ∇ f (0p×R)[: ,r ]
+
+ + 1
+
+n ˆΣ−1X⊤(R + ε).(S6) According to (S5) and (S6), we first have 
+
+ˆA − ˇA F
+
+= vec 
+
+"
+
+1
+
+n
+
+> n
+
+X
+
+> i=1
+
+YiS(Xi)
+
+#
+
+− vec 
+
+"
+
+1
+
+n
+
+> n
+
+X
+
+> i=1
+
+Yi ˆS(Xi)
+
+#
+
+> 2
+
+=
+
+
+
+Σ−1 ˆΣ − I
+
+ RX
+
+> r=1
+
+ br ⊗ ∇ f (0p×R)[: ,r ]
+
+ − 1
+
+n
+
+
+
+Σ−1 − ˆΣ−1
+
+X⊤(R + ε)
+
+> 2
+
+≤ Σ−1 ˆΣ − I 2
+
+> R
+
+X
+
+> r=1
+
+ br ⊗ ∇ f (0p×R)[: ,r ]
+
+
+
+> 2
+
+| {z }
+
+> A1
+
++ 1
+
+n Σ−1 − ˆΣ−1 
+
+> 2
+
+X⊤(R + ε) 2
+
+| {z }
+
+> A2
+
+.
+
+To bound the target error, we shall bound the A1 and A2 terms respectively. For the first term A1, it holds that 
+
+Σ−1 ˆΣ − I 2 = Σ−1  ˆΣ − Σ
+
+ 
+
+> 2
+
+≤ 1
+
+λm
+
+ˆΣ − Σ 2 .
+
+According to Lemma S2.4, 
+
+ˆΣ − Σ 2 ≤ e, where e = max (δ, δ 2) and δ = CLt 
+
+r pd n
+
+with probability at least 1 − 2 exp( −t2pd ). Here L = max (K, K 2) and K = M √λM . Let 
+
+t =
+
+q log(2 /α ) 
+
+> pd
+
+, we have 
+
+P ˆΣ − Σ 2 ≥ CL 
+
+r log(2 /α )
+
+n
+
+!
+
+≤ α, 
+
+which means that 
+
+ˆΣ − Σ 2 = Op
+
+p 1/n 
+
+
+
+.(S7) LEARNING CNN FILTERS VIA GENERALIZED STEIN’S METHOD 31 
+
+Besides, note that 
+
+> R
+
+X
+
+> r=1
+
+ br ⊗ ∇ f (0p×R)[: ,r ]
+
+
+
+> 2
+
+= vec 
+
+
+
+∇f (0p×R)Θ⊤
+
+> 2
+
+= ∇f (0p×R)Θ⊤
+
+> F
+
+= O(√p).(S8) Therefore, we get the order of A1 is Op
+
+pp/n 
+
+
+
+. For the second term A2, according to Lemma S2.6, we first have 
+
+Σ−1 − ˆΣ−1 
+
+> 2
+
+≤ Σ−1 
+
+> 2
+
+ˆΣ−1
+
+> 2
+
+ˆΣ − Σ 2 ,
+
+where for ˆΣ−1 
+
+> 2
+
+we have ˆΣ−1 
+
+> 2
+
+= λmax 
+
+ ˆΣ−1
+
+= 1 /λ min 
+
+ ˆΣ
+
+
+
+= 1 /σ 2min (X/√n).According to Lemma S2.5, one has 
+
+σmin (X/√n) ≥ 1 − tL ppd/n (S9) with probability 1 − 2pd exp( −ct 2). Let t =
+
+r 
+
+> 1
+> c
+
+log 
+
+ 2pd α
+
+
+
+and we have 
+
+P σmin (X/√n) ≥ 1 − L
+
+s
+
+pd cn log 
+
+ 2pd α
+
+!
+
+≤ α. (S10) Therefore we can get the order of σmin (X/√n) is Op (1) , and then 
+
+ˆΣ−1 
+
+> 2
+
+= 1 /σ 2min (X/√n) = Op (1) .(S11) Consequently, 
+
+Σ−1 − ˆΣ−1 
+
+> 2
+
+= Op
+
+p 1/n 
+
+
+
+.(S12) Besides, for the noise-related term (1 /n ) X⊤(R + ε) 2 ≤ (1 /n )∥X∥2 (∥R∥2 + ∥ε∥2).Again by Lemma S2.5, we get σmax (X/√n) = Op (1) , implying that ∥X∥2 = Op(√n).For the remainder vector R, we have 
+
+h(XiΘ)∥XiΘ∥ ≤ H∥Xi∥2.(S13) Besides, according to Lemma S2.7 one has 
+
+∥Xi∥2 ≤ ∥ Xi∥F = ∥xi∥2 = Op(ppd ).(S14) Therefore 
+
+∥R∥2 =
+
+vuut nX
+
+> i=1
+
+(h(XiΘ)∥XiΘ∥)2 ≤ H
+
+vuut nX
+
+> i=1
+
+∥Xi∥22 = Op(pnpd ).(S15) For sub-gaussian ε, according Lemma S2.7 the order of ε is Op(√n). Therefore the order of noise-related term is 
+
+1
+
+n X⊤(R + ε) 2 = Op(ppd ).(S16) Therefore the order of A2 is Op
+
+ppd/n 
+
+
+
+.32 
+
+In summary, according to (S7), (S8), (S12) and (S16), we can get 
+
+ˆA − ˇA F = Op
+
+r pd n
+
+!
+
+.
+
+Then we can get by Theorem 19 in O’Rourke et al. (2018) again 
+
+∥ ˇΘ ˇO − ˆΘ∥F ≤ √2 sin Θ( ˇΘ, ˆΘ) ≤ 23/2∥ ˇA − ˆA∥F
+
+σR
+
+= Op
+
+r Rd n
+
+!
+
+.
+
+This completes the proof.

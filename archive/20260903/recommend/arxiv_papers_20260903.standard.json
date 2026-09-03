@@ -1,0 +1,128 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-09-03T23:01:25.297028+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 3,
+    "deep_cap": 6,
+    "deep_selected": 3,
+    "quick_candidates": 0,
+    "quick_skim_target": 11,
+    "quick_selected": 0
+  },
+  "deep_dive": [
+    {
+      "id": "2609.01787v1",
+      "source": "arxiv",
+      "title": "CoViT: Instance-Correspondence Contrastive Learning for Vision Transformer",
+      "abstract": "Vision Transformers (ViT) excel in semantic understanding but fail to discriminate between object instances (e.g., identical embeddings for two dogs), limiting their use in instance-level tasks such as object detection and instance segmentation. We propose Contrastive Vision Transformer (CoViT), a self-supervised learning framework that injects instance-awareness into ViT through geometry-guided contrastive learning. CoViT uniquely coordinates ViT's attention maps and embeddings by constructing triplets: (1) Attention-guided masking: Refine multi-head attention via adaptive thresholding and morphological operations to generate instance masks, identifying foreground anchors; (2) Hardest contrastive mining: For each anchor, computing pairwise embedding similarities to select the intra-instance hardest positive (least similar patch within its mask) and inter-instance hardest negative (most similar patch from other instances), with intra-instance regions masked during negative search. These triplets drive a contrastive loss that simultaneously compresses intra-instance variance and expands inter-instance margins, forcing ViT to discern subtle geometric and appearance differences between instances. CoViT consistently achieves stable performance gains of over 2 AP points across multiple instance-level perception tasks by using ViT as backbone architecture. Notably, CoViT requires no extra decoders or labels, demonstrating that a pure ViT can learn instance-aware representations via inherent attention priors and targeted contrastive constraints. Code and models will be released.",
+      "authors": [
+        "Yisen Wang",
+        "Zhirong Wu",
+        "Limin Wang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-01T18:59:02+00:00",
+      "link": "https://arxiv.org/pdf/2609.01787v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Self-supervised instance-aware representation learning for vision transformer, i.e., CV feature extraction.",
+      "llm_evidence_cn": "为视觉Transformer注入实例感知的自监督表征学习，属于计算机视觉特征提取。",
+      "llm_evidence": "为视觉Transformer注入实例感知的自监督表征学习，属于计算机视觉特征提取。",
+      "canonical_evidence": "为视觉Transformer注入实例感知的自监督表征学习，属于计算机视觉特征提取。",
+      "llm_tldr_en": "CoViT uses attention-guided masks and hardest contrastive mining to make ViT embeddings instance-aware, overcoming poor instance discrimination for object detection and segmentation.",
+      "llm_tldr_cn": "视觉Transformer擅长语义理解却无法区分同一类的不同实例，严重限制其在目标检测与实例分割等任务上的应用。针对该问题提出对比视觉Transformer（CoViT），通过注意力引导掩码生成实例掩码并锚定前景，再结合最困难对比挖掘构造三元组进行几何引导对比学习。该方法使ViT嵌入具备实例感知能力，在保持语义信息的同时显著提升实例判别性，为实例级视觉任务提供了更优的自监督表征基础。",
+      "llm_tldr": "视觉Transformer擅长语义理解却无法区分同一类的不同实例，严重限制其在目标检测与实例分割等任务上的应用。针对该问题提出对比视觉Transformer（CoViT），通过注意力引导掩码生成实例掩码并锚定前景，再结合最困难对比挖掘构造三元组进行几何引导对比学习。该方法使ViT嵌入具备实例感知能力，在保持语义信息的同时显著提升实例判别性，为实例级视觉任务提供了更优的自监督表征基础。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "feature extraction in computer vision",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2609.02471v1",
+      "source": "arxiv",
+      "title": "Learning to Track from Privileged Target Appearances",
+      "abstract": "Target templates define what a visual tracker searches for, yet the templates available at inference trade off localization certainty with appearance freshness: the initial ground-truth template is exact but becomes stale, whereas recent templates better reflect the current appearance but are cropped from uncertain predictions. We quantify this bottleneck with a non-deployable oracle that supplies an exact current-frame target crop, improving AUC on LaSOT by 15.2 percentage points. This gap reveals a training-only opportunity: frame-level ground truths provide exact current- and future-frame target crops, although such crops are unavailable at deployment. We introduce Privileged Appearance Transfer for Tracking (PATT), a teacher-student training framework that transfers these privileged appearances to a deployable tracker through multi-level representation prediction. The privileged teacher observes exact target crops from past, current, and future frames, whereas the student receives only past-frame templates and learns to predict the teacher's search representations. To avoid transferring unreliable teacher signals, PATT weights this transfer by the teacher's relative localization advantage over the student and its absolute localization accuracy. After training, the teacher, latent predictor, reliability weights, and privileged crops are removed, leaving standard student-only inference. Across seven benchmarks at two model scales, PATT achieves consistent gains under both long- and short-term tracking protocols.",
+      "authors": [
+        "Xin Chen",
+        "Jiao Xu",
+        "Dong Wang",
+        "Huchuan Lu",
+        "Kede Ma"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-02T11:43:43+00:00",
+      "link": "https://arxiv.org/pdf/2609.02471v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Visual tracking method with teacher-student learning, highly relevant to visual tracking topic.",
+      "llm_evidence_cn": "视觉跟踪方法与知识蒸馏训练框架，与视觉跟踪研究主题高度相关。",
+      "llm_evidence": "视觉跟踪方法与知识蒸馏训练框架，与视觉跟踪研究主题高度相关。",
+      "canonical_evidence": "视觉跟踪方法与知识蒸馏训练框架，与视觉跟踪研究主题高度相关。",
+      "llm_tldr_en": "Visual tracker template bottleneck quantified by an oracle (+15.2 AUC on LaSOT); PATT transfers privileged future/current target appearances during training to improve deployment tracking.",
+      "llm_tldr_cn": "视觉跟踪中初始模板精确但易过时，新近模板反映外观却定位不确定；神谕实验显示该瓶颈可使LaSOT AUC提升15.2个百分点。为此提出PATT师生训练框架，仅利用训练期的帧级真值提供当前与未来目标外观作为特权信息，并通过知识迁移在部署时逼近上限。结果表明利用特权外观能有效改善跟踪精度，突破了模板时效性与准确性之间的折衷。",
+      "llm_tldr": "视觉跟踪中初始模板精确但易过时，新近模板反映外观却定位不确定；神谕实验显示该瓶颈可使LaSOT AUC提升15.2个百分点。为此提出PATT师生训练框架，仅利用训练期的帧级真值提供当前与未来目标外观作为特权信息，并通过知识迁移在部署时逼近上限。结果表明利用特权外观能有效改善跟踪精度，突破了模板时效性与准确性之间的折衷。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "visual tracking surveys",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2609.02875v1",
+      "source": "arxiv",
+      "title": "Learning CNN Filters via Generalized Stein's Method",
+      "abstract": "Convolutional Neural Networks (CNNs) have undoubtedly revolutionized image data analysis and the field of computer vision. As the cornerstone of CNNs, the convolution operation enables the networks to extract abstract features and uncover hidden relationships in the image data. This paper considers the problem of estimating convolution filters from a statistical perspective using a classical tool --- Stein's formula. We first formulate CNNs into a general index model with matrix-valued input, where convolution filters can be viewed as index vectors. Furthermore, we propose a novel singular value decomposition (SVD) based approach to accurately learn the convolution filters based on a generalized version of the first-order Stein's formula. Theoretical analysis suggests that our estimation achieves an optimal convergence rate, comparable to that of generalized linear models where the link function is known. Extensive simulation studies and real data analyses demonstrate that our approach outperforms popular deep learning algorithms, such as Adam. Notably, our method extends beyond filter estimation and can be applied to nonlinear dimension reduction, providing a viable pathway for representation learning.",
+      "authors": [
+        "Guang Yang",
+        "Wei Shi",
+        "Yuan Cao",
+        "Long Feng"
+      ],
+      "primary_category": "stat.AP",
+      "categories": [
+        "stat.AP"
+      ],
+      "published": "2026-09-02T17:56:06+00:00",
+      "link": "https://arxiv.org/pdf/2609.02875v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "statistical method of learning CNN convolution filters for feature extraction",
+      "llm_evidence_cn": "从统计角度学习CNN卷积滤波器以支撑特征提取",
+      "llm_evidence": "从统计角度学习CNN卷积滤波器以支撑特征提取",
+      "canonical_evidence": "从统计角度学习CNN卷积滤波器以支撑特征提取",
+      "llm_tldr_en": "Presents an SVD-based approach to estimate CNN convolution filters via generalized Stein's formula, formulating CNNs as index models with matrix-valued inputs, yielding theoretical convergence guarantees for accurate feature extraction.",
+      "llm_tldr_cn": "卷积核是CNN提取图像抽象特征的核心，但从统计上估计滤波器仍缺少严格方法。本文将CNN视为矩阵输入的广义指标模型，将卷积核看作指标向量，并基于一阶广义Stein公式提出SVD方法估计卷积核。理论分析显示该方法能够在较宽条件下准确学习滤波器。这项工作把经典统计工具引入卷积滤波器估计，为理解和构造CNN特征提供了新视角。",
+      "llm_tldr": "卷积核是CNN提取图像抽象特征的核心，但从统计上估计滤波器仍缺少严格方法。本文将CNN视为矩阵输入的广义指标模型，将卷积核看作指标向量，并基于一阶广义Stein公式提出SVD方法估计卷积核。理论分析显示该方法能够在较宽条件下准确学习滤波器。这项工作把经典统计工具引入卷积滤波器估计，为理解和构造CNN特征提供了新视角。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "feature extraction in computer vision",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": []
+}
