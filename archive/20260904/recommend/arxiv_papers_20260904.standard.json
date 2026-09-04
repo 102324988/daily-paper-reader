@@ -1,0 +1,414 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-09-04T22:44:16.078093+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 6,
+    "deep_cap": 6,
+    "deep_selected": 6,
+    "quick_candidates": 4,
+    "quick_skim_target": 11,
+    "quick_selected": 4
+  },
+  "deep_dive": [
+    {
+      "id": "2609.03378v1",
+      "source": "arxiv",
+      "title": "When Depth Hurts: Reliability-Aware Geometry Distillation for Depth-Free RGB-D Salient Object Detection",
+      "abstract": "Depth can resolve appearance ambiguity in RGB-D salient object detection (SOD), yet sensor depth is not uniformly reliable. Missing regions, blurred boundaries, and structural artifacts can propagate through multimodal fusion and make an RGB-D detector less accurate than its RGB-only counterpart. Existing quality-aware approaches regulate observed depth but remain dependent on the same potentially defective modality. We propose \\method, a reliability-aware geometry distillation framework developed for RGB-D SOD benchmarks without using dataset-provided depth during training or inference. A frozen Depth Anything V2 model serves only as a training-time teacher, transferring dense relative geometry, hierarchical spatial attention, and boundary structure to a compact edge-aware geometry branch. Pooled bidirectional interaction aligns geometry with appearance, and a pixel-wise reliability estimator selectively injects geometry that is compatible with the current RGB representation. The teacher is removed after training, leaving an RGB-only inference network. Trained on 2,985 RGB-mask pairs, \\method{} achieves the best or tied-best result in 26 of 36 metric-dataset comparisons against ten recent RGB-D SOD methods, including a 13.4\\% relative MAE reduction on ReDWeb-S. When retrained on DUTS-TR, it also improves the strongest prior $F$-measure by 4.2\\% on PASCAL-S, showing that the distilled geometry transfers beyond a particular sensor or dataset domain. Code will be released upon publication.",
+      "authors": [
+        "Xuehao Wang",
+        "Jiaxin Hua",
+        "Runmei Li",
+        "Zhenyu Wu",
+        "Chenglizhao Chen",
+        "Ke Gu",
+        "Aimin Hao"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-03T05:29:10+00:00",
+      "link": "https://arxiv.org/pdf/2609.03378v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Reliability-aware geometry distillation for depth-free RGB-D salient object detection, a pixel-wise segmentation task",
+      "llm_evidence_cn": "提出可靠性感知几何蒸馏的无深度RGB-D显著性目标检测方法，任务本质为像素级分割",
+      "llm_evidence": "提出可靠性感知几何蒸馏的无深度RGB-D显著性目标检测方法，任务本质为像素级分割",
+      "canonical_evidence": "提出可靠性感知几何蒸馏的无深度RGB-D显著性目标检测方法，任务本质为像素级分割",
+      "llm_tldr_en": "RGB-D salient object detection suffers from unreliable sensor depth; this paper distills geometry from a frozen monocular depth teacher, enabling depth-free training and inference while achieving robust pixel-level saliency segmentation.",
+      "llm_tldr_cn": "针对RGB-D显著性目标检测中传感器深度不可靠、反而降低精度的问题，提出一种可靠性感知的几何蒸馏框架：训练时使用冻结的Depth Anything V2作为教师模型转移稠密相对几何，推理时不依赖数据集提供的深度图。在公共RGB-D SOD基准上的实验表明该方法能避免深度噪声干扰，达到与依赖观测深度的现有方法相当或更优的精度，为RGB-D视觉任务提供了无需深度传感器的解决方案。",
+      "llm_tldr": "针对RGB-D显著性目标检测中传感器深度不可靠、反而降低精度的问题，提出一种可靠性感知的几何蒸馏框架：训练时使用冻结的Depth Anything V2作为教师模型转移稠密相对几何，推理时不依赖数据集提供的深度图。在公共RGB-D SOD基准上的实验表明该方法能避免深度噪声干扰，达到与依赖观测深度的现有方法相当或更优的精度，为RGB-D视觉任务提供了无需深度传感器的解决方案。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "image segmentation techniques",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2609.04088v1",
+      "source": "arxiv",
+      "title": "Efficient Semantic Understanding from Digital Foveation",
+      "abstract": "Dense semantic segmentation allocates computational resources uniformly across the entire image, regardless of scene complexity or task relevance. Inspired by biological vision, we investigate whether semantic understanding can be achieved more efficiently through digital foveated perception. We introduce a lightweight active-vision pipeline that combines saliency-driven fixation selection, high-resolution foveal observations, low-resolution contextual information, semantic accumulation, and adaptive computation. Beyond conventional dense prediction metrics, we use object-level evaluation to measure semantic understanding under sparse observations. On ADE20K-Object, a single foveated observation achieves 95.9% of the baseline Top-1 accuracy and 96.9% of the baseline Top-3 accuracy while requiring only 4.7% of the computational cost. At the scene level, semantic accumulation recovers 90.6% of the baseline object recall while using 58.6% of the computation. These results suggest that substantial semantic understanding can emerge from sparse observations when computation is allocated selectively, highlighting active vision as an efficient alternative to uniform dense processing and motivating evaluation protocols beyond conventional pixel-wise segmentation metrics.",
+      "authors": [
+        "Caterina Caccavella",
+        "Vittorio Fra",
+        "Andreas Ziegler",
+        "Giulia D'Angelo",
+        "Yulia Sandamirskaya"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-03T16:56:12+00:00",
+      "link": "https://arxiv.org/pdf/2609.04088v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Dense semantic segmentation with digital foveated perception for efficient semantic understanding.",
+      "llm_evidence_cn": "用数字凹视感知实现高效密集语义分割和语义理解。",
+      "llm_evidence": "用数字凹视感知实现高效密集语义分割和语义理解。",
+      "canonical_evidence": "用数字凹视感知实现高效密集语义分割和语义理解。",
+      "llm_tldr_en": "Dense semantic segmentation allocates compute uniformly regardless of scene complexity. Inspired by biological vision, this lightweight active-vision pipeline combines saliency-driven fixation, high-resolution foveal observation, low-resolution context, semantic accumulation, and adaptive computation. On ADE20K-Object, one foveated observation keeps about 95.9% baseline top-1 accuracy.",
+      "llm_tldr_cn": "传统密集语义分割在整幅图上均匀分配计算，浪费在简单区域。本文受生物视觉启发，提出轻量主动视觉流水线：以显著性引导选择注视点，用高分辨率中央凹观测、低分辨率上下文、语义累积和自适应计算实现语义理解。在 ADE20K-Object 上，仅一次凹视观测即可达到基线约95.9%的 Top-1精度，表明稀疏观测可带来高效语义理解。",
+      "llm_tldr": "传统密集语义分割在整幅图上均匀分配计算，浪费在简单区域。本文受生物视觉启发，提出轻量主动视觉流水线：以显著性引导选择注视点，用高分辨率中央凹观测、低分辨率上下文、语义累积和自适应计算实现语义理解。在 ADE20K-Object 上，仅一次凹视观测即可达到基线约95.9%的 Top-1精度，表明稀疏观测可带来高效语义理解。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "image segmentation techniques",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2609.01806v1",
+      "source": "arxiv",
+      "title": "Consistency as Regularization for Unsupervised Shadow Removal",
+      "abstract": "Shadow removal is an important preprocessing step for many vision tasks, yet existing supervised methods require paired shadow and shadow-free images, while unsupervised approaches often still rely on shadow masks or shadow-free references. We propose ShadowCLR, an unsupervised framework that learns shadow removal directly from shadow images. Our key observation is that shadows vary across observations while the underlying scene content remains largely consistent. We therefore use consistency across shadow observations as regularization, encouraging the model to recover scene-consistent appearance while suppressing shadow-specific variations. Global and local consistency further enable us to explore visually related images, learn from imperfectly aligned observations, and focus the representation on shared scene information. Experiments on multiple benchmarks show that ShadowCLR achieves competitive and often superior performance over state-of-the-art unsupervised methods, demonstrating that consistency can provide regularization for shadow removal without shadow masks or shadow-free images.",
+      "authors": [
+        "Anh-Kiet Duong",
+        "Petra Gomez-Krämer",
+        "Jean-Michel Carozza"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-01T19:26:25+00:00",
+      "link": "https://arxiv.org/pdf/2609.01806v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Unsupervised shadow removal via consistency regularization in visual preprocessing",
+      "llm_evidence_cn": "基于一致性正则的无监督阴影去除，视觉任务预处理研究",
+      "llm_evidence": "基于一致性正则的无监督阴影去除，视觉任务预处理研究",
+      "canonical_evidence": "基于一致性正则的无监督阴影去除，视觉任务预处理研究",
+      "llm_tldr_en": "ShadowCLR learns unsupervised shadow removal directly from shadow images, using global and local consistency across shadow observations as regularization to recover stable scene appearance without masks or paired references.",
+      "llm_tldr_cn": "阴影去除常用于视觉任务前处理，但监督方法需要成对有/无阴影图像，无监督法仍常依赖阴影掩码或参考图。该工作提出ShadowCLR，直接从含阴影图像学习去除阴影，核心是利用不同阴影观测下场景内容一致这一特性，将全局与局部一致性作为正则项，压制阴影变化并恢复稳定外观。框架还能利用近似对齐观测以提升无监督设置的实用性。结果表明仅靠一致性正则即可驱动无监督阴影去除。",
+      "llm_tldr": "阴影去除常用于视觉任务前处理，但监督方法需要成对有/无阴影图像，无监督法仍常依赖阴影掩码或参考图。该工作提出ShadowCLR，直接从含阴影图像学习去除阴影，核心是利用不同阴影观测下场景内容一致这一特性，将全局与局部一致性作为正则项，压制阴影变化并恢复稳定外观。框架还能利用近似对齐观测以提升无监督设置的实用性。结果表明仅靠一致性正则即可驱动无监督阴影去除。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "computer vision research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2609.02556v1",
+      "source": "arxiv",
+      "title": "RGB-to-IR image translation for infrared vehicle detection in unseen UAV domains",
+      "abstract": "Synthetic training data is crucial for developing vision AI when real-world data is scarce, as in thermal infrared (IR) aerial vehicle detection. While abundant UAV RGB imagery motivates RGB-to-IR translation for data augmentation, unobservable thermal traits (e.g., engine heat) make learning transferable mappings challenging. This work investigates whether modern generative translators can overcome this cross-modal gap to improve infrared vehicle detection on unseen UAV target domains. Translators are trained on paired RGB-IR source datasets and applied to RGB training images from held-out target datasets to generate synthetic IR data. Evaluated methods include supervised GANs, ControlNet-based diffusion models, and foundation-model editing via LoRA. The resulting synthetic IR imagery is used to train RF-DETR vehicle detectors, which are evaluated on unseen IR target test splits across five aerial datasets, with Kust4K and VTUAV serving as target domains. Synthetic IR consistently outperforms RGB and grayscale baselines. Stable Diffusion 3.5 with ControlNet yields the best results, improving mAP from 50.8 to 60.1 on Kust4K and from 25.6 to 38.4 on VTUAV compared to models trained only on source-domain IR data. Increasing output diversity via multiple seeds (+1.1 mAP) and prompt variations (+3.3 mAP) provides additional gains on VTUAV. Although a performance gap to real target IR data remains, generative RGB-to-IR translation effectively mitigates IR data scarcity and improves cross-domain aerial vehicle detection.",
+      "authors": [
+        "Thijs A. Eker",
+        "Ella P. Fokkinga",
+        "Jan Erik van Woerden",
+        "Elfi I. S. Hofmeijer",
+        "Sebastiaan P. Snel",
+        "Klamer Schutte",
+        "Friso G. Heslinga"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-02T13:06:58+00:00",
+      "link": "https://arxiv.org/pdf/2609.02556v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "infrared vehicle detection on UAV images via synthetic RGB-to-IR translation",
+      "llm_evidence_cn": "面向无人机红外车辆检测的图像翻译与训练数据增强",
+      "llm_evidence": "面向无人机红外车辆检测的图像翻译与训练数据增强",
+      "canonical_evidence": "面向无人机红外车辆检测的图像翻译与训练数据增强",
+      "llm_tldr_en": "Infrared UAV target data is scarce; this paper trains modern image translators including GANs, ControlNet diffusion, and foundation-model editing on paired RGB-IR source data, then translates RGB training images from unseen target domains to generate synthetic IR data, assessing whether such data improves infrared vehicle detection.",
+      "llm_tldr_cn": "真实红外无人机数据稀缺，合成训练数据对开发视觉检测器非常关键，但发动机热量等热特征在RGB中不可观测，导致跨模态映射难学。该文在成对RGB-IR源数据集上训练监督GAN、ControlNet扩散以及基础模型编辑等现代生成方法，并对被保留的目标域RGB训练图像合成红外数据。随后在未见过的无人机目标域上评估这些合成数据对红外车辆检测的促进作用。这项工作系统比较了不同翻译器弥补跨模态差距、支撑目标检测的能力。",
+      "llm_tldr": "真实红外无人机数据稀缺，合成训练数据对开发视觉检测器非常关键，但发动机热量等热特征在RGB中不可观测，导致跨模态映射难学。该文在成对RGB-IR源数据集上训练监督GAN、ControlNet扩散以及基础模型编辑等现代生成方法，并对被保留的目标域RGB训练图像合成红外数据。随后在未见过的无人机目标域上评估这些合成数据对红外车辆检测的促进作用。这项工作系统比较了不同翻译器弥补跨模态差距、支撑目标检测的能力。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "object detection methods",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2609.03216v1",
+      "source": "arxiv",
+      "title": "ProgResViT: Progressive Resolution and Width for Adaptive Vision Transformers",
+      "abstract": "Vision Transformers (ViTs) typically process every image using a fixed input resolution and model width, even though many images can be classified with substantially less computation. We introduce ProgResViT, an input-adaptive ViT that performs inference progressively across multiple rounds. The first round processes a low-resolution image with a narrow subnetwork. Inference terminates when the prediction is sufficiently confident; otherwise, the model reuses the representations produced in the current round and proceeds with a higher-resolution input and a wider subnetwork to refine its prediction. As all rounds share a single backbone, we propose Progress-Conditioned Soft Gating (PSG), which conditions token fusion and layer outputs on the current round, block, and input resolution. On image classification, applying ProgResViT to DeiT yields better accuracy-compute trade-offs than adaptive-width, adaptive-depth, and dynamic-token baselines. With knowledge distillation, a DeiT-based ProgResViT achieves 84.9% top-1 accuracy, slightly exceeding the reported DeiT-III-S accuracy under a comparable evaluation setting. We show that the same design also provides favorable accuracy-compute trade-offs for self-supervised DINO representations and downstream semantic segmentation. Code is available at https://github.com/ds-kiel/ProgResViT.",
+      "authors": [
+        "Ali Hojjat",
+        "Janek Haberer",
+        "Olaf Landsiedel"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-02T23:10:56+00:00",
+      "link": "https://arxiv.org/pdf/2609.03216v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Adaptive Vision Transformer recognition method with progressive resolution and width; visual recognition algorithm",
+      "llm_evidence_cn": "渐进分辨率与宽度的自适应视觉Transformer识别算法",
+      "llm_evidence": "渐进分辨率与宽度的自适应视觉Transformer识别算法",
+      "canonical_evidence": "渐进分辨率与宽度的自适应视觉Transformer识别算法",
+      "llm_tldr_en": "Vision Transformers typically use fixed resolution and width. ProgResViT performs progressive low-to-high resolution and widening rounds, reusing representations and using Progress-Conditioned Soft Gating, so inference cost adapts to image difficulty.",
+      "llm_tldr_cn": "现有Vision Transformer对所有图像使用固定输入分辨率和宽度，简单样本也消耗同样算力。本文提出ProgResViT：先从低分辨率与窄子网开始推理，若置信度不足则复用当前表示并转向更高分辨率、更宽子网继续精化；各轮共享一个骨干并用Progress-Conditioned Soft Gating调节令牌融合与层输出。该方法使计算量随图像难度自适应变化，为低成本视觉识别提供了一种灵活的Transformer推断方案。",
+      "llm_tldr": "现有Vision Transformer对所有图像使用固定输入分辨率和宽度，简单样本也消耗同样算力。本文提出ProgResViT：先从低分辨率与窄子网开始推理，若置信度不足则复用当前表示并转向更高分辨率、更宽子网继续精化；各轮共享一个骨干并用Progress-Conditioned Soft Gating调节令牌融合与层输出。该方法使计算量随图像难度自适应变化，为低成本视觉识别提供了一种灵活的Transformer推断方案。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "visual recognition algorithms",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2609.03995v1",
+      "source": "arxiv",
+      "title": "Catalogue Photography as a Cold Start: Toward Deployable Carbide Burr Recognition",
+      "abstract": "Verifying that manufactured batches of milling tools or carbide rotary burrs conform to production order sheets remains a largely manual and error-prone quality assurance task. Automating this process with computer vision faces a critical cold-start constraint since no labelled imagery is available, leaving manufacturer catalogue photography as the sole source of supervision. We investigate how far catalogue supervision can support an industrial recognition pipeline under domain shift, explicitly measuring the gap between catalogue separability and performance on held-out field photographs. Our findings reveal three key insights. First, off-the-shelf frozen feature extractors do not reliably separate the two task attributes, head shape and tooth profile, motivating targeted representation learning. Second, metric learning produces near-perfect unsupervised cluster discovery on catalogue images (adjusted Rand index 0.94--0.97), but less than half of this gain transfers to field photographs. Third, the largest transfer gains do not come from model scale or representation complexity, but from simple changes that reduce domain sensitivity: converting images to grayscale (+0.22) and constraining retrieval using the known order sheet via Hungarian assignment (+0.11). We therefore treat catalogue photography as a useful cold start rather than a deployment-ready training domain, and provide empirical baselines and an evaluation protocol for catalogue-to-field transfer in precision tool manufacturing.",
+      "authors": [
+        "Abilash Philip Madavath",
+        "Chandra Yuvesh Aubeeluck",
+        "Augustin Raju",
+        "Nicolas Pyschny",
+        "Felix Hackelöer",
+        "Florian Zwanzig"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI",
+        "cs.RO"
+      ],
+      "published": "2026-09-03T15:36:12+00:00",
+      "link": "https://arxiv.org/pdf/2609.03995v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "industrial visual recognition of burr attributes under catalogue cold-start",
+      "llm_evidence_cn": "面向旋转锉属性质检的视觉识别与冷启动监督研究",
+      "llm_evidence": "面向旋转锉属性质检的视觉识别与冷启动监督研究",
+      "canonical_evidence": "面向旋转锉属性质检的视觉识别与冷启动监督研究",
+      "llm_tldr_en": "Automating carbide burr quality checks is hard because no labelled field imagery exists; only catalogue photos supervise the recognition pipeline. This paper explicitly measures the catalogue-to-heldout field gap, showing that frozen off-the-shelf feature extractors cannot reliably separate burr head shape and type attributes.",
+      "llm_tldr_cn": "验证旋转锉批次是否符合生产订单目前仍是人工且易错的质检任务，而自动化视觉识别面临没有任何标注现场图像的冷启动约束，只能使用制造商目录图片作为唯一监督。该文系统考察目录图片监督能在多大程度上支持工业识别流程，明确量化目录可分性与现场留出照片性能之间的差距。研究发现现成冻结特征提取器无法可靠地区分旋转锉的头部形状和型别这两个任务属性。这项工作为实际部署旋转锉识别提供了关于领域迁移和冷启动的实证洞察。",
+      "llm_tldr": "验证旋转锉批次是否符合生产订单目前仍是人工且易错的质检任务，而自动化视觉识别面临没有任何标注现场图像的冷启动约束，只能使用制造商目录图片作为唯一监督。该文系统考察目录图片监督能在多大程度上支持工业识别流程，明确量化目录可分性与现场留出照片性能之间的差距。研究发现现成冻结特征提取器无法可靠地区分旋转锉的头部形状和型别这两个任务属性。这项工作为实际部署旋转锉识别提供了关于领域迁移和冷启动的实证洞察。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "visual recognition algorithms",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2609.03391v1",
+      "source": "arxiv",
+      "title": "Exploring the Potential of Contrastive Language-Image Pre-training for Multi-Source Remote Sensing Data",
+      "abstract": "Contrastive language-image learning (CLIP) has become a key paradigm for remote sensing vision-language understanding. However, existing remote sensing contrastive learning methods are mostly built on RGB-oriented CLIP architectures, making it difficult to exploit heterogeneous sensors such as SAR, multi-spectral imaging (MSI), and hyperspectral imaging (HSI). To address this limitation, we propose OmniRSCLIP, an end-to-end contrastive learning framework that supports multi-source sensor inputs for remote sensing vision-language modeling. The key idea is to extend CLIP beyond its fixed RGB input interface without breaking the pretrained visual knowledge. To this end, OmniRSCLIP introduces Spectral-Spatial Basis Decomposition (SSBD), which formulates arbitrary-channel adaptation as a basis recomposition problem: pretrained CLIP patch embeddings provide transferable spatial bases, while wavelength-conditioned coefficients span sensor-specific embedding kernels within a constrained visual prior space. This design avoids forcing heterogeneous sensors into a fixed-channel input space, while aligning them in a unified image-text semantic space. We further introduce a spectral-context-aware mask-based contrastive learning scheme to suppress modality-specific redundant features and enhance fine-grained image-text alignment. Finally, to support multi-modal training, we construct OmniRS5M, the first large-scale remote sensing image-text corpus covering RGB, SAR, MSI, and HSI. Experiments on retrieval, zero-shot classification, and semantic localization show that OmniRSCLIP preserves strong RGB-domain performance while effectively extending CLIP to heterogeneous remote sensing modalities.",
+      "authors": [
+        "Xiangyang Miao",
+        "Kelu Yao",
+        "Yekai Huang",
+        "Xiaogang Xu",
+        "Junxiao Xue",
+        "Minjun Shen",
+        "Chenghui Lv",
+        "Shanji Liu",
+        "Yaying Chen",
+        "Chao Li"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-09-03T05:45:31+00:00",
+      "link": "https://arxiv.org/pdf/2609.03391v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Contrastive representation learning for multi-source remote sensing data",
+      "llm_evidence_cn": "面向多源遥感数据的对比表示学习，扩展CLIP以提取跨模态视觉特征",
+      "llm_evidence": "面向多源遥感数据的对比表示学习，扩展CLIP以提取跨模态视觉特征",
+      "canonical_evidence": "面向多源遥感数据的对比表示学习，扩展CLIP以提取跨模态视觉特征",
+      "llm_tldr_en": "Proposes OmniRSCLIP, a contrastive learning framework extending CLIP beyond RGB to multi-source remote sensing inputs such as SAR, MSI and HSI via spectral-spatial basis decomposition while preserving pretrained visual knowledge.",
+      "llm_tldr_cn": "针对现有遥感对比学习方法多基于RGB版CLIP、难以利用SAR和多光谱/高光谱等异构传感器数据的问题，提出OmniRSCLIP端到端对比学习框架。它通过光谱-空间基分解扩展CLIP的输入接口，并在不破坏预训练视觉知识的前提下支持多源传感器的视觉-语言建模。该方法可提升遥感影像的基础特征提取能力，为多模态遥感理解提供统一表示。",
+      "llm_tldr": "针对现有遥感对比学习方法多基于RGB版CLIP、难以利用SAR和多光谱/高光谱等异构传感器数据的问题，提出OmniRSCLIP端到端对比学习框架。它通过光谱-空间基分解扩展CLIP的输入接口，并在不破坏预训练视觉知识的前提下支持多源传感器的视觉-语言建模。该方法可提升遥感影像的基础特征提取能力，为多模态遥感理解提供统一表示。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "feature extraction in computer vision",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2609.03655v1",
+      "source": "arxiv",
+      "title": "PL-SCEA: Reconfiguring Pretrained Attention for Few-Shot Industrial Anomaly Detection",
+      "abstract": "Vision Foundation Models (VFMs) provide transferable patch representations for few-shot industrial anomaly detection, but their attention computation is typically inherited from pretraining objectives centered on semantic aggregation. This creates a potential mismatch: token relations that support semantic recognition may not adequately expose the localized texture and structural deviations required for anomaly localization. We therefore investigate the hypothesis that the attention computation of a frozen VFM can be reconfigured as a task-relevant component of anomaly detection. We instantiate this idea with Power-Law Self-Correlation Enhanced Attention (PL-SCEA), which retains the semantic context of pretrained query-key attention while constructing token-adaptive self-correlations over contextualized value features. Positive-correlation filtering and power-law reweighting then emphasize relations that are salient relative to each token's relational background, without introducing additional trainable attention projections. The resulting features are modeled by a lightweight variational autoencoder that provides a fixed-size reconstruction-based representation of category-specific normality. The two stages serve complementary roles: attention reconfiguration shapes how local relational deviations are represented, while reconstruction-based modeling converts deviations from learned normality into anomaly scores. Across MVTec AD and VisA, the complete framework achieves competitive image-level detection and consistently strong pixel-level localization across the evaluated few-shot settings. Ablations further show that PL-SCEA improves localization with either the VAE or a memory bank under the tested setting. These results support the view that task-aligned attention reconfiguration can improve the anomaly-localization capability of frozen pretrained representations.",
+      "authors": [
+        "Xiaoyu Yang",
+        "Qixing Wu",
+        "Huixian Zhao",
+        "Changlong Jin"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-03T10:54:05+00:00",
+      "link": "https://arxiv.org/pdf/2609.03655v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Few-shot industrial anomaly detection using reconfigurable pretrained attention of a vision foundation model; computer vision research.",
+      "llm_evidence_cn": "少样本工业异常检测并重配置预训练视觉基础模型注意力，属于计算机视觉研究主题。",
+      "llm_evidence": "少样本工业异常检测并重配置预训练视觉基础模型注意力，属于计算机视觉研究主题。",
+      "canonical_evidence": "少样本工业异常检测并重配置预训练视觉基础模型注意力，属于计算机视觉研究主题。",
+      "llm_tldr_en": "Reconfigures attention of a frozen vision foundation model for few-shot industrial anomaly detection; PL-SCEA uses power-law self-correlation enhanced attention to preserve semantic context while exposing local texture and structure deviations.",
+      "llm_tldr_cn": "少样本工业异常检测中，冻结视觉基础模型的注意力继承自语义聚合预训练目标，难以暴露局部纹理与结构偏差。本文提出 PL-SCEA，利用幂律自相关增强注意力，在保留语义上下文的同时使注意力按异常定位任务发生重配置。其思路表明冻结基础模型的注意力可被任务相关地重构，为异常检测提供新途径。",
+      "llm_tldr": "少样本工业异常检测中，冻结视觉基础模型的注意力继承自语义聚合预训练目标，难以暴露局部纹理与结构偏差。本文提出 PL-SCEA，利用幂律自相关增强注意力，在保留语义上下文的同时使注意力按异常定位任务发生重配置。其思路表明冻结基础模型的注意力可被任务相关地重构，为异常检测提供新途径。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "computer vision research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2609.03931v1",
+      "source": "arxiv",
+      "title": "Sparse auto-regressive modeling for scene generation from multi-view images",
+      "abstract": "Generating complete 3D scenes from sparse, unconstrained views is a fundamental challenge in 3D vision which requires reasoning beyond observed content while remaining computationally tractable. Existing feed-forward reconstruction methods are inherently limited to content visible in the input images, while 3D generative modeling is hindered by the high computational cost of dense volumetric representations and the scarcity of large-scale 3D supervision. We introduce SPAR3S, a sparse voxel-aligned 3D latent generative model for conditional scene completion without requiring ground-truth 3D data for supervision. Our key insight is to formulate 3D scene generation in a structured, compact, voxel-aligned 3D latent space where only occupied voxels are represented. We learn this sparse latent space directly from multi-view images using photometric supervision via differentiable 3D Gaussian Splatting. Given a partial set of observed voxels encoded from sparse input views, scene completion reduces to predicting the missing latent tokens and their spatial support within the voxel grid. To this end, we train a masked autoregressive transformer that jointly models voxel occupancy and latent token values, enabling efficient and spatially consistent generation of unseen regions. We demonstrate the effectiveness of our method on synthetic indoor scenes, achieving higher novel-view quality than prior work. We further validate its generalization on RealEstate10k, highlighting its applicability to real-world data.",
+      "authors": [
+        "Thomas Lucas",
+        "Maxime Pietrantoni",
+        "Philippe Weinzaepfel",
+        "Wonjune Cho",
+        "Bardienus Pieter Duisterhof",
+        "Vincent Leroy",
+        "Jerome Revaud"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.LG"
+      ],
+      "published": "2026-09-03T14:41:34+00:00",
+      "link": "https://arxiv.org/pdf/2609.03931v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "3D scene generation from multi-view images using sparse auto-regressive modeling; computer vision research.",
+      "llm_evidence_cn": "基于多视角图像的稀疏自回归三维场景生成，属于计算机视觉研究。",
+      "llm_evidence": "基于多视角图像的稀疏自回归三维场景生成，属于计算机视觉研究。",
+      "canonical_evidence": "基于多视角图像的稀疏自回归三维场景生成，属于计算机视觉研究。",
+      "llm_tldr_en": "Proposes SPAR3S, a sparse voxel-aligned 3D latent generative model for completing 3D scenes from sparse unconstrained multi-view images. It generates in structured compact voxel-aligned latent space with only occupied voxels, avoiding ground-truth 3D supervision and expensive dense volumetric modeling.",
+      "llm_tldr_cn": "从稀疏无约束多视角图像生成完整三维场景需要超越可见内容的推理，同时面临体积表示计算昂贵和三维监督稀缺。本文提出 SPAR3S，将条件生成建模在仅保留占用体素的稀疏体素对齐三维潜空间中，无需真实三维数据监督。该方式以结构化紧凑表示完成场景补全，缓解了三维生成式计算与数据瓶颈。",
+      "llm_tldr": "从稀疏无约束多视角图像生成完整三维场景需要超越可见内容的推理，同时面临体积表示计算昂贵和三维监督稀缺。本文提出 SPAR3S，将条件生成建模在仅保留占用体素的稀疏体素对齐三维潜空间中，无需真实三维数据监督。该方式以结构化紧凑表示完成场景补全，缓解了三维生成式计算与数据瓶颈。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "computer vision research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2609.04026v1",
+      "source": "arxiv",
+      "title": "Stable and Scalable Bundle Adjustment of Holistic 3D Structures",
+      "abstract": "Bundle Adjustment (BA) is a cornerstone of 3D computer vision and has benefited from decades of advances in sparse optimization and numerical methods. It was originally developed for jointly optimizing camera intrinsics, poses and sparse 3D points. While extensions incorporate lines and other primitives, integrating richer geometric structures such as parallelism, coplanarity, or wireframes often introduces significantly increased computational cost and reduced numerical stability. In this paper, we propose a unified framework that extends bundle adjustment to jointly optimize geometric features and higher-order relations. We first introduce a taxonomy that distinguishes scalable geometric features with direct 2D measurements (e.g., points and lines), from groups encoding higher-order relations (e.g., coplanarity, parallelism, etc.), where we show that groups can be modeled as camera-like entities within the bundle adjustment framework. Building on this formulation, we propose that both group constraints and cross-feature relations (i.e., point-line associations) can be expressed through 2D reprojection measurements. By formulating group-induced and cross-feature reprojection errors, we preserve the sparsity structure of classical point-based BA under Schur elimination, while avoiding direct 3D regularization that degrades the conditioning and stability. Experiments on both real-world and synthetic datasets demonstrate runtime performance comparable to classical point-only bundle adjustment, while producing significantly richer 3D structures and improved geometric accuracy.",
+      "authors": [
+        "Shaohui Liu",
+        "Rémi Pautrat",
+        "Daniel Barath",
+        "Richard Hartley",
+        "Viktor Larsson",
+        "Marc Pollefeys"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-03T16:08:03+00:00",
+      "link": "https://arxiv.org/pdf/2609.04026v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "3D computer vision paper with unified bundle adjustment over geometric features and higher-order structures",
+      "llm_evidence_cn": "面向几何特征与高阶结构的统一Bundle Adjustment三维计算机视觉研究",
+      "llm_evidence": "面向几何特征与高阶结构的统一Bundle Adjustment三维计算机视觉研究",
+      "canonical_evidence": "面向几何特征与高阶结构的统一Bundle Adjustment三维计算机视觉研究",
+      "llm_tldr_en": "Bundle adjustment is central to 3D vision but struggles with rich structures like parallelism and coplanarity. The paper proposes a unified BA framework jointly optimizing geometric features and higher-order relations with improved numerical stability and scalability.",
+      "llm_tldr_cn": "三维视觉中的Bundle Adjustment通常只优化相机位姿与稀疏点，纳入平行、共面或线框等丰富几何结构时会明显增加计算负担并损害数值稳定性。本文提出统一框架，将几何特征和高阶关系放入同一优化问题，同时给出区分可直接用二维观测约束的可扩展特征（如点、线）与复杂结构的分类。这样可以在整体三维结构优化中兼顾更高的数值稳定性和可扩展性，为三维重建与相机定位提供了基础性改进。",
+      "llm_tldr": "三维视觉中的Bundle Adjustment通常只优化相机位姿与稀疏点，纳入平行、共面或线框等丰富几何结构时会明显增加计算负担并损害数值稳定性。本文提出统一框架，将几何特征和高阶关系放入同一优化问题，同时给出区分可直接用二维观测约束的可扩展特征（如点、线）与复杂结构的分类。这样可以在整体三维结构优化中兼顾更高的数值稳定性和可扩展性，为三维重建与相机定位提供了基础性改进。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "computer vision research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}
