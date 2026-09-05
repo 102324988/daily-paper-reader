@@ -41,17 +41,17 @@
 <section class="dpr-home-dashboard-card dpr-home-report-card">
   <div class="dpr-home-dashboard-header">
     <div>
-      <span class="dpr-home-dashboard-kicker">2026-09-04</span>
+      <span class="dpr-home-dashboard-kicker">2026-09-05</span>
       <h3 class="dpr-home-dashboard-title">今日汇总</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">共 10 篇</strong>
+    <strong class="dpr-home-dashboard-count">共 11 篇</strong>
   </div>
   <dl class="dpr-home-dashboard-stats">
     <div class="dpr-home-dashboard-stat"><dt>累计更新</dt><dd>1 次</dd></div>
     <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>6</dd></div>
-    <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>4</dd></div>
+    <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>5</dd></div>
   </dl>
-  <p class="dpr-home-dashboard-body">最近更新：2026-09-04 22:51:09 UTC<br>状态：成功</p>
+  <p class="dpr-home-dashboard-body">最近更新：2026-09-05 21:57:56 UTC<br>状态：成功</p>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-brief-card">
   <div class="dpr-home-dashboard-header">
@@ -62,9 +62,9 @@
     <strong class="dpr-home-dashboard-count">AI</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<p>今日完成10篇论文扫描（精读6篇，速读4篇），两篇高分集中于无深度RGB-D显著性检测与数字凹视觉编码。</p>
-<p>最值得看：可靠性感知几何蒸馏（9.0）使无深度RGB-D检测更鲁棒，数字凹视觉（9.0）以仿生采样降低理解成本。</p>
-<p>下一步可优先精读这两篇，再向遥感对比学习与少样本工业异常检测的迁移思路延伸。</p>
+<p>今日共扫描11篇论文，精读6篇、速读5篇，重点关注几何感知与医学视觉语言分割两大方向。</p>
+<p>最值得关注的是《OptiGeo》（9.0）在光学挑战场景下的单目几何感知，以及《Characterizing Text Branch Sensitivity》（9.0）通过证据解耦剖析医学分割中的文本分支敏感度。</p>
+<p>建议优先精读这两篇高分工作，并结合速读中的开放词汇3D实例映射与无监督视频状态追踪，拓展对多模态与几何融合的理解。</p>
   </div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-deep-card">
@@ -76,7 +76,7 @@
     <strong class="dpr-home-dashboard-count">6 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="When Depth Hurts: Reliability-Aware Geometry Distillation for Depth-Free RGB-D Salient Object Detection">When Depth Hurts: Reliability-Aware Geometry Distillation for Depth-Free RGB-D Salient Object Detection</span></li><li><span class="dpr-home-dashboard-paper-title" title="Efficient Semantic Understanding from Digital Foveation">Efficient Semantic Understanding from Digital Foveation</span></li><li><span class="dpr-home-dashboard-paper-title" title="Consistency as Regularization for Unsupervised Shadow Removal">Consistency as Regularization for Unsupervised Shadow Removal</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="OptiGeo: Efficient Monocular Geometry for Embodied Perception in Optically Challenging Scenes">OptiGeo: Efficient Monocular Geometry for Embodied Perception in Optically Challenging Scenes</span></li><li><span class="dpr-home-dashboard-paper-title" title="Characterizing Text Branch Sensitivity in Medical Vision-Language Segmentation via Evidence Decoupling">Characterizing Text Branch Sensitivity in Medical Vision-Language Segmentation via Evidence Decoupling</span></li><li><span class="dpr-home-dashboard-paper-title" title="Residual Optimal Transport-Based Experts Collaboration Towards Modality-Aware Infrared-Visible Object Detection">Residual Optimal Transport-Based Experts Collaboration Towards Modality-Aware Infrared-Visible Object Detection</span></li></ul>
   </div>
   <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">cv <strong>6</strong></span></div>
 </section>
@@ -86,12 +86,12 @@
       <span class="dpr-home-dashboard-kicker">今日累计</span>
       <h3 class="dpr-home-dashboard-title">速读推荐</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">4 篇</strong>
+    <strong class="dpr-home-dashboard-count">5 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Exploring the Potential of Contrastive Language-Image Pre-training for Multi-Source Remote Sensing Data">Exploring the Potential of Contrastive Language-Image Pre-training for Multi-Source Remote Sensing Data</span></li><li><span class="dpr-home-dashboard-paper-title" title="PL-SCEA: Reconfiguring Pretrained Attention for Few-Shot Industrial Anomaly Detection">PL-SCEA: Reconfiguring Pretrained Attention for Few-Shot Industrial Anomaly Detection</span></li><li><span class="dpr-home-dashboard-paper-title" title="Sparse auto-regressive modeling for scene generation from multi-view images">Sparse auto-regressive modeling for scene generation from multi-view images</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="VOIM: Training-Free Open-Vocabulary 3D Instance Mapping for RGB-D and Monocular SLAM">VOIM: Training-Free Open-Vocabulary 3D Instance Mapping for RGB-D and Monocular SLAM</span></li><li><span class="dpr-home-dashboard-paper-title" title="Progressive Pseudo-Label Optimization for Point-Supervised Change Detection">Progressive Pseudo-Label Optimization for Point-Supervised Change Detection</span></li><li><span class="dpr-home-dashboard-paper-title" title="Temporal Self-Distillation: Learning Visual State Tracking in Videos Without Supervision">Temporal Self-Distillation: Learning Visual State Tracking in Videos Without Supervision</span></li></ul>
   </div>
-  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">cv <strong>4</strong></span></div>
+  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">cv <strong>5</strong></span></div>
 </section>
 </div>
 

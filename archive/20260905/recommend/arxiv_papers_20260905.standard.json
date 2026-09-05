@@ -1,0 +1,449 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-09-05T21:50:51.599989+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 9,
+    "deep_cap": 6,
+    "deep_selected": 6,
+    "quick_candidates": 5,
+    "quick_skim_target": 11,
+    "quick_selected": 5
+  },
+  "deep_dive": [
+    {
+      "id": "2608.29881v1",
+      "source": "arxiv",
+      "title": "OptiGeo: Efficient Monocular Geometry for Embodied Perception in Optically Challenging Scenes",
+      "abstract": "Monocular depth estimation has achieved strong open-domain generalization, yet reliable robotic deployment remains difficult in transparent, reflective, and specular environments, where depth sensors often produce missing or biased depth. Existing methods often handle such optical failures with scene-specific preprocessing, auxiliary modules, or post-hoc fine-tuning. While effective in constrained settings, these designs increase architectural redundancy and can over-specialize general geometry models to narrow optical scenarios. We revisit this problem as a localized failure mode within base-model training and identify sensor-induced supervision bias as a key bottleneck: models inherit sensor failure patterns from biased real-depth supervision in optically challenging regions. We then introduce OptiGeo, a bias-aware training framework that rehabilitates biased real supervision using a clean-geometry teacher and residual-trimmed alignment. We redefine transparency-targeted rendering as a compact source of clean optical geometry, rather than a large domain-specific fine-tuning set. With only a small targeted rendering set, OptiGeo learns the geometric structure of transparent objects and regions, correcting local geometry distortions that real sensors cannot reliably supervise. Despite only 30M parameters, OptiGeo outperforms substantially larger 300M-scale monocular models and billion-scale multi-view baselines on transparent-scene benchmarks, while remaining competitive on general zero-shot depth and boundary sharpness. Real-world navigation cases further validate its practicality as an efficient perception module in optically challenging scenes.",
+      "authors": [
+        "Muxin Liu",
+        "Tianbo Liu",
+        "Jing Xia",
+        "Xiaoyang Lyu",
+        "Xiaoshan Wu",
+        "Bo Wang",
+        "Peng Dai",
+        "Zhongrui Wang",
+        "Shaoshuai Shi",
+        "Xiaojuan Qi"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-30T16:21:02+00:00",
+      "link": "https://arxiv.org/pdf/2608.29881v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "computer vision research on monocular geometry for optically challenging scenes",
+      "llm_evidence_cn": "面向光学挑战场景的单目几何估计计算机视觉研究",
+      "llm_evidence": "面向光学挑战场景的单目几何估计计算机视觉研究",
+      "canonical_evidence": "面向光学挑战场景的单目几何估计计算机视觉研究",
+      "llm_tldr_en": "This paper reframes failures of monocular depth estimation in transparent, reflective, and specular scenes as a localized base-model issue and identifies sensor-induced supervision bias as the key bottleneck for robust embodied perception.",
+      "llm_tldr_cn": "透明、反射和高光场景中深度传感器常产生缺失或偏差，使单目深度模型难以在机器人上实用。作者将这类光学失败视为基础模型训练中的局部失效模式，指出传感器引导的监督偏差是关键瓶颈；与其增加场景专用模块或事后微调，不如在训练阶段缓解偏差。OptiGeo面向此类场景提供高效单目几何估计，为具身感知的鲁棒部署提供了更通用的思路。",
+      "llm_tldr": "透明、反射和高光场景中深度传感器常产生缺失或偏差，使单目深度模型难以在机器人上实用。作者将这类光学失败视为基础模型训练中的局部失效模式，指出传感器引导的监督偏差是关键瓶颈；与其增加场景专用模块或事后微调，不如在训练阶段缓解偏差。OptiGeo面向此类场景提供高效单目几何估计，为具身感知的鲁棒部署提供了更通用的思路。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "computer vision research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2609.02663v1",
+      "source": "arxiv",
+      "title": "Characterizing Text Branch Sensitivity in Medical Vision-Language Segmentation via Evidence Decoupling",
+      "abstract": "Pretrained vision-language models (VLMs) have shown promising performance in medical image segmentation by incorporating clinical text. However, it remains unclear how much textual information actually contributes to pixel-level predictions. In this work, we systematically investigate the role of text in multimodal medical image segmentation. We first analyze several commonly used fusion strategies and find that segmentation performance is largely insensitive to the choice of fusion module. To further understand modality interactions, we propose an Evidence Decoupling Decoder (EDD) based on evidential deep learning and deep supervision. EDD serves as an internal representation analysis tool that decomposes image evidence and text-modulated evidence throughout the decoding process while maintaining competitive segmentation performance. Experimental results show that the sensitivity to text perturbation varies substantially across datasets. On BUSI and BTMRI, removing text causes catastrophic performance drops, indicating strong model reliance on textual input. On ISIC and Kvasir-SEG, text exerts relatively marginal influence. We further find that text affects predictions mainly through global semantic modulation rather than independent spatial localization, and that the specific semantic components driving text sensitivity differ across datasets. These findings provide a deeper understanding of modality interaction in multimodal medical image segmentation and offer practical insights for future model design.",
+      "authors": [
+        "Ziquan Liu",
+        "Zhewei Zhu",
+        "Xuyang Shi"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-02T14:38:52+00:00",
+      "link": "https://arxiv.org/pdf/2609.02663v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Medical image segmentation with vision-language models directly matches image segmentation techniques",
+      "llm_evidence_cn": "医学图像分割与视觉-语言模型直接属于图像分割技术范畴",
+      "llm_evidence": "医学图像分割与视觉-语言模型直接属于图像分割技术范畴",
+      "canonical_evidence": "医学图像分割与视觉-语言模型直接属于图像分割技术范畴",
+      "llm_tldr_en": "This paper analyzes how text contributes in medical VLM-based segmentation and proposes an Evidence Decoupling Decoder with evidential deep learning to characterize modality contributions.",
+      "llm_tldr_cn": "针对医学视觉-语言分割模型中文本分支的贡献不清晰这一问题，本文系统比较常见融合策略后发现分割性能对融合模块不敏感，并进一步提出基于证据深度学习与深度监督的证据解耦解码器（EDD）。该解码器作为内部分析工具，将图像证据与文本证据进行解耦，从而量化文本分支对像素级预测的真实作用。研究结果有助于理解多模态分割机制并为医学图像分割提供可解释的模型设计参考。",
+      "llm_tldr": "针对医学视觉-语言分割模型中文本分支的贡献不清晰这一问题，本文系统比较常见融合策略后发现分割性能对融合模块不敏感，并进一步提出基于证据深度学习与深度监督的证据解耦解码器（EDD）。该解码器作为内部分析工具，将图像证据与文本证据进行解耦，从而量化文本分支对像素级预测的真实作用。研究结果有助于理解多模态分割机制并为医学图像分割提供可解释的模型设计参考。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "image segmentation techniques",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2609.03516v1",
+      "source": "arxiv",
+      "title": "Residual Optimal Transport-Based Experts Collaboration Towards Modality-Aware Infrared-Visible Object Detection",
+      "abstract": "Infrared-visible object detection (IVOD) integrates complementary evidence from visible and infrared sensors for reliable perception in challenging scenes. In practice, sensors may fail or drop frames, leaving one modality unavailable or intermittent. Existing methods for IVOD assume both modalities are always present, and fixed fusion collapses when one stream is missing. Furthermore, it remains a critical challenge to reliably estimate semantic correlation across heterogeneous modalities, especially under spectral distribution discrepancy. We present FlexibleFusion, a unified and adaptive method that flexibly allocates integration pathways and fusion strength, operating seamlessly across complete and missing-modality regimes. At its core, the Modality-Aware Experts Collaboration (MAEC) mechanism selectively activates and aggregates cross-modal or intra-modal expert pathways. It allows cross-modal fusion when full modalities are available and falls back to self-fusion under missing conditions. Additionally, we design Residual Self-Paced Entropic Optimal Transport (RSPEOT) to align heterogeneous feature distributions from a transport perspective. Instead of relying on the fixed sparsity coefficient in standard entropic optimal transport (EOT), RSPEOT introduces a residual-driven self-paced update that prioritizes reliable matches and progressively refines harder ones. This design alleviates the additional optimization burden of standard EOT while preserving reliable semantic alignment. Comprehensive experiments under complete and missing-modality protocols show consistent performance across arbitrary modality configurations. Code will be released upon publication.",
+      "authors": [
+        "Yue Zhao",
+        "Hua Yu",
+        "Yukun Zhao",
+        "Yuzhi Zhang",
+        "Maoguo Gong",
+        "Xin Mei",
+        "Zhuping Hu",
+        "Yanchi Li",
+        "A. K. Qin"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-03T08:17:40+00:00",
+      "link": "https://arxiv.org/pdf/2609.03516v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "infrared-visible object detection with adaptive fusion and missing modality handling",
+      "llm_evidence_cn": "红外可见光目标检测及自适应融合方法研究",
+      "llm_evidence": "红外可见光目标检测及自适应融合方法研究",
+      "canonical_evidence": "红外可见光目标检测及自适应融合方法研究",
+      "llm_tldr_en": "This paper presents FlexibleFusion, an adaptive infrared-visible object detection method that uses residual optimal transport for modality-aware fusion and operates seamlessly when one modality stream is missing or intermittent.",
+      "llm_tldr_cn": "红外可见光目标检测常假设双模态始终存在，实际中传感器失效或丢帧时固定融合会崩溃。作者提出FlexibleFusion，通过残差最优传输估计异构模态间的语义相关程度，并依据模态是否缺失自适应分配融合路径和融合强度。在完整与缺失模态情况下该方法都能统一运行，从而提升红外可见光目标检测在真实场景中的鲁棒性与适应性。",
+      "llm_tldr": "红外可见光目标检测常假设双模态始终存在，实际中传感器失效或丢帧时固定融合会崩溃。作者提出FlexibleFusion，通过残差最优传输估计异构模态间的语义相关程度，并依据模态是否缺失自适应分配融合路径和融合强度。在完整与缺失模态情况下该方法都能统一运行，从而提升红外可见光目标检测在真实场景中的鲁棒性与适应性。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "object detection methods",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2609.03535v1",
+      "source": "arxiv",
+      "title": "Feature Reconfiguration With Visual Prior for Medical Lesion Segmentation",
+      "abstract": "Lesion segmentation in medical images plays a critical role in clinical diagnosis and treatment planning. Despite significant advances, lesion segmentation remains challenging due to two major factors: (1) complex background interference; (2) diverse lesion morphology. Existing encoder-decoder based methods mainly focus on enhancing feature extraction or redesigning decoding strategies. However, they lack early prior guidance and feature reconfiguration during the encoding stage, limiting their effectiveness in handling these challenges. To address these limitations, we propose FreNet, a feature reconfiguration framework with visual priors, which performs pixel-level reconfiguration before encoding and feature-level reconfiguration during encoding for precise medical lesion segmentation. To suppress background responses, we propose an Implicit Prior Neural Network (IPNN), which models a continuous spatial field and leverages visual prior from SAM to reconfigure input image before encoding stage. To better handle diverse lesion morphology, we design a Dual-domain Feature Reconfiguration (DFR) module to progressively reconfigure backbone features during encoding stage. Within DFR, the Frequency Decoupling Module (FDM) decouples backbone features in frequency domain to enhance foreground-background discriminability, while the Spatial Localization Module (SLM) spatially relocates and improving spatial stability after frequency decoupling. Extensive experiments on 9 medical image segmentation benchmarks across three imaging modalities demonstrate that FreNet significantly outperforms state-of-the-art (SOTA) methods. On the challenging ETIS dataset, our method achieves Dice improvements of 5.0% over SOTA method and 7.2% over SAM.",
+      "authors": [
+        "Yinan Liu",
+        "Jiankang Hong",
+        "Zhen Gao",
+        "Ye Lu"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI",
+        "eess.IV"
+      ],
+      "published": "2026-09-03T08:34:40+00:00",
+      "link": "https://arxiv.org/pdf/2609.03535v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Proposes FreNet for medical lesion segmentation with visual-prior-guided pixel- and feature-level reconfiguration",
+      "llm_evidence_cn": "面向医学病灶分割的视觉先验引导特征重配置方法",
+      "llm_evidence": "面向医学病灶分割的视觉先验引导特征重配置方法",
+      "canonical_evidence": "面向医学病灶分割的视觉先验引导特征重配置方法",
+      "llm_tldr_en": "FreNet performs pixel-level reconfiguration before encoding and feature-level reconfiguration during encoding, using visual priors to suppress background interference for lesion segmentation.",
+      "llm_tldr_cn": "医学影像病灶分割受复杂背景干扰和病灶形态多样影响，现有编码器-解码器方法多在特征提取或解码策略上改进，缺少编码前的先验指导。论文提出FreNet，在编码前对输入做像素级重配置，并在编码阶段依据视觉先验进行特征级重配置，从而在早期抑制背景噪声并适应病灶形态变化。该框架将视觉先验与特征重配置结合起来，为病灶分割提供了一种新的特征增强途径。",
+      "llm_tldr": "医学影像病灶分割受复杂背景干扰和病灶形态多样影响，现有编码器-解码器方法多在特征提取或解码策略上改进，缺少编码前的先验指导。论文提出FreNet，在编码前对输入做像素级重配置，并在编码阶段依据视觉先验进行特征级重配置，从而在早期抑制背景噪声并适应病灶形态变化。该框架将视觉先验与特征重配置结合起来，为病灶分割提供了一种新的特征增强途径。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "image segmentation techniques",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.30997v1",
+      "source": "arxiv",
+      "title": "Multi-View Reflective Surface Inspection via Semantic-Saliency Cross-Verification",
+      "abstract": "Reflective smartphone cover glass is challenging to inspect from a single fixed viewpoint because defect visibility varies with viewing geometry and specular reflections. This gives rise to two practical challenges: defects may be weakly observable from certain viewpoints, while the available visual evidence may remain spatially ambiguous. To address these issues, we propose a multi-view inspection framework in which each RGB observation is processed by a shared per-view expert. A vision-language model (VLM) produces class-aware semantic boxes, while a normal-reference reconstruction branch provides class-agnostic saliency. Their spatial agreement is used as supporting evidence to rank semantic proposals without modifying their coordinates or treating saliency as ground truth. The resulting evidence records are combined at product level without cross-view registration. On 282 production-line images, semantic-saliency association improves $AP_{50}$ from 52.6% to 62.6% by re-ranking fixed semantic proposals. Across 94 products, cross-view evidence recall $R_{\\rm prod}@0.5$ increases from 75.5% for the best single view to 88.3% using all three views. These results support the complementary roles of semantic-saliency cross-verification and additional optical observations in reflective-surface inspection.",
+      "authors": [
+        "Van-Giang Nguyen",
+        "Thanh-Tuan Tran",
+        "Xuan-Hieu Phan",
+        "Xiem HoangVan"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-31T15:48:39+00:00",
+      "link": "https://arxiv.org/pdf/2608.30997v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Uses VLM semantic boxes and saliency cross-verification to recognize defects on reflective surfaces",
+      "llm_evidence_cn": "融合语义框与显著性交叉验证的视觉缺陷识别方法",
+      "llm_evidence": "融合语义框与显著性交叉验证的视觉缺陷识别方法",
+      "canonical_evidence": "融合语义框与显著性交叉验证的视觉缺陷识别方法",
+      "llm_tldr_en": "Proposes multi-view cross-verification between VLM class-aware semantic boxes and class-agnostic saliency for defect recognition on reflective smartphone cover glass.",
+      "llm_tldr_cn": "反射性手机盖板玻璃的缺陷可见性随视角变化且证据常具空间歧义，难以从单一固定视角可靠识别。论文提出多视角检测框架，以共享的逐视角专家处理每张RGB图像，视觉语言模型输出类别语义框，法向参考重建分支输出类别无关显著性，依据二者空间一致性对语义候选排序并聚合多视角证据。该方法在不修改候选坐标的前提下增强对弱可见缺陷的识别，为反射表面质量检测提供了实用的视觉识别方案。",
+      "llm_tldr": "反射性手机盖板玻璃的缺陷可见性随视角变化且证据常具空间歧义，难以从单一固定视角可靠识别。论文提出多视角检测框架，以共享的逐视角专家处理每张RGB图像，视觉语言模型输出类别语义框，法向参考重建分支输出类别无关显著性，依据二者空间一致性对语义候选排序并聚合多视角证据。该方法在不修改候选坐标的前提下增强对弱可见缺陷的识别，为反射表面质量检测提供了实用的视觉识别方案。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "visual recognition algorithms",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2609.01511v1",
+      "source": "arxiv",
+      "title": "Benchmarking Spatial, Spectral, and Self-Supervised Cues for Face Forgery Detection under Realistic Degradation",
+      "abstract": "Face forgery detectors often achieve strong results on controlled benchmarks, but their reliability under realistic image degradations remains limited. This paper presents a standardized benchmark for face forgery detection using the Multi-Dimensional Face Forgery Image (MFFI) dataset and evaluates performance on both clean and degraded test partitions. We compare six model families, including convolutional networks, transformer-based models, and a frozen self-supervised DINOv3 backbone, across spatial, spectral, and hybrid input representations. The results show that clean-set performance is not a reliable indicator of robustness under compression, resizing, and blurring. Xception with RGB obtains the best clean performance, reaching 0.884 mean ROC-AUC, but degrades substantially on the harder partition. In contrast, frozen DINOv3 achieves the strongest degraded-set result, with 0.726 mean ROC-AUC, while training only a linear classification head. The representation analysis indicates that Fourier-domain cues are most useful when combined with RGB information, whereas purely spectral inputs consistently underperform spatial representations. Qualitative attribution maps further suggest that convolutional detectors focus on localized artifacts, while DINOv3 relies on broader facial structure. These findings reinforce the need for degraded evaluation protocols and highlight self-supervised visual representations as a promising direction for robust face forgery detection. Our source code is publicly available at https://github.com/lucasdocunha/FaceForgery-Benchmark/.",
+      "authors": [
+        "Lucas Cunha",
+        "Lucas Sotomaior",
+        "Lucas Gasperin",
+        "Beatriz Caldas",
+        "Eduardo Pianovski",
+        "Rayson Laroca"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-01T16:41:55+00:00",
+      "link": "https://arxiv.org/pdf/2609.01511v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "face forgery detection benchmark comparing visual recognition models under real degradation",
+      "llm_evidence_cn": "真实退化条件下人脸伪造检测的视觉识别模型基准测评",
+      "llm_evidence": "真实退化条件下人脸伪造检测的视觉识别模型基准测评",
+      "canonical_evidence": "真实退化条件下人脸伪造检测的视觉识别模型基准测评",
+      "llm_tldr_en": "This paper benchmarks six face forgery detector families across clean and degraded MFFI partitions, showing that clean-set accuracy is an unreliable predictor of robustness under compression, resizing, and blurring.",
+      "llm_tldr_cn": "真实图像退化下的人脸伪造检测鲁棒性评测尚不充分，作者在MFFI数据集上建立标准化基准，比较卷积网络、Transformer和冻结自监督DINOv3等六类模型在空间、光谱和混合输入下的表现。实验表明干净集性能不能可靠预测压缩、缩放和模糊后的鲁棒性，Xception在RGB干净集上表现最佳。该工作为退化场景中的人脸伪造检测提供了可复现评测基准与模型选择参考。",
+      "llm_tldr": "真实图像退化下的人脸伪造检测鲁棒性评测尚不充分，作者在MFFI数据集上建立标准化基准，比较卷积网络、Transformer和冻结自监督DINOv3等六类模型在空间、光谱和混合输入下的表现。实验表明干净集性能不能可靠预测压缩、缩放和模糊后的鲁棒性，Xception在RGB干净集上表现最佳。该工作为退化场景中的人脸伪造检测提供了可复现评测基准与模型选择参考。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "visual recognition algorithms",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2609.00775v1",
+      "source": "arxiv",
+      "title": "VOIM: Training-Free Open-Vocabulary 3D Instance Mapping for RGB-D and Monocular SLAM",
+      "abstract": "We present Voxel-Grounded Online Instance Manager (VOIM), a training-free voxel-grounded instance manager that builds open-vocabulary 3D instance maps from RGB-D or from monocular RGB alone, a regime no prior training-free system addresses. Online systems typically segment object instances and label them at first detection, committing when evidence is weakest. VOIM instead defers label and instance decisions until soft evidence from unmodified, off-the-shelf perception has accumulated per voxel across views. We show that the mapping stage, rather than the particular perception models, carries the result: across four perception configurations on ScanNet++, varying the region descriptor, the detector label prior and the mask source, the map exceeds the strongest online RGB-D system, OVO-SLAM, by between 4.8 and 11.7 mIoU. Perception is not neutral, and substituting that baseline's own descriptor family costs 4.1 of the margin, yet the baseline carries the marginally better 2D descriptor (33.7 vs. 31.5 mIoU over three scenes) and still realizes the weaker map. Under a like-for-like protocol VOIM reaches 44.07 mIoU on ScanNet++ against 32.37, winning all ten scenes and both aggregations (pooled 33.31 vs. 25.97), and the same system runs unchanged to fully monocular RGB, matching that baseline pooled on Replica (27.80 vs. 27.50). The advantage is regime-specific: under Replica's all-classes scoring, matched inputs give a split result, 28.60 vs. 27.50 pooled against 24.59 vs. 30.11 on the per-scene mean. Room scale is label-limited and building scale drift-limited. Labeling does not run in real time, dominated by per-class detection over the full vocabulary. The maps export occupancy grids and resolve free-form queries to object instances.",
+      "authors": [
+        "Sangmin Song",
+        "Sarath Kodagoda",
+        "Marc G. Carmichael",
+        "Karthick Thiyagarajan",
+        "Amal Gunatilake",
+        "Kelly Prentice",
+        "Jodi Martin"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-09-01T06:07:25+00:00",
+      "link": "https://arxiv.org/pdf/2609.00775v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "training-free open-vocabulary 3D instance mapping from segmenter and detector outputs",
+      "llm_evidence_cn": "基于分割与检测输出的免训练开放词汇3D实例建图",
+      "llm_evidence": "基于分割与检测输出的免训练开放词汇3D实例建图",
+      "canonical_evidence": "基于分割与检测输出的免训练开放词汇3D实例建图",
+      "llm_tldr_en": "Online 3D instance mapping commits too early. VOIM is a training-free voxel-grounded manager that defers label and instance decisions until soft evidence from off-the-shelf perception accumulates across views, building open-vocabulary 3D instance maps from RGB-D or monocular SLAM; ScanNet++ shows the mapping stage carries the result.",
+      "llm_tldr_cn": "在线3D实例建图系统通常在前几帧检测到实例时立即确定标签和身份，在证据最弱时过早承诺；此前也无免训练方法支持单目RGB输入。论文提出VOIM，一个体素锚定的在线实例管理器，使用现成、不加修改的感知模型，跨视角逐体素累积分类与实例软证据，等到证据充分时再做标签与实例归属决策，整个过程不需要训练。在ScanNet++上的四组感知配置实验中，更换区域描述符、检测标签先验和掩码来源后，建图结果主要取决于建图阶段。该方法使开放词汇3D实例建图能够从RGB-D或单目RGB中稳定工作。",
+      "llm_tldr": "在线3D实例建图系统通常在前几帧检测到实例时立即确定标签和身份，在证据最弱时过早承诺；此前也无免训练方法支持单目RGB输入。论文提出VOIM，一个体素锚定的在线实例管理器，使用现成、不加修改的感知模型，跨视角逐体素累积分类与实例软证据，等到证据充分时再做标签与实例归属决策，整个过程不需要训练。在ScanNet++上的四组感知配置实验中，更换区域描述符、检测标签先验和掩码来源后，建图结果主要取决于建图阶段。该方法使开放词汇3D实例建图能够从RGB-D或单目RGB中稳定工作。",
+      "llm_tags": [
+        "query:cv:composite"
+      ],
+      "matched_query_tag": "query:cv:composite",
+      "matched_query_text": "Papers central to 计算机视觉相关论文, especially work that connects or combines: computer vision research papers; object detection methods; image segmentation techniques; visual recognition algorithms; feature extraction in computer vision; visual tracking surveys; Find papers on computer vision; Retrieve computer vision research articles; Search for state of the art in computer vision.",
+      "matched_requirement_id": "req-composite-cv",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2608.29374v1",
+      "source": "arxiv",
+      "title": "Think, Look, and Revise: Inconsistency-Aware Visual Self-Correction in MLLMs",
+      "abstract": "Tool-augmented multimodal reasoning integrates external tools (e.g., object detection, depth estimation) into multimodal large language models (MLLMs) to address perceptual bottlenecks in complex visual tasks. However, existing approaches rarely verify tool outputs, limiting their ability to detect and recover from tool failures. We propose ReVISE, a framework that equips MLLMs with verification and dynamic error recovery for tool-augmented reasoning. ReVISE introduces (1) a curated training dataset that supervises reflective behaviors, enabling models to validate tool-derived evidence, reformulate queries when visual mismatches arise, and fall back to intrinsic grounding when external tools are unreliable; and (2) a reinforcement learning based targeted rewards that encourage internal reflection and penalize spatial misalignment. Experiments on several benchmarks demonstrate consistent improvements over existing methods, highlighting the importance of error detection and correction in tool-augmented multimodal reasoning.",
+      "authors": [
+        "Yu Cheng",
+        "Arushi Goel",
+        "Hakan Bilen"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-29T17:22:08+00:00",
+      "link": "https://arxiv.org/pdf/2608.29374v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "multimodal LLM visual reasoning with external vision tools such as object detection and depth estimation plus inconsistency-aware visual self-correction",
+      "llm_evidence_cn": "面向多模态大模型视觉推理的工具验证与自纠错，涉及目标检测、深度估计等外部视觉工具",
+      "llm_evidence": "面向多模态大模型视觉推理的工具验证与自纠错，涉及目标检测、深度估计等外部视觉工具",
+      "canonical_evidence": "面向多模态大模型视觉推理的工具验证与自纠错，涉及目标检测、深度估计等外部视觉工具",
+      "llm_tldr_en": "ReVISE makes MLLMs verify and correct outputs of external visual tools such as object detection and depth estimation, improving tool-augmented visual reasoning with reinforcement learning.",
+      "llm_tldr_cn": "工具增强的多模态推理利用目标检测、深度估计等外部工具克服感知瓶颈，但现有方法很少校验工具输出。ReVISE为多模态大模型加入验证与动态纠错机制，通过专门数据集教会模型验证视觉证据、在视觉不一致时改写查询，并在工具不可靠时回退到内在基础能力，同时结合强化学习优化策略。该方法提升复杂视觉任务中工具调用的可靠性，为多模态模型与视觉工具协同提供了可验证新范式。",
+      "llm_tldr": "工具增强的多模态推理利用目标检测、深度估计等外部工具克服感知瓶颈，但现有方法很少校验工具输出。ReVISE为多模态大模型加入验证与动态纠错机制，通过专门数据集教会模型验证视觉证据、在视觉不一致时改写查询，并在工具不可靠时回退到内在基础能力，同时结合强化学习优化策略。该方法提升复杂视觉任务中工具调用的可靠性，为多模态模型与视觉工具协同提供了可验证新范式。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "computer vision research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2609.02171v1",
+      "source": "arxiv",
+      "title": "Progressive Pseudo-Label Optimization for Point-Supervised Change Detection",
+      "abstract": "Point-supervised change detection (PS-CD) aims to identify pixel-level changes between bi-temporal images using only sparsely annotated points. Although point annotations substantially reduce labeling costs, their limited spatial coverage often results in incomplete and noisy pseudo-labels. To address this issue, we propose a two-stage framework that introduces SAM2 priors into PS-CD and progressively adapts them to the target task. In Stage I, SAM2 generates object-aware candidate masks from point annotations on the bi-temporal images, and a bi-temporal mask selection strategy is designed to convert generic segmentation responses into more reliable change pseudo-labels. Subsequently, a lightweight CNN refinement module with an uncertainty-aware loss is employed to improve boundary quality and local structural consistency. In Stage II, we construct a teacher-student self-training framework in which the teacher is updated by exponential moving average and periodically refreshes the pseudo-labels. This design establishes a closed-loop optimization process that alternates between pseudo-label refinement and model re-optimization. Experiments on three benchmark datasets, including WHU-CD, LEVIR-CD, and SYSU-CD, demonstrate that the proposed method outperforms previous weakly supervised approaches on most benchmarks and remains competitive with several fully supervised methods.",
+      "authors": [
+        "Hailong Ning",
+        "Hao Wang",
+        "Yimeng Wang",
+        "Tao Lei",
+        "Renwei Dian",
+        "Asoke K. Nandi"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-02T06:33:23+00:00",
+      "link": "https://arxiv.org/pdf/2609.02171v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Pixel-level change detection is an image segmentation technique using pseudo-label refinement",
+      "llm_evidence_cn": "像元级变化检测是使用伪标签细化的图像分割技术",
+      "llm_evidence": "像元级变化检测是使用伪标签细化的图像分割技术",
+      "canonical_evidence": "像元级变化检测是使用伪标签细化的图像分割技术",
+      "llm_tldr_en": "This work presents a two-stage framework that introduces SAM2 priors for point-supervised change detection, progressively refines pseudo-labels with mask selection, and improves bi-temporal change segmentation.",
+      "llm_tldr_cn": "针对点监督变化检测仅有点标注导致伪标签不完整且噪声大的问题，本文设计两阶段框架。第一阶段引入SAM2生成候选目标掩码，并通过双时相掩码选择策略将通用分割响应转化为更可靠的变化伪标签。第二阶段采用带不确定性感知的轻量CNN模块进行平滑和优化。实验结果表明，该方法在利用稀疏点标注的同时能够获得更精确的像元级变化检测结果，为低成本变化检测分割提供了有效途径。",
+      "llm_tldr": "针对点监督变化检测仅有点标注导致伪标签不完整且噪声大的问题，本文设计两阶段框架。第一阶段引入SAM2生成候选目标掩码，并通过双时相掩码选择策略将通用分割响应转化为更可靠的变化伪标签。第二阶段采用带不确定性感知的轻量CNN模块进行平滑和优化。实验结果表明，该方法在利用稀疏点标注的同时能够获得更精确的像元级变化检测结果，为低成本变化检测分割提供了有效途径。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "image segmentation techniques",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2609.02359v1",
+      "source": "arxiv",
+      "title": "TempoGround: State-Aware Streaming Visual Grounding with Vision-Language Models",
+      "abstract": "Visual grounding maps language referents to spatial targets and is central to open-vocabulary perception with vision-language models. Existing methods have made substantial progress on single-frame and video-based visual grounding, yet under streaming inputs they still suffer from identity drift, cross-frame inconsistency, and fragile localization under partial occlusion. To address these issues, we present TempoGround, a VLM-native framework that detects cross-frame object correspondence and explicitly models object presence states, thereby enabling accurate and consistent visual grounding under streaming inputs. The key is a curriculum prediction mechanism guided by state-aware cross-frame correspondence: TempoGround resolves 2D instance association, predicts whether each object newly enters, continues in, or leaves the view, decodes the 2D box, and then lifts it to a camera-frame 3D box. As token-level supervision alone cannot capture the geometric objectives of streaming grounding, we further introduce Streaming Grounding Reinforcement (SGR), which optimizes TempoGround with verifiable Grounding, Identity, and Consistency rewards, jointly reinforcing persistent localization and temporally consistent predictions. We carefully design a three-stage training strategy and train TempoGround on large-scale data. We evaluate visual grounding under causally streaming inputs on multiple challenging benchmarks: TempoGround improves F1_2D@0.5 and F1_2D@0.95 by 4.4 and 0.5 on average, and F1_3D@0.25 and AP_3D by 6.2 and 7.5, respectively. These results demonstrate that TempoGround provides a practical foundation for visual grounding under streaming inputs.",
+      "authors": [
+        "Leqian Ding",
+        "Junning Qiu",
+        "Manwen Yang",
+        "Yu Guo",
+        "Fei Wang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-02T09:30:08+00:00",
+      "link": "https://arxiv.org/pdf/2609.02359v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Streaming visual grounding with cross-frame identity modeling is a central computer vision research topic",
+      "llm_evidence_cn": "面向流式输入的视觉定位与跨帧一致性建模是计算机视觉核心研究主题",
+      "llm_evidence": "面向流式输入的视觉定位与跨帧一致性建模是计算机视觉核心研究主题",
+      "canonical_evidence": "面向流式输入的视觉定位与跨帧一致性建模是计算机视觉核心研究主题",
+      "llm_tldr_en": "TempoGround introduces state-aware streaming visual grounding, modeling cross-frame object presence to reduce identity drift and improve localization accuracy in VLM-based grounding.",
+      "llm_tldr_cn": "针对流式输入下视觉定位常出现身份漂移、跨帧不一致和局部遮挡定位脆弱的问题，提出TempoGround框架。该框架利用视觉-语言模型，通过状态感知的跨帧对应机制显式建模目标出现状态，并设计课程预测机制来保持定位一致性。实验结果显示TempoGround在流式视觉定位任务上能有效抑制身份漂移，提升连续帧中的目标定位精度，为开放词汇感知与视觉跟踪相关研究提供新方案。",
+      "llm_tldr": "针对流式输入下视觉定位常出现身份漂移、跨帧不一致和局部遮挡定位脆弱的问题，提出TempoGround框架。该框架利用视觉-语言模型，通过状态感知的跨帧对应机制显式建模目标出现状态，并设计课程预测机制来保持定位一致性。实验结果显示TempoGround在流式视觉定位任务上能有效抑制身份漂移，提升连续帧中的目标定位精度，为开放词汇感知与视觉跟踪相关研究提供新方案。",
+      "llm_tags": [
+        "query:cv:composite"
+      ],
+      "matched_query_tag": "query:cv:composite",
+      "matched_query_text": "Papers central to 计算机视觉相关论文, especially work that connects or combines: computer vision research papers; object detection methods; image segmentation techniques; visual recognition algorithms; feature extraction in computer vision; visual tracking surveys; Find papers on computer vision; Retrieve computer vision research articles; Search for state of the art in computer vision.",
+      "matched_requirement_id": "req-composite-cv",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2609.04203v1",
+      "source": "arxiv",
+      "title": "Temporal Self-Distillation: Learning Visual State Tracking in Videos Without Supervision",
+      "abstract": "We introduce S$^3$T (Self-Supervised Self-Distillation over Time), which, to the best of our knowledge, is the first fully self-contained framework for continuous video state tracking. Our method treats temporal sampling density as privileged information, based on the hypothesis that a denser view of the same clip recovers the running state more accurately. This view serves as the teacher, while a sparse-view student with the same weights learns to match its next-token distribution. The model generates its own target, so training requires no labels, separate teacher, or reward signal, and adds no inference cost. On LLaVA-OneVision-2-8B, S$^3$T improves VSTAT accuracy by $+1.74$ as a single model, $+2.38$ with souping, and $+2.70$ with additional vision-encoder adaptation, while prior self-evolving methods leave state tracking largely unchanged. The capability learned from unlabeled synthetic clips transfers to real videos, improving performance by $+7.95$ on VSTAT-YouTube state-tracking questions and $+4.50$ on MVBench Action Count.",
+      "authors": [
+        "Shravan Venkatraman",
+        "Wenshuai Zhao",
+        "Mohammad Hassan Vali",
+        "Arno Solin"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-03T17:59:55+00:00",
+      "link": "https://arxiv.org/pdf/2609.04203v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Video state tracking is an emerging computer vision research problem",
+      "llm_evidence_cn": "视频状态追踪属于计算机视觉理解研究方向",
+      "llm_evidence": "视频状态追踪属于计算机视觉理解研究方向",
+      "canonical_evidence": "视频状态追踪属于计算机视觉理解研究方向",
+      "llm_tldr_en": "S3T is a self-supervised framework for continuous video state tracking that treats denser temporal sampling as a teacher to distill next-token prediction into a sparse-view student, improving VSTAT accuracy by up to +2.70.",
+      "llm_tldr_cn": "视频连续状态追踪过去依赖人工标注或奖励信号，难以在大规模无标签视频上自监督学习。S3T将时间采样密度视为特权信息：高密度视图充当教师，同权重稀疏视图学生通过匹配下一词分布完成自蒸馏，全程无需标签。在LLaVA-OneVision-2-8B上，该方法将VSTAT准确率提升约1.74点，集成后最高提升2.70点。它为视频状态追踪提供了完全自包含、零额外推理代价的自监督范式。",
+      "llm_tldr": "视频连续状态追踪过去依赖人工标注或奖励信号，难以在大规模无标签视频上自监督学习。S3T将时间采样密度视为特权信息：高密度视图充当教师，同权重稀疏视图学生通过匹配下一词分布完成自蒸馏，全程无需标签。在LLaVA-OneVision-2-8B上，该方法将VSTAT准确率提升约1.74点，集成后最高提升2.70点。它为视频状态追踪提供了完全自包含、零额外推理代价的自监督范式。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "computer vision research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    }
+  ]
+}
