@@ -41,7 +41,7 @@
 <section class="dpr-home-dashboard-card dpr-home-report-card">
   <div class="dpr-home-dashboard-header">
     <div>
-      <span class="dpr-home-dashboard-kicker">2026-09-05</span>
+      <span class="dpr-home-dashboard-kicker">2026-09-06</span>
       <h3 class="dpr-home-dashboard-title">今日汇总</h3>
     </div>
     <strong class="dpr-home-dashboard-count">共 11 篇</strong>
@@ -51,7 +51,7 @@
     <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>6</dd></div>
     <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>5</dd></div>
   </dl>
-  <p class="dpr-home-dashboard-body">最近更新：2026-09-05 21:57:56 UTC<br>状态：成功</p>
+  <p class="dpr-home-dashboard-body">最近更新：2026-09-06 22:10:21 UTC<br>状态：成功</p>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-brief-card">
   <div class="dpr-home-dashboard-header">
@@ -62,9 +62,9 @@
     <strong class="dpr-home-dashboard-count">AI</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<p>今日共扫描11篇论文，精读6篇、速读5篇，重点关注几何感知与医学视觉语言分割两大方向。</p>
-<p>最值得关注的是《OptiGeo》（9.0）在光学挑战场景下的单目几何感知，以及《Characterizing Text Branch Sensitivity》（9.0）通过证据解耦剖析医学分割中的文本分支敏感度。</p>
-<p>建议优先精读这两篇高分工作，并结合速读中的开放词汇3D实例映射与无监督视频状态追踪，拓展对多模态与几何融合的理解。</p>
+<p>今日共读11篇论文，精读6篇、速读5篇，重点聚焦可解释分类与医学图像分割。</p>
+<p>最值得关注的是9.0分双雄：《OPAL》用正交原型对齐实现可解释图像分类，《GazeRefine》以专家凝视作为测试时提示、免训练提升医学图像分割精度。</p>
+<p>若想快速跟进，可顺带一览异常检测、超分与流式视觉定位三篇7分工作，拓宽视野。</p>
   </div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-deep-card">
@@ -76,7 +76,7 @@
     <strong class="dpr-home-dashboard-count">6 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="OptiGeo: Efficient Monocular Geometry for Embodied Perception in Optically Challenging Scenes">OptiGeo: Efficient Monocular Geometry for Embodied Perception in Optically Challenging Scenes</span></li><li><span class="dpr-home-dashboard-paper-title" title="Characterizing Text Branch Sensitivity in Medical Vision-Language Segmentation via Evidence Decoupling">Characterizing Text Branch Sensitivity in Medical Vision-Language Segmentation via Evidence Decoupling</span></li><li><span class="dpr-home-dashboard-paper-title" title="Residual Optimal Transport-Based Experts Collaboration Towards Modality-Aware Infrared-Visible Object Detection">Residual Optimal Transport-Based Experts Collaboration Towards Modality-Aware Infrared-Visible Object Detection</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="OPAL: Orthonormal Prototype Alignment Learning for Interpretable Image Classification">OPAL: Orthonormal Prototype Alignment Learning for Interpretable Image Classification</span></li><li><span class="dpr-home-dashboard-paper-title" title="GazeRefine: Expert Gaze as a Test-Time Prompt for Training-Free Medical Image Segmentation">GazeRefine: Expert Gaze as a Test-Time Prompt for Training-Free Medical Image Segmentation</span></li><li><span class="dpr-home-dashboard-paper-title" title="RoSe-SLAM: Robust Semantic-Aware Gaussian Splatting SLAM from Dynamic Monocular Videos">RoSe-SLAM: Robust Semantic-Aware Gaussian Splatting SLAM from Dynamic Monocular Videos</span></li></ul>
   </div>
   <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">cv <strong>6</strong></span></div>
 </section>
@@ -89,7 +89,7 @@
     <strong class="dpr-home-dashboard-count">5 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="VOIM: Training-Free Open-Vocabulary 3D Instance Mapping for RGB-D and Monocular SLAM">VOIM: Training-Free Open-Vocabulary 3D Instance Mapping for RGB-D and Monocular SLAM</span></li><li><span class="dpr-home-dashboard-paper-title" title="Progressive Pseudo-Label Optimization for Point-Supervised Change Detection">Progressive Pseudo-Label Optimization for Point-Supervised Change Detection</span></li><li><span class="dpr-home-dashboard-paper-title" title="Temporal Self-Distillation: Learning Visual State Tracking in Videos Without Supervision">Temporal Self-Distillation: Learning Visual State Tracking in Videos Without Supervision</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Anomaly Detection on Small Industrial Components via Vision-Based Tactile Sensing">Anomaly Detection on Small Industrial Components via Vision-Based Tactile Sensing</span></li><li><span class="dpr-home-dashboard-paper-title" title="PixelIR: Fidelity-Perception Decoupling via Pixel-Space Image-Residual Flow Matching for Efficient One-Step Real-World Super-Resolution">PixelIR: Fidelity-Perception Decoupling via Pixel-Space Image-Residual Flow Matching for Efficient One-Step Real-World Super-Resolution</span></li><li><span class="dpr-home-dashboard-paper-title" title="TempoGround: State-Aware Streaming Visual Grounding with Vision-Language Models">TempoGround: State-Aware Streaming Visual Grounding with Vision-Language Models</span></li></ul>
   </div>
   <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">cv <strong>5</strong></span></div>
 </section>

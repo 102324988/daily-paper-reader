@@ -1,0 +1,185 @@
+{
+  "date": "20260906",
+  "date_label": "",
+  "generated_at": "2026-09-06 22:10:21 UTC",
+  "recommend_exists": true,
+  "run_count": 1,
+  "papers": [
+    {
+      "paper_id": "2608.30003v1",
+      "route": "202609/06/2608.30003v1-opal-orthonormal-prototype-alignment-learning-for-interpretable-image-classification",
+      "title": "OPAL: Orthonormal Prototype Alignment Learning for Interpretable Image Classification",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "基于正交原型对齐学习的可解释图像分类",
+      "first_seen_at": "2026-09-06 22:10:21 UTC",
+      "updated_at": "2026-09-06 22:10:21 UTC"
+    },
+    {
+      "paper_id": "2609.01310v1",
+      "route": "202609/06/2609.01310v1-gazerefine-expert-gaze-as-a-test-time-prompt-for-training-free-medical-image-segmentation",
+      "title": "GazeRefine: Expert Gaze as a Test-Time Prompt for Training-Free Medical Image Segmentation",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "以专家凝视作为提示的免训练医学图像分割技术",
+      "first_seen_at": "2026-09-06 22:10:21 UTC",
+      "updated_at": "2026-09-06 22:10:21 UTC"
+    },
+    {
+      "paper_id": "2608.29003v1",
+      "route": "202609/06/2608.29003v1-rose-slam-robust-semantic-aware-gaussian-splatting-slam-from-dynamic-monocular-videos",
+      "title": "RoSe-SLAM: Robust Semantic-Aware Gaussian Splatting SLAM from Dynamic Monocular Videos",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "动态单目视频中语义感知高斯溅射SLAM，是计算机视觉研究论文",
+      "first_seen_at": "2026-09-06 22:10:21 UTC",
+      "updated_at": "2026-09-06 22:10:21 UTC"
+    },
+    {
+      "paper_id": "2609.00591v1",
+      "route": "202609/06/2609.00591v1-a-glance-is-all-you-need-single-pass-fine-grained-image-captioning-with-simloss",
+      "title": "A Glance Is All You Need: Single-Pass Fine-Grained Image Captioning with SimLoss",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "面向细粒度图像描述生成的对比嵌入对齐方法，属于计算机视觉与视觉语言研究",
+      "first_seen_at": "2026-09-06 22:10:21 UTC",
+      "updated_at": "2026-09-06 22:10:21 UTC"
+    },
+    {
+      "paper_id": "2609.00775v1",
+      "route": "202609/06/2609.00775v1-voim-training-free-open-vocabulary-3d-instance-mapping-for-rgb-d-and-monocular-slam",
+      "title": "VOIM: Training-Free Open-Vocabulary 3D Instance Mapping for RGB-D and Monocular SLAM",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "基于体素接地的开放词汇3D实例映射，涉及实例分割与场景建图",
+      "first_seen_at": "2026-09-06 22:10:21 UTC",
+      "updated_at": "2026-09-06 22:10:21 UTC"
+    },
+    {
+      "paper_id": "2609.00995v1",
+      "route": "202609/06/2609.00995v1-cqf-hmr-continuous-quaternion-flows-for-probabilistic-3d-human-mesh-recovery-from-a-single-image",
+      "title": "CQF-HMR: Continuous Quaternion Flows for Probabilistic 3D Human Mesh Recovery from a Single Image",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "基于四元数流的单图概率性3D人体网格恢复",
+      "first_seen_at": "2026-09-06 22:10:21 UTC",
+      "updated_at": "2026-09-06 22:10:21 UTC"
+    },
+    {
+      "paper_id": "2608.30506v1",
+      "route": "202609/06/2608.30506v1-anomaly-detection-on-small-industrial-components-via-vision-based-tactile-sensing",
+      "title": "Anomaly Detection on Small Industrial Components via Vision-Based Tactile Sensing",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "基于视觉触觉成像的异常检测与特征嵌入方法评估",
+      "first_seen_at": "2026-09-06 22:10:21 UTC",
+      "updated_at": "2026-09-06 22:10:21 UTC"
+    },
+    {
+      "paper_id": "2608.30782v1",
+      "route": "202609/06/2608.30782v1-pixelir-fidelity-perception-decoupling-via-pixel-space-image-residual-flow-matching-for-efficient-one-step-real-world-super-resolution",
+      "title": "PixelIR: Fidelity-Perception Decoupling via Pixel-Space Image-Residual Flow Matching for Efficient One-Step Real-World Super-Resolution",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "像素空间图像残差流匹配实现高效单步真实图像超分辨率的视觉研究",
+      "first_seen_at": "2026-09-06 22:10:21 UTC",
+      "updated_at": "2026-09-06 22:10:21 UTC"
+    },
+    {
+      "paper_id": "2609.02359v1",
+      "route": "202609/06/2609.02359v1-tempoground-state-aware-streaming-visual-grounding-with-vision-language-models",
+      "title": "TempoGround: State-Aware Streaming Visual Grounding with Vision-Language Models",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "结合跨帧对应与目标存在状态建模的视觉语言模型流式视觉定位研究",
+      "first_seen_at": "2026-09-06 22:10:21 UTC",
+      "updated_at": "2026-09-06 22:10:21 UTC"
+    },
+    {
+      "paper_id": "2609.03406v1",
+      "route": "202609/06/2609.03406v1-neural-collapse-guided-task-free-continual-anomaly-detection",
+      "title": "Neural-Collapse-guided Task-Free Continual Anomaly Detection",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "面向工业视觉检测的无任务持续异常检测方法，属于图像识别与异常识别方向",
+      "first_seen_at": "2026-09-06 22:10:21 UTC",
+      "updated_at": "2026-09-06 22:10:21 UTC"
+    },
+    {
+      "paper_id": "2608.29408v1",
+      "route": "202609/06/2608.29408v1-a-visual-question-answering-model-to-automate-nondestructive-evaluation-image-analysis",
+      "title": "A Visual Question Answering Model to Automate Nondestructive Evaluation Image Analysis",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "将ResNet-50图像特征提取与GPT-2语言生成集成，用于无损检测图像的问答分析",
+      "first_seen_at": "2026-09-06 22:10:21 UTC",
+      "updated_at": "2026-09-06 22:10:21 UTC"
+    }
+  ]
+}

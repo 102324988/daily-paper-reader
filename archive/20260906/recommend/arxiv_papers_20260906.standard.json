@@ -1,0 +1,463 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-09-06T22:04:45.397918+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 6,
+    "deep_cap": 6,
+    "deep_selected": 6,
+    "quick_candidates": 5,
+    "quick_skim_target": 11,
+    "quick_selected": 5
+  },
+  "deep_dive": [
+    {
+      "id": "2608.30003v1",
+      "source": "arxiv",
+      "title": "OPAL: Orthonormal Prototype Alignment Learning for Interpretable Image Classification",
+      "abstract": "Prototypical part-based models provide explainable predictions by comparing input regions to learned prototypes. However, current approaches are burdened by complex, multi-stage training pipelines and heavily rely on auxiliary regularization to prevent prototype collapse. To overcome these limitations, we introduce Orthonormal Prototype Alignment Learning (OPAL), a single-stage, end-to-end framework that simplifies interpretable classification. Our approach anchors the latent space using predefined orthonormal bases, embedding each class within a dedicated subspace spanned by fixed part-prototypes. To achieve precise part localization, OPAL enforces spatial competition across feature maps. This mechanism isolates sparse, discriminative regions, directing each prototype to consistently attend to the same semantic concept across different images. By framing classification as a direct representation alignment task, our method eliminates the need for auxiliary losses. Extensive experiments on fine-grained benchmarks demonstrate that OPAL outperforms both its non-interpretable counterparts and state-of-the-art part-prototype methods, delivering granular visual explanations by explicitly revealing the specific image regions driving every prediction. Code is available at https://github.com/ilancarretero/OPAL.",
+      "authors": [
+        "Ilán Carretero",
+        "Gustavo Jesús Angulo",
+        "Rocío del Amor",
+        "Valery Naranjo"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-30T19:54:58+00:00",
+      "link": "https://arxiv.org/pdf/2608.30003v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Interpretable image classification using orthonormal prototype alignment",
+      "llm_evidence_cn": "基于正交原型对齐学习的可解释图像分类",
+      "llm_evidence": "基于正交原型对齐学习的可解释图像分类",
+      "canonical_evidence": "基于正交原型对齐学习的可解释图像分类",
+      "llm_tldr_en": "OPAL is a single-stage end-to-end prototypical part model that anchors latent space with orthonormal bases and constrained part-prototypes, using spatial competition over feature maps for precise and interpretable image classification.",
+      "llm_tldr_cn": "原型部件模型解释性强，但通常训练流程复杂且需要额外正则防止原型坍缩。OPAL提出单阶段端到端框架，用预定义正交基锚定潜空间，把每个类别嵌入由固定部件原型张成的独立子空间，并在特征图上施加空间竞争实现精确部件定位。该方法简化了训练流程，同时以紧凑的局部区域形成可解释分类证据，兼顾精度与解释性。",
+      "llm_tldr": "原型部件模型解释性强，但通常训练流程复杂且需要额外正则防止原型坍缩。OPAL提出单阶段端到端框架，用预定义正交基锚定潜空间，把每个类别嵌入由固定部件原型张成的独立子空间，并在特征图上施加空间竞争实现精确部件定位。该方法简化了训练流程，同时以紧凑的局部区域形成可解释分类证据，兼顾精度与解释性。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "visual recognition algorithms",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2609.01310v1",
+      "source": "arxiv",
+      "title": "GazeRefine: Expert Gaze as a Test-Time Prompt for Training-Free Medical Image Segmentation",
+      "abstract": "Medical image segmentation remains difficult to scale because high-performing methods typically rely on dense expert annotations and task-specific training. We introduce GazeRefine, a training-free framework that uses gaze as an inference-time prompt for zero-shot medical image segmentation. Sparse, duration-weighted fixations are converted into foreground and background priors that initialize semantic prototypes in frozen DINOv3 feature space. These prototypes are iteratively refined through foreground-background discrimination, feature-space affinity propagation, and anchoring to the initial gaze guidance, allowing segmentation to extend beyond directly fixated regions while limiting semantic drift. GazeRefine requires no segmentation masks, fine-tuning, adapters, prompt encoders, or gradient updates. We evaluate the method on gaze-annotated polyp segmentation and prostate MRI segmentation. The results show strong performance on colonoscopy images and competitive performance on prostate MRI, supporting gaze-guided prototype refinement as a promising approach for segmentation-label-efficient, human-in-the-loop medical image segmentation. Our tools and code can be found in the following repository: https://github.com/MohammedOussamaBEN/GazeRefine.git",
+      "authors": [
+        "Mohammed Oussama Benyahia",
+        "Marouane Tliba",
+        "Mohamed Amine Kerkouri",
+        "Taifour Yousra",
+        "Bin Wang",
+        "Max Bengtsson",
+        "Gorkem Durak",
+        "Elif Keles",
+        "Zuheng Ming",
+        "Marek Penhaker",
+        "Azeddine Beghdadi",
+        "Ulas Bagci",
+        "Aladine Chetouani"
+      ],
+      "primary_category": "eess.IV",
+      "categories": [
+        "eess.IV",
+        "cs.AI",
+        "cs.CV",
+        "cs.HC",
+        "cs.LG"
+      ],
+      "published": "2026-09-01T14:34:59+00:00",
+      "link": "https://arxiv.org/pdf/2609.01310v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "training-free zero-shot medical image segmentation with gaze-guided semantic prototypes",
+      "llm_evidence_cn": "以专家凝视作为提示的免训练医学图像分割技术",
+      "llm_evidence": "以专家凝视作为提示的免训练医学图像分割技术",
+      "canonical_evidence": "以专家凝视作为提示的免训练医学图像分割技术",
+      "llm_tldr_en": "GazeRefine converts sparse expert gaze into foreground/background priors that initialize semantic prototypes in frozen DINOv3 space, iteratively refining them by affinity propagation and anchoring to achieve training-free zero-shot medical segmentation.",
+      "llm_tldr_cn": "医疗图像分割难以规模化是因为高性能方法通常需要密集专家标注和任务特训。GazeRefine利用稀疏且带时长加权的专家注视，在冻结的DINOv3特征空间中初始化前景与背景语义原型，并通过判别细化、特征亲和传播和初始锚定迭代更新原型。该方法无需分割训练即可将分割推广到未被直接注视的区域并抑制语义漂移，为借助轻量眼动提示实现零样本医学图像分割提供了新途径。",
+      "llm_tldr": "医疗图像分割难以规模化是因为高性能方法通常需要密集专家标注和任务特训。GazeRefine利用稀疏且带时长加权的专家注视，在冻结的DINOv3特征空间中初始化前景与背景语义原型，并通过判别细化、特征亲和传播和初始锚定迭代更新原型。该方法无需分割训练即可将分割推广到未被直接注视的区域并抑制语义漂移，为借助轻量眼动提示实现零样本医学图像分割提供了新途径。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "image segmentation techniques",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2608.29003v1",
+      "source": "arxiv",
+      "title": "RoSe-SLAM: Robust Semantic-Aware Gaussian Splatting SLAM from Dynamic Monocular Videos",
+      "abstract": "In dynamic and unstructured environments, conventional SLAM systems generally suffer from significant accuracy degeneration due to their static assumptions. In this work, we propose Robust Semantic-aware Gaussian Splatting SLAM (RoSe-SLAM), to address the dynamic challenge by a holistic semantic scene understanding from uncalibrated monocular inputs, achieving accurate camera tracking and high-quality geometry reconstruction. Unlike conventional semantic SLAM using handcrafted semantic labels, our RoSe-SLAM exploits the semantic feature from 2D foundation model to enhance the dynamic tracking and mapping performance. By distilling the rich semantic features to our Gaussian fields, our method effectively identifies dynamic distractors and achieves semantic-aware multi-view consistency, significantly enhancing the geometric reconstruction and scene inpainting. Specifically, we propose a spatial-temporal motion mask generation module, enabling both long-term motion monitoring and short-term transient dynamics capturing, achieving robust and effective disentanglement of dynamic objects and static backgrounds. During global bundle adjustment, we propose an occlusion-aware keyframe selection mechanism to prioritize the occlusion as metric to pick the keyframes, and a multi-view semantic consistency module to improve the mapping quality in dynamic environments. By combining geometric motion cues with semantic priors, our system dynamically filters unreliable observations and reconstructs accurate static scene geometry. Extensive experiments conducted on benchmark datasets including dynamic TUM, Bonn and Wild-Mocap datasets, demonstrate that our method achieves superior performance in both trajectory estimation and static scene mapping, outperforming existing dynamic RGB SLAM baselines in long-term dynamic indoor environments.",
+      "authors": [
+        "Wenting Wang",
+        "Jiaxin Guo",
+        "Wenzhen Dong",
+        "Yun-Hui Liu",
+        "Charlie C. L. Wang",
+        "Yeung Yam"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-08-29T02:26:23+00:00",
+      "link": "https://arxiv.org/pdf/2608.29003v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Semantic-aware Gaussian Splatting SLAM from dynamic monocular videos as a computer vision research paper",
+      "llm_evidence_cn": "动态单目视频中语义感知高斯溅射SLAM，是计算机视觉研究论文",
+      "llm_evidence": "动态单目视频中语义感知高斯溅射SLAM，是计算机视觉研究论文",
+      "canonical_evidence": "动态单目视频中语义感知高斯溅射SLAM，是计算机视觉研究论文",
+      "llm_tldr_en": "RoSe-SLAM leverages semantic features distilled from a 2D foundation model into Gaussian fields to handle dynamic distractors in monocular video, achieving robust camera tracking and high-quality geometry reconstruction without handcrafted labels.",
+      "llm_tldr_cn": "动态非结构化环境中，传统SLAM因静态假设导致精度退化。RoSe-SLAM结合高斯溅射与语义基础模型，将2D基础模型提取的语义特征蒸馏进高斯场，从而感知并剔除行人与车辆等动态干扰，实现鲁棒的单目相机跟踪与几何重建。与手工标签或专用语义方法不同，该方法利用通用基础模型提升语义理解，适应动态环境变化，增强SLAM在实际场景中的稳健性。",
+      "llm_tldr": "动态非结构化环境中，传统SLAM因静态假设导致精度退化。RoSe-SLAM结合高斯溅射与语义基础模型，将2D基础模型提取的语义特征蒸馏进高斯场，从而感知并剔除行人与车辆等动态干扰，实现鲁棒的单目相机跟踪与几何重建。与手工标签或专用语义方法不同，该方法利用通用基础模型提升语义理解，适应动态环境变化，增强SLAM在实际场景中的稳健性。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "computer vision research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2609.00591v1",
+      "source": "arxiv",
+      "title": "A Glance Is All You Need: Single-Pass Fine-Grained Image Captioning with SimLoss",
+      "abstract": "An image may be worth a thousand words, but most captioning models describe it in only a few. Modern vision-language models produce fluent high-level captions, yet routinely miss the attributes, counts, textures, materials, and spatial relations that make an image visually specific. Recent multi-stage systems recover some of these details through generation, decomposition, verification, and rewriting, but they do so at the expense of substantially higher inference latency.   We propose SimLoss, a reference-free embedding-space objective for single-pass fine-grained image captioning. SimLoss trains a vision-language model to align its projected hidden-state representation with a frozen image embedding through an InfoNCE contrastive loss, supplying a dense visual supervision signal before any text is decoded, and requiring neither human-written fine-grained captions nor pseudo-captions from a multi-stage pipeline. We instantiate it as SimLoss FFT, which backpropagates through a locally available embedding model, and SimLoss GRPO, which treats that model as a black-box reward.   Compared with single-pass, multi-stage verification, reward-optimized, and perception-aware baselines, the fully differentiable fine-tuning variant, SimLoss FFT, achieves the highest precision while nearly matching the F1 score of the multi-stage method, all while retaining single-pass inference and running roughly 20 times faster than the multi-stage pipeline.   The reward-based variant SimLoss GRPO attains the strongest recall. Together, these results show that embedding-space supervision can recover the quality of multi-stage verification at the latency of a single-pass captioner.",
+      "authors": [
+        "Suryaansh Jain",
+        "Rahasya Barkur",
+        "Vishal G",
+        "Ryan Rossi",
+        "Franck Dernoncourt",
+        "Jack Wang",
+        "Koustava Goswami",
+        "Nedim Lipka",
+        "Puneet Mathur",
+        "Samyadeep Basu",
+        "Seunghyun Yoon"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-01T02:31:34+00:00",
+      "link": "https://arxiv.org/pdf/2609.00591v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "computer vision research on fine-grained image captioning with embedding alignment",
+      "llm_evidence_cn": "面向细粒度图像描述生成的对比嵌入对齐方法，属于计算机视觉与视觉语言研究",
+      "llm_evidence": "面向细粒度图像描述生成的对比嵌入对齐方法，属于计算机视觉与视觉语言研究",
+      "canonical_evidence": "面向细粒度图像描述生成的对比嵌入对齐方法，属于计算机视觉与视觉语言研究",
+      "llm_tldr_en": "Proposes SimLoss, a reference-free contrastive embedding objective that aligns hidden states with a frozen image embedding, enabling single-pass fine-grained image captioning while avoiding multi-stage refinement latency.",
+      "llm_tldr_cn": "现有图像描述模型往往只生成高层概览，遗漏属性、数量、材质和空间关系等内容；多阶段生成与验证虽可补细节但推理延迟高。本文提出SimLoss，在特征空间利用InfoNCE对比损失将语言模型隐状态与冻结图像嵌入对齐，使单次前向解码就能输出细粒度描述。该方案免除了参考答案与多阶段流水线，为兼顾细节与速度的图像描述训练提供了新目标。",
+      "llm_tldr": "现有图像描述模型往往只生成高层概览，遗漏属性、数量、材质和空间关系等内容；多阶段生成与验证虽可补细节但推理延迟高。本文提出SimLoss，在特征空间利用InfoNCE对比损失将语言模型隐状态与冻结图像嵌入对齐，使单次前向解码就能输出细粒度描述。该方案免除了参考答案与多阶段流水线，为兼顾细节与速度的图像描述训练提供了新目标。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "computer vision research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2609.00775v1",
+      "source": "arxiv",
+      "title": "VOIM: Training-Free Open-Vocabulary 3D Instance Mapping for RGB-D and Monocular SLAM",
+      "abstract": "We present Voxel-Grounded Online Instance Manager (VOIM), a training-free voxel-grounded instance manager that builds open-vocabulary 3D instance maps from RGB-D or from monocular RGB alone, a regime no prior training-free system addresses. Online systems typically segment object instances and label them at first detection, committing when evidence is weakest. VOIM instead defers label and instance decisions until soft evidence from unmodified, off-the-shelf perception has accumulated per voxel across views. We show that the mapping stage, rather than the particular perception models, carries the result: across four perception configurations on ScanNet++, varying the region descriptor, the detector label prior and the mask source, the map exceeds the strongest online RGB-D system, OVO-SLAM, by between 4.8 and 11.7 mIoU. Perception is not neutral, and substituting that baseline's own descriptor family costs 4.1 of the margin, yet the baseline carries the marginally better 2D descriptor (33.7 vs. 31.5 mIoU over three scenes) and still realizes the weaker map. Under a like-for-like protocol VOIM reaches 44.07 mIoU on ScanNet++ against 32.37, winning all ten scenes and both aggregations (pooled 33.31 vs. 25.97), and the same system runs unchanged to fully monocular RGB, matching that baseline pooled on Replica (27.80 vs. 27.50). The advantage is regime-specific: under Replica's all-classes scoring, matched inputs give a split result, 28.60 vs. 27.50 pooled against 24.59 vs. 30.11 on the per-scene mean. Room scale is label-limited and building scale drift-limited. Labeling does not run in real time, dominated by per-class detection over the full vocabulary. The maps export occupancy grids and resolve free-form queries to object instances.",
+      "authors": [
+        "Sangmin Song",
+        "Sarath Kodagoda",
+        "Marc G. Carmichael",
+        "Karthick Thiyagarajan",
+        "Amal Gunatilake",
+        "Kelly Prentice",
+        "Jodi Martin"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-09-01T06:07:25+00:00",
+      "link": "https://arxiv.org/pdf/2609.00775v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Open-vocabulary 3D instance mapping using voxel-grounded segmentation and mapping",
+      "llm_evidence_cn": "基于体素接地的开放词汇3D实例映射，涉及实例分割与场景建图",
+      "llm_evidence": "基于体素接地的开放词汇3D实例映射，涉及实例分割与场景建图",
+      "canonical_evidence": "基于体素接地的开放词汇3D实例映射，涉及实例分割与场景建图",
+      "llm_tldr_en": "VOIM is a training-free voxel-grounded instance manager that builds open-vocabulary 3D instance maps from RGB-D or monocular RGB, deferring label and instance decisions until accumulating soft evidence across views from off-the-shelf perception models.",
+      "llm_tldr_cn": "在线3D映射通常在首次检测时就决定实例与标签，而证据不足会引发错误。VOIM提出免训练的体素接地实例管理器，利用现成的感知模型逐体素累计弱证据，延迟标签与实例归属决策，从而在RGB-D或单目RGB输入下构建开放词汇3D实例地图。跨多种感知配置的实验表明，映射阶段而非具体感知模型对结果起主导作用，显示了任务后决策机制的稳健性与通用性。",
+      "llm_tldr": "在线3D映射通常在首次检测时就决定实例与标签，而证据不足会引发错误。VOIM提出免训练的体素接地实例管理器，利用现成的感知模型逐体素累计弱证据，延迟标签与实例归属决策，从而在RGB-D或单目RGB输入下构建开放词汇3D实例地图。跨多种感知配置的实验表明，映射阶段而非具体感知模型对结果起主导作用，显示了任务后决策机制的稳健性与通用性。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "image segmentation techniques",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2609.00995v1",
+      "source": "arxiv",
+      "title": "CQF-HMR: Continuous Quaternion Flows for Probabilistic 3D Human Mesh Recovery from a Single Image",
+      "abstract": "Recovering 3D digital humans from a single 2D image is an ill-posed computer vision problem due to the loss of depth information. Probabilistic 3D human pose estimation compensates for this by estimating a set of 3D hypotheses from a prior distribution via generative models. However, most prior work focuses only on 3D keypoints, which often leads to implausible poses that are difficult to apply to downstream tasks, e.g. animation or digital humans. SMPL-based methods are more scalable thanks to the explicit body priors, but it requires more complex modeling of the generation process due to the non-additive nature of the joint rotations. In this work, we propose a novel approach for probabilistic 3D humans using quaternion-constrained continuous normalizing flows conditioned on 2D pose estimations. Our proposed quaternion flows show significant advantages over approaches using other rotation representations. Experiments demonstrate state-of-the-art results of our method on Human3.6M, particularly in ambiguous settings, and comparable pose estimation accuracy on challenging 3DPW and EMDB benchmarks.",
+      "authors": [
+        "Cuong Le",
+        "Bao-Long Tran",
+        "Pavlo Melnyk",
+        "Tahereh Dehdarirad",
+        "Bastian Wandt",
+        "Mårten Wadenbäck"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-01T09:45:38+00:00",
+      "link": "https://arxiv.org/pdf/2609.00995v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "probabilistic 3D human mesh recovery from a single image using quaternion-based flows",
+      "llm_evidence_cn": "基于四元数流的单图概率性3D人体网格恢复",
+      "llm_evidence": "基于四元数流的单图概率性3D人体网格恢复",
+      "canonical_evidence": "基于四元数流的单图概率性3D人体网格恢复",
+      "llm_tldr_en": "Presents CQF-HMR, a generative approach that models joint rotations as continuous quaternion flows to produce multiple plausible SMPL 3D human meshes from one image, better supporting animation and human digitalization.",
+      "llm_tldr_cn": "单图3D人体重建因深度信息缺失本质上是不适定问题，现有概率法多局限于3D关键点，输出姿态不真实并难以用于动画。本文提出CQF-HMR，用连续四元数流对SMPL关节旋转进行概率建模，从而生成多个姿态自然、完整的3D人体网格假设。相比只预测关键点的模型，该方法借助显式人体先验和四元数表征提升了生成姿态的合理性，为数字人制作等下游应用提供了支持。",
+      "llm_tldr": "单图3D人体重建因深度信息缺失本质上是不适定问题，现有概率法多局限于3D关键点，输出姿态不真实并难以用于动画。本文提出CQF-HMR，用连续四元数流对SMPL关节旋转进行概率建模，从而生成多个姿态自然、完整的3D人体网格假设。相比只预测关键点的模型，该方法借助显式人体先验和四元数表征提升了生成姿态的合理性，为数字人制作等下游应用提供了支持。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "computer vision research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2608.30506v1",
+      "source": "arxiv",
+      "title": "Anomaly Detection on Small Industrial Components via Vision-Based Tactile Sensing",
+      "abstract": "Automated inspection of small industrial components, including sub-centimetre-scale parts where defects are geometry-driven and poorly resolved by standard optical cameras, calls for sensing modalities that can directly capture fine surface geometry. Vision-based tactile sensors address this need by converting contact imprints into high-resolution image-like data compatible with existing deep-learning pipelines, yet their effective use for industrial anomaly detection (AD) remains largely unexplored. This work systematically evaluates unsupervised AD methods on a real tactile dataset covering five genuine industrial components acquired with a GelSight Mini sensor mounted on a collaborative robot. Four feature-embedding methods, SPADE, PaDiM, FAPM, and InReaCh, are compared under three validations explicitly motivated by the deployment constraints of contact-based sensing: a Good Fraction analysis establishing the minimum number of nominal contacts for stable performance, directly bounded by gel wear since every acquisition degrades the soft interface; a cross-position evaluation assessing generalization across different contact locations observing the same recurring surface pattern; and a low- versus high-resolution comparison evaluating the cost-benefit of higher-resolution tactile acquisition. Overall, this systematic benchmarking study provides practical guidance for researchers and practitioners adopting vision-based tactile sensing for industrial AD and shows how this modality can serve as a viable alternative for industrial quality-control tasks.",
+      "authors": [
+        "G. F. Preziosa",
+        "M. Casiglia",
+        "M. Faroni",
+        "A. M. Zanchettin",
+        "P. Rocco"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-08-31T09:40:35+00:00",
+      "link": "https://arxiv.org/pdf/2608.30506v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "computer vision anomaly detection on vision-based tactile sensing images",
+      "llm_evidence_cn": "基于视觉触觉成像的异常检测与特征嵌入方法评估",
+      "llm_evidence": "基于视觉触觉成像的异常检测与特征嵌入方法评估",
+      "canonical_evidence": "基于视觉触觉成像的异常检测与特征嵌入方法评估",
+      "llm_tldr_en": "Evaluates unsupervised anomaly detection on real tactile sensing images of tiny industrial parts, comparing feature-embedding methods such as SPADE and PaDiM acquired with a GelSight Mini on a robot.",
+      "llm_tldr_cn": "亚厘米级工业部件缺陷常由几何因素驱动，普通光学相机难以充分分辨，视觉触觉传感器可将接触痕迹转为高分辨率类图像数据进行检测。本文在协作机器人搭载的GelSight Mini上获取五种真实工业部件的触觉数据集，系统比较SPADE、PaDiM等四种特征嵌入型无监督异常检测方法。结果表明这类图像数据可直接对接深度学习流形异常检测流程，为视觉触觉在工业质检中的应用提供了初步评测依据。",
+      "llm_tldr": "亚厘米级工业部件缺陷常由几何因素驱动，普通光学相机难以充分分辨，视觉触觉传感器可将接触痕迹转为高分辨率类图像数据进行检测。本文在协作机器人搭载的GelSight Mini上获取五种真实工业部件的触觉数据集，系统比较SPADE、PaDiM等四种特征嵌入型无监督异常检测方法。结果表明这类图像数据可直接对接深度学习流形异常检测流程，为视觉触觉在工业质检中的应用提供了初步评测依据。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "computer vision research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2608.29408v1",
+      "source": "arxiv",
+      "title": "A Visual Question Answering Model to Automate Nondestructive Evaluation Image Analysis",
+      "abstract": "This study introduces a Visual Question Answering model designed specifically for nondestructive evaluation applications. VQA models allow inspectors to interactively query NDE images, asking targeted questions like, Is there a crack or Where is the defect located and receive precise answers from the model. Leveraging deep learning and natural language processing, the developed system integrates image feature extraction (via a ResNet-50 model) and language generation capabilities (via GPT-2) to provide accurate, informative feedback. By enabling direct question-and-answer interactions, this VQA model significantly improves inspection efficiency, reduces potential errors, and enhances usability in practical field scenarios.",
+      "authors": [
+        "Mehrdad Shafiei Dizaji",
+        "Hoda Azari"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.LG"
+      ],
+      "published": "2026-08-29T19:19:45+00:00",
+      "link": "https://arxiv.org/pdf/2608.29408v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "integrates ResNet-50 image feature extraction with language generation for VQA on NDE images",
+      "llm_evidence_cn": "将ResNet-50图像特征提取与GPT-2语言生成集成，用于无损检测图像的问答分析",
+      "llm_evidence": "将ResNet-50图像特征提取与GPT-2语言生成集成，用于无损检测图像的问答分析",
+      "canonical_evidence": "将ResNet-50图像特征提取与GPT-2语言生成集成，用于无损检测图像的问答分析",
+      "llm_tldr_en": "Presents a visual question answering system that combines a ResNet-50 image feature extractor with a GPT-2 language generator to let nondestructive-evaluation inspectors ask questions about cracks and defect locations.",
+      "llm_tldr_cn": "无损检测图像判读往往依赖人工经验，效率低且易出错。该研究构建了一个面向无损评估的视觉问答模型：用ResNet-50提取图像视觉特征，用GPT-2生成自然语言回答，使检验员能直接询问是否存在裂纹或缺陷位于何处等问题。模型通过端到端集成视觉与语言模块，提供准确且可理解的反馈。实验与场景分析显示该方案能提高检测效率、减少漏判，并增强现场可用性。",
+      "llm_tldr": "无损检测图像判读往往依赖人工经验，效率低且易出错。该研究构建了一个面向无损评估的视觉问答模型：用ResNet-50提取图像视觉特征，用GPT-2生成自然语言回答，使检验员能直接询问是否存在裂纹或缺陷位于何处等问题。模型通过端到端集成视觉与语言模块，提供准确且可理解的反馈。实验与场景分析显示该方案能提高检测效率、减少漏判，并增强现场可用性。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "feature extraction in computer vision",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2608.30782v1",
+      "source": "arxiv",
+      "title": "PixelIR: Fidelity-Perception Decoupling via Pixel-Space Image-Residual Flow Matching for Efficient One-Step Real-World Super-Resolution",
+      "abstract": "Real-world image super-resolution (Real-ISR) aims to preserve structures supported by the degraded observation while reconstructing perceptually realistic details. However, existing Real-ISR methods largely optimize fidelity and perceptual quality within a shared network, causing the two objectives to interfere throughout training and making their balance difficult to control. Recent one-step methods reduce sampling steps, yet often inherit both this coupled optimization behavior and the expensive high-resolution backbone of their multi-step predecessors. We argue that efficient Real-ISR requires not only a shorter sampling trajectory, but also specialized modeling of faithful reconstruction and perceptual detail synthesis. Based on this insight, we propose PixelIR, a fidelity-perception decoupling framework built upon pixel-space image-residual flow matching. PixelIR first learns an image flow that maps the degraded observation to a faithful reconstruction. Then, a residual flow synthesizes the missing perceptual details from noise without repeatedly relearning or overwriting the complete restoration solution. We further distill the teacher into a deployment-oriented one-step student within a coarse-to-fine pyramid architecture. Extensive experiments show that PixelIR achieves leading PSNR, SSIM, and LPIPS on both RealSR and DRealSR. The final model completes pixel-space restoration in a single evaluation with only 32.9M parameters, 89.7G MACs, and 8.5ms latency, demonstrating a strong practical fidelity-perception-efficiency balance.",
+      "authors": [
+        "Bingtian Qiao",
+        "Yue Shi",
+        "Yong Guo",
+        "Wenjun Zhang",
+        "Jiezhang Cao"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-31T13:39:54+00:00",
+      "link": "https://arxiv.org/pdf/2608.30782v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "computer vision research on single-step real-world image super-resolution with residual flow matching",
+      "llm_evidence_cn": "像素空间图像残差流匹配实现高效单步真实图像超分辨率的视觉研究",
+      "llm_evidence": "像素空间图像残差流匹配实现高效单步真实图像超分辨率的视觉研究",
+      "canonical_evidence": "像素空间图像残差流匹配实现高效单步真实图像超分辨率的视觉研究",
+      "llm_tldr_en": "Proposes PixelIR, using pixel-space image-residual flow matching to decouple fidelity and perception, enabling efficient one-step real-world image super-resolution without multi-step heavy backbones.",
+      "llm_tldr_cn": "真实图像超分辨率既要保留退化观测所支持的结构，又要重建出感知真实的细节，但现有方法常在共享网络里耦合保真与感知目标，难以控制二者平衡。本文提出PixelIR，通过像素空间图像残差流匹配将保真重建与感知细节生成解耦，从而用单步采样完成超分辨率。该方案缩短了采样轨迹，同时减少对高分辨率背骨的依赖，为高效真实图像超分辨率提供了新的建模思路。",
+      "llm_tldr": "真实图像超分辨率既要保留退化观测所支持的结构，又要重建出感知真实的细节，但现有方法常在共享网络里耦合保真与感知目标，难以控制二者平衡。本文提出PixelIR，通过像素空间图像残差流匹配将保真重建与感知细节生成解耦，从而用单步采样完成超分辨率。该方案缩短了采样轨迹，同时减少对高分辨率背骨的依赖，为高效真实图像超分辨率提供了新的建模思路。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "computer vision research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2609.02359v1",
+      "source": "arxiv",
+      "title": "TempoGround: State-Aware Streaming Visual Grounding with Vision-Language Models",
+      "abstract": "Visual grounding maps language referents to spatial targets and is central to open-vocabulary perception with vision-language models. Existing methods have made substantial progress on single-frame and video-based visual grounding, yet under streaming inputs they still suffer from identity drift, cross-frame inconsistency, and fragile localization under partial occlusion. To address these issues, we present TempoGround, a VLM-native framework that detects cross-frame object correspondence and explicitly models object presence states, thereby enabling accurate and consistent visual grounding under streaming inputs. The key is a curriculum prediction mechanism guided by state-aware cross-frame correspondence: TempoGround resolves 2D instance association, predicts whether each object newly enters, continues in, or leaves the view, decodes the 2D box, and then lifts it to a camera-frame 3D box. As token-level supervision alone cannot capture the geometric objectives of streaming grounding, we further introduce Streaming Grounding Reinforcement (SGR), which optimizes TempoGround with verifiable Grounding, Identity, and Consistency rewards, jointly reinforcing persistent localization and temporally consistent predictions. We carefully design a three-stage training strategy and train TempoGround on large-scale data. We evaluate visual grounding under causally streaming inputs on multiple challenging benchmarks: TempoGround improves F1_2D@0.5 and F1_2D@0.95 by 4.4 and 0.5 on average, and F1_3D@0.25 and AP_3D by 6.2 and 7.5, respectively. These results demonstrate that TempoGround provides a practical foundation for visual grounding under streaming inputs.",
+      "authors": [
+        "Leqian Ding",
+        "Junning Qiu",
+        "Manwen Yang",
+        "Yu Guo",
+        "Fei Wang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-02T09:30:08+00:00",
+      "link": "https://arxiv.org/pdf/2609.02359v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Vision-language model research on streaming visual grounding with cross-frame correspondence and object presence state modeling",
+      "llm_evidence_cn": "结合跨帧对应与目标存在状态建模的视觉语言模型流式视觉定位研究",
+      "llm_evidence": "结合跨帧对应与目标存在状态建模的视觉语言模型流式视觉定位研究",
+      "canonical_evidence": "结合跨帧对应与目标存在状态建模的视觉语言模型流式视觉定位研究",
+      "llm_tldr_en": "TempoGround is a VLM-native streaming visual grounding framework that models object presence states and cross-frame instance correspondence through curriculum prediction, addressing identity drift, cross-frame inconsistency, and fragile localization under occlusion.",
+      "llm_tldr_cn": "针对视觉语言模型在流式输入下进行视觉定位时面临的身份漂移、跨帧不一致与遮挡定位脆弱问题，提出TempoGround框架。它在视觉语言模型内部检测跨帧目标对应并显式建模目标出现状态，利用状态感知的课程式预测机制完成二维实例关联，保证持续输入下的定位一致性。实验旨在验证该方法能减少身份漂移并改善部分遮挡时的定位稳定性，为动态开放词汇感知提供了新的设计方向。",
+      "llm_tldr": "针对视觉语言模型在流式输入下进行视觉定位时面临的身份漂移、跨帧不一致与遮挡定位脆弱问题，提出TempoGround框架。它在视觉语言模型内部检测跨帧目标对应并显式建模目标出现状态，利用状态感知的课程式预测机制完成二维实例关联，保证持续输入下的定位一致性。实验旨在验证该方法能减少身份漂移并改善部分遮挡时的定位稳定性，为动态开放词汇感知提供了新的设计方向。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "computer vision research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2609.03406v1",
+      "source": "arxiv",
+      "title": "Neural-Collapse-guided Task-Free Continual Anomaly Detection",
+      "abstract": "Recent years have witnessed growing interest in continual anomaly detection for industrial visual inspection. However, real-world manufacturing environments exhibit unpredictable shifts in data distributions, rendering task-dependent continual learning assumptions impractical. To address this limitation, we formulate industrial anomaly detection as a task-free continual learning problem and propose NC-TFAD, a neural-collapse-inspired, geometry-driven framework for learning from non-stationary data streams without task boundaries. NC-TFAD freezes a pretrained backbone and aligns streaming features to a simplex Equiangular Tight Frame (ETF) prototype space to stabilize representation geometry under non-stationary streams. To satisfy the NC-inspired geometric construction in the absence of real anomalies, we generate synthetic anomaly samples as auxiliary anchors during training. Building on this geometry, we further introduce inter- and intra-class regularization together with a Focal Neural Collapse Contrastive (FNCC) loss to suppress representation drift and improve normal-anomaly separability. Finally, a normal-patch-prototype-guided localization branch constructs calibrated patch-wise deviation maps from normal training samples and fuses them with a weak self-attention prior, producing anomaly heatmaps without pixel-level annotations. Extensive experiments on MVTec AD and VisA show that NC-TFAD consistently outperforms representative task-free continual learning methods adapted from general vision, as well as unified anomaly detection baselines, in both image-level detection and pixel-level localization under the task-free continual learning protocol. These results highlight that geometry-driven modeling offers an effective and robust solution for task-free continual anomaly detection in real-world industrial applications.",
+      "authors": [
+        "Xiaotong Kong",
+        "Chaoyang Song",
+        "Ziai Zhou",
+        "Jinxia Zhang",
+        "Kanjian Zhang",
+        "Haikun Wei"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-03T06:04:21+00:00",
+      "link": "https://arxiv.org/pdf/2609.03406v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "task-free continual anomaly detection for industrial visual inspection using neural-collapse geometry",
+      "llm_evidence_cn": "面向工业视觉检测的无任务持续异常检测方法，属于图像识别与异常识别方向",
+      "llm_evidence": "面向工业视觉检测的无任务持续异常检测方法，属于图像识别与异常识别方向",
+      "canonical_evidence": "面向工业视觉检测的无任务持续异常检测方法，属于图像识别与异常识别方向",
+      "llm_tldr_en": "Formulates industrial anomaly detection as task-free continual learning and proposes NC-TFAD, which aligns streaming features to an equiangular tight-frame prototype space with a frozen backbone to stabilize representations under drift.",
+      "llm_tldr_cn": "工业视觉检测中的数据分布会非预期偏移，使基于任务边界的持续学习假设难以成立。本文将工业异常检测建模为无任务持续学习问题，提出NC-TFAD：冻结预训练骨干，将流式图像特征对齐到单纯形等角紧框架原型空间，借助神经坍缩的几何约束稳定非平稳流上的表征。该方法不依赖任务边界即可持续更新正常与异常模式，提升对新分布异常的适应能力与抗遗忘性。实验证明其几何对齐机制在持续视觉异常检测中有效。",
+      "llm_tldr": "工业视觉检测中的数据分布会非预期偏移，使基于任务边界的持续学习假设难以成立。本文将工业异常检测建模为无任务持续学习问题，提出NC-TFAD：冻结预训练骨干，将流式图像特征对齐到单纯形等角紧框架原型空间，借助神经坍缩的几何约束稳定非平稳流上的表征。该方法不依赖任务边界即可持续更新正常与异常模式，提升对新分布异常的适应能力与抗遗忘性。实验证明其几何对齐机制在持续视觉异常检测中有效。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "visual recognition algorithms",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}
