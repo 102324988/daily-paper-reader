@@ -1,0 +1,601 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-09-07T22:59:45.808959+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 10,
+    "deep_cap": 6,
+    "deep_selected": 6,
+    "quick_candidates": 9,
+    "quick_skim_target": 11,
+    "quick_selected": 9
+  },
+  "deep_dive": [
+    {
+      "id": "2609.03384v1",
+      "source": "arxiv",
+      "title": "FoRIS: Progressive Foreground Refinement for Training-Free In-Context Segmentation",
+      "abstract": "In-Context Segmentation (ICS) aims to precisely segment arbitrary semantic concepts, such as objects or parts, given one or a few annotated visual exemplars. In this paper, we revisit ICS from a more classical segmentation perspective, viewing it as a coarse-to-fine progressive refinement process. Rather than directly predicting the final mask through reference-query matching, we progressively refine the segmentation from coarse and ambiguous foreground responses to precise and complete foreground structures. Building upon this perspective, we propose a training-free in-context segmentation framework, termed FoRIS. Specifically, FoRIS consists of three key stages: Foreground Purification, Foreground Localization, and Foreground Consolidation, which progressively suppress background distractions, localize discriminative target regions, and recover complete foreground structures through semantic aggregation. Experimental results demonstrate that FoRIS achieves SOTA performance across semantic and part segmentation tasks, with average improvements of 4.5 and 4.8 mIoU points over existing approaches in the 1-shot and 5-shot settings, respectively. Code: https://github.com/Xi-Mu-Yu/FoRIS.",
+      "authors": [
+        "Ming Hu",
+        "Jianfu Yin",
+        "Mingyu Dou",
+        "Miaomiao Zhang",
+        "Yao Wang",
+        "Cong Hu",
+        "Bingliang Hu",
+        "Quan Wang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-03T05:38:07+00:00",
+      "link": "https://arxiv.org/pdf/2609.03384v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Presents a training-free in-context segmentation framework based on progressive foreground refinement",
+      "llm_evidence_cn": "提出基于前景渐进细化的免训练上下文分割框架",
+      "llm_evidence": "提出基于前景渐进细化的免训练上下文分割框架",
+      "canonical_evidence": "提出基于前景渐进细化的免训练上下文分割框架",
+      "llm_tldr_en": "FoRIS reframes in-context segmentation as coarse-to-fine foreground refinement with three stages: foreground purification, localization, and consolidation, enabling precise training-free segmentation from one or a few exemplars.",
+      "llm_tldr_cn": "针对上下文分割直接进行参考-查询匹配预测掩码而容易忽略前景粗糙和模糊的问题，提出免训练的FoRIS框架。该方法从经典分割视角将上下文分割视为由粗到细的前景渐进细化过程，依次执行前景净化、前景定位与前景巩固，从而恢复精确且完整的前景区域。在给定一个或少量标注示例时无需训练即可分割任意语义概念。大量实验表明渐进细化能有效提升上下文分割的精度与完整性。",
+      "llm_tldr": "针对上下文分割直接进行参考-查询匹配预测掩码而容易忽略前景粗糙和模糊的问题，提出免训练的FoRIS框架。该方法从经典分割视角将上下文分割视为由粗到细的前景渐进细化过程，依次执行前景净化、前景定位与前景巩固，从而恢复精确且完整的前景区域。在给定一个或少量标注示例时无需训练即可分割任意语义概念。大量实验表明渐进细化能有效提升上下文分割的精度与完整性。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "image segmentation techniques",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2609.04381v1",
+      "source": "arxiv",
+      "title": "Where Appearance Fails, Geometry Recognizes: A CAD-Free 3D Shape Prior That Complements Vision Foundation Models",
+      "abstract": "Recognizing specific objects onboarded without a labeled training set recurs across manufacturing and service robotics, yet the conventional renderable prior, a computer-aided-design (CAD) model, is often unavailable. Two-dimensional capture supplies no shape prior, and frozen foundation features fail on geometrically similar, low-texture industrial parts. We ask what a short object-centric scan buys for recognition beyond the captured images themselves: each object is reconstructed with 3D Gaussian Splatting (3DGS), summarized into a per-class shape prototype, and fused with frozen DINOv2 image features. First, the scan recovers the recognition value of CAD without CAD: geometry from RGB-D depth (on T-LESS), 3DGS, and CAD gives comparable recognition (tied on HOPE, within 1.6 points on T-LESS); 3DGS is only a convenient route to a point cloud. Second, the payoff is governed by how recognizable the shape is: on shape-distinctive household objects (HOPE) geometry alone reaches 0.920 versus image-only 0.832, a ceiling below which fixed-weight fusion (0.872) sits. On shape-confusable textureless industrial parts (T-LESS) the gain is modest but consistent (0.560 to 0.591 fused, above both single signals). Third, the prior is complementary, not uniformly additive: it rescues far more image failures than it breaks successes, and its benefit grows under partial occlusion. Finally, the worth lies in geometry, not rendered pixels: 3DGS renderings do not help the image side, and frozen-feature recognition is nearly lighting-invariant (within 2.5 points). The study is scoped to recognition, not the BOP pose benchmark.",
+      "authors": [
+        "Chenxi Tao",
+        "Seung-Kyum Choi"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI",
+        "cs.RO"
+      ],
+      "published": "2026-09-03T18:42:59+00:00",
+      "link": "https://arxiv.org/pdf/2609.04381v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "CAD-free 3D shape prior fused with vision foundation features for industrial object recognition",
+      "llm_evidence_cn": "结合无CAD三维形状先验与视觉特征进行工业目标识别",
+      "llm_evidence": "结合无CAD三维形状先验与视觉特征进行工业目标识别",
+      "canonical_evidence": "结合无CAD三维形状先验与视觉特征进行工业目标识别",
+      "llm_tldr_en": "Proposes recognizing industrial objects without CAD models by reconstructing a short object-centric scan with 3D Gaussian Splatting, building per-class prototypes, and fusing them with frozen DINOv2 features where appearance alone is unreliable.",
+      "llm_tldr_cn": "在无标签训练集且缺乏CAD模型的工业与服务机器人场景中，仅靠二维外观的视觉基础模型常无法区分几何相似的低纹理部件。该文利用短时目标中心扫描，用3D高斯泼溅重建对象，生成每类形状原型，并与冻结的DINOv2图像特征融合。结果显示该扫描补回了CAD的形状先验价值，解决了仅外观识别失效的问题，为工业部件在库识别提供了无需CAD的可行范式。",
+      "llm_tldr": "在无标签训练集且缺乏CAD模型的工业与服务机器人场景中，仅靠二维外观的视觉基础模型常无法区分几何相似的低纹理部件。该文利用短时目标中心扫描，用3D高斯泼溅重建对象，生成每类形状原型，并与冻结的DINOv2图像特征融合。结果显示该扫描补回了CAD的形状先验价值，解决了仅外观识别失效的问题，为工业部件在库识别提供了无需CAD的可行范式。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "visual recognition algorithms",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2609.04392v1",
+      "source": "arxiv",
+      "title": "FAVE: Foveated Adaptive Visual Encoding for Efficient Fine-Grained Visual Understanding",
+      "abstract": "Fine-grained visual understanding depends on local detail, yet visual encoders face a trade-off between costly full-image high-resolution processing and compact global encoding that can weaken such evidence. Inspired by human active vision, we separate where to look from what to encode. We focus on the latter and introduce FAVE (Foveated Adaptive Visual Encoding), a lightweight variable-resolution ViT that encodes externally selected regions at high acuity while preserving native geometry. We first isolate this encoding problem using oracle ground-truth crops in a controlled small-object regime. On ImageNet objects with a native maximum side of 96 pixels, FAVE improves Top-1 by 9.4 points over a fixed-resolution ViT on the same crop window with 12.7 times lower FLOPs. Increasing global resolution or backbone capacity does not recover the same operating point. We then integrate FAVE as a complementary local branch in FastVLM. Its local tokens are combined with FastVLM's global visual tokens, while the original global pathway and language model remain frozen. With at most 16 additional local tokens, FAVE improves TextVQA by 1.60 points and achieves a 3.3 times controlled TTFT speedup over SmolVLM2-2.2B. On GQA attribute questions, it improves FastVLM-1.5B by 1.31 points, extending the benefit beyond text while narrowing the gap to FastVLM-7B. Together, these results show that selectively allocating high-acuity local capacity provides an efficient complement to broader global representations and model scaling for fine-grained understanding of small objects, text, and attributes.",
+      "authors": [
+        "Amitangshu Mukherjee",
+        "Kaushik Roy"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-03T18:58:41+00:00",
+      "link": "https://arxiv.org/pdf/2609.04392v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "adaptive visual encoding method for fine-grained visual understanding and ImageNet classification",
+      "llm_evidence_cn": "面向细粒度视觉理解与图像分类的自适应编码算法",
+      "llm_evidence": "面向细粒度视觉理解与图像分类的自适应编码算法",
+      "canonical_evidence": "面向细粒度视觉理解与图像分类的自适应编码算法",
+      "llm_tldr_en": "FAVE is a lightweight variable-resolution ViT that encodes selected high-acuity regions while preserving geometry, improving fine-grained visual recognition accuracy on small objects.",
+      "llm_tldr_cn": "针对细粒度视觉理解对局部细节敏感且固定高分辨率处理成本高的问题，提出FAVE——一种轻量级变分辨率ViT。它将外部选中的关注区域以高清晰度编码，同时保持图像的原始几何结构。在最大边长仅96像素的ImageNet物体上，FAVE较同裁剪下固定分辨率ViT的Top-1精度提升9.4个百分点。该工作表明将“看哪里”与“编码什么”分离能高效提升细节识别能力。",
+      "llm_tldr": "针对细粒度视觉理解对局部细节敏感且固定高分辨率处理成本高的问题，提出FAVE——一种轻量级变分辨率ViT。它将外部选中的关注区域以高清晰度编码，同时保持图像的原始几何结构。在最大边长仅96像素的ImageNet物体上，FAVE较同裁剪下固定分辨率ViT的Top-1精度提升9.4个百分点。该工作表明将“看哪里”与“编码什么”分离能高效提升细节识别能力。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "visual recognition algorithms",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2609.04948v1",
+      "source": "arxiv",
+      "title": "VICAL: Vicinal Consistency Alignment for Long-Tailed Visual Recognition",
+      "abstract": "Multi-expert models have become the dominant paradigm for long-tailed learning, largely attributed to their presumed ability to benefit from expert diversity. However, we revisit this central assumption and reveal that diversity induced by logit adjustment or explicit regularizers does not guarantee better ensemble accuracy. Our work suggests that multi-expert models benefit more from variance reduction than diversity maximization. We introduce \\textbf{VICAL}, a \\textbf{VI}cinal \\textbf{C}onsistency \\textbf{AL}ignment framework that improves long-tailed recognition not by enforcing expert diversity, but by reducing prediction variance. Specifically, our approach comprises two key components: Self-Consistency Learning and Deep Ensemble Distillation. Self-Consistency Learning discourages reliance on unstable high-frequency information, smoothing the local loss landscape and mitigating overfitting, especially for tail classes. Deep Ensemble Distillation promotes cross-expert low-frequency semantic agreement using a low-resolution view, thereby sidestepping optimization conflicts with established knowledge. Extensive experiments on CIFAR-LT, ImageNet-LT, and iNaturalist 2018 show that VICAL consistently outperforms state-of-the-art methods, validating the effectiveness of our consistency-driven design. Our code is available at \\href{https://github.com/FlamieZhu/Vicinal-Consistency-Alignment}{VICAL}.",
+      "authors": [
+        "Jiangang Zhu",
+        "Zheng Wang",
+        "Bin Zhu",
+        "Yi-Ping Phoebe Chen",
+        "Jingjing Chen"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-09-04T09:55:12+00:00",
+      "link": "https://arxiv.org/pdf/2609.04948v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Long-tailed visual recognition framework improving ensemble accuracy by variance reduction",
+      "llm_evidence_cn": "面向长尾视觉识别的VICAL方法，通过降低集成预测方差提升精度",
+      "llm_evidence": "面向长尾视觉识别的VICAL方法，通过降低集成预测方差提升精度",
+      "canonical_evidence": "面向长尾视觉识别的VICAL方法，通过降低集成预测方差提升精度",
+      "llm_tldr_en": "Reveals that expert diversity in long-tailed ensembles does not guarantee accuracy and proposes VICAL with Self-Consistency Learning and Deep Ensemble Distillation to reduce prediction variance and improve long-tailed recognition.",
+      "llm_tldr_cn": "长尾识别常用多专家集成提升性能，但论文发现专家多样性并不必然带来更高集成精度。作者提出VICAL框架，用方差控制替代多样性最大化，通过邻域一致性对齐约束不同专家的预测，并加入深度集成蒸馏。该方法有效降低整体预测方差，在长尾视觉识别基准上取得更稳定且更优的结果，为多专家长尾学习提供新思路。",
+      "llm_tldr": "长尾识别常用多专家集成提升性能，但论文发现专家多样性并不必然带来更高集成精度。作者提出VICAL框架，用方差控制替代多样性最大化，通过邻域一致性对齐约束不同专家的预测，并加入深度集成蒸馏。该方法有效降低整体预测方差，在长尾视觉识别基准上取得更稳定且更优的结果，为多专家长尾学习提供新思路。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "visual recognition algorithms",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2609.05049v1",
+      "source": "arxiv",
+      "title": "Efficient Multi-Timescale Event Representations for Feed-Forward Object Detection",
+      "abstract": "Autonomous systems require robust low-latency perception under rapidly changing scene dynamics and challenging illumination. In event cameras object detection commonly relies on recurrent architectures to accumulate sparse temporal information over time. This work investigates how temporal information can be encoded directly within the event representation. We propose a confidence-normalized continuous multi-timescale representation based on logarithmic B-spline temporal encoding together with a geometry-aware local confidence mechanism that exploits the spatial structure of event generation. Using a fixed feed-forward EventCenterNet detector, we show that the proposed representations consistently outperform the compact CSTR representation on PEDRo and Gen1 datasets. We further introduce a recursive exponential-polynomial approximation that enables efficient event-by-event updates while largely preserving detection performance. These results demonstrate that carefully designed event representations can capture a substantial portion of the temporal information learned through recurrent temporal modeling, providing a promising foundation for efficient feed-forward, event-driven, and future neuromorphic object detection.",
+      "authors": [
+        "Fredrik Lundell",
+        "Per-Erik Forssen",
+        "Mårten Wadenbäck",
+        "Astrid Lundmark"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-04T12:12:26+00:00",
+      "link": "https://arxiv.org/pdf/2609.05049v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Object detection with event cameras; feed-forward representation for low-latency detection",
+      "llm_evidence_cn": "事件相机前馈目标检测表示，直接面向低延迟目标检测",
+      "llm_evidence": "事件相机前馈目标检测表示，直接面向低延迟目标检测",
+      "canonical_evidence": "事件相机前馈目标检测表示，直接面向低延迟目标检测",
+      "llm_tldr_en": "Introduces confidence-normalized multi-timescale event representations with B-spline temporal encoding and geometry-aware confidence, improving feed-forward event-camera object detection over compact temporal representations.",
+      "llm_tldr_cn": "事件相机目标检测通常使用循环架构随时间累积稀疏事件，导致低延迟检测受限。本文研究如何将时间信息直接编码进事件表示，提出基于对数B样条时间编码的置信度归一化连续多时间尺度表示，并结合利用事件生成几何结构的局部置信度机制。在固定前馈EventCenterNet检测器上，该表示一致优于紧凑的CSTR表示。结果表明，合理设计的事件表示可让前馈模型高效处理事件流，为低延迟目标检测提供有力支持。",
+      "llm_tldr": "事件相机目标检测通常使用循环架构随时间累积稀疏事件，导致低延迟检测受限。本文研究如何将时间信息直接编码进事件表示，提出基于对数B样条时间编码的置信度归一化连续多时间尺度表示，并结合利用事件生成几何结构的局部置信度机制。在固定前馈EventCenterNet检测器上，该表示一致优于紧凑的CSTR表示。结果表明，合理设计的事件表示可让前馈模型高效处理事件流，为低延迟目标检测提供有力支持。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "object detection methods",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2609.05242v1",
+      "source": "arxiv",
+      "title": "Few-Shot Video Recognition via Hierarchical Metric Learning",
+      "abstract": "Few-shot action recognition (FSAR) aims to recognize unseen action categories with only a small number of annotated video samples. Recent works typically apply single-prototype supervision at the network output and fail to sufficiently exploit rich cross-frame global spatial information in videos. Even existing multi-level metric schemes only impose parallel prototype constraints on intermediate layers, without progressive supervision along the full feature pipeline, which results in limited generalization ability of the learned class prototypes. Inspired by this, we present a novel method, hierarchical metric learning for few-shot action recognition (HML-FSAR). First, a spatial-enhanced module is developed to capture cross-frame global spatial representations. Combined with temporal MHA, heterogeneous alignment, spatial-temporal feature fusion and dictionary learning modules, it constructs the complete feature processing pipeline. Second, a hierarchical metric learning (HML) strategy is embedded into HML-FSAR. Composed of center metric, alignment metric, contrastive metric, dictionary metric and prototype metric, HML imposes progressive multi-stage complementary constraints from frame-level representations to final class prototypes, so as to jointly optimize feature compactness, heterogeneous spatial-temporal alignment, inter-class discriminability and anti-noise robustness. The proposed HML-FSAR method is validated on five widely-used FSAR datasets, and experimental results fully demonstrate its effectiveness.",
+      "authors": [
+        "Jiaxin Zhang",
+        "Haoran Gao",
+        "Xizhan Gao",
+        "Zihao Dong",
+        "Tingwei Wang",
+        "Sijie Niu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-04T15:07:44+00:00",
+      "link": "https://arxiv.org/pdf/2609.05242v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Few-shot video action recognition using hierarchical metric learning",
+      "llm_evidence_cn": "基于分层度量学习的小样本视频动作识别",
+      "llm_evidence": "基于分层度量学习的小样本视频动作识别",
+      "canonical_evidence": "基于分层度量学习的小样本视频动作识别",
+      "llm_tldr_en": "HML-FSAR captures cross-frame global spatial representations and imposes progressive prototype constraints along the feature hierarchy, yielding improved few-shot video action recognition.",
+      "llm_tldr_cn": "小样本视频识别旨在极少标注样本下识别未见动作类别，但已有方法多在网络输出施加单原型监督，未能充分利用视频中跨帧全局空间信息。本文提出分层度量学习HML-FSAR：先设计空间增强模块捕捉跨帧全局空间表示，再沿完整特征流水线逐步施加原型监督，而非简单并行约束中间层。实验结果表明该方法提升了类原型的泛化能力，在多个小样本动作识别基准上取得更好性能。分层渐进式原型学习为少样本视频理解提供了有效示范。",
+      "llm_tldr": "小样本视频识别旨在极少标注样本下识别未见动作类别，但已有方法多在网络输出施加单原型监督，未能充分利用视频中跨帧全局空间信息。本文提出分层度量学习HML-FSAR：先设计空间增强模块捕捉跨帧全局空间表示，再沿完整特征流水线逐步施加原型监督，而非简单并行约束中间层。实验结果表明该方法提升了类原型的泛化能力，在多个小样本动作识别基准上取得更好性能。分层渐进式原型学习为少样本视频理解提供了有效示范。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "visual recognition algorithms",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2609.04348v1",
+      "source": "arxiv",
+      "title": "Object Concepts Emerge from Motion",
+      "abstract": "Object-centric visual representations are important for physical-world perception, but existing visual pretraining methods often capture semantic categories without preserving the identity and coherence of individual instances. We present a biologically inspired framework that learns object-centric representations for single images from raw videos. Our approach uses motion boundaries as a source of object-level grouping: off-the-shelf optical flow and clustering produce pseudo-instance masks, which supervise a single-image encoder with pixel-level pairwise metric learning. The framework requires neither human annotations nor camera calibration. We first obtain 195 million pseudo-labeled frames from 7,163 hours of driving and web videos, then expand the supervision to 421 million frames with Motion-Verified Self-Training, which combines model proposals with motion evidence. We train encoders up to Swin-H and distill the learned representations into a family of Swin backbones. Across monocular depth estimation, 3D object detection, 3D occupancy prediction, and end-to-end planning, the resulting models achieve competitive or superior performance relative to supervised and self-supervised pretraining baselines, with particularly strong transfer on geometry- and instance-sensitive tasks. These results show that motion-derived supervision can teach static image encoders to represent visual instances, providing a complementary direction for scalable visual pretraining.",
+      "authors": [
+        "Boshi Li",
+        "Xiaohui Wang",
+        "Xiaoyang Wu",
+        "Zhichao Li",
+        "Ya Yang",
+        "Naiyan Wang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-03T18:11:53+00:00",
+      "link": "https://arxiv.org/pdf/2609.04348v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Self-supervised object-centric feature learning from motion-derived pseudo-instance masks without human annotation",
+      "llm_evidence_cn": "无需人工标注，由运动伪实例掩膜自监督学习图像编码器表征",
+      "llm_evidence": "无需人工标注，由运动伪实例掩膜自监督学习图像编码器表征",
+      "canonical_evidence": "无需人工标注，由运动伪实例掩膜自监督学习图像编码器表征",
+      "llm_tldr_en": "Learns object-centric single-image representations from raw video by converting motion boundaries and optical-flow clustering into instance pseudo-masks, then training a single-image encoder with pixel-level pairwise metric learning, requiring no human annotation.",
+      "llm_tldr_cn": "物体中心的视觉表征对物理世界感知很重要，但现有预训练常只保留语义类别而丢失个体身份连贯性。该工作提出生物启发的自监督框架，从在线视频中利用光流和聚类产生运动边界伪实例掩膜，不依赖人工标注或相机标定即可训练单图像编码器做像素级成对度量学习。即使在数亿帧大规模数据上扩展，模型也能从单张图像涌现出保身份一致的物体概念，成为下游感知任务的强基础。",
+      "llm_tldr": "物体中心的视觉表征对物理世界感知很重要，但现有预训练常只保留语义类别而丢失个体身份连贯性。该工作提出生物启发的自监督框架，从在线视频中利用光流和聚类产生运动边界伪实例掩膜，不依赖人工标注或相机标定即可训练单图像编码器做像素级成对度量学习。即使在数亿帧大规模数据上扩展，模型也能从单张图像涌现出保身份一致的物体概念，成为下游感知任务的强基础。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "feature extraction in computer vision",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2609.04555v1",
+      "source": "arxiv",
+      "title": "DART: Depth-as-Target Pretraining for Surgical Vision Foundation Models",
+      "abstract": "Vision foundation models (VFMs) are valuable in data-scarce domains such as surgery, where a single pretrained backbone can provide rich representations for many downstream tasks. Yet the dominant self-supervised pretraining paradigm uses only RGB images, leaving readily available complementary signals, such as depth maps, unused. This is a particular missed opportunity in surgery, where natural-image VFMs transfer poorly while the scene geometry is rich and informative. With strong off-the-shelf models now able to produce pseudo-labeled dense depth for any image corpus, we hypothesize that such signals can be folded into pretraining to learn better representations. We present DART, an RGB-D pretraining recipe that builds on DINOv2 with a simple modification: a pixel-space depth reconstruction objective applied to masked iBOT patches, supervised by pseudo-labeled depth. Depth is used only during pretraining, so fine-tuning and inference remain RGB-only. We find that this pixel-level reconstruction head improves representation quality rather than disrupting it. We further show that depth, which encodes scene geometry, is more effective as a target than alternative dense signals such as Canny edges, confirming that the gains stem from depth rather than added supervision alone. Across eight surgical benchmarks spanning segmentation, depth estimation, and image-level recognition, DART outperforms both natural-image and in-domain baselines, including a vanilla DINOv2 trained on identical data, improving dense prediction while also strengthening image-level understanding. More broadly, DART shows that freely available geometric pseudo-labels can strengthen foundation model pretraining without extra labels or added inference cost, pointing toward stronger backbones for surgery.",
+      "authors": [
+        "John J. Han",
+        "Adam Schmidt",
+        "Muhammad Abdullah Jamal",
+        "Jie Ying Wu",
+        "Omid Mohareri"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-03T23:20:53+00:00",
+      "link": "https://arxiv.org/pdf/2609.04555v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Depth-as-target self-supervised pretraining to improve visual representations for surgical foundation models",
+      "llm_evidence_cn": "以伪深度为训练目标增强外科视觉基础模型的表征学习",
+      "llm_evidence": "以伪深度为训练目标增强外科视觉基础模型的表征学习",
+      "canonical_evidence": "以伪深度为训练目标增强外科视觉基础模型的表征学习",
+      "llm_tldr_en": "Presents DART, an RGB-D pretraining recipe for surgical vision foundation models that folds pseudo-labeled dense depth into DINOv2 training, improving representation transfer in data-scarce surgical domains.",
+      "llm_tldr_cn": "外科数据稀少，视觉基础模型可以提供共享骨干，但主流自监督预训练只用RGB，没有利用手术场景丰富而关键的深度几何。论文提出DART，借助成熟的模型为任意图像语料生成稠密伪深度，在DINOv2上加入深度作为目标完成RGB-D自监督预训练。实验表明含深度目标的预训练让外科下游任务迁移表现更好，是一种简单有效的表征增强方式。",
+      "llm_tldr": "外科数据稀少，视觉基础模型可以提供共享骨干，但主流自监督预训练只用RGB，没有利用手术场景丰富而关键的深度几何。论文提出DART，借助成熟的模型为任意图像语料生成稠密伪深度，在DINOv2上加入深度作为目标完成RGB-D自监督预训练。实验表明含深度目标的预训练让外科下游任务迁移表现更好，是一种简单有效的表征增强方式。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "feature extraction in computer vision",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2609.04846v1",
+      "source": "arxiv",
+      "title": "LetOccVote: Learning Weakly Supervised 3D Occupancy through Consensus",
+      "abstract": "Weakly supervised 3D occupancy prediction reduces the reliance on costly 3D annotations by learning from 2D pseudo-labels generated by vision foundation models. However, existing methods typically use these imperfect pseudo-labels directly as supervision, making occupancy learning vulnerable to erroneous geometric and semantic targets. We observe that agreement across repeated observations provides an inexpensive and reliable cue for assessing pseudo-label reliability. Based on this observation, we propose \\textbf{LetOccVote}, a weakly supervised Gaussian-based occupancy framework that leverages cross-frame voting to improve both geometric and semantic supervision. For geometry, Depth Vote exploits cross-frame geometric agreement to refine supported pseudo depth and reject contradictory estimates before volumetric lifting and depth supervision. For semantics, Semantic Vote aggregates pseudo-semantic observations in a shared 3D space to identify reliable and contested evidence, strengthening reliable semantic supervision while filtering unreliable pseudo-label segments. The entire framework is trained solely with 2D pseudo-label supervision without requiring 3D occupancy annotations. On Occ3D-nuScenes, LetOccVote achieves 53.27 IoU and 20.39 mIoU, establishing state-of-the-art performance among methods with 2D pseudo-label supervision.",
+      "authors": [
+        "Chi Zhang",
+        "Qi Song",
+        "Feifei Li",
+        "Jie Li",
+        "Rui Huang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-04T08:03:57+00:00",
+      "link": "https://arxiv.org/pdf/2609.04846v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Weakly supervised 3D occupancy prediction via cross-frame consensus, a 3D scene understanding task in computer vision",
+      "llm_evidence_cn": "基于跨帧共识的弱监督3D占用预测，属计算机视觉三维场景理解任务",
+      "llm_evidence": "基于跨帧共识的弱监督3D占用预测，属计算机视觉三维场景理解任务",
+      "canonical_evidence": "基于跨帧共识的弱监督3D占用预测，属计算机视觉三维场景理解任务",
+      "llm_tldr_en": "LetOccVote refines weak 2D pseudo-labels for 3D occupancy by exploiting cross-frame geometric and semantic agreement with Gaussian-based depth voting, improving robustness against noisy supervision.",
+      "llm_tldr_cn": "弱监督3D占用预测通过视觉基础模型生成的2D伪标签减少昂贵的3D标注依赖，但伪标签中有几何与语义错误，直接作为监督会使模型损伤。本文提出LetOccVote，基于高斯的占用学习框架，利用跨帧观测的一致性评估伪标签可靠性。深度投票利用几何一致性修正支撑点的深度，语义部分也通过跨帧共识改善监督；在标准数据集上，该方法显著提升了弱监督3D占用的几何与语义精度。跨帧共识为解决伪标签噪声提供了有效思路。",
+      "llm_tldr": "弱监督3D占用预测通过视觉基础模型生成的2D伪标签减少昂贵的3D标注依赖，但伪标签中有几何与语义错误，直接作为监督会使模型损伤。本文提出LetOccVote，基于高斯的占用学习框架，利用跨帧观测的一致性评估伪标签可靠性。深度投票利用几何一致性修正支撑点的深度，语义部分也通过跨帧共识改善监督；在标准数据集上，该方法显著提升了弱监督3D占用的几何与语义精度。跨帧共识为解决伪标签噪声提供了有效思路。",
+      "llm_tags": [
+        "query:cv:composite"
+      ],
+      "matched_query_tag": "query:cv:composite",
+      "matched_query_text": "Papers central to 计算机视觉相关论文, especially work that connects or combines: computer vision research papers; object detection methods; image segmentation techniques; visual recognition algorithms; feature extraction in computer vision; visual tracking surveys; Find papers on computer vision; Retrieve computer vision research articles; Search for state of the art in computer vision.",
+      "matched_requirement_id": "req-composite-cv",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.04369v1",
+      "source": "arxiv",
+      "title": "AdaptVPR: Route-Aware Hard Positive Generation for Robust Visual Place Recognition",
+      "abstract": "Visual Place Recognition (VPR) localizes a query image by retrieving database images of the same or nearby place, yet its robustness is often degraded by domain shifts arising from illumination, weather, seasonal changes, and dynamic occlusions. One contributing factor is the limited appearance diversity of the same place in existing training data. To address this issue, we propose AdaptVPR, a route-aware generative augmentation framework that constructs same-place hard positives for robust VPR training. AdaptVPR first uses a vision language model to parse scene attributes and estimate editing feasibility, while a rule-based scheduler determines the generation route according to editability scores and risk constraints. The generation process is decomposed into three complementary routes: the Global Appearance Route introduces global scene changes in weather, illumination, and time of day; the Local Occlusion Route inserts plausible dynamic occluders; and the Dual Route combines both types of perturbations to produce more challenging appearance shifts. Each generated candidate is evaluated using a VPR-oriented verification scheme based on geometric consistency and appearance diversity, reducing the risk of structural drift while ensuring sufficient appearance variation. Global candidates are generated once and rejected if verification fails, while Local Occlusion and Dual candidates use verification feedback for limited prompt refinement and regeneration. Using this framework, we construct AdaptCities, containing 160K verified synthetic same-place hard positives. Experiments across multiple VPR baselines and vision foundation backbones show consistent gains on standard benchmarks and substantial improvements under challenging domain shifts, with R@1 gains of up to 9.2%. The source code and data resources are publicly available at https://github.com/chenshunpeng/AdaptVPR.",
+      "authors": [
+        "Shunpeng Chen",
+        "Jingyi Zhang",
+        "Changwei Wang",
+        "Shengpeng Xu",
+        "Yukun Song",
+        "Xingtian Pei",
+        "Jinzhou Lin",
+        "Li Guo",
+        "Shibiao Xu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-03T18:34:17+00:00",
+      "link": "https://arxiv.org/pdf/2609.04369v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Robust visual place recognition via route-aware hard positive generation with generative augmentation",
+      "llm_evidence_cn": "VPR地点识别的域偏移鲁棒性增强，利用生成难正样本",
+      "llm_evidence": "VPR地点识别的域偏移鲁棒性增强，利用生成难正样本",
+      "canonical_evidence": "VPR地点识别的域偏移鲁棒性增强，利用生成难正样本",
+      "llm_tldr_en": "For robust visual place recognition, route-aware generation creates hard positives: a VLM judges scene editability and a scheduler controls generation routes, enriching same-place appearance diversity in training and improving robustness to illumination, weather, and seasonal shifts.",
+      "llm_tldr_cn": "视觉地点识别需要检索同一地点的图像，但光照、天气与季节变化会造成域偏移，而同一地点训练样本外观多样性不足。AdaptVPR提出路线感知的生成式增强框架，先用视觉语言模型解析场景属性并估计编辑可行性，再由规则调度器根据可编辑性和风险约束决定生成路径。该方法为同一地点生成困难正样本用于训练，从而扩展外观多样性。在域偏移场景下可提升地点检索鲁棒性，展示了可控生成缓解VPR数据瓶颈的价值。",
+      "llm_tldr": "视觉地点识别需要检索同一地点的图像，但光照、天气与季节变化会造成域偏移，而同一地点训练样本外观多样性不足。AdaptVPR提出路线感知的生成式增强框架，先用视觉语言模型解析场景属性并估计编辑可行性，再由规则调度器根据可编辑性和风险约束决定生成路径。该方法为同一地点生成困难正样本用于训练，从而扩展外观多样性。在域偏移场景下可提升地点检索鲁棒性，展示了可控生成缓解VPR数据瓶颈的价值。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "visual recognition algorithms",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2609.04690v1",
+      "source": "arxiv",
+      "title": "Enhancing Multimodal Emotion Recognition via Multi-Feature Encoding and Attention-Based Fusion",
+      "abstract": "Multimodal emotion recognition has attracted growing interest due to its importance in human-computer interaction, remote education, and healthcare. This paper proposes a novel multimodal emotion recognition framework that integrates rich audio and visual feature extraction with an attention-based fusion strategy. For audio, we extract three complementary feature types: semantic embeddings from Wav2Vec2, MFCC features, and statistical acoustic descriptors such as pitch, energy, and rhythm. These are aligned and fused via a BiLSTM to capture temporal dependencies. For video, we propose a ResNet50-BiLSTM architecture that combines deep residual learning and sequential modeling to extract expressive spatiotemporal features from facial sequences. To enhance multimodal synergy, we introduce a feature-level fusion mechanism based on multi-head attention, allowing the model to adaptively weigh contributions across modalities. Experiments conducted on the MELD and IEMOCAP datasets demonstrate that our model significantly outperforms baselines in both accuracy and robustness. Furthermore, ablation studies show that the attention-based fusion strategy significantly improves performance in unbalanced data settings. Our findings suggest that the proposed framework effectively captures diverse emotional cues from speech and visual expressions, and offers a practical and generalizable approach for real-world multimodal emotion recognition tasks.",
+      "authors": [
+        "Xu Lin",
+        "Ke Wang",
+        "Hui Kang",
+        "Xinying Wang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI",
+        "cs.LG"
+      ],
+      "published": "2026-09-04T03:40:16+00:00",
+      "link": "https://arxiv.org/pdf/2609.04690v1",
+      "tags": [
+        "keyword:cv"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Integrates visual feature extraction with audio features and attention-based fusion for multimodal recognition",
+      "llm_evidence_cn": "用ResNet50-BiLSTM做视觉多特征编码并注意力融合，契合视觉特征提取",
+      "llm_evidence": "用ResNet50-BiLSTM做视觉多特征编码并注意力融合，契合视觉特征提取",
+      "canonical_evidence": "用ResNet50-BiLSTM做视觉多特征编码并注意力融合，契合视觉特征提取",
+      "llm_tldr_en": "This multimodal emotion recognition framework extracts Wav2Vec2, MFCC, and acoustic descriptors for audio and spatiotemporal facial features with ResNet50-BiLSTM for video, then fuses them by attention. Multi-feature encoding plus attentive alignment improves recognition in human-computer interaction contexts.",
+      "llm_tldr_cn": "多模态情感识别依赖音频与视觉信息的有效融合，现有模型常未充分利用特征互补性。该文设计多特征编码管道：音频使用Wav2Vec2语义嵌入、MFCC和统计声学描述，经BiLSTM捕获时序；视频使用ResNet50-BiLSTM提取面部时空表征，再以注意力机制完成跨模态融合。实验表明加入多种音频视觉特征与注意力融合能提升情感识别性能。该方法为人机交互与情感计算提供了可扩展的融合框架。",
+      "llm_tldr": "多模态情感识别依赖音频与视觉信息的有效融合，现有模型常未充分利用特征互补性。该文设计多特征编码管道：音频使用Wav2Vec2语义嵌入、MFCC和统计声学描述，经BiLSTM捕获时序；视频使用ResNet50-BiLSTM提取面部时空表征，再以注意力机制完成跨模态融合。实验表明加入多种音频视觉特征与注意力融合能提升情感识别性能。该方法为人机交互与情感计算提供了可扩展的融合框架。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "feature extraction in computer vision",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2609.05397v1",
+      "source": "arxiv",
+      "title": "CrossDepth: Geometry-Constrained Attention for Generalizable Multi-View Surround Depth Estimation",
+      "abstract": "Reliable 3D understanding of the surrounding environment is a core requirement for autonomous driving. Multi-view surround camera rigs provide broad scene coverage, but the spatially adjacent images typically overlap only minimally. Consequently, the depth of most pixels must be inferred from monocular appearance cues. These cues can appear differently across images and may therefore be interpreted differently by the depth estimation model. We target two main sources of cross-image inconsistency: differences in camera intrinsics and the limited receptive field of each image. We address the former by conditioning the features on per-pixel camera-aware ray embeddings, enabling the network to account for camera-dependent variations in monocular cues. We address the latter by extending each pixel's context beyond its own image through cross-image attention constrained to geometrically plausible regions, derived from the calibrated rig setup. The model is trained in a fully self-supervised manner based on photometric consistency. Evaluations on DDAD and nuScenes show improved overall depth accuracy and cross-image depth consistency over state-of-the-art self-supervised methods under in-domain and cross-domain evaluation. Code is available at https://abualhanud.github.io/CrossDepthPage/.",
+      "authors": [
+        "Samer Abualhanud",
+        "Max Mehltretter"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.RO"
+      ],
+      "published": "2026-09-04T17:45:06+00:00",
+      "link": "https://arxiv.org/pdf/2609.05397v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Multi-view surround depth estimation for autonomous driving, a central computer vision 3D perception task",
+      "llm_evidence_cn": "面向自动驾驶的多视角环视深度估计，属计算机视觉三维感知核心任务",
+      "llm_evidence": "面向自动驾驶的多视角环视深度估计，属计算机视觉三维感知核心任务",
+      "canonical_evidence": "面向自动驾驶的多视角环视深度估计，属计算机视觉三维感知核心任务",
+      "llm_tldr_en": "Presents CrossDepth, a depth estimation network that conditions features on camera-aware ray embeddings and applies geometry-constrained attention to improve cross-image consistency in multi-view surround depth estimation.",
+      "llm_tldr_cn": "可靠的三维场景理解是自动驾驶的核心需求，多视角环视相机为车辆提供广覆盖，但相邻图像重叠极小，大部分像素深度需依靠单目外观线索推断。针对相机内参差异与有限感受野导致的跨图像不一致，本文提出CrossDepth，将特征按像素相机感知射线条件化，并设计几何约束注意力来扩大感受野。该网络可适应相机参数差异，提升多视角环视深度估计的泛化性。相关工作为自动驾驶多相机三维感知提供了更稳健的深度估计方案。",
+      "llm_tldr": "可靠的三维场景理解是自动驾驶的核心需求，多视角环视相机为车辆提供广覆盖，但相邻图像重叠极小，大部分像素深度需依靠单目外观线索推断。针对相机内参差异与有限感受野导致的跨图像不一致，本文提出CrossDepth，将特征按像素相机感知射线条件化，并设计几何约束注意力来扩大感受野。该网络可适应相机参数差异，提升多视角环视深度估计的泛化性。相关工作为自动驾驶多相机三维感知提供了更稳健的深度估计方案。",
+      "llm_tags": [
+        "query:cv:composite"
+      ],
+      "matched_query_tag": "query:cv:composite",
+      "matched_query_text": "Papers central to 计算机视觉相关论文, especially work that connects or combines: computer vision research papers; object detection methods; image segmentation techniques; visual recognition algorithms; feature extraction in computer vision; visual tracking surveys; Find papers on computer vision; Retrieve computer vision research articles; Search for state of the art in computer vision.",
+      "matched_requirement_id": "req-composite-cv",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.04698v1",
+      "source": "arxiv",
+      "title": "LookThere! Sparse Vision by Reinforced Selection",
+      "abstract": "Vision transformers typically treat every image token as equally important, yet for most tasks in computer vision only a fraction are needed. Adaptive computation methods accelerate inference by choosing which tokens to process, but existing methods struggle at extreme sparsity and require heuristics that may not generalize like token diversity and attention scores. We address these limitations with LookThere, achieving a new pareto frontier in performance-compute trade-offs through an end-to-end reinforcement learning framework that jointly trains a shallow input selector and a deep representation extractor. The selector learns where to look and the extractor learns what to see, together saving computation by selecting only what is worth processing for a given task without relying on auxiliary signals. We show that LookThere only selects the task-specific input, excelling at sparse recognition in high-resolution settings (traffic signs, billiards), and maintaining accuracy with as little as 0.2% of the input. It generalizes across tasks and models, including global recognition (ImageNet classification), local recognition (ADE20K segmentation), zero-shot classification (by distillation), and regression (counting). Across all settings, LookThere surpasses state-of-the-art selection to provide a general and scalable framework for specialized and efficient adaptive computation.",
+      "authors": [
+        "Sreehari Rammohan",
+        "Yousef Yassin",
+        "Anthony Fuller",
+        "Junfeng Wen",
+        "Carl Vondrick",
+        "Evan Shelhamer"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.LG"
+      ],
+      "published": "2026-09-04T04:00:43+00:00",
+      "link": "https://arxiv.org/pdf/2609.04698v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Sparse selective attention and adaptive computation for efficient inference in vision transformers",
+      "llm_evidence_cn": "针对视觉Transformer的高效稀疏选择与自适应计算",
+      "llm_evidence": "针对视觉Transformer的高效稀疏选择与自适应计算",
+      "canonical_evidence": "针对视觉Transformer的高效稀疏选择与自适应计算",
+      "llm_tldr_en": "Proposes a reinforcement-learning framework that jointly trains a token selector and a representation extractor for vision transformers, achieving state-of-the-art accuracy-efficiency trade-offs under extreme sparsity.",
+      "llm_tldr_cn": "视觉Transformer通常将每个图像token视为同等重要，但多数计算机视觉任务只需其中少量token即可完成。现有自适应计算方法在极度稀疏下表现不佳，且常依赖token多样性、注意力分数等启发式规则。本文提出LookThere，通过端到端强化学习联合训练浅层输入选择器和深层表示提取器，让选择器学会看哪里、提取器学会看什么。实验表明，LookThere取得了性能与计算量之间的新帕累托前沿，为稀疏视觉推理提供了一种通用高效方法。",
+      "llm_tldr": "视觉Transformer通常将每个图像token视为同等重要，但多数计算机视觉任务只需其中少量token即可完成。现有自适应计算方法在极度稀疏下表现不佳，且常依赖token多样性、注意力分数等启发式规则。本文提出LookThere，通过端到端强化学习联合训练浅层输入选择器和深层表示提取器，让选择器学会看哪里、提取器学会看什么。实验表明，LookThere取得了性能与计算量之间的新帕累托前沿，为稀疏视觉推理提供了一种通用高效方法。",
+      "llm_tags": [
+        "query:cv:composite"
+      ],
+      "matched_query_tag": "query:cv:composite",
+      "matched_query_text": "Papers central to 计算机视觉相关论文, especially work that connects or combines: computer vision research papers; object detection methods; image segmentation techniques; visual recognition algorithms; feature extraction in computer vision; visual tracking surveys; Find papers on computer vision; Retrieve computer vision research articles; Search for state of the art in computer vision.",
+      "matched_requirement_id": "req-composite-cv",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2609.05399v1",
+      "source": "arxiv",
+      "title": "From Interpretability Methods to Interpretable Models",
+      "abstract": "More than a decade in, explainable AI (XAI) for computer vision has assembled a mature toolbox: attribution, feature visualization, concept-based, and circuit-based methods. Yet almost all of the field's effort has gone into building and comparing these methods, and little into the question they were meant to answer---how interpretable are our models, and are we making progress as they evolve? We argue for shifting the field's focus from methods to models, along two complementary lines. One is already within reach: existing tools let us characterize and compare what different models represent and compute. The other is harder, and largely neglected: whether a model can actually be understood by the humans who rely on it---the independent evaluators on whom trust and certification depend, not the experts confirming what they already expect. It can only be measured, not inferred. We review why the toolbox is mature enough to support both, survey the thin body of work comparing models, draw a parallel to systems neuroscience, and close with a model-centric XAI agenda.",
+      "authors": [
+        "Julien Colin",
+        "Nuria Oliver",
+        "Thomas Serre"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.HC"
+      ],
+      "published": "2026-09-04T17:46:33+00:00",
+      "link": "https://arxiv.org/pdf/2609.05399v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Perspective paper on interpretability evaluation of computer vision models; relevant to CV research broadly",
+      "llm_evidence_cn": "关于计算机视觉模型可解释性评估的观点文章，属于计算机视觉研究范畴",
+      "llm_evidence": "关于计算机视觉模型可解释性评估的观点文章，属于计算机视觉研究范畴",
+      "canonical_evidence": "关于计算机视觉模型可解释性评估的观点文章，属于计算机视觉研究范畴",
+      "llm_tldr_en": "A perspective paper arguing that explainable AI for computer vision should shift from building attribution and visualization methods toward evaluating model interpretability and human understanding of models.",
+      "llm_tldr_cn": "计算机视觉的可解释人工智能已积累归因、特征可视化、概念与电路等方法，但几乎没有问模型本身是否可解释、以及随着模型演化是否在进步。论文主张把研究重心从解释方法转向模型评估：一方面用现有工具刻画不同视觉模型表征与计算差异，另一方面评估人类用户是否能够真正理解模型。该观点为可信计算机视觉研究提出新的评估议程。",
+      "llm_tldr": "计算机视觉的可解释人工智能已积累归因、特征可视化、概念与电路等方法，但几乎没有问模型本身是否可解释、以及随着模型演化是否在进步。论文主张把研究重心从解释方法转向模型评估：一方面用现有工具刻画不同视觉模型表征与计算差异，另一方面评估人类用户是否能够真正理解模型。该观点为可信计算机视觉研究提出新的评估议程。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "computer vision research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.05257v1",
+      "source": "arxiv",
+      "title": "Commonsense Reasoning in Computer Vision: Foundations, Recent Advancements, and Future Directions",
+      "abstract": "Commonsense reasoning in computer vision encompasses integrating visual data and contextual knowledge, crucial for enhancing AI's understanding of everyday scenarios. This understanding not only improves machine learning models but also enhances their ability to interact meaningfully with humans and the environment. Unlike CNN-based conventional vision models, which are designed to identify objects within a specific image, incorporating commonsense knowledge enables models to interpret scenes in a more holistic manner, thereby improving their spatial ability to reason about relationships among objects and actions. This integration not only enhances object recognition but also facilitates a deeper understanding of the contextual factors, ultimately leading to more precise predictions and interactions in real-world applications. This paper presents a comprehensive survey of recent developments that integrate commonsense knowledge into computer vision tasks. We systematically review approaches based on knowledge graphs, scene graphs, neuro-symbolic models, and commonsense-augmented transformers. We also outline current limitations related to dataset bias, knowledge incompleteness, and integration challenges. Finally, we highlight prospective research trajectories in cross-modal reasoning, scalable commonsense knowledge injection, and neuro-symbolic hybrid architectures to develop truly intelligent visual systems.",
+      "authors": [
+        "Bahar Uddin Mahmud",
+        "Sumit Barua",
+        "Guan Yue Hong",
+        "Ajay Gupta",
+        "Hexu Liu"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-09-04T15:19:37+00:00",
+      "link": "https://arxiv.org/pdf/2609.05257v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Survey covering foundations, recent advancements, and future directions of commonsense reasoning in computer vision",
+      "llm_evidence_cn": "计算机视觉常识推理综述，梳理最新进展与未来方向，符合SOTA检索需求",
+      "llm_evidence": "计算机视觉常识推理综述，梳理最新进展与未来方向，符合SOTA检索需求",
+      "canonical_evidence": "计算机视觉常识推理综述，梳理最新进展与未来方向，符合SOTA检索需求",
+      "llm_tldr_en": "This survey reviews commonsense reasoning in computer vision: how visual data and contextual knowledge are integrated, why it improves object recognition, spatial relations, and action understanding, and what recent advances and future directions exist beyond conventional CNN-only models.",
+      "llm_tldr_cn": "计算机视觉中的常识推理旨在把视觉数据与语境和世界知识结合，使图像理解从单纯识别物体提升到场景关系和动作推理。该综述系统梳理了这一方向的基础概念、常识知识与视觉模型的集成方式，并回顾近年来的模型与评测进展。相比仅用CNN识别单个物体的传统方法，结合常识使模型能更好地处理空间关系与对象交互。文章展望了面向常识推理的未来研究方向，为视觉场景理解提供了较全面的参考。",
+      "llm_tldr": "计算机视觉中的常识推理旨在把视觉数据与语境和世界知识结合，使图像理解从单纯识别物体提升到场景关系和动作推理。该综述系统梳理了这一方向的基础概念、常识知识与视觉模型的集成方式，并回顾近年来的模型与评测进展。相比仅用CNN识别单个物体的传统方法，结合常识使模型能更好地处理空间关系与对象交互。文章展望了面向常识推理的未来研究方向，为视觉场景理解提供了较全面的参考。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "Search for state of the art in computer vision",
+      "matched_requirement_id": "req-9",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    }
+  ]
+}

@@ -1,0 +1,633 @@
+Title: FAVE: Foveated Adaptive Visual Encoding for Efficient Fine-Grained Visual Understanding
+
+URL Source: https://arxiv.org/pdf/2609.04392v1
+
+Published Time: Mon, 07 Sep 2026 00:14:15 GMT
+
+Number of Pages: 21
+
+Markdown Content:
+# FAVE: Foveated Adaptive Visual Encoding for Efficient Fine-Grained Visual Understanding 
+
+## Amitangshu Mukherjee Kaushik Roy Elmore Family School of Electrical and Computer Engineering Purdue University 
+
+mukher44@purdue.edu kaushik@purdue.edu 
+
+## Abstract 
+
+Fine-grained visual understanding depends on local de-tail, yet visual encoders face a trade-off between costly full-image high-resolution processing and compact global encoding that can weaken such evidence. Inspired by human active vision, we separate where to look from 
+
+what to encode. We focus on the latter and introduce 
+
+FAVE (Foveated Adaptive Visual Encoding), a lightweight variable-resolution ViT that encodes externally selected re-gions at high acuity while preserving native geometry. We first isolate this encoding problem using oracle ground-truth crops in a controlled small-object regime. On Im-ageNet objects with a native maximum side of 96 pixels, FAVE improves Top-1 by 9.4 points over a fixed-resolution ViT on the same crop window with 12 .7× lower FLOPs. In-creasing global resolution or backbone capacity does not recover the same operating point. We then integrate FAVE as a complementary local branch in FastVLM. Its local to-kens are combined with FastVLM’s global visual tokens, while the original global pathway and language model re-main frozen. With at most 16 additional local tokens, FAVE improves TextVQA by 1.60 points and achieves a 3.3× con-trolled TTFT speedup over SmolVLM2-2.2B. On GQA at-tribute questions, it improves FastVLM-1.5B by 1.31 points, extending the benefit beyond text while narrowing the gap to FastVLM-7B. Together, these results show that selec-tively allocating high-acuity local capacity provides an ef-ficient complement to broader global representations and model scaling for fine-grained understanding of small ob-jects, text, and attributes. 
+
+## 1. Introduction 
+
+Image classification has long served as a fundamental task for visual recognition [11, 37]. As visual perception has ex-panded to object detection, segmentation, structured scene understanding, and now vision–language reasoning, pre-serving task-relevant visual evidence has become increas-ingly demanding [21, 26]. In modern vision–language systems, visual encoders provide the perceptual represen-tation that language models use for multimodal reason-ing [2, 22, 27]. This evidence is inherently multi-scale. Global scene structure provides context, while fine local details distinguish small objects, attributes, text, and other task-relevant evidence. A useful visual system must pre-serve both, yet doing so does not require uniformly high spatial resolution across the image. A straightforward way to preserve fine detail is to pro-cess the complete image at high resolution. For Vision Transformers (ViTs), however, higher resolution rapidly in-creases the visual-token count and the cost of global self-attention [14, 29, 50]. With a fixed patch size, doubling both image dimensions produces four times as many visual tokens, including regions where such detail may be unnec-essary. Aggressive global downsampling offers the oppo-site trade-off: it reduces computation but can discard small yet task-relevant evidence before downstream processing. Figure 1(a) summarizes this tension between visual detail and computational efficiency. Selective high-resolution pro-cessing provides a middle ground, retaining global context while directing additional visual computation only to re-gions that require finer detail. Selective processing also allows us to add a lightweight foveated encoder for these regions, rather than enlarging the entire full-image visual backbone. This selective allocation of visual computation is closely related to active vision. Human perception does not sample an entire scene uniformly. Peripheral vision provides coarse global context, while task-driven saccadic eye movements direct the high-acuity fovea toward regions that require finer inspection [7, 18, 32, 34]. This motivates a distinction be-tween where to look and what to encode: spatial selection identifies regions for closer inspection, while high-acuity 
+
+> 1Source photograph: Mendy Van Hoogdalem van Barneveld, Pexels.
+> https://www.pexels.com/photo/photo- of- a- living-room-13675290/
+
+1arXiv:2609.04392v1 [cs.CV] 3 Sep 2026 (a) Why adaptive foveation?      
+
+> Feature loss
+> Uniform high-resolution Global downsampling Adaptive local processing
+> High compute Preserves Detail Loses fine-grained evidence Global context + local detail Efficient Efficient
+
+(b) Active-vision inspired scene understanding      
+
+> Input scene 1. Global peripheral view 2. Object proposals
+> Coarse map Proposal
+> regions
+> 3. Adaptive foveated encoding
+> High –acuity adaptive
+> object-first encoding
+> ViT
+> ViT
+> Variable crops
+> A. Adaptive recognition
+> B. Multimodal Reasoning
+> FG
+> Global and Local tokens
+
+LLM 
+
+> Reasoning
+> Class preds
+
+Figure 1. Motivation and overview of adaptive foveated visual processing. (a) Uniform high-resolution processing preserves fine-grained visual evidence but incurs high computational cost, whereas global downsampling is efficient but can discard locally important details. Selective high-resolution processing retains global context while allocating additional computation to salient local regions. (b) Our approach builds on active vision: a coarse peripheral representation preserves global scene context, candidate regions provide potential gaze targets, and selected regions receive adaptive high-acuity processing. The resulting global and foveated local representations support both adaptive visual recognition and multimodal reasoning. 1
+
+foveated processing preserves the visual evidence within them [15, 47]. Figure 1(b) translates this principle into a computational setup: a global pathway preserves scene context, an external selector determines where to inspect, and selected regions receive high-acuity local processing. As illustrated by the couch and clock, these regions can differ substantially in scale and therefore need not receive the same visual budget. We make the local representa-tion adaptive, allowing spatial resolution and token count to vary across selected regions while keeping computation bounded. This leads to FAVE , our foveated adaptive visual en-coder. Once a region has been selected, FAVE preserves its native geometry rather than forcing it to a common square resolution. Small regions therefore remain computation-ally small, while larger regions can use more visual com-putation within the budget. A variable-resolution vision transformer with factorized positional embeddings supports these region-dependent inputs, while Patch-n-Pack effi-ciently batches the resulting variable-length sequences [10]. These mechanisms enable FAVE, but the central idea is adaptive high-acuity encoding that preserves fine-grained evidence within selected visual regions. We first study FAVE in isolation through object recogni-tion. ImageNet [11] provides a controlled setting for asking how a selected object should be encoded once its location is known. We use ground-truth bounding boxes as oracle spa-tial selections, separating where to look from how to encode what is selected. This isolates the accuracy–compute trade-off of adaptive local encoding and lets us test where addi-tional visual computation is most effective. The same need for fine local evidence arises in vision–language models. Broad scene context may be sufficient for many questions, while others depend on small objects, text, or attributes that can be weakened by compact global encoding. A language model can reason over the evidence it receives, but it can-not reliably reconstruct visual information that was not pre-served by the visual encoder. We use FastVLM [49] as the global pathway because it provides a compact visual-token sequence for efficient scene understanding. FAVE comple-ments this representation by encoding selected regions at higher acuity. The resulting local representations are com-pressed into a small token budget and added to the FastVLM global tokens. The FastVLM global pathway and language 2model remain frozen, isolating the contribution of the lo-cal visual pathway. Together, these settings examine one encoder-side question: can fine-grained evidence within se-lected regions be preserved through targeted local visual capacity while retaining an efficient global representation? ImageNet isolates how to encode a selected region, while the VLM setting tests how that encoding can complement a compact global pathway with limited token and latency overhead. The main contributions of this work are as fol-lows: • We introduce FAVE , a foveated adaptive visual encoder for selected regions. FAVE preserves native geometry and adapts spatial resolution and token count to region scale, avoiding a fixed-resolution representation for every region. • We isolate this encoding principle on ImageNet using or-acle spatial selection. On objects with native maximum side ≤ 96 pixels, FAVE improves Top-1 by 9.4 points over a fixed-resolution ViT on the same crop window with 12.7 × lower FLOPs. The 5.7M-parameter FAVE-T also outperforms substantially larger fixed-resolution ViTs in this regime. • We integrate FAVE as a sparse local complement to FastVLM’s efficient global representation. FastVLM re-tains global scene context, while FAVE contributes a small set of local visual tokens. The original global path-way and language model remain frozen. • On TextVQA, FAVE improves the FastVLM-1.5B base-line by 1.60 points with at most 16 additional local tokens. With FAVE augmentation, FastVLM-1.5B becomes com-petitive with compact VLMs such as SmolVLM2-2.2B, while reducing controlled TTFT by a factor of 3.3 rela-tive to SmolVLM2-2.2B. • We extend the evaluation beyond text to fine-grained ob-ject attributes on GQA. FAVE improves FastVLM-1.5B by 1.31 points with only a 0.42% increase in total pa-rameters, reaching 72.04% attribute accuracy, within 0.68 points of FastVLM-7B. 
+
+## 2. Related Work 
+
+We review related work in three areas: foveated vision, adaptive visual encoding, and efficient multimodal percep-tion. Broader discussion is provided in Appendix A. 
+
+2.1. Foveated vision 
+
+Computational foveation models peripheral vision through eccentricity-dependent blur, pooling, and non-uniform sam-pling [1, 12, 13, 39, 51]. FocL instead processes object-centric crops, but at a fixed resolution [35], while Segment This Thing uses a fixed point-centered foveation pattern with progressively coarser peripheral patches [38]. Given externally selected regions, FAVE preserves their native ge-ometry, allowing local resolution to adapt to each region without imposing a fixed-resolution representation. 
+
+2.2. Efficient and Adaptive Visual Encoding 
+
+Efficient visual encoders reduce cost through architectural design, variable-resolution processing, or token reduction. Swin Transformer, Focal Transformer, and FocalNet struc-ture attention across spatial scales [29, 53, 54], while Effi-cientViT and FastViT target efficient inference [4, 48]. Res-Former and ViTAR support variable or high-resolution in-puts [16, 45], whereas DynamicViT, Adaptive Token Sam-pling, and Token Merging prune, sample, or merge visual tokens [3, 17, 36]. NaViT preserves native image resolu-tion and aspect ratio, with Patch-n-Pack batching variable-length sequences [10]. FAVE applies variable-resolution processing to externally selected regions rather than the full image, preserving native geometry and adapting the local spatial budget without token pruning or learned selection. 
+
+2.3. Efficient and Adaptive Multimodal Perception 
+
+Compact VLMs reduce multimodal cost through smaller language backbones, efficient visual encoders, or compact visual-token sequences. SmolVLM2 and TinyLLaVA tar-get small-scale multimodal models, while FastVLM uses FastViTHD to reduce vision latency and produce a com-pact global visual representation [31, 49, 57]. TokenPacker and VisionZip further reduce the visual sequence before language-model inference [23, 55]. A complementary line of work targets fine-grained per-ception by allocating additional visual detail when the global representation is insufficient. LLaVA-UHD uses adaptive image slicing, while AttWarp, ViCrop, SD-RPN, and Q-Zoom refine or revisit informative image regions [8, 19, 42, 43, 56]. Visual CoT and Foveated Reasoner incor-porate localized visual evidence into the reasoning process, while LLMind adapts image sampling under a constrained pixel budget [9, 33, 40]. Multi-encoder VLMs instead combine complementary visual representations. Mini-Gemini adds a second visual encoder for high-resolution refinement without increasing the visual-token count, while Cambrian-1 studies combina-tions of multiple vision encoders and spatially aggregates their high-resolution features [24, 46]. Our VLM instanti-ation instead uses complementary visual pathways with a different division of labor: FastVLM retains the efficient global representation, while a lightweight FAVE encoder re-encodes externally selected regions. Spatial selection re-mains separate from local encoding, and the resulting lo-cal representations are compressed into a small token bud-get while the global pathway and language model remain frozen. 3h1 x w1 h2 x w2 h3 x w3                     
+
+> 1. Variable object-centric crops 2. Adaptive crop resolution
+> 66 x47 78 x52 28 x 18
+> 64 x48 80 x48 32 x 16
+> Align each dimension to the 16-px patch grid
+> Original (native crop)
+> Grid-aligned crop
+> 4 X 3 Patch grid
+> Resolution
+> 5x32x 1
+> Source image + bounding boxes
+> 3. Patchify →Variable token sequences
+
+Hi x W i → Pi = H iWi → [CLS i | x i,1 ,…. x i,P i ] , Ni = P i + 1        
+
+> 12 patch tokens
+> 15 patch tokens
+> 2 patch tokens
+> 4 x 3 grid
+> 5 x 3 grid
+> 2 x 1 grid
+> CLS
+> CLS
+> CLS
+> P3= 2
+> N3= 3
+> P2= 15
+> N2= 16
+> P1= 12
+> N1= 13
+> 4. Sequence batching : Standard Padding or Patch-n-Pack
+> CLS
+> CLS
+> CLS 2 patch tokens
+> 15 patch tokens
+> 12 patch tokens
+> 3 PAD
+> (masked)
+> 0 PAD
+> 13 PAD
+> (masked)
+
+(a) Standard padding to N max 
+
+Nmax = 16         
+
+> Sample 1
+> N1= 13 Sample 2N2= 16
+> Sample 3
+> N3= 3
+
+(b) Patch-n-Pack under T max  Tmax = 32         
+
+> Packed sequence (1 packed row)
+> Sample 1N1= 13
+> Sample 2
+> N2= 16
+> Sample 3N3= 3
+> Block-diagonal attention mask (schematic )
+
+S-A 
+
+S-A 
+
+> S-A
+
+0
+
+00
+
+0               
+
+> Total tokens =13 + 16 + 3 = 32 <= T max
+> Sample 1
+> N1= 13
+> Sample 1
+> N1= 13
+> Sample 3
+> N3= 3
+> Sample 3
+> N3= 3
+> Sample 2
+> N2= 16
+> Sample 2
+> N2= 16
+
+1 CLS / sample 
+
+No cross-sample attention      
+
+> Sample 1Sample 3
+> Sample 2
+> 5. FAVE encoding and recognition
+> Standard padding
+> to N max
+
+Patch-n-Pack 
+
+under T max       
+
+> or
+> Classifier
+> ViT encoder + factorized PE
+> 𝑳 𝑪𝑬 (y’,y )
+> CLS’ 1CLS’ 2CLS’ 3
+> Per-sample
+> CLS’ readout
+
+Figure 2. FAVE: adaptive object-centric visual encoding for recognition. Starting from selected object-centric crops, FAVE preserves aspect ratio and aligns each crop to the 16-pixel patch grid, producing variable-resolution patch grids. Each crop yields Pi = HiWi patch tokens and sequence length Ni = Pi + 1 after prepending a CLS token. Variable-length sequences are processed either with standard padding to Nmax or with Patch-n-Pack under token budget Tmax , using block-diagonal self-attention to prevent cross-sample interaction. A shared ViT with factorized positional encoding produces one CLS representation per crop for recognition. 
+
+## 3. Foveated Adaptive Visual Encoding 
+
+We first define FAVE as an adaptive encoder for selected visual regions, then use ImageNet with ground-truth spatial selection fixed to isolate the encoder-side question: once a region is known, how should it be encoded? 
+
+Object-centric adaptive crops. For the ImageNet instan-tiation in Fig. 2, FAVE operates on object regions defined by dataset bounding boxes. Each selected region is cropped directly from the source image and retains its native spa-tial dimensions and aspect ratio rather than being resized to a common resolution. Small crops remain at native res-olution, while larger crops may optionally be isotropically downscaled under a task-specific spatial or compute cap. The resulting crop is then aligned to the 16 -pixel patch grid by adjusting its spatial boundaries rather than resiz-ing it, preserving crop-dependent geometry and producing variable-size patch grids. 
+
+Patch tokenization and positional encoding. Each grid-aligned crop is partitioned into 16 × 16 patches. Because crops are not normalized to a common spatial size, differ-ences in scale and aspect ratio produce variable patch grids of size Hi ×Wi, with Pi = HiWi patch tokens. We prepend one CLS i token to form 
+
+[CLS i | xi, 1, . . . , xi,P i ], Ni = Pi + 1 .
+
+Since Hi and Wi vary across samples, the encoder must support different grid shapes and aspect ratios. Following NaViT [10], we use factorized positional encoding. For a patch at row u and column v,
+
+epos 
+
+u,v = erow 
+
+u + ecol 
+
+v .
+
+This avoids fixed-grid positional embeddings, allowing one ViT to process variable patch grids while region scale de-termines token count and compute. 
+
+Sequence batching. Figure 2, Part 4, illustrates batching strategies for FAVE’s variable-length sequences. With stan-dard batching, sequences are padded to the longest length 
+
+Nmax ; padding positions are masked, excluded from valid self-attention interactions, and do not contribute to the task objective. Alternatively, Patch-n-Pack [10] packs complete sequences under a token budget Tmax , using block-diagonal 4Native bbox ≤ 96 Native bbox ≤ 224 General-2K Model Input T1 ↑ Tok. ↓ G ↓ T1 ↑ Tok. ↓ G ↓ T1 ↑ Tok. ↓ G ↓
+
+Fixed-Res ViT-T/16 Image 32.65 197.0 1.283 46.30 197.0 1.283 61.75 197.0 1.283 Oracle crop 41.05 197.0 1.283 55.70 197.0 1.283 64.60 197.0 1.283 Adaptive ViT-T (Full) Image 23.80 149.3 0.943 29.25 153.3 0.969 43.25 156.4 0.991 Oracle crop 9.55 17.7 0.101 29.35 71.6 0.434 42.20 127.3 0.800 
+
+NaViT-T Image 34.25 148.3 0.958 43.45 152.3 0.985 59.55 155.4 1.007 Oracle crop 31.60 16.7 0.098 49.60 70.6 0.439 60.35 126.3 0.812 
+
+FAVE Oracle crop 50.45 17.7 0.101 60.55 71.6 0.434 65.60 127.3 0.800 
+
+Table 1. Adaptive object recognition under fixed spatial selection. We compare full-image processing with GT-selected object regions across native object-scale cohorts. Ground-truth boxes fix spatial selection so that the object-centric rows isolate how the selected region is encoded. FAVE preserves crop geometry and adapts its spatial resolution and token count, whereas Fixed-Res ViT-T/16 resizes every selected crop to 224 × 224 . T1, Tok., and G denote Top-1 accuracy, mean visual tokens per image, and analytical GFLOPs per image. Bold indicates the best value within each cohort. Model Policy T1 ↑ Tok. ↓ G ↓
+
+Native bbox ≤ 96 
+
+FAVE Native 50.45 17.7 0.101 
+
+FAVE Adaptive zoom 54.00 40.0 0.234 NaViT-T LS cap 34.25 148.3 0.958 NaViT-T r = 224 34.20 192.3 1.277 Native bbox ≤ 224 
+
+FAVE Native 60.55 71.6 0.434 
+
+FAVE Adaptive zoom 62.20 97.6 0.603 NaViT-T LS cap 43.45 152.3 0.985 NaViT-T r = 224 43.25 192.3 1.277 Table 2. Selective local magnification versus additional global resolution. FAVE allocates additional resolution to the GT-selected region using scale-dependent magnification, whereas NaViT increases resolution over the full image. T1, Tok., and G denote Top-1 accuracy, mean visual tokens per image, and analyt-ical GFLOPs per image. 
+
+attention to prevent cross-sample interaction. Both preserve the per-sample token sequence, allowing the same FAVE checkpoint to be executed with either batching scheme. Fur-ther details are provided in Appendix B. 
+
+FAVE encoding and recognition. As shown in Fig. 2, Part 5, all variable-length crop sequences are processed by a shared ViT encoder. The output CLS ′ 
+
+> i
+
+representation is passed to a shared classifier and trained with standard cross-entropy loss. The main ImageNet comparison uses a Tiny-scale ViT; larger fixed-resolution backbones are evaluated separately. 
+
+3.1. Adaptive Object Recognition 
+
+Dataset and training. We use ImageNet images with bounding-box annotations and a fixed 90/10 train– 
+
+Model Input Params T1 ↑ GFLOPs ↓
+
+ViT-T/16 Full 5.72M 32.65 1.283 ViT-T/16 GT 5.72M 41.05 1.283 ViT-S/16 Full 22.05M 43.50 4.657 ViT-S/16 GT 22.05M 45.65 4.657 ViT-B/16 Full 86.57M 45.55 17.680 ViT-B/16 GT 86.57M 47.35 17.680 
+
+FAVE-T (ours) GT 5.70M 50.45 0.101 
+
+Table 3. Does increasing backbone capacity recover the small-object operating point? Fixed-resolution ViTs are evaluated on the full image ( Full ) and GT-selected crop ( GT ) on the native-bbox 
+
+≤ 96 cohort. FAVE-T uses adaptive native-geometry encoding of the same selected region. 
+
+validation split shared across methods. The main compar-ison uses Tiny-scale ViT backbones with 12 blocks, em-bedding dimension D = 192 , and 16 × 16 patches; larger fixed-resolution backbones are evaluated separately in Ta-ble 3. FAVE is trained on object-centric crops, whereas the full-image controls are trained on the corresponding com-plete images. Optimization and dataset-construction details are provided in Appendices B and C. 
+
+Evaluation design. We use ImageNet as a recognition di-agnostic for how a selected region should be encoded once its location is known. Ground-truth boxes fix spatial selec-tion, removing proposal quality as a confound and enabling comparison on the same region. We evaluate three inde-pendently sampled 2,000-image cohorts: native bounding-box maximum side ≤ 96 pixels, ≤ 224 pixels, and an unrestricted General-2K cohort. Table 1 separates the ef-fects of spatial selection, variable-resolution encoding, and object-centric training. Fixed-Res ViT-T/16 compares full-image processing with the same GT-selected crop resized 5FastVLM Vision Tower 
+
+> (frozen)
+> FastVLM mm projector (frozen)
+
+…. …..       
+
+> Visual token concatenation [G 1,….,G 256 | F 1, ….., F k](256 + K visual tokens) Selected regions (external proposals) up to  K crops
+> FAVE ViT (encoder)
+> Token
+> Reducer
+> Stage 1 : K native crops →Variable patch tokens →1 learned token/crop →
+> K foveated tokens ( ViT encoder and reducer trained from scratch)
+> 1
+> 2KLocal projector (MLP) 12k
+> ….
+
+….            
+
+> K foveated tokens (LLM space) 256 global tokens (LLM space)
+> Input scene
+> Stage 2 : FAVE ViT frozen ; token reducer fine-tuned ; local projector trained from scratch
+> Qwen2 (frozen)
+> Multimodal input sequence [Visual tokens | Prompt tokens]
+> Answer FastVLM vision tower , Global mm projector and LLM always frozen
+> Question / Prompt
+> P1
+> ….
+> P2 PK
+> Hix W i
+> PixDFAVE
+> K x DLLM
+> 1 x DFAVE
+> K x DFAVE
+> ( 256 + K ) xDLLM
+> 256 x DLLM 256 x DG
+> 512 DLLM DFAVE
+
+Figure 3. FAVE for multimodal visual understanding. The full image is processed by the frozen FastVLM vision tower and projector to produce 256 global visual tokens, while up to K externally selected regions are encoded by FAVE. In Stage 1, the FAVE ViT and learned reducer are trained jointly from scratch to compress each native-geometry crop from Pi variable-length features to one DFAVE -dimensional token. In Stage 2, the ViT is frozen, the reducer is fine-tuned, and a learned local projector maps the K crop tokens into the DLLM space. These local tokens are concatenated with the 256 FastVLM tokens and, together with the prompt, processed by the frozen Qwen2 language model. DG, DFAVE , and DLLM denote the global feature, FAVE feature, and language-model embedding widths, respectively. 
+
+to 224 × 224 , testing the selected region under a fixed vi-sual budget. Adaptive ViT-T (Full) uses the same variable-resolution backbone and, under GT-selected evaluation, the same crop geometry and compute as FAVE, but is trained on complete images. NaViT-T provides a generic variable-resolution control [10]. Together, these baselines isolate how the selected region is encoded. Table 2 then asks where additional visual compute should be allocated, while Ta-ble 3 asks whether larger fixed-resolution ViTs recover the same accuracy–efficiency operating point. We report Top-1 accuracy, mean visual tokens, and analytical GFLOPs; fur-ther details are provided in Appendix C. 
+
+Adaptive local encoding. Table 1 shows that GT-selected regions help even under fixed-resolution encoding: Fixed-Res ViT-T/16 improves from 32 .65 to 41 .05 Top-1 on the 
+
+≤ 96 cohort at unchanged compute. FAVE reaches 50 .45 , a further 9.4-point gain with 11 .1× fewer tokens and 12 .7×
+
+lower analytical FLOPs. This is not explained by region ac-cess alone: Adaptive ViT-T (Full) receives the same crop geometry and inference budget but performs substantially worse, isolating the role of object-centric training. NaViT-T also fails to recover FAVE accuracy, showing that generic variable-resolution processing is insufficient. FAVE re-mains strongest on the broader ≤ 224 and General-2K co-horts, reaching 60 .55 and 65 .60 Top-1. 
+
+Selective compute allocation. Table 2 asks where addi-tional visual compute should be allocated. Scale-dependent magnification improves FAVE by 3.55 Top-1 points on the 
+
+≤ 96 cohort and 1.65 points on the ≤ 224 cohort. In con-trast, increasing NaViT’s full-image resolution raises token count and FLOPs without improving Top-1 on either co-hort. Thus, at these operating points, additional compute is more effective when targeted toward the selected region rather than spread across the image. 
+
+Backbone capacity. Table 3 asks whether larger fixed-resolution backbones can recover the same small-object op-erating point. On the ≤ 96 cohort, scaling the GT-crop ViT from Tiny to Base raises Top-1 from 41 .05 to 47 .35 , still below FAVE-T at 50 .45 . FAVE-T uses only 5.70 M parame-ters and 0.101 GFLOPs, compared with 86 .57 M and 17 .68 
+
+GFLOPs for ViT-B/16. Together with Table 2, these results show that targeted local capacity provides a more efficient route to fine-grained evidence than broadly increasing reso-lution or backbone capacity at these operating points. Together, this section establishes FAVE as an efficient adaptive encoder for fine-grained evidence in selected re-gions. We next use it as a complementary local pathway alongside FastVLM’s compact global representation. 64. FAVE for Multimodal Visual Understanding 
+
+We next test whether FAVE can complement FastVLM’s compact global representation with sparse local evidence. 
+
+Global and foveated visual pathways. The ImageNet re-sults show that targeted local visual capacity can recover fine-grained evidence efficiently. We therefore ask whether the same principle can complement an efficient global VLM representation. As shown in Fig. 3, FastVLM provides compact scene-level context through its frozen vision tower and multimodal projector, producing 256 global visual to-kens [49]. In parallel, a task-specific external proposal mechanism selects up to K source-image regions, which FAVE independently re-encodes to preserve fine-grained lo-cal evidence. Spatial selection determines where to look; FAVE determines how the selected regions are encoded. 
+
+Stage 1: Compact local token learning. Each selected crop is independently encoded by FAVE using the variable-resolution formulation of Sec. 3, producing Pi patch fea-tures Xi ∈ RPi×DFAVE , where Pi varies with crop geom-etry. A shared learned cross-attention reducer compresses these features into one content-dependent crop token, 
+
+zi = R(Xi), zi ∈ RDFAVE .
+
+Stage 1 trains the FAVE ViT and reducer jointly from scratch. Each region may use a different spatial resolu-tion and number of patch features, but still contributes only one compact token. This decouples local encoding reso-lution from the downstream language-model token budget. The architecture is shared across multimodal settings; task-specific training objectives are provided in Appendix D. 
+
+Stage 2: Local projection and token fusion. Stage 2 maps the compact crop tokens into the language-model em-bedding space using a local projector P,
+
+F = P(Z), F ∈ RK×DLLM .
+
+The projected local tokens are then concatenated with the 256 global FastVLM tokens, 
+
+V = [ G; F] ∈ R(256+ K)×DLLM ,
+
+and combined with the task prompt for answer generation by the frozen Qwen2 language model. During Stage 2, the FAVE ViT is frozen, the token reducer is fine-tuned, and the local projector is trained from scratch. The FastVLM vision tower, global projector, and language model remain frozen. 
+
+4.1. Text-Rich Visual Understanding 
+
+TextVQA [44] provides a natural test of the global–local de-sign because answers often depend on small, localized text regions. Such regions can be narrow or highly non-square,                            
+
+> Method TextVQA ↑
+> Compact VLMs SmolVLM-2.2B [31] 72.1 †
+> SmolVLM2-2.2B [31] 73.21 †
+> MobileVLM V2-1.7B [6] 52.1 †
+> MobileVLM V2-3B 57.5 †
+> DeepSeek-VL-1.3B [30] 55.8 †
+> Florence-VL [5] 69.1 †
+> Multi-encoder VLMs (8B LLM) MiniGemini-HD [24] 70.2 †
+> Cambrian-1 [46] 71.7 †
+> Fine-grained perception: LLaVA-1.5-7B LLaVA-1.5- [27] 46.1 ‡
+> + S 2[41] 52.6 ‡
+> + ViCrop [56] 57.2 ‡
+> + SD-RPN [42] 58.8 ‡
+> + Q-Zoom [43] 58.4 ‡
+> Efficient global + local encoding FastVLM-1.5B (reported) [49] 71.20 †
+> FastVLM-1.5B (reproduced) 71.95 + FAVE (Mean) 73.27
+> + FAVE ( K=16 ,M=1 )73.55
+> Table 4. TextVQA accuracy. FAVE improves the reproduced FastVLM-1.5B baseline from 71.95 to 73.55 while retaining its efficient global pathway and adding sparse local visual evidence.
+> †denotes externally reported results. ‡denotes results under the unified LLaVA-1.5-7B evaluation reported by Q-Zoom [43].
+
+making them vulnerable to global downsampling or distor-tion under fixed-resolution resizing. Preserving their local geometry and visual detail is therefore important for reliable text understanding. We use DBNet++ [25] as a task-specific external proposal mechanism and retain up to K = 16 
+
+source-image regions. Stage 1 jointly trains the FAVE ViT and reducer with question-conditioned contrastive supervi-sion, producing one compact token per region. Stage 2 freezes the ViT, fine-tunes the reducer, and trains the local projector with a teacher-forced autoregressive answer ob-jective. The FastVLM global pathway and Qwen2 remain frozen. Full training details are provided in Appendix D.2. Table 4 shows that FAVE improves the reproduced FastVLM-1.5B baseline by 1.60 percentage points with at most 16 additional local tokens. The model adds only 7.04M vision-side parameters and does not modify the global pathway or language model. The gain therefore comes from supplying additional local visual evidence to the existing multimodal system. Table 5 shows that adding the FAVE local pathway costs 9.18 ms of visual encoding. Detailed latency accounting is provided in Appendix D.4. As a transfer test, we evaluate the same TextVQA-7Method Vision enc. (ms) ↓                                          
+
+> TTFT (ms) ↓
+> Compact VLM SmolVLM2-2.2B [31] 169.65 246.54 Efficient global + local encoding FastVLM-1.5B [49] 29.54 59.00 + FAVE (Mean) 29 .54 + 9.25 = 38 .79 68.03 + FAVE ( K=16 ,M=1 )29 .54 + 9.18 = 38 .72 74.51 Table 5. TextVQA inference efficiency. We report vision-encoder latency and end-to-end time-to-first-token (TTFT). For FAVE, vi-sion latency is decomposed into frozen FastViTHD global encoder and local FAVE encoder over all selected crops. FAVE uses a 224-pixel crop cap with Patch-n-Pack inference. TTFT is measured on an NVIDIA A40 with batch size 1 over a fixed 500-example sub-set; vision latency is measured separately on 50 examples. Subset FastVLM FAVE ∆
+> OCRBench overall 54.5 55.8 +1.3 Scene Text VQA 66.5 80.0 +13.5 ESTVQA 58.0 80.0 +22.0 STVQA 40.0 66.0 +26.0 OCRVQA 94.0 96.0 +2.0 TextVQA 74.0 78.0 +4.0 Table 6. OCRBench transfer without OCRBench-specific training. Values are accuracy (%), and ∆denotes percentage-point improvement. FAVE improves the overall OCRBench score and yields its largest gains on Scene Text-centric VQA, where lo-calized scene text is most relevant.
+
+trained model on OCRBench [28] without OCRBench-specific training. Table 6 shows a 1.3-point overall gain and a 13.5-point gain on Scene Text-centric VQA, with the strongest improvements on ESTVQA and STVQA. This suggests that the fine-grained local representation trans-fers well across related text-centric domains without task-specific adaptation. 
+
+4.2. Fine-Grained Attribute Understanding 
+
+We next ask whether the benefit extends beyond text to fine-grained object appearance. We therefore evaluate only questions labeled as attribute under the GQA semantic question type [20]. These questions probe properties such as color, material, size, state, and shape, providing a tar-geted test of local visual evidence rather than aggregate GQA reasoning. A question-independent YOLOE-26S [52] proposal net-work provides candidate object regions. We otherwise fol-low the TextVQA multimodal setup, except that Stage 1 is trained with supervised object and attribute semantics to preserve fine-grained appearance information. Full super-vision and proposal details are provided in Appendix D.5.                          
+
+> Method Total params. GQA Attribute ↑
+> Compact VLM SmolVLM2-2.2B [31] 2.247B 57.40 TinyLLaVA-Phi2-SigLIP [57] 3.1B 68.40 Fine-grained VLM AttWarp (LLaVA-1.5-7B) [8] ∼7B 69.30 ViCrop (LLaVA-1.5-7B) [56] ∼7B 68.20 Mini-Gemini-HD-8B [24] ∼8B 72.02 FastVLM and FAVE FastVLM-1.5B [49] 1.675B 70.73 + FAVE ( K=16 ,M=1 )1.682B 72.04
+> FastVLM-7B [49] ∼8.0B 72.72 Table 7. Fine-grained attribute understanding on GQA. We re-port accuracy on questions labeled as attribute under the GQA se-mantic question type. FAVE improves FastVLM-1.5B from 70.73 to 72.04 while keeping the global visual pathway and language model frozen. It matches the substantially larger Mini-Gemini-HD-8B (72.02) and remains within 0.68 points of FastVLM-7B.
+
+Table 7 shows that FAVE improves FastVLM-1.5B by 1.31 percentage points , outperforming the compact VLM baselines and matching the substantially larger multi-encoder Mini-Gemini-HD-8B (72.04 vs. 72.02). It also nar-rows the gap to FastVLM-7B to only 0.68 points while leav-ing the global FastVLM pathway and 1.5B language model unchanged. Together with the ImageNet and TextVQA re-sults, this shows that targeted local visual capacity provides a complementary path to fine-grained accuracy gains with-out scaling the entire visual–language system. 
+
+## 5. Conclusion 
+
+Fine-grained visual evidence does not require uniformly in-creasing resolution or capacity across the entire image. We introduced FAVE, a foveated adaptive visual encoder that preserves native region geometry and lets local resolution, token count, and compute scale with region size. Con-trolled ImageNet experiments establish three effects: FAVE encodes the same selected small-object region more ac-curately and efficiently than fixed-resolution and variable-resolution controls; additional compute is more effective when directed to the selected region than spread across the full image; and lightweight FAVE-T reaches an accuracy– efficiency operating point that substantially larger fixed-resolution ViTs do not recover. We then pair FAVE with FastVLM as a sparse local complement to its compact global representation. With at most 16 local tokens, FAVE improves TextVQA by 1.60 percentage points while keep-ing FastVLM and Qwen2 frozen. On GQA attributes, it improves FastVLM-1.5B by 1.31 points, matches Mini-Gemini-HD-8B, and comes within 0.68 points of FastVLM-87B. Together, these results show that targeted local visual capacity can recover fine-grained evidence efficiently with-out scaling the entire visual–language system. 
+
+## Acknowledgments 
+
+This work was supported in part by the Center for the Co-Design of Cognitive Systems (CoCoSys), a DARPA-sponsored JUMP 2.0 center, the Semiconductor Research Corporation (SRC), and the National Science Foundation (NSF). We also thank Deepak Ravikumar for helpful initial discussions. 
+
+## A. Additional Related Work 
+
+A.1. Foveated Vision 
+
+Foveated vision reduces visual processing cost by allocating different levels of spatial detail across the visual field. Com-putational models have implemented this principle through eccentricity-dependent blur, pooling, and non-uniform sam-pling inspired by human peripheral vision [1, 12, 13, 39, 51]. These methods preserve greater visual detail near se-lected locations while representing peripheral regions more coarsely. FocL takes an object-centric approach by processing se-lected crops to reduce background clutter, but uses a fixed crop resolution [35]. Segment This Thing instead applies a fixed point-centered foveation pattern in Vision Transform-ers, with fine-resolution tokens near the prompt and pro-gressively coarser tokens toward the periphery [38]. FAVE differs in how the selected region is encoded. Given an externally selected region, FAVE preserves its na-tive geometry rather than imposing a fixed-resolution repre-sentation or a fixation-centered resolution profile. Its spa-tial resolution, patch grid, token count, and visual com-pute therefore vary with region scale. Spatial selection re-mains separate from local encoding, allowing FAVE to fo-cus on how a selected region should be represented under a bounded visual-compute budget. 
+
+A.2. Efficient and Adaptive Visual Encoding 
+
+Efficient visual encoders reduce computation through ar-chitectural design, flexible input resolution, or visual-token reduction. Swin Transformer restricts self-attention to shifted local windows, while Focal Transformer and Fo-calNet aggregate information across multiple spatial scales [29, 53, 54]. EfficientViT targets efficient inference through a lightweight attention design, while FastViT uses a repa-rameterized hybrid architecture to improve the latency– accuracy trade-off [4, 48]. Other methods make visual encoders more flexible to input resolution. ResFormer uses multi-resolution training to improve performance across different image sizes, while ViTAR supports high-resolution inputs by adaptively merg-ing visual tokens [16, 45]. A separate class of methods re-duces an existing visual-token sequence. DynamicViT dy-namically prunes tokens, Adaptive Token Sampling selects a subset of informative tokens, and Token Merging com-bines similar tokens during inference [3, 17, 36]. NaViT instead preserves native image resolution and as-pect ratio. Patch-n-Pack allows variable-length image se-quences to be processed efficiently within a shared token budget [10]. FAVE uses this variable-resolution capabil-ity at the level of externally selected regions rather than the complete image. The native geometry of each selected region determines its patch grid and resulting visual-token count. FAVE therefore adapts the local spatial budget with-out pruning, sampling, or merging tokens from an already constructed visual representation. 
+
+A.3. Efficient and Adaptive Multimodal Perception 
+
+Efficient VLMs reduce multimodal cost at different parts of the system. SmolVLM2 and TinyLLaVA target com-pact multimodal models through smaller model configu-rations and efficient training and representation choices [31, 57]. FastVLM instead focuses directly on global vi-sual encoding. FastViTHD reduces vision latency and pro-duces a compact visual-token sequence for the language model [49]. FAVE is complementary to this approach. We retain FastVLM as the global pathway and add visual ca-pacity only through a lightweight local encoder for selected regions. The original global pathway and language model remain frozen. Visual-token reduction provides another route to effi-ciency. TokenPacker condenses high-resolution visual fea-tures through a coarse-to-fine visual projector, while Vi-sionZip selects informative tokens from the representation produced by the visual encoder [23, 55]. These methods re-duce redundancy in an existing visual representation. FAVE instead re-encodes selected regions directly from the source image. It can therefore introduce local evidence that may have been weakened before or during compact global en-coding. The resulting region representations are then com-pressed into a small local-token budget before language-model inference. High-resolution and region-adaptive methods address fine-grained evidence in different ways. LLaVA-UHD di-vides the native-resolution image into adaptive slices and compresses their features while preserving their spatial or-ganization [19]. AttWarp and ViCrop instead use signals from the MLLM itself to redistribute or revisit visual de-tail at inference time without training new model weights [8, 56]. SD-RPN learns a lightweight region predictor from pseudo-RoI labels distilled from the MLLM’s internal at-tention, while Q-Zoom adds query-aware routing so that high-resolution regional processing is invoked only when 9the coarse representation is insufficient [42, 43]. These ap-proaches primarily address where and when additional vi-sual detail should be acquired. FAVE separates this decision from local encoding. An external proposal mechanism de-termines where to look, while FAVE determines how each selected region is represented with native geometry and an adaptive spatial budget. Localized perception can also be integrated directly into reasoning. Visual CoT uses intermediate localized regions in a multi-turn reasoning pipeline and provides training data with region and reasoning annotations [40]. Foveated Rea-soner makes high-acuity visual acquisition an action within the autoregressive reasoning trajectory and trains this be-havior using supervised initialization followed by reinforce-ment learning [33]. FAVE does not place visual acquisition inside the language-model reasoning loop. Selected regions are encoded before generation, and their local tokens aug-ment the visual prefix consumed by the frozen language model. LLMind provides another complementary design. It uses training-free, bio-inspired non-uniform image sam-pling under a constrained pixel budget rather than adding a separately learned local encoder [9]. Multi-encoder VLMs combine complementary visual representations within one multimodal architecture. Mini-Gemini adds a second high-resolution visual encoder and uses its features to refine the visual representation without increasing the final visual-token count [24]. Cambrian-1 studies combinations of multiple vision encoders and uses a spatially aware aggregator to integrate high-resolution fea-tures with the language model [46]. Our VLM instantiation also uses complementary visual pathways, but with a differ-ent division of labor. FastVLM retains the efficient global representation, while FAVE independently re-encodes ex-ternally selected regions. Spatial selection remains sep-arate from local encoding, the local representations are compressed into a bounded token budget, and the global FastVLM pathway and language model remain frozen. 
+
+## B. Additional FAVE Implementation Details 
+
+This section provides the additional FAVE implementation and training details referenced in the main paper. ImageNet dataset construction and evaluation protocols are described separately in Sec. C. 
+
+B.1. Object-Centric Crop Construction 
+
+For ImageNet training, FAVE processes one selected object-centric crop per sample. We perturb the selected box dur-ing training using an isotropic scale factor sampled from 
+
+[0 .9, 1.1] . We also perturb the crop center independently along the horizontal and vertical axes by at most 20% of the corresponding box dimension. A minimum crop side of 32 pixels is enforced. Evaluation uses the deterministic GT-selected crop without spatial jitter. FAVE does not resize every selected region to 224 ×224 .Instead, the maximum resolution is chosen according to the operating resolution of the task. For ImageNet, we use 224 pixels because this is the resolution used by the standard fixed-resolution setup and by the corresponding baselines in our comparison. Crops whose longest side is at most 224 pixels therefore remain at native scale. Only larger crops are isotropically downsampled so that their longest side is 224 pixels. If a task used a different reference resolution, the same procedure would use that resolution as the task-specific cap. Thus, 224 is an ImageNet-specific operating point rather than a fixed property of FAVE. Height and width are never resized independently. The resulting crop is aligned to the 16-pixel patch grid without anisotropic warping, following the grid-alignment proce-dure described in the main paper. The spatial dimensions presented to the encoder therefore remain crop dependent rather than being normalized to a common 224 × 224 input. 
+
+B.2. Variable-Resolution FAVE Encoder 
+
+The ImageNet FAVE-T encoder follows the Tiny-scale con-figuration used in the main comparison. It contains 12 Transformer blocks with embedding dimension D = 192 ,three attention heads, an MLP expansion ratio of 4, and 
+
+16 ×16 patch embedding. Patch embedding is implemented with kernel size and stride 16. A learned CLS token is prepended to each crop sequence. Because crop dimensions remain adaptive, different samples produce different numbers of patch tokens. All valid patch tokens are retained and processed by the same encoder. The final CLS representation is normalized and passed to a shared linear ImageNet classifier. We use stochastic depth increasing linearly to 0.1 across the Trans-former blocks. 
+
+B.3. Variable-Length Batching and Patch-n-Pack 
+
+We train the ImageNet FAVE model using standard padded variable-length sequence batching. Each crop first forms its complete sequence [CLS i | xi, 1, . . . , x i,P i ]. Within a batch, sequences are padded to the longest sequence, and padding positions are masked from attention and from the classification objective. A model trained using this standard sequence-batching procedure can be used directly with Patch-n-Pack at infer-ence time; no retraining or parameter modification is re-quired. Patch-n-Pack changes only how the already formed per-image sequences are scheduled. Multiple complete se-quences are concatenated into a packed row under a token budget Tmax , while a block-diagonal attention mask pre-vents interaction between different images. Each image re-tains its own CLS token and all of its patch tokens. The per-image computation on valid tokens is therefore unchanged between the two execution schemes. Crop con-10 struction, patch embedding, encoder weights, and classifier weights are identical. Patch-n-Pack changes batching and sequence scheduling rather than the learned prediction func-tion, and it does not change the per-image token count or the analytical FLOP accounting reported in the main paper. 
+
+B.4. Optimization 
+
+FAVE-T is trained for 300 epochs with AdamW. The train-ing batch size is 64 images per GPU, and the learning rate is linearly scaled with the global batch size from a base learn-ing rate of 10 −3 at batch size 512. We use weight decay 0.05, Adam coefficients (0 .9, 0.999) , and gradient clipping at norm 1.0. The learning rate is warmed up for 10 epochs and then follows a cosine schedule to a minimum value of 
+
+10 −6. Training uses cross-entropy with label smoothing 0.1. Bias terms, normalization parameters, positional embed-dings, and the CLS token are excluded from weight decay. We maintain an exponential moving average of the model parameters with decay 0.99996 after a two-epoch warm-up. Training uses random horizontal flipping and photo-metric augmentation, followed by ImageNet normalization and size-aware random erasing. Validation uses determinis-tic crop construction and ImageNet normalization. The matched Adaptive ViT-T full-image control uses the same optimization, regularization, EMA, and appearance-augmentation settings as FAVE-T, differing primarily in its spatial input construction. The fixed-resolution ViT-S/16 and ViT-B/16 capacity controls are trained from scratch for 300 epochs on the same ImageNet train–validation parti-tion using strong fixed-resolution ViT training recipes. In particular, these larger models use RandomResizedCrop, Mixup/CutMix, label smoothing, and random erasing, to-gether with architecture-specific batch sizes, learning-rate scaling, weight decay, and warm-up schedules. Thus, the capacity controls are trained with optimization and regular-ization appropriate to their model scale rather than being forced to share FAVE-T’s hyperparameters. 
+
+## C. Additional ImageNet Experimental Details 
+
+C.1. Dataset Split and Annotation Protocol 
+
+We use the ImageNet subset with available bounding-box annotations. Following the supervised ImageNet split used in FocL [35], we use a fixed 90/10 train–validation parti-tion. The same partition is used for FAVE and all ImageNet controls reported in the main paper, so differences between methods are not caused by differences in training data. Only samples with at least one valid ground-truth bound-ing box are retained. When an image contains multiple valid boxes, we use the largest box by area as the selected object. This convention is used consistently for object-centric crop construction and for defining the native object scale used in the evaluation cohorts. 
+
+C.2. Evaluation Cohorts 
+
+We evaluate on three independently sampled 2,000-image validation cohorts, defined using the native maximum side 
+
+S = max( w, h ) of the largest GT bounding box. The first cohort contains images with S ≤ 96 pixels, the second con-tains images with S ≤ 224 pixels, and the General-2K co-hort is sampled without an object-size restriction. Each co-hort is sampled independently after applying its correspond-ing eligibility rule. They should therefore be interpreted as filtered evaluation cohorts rather than as disjoint object-size bins or nested 2K subsets. The 96 -pixel threshold corresponds to the first two smallest-scale bins of the bounding-box scale partition used to characterize the dataset: S ≤ 48 and 49 ≤ S ≤ 96 . We therefore use their union as the stringent small-object co-hort. The 224 -pixel cohort provides a broader object-scale setting while remaining aligned with the ImageNet operat-ing resolution used in this study. 
+
+C.3. Evaluation and Resolution Policies 
+
+For object-centric evaluation, the adaptive models use the same deterministic GT-selected region. Fixed-Res ViT-T/16 receives the same selected crop window, but resizes it to 224 × 224 before encoding. Adaptive ViT-T (Full) and FAVE instead preserve the adaptive crop geometry de-scribed in Sec. B. For full-image evaluation, Adaptive ViT-T (Full) preserves aspect ratio and downsamples only when the image’s longest side exceeds 224 pixels. For the adaptive-zoom evaluation in Table 2 of the main paper, the magnification factor is selected from the native maximum side S of the GT bounding box. We use 1.8× for 
+
+S < 96 , 1.5× for 96 ≤ S < 128 , 1.4× for 128 ≤ S < 144 ,and 1.2× otherwise. Magnification is applied to the se-lected region before the same 224-pixel task-specific cap and patch-grid alignment used for native FAVE inference. NaViT-T’s long-side-cap policy preserves the complete im-age and downsamples only when its longest side exceeds 224 pixels. Its r = 224 policy instead targets an effective image area of approximately 224 2 pixels while preserving aspect ratio, and can therefore either upsample or downsam-ple the complete image. 
+
+C.4. Token and Analytical FLOP Accounting 
+
+We report visual-token count and analytical forward FLOPs at the actual spatial resolution processed for each image. For the CLS-based models, an input with patch-grid dimen-sions Hp × Wp contains P = HpWp patch tokens and has sequence length N = P + 1 . Token counts are com-puted independently for every image and averaged over the corresponding 2,000-image cohort. They therefore reflect valid per-image sequence lengths rather than padded batch 11 lengths. NaViT-T uses learned-query pooling rather than a CLS token and consequently reports patch tokens only. For the CLS-based ViT models, the dominant Transformer-block cost is computed as 
+
+L  12 N D 2 + 2 N 2D ,
+
+for embedding dimension D and depth L. We additionally account for patch projection and the classification head us-ing the same fixed analytical convention for all reported operating points. Layer normalization, softmax, nonlin-earities, bias additions, and runtime padding overhead are excluded. We count a multiplication and an addition as two floating-point operations. Because self-attention is quadratic in sequence length, FLOPs are computed inde-pendently from each image’s actual valid sequence length and then averaged over the cohort, rather than by substitut-ing the mean token count into the FLOP expression. Re-ported values therefore describe logical per-image model compute on valid tokens and exclude runtime work intro-duced by padding or packed execution. NaViT-T is ac-counted for analogously, with the additional cost of its learned-query attention pooling. As a reference, a fixed 224 × 224 ViT-T/16 processes 196 patch tokens plus one CLS token and requires 1.283 analytical GFLOPs per image under this accounting. On the 
+
+≤ 96 cohort, FAVE processes 17.7 visual tokens and 0.101 analytical GFLOPs per image on average, corresponding to the 12 .7× reduction reported in the main paper. Patch-n-Pack changes sequence scheduling but not the per-image token count or analytical FLOP accounting. 
+
+## D. Additional Multimodal Experimental De-tails 
+
+D.1. Common Multimodal FAVE Architecture 
+
+We use the common global–local architecture described in Sec. 4 and Fig. 3 of the main paper. The complete image is processed by the frozen FastVLM vision tower and multimodal projector, producing 256 global visual to-kens. In parallel, a task-specific external proposal mecha-nism selects up to K regions. Importantly, these regions are cropped directly from the original source image, rather than from the resized input or intermediate representation used by the FastVLM global pathway. Each selected source-image crop is then independently processed by FAVE using the variable-resolution formulation of Sec. 3, preserving its local geometry. A shared learned cross-attention reducer compresses the resulting variable-length patch representa-tion to one compact token per crop. Thus, the spatial reso-lution and number of FAVE patch features may vary across regions, while each selected region contributes a fixed one-token representation to the subsequent multimodal stage. Training follows the two-stage procedure in Fig. 3. In Stage 1, the FAVE ViT and token reducer are trained jointly from scratch to learn the compact local representation. The architecture is shared across the multimodal settings, but the proposal source and supervision used to learn this rep-resentation are task-specific and are described in the corre-sponding dataset sections below. In Stage 2, the FAVE ViT is frozen, the reducer is fine-tuned, and a local projector trained from scratch maps each compact crop representation into the Qwen2 embedding space. The projected local to-kens are concatenated with the 256 FastVLM global tokens and the task prompt for answer generation. The FastVLM vision tower, global multimodal projector, and Qwen2 lan-guage model remain frozen throughout these experiments. 
+
+D.2. TextVQA Training and Evaluation Details 
+
+Region proposals and supervision sources. For TextVQA, DBNet++ provides the local regions processed by FAVE during Stage 2 and inference. These regions are cropped directly from the original source image, indepen-dently of the preprocessing used by the FastVLM global pathway. Rosetta plays a different role. During Stage 1, its OCR boxes provide cleaner text-region geometry from which question-conditioned answer relevance can be estimated. Rosetta therefore provides weak relevance supervision, whereas DBNet represents the proposal distribution encountered by the downstream model. We transfer this supervision from Rosetta to DBNet us-ing spatial coverage. For a DBNet proposal BDB and an answer-positive Rosetta box BR, we measure 
+
+|BDB ∩ BR||BR| . (1) A DBNet proposal is considered positive when this cover-age is at least 0.5, while coverage in [0 .2, 0.5) is treated as ambiguous and excluded from the relevance loss. We use coverage rather than IoU because a DBNet text line can correctly contain a substantially smaller answer word while having low IoU. For cross-source feature alignment, we fur-ther require 
+
+|BDB ∩ BR||BDB | ≥ 0.3, (2) preventing large text-line proposals that merely contain a small Rosetta word from being forced into feature corre-spondence. Rosetta OCR text can additionally appear in the TextVQA language prompt; this prompt-level role is sepa-rate from the DBNet proposal mechanism. 
+
+Stage-1 local representation learning. The “question-conditioned contrastive supervision” described in the main paper is implemented as a hybrid objective that combines two-view visual consistency, question-conditioned region 12 relevance, and cross-source alignment. Stage 1 jointly trains the FAVE ViT and learned reducer using 
+
+LS1 = LRosetta + λdb LDBNet + λcross Lcross , (3) where 
+
+Ldomain = Lcons + λrel Lrel . (4) We use τ = 0 .07 , λrel = 0 .5, λdb = 1 .0, and λcross = 0 .1.For M > 1, the consistency and relevance terms are evalu-ated independently for each active reducer slot and averaged across slots. The reported K = 16 , M = 1 configuration does not use the optional reducer-slot diversity regularizer. The consistency term is a two-view InfoNCE objective. Each region is rendered twice with independent augmenta-tion; the two views of the same region form a positive pair, while views from all other regions are negatives, including other regions from the same image: 
+
+ℓcons  
+
+> i
+
+= − log exp  s(zi, z + 
+
+> i
+
+)/τ P  
+
+> j̸=i
+
+exp( s(zi, z j )/τ ) . (5) This term encourages the compact local representation to remain stable under small appearance and crop perturba-tions while retaining discriminative information across re-gions. Importantly, this InfoNCE term is not itself question-conditioned. Question-conditioned supervision enters through Lrel .The representations of the two augmented views of each region are averaged and re-normalized. For each ques-tion, the mean embedding of its answer-positive regions defines a normalized positive reference, and candidate re-gions are trained with a weighted binary relevance loss us-ing their cosine similarity to this reference. Exact, numeric, and concatenation answer matches receive weight 1, sub-string matches receive weight 0.6, and matched Rosetta tokens shorter than three normalized characters are ig-nored. Stage 1 therefore learns two complementary prop-erties: augmentation-stable local representations through two-view contrastive learning and preservation of answer-relevant text evidence through weak question-conditioned supervision. Finally, confidently corresponding Rosetta and DBNet regions are aligned through 
+
+Lcross = 1 − cos ( zRosetta , z DBNet ) . (6) This transfers supervision derived from the cleaner Rosetta regions toward the DBNet proposal domain used by the downstream model. 
+
+Learned crop compression. The FAVE ViT produces a variable number of 192 -D patch features for each source-image crop. The mean-pooling baseline compresses these features as 
+
+z = 1
+
+N
+
+> N
+
+X
+
+> i=1
+
+xi, (7) assigning equal weight to every patch. The learned reducer instead uses shared learned queries that cross-attend to the variable-length patch sequence and produce M compact 
+
+192 -D representations. For the reported M = 1 configura-tion, a single shared learned query produces one representa-tion per selected region. The ViT and reducer are optimized jointly during Stage 1, allowing the retained token to em-phasize crop evidence useful under the Stage-1 objectives rather than uniformly averaging all patches. During Stage 1 training, the active reducer width M is sampled from {1, 2, 3}, providing supervision to each re-ducer prefix. The Stage 1 checkpoint is selected using the mean validation loss across M = 1, 2, 3. A temporary 
+
+192 → 384 → 128 projection head is used only for the Stage 1 objectives and is discarded afterward. 
+
+Stage-2 multimodal adaptation. Stage 2 connects the compact local representations to the frozen FastVLM sys-tem. The FAVE ViT is frozen, the learned reducer is fine-tuned, and a 192 → 512 → 1536 local projector to-gether with a lightweight auxiliary region-relevance head is trained. The projected local representations enter the Qwen2 embedding space. For the reported configuration, up to K = 16 DBNet regions are retained and M = 1 ,adding at most 16 local visual tokens to the 256 FastVLM global tokens. The FastVLM vision tower, global mul-timodal projector, Qwen2 language model, and language head remain frozen. Stage 2 is optimized with 
+
+LS2 = Lsharp -MA + λaux Lregion , (8) where λaux = 0 .03 for the reported learned-reducer con-figuration. The auxiliary region loss uses Rosetta-derived weak question-conditioned relevance labels transferred to the selected DBNet regions used by the VLM. TextVQA provides multiple human answers for each question. Rather than reducing these annotations to a single hard target, we first merge answers that produce the same supervised token sequence. If the resulting answer a occurs 
+
+ca times, it receives weight 
+
+wa = c γa
+
+P 
+
+> b
+
+c γb
+
+, γ = 1 .5. (9) A separate teacher-forced autoregressive cross-entropy is computed for each distinct answer sequence and combined according to wa. Ordinary count weighting corresponds to 
+
+γ = 1 . Sharpening with γ = 1 .5 retains different valid sur-face forms among the human annotations while increasing the relative contribution of answers with stronger annotator consensus. 13 Optimization and model selection. Stage 1 is optimized with AdamW using a common learning rate for the FAVE ViT, reducer, and temporary projection head, with ViT-style weight-decay exclusions for biases, normalization parame-ters, positional and class tokens, and reducer query tokens. We use linear warmup followed by cosine learning-rate de-cay and no EMA. Validation evaluates M = 1 , 2, 3 sepa-rately, and the Stage 1 checkpoint is selected by the lowest mean validation loss across the three reducer widths. Be-cause the effective Stage 1 dataset retains only matched hy-brid examples, its indexed size can be smaller than the un-derlying TextVQA train/development split. Stage 2 is trained for three epochs with AdamW. We use learning rates of 10 −4, 10 −5, and 10 −4 for the reducer, local projector, and auxiliary region-relevance head, respectively, with zero weight decay. The batch size is 8 with gradient ac-cumulation over two steps. We linearly warm up the learn-ing rate over the first 3% of optimizer steps and then apply cosine decay, with gradient-norm clipping at 1.0. Validation is performed after each epoch, and the checkpoint with the lowest sharpened multi-answer cross-entropy on the devel-opment set is used for final evaluation. Checkpoint selection therefore does not use the auxiliary region loss or accuracy on the official TextVQA evaluation set. 
+
+Crop construction and evaluation. Stage 1 regions are denormalized to original-image pixel coordinates and cropped directly from the source image. Crops remain variable-sized, are aligned to the 16 -pixel patch grid, and use a maximum side of 384 pixels, matching the preprocess-ing contract of the reducer-aware checkpoint used by the reported model. Training uses size-dependent mild trans-lation and scale jitter, brightness, contrast, and saturation augmentation, and 5% random grayscale. We do not use flips, rotations, or perspective transformations. Very small regions additionally receive a 4-pixel context margin. We use the 34,063/539 TextVQA train/development split for model development. Stage 1 further retains only exam-ples satisfying its matched-region construction. For the re-produced FastVLM and FAVE evaluations, we follow the OCR-conditioned LLaVA-style TextVQA evaluation proto-col used by FastVLM and instantiate the OCR text with Rosetta transcriptions. This prompt-level OCR input is identical for the reproduced FastVLM baseline and FAVE and is separate from the DBNet proposals used by the FAVE local pathway. Results for other methods in the main paper are taken from their corresponding reported evaluation set-tings. We evaluate the selected Stage 2 checkpoint separately on the official 5,000-example TextVQA validation set using greedy Qwen2 decoding with max new tokens=16 . The final TextVQA model uses K = 16 and M = 1 , adding at most 16 local visual tokens. This configuration im-proves the reproduced FastVLM-1.5B baseline from 71 .95 
+
+to 73 .55 .
+
+D.3. OCRBench Transfer Protocol 
+
+We evaluate the selected TextVQA-trained FAVE model on OCRBench without any OCRBench-specific training or pa-rameter updates. We retain the same DBNet-based local pathway, K = 16 , M = 1 learned reducer, and 384-pixel crop preprocessing used by the TextVQA model. Our primary interest is the Scene Text-centric VQA cat-egory. This setting is the closest match to the motiva-tion and supervision used for TextVQA: answers depend on localized text embedded in natural scenes, where com-pact global encoding may weaken small task-relevant ev-idence. OCRBench also contains document-, chart-, and other OCR-oriented categories that are not directly targeted by our TextVQA training setup. We therefore interpret the overall OCRBench score as a broad transfer measure, while treating Scene Text-centric VQA as the most direct test of whether the learned local representation transfers to related scene-text understanding. FAVE improves the overall OCRBench score from 
+
+54 .5% to 55 .8% , while Scene Text-centric VQA improves from 66 .5% to 80 .0% . The largest subset gains occur on ESTVQA ( 58 .0% → 80 .0% ) and STVQA ( 40 .0% →
+
+66 .0% ), showing that the TextVQA-trained local represen-tation transfers to related scene-text domains without task-specific adaptation. 
+
+D.4. TextVQA Efficiency and Latency Accounting 
+
+TTFT protocol. Throughout the paper, time-to-first-token (TTFT) refers to end-to-end VLM inference la-tency: the timed path begins with visual encoding and con-tinues through multimodal token construction, language-model prefill, and generation of the first output to-ken. External preprocessing is performed before this timed VLM forward path. In particular, image load-ing, OCR prompt construction, and DBNet proposal lookup and crop extraction are not included in TTFT. Operationally, the timed region is exactly one synchro-nized model.generate(max new tokens=1) call after external input preprocessing has completed. We measure TTFT on an NVIDIA A40 with batch size 1 over the first 500 TextVQA examples in fixed dataset or-der. FastVLM and FAVE use the same OCR-conditioned prompt and input ordering. For each example, we per-form three warm-up calls followed by five timed calls to 
+
+generate(max new tokens=1) using greedy decod-ing ( do sample=False , num beams=1 ). Timing uses synchronized wall-clock measurements: CUDA is synchro-nized immediately before and after each timed generation call. We report the arithmetic mean over the resulting mea-surements. Normal TextVQA accuracy evaluation instead 14 allows up to 16 generated tokens. 
+
+Vision-encoder accounting. Vision latency is measured separately on a fixed 50-example subset with five repeats per example. The frozen FastViTHD global encoder re-quires 29 .540 ms/image. For FAVE, Table 5 of the main pa-per reports the visual cost as the sum of this global-encoder latency and the local FAVE encoding cost over all selected crops. Under the reported 224-pixel crop cap with Patch-n-Pack inference, the local encoder requires 9.252 ms for mean pooling and 9.176 ms for the learned K = 16 , M = 1 
+
+reducer, giving total visual-encoder costs of 38 .792 and 
+
+38 .716 ms, respectively. The corresponding VLM TTFT values are 68 .026 and 74 .510 ms, matching the rounded values reported in the main paper. Vision-encoder latency is reported as component-level accounting, whereas TTFT is measured directly over the complete VLM inference path from visual encoding through generation of the first output token. 
+
+Crop-cap sensitivity. The trained TextVQA models use the 384-pixel crop preprocessing described in Sec. D.2, whereas the controlled latency experiment in Table 5 of the main paper uses a 224-pixel local-crop cap. We additionally measure the corresponding 384-pixel Patch-n-Pack configu-ration. For mean pooling, local FAVE latency changes from 
+
+9.252 to 9.195 ms and TTFT from 68 .026 to 67 .928 ms. For the learned K = 16 , M = 1 model, local latency changes from 9.176 to 9.231 ms and TTFT from 74 .510 to 74 .759 
+
+ms. These small variations in both directions indicate that the latency conclusions are not materially affected by the controlled crop cap. For the compact-VLM efficiency reference in Table 5, SmolVLM2-2.2B is evaluated in BF16 using PyTorch scaled dot-product attention (SDPA). Although SmolVLM2 also supports FlashAttention-2, we use SDPA for this com-parison because the FastVLM implementation does not use FlashAttention-2. SmolVLM2 is evaluated on the same or-dered 500 question–image pairs and with the same synchro-nized one-token generation boundary; each model uses its native chat template and tokenization outside the timed re-gion. 
+
+D.5. GQA Training and Evaluation Details 
+
+The GQA experiment in the main paper is a targeted eval-uation of fine-grained object appearance rather than aggre-gate GQA reasoning. We use the balanced GQA splits, with 942,848 training questions and 132,062 validation ques-tions. Final evaluation is performed on the 12,578-question testdev-balanced split, restricted to the 5,186 questions la-beled attribute under the GQA semantic question type. These questions cover properties such as color, material, size, state, and shape. 
+
+Stage-1 object and attribute supervision. Unlike the TextVQA local encoder, the GQA Stage-1 encoder is trained directly from GQA scene-graph object crops to pre-serve general object and appearance semantics. Each re-tained scene-graph object forms one training sample. Ob-ject identity is supervised with masked cross-entropy, while attributes are represented as grouped multi-label targets over seven semantic groups: color, material, shape, size, texture/pattern, state, and part/clothing detail. Attribute su-pervision is masked per group: a missing group is treated as unknown rather than as an all-negative target. Within an ob-served group, multiple positive attributes are permitted, and the active group losses are averaged equally so that groups with larger vocabularies do not dominate the objective. We additionally use two augmented views of each object crop and enforce same-object representation consistency. For each active reducer slot, the corresponding represen-tation from the other view is the positive example and rep-resentations from other object crops serve as negatives. The complete Stage-1 objective is 
+
+LS1 = Lobj + Lattr + 0 .1 Lcon , (10) where Lobj is masked object cross-entropy, Lattr is grouped masked binary cross-entropy, and Lcon is a two-view In-foNCE loss with temperature 0.07 . Stage-1 training sam-ples the active reducer width uniformly from M ∈ { 1, 2};the downstream GQA system uses the nested M = 1 prefix, so each selected region is represented by one 192-D FAVE token. 
+
+Deferred long-tail balancing. GQA object identities and attributes are strongly long-tailed. We therefore apply train-only logit adjustment to the two semantic losses while leaving the raw model logits unchanged for validation and downstream use. For object class c with training frequency 
+
+nc, the training logit is 
+
+˜zc = zc + τobj log nc. (11) For attribute label j, let 
+
+πj = N +
+
+> j
+
+N sup 
+
+> j
+
+, (12) where N + 
+
+> j
+
+is its positive count and N sup  
+
+> j
+
+is the number of training objects for which its attribute group is supervised. The corresponding attribute logit is 
+
+˜zj = zj + τattr [log πj − log(1 − πj )] . (13) Balancing is deferred so that the representation first learns the unadjusted semantic objective. During epochs 1–10, 
+
+τobj = τattr = 0 . From epochs 11–20 the strengths increase linearly, reaching τobj = 1 .0 and τattr = 0 .5 at epoch 20. 15 Figure 4. Qualitative GQA examples of local attribute and state recognition. FAVE correctly distinguishes the outlet and mug colors and recognizes that the plant pot is full rather than empty . The latter closely echoes the coarse-to-fine motivation of Figure 1 in the main paper: localized high-acuity processing recovers fine object-state evidence that can be weakened in the compact global representation. 
+
+The Stage-2 model used in the reported experiment is ini-tialized from this epoch-20 Stage-1 encoder/reducer check-point. Stage 1 is optimized with AdamW using a global batch size of 256, peak learning rate 2.5 × 10 −4, weight decay 
+
+0.05 , four warm-up epochs, and cosine learning-rate de-cay to 10 −6. Crops follow the same native-geometry FAVE preprocessing used downstream: they are not upsampled, are aspect-ratio-preservingly downsampled only when the longest side exceeds 384 pixels, and are padded on the right and bottom to the 16-pixel patch grid. 
+
+Question-independent object proposals. Local regions are generated once per image using prompt-free YOLOE-26S and are therefore independent of the GQA question. YOLOE operates at an input size of 640 pixels with a con-fidence threshold of 0.001 and retains at most 1,000 can-didate detections, initially ordered by descending detec-tor confidence. We then apply a conservative stable de-duplication policy ( Dedup-v2 ). A proposal is considered a near-duplicate of an earlier higher-ranked proposal only when their IoU is at least 0.85 and their area similarity, 
+
+min( Ai, A j )max( Ai, A j ) , (14) 16 Figure 5. Qualitative GQA examples of fine-grained object-property recovery. FAVE correctly identifies the lamp as white and tall and the device on the mouse pad as small and silver , recovering the ground-truth answers in cases where FastVLM-1.5B fails. 
+
+is at least 0.70 . Non-duplicate proposals retain their original confidence ordering. Near-duplicates are moved to the end rather than removed, preserving the complete raw proposal pool. Dedup-v2 is deterministic and uses neither the ques-tion text nor GQA labels, object-class semantics, or object-size quotas. 
+
+Stage-2 proposal composition and training. Stage 2 trains on the full balanced GQA training questions using the first K = 32 Dedup-v2 proposals for each image. The FastVLM-1.5B global vision pathway and multimodal pro-jector, Qwen2 language model and language head, and the Stage-1 FAVE ViT are frozen. The M = 1 Stage-1 re-ducer is fine-tuned and a local projector mapping 192 →
+
+512 → 1536 is trained to place the local FAVE tokens in the Qwen2 embedding space. The resulting local tokens are concatenated after FastVLM’s 256 global visual tokens. During training only, question-relevant GQA scene-graph objects are used to guard against missing proposal coverage. Relevant objects are obtained from the union of object references in the question annotation and semantic-program arguments. Resolved relevant GT objects are matched one-to-one to the selected YOLOE proposals us-ing deterministic maximum-cardinality matching with the inclusive criterion IoU ≥ 0.50 . When a match exists, the YOLOE proposal crop is retained; the GT crop does not 17 Figure 6. Qualitative GQA examples of spatial disambiguation and small-object attribute recovery. In the first example, the field is grassy but not white; the visible white regions belong to the players. FAVE correctly answers no , separating attributes of nearby objects from those of the queried field. In the second, FAVE correctly identifies the middle traffic light as green , recovering fine-grained evidence from a small object within a larger street scene. 
+
+replace it. Only an unmatched resolved relevant object is inserted as a GT fallback. If the proposal set already fills the K = 32 budget, the fallback replaces the lowest-ranked proposal that is not itself assigned to a relevant object. Thus the local budget never exceeds 32 crops. GT boxes are used only for this training-time fallback mechanism; validation and test-time inference use Dedup-v2 proposals alone. All proposal and fallback crops follow the same deter-ministic Stage-1 preprocessing contract: boxes are clamped to the image, converted to integer crop bounds, extracted without upsampling, aspect-ratio-preservingly capped at a longest side of 384 pixels, normalized with ImageNet statis-tics, and right/bottom padded to the 16-pixel patch grid. Stage 2 uses autoregressive answer supervision only. Prompt tokens are masked from the loss and cross-entropy is applied to the assistant answer tokens. No OCR, region-classification, or TextVQA-specific auxiliary objective is used. The newly initialized local projector and the Stage-1 reducer are optimized with AdamW at learning rates 10 −4
+
+and 10 −5, respectively, with a 3% warm-up followed by co-sine decay. Training runs for two epochs, and validation teacher-forced answer cross-entropy is used for checkpoint selection. 18 Inference and attribute evaluation. The reported oper-ating point uses the same Stage-2 checkpoint but reduces the inference proposal budget from K = 32 to K = 16 .Specifically, we retain the first 16 regions in the frozen Dedup-v2 ordering and keep M = 1 , yielding at most 16 additional local visual tokens. This changes only the local proposal/token budget: the FAVE encoder, reducer, local projector, FastVLM global pathway, and language model weights are unchanged. No GT information is available dur-ing inference. Generation follows the matched FastVLM GQA proto-col with the Qwen2 conversation template and the instruc-tion “Answer the question using a single word or phrase.” We use greedy decoding with one beam, no sampling, and at most 32 generated tokens. Predictions are scored with the GQA evaluator, and the number reported in Table 7 of the main paper is accuracy over the 5,186 testdev-balanced questions whose semantic type is attribute .
+
+Targeted local capacity versus model scaling. The GQA comparison is intentionally restricted to this attribute sub-set. FAVE increases the FastVLM-1.5B system from 1.675B to 1.682B parameters ( 0.42% ) while improving at-tribute accuracy from 70 .73 to 72 .04 . This matches the substantially larger Mini-Gemini-HD-8B ( 72 .02 ) and re-mains within 0.68 points of FastVLM-7B ( 72 .72 ). Con-sistent with the main-paper interpretation, this result shows that targeted local visual capacity provides a complemen-tary route to fine-grained accuracy gains without scaling the entire visual–language system. 
+
+Qualitative interpretation and connection to active vi-sion. The qualitative examples make the role of the lo-cal pathway concrete. In each case, answering correctly re-quires an attribute or state to be associated with a particular object rather than inferred only from the global scene. The traffic-light example is the clearest scale case: the queried light occupies a small fraction of the street scene, and the global FastVLM pathway predicts the wrong color, whereas the selected high-acuity crop preserves the local evidence needed to identify it as green . The plant-pot example ex-hibits the same coarse-to-fine mechanism illustrated by the potted plant in Figure 1 of the main paper. Global con-text establishes the object and surrounding scene, but distin-guishing whether the pot is full or empty depends on finer state information within the object region; FAVE supplies this additional local evidence. The field example exposes a different failure mode: object–attribute binding. The question asks whether the field is both grassy and white , so both attributes must apply to the field itself. The global scene clearly contains grass as well as salient white regions, but the selected local pro-posals show that the white regions belong to the players. FAVE therefore supplies object-local evidence that disam-biguates where the white appearance comes from, allow-ing the combined global–local representation to answer no .Here the global pathway provides the field-level scene con-text, while the foveated pathway localizes the competing white evidence to the players. These cases also clarify the active-vision decomposition underlying FAVE. The FastVLM global pathway provides passive scene encoding: it compresses the complete image into a fixed global representation without allocating additional acuity to particular regions. The local pathway separates spatial selection from visual encoding. The question-independent proposal mechanism determines 
+
+where additional processing can be allocated by identifying candidate object regions, while FAVE determines what vi-sual evidence is preserved from those regions through high-acuity adaptive encoding. The two pathways are therefore complementary: the global branch preserves scene context, while the foveated branch supplies additional object-centric evidence for fine appearance and object–attribute binding. 
+
+## References             
+
+> [1] Emre Akbas and Miguel P. Eckstein. Object detection through search with a foveated visual system. PLOS Com-putational Biology , 2017. 3, 9 [2] Jean-Baptiste Alayrac, Jeff Donahue, Pauline Luc, Antoine Miech, Iain Barr, Yana Hasson, Karel Lenc, Arthur Men-sch, Katherine Millican, Malcolm Reynolds, Roman Ring, Eliza Rutherford, Serkan Cabi, Tengda Han, Zhitao Gong, Sina Samangooei, Marianne Monteiro, Jacob L Menick, Sebastian Borgeaud, Andy Brock, Aida Nematzadeh, Sa-hand Sharifzadeh, Mikoł aj Bi´ nkowski, Ricardo Barreira, Oriol Vinyals, Andrew Zisserman, and Kar´ en Simonyan. Flamingo: a visual language model for few-shot learning. In NeurIPS , 2022. 1 [3] Daniel Bolya, Cheng-Yang Fu, Xiaoliang Dai, Peizhao Zhang, Christoph Feichtenhofer, and Judy Hoffman. Token merging: Your ViT but faster. In International Conference on Learning Representations , 2023. 3, 9 [4] Han Cai, Junyan Li, Muyan Hu, Chuang Gan, and Song Han. Efficientvit: Lightweight multi-scale attention for high-resolution dense prediction. In Proceedings of the IEEE/CVF International Conference on Computer Vision (ICCV) , 2023. 3, 9 [5] Jiuhai Chen, Jianwei Yang, Haiping Wu, Dianqi Li, Jian-feng Gao, Tianyi Zhou, and Bin Xiao. Florence-vl: Enhanc-ing vision-language models with generative vision encoder and depth-breadth fusion. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) , pages 24928–24938, 2025. 7 [6] Xiangxiang Chu, Limeng Qiao, Xinyu Zhang, Shuang Xu, Fei Wei, Yang Yang, Xiaofei Sun, Yiming Hu, Xinyang Lin, Bo Zhang, and Chunhua Shen. Mobilevlm v2: Faster and stronger baseline for vision language model. arXiv preprint arXiv:2402.03766 , 2024. 7
+
+19 [7] A Clark. Whatever next? predictive brains, situated agents, and the future of cognitive science. Behavioral and Brain Sciences , 36(3):181–204, 2013. 1 [8] Dwip Dalal, Gautam Vashishtha, Utkarsh Mishra, Jeongh-wan Kim, Madhav Kanda, Hyeonjeong Ha, Svetlana Lazeb-nik, Heng Ji, and Unnat Jain. Constructive distortion: Im-proving mllms with attention-guided image warping. In In-ternational Conference on Learning Representations , pages 23639–23672, 2026. 3, 8, 9 [9] Soumyaratna Debnath, Bui Duc Manh, Zinan Liu, and Lin Wang. Llmind: Bio-inspired training-free adaptive visual representations for vision-language models. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pat-tern Recognition (CVPR) , 2026. 3, 10 [10] Mostafa Dehghani, Basil Mustafa, Josip Djolonga, Jonathan Heek, Matthias Minderer, Mathilde Caron, Andreas Peter Steiner, Joan Puigcerver, Robert Geirhos, Ibrahim Alabdul-mohsin, Avital Oliver, Piotr Padlewski, Alexey A. Gritsenko, Mario Lucic, and Neil Houlsby. Patch n’ pack: Navit, a vision transformer for any aspect ratio and resolution. In 
+
+Thirty-seventh Conference on Neural Information Process-ing Systems , 2023. 2, 3, 4, 6, 9 [11] Jia Deng, Wei Dong, Richard Socher, Li-Jia Li, Kai Li, and Li Fei-Fei. Imagenet: A large-scale hierarchical image database. In IEEE Conference on Computer Vision and Pat-tern Recognition , 2009. 1, 2 [12] Arturo Deza and Miguel Eckstein. Can peripheral represen-tations improve clutter metrics on complex scenes? In Ad-vances in Neural Information Processing Systems , 2016. 3, 9[13] Arturo Deza and Talia Konkle. Emergent properties of foveated perceptual systems, 2021. 3, 9 [14] Alexey Dosovitskiy, Lucas Beyer, Alexander Kolesnikov, Dirk Weissenborn, Xiaohua Zhai, Thomas Unterthiner, Mostafa Dehghani, Matthias Minderer, Georg Heigold, Syl-vain Gelly, Jakob Uszkoreit, and Neil Houlsby. An image is worth 16x16 words: Transformers for image recognition at scale. In International Conference on Learning Representa-tions , 2021. 1 [15] Miguel P Eckstein. Visual search: A retrospective. Journal of vision , 11(5):14–14, 2011. 2 [16] Qihang Fan, Quanzeng You, Xiaotian Han, Yongfei Liu, Yunzhe Tao, Huaibo Huang, Ran He, and Hongxia Yang. Vitar: Vision transformer with any resolution, 2024. 3, 9 [17] Mohsen Fayyaz, Soroush Abbasi Koohpayegani, Farnoush Rezaei Jafari, Sunando Sengupta, Hamid Reza Vaezi Joze, Eric Sommerlade, Hamed Pirsiavash, and Juergen Gall. Adaptive token sampling for efficient vision transformers. In European Conference on Computer Vision ,2021. 3, 9 [18] M A Goodale and A D Milner. Sight unseen: An explo-ration of conscious and unconscious vision . Oxford Univer-sity Press, 2004. 1 [19] Zonghao Guo, Ruyi Xu, Yuan Yao, Junbo Cui, Zanlin Ni, Chunjiang Ge, Tat-Seng Chua, Zhiyuan Liu, and Gao Huang. Llava-uhd: An lmm perceiving any aspect ratio and high-resolution images. In ECCV , 2024. 3, 9 [20] Drew A. Hudson and Christopher D. Manning. Gqa: Anew dataset for real-world visual reasoning and composi-tional question answering. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) , 2019. 8 [21] Ranjay Krishna, Yuke Zhu, Oliver Groth, Justin Johnson, Kenji Hata, Joshua Kravitz, Stephanie Chen, Yannis Kalan-tidis, Li-Jia Li, David A. Shamma, Michael S. Bernstein, and Li Fei-Fei. Visual genome: Connecting language and vision using crowdsourced dense image annotations. International Journal of Computer Vision , 123(1):32–73, 2017. 1 [22] Junnan Li, Dongxu Li, Silvio Savarese, and Steven Hoi. BLIP-2: Bootstrapping language-image pre-training with frozen image encoders and large language models. In Pro-ceedings of the 40th International Conference on Machine Learning . PMLR, 2023. 1 [23] Wentong Li, Yiming Yuan, Jian Liu, et al. Tokenpacker: Efficient visual projector for multimodal llm. International Journal of Computer Vision , 2025. 3, 9 [24] Yanwei Li, Yuechen Zhang, Chengyao Wang, Zhisheng Zhong, Yixin Chen, Ruihang Chu, Shaoteng Liu, and Jiaya Jia. Mini-gemini: Mining the potential of multi-modality vi-sion language models. IEEE Transactions on Pattern Analy-sis and Machine Intelligence , 2026. 3, 7, 8, 10 [25] Minghui Liao, Zhisheng Zou, Zhaoyi Wan, Cong Yao, and Xiang Bai. Real-Time Scene Text Detection With Differen-tiable Binarization and Adaptive Scale Fusion . IEEE Trans-actions on Pattern Analysis & Machine Intelligence , 2023. 7[26] Tsung-Yi Lin, Michael Maire, Serge J. Belongie, James Hays, Pietro Perona, Deva Ramanan, Piotr Doll´ ar, and C. Lawrence Zitnick. Microsoft coco: Common objects in context. In European Conference on Computer Vision , 2014. 1[27] Haotian Liu, Chunyuan Li, Qingyang Wu, and Yong Jae Lee. Visual instruction tuning. In NeurIPS , 2023. 1, 7 [28] Yuliang Liu, Zhang Li, Mingxin Huang, Biao Yang, Wenwen Yu, Chunyuan Li, Xu-Cheng Yin, Cheng-Lin Liu, Lianwen Jin, and Xiang Bai. Ocrbench: on the hidden mystery of ocr in large multimodal models. Science China Information Sciences , 2024. 8 [29] Ze Liu, Han Hu, Yutong Lin, Zhuliang Yao, Zhenda Xie, Yixuan Wei, Jia Ning, Yue Cao, Zheng Zhang, Li Dong, Furu Wei, and Baining Guo. Swin transformer v2: Scaling up capacity and resolution. In CVPR , 2022. 1, 3, 9 [30] Haoyu Lu, Wen Liu, Bo Zhang, Bingxuan Wang, Kai Dong, Bo Liu, Jingxiang Sun, Tongzheng Ren, Zhuoshu Li, Hao Yang, Yaofeng Sun, Chengqi Deng, Hanwei Xu, Zhenda Xie, and Chong Ruan. Deepseek-vl: Towards real-world vision-language understanding. arXiv preprint arXiv:2403.05525 ,2024. 7 [31] Andr´ es Marafioti, Orr Zohar, Miquel Farr´ e, Merve Noyan, Elie Bakouch, Pedro Cuenca, Cyril Zakka, Loubna Ben Allal, Anton Lozhkov, Nouamane Tazi, Vaibhav Srivastav, Joshua Lochner, Hugo Larcher, Mathieu Morlon, Lewis Tun-stall, Leandro von Werra, and Thomas Wolf. Smolvlm: Redefining small and efficient multimodal models. arXiv preprint arXiv:2504.05299 , 2025. 3, 7, 8, 9 
+
+20 [32] A D Milner and M A Goodale. The visual brain in action .Oxford University Press, 1992. 1 [33] Juhong Min, Lazar Valkov, Vitali Petsiuk, Hossein Souri, and Deen Dayal Mohan. Foveated reasoning: Stateful, action-based visual focusing for vision-language models. 
+
+arXiv preprint arXiv:2604.21079 , 2026. 3, 10 [34] M Mishkin, LG Ungerleider, and KA Macko. Object vision and spatial vision: Two cortical pathways. Trends in Neuro-sciences , 6:414–417, 1983. 1 [35] Amitangshu Mukherjee, Deepak Ravikumar, and Kaushik Roy. From clutter to clarity: Visual recognition through foveated object-centric learning (focl). Transactions on Ma-chine Learning Research , 2026. 3, 9, 11 [36] Yongming Rao, Wenliang Zhao, Benlin Liu, Jiwen Lu, Jie Zhou, and Cho-Jui Hsieh. Dynamicvit: Efficient vision transformers with dynamic token sparsification. In Advances in Neural Information Processing Systems (NeurIPS) , 2021. 3, 9 [37] Olga Russakovsky, Jia Deng, Hao Su, Jonathan Krause, San-jeev Satheesh, Sean Ma, Zhiheng Huang, Andrej Karpathy, Aditya Khosla, Michael Bernstein, Alexander C Berg, and Li Fei-Fei. Imagenet large scale visual recognition challenge. 
+
+International Journal of Computer Vision , 115(3):211–252, 2015. 1 [38] Tanner Schmidt and Richard Newcombe. Segment this thing: Foveated tokenization for efficient point-prompted segmen-tation. In Proceedings of the Computer Vision and Pattern Recognition Conference (CVPR) , 2025. 3, 9 [39] Muhammad A Shah, Aqsa Kashaf, and Bhiksha Raj. Train-ing on foveated images improves robustness to adversarial attacks. In Thirty-seventh Conference on Neural Information Processing Systems , 2023. 3, 9 [40] Hao Shao, Shengju Qian, Han Xiao, Guanglu Song, Zhuofan Zong, Letian Wang, Yu Liu, and Hongsheng Li. Visual cot: Advancing multi-modal language models with a comprehen-sive dataset and benchmark for chain-of-thought reasoning. In The Thirty-eight Conference on Neural Information Pro-cessing Systems Datasets and Benchmarks Track , 2024. 3, 10 [41] Baifeng Shi, Ziyang Wu, Maolin Mao, Xin Wang, and Trevor Darrell. When do we not need larger vision models? In 
+
+European Conference on Computer Vision , pages 444–462, 2024. 7 [42] Yuheng Shi, Xiaohuan Pei, Minjing Dong, and Chang Xu. Catching the details: Self-distilled roi predictors for fine-grained mllm perception. In International Conference on Learning Representations , 2026. 3, 7, 10 [43] Y. Shi, X. Pei, L. Wen, M. Dong, and C. Xu. Q-zoom: Query-aware adaptive perception for efficient multimodal large language models. arXiv preprint arXiv:2604.06912 ,2026. 3, 7, 10 [44] Amanpreet Singh, Vivek Natarjan, Meet Shah, Yu Jiang, Xinlei Chen, Devi Parikh, and Marcus Rohrbach. Towards vqa models that can read. In Proceedings of the IEEE Con-ference on Computer Vision and Pattern Recognition , pages 8317–8326, 2019. 7 [45] Rui Tian, Zuxuan Wu, Qi Dai, Han Hu, Yu Qiao, and Yu-Gang Jiang. Resformer: Scaling vits with multi-resolution training. In CVPR , 2023. 3, 9 [46] Shengbang Tong, Ellis L Brown II, Penghao Wu, Sanghyun Woo, ADITHYA JAIRAM IYER, Sai Charitha Akula, Shusheng Yang, Jihan Yang, Manoj Middepogu, Ziteng Wang, Xichen Pan, Rob Fergus, Yann LeCun, and Saining Xie. Cambrian-1: A fully open, vision-centric exploration of multimodal LLMs. In The Thirty-eighth Annual Conference on Neural Information Processing Systems , 2024. 3, 7, 10 [47] L G Ungerleider and J V Haxby. ’what’ and ’where’ in the human brain. Current Opinion in Neurobiology , 4(2):157– 165, 1994. 2 [48] Pavan Kumar Anasosalu Vasu, James Gabriel, Jeff Zhu, On-cel Tuzel, and Anurag Ranjan. Fastvit: A fast hybrid vision transformer using structural reparameterization. In Proceed-ings of the IEEE/CVF International Conference on Com-puter Vision , 2023. 3, 9 [49] Pavan Kumar Anasosalu Vasu, Fartash Faghri, Chun-Liang Li, Cem Koc, Nate True, Albert Antony, Gokul San-thanam, James Gabriel, Peter Grasch, Oncel Tuzel, and Hadi Pouransari. Fastvlm: Efficient vision encoding for vision language models. In Proceedings of the IEEE/CVF Confer-ence on Computer Vision and Pattern Recognition (CVPR) ,2025. 2, 3, 7, 8, 9 [50] Ashish Vaswani, Noam Shazeer, Niki Parmar, Jakob Uszko-reit, Llion Jones, Aidan N Gomez, Ł ukasz Kaiser, and Illia Polosukhin. Attention is all you need. In NeurIPS , 2017. 1 [51] Manish Reddy Vuyyuru, Andrzej Banburski, Nishka Pant, and Tomaso Poggio. Biologically inspired mechanisms for adversarial robustness. In Advances in Neural Information Processing Systems , 2020. 3, 9 [52] Ao Wang, Lihao Liu, Hui Chen, Zijia Lin, Jungong Han, and Guiguang Ding. Yoloe: Real-time seeing anything. In 
+
+Proceedings of the IEEE/CVF International Conference on Computer Vision (ICCV) , pages 24591–24602, 2025. 8 [53] Jianwei Yang, Chunyuan Li, Pengchuan Zhang, Xiyang Dai, Bin Xiao, Lu Yuan, and Jianfeng Gao. Focal attention for long-range interactions in vision transformers. In Advances in Neural Information Processing Systems , 2021. 3, 9 [54] Jianwei Yang, Chunyuan Li, Xiyang Dai, and Jianfeng Gao. Focal modulation networks, 2022. 3, 9 [55] Senqiao Yang, Yukang Chen, Zhuotao Tian, Chengyao Wang, Jingyao Li, Bei Yu, and Jiaya Jia. Visionzip: Longer is better but not necessary in vision language models. In Pro-ceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) , 2025. 3, 9 [56] Jiarui Zhang, Mahyar Khayatkhoei, Prateek Chhikara, and Filip Ilievski. MLLMs know where to look: Training-free perception of small visual details with multimodal LLMs. In 
+
+The Thirteenth International Conference on Learning Rep-resentations , 2025. 3, 7, 8, 9 [57] Baichuan Zhou, Ying Hu, Xi Weng, Junlong Jia, Jie Luo, Xien Liu, Ji Wu, and Lei Huang. Tinyllava: A framework of small-scale large multimodal models, 2024. 3, 8, 9 
+
+21

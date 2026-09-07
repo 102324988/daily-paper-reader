@@ -41,17 +41,17 @@
 <section class="dpr-home-dashboard-card dpr-home-report-card">
   <div class="dpr-home-dashboard-header">
     <div>
-      <span class="dpr-home-dashboard-kicker">2026-09-06</span>
+      <span class="dpr-home-dashboard-kicker">2026-09-07</span>
       <h3 class="dpr-home-dashboard-title">今日汇总</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">共 11 篇</strong>
+    <strong class="dpr-home-dashboard-count">共 15 篇</strong>
   </div>
   <dl class="dpr-home-dashboard-stats">
     <div class="dpr-home-dashboard-stat"><dt>累计更新</dt><dd>1 次</dd></div>
     <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>6</dd></div>
-    <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>5</dd></div>
+    <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>9</dd></div>
   </dl>
-  <p class="dpr-home-dashboard-body">最近更新：2026-09-06 22:10:21 UTC<br>状态：成功</p>
+  <p class="dpr-home-dashboard-body">最近更新：2026-09-07 23:10:11 UTC<br>状态：成功</p>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-brief-card">
   <div class="dpr-home-dashboard-header">
@@ -62,9 +62,7 @@
     <strong class="dpr-home-dashboard-count">AI</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<p>今日共读11篇论文，精读6篇、速读5篇，重点聚焦可解释分类与医学图像分割。</p>
-<p>最值得关注的是9.0分双雄：《OPAL》用正交原型对齐实现可解释图像分类，《GazeRefine》以专家凝视作为测试时提示、免训练提升医学图像分割精度。</p>
-<p>若想快速跟进，可顺带一览异常检测、超分与流式视觉定位三篇7分工作，拓宽视野。</p>
+<p>今日共读15篇论文，精读6篇、速读9篇，重点聚焦视觉分割与三维几何识别。最值得关注的是无训练上下文分割方法FoRIS（9.0分）及CAD-free三维形状先验（9.0分），两者分别解决前景细化与外观失效时的几何补全问题。建议普通读者优先浏览这两篇精读，再按兴趣拓展至运动物体概念涌现等速读话题。</p>
   </div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-deep-card">
@@ -76,7 +74,7 @@
     <strong class="dpr-home-dashboard-count">6 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="OPAL: Orthonormal Prototype Alignment Learning for Interpretable Image Classification">OPAL: Orthonormal Prototype Alignment Learning for Interpretable Image Classification</span></li><li><span class="dpr-home-dashboard-paper-title" title="GazeRefine: Expert Gaze as a Test-Time Prompt for Training-Free Medical Image Segmentation">GazeRefine: Expert Gaze as a Test-Time Prompt for Training-Free Medical Image Segmentation</span></li><li><span class="dpr-home-dashboard-paper-title" title="RoSe-SLAM: Robust Semantic-Aware Gaussian Splatting SLAM from Dynamic Monocular Videos">RoSe-SLAM: Robust Semantic-Aware Gaussian Splatting SLAM from Dynamic Monocular Videos</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="FoRIS: Progressive Foreground Refinement for Training-Free In-Context Segmentation">FoRIS: Progressive Foreground Refinement for Training-Free In-Context Segmentation</span></li><li><span class="dpr-home-dashboard-paper-title" title="Where Appearance Fails, Geometry Recognizes: A CAD-Free 3D Shape Prior That Complements Vision Foundation Models">Where Appearance Fails, Geometry Recognizes: A CAD-Free 3D Shape Prior That Complements Vision Foundation Models</span></li><li><span class="dpr-home-dashboard-paper-title" title="FAVE: Foveated Adaptive Visual Encoding for Efficient Fine-Grained Visual Understanding">FAVE: Foveated Adaptive Visual Encoding for Efficient Fine-Grained Visual Understanding</span></li></ul>
   </div>
   <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">cv <strong>6</strong></span></div>
 </section>
@@ -86,12 +84,12 @@
       <span class="dpr-home-dashboard-kicker">今日累计</span>
       <h3 class="dpr-home-dashboard-title">速读推荐</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">5 篇</strong>
+    <strong class="dpr-home-dashboard-count">9 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Anomaly Detection on Small Industrial Components via Vision-Based Tactile Sensing">Anomaly Detection on Small Industrial Components via Vision-Based Tactile Sensing</span></li><li><span class="dpr-home-dashboard-paper-title" title="PixelIR: Fidelity-Perception Decoupling via Pixel-Space Image-Residual Flow Matching for Efficient One-Step Real-World Super-Resolution">PixelIR: Fidelity-Perception Decoupling via Pixel-Space Image-Residual Flow Matching for Efficient One-Step Real-World Super-Resolution</span></li><li><span class="dpr-home-dashboard-paper-title" title="TempoGround: State-Aware Streaming Visual Grounding with Vision-Language Models">TempoGround: State-Aware Streaming Visual Grounding with Vision-Language Models</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Object Concepts Emerge from Motion">Object Concepts Emerge from Motion</span></li><li><span class="dpr-home-dashboard-paper-title" title="AdaptVPR: Route-Aware Hard Positive Generation for Robust Visual Place Recognition">AdaptVPR: Route-Aware Hard Positive Generation for Robust Visual Place Recognition</span></li><li><span class="dpr-home-dashboard-paper-title" title="LookThere! Sparse Vision by Reinforced Selection">LookThere! Sparse Vision by Reinforced Selection</span></li></ul>
   </div>
-  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">cv <strong>5</strong></span></div>
+  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">cv <strong>9</strong></span></div>
 </section>
 </div>
 

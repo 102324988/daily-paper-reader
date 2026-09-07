@@ -1,0 +1,405 @@
+Title: Efficient Multi-Timescale Event Representations for Feed-Forward Object Detection
+
+URL Source: https://arxiv.org/pdf/2609.05049v1
+
+Published Time: Mon, 07 Sep 2026 00:54:14 GMT
+
+Number of Pages: 16
+
+Markdown Content:
+Accepted to the Workshop on Neuromorphic Vision (NeVi) of the European Conference on Computer Vision (ECCV), 2026. 
+
+# Efficient Multi-Timescale Event Representations for Feed-Forward Object Detection 
+
+Fredrik Lundell 1,2 , Per-Erik Forssén 1 , Mårten Wadenbäck 1 , and Astrid Lundmark 2 
+
+> 1
+
+Department of Electrical Engineering, Linköping University, Sweden 
+
+{firstname.lastname}@liu.se  
+
+> 2
+
+Saab AB, Linköping, Sweden 
+
+Abstract. Autonomous systems require robust low-latency perception under rapidly changing scene dynamics and challenging illumination. In event cameras, object detection commonly relies on recurrent architec-tures to accumulate sparse temporal information over time. This work investigates how temporal information can be encoded directly within the event representation. We propose a confidence-normalized continu-ous multi-timescale representation based on logarithmic B-spline tem-poral encoding together with a geometry-aware local confidence mech-anism that exploits the spatial structure of event generation. Using a fixed feed-forward EventCenterNet detector, we show that the proposed representations consistently outperform the compact CSTR representa-tion on PEDRo and Gen1 datasets. We further introduce a polynomial approximation from recursive exponentials that enables efficient event-by-event updates while largely preserving detection performance. Our results demonstrate that carefully designed event representations can capture much of the temporal information learned through recurrent temporal modeling, providing a promising foundation for efficient feed-forward, event-driven, and future neuromorphic object detection. 
+
+Keywords: Feed-Forward Object Detection · Neuromorphic Processing · Event Cameras 
+
+## 1 Introduction 
+
+Reliable object detection in dynamic environments remains challenging for con-ventional frame-based cameras due to motion blur, limited temporal resolution, low-light conditions, and rapidly changing illumination. Event cameras address several of these limitations by asynchronously measuring logarithmic brightness changes with microsecond temporal resolution [9,19,22]. This enables low-latency sensing, high dynamic range, and reduced motion blur, making event cameras attractive for robotics, autonomous driving, drones, industrial automation, and high-speed tracking. A central challenge in detection is how to represent temporal information effi-ciently. Short temporal windows preserve localization accuracy but may discard arXiv:2609.05049v1 [cs.CV] 4 Sep 2026 2 F. Lundell et al. 
+
+weak object evidence, whereas longer windows improve temporal persistence at the cost of stale structures and reduced localization precision. Modern detectors commonly model temporal information through recurrent hidden-state propagation or recurrent attention mechanisms [12, 24]. Although effective, these approaches introduce sequential dependencies and additional ar-chitectural complexity, limiting parallel execution and making efficient event-driven implementations more challenging. This work investigates whether temporal information can be encoded directly within the event representation. We propose a confidence-normalized multi-timescale representation combining logarithmic B-spline encoding with geometry-aware local confidence support, preserving high resolution for recent events while compressing older temporal context. The confidence is conceptually related to the event-count support in CSTR [6], but uses temporally weighted support for normalization, similar in spirit to normalized convolution [16], with optional spatial aggregation to reinforce coherent event structures. Exponential decay [15] naturally supports recursive event-by-event updates but exhibit relatively high inter-channel correlation. In contrast, logarithmic B-spline encoding provides smoothly overlapping temporal functions with lower correlation, improving temporal diversity. To recover recursive updates, we in-troduce an exponential-polynomial approximation that closely matches the ana-lytical spline representation while enabling efficient event-by-event computation. Our main contributions are: 
+
+– A confidence-normalized multi-timescale event representation based on log-arithmic B-spline temporal encoding. 
+
+– An analysis of the influence of temporal encoding, temporal support, and local confidence on detection performance across the PEDRo and Gen1 datasets. 
+
+– A polynomial approximation from recursive exponentials enabling efficient event-by-event updates of the logarithmic B-spline representation. 
+
+– Experimental evidence that carefully designed event representations capture much of the temporal information learned through recurrent temporal mod-eling. 
+
+## 2 Related Work 
+
+2.1 Event representations 
+
+Most event-based vision methods first convert asynchronous event streams into grid-based representations that can be processed by conventional convolutional neural networks or vision transformers. Common representations include event count images, time surfaces, spatio-temporal histograms, and voxel grids. Time surfaces encode recent event timestamps through temporal decay functions [17, 25], while voxel grids discretize events into temporal bins [30]. These representa-tions are effective, but their temporal precision and temporal support are largely fixed by the chosen bin width or accumulation window. Efficient Multi-Timescale Event Representations. . . 3
+
+Compact image-like encodings reduce memory and computation. CSTR [6] combines event count, polarity, and temporal information in a three-channel rep-resentation [6]. Learned representations and recurrent matrix-based aggregation have also been explored for asynchronous vision [3,11,18]. Representation choice can strongly affect performance and generalization in event-based perception tasks [13]. Spatial consistency can also reinforce coherent event structures and reduce isolated noise. The Exponential Reduced Ordinal Surface (EROS) [10] uses local spatial support to maintain stable event contours under sparse and noisy con-ditions. Similarly, the proposed method incorporates confidence-weighted local support into a continuous multi-timescale temporal representation. Despite these advances, existing representations rely primarily on fixed tem-poral bins or exponential decay, leaving the influence of continuous temporal function design largely unexplored. This work addresses this question using a feed-forward detector. 
+
+2.2 Temporal modeling for event-based detection 
+
+Event-based object detectors often adapt frame-based architectures such as Cen-terNet [29] or YOLO [28]. Since event evidence may appear intermittently, recent detectors increasingly rely on recurrent hidden states, recurrent atten-tion, or other temporal aggregation mechanisms to accumulate information over time [7,12,24]. Spiking detectors further combine event-based input with neuro-morphic computation [1]. These approaches demonstrate the value of temporal memory, but also in-crease architectural complexity. In contrast, this work investigates how much temporal information can be encoded directly before detection, thereby isolat-ing the design of the event input from architectural temporal modeling. 
+
+2.3 Event-driven and neuromorphic processing 
+
+Neuromorphic processing is particularly attractive for event cameras because computation is driven asynchronously by incoming events, enabling low-latency and energy-efficient processing of sparse event streams [5, 22]. Representations based on recursively updated temporal states naturally support this paradigm, as each incoming event can be processed with constant computational cost with-out recomputing a temporal window. The recursive approximation proposed in this work provides one such formulation while preserving the multi-timescale temporal structure of the analytical spline representation. This event-driven formulation is compatible with asynchronous processing and may facilitate fu-ture implementations on specialized event-driven and neuromorphic hardware platforms [4, 8]. More generally, these observations highlight the potential of representation-level temporal modeling as an alternative to architectural tem-poral memory. 4 F. Lundell et al. 
+
+## 3 Method 
+
+We first review event generation and formulate multi-timescale temporal encod-ing using both widely used exponential decay [15] and the proposed logarithmic B-spline functions. We then introduce confidence normalization with optional local confidence support, followed by an exponential-polynomial approximation that enables recursive event-by-event updates of the spline representation. 
+
+3.1 Event Generation 
+
+An event is generated when the accumulated logarithmic brightness change ex-ceeds a contrast threshold, 
+
+|∆L (x, y, t )| ≥ C,  (1) where ∆L (x, y, t ) denotes the logarithmic brightness change accumulated at pixel 
+
+(x, y ) since its previous event, evaluated at time t, and C is the contrast thresh-old. Each event is represented as 
+
+ei = ( xi, y i, t i, p i), (2) where (xi, y i) is the pixel location, ti the timestamp, and pi ∈ {− 1, +1 } the polarity. Under brightness constancy, event generation can be approximated by 
+
+dL dt = ∇L · u, (3) where ∇L denotes the spatial image gradient and u is image-plane motion. Events are therefore generated primarily along moving object gradients. 
+
+3.2 Confidence-Normalized Multi-Timescale Representation 
+
+Given the event stream in Eq. (2), the representation projects event age onto temporal functions. For a representation queried at time t, the age 
+
+∆t i = t − ti, (4) and event i contributes to temporal channel k according to 
+
+wik = ϕk(∆t i), (5) where ϕk is the k-th temporal function. The event stream is converted into a compact 3N -channel tensor with N
+
+positive, N negative, and N confidence/support channels. Positive and negative temporal evidence is accumulated as 
+
+S+ 
+
+> k
+
+(x, y ) = X
+
+> i:pi=+1
+
+ϕk(∆t i), S− 
+
+> k
+
+(x, y ) = X
+
+> i:pi=−1
+
+ϕk(∆t i). (6) Efficient Multi-Timescale Event Representations. . . 5
+
+Unsigned temporal support is 
+
+Ck(x, y ) = S+ 
+
+> k
+
+(x, y ) + S− 
+
+> k
+
+(x, y ), (7) and the polarity channels are normalized by this support: 
+
+ˆS+ 
+
+> k
+
+(x, y ) = S+ 
+
+> k
+
+(x, y )
+
+Ck(x, y ) + ϵ , ˆS− 
+
+> k
+
+(x, y ) = S− 
+
+> k
+
+(x, y )
+
+Ck(x, y ) + ϵ . (8) Similar to normalized convolution [16], the temporal support measures the amount of confidence available at each temporal scale. Thus, the normalized po-larity channels encode relative positive and negative temporal structure, while the confidence channels in Eq. 7 indicate how strongly each response is sup-ported. 
+
+3.3 Exponential Decay Encoding 
+
+For exponential decay encoding [15], 
+
+ϕk(∆t ) = exp 
+
+
+
+− ∆t τk
+
+
+
+, (9) where τk is the decay constant. Small constants emphasize recent events, while larger constants provide longer temporal persistence. Exponential states also support recursive event-by-event updates, 
+
+Dk(ti) = exp 
+
+
+
+− δt i
+
+τk
+
+
+
+Dk(ti−1) + Ei, (10) where δt i = ti − ti−1 and Ei is the contribution of the current event. This is at-tractive for low-latency and neuromorphic processing, but exponential functions with similar τk can be highly correlated across timescales. 
+
+3.4 Log-Time B-Spline Encoding 
+
+The proposed spline representation decomposes the event history into smoothly overlapping logarithmic B-spline functions [27]. Event age is mapped to 
+
+ai = log 
+
+
+
+1 + ∆t i
+
+τ0
+
+
+
+, sk = kK − 1 log 
+
+
+
+1 + τmax 
+
+τ0
+
+
+
+, (11) where τ0 controls temporal resolution near recent events, while τmax determines the temporal extent over which the spline representation is distributed. The logarithmically distributed shifts sk define the placement of the K function. The 
+
+k-th temporal function is then 
+
+ϕk(∆t i) = B(ai − sk) , (12) 6 F. Lundell et al.       
+
+> Fig. 1: Temporal structure of the proposed logarithmic B-spline representation. (a) Four Second-order logarithmic B-spline functions for τ0= 1 .2and τmax = 35 .(b) Correlation matrix of logarithmic B-spline (left) and exponential decay (right) temporal functions, showing that the B-spline functions produce a less redundant multi-timescale encoding.
+
+where B(·) denotes the B-spline basis function. Following the standard recursive construction [27], the zeroth-order B-spline is defined as 
+
+B0(t) = 
+
+(
+
+1, t ∈ [0 , 1) ,
+
+0, otherwise , (13) and the n-th order B-spline is obtained by repeated convolution ( ∗). 
+
+Bn(t) = ( B0 ∗ Bn−1)( t) = ( B0 ∗ B0 ∗ · · · ∗ B0)( t)
+
+| {z } 
+
+> n+1 times
+
+, (14) In this work, we use the second-order basis function n = 2 .The logarithmic mapping allocates high temporal resolution to recent events while progressively compressing older history. Compared to exponential decay, logarithmic B-splines provide smooth interpolation with lower inter-channel cor-relation, yielding a more diverse temporal encoding. Figure 1 illustrates the logarithmic B-spline functions and compares their temporal correlations with exponential decay. 
+
+3.5 Spatial-Neighbourhood Confidence 
+
+Since events are generated primarily along moving structures, neighbouring tem-porally correlated events provide geometric support for weak or fragmented ob-ject evidence. Given Ck(x, y ), local confidence is accumulated as 
+
+˜Ck(x, y ) = X 
+
+> (u,v )∈N (x,y )
+
+G(u − x, v − y, σ )Ck(u, v ), (15) where N (x, y ) is a local spatial neighbourhood and G is a normalized Gaussian weighting kernel, with std σ.Efficient Multi-Timescale Event Representations. . . 7
+
+The confidence channels measure local spatio-temporal support rather than polarity. This differs from smoothing the positive and negative channels: lo-cal confidence reinforces the support used for normalization without blurring polarity-specific temporal information. 
+
+3.6 Polynomial Approximation of Log-Time B-Spline functions 
+
+Direct spline accumulation does not naturally support constant-cost recursive updates. To enable event-driven updates, spline functions are approximated us-ing polynomial combinations of exponential kernels, 
+
+ej (∆t ) = exp 
+
+
+
+− ∆t τj
+
+
+
+. (16) Each spline function in Eq. 12 is approximated as 
+
+ˆBk(∆t ) = fk(e1(∆t ), e 2(∆t ), . . . , e M (∆t )) , (17) where fk is a learned polynomial mapping. Coefficients are obtained by least-squares regression over sampled temporal points. Figure 2 illustrates the fourth-order polynomial approximation of the loga-rithmic B-spline functions using three exponential functions and a learned poly-nomial mapping.  
+
+> Fig. 2: Approximated logarithmic B-spline functions. (a) Input exponential decay ker-nel functions (b) Learned 4-order polynomial mapping without a bias term.
+
+The exponential states can be updated recursively as events arrive, while the polynomial mapping reconstructs spline-like responses when applied. It has not escaped our notice that the change of basis can be derived analytically using Gram-matrices formed by dot-products of the involved basis functions. We leave this, with efficient recursive implementation and evaluation, for future work. 
+
+## 4 Experimental Setup 
+
+Experiments are conducted on PEDRo [2] and Gen1 [26]. PEDRo consists pri-marily of pedestrian detection sequences recorded from a moving platform and is 8 F. Lundell et al. 
+
+dominated by medium and large objects, with few small-object instances. Gen1 contains urban driving sequences with a much larger proportion of small and distant objects, resulting in sparser event observations and a more challenging detection setting. Therefore, the PEDRo and Gen1 datasets complement each other. 
+
+4.1 Detector and Evaluation 
+
+All experiments use the proposed fully feed-forward EventCenterNet detector. The architecture consists of a ResNet34 encoder, a U-Net-style decoder with attention skip connections, and CenterNet prediction heads [14, 21, 23, 29]. It predicts object center heatmaps, bounding-box sizes, and center offsets. No re-current hidden state or temporal attention is used, allowing the effect of rep-resentation design to be evaluated independently. To accommodate different event representations, only the first convolutional layer is modified to match the number of input channels; the rest of the architecture is identical. A custom CenterNet with ResNet34 was chosen for architectural flexibility and fewer li-censing constraints, while providing a moderate-capacity feed-forward baseline for isolating the impact of event representation design. Within each dataset, all models use identical training settings; only the event representation is changed. Standard event-based augmentation is applied, includ-ing horizontal flips, polarity flips, and timestamp jittering. Performance is evaluated using the standard Common Objects in Context (COCO) metrics [20], AP 50:95 denotes Average Precision (AP) averaged over IoU thresholds from 0.50 to 0.95. We additionally report AP 50 , AP 75 , AP s,AP m, AP l, and AR s, where AR denotes Average Recall and the subscripts s, m,and l refer to small, medium, and large objects, respectively. 
+
+## 5 Results 
+
+5.1 Representation Comparison 
+
+We compare the CSTR [6], multi-timescale exponential decay and logarithmic B-spline representations using the feed-forward EventCenterNet detector. Table 1 summarizes the results. All models use four temporal functions. Ex-ponential decay employs τ = {1.2, 3.5, 10 , 35 } ms, while the spline-based repre-sentation uses four second-order functions spanning the same temporal range. PEDRo uses a 40 ms event window and Gen1 a 50 ms event window. A normalized 3×3 binomial kernel, approximating a Gaussian filter, was used for local confidence. Both multi-timescale representations outperform the compact CSTR baseline on PEDRo and Gen1 across all evaluated metrics. On PEDRo, spline encoding with local confidence achieves the highest AP 50:95 , AP 50 , AP 75 , AP s, AP m, and AR s. Compared with exponential decay, AP s increases from 0.015 to 0.062 and AR s from 0.142 to 0.219. On Gen1, spline encoding without local confidence Efficient Multi-Timescale Event Representations. . . 9
+
+Table 1: Comparison of temporal representations on PEDRo and Gen1. PEDRo mod-els use a 40 ms event window, while Gen1 models use a 50 ms window. Only the event representation is changed within each dataset. Four temporal functions are used for both exponential and spline-based representations.                                                                                          
+
+> Dataset Representation Ch. AP 50:95 AP 50 AP 75 AP sAP mAP lAR s
+> PEDRo CSTR [6] 30.566 0.877 0.648 0.010 0.563 0.597 0.072 Exp. decay 12 0.621 0.907 0.739 0.015 0.593 0.674 0.142 Exp. decay + local conf. 12 0.621 0.908 0.734 0.018 0.600 0.668 0.106 Spline 12 0.625 0.907 0.738 0.041 0.606 0.671 0.151 Spline + local conf. 12 0.630 0.915 0.752 0.062 0.611 0.670 0.219
+> Gen1 CSTR [6] 30.355 0.637 0.349 0.278 0.435 0.274 0.446 Exp. decay 12 0.365 0.646 0.360 0.285 0.453 0.307 0.505
+> Exp. decay + local conf. 12 0.365 0.642 0.361 0.282 0.451 0.304 0.499 Spline 12 0.370 0.658 0.361 0.285 0.455 0.298 0.501 Spline + local conf. 12 0.365 0.646 0.352 0.282 0.451 0.318 0.498
+
+Table 2: Influence of window size and temporal function placement on Gen1. All mod-els use four second-order logarithmic B-spline functions with local confidence support. All models were trained for 20 epochs using the same training configuration.                                                         
+
+> Window size (ms) τ0(ms) τmax (ms) AP 50:95 AP 50 AP 75 AP s
+> 50 1.2 35 0.365 0.646 0.352 0.282 150 1.2 75 0.387 0.678 0.386 0.318 300 1.2 90 0.389 0.673 0.392 0.324 150 1.2 75 0.387 0.678 0.386 0.318 150 0.6 75 0.406 0.691 0.409 0.335
+> 150 0.45 75 0.399 0.680 0.402 0.321 150 0.6 50 0.400 0.690 0.401 0.332 150 0.45 50 0.401 0.691 0.398 0.320
+
+achieves the highest AP 50:95 , AP 50 , and AP 75 , while local confidence primarily improves AP l. The effect of local confidence also differs between the two tem-poral representations. For exponential decay, local confidence provides little or no benefit on either dataset, whereas it consistently improves spline encoding on PEDRo. Figure 3 presents qualitative examples from PEDRo, where the proposed spline-based representation detects object instances that are either missed or less accurately localized by the CSTR and exponential decay representations. 
+
+5.2 Temporal Function Placement 
+
+To better understand the influence of temporal representation on Gen1, we in-vestigate the effect of the window size and temporal function placement. The temporal resolution near recent events controlled by τ0, and the maximum tem-poral range determined by τmax .Comparisons in Table 2 show that increasing the window size from 50 ms to 150 ms and temporal range τmax yields a substantial improvement, demon-strating the importance of longer temporal context for sparse event observations. Extending the window size to 300 ms with τmax = 90, provides only marginal 10 F. Lundell et al. 
+
+CSTR Exp Spline + local conf. Repr. Heatmap Repr. Heatmap Repr. Heatmap 
+
+Fig. 3: Qualitative comparison of CSTR, exponential decay, and logarithmic spline representations on PEDRo. Each row shows one test example with predictions (red), annotations (green), and detector heatmaps. Exponential and spline representations are averaged over four temporal scales; red/green encode polarity support and blue local temporal confidence. 
+
+Table 3: Influence of temporal function placement on PEDRo. All models use four second-order logarithmic B-spline functions and local confidence support. All models were trained for 120 epochs using the same training configuration.                                             
+
+> Window size (ms) τ0(ms) τmax (ms) AP 50:95 AP 50 AP 75 AP s
+> 40 0.6 20 0.633 0.913 0.747 0.024 40 0.6 35 0.627 0.906 0.750 0.002 40 1.2 20 0.620 0.904 0.733 0.021 40 1.2 35 0.630 0.915 0.752 0.062
+> 40 2.4 20 0.631 0.911 0.745 0.032 40 2.4 35 0.628 0.910 0.747 0.025
+
+additional benefit, suggesting that a window size of 150 ms and τmax = 75 is sufficient for the evaluated representation. Temporal function placement also has a strong influence on performance. Keeping the window size fixed at 150 ms, reducing the temporal resolution pa-rameter τ0 from 1.2 ms to 0.6 ms improves AP across all reported metrics, in-dicating that Gen1 benefits from higher temporal resolution near recent events. Further reducing τ0 to 0.45 ms provides no additional improvement. Finally, reducing the temporal range τmax from 75 ms to 50 ms produces only minor performance changes. Figure 4 presents qualitative Gen1 examples spanning fast highway and slower urban driving. The four temporal functions capture complementary mo-tion dynamics across multiple timescales. Several apparent false positives, in-cluding approaching vehicles at high-speed and a parked car, are, in fact, correct detections missing from the annotations. Table 3 presents a similar parameter study on PEDRo using a fixed 40 ms window size. While τ0 = 0 .6 ms and τmax = 20 ms achieve the highest AP 50:95 ,Efficient Multi-Timescale Event Representations. . . 11 
+
+Mean repr. Heatmap τ0 τ1 τ2 τ3
+
+Fig. 4: Qualitative visualization of the logarithmic spline representation on Gen1 using a 150 ms event window. Columns show the averaged representation with predictions (red) and annotations (green), the detector heatmap, and the four spline channels spanning 0.6–75 ms. Red/green denote confidence-weighted polarity support and blue denotes local temporal confidence. 
+
+Table 4: Performance of recursive exponential-polynomial approximation of the loga-rithmic B-spline representation on PEDRo.                                  
+
+> Method Coeff. MSE ↓AP 50:95 AP 50 AP 75 AP sAP mAP l
+> Analytical spline Exact –0.636 0.918 0.752 0.111 0.618 0.674
+> 2nd order approx. 91.44 ×10 −50.624 0.914 0.739 0.091 0.603 0.665 4th order approx. 34 1.03 ×10 −60.626 0.913 0.739 0.087 0.607 0.667
+
+the best AP 50 , AP 75 , and AP s are obtained using τ0 = 1 .2 ms and τmax = 35 ms. Small-object performance is particularly sensitive to the shortest temporal scale, decreasing when τ0 is either reduced to 0.6 ms or increased to 2.4 ms. 
+
+5.3 Polynomial Approximation 
+
+Table 4 evaluates polynomial approximation from recursive exponentials of the analytical spline representation. The detector is trained once using the ana-lytical spline representation for 200 epochs, after which the analytical spline functions are replaced at inference by approximations using 9 and 34 polyno-mial coefficients per spline. To enable fully recursive event-by-event updates, the polynomial mapping is fitted without a constant bias term, allowing all represen-tation channels to be reconstructed solely from recursively updated exponential states. Increasing the approximation order from 2 to 4 reduces the approxima-tion MSE from 1.44 × 10 −5 to 1.03 × 10 −6, while detection performance changes only marginally. These results indicate that accurate object detection does not require an exact reconstruction of the analytical spline function and that a com-pact approximation preserves most of the discriminative temporal information. 12 F. Lundell et al. 
+
+Table 5: Comparison with feed-forward and recurrent YOLO-based detectors. ReY-OLO AP 50 and AP 50:95 values were obtained by re-evaluating the released models using the original evaluation protocol [24], reproducing the published AP 50:95 results.                                                    
+
+> Dataset Model Recurrent. Temporal context Params AP 50 AP 50:95
+> PEDRo EventCenterNet (Ours) No 40 ms 25M 0.918 0.636 YOLOv8x [24] No 40 ms 58M 0.895 0.586 ReYOLOv8n [24] Yes 200 (40 ×5) ms 4.7M 0.878 0.639 ReYOLOv8s [24] Yes 200 (40 ×5) ms 8.3M 0.905 0.655 ReYOLOv8m [24] Yes 200 (40 ×5) ms 18.1M 0.908 0.692
+> Gen1 EventCenterNet (Ours) No 150 ms 25M 0.691 0.406 ReYOLOv8n [24] Yes 550 (50 ×11) ms 4.7M 0.745 0.464 ReYOLOv8s [24] Yes 550 (50 ×11) ms 8.3M 0.769 0.483 ReYOLOv8m [24] Yes 550 (50 ×11) ms 18.1M 0.780 0.495
+
+Additional fitting experiments on Gen1 further show that the exponential basis should be matched to the temporal support of the analytical spline repre-sentation. Using three exponential functions yields a total approximation MSE of 
+
+1.89 ×10 −2, whereas five functions with decay constants τ = {0.6, 2.5, 10 , 40 , 120 } ms reduce the MSE to 1.36 × 10 −6. This demonstrates that selecting exponential functions consistent with the temporal range of the splines is important for an accurate approximation. 
+
+5.4 Comparison with Feed-Forward and Recurrent Detectors 
+
+Table 5 compares the proposed feed-forward EventCenterNet using the best spline-based representation, obtained from experiments in section 3.6 and 5.2, against recurrent and non-recurrent YOLO-based detectors. AP 50 and AP 50:95 values for ReYOLO were obtained by re-evaluating the re-leased models using the same evaluation framework as in the original paper [24]. The reproduced AP 50:95 values matched the published results. On PEDRo, EventCenterNet achieves the highest AP 50 among all compared methods and substantially outperforms the non-recurrent YOLOv8x baseline in AP 50:95 . Although recurrent models achieve the highest AP 50:95 , the proposed feed-forward detector remains competitive with the smallest ReYOLO model despite using no recurrent state and a shorter temporal window. On Gen1, recurrent ReYOLO models continue to achieve the highest perfor-mance by exploiting substantially longer temporal context through hidden-state propagation. However, the improvements obtained solely through representa-tion design suggest that a substantial portion of temporal information can be encoded directly within the event representation, while long-horizon temporal aggregation remains beneficial for challenging urban driving scenes. 
+
+5.5 Kalman-Based Temporal Filtering 
+
+We evaluated lightweight Kalman-based temporal filtering on top of the best spline-based baseline. Since PEDRo is recorded using a moving camera, smooth-Efficient Multi-Timescale Event Representations. . . 13              
+
+> Table 6: Kalman-based temporal filtering on PEDRo.
+> Method AP 50:95 AP 50 AP 75
+> Spline + local conf. 0.636 0.918 0.752 + Kalman, center + size 0.635 0.911 0.752 + Kalman, size only 0.639 0.918 0.757
+
+ing bounding box centers introduced localization lag due to unmodeled ego-motion. In contrast, restricting the filtering to bounding box width and height improved localization performance. The results in Table 6 show that smoothing bounding box centers does not improve localization, likely due to ego-motion-induced lag from the moving camera. Filtering only box width and height im-proves AP and AP 75 while preserving detector-predicted centers. This suggests that the representation already captures substantial short-term temporal con-tinuity, while lightweight size stabilization can still provide modest localization gains. 
+
+## 6 Discussion 
+
+The experiments show that representation design substantially influences event-based object detection. Using the same fully feed-forward detector isolates this effect, with the proposed multi-timescale representations consistently outper-forming compact CSTR on both PEDRo and Gen1. The experiments further show that temporal function design is an impor-tant factor in event-based object detection. Compared with exponential decay, logarithmic B-spline encoding shows promise for localization and robustness, suggesting that the shape and placement of the temporal functions influence the temporal information retained by the representation. Parameter studies fur-ther show that PEDRo benefits from a broader distribution of temporal support within the event window, whereas Gen1 benefits from higher temporal resolution near recent events, indicating that temporal representations should be adapted to the target application rather than relying on a fixed temporal distribution. Local confidence support provides little benefit for exponential decay but consistently improves logarithmic spline encoding on PEDRo, suggesting that temporal encoding and spatial support should be designed jointly. The comparison with recurrent detectors provides additional insight into representation-level temporal memory. On PEDRo, the proposed feed-forward detector achieves the highest AP 50 among the compared recurrent and non-recurrent YOLO-based detectors without recurrent state. On Gen1, optimizing temporal placement and context provides clear gains, although the remaining gap to recurrent models indicates a benefit from longer temporal aggregation. The qualitative examples also reveal several detections counted as false pos-itives that correspond to unannotated vehicles, suggesting that missing annota-tions slightly underestimate the reported performance. 14 F. Lundell et al. 
+
+Kalman filtering provides only modest gains, suggesting that the proposed representation already captures most short-term temporal continuity. Finally, the polynomial approximation retains much of the analytical spline performance while enabling recursive exponential states, with accurate approx-imation depending on the choice of exponential functions. The choice and cov-erage of temporal functions across scenarios, their applicability to other event-based perception tasks, and efficient recursive implementations for event-driven and neuromorphic processing remain important directions for future research. 
+
+## 7 Conclusion 
+
+This work investigates how efficient multi-timescale event representations can improve event-based feed-forward object detection by encoding temporal infor-mation directly within the representation instead of relying on recurrent hidden-state propagation. We isolated the effect of representation design and introduced a confidence-normalized continuous multi-timescale representation based on logarithmic B-spline temporal encoding, together with local confidence support and a recursive exponential-polynomial approximation. Across both PEDRo and Gen1, the proposed representations consistently outperformed the compact CSTR baseline. On PEDRo, the spline representa-tion improved AP 50:95 from 0.566 to 0.630 (+6.4) and increased small-object performance AP s from 0.010 to 0.062 (+5.2). By finetuning temporal function placement and support on Gen1, we also found that temporal representations are application dependent, improving AP 50:95 from 0.365 to 0.406 (+4.1). As shown in Table 5 our EventCenterNet model achieved the highest AP 50 
+
+among all compared recurrent and non-recurrent YOLO-based detectors. The achieved AP 50:95 was also competitive with recurrent ReYOLO models despite requiring no recurrent state. On Gen1, the remaining performance gap indicates that long-horizon temporal aggregation still benefits urban driving scenes. Finally, the polynomial approximation from recursive exponentials replaced the analytical spline representation with a compact recursive formulation while causing only minor changes in detection performance. Matching the exponential functions to the temporal support of the spline representation proved important for accurate approximation and efficient event-by-event updates. Overall, the results demonstrate that a substantial portion of the temporal information provided by recurrent temporal modeling can be encoded directly within the event representation, providing a promising foundation for efficient feed-forward, event-driven, and future neuromorphic perception systems. 
+
+Acknowledgments: This work was supported by the Wallenberg AI, Autonomous Systems and Software Program (WASP) funded by the Knut and Alice Wal-lenberg Foundation and Saab AB. Computational resources were provided by the National Academic Infrastructure for Supercomputing in Sweden (NAISS), funded by the Swedish Research Council. Efficient Multi-Timescale Event Representations. . . 15 
+
+## References 
+
+1. Bodden, L., Schwaiger, F., Ha, D.B., Kreuzberg, L., Behnke, S.: Spiking CenterNet: A Distillation-boosted Spiking Neural Network for Object Detection (2024), https: //arxiv.org/abs/2402.01287 
+
+2. Boretti, C., Bich, P., Pareschi, F., Prono, L., Rovatti, R., Setti, G.: PEDRo: an Event-based Dataset for Person Detection in Robotics. In: IEEE/CVF Conference on Computer Vision and Pattern Recognition Workshops (CVPRW) (jun 2023) 3. Cannici, M., Ciccone, M., Romanoni, A., Matteucci, M.: A Differentiable Recurrent Surface for Asynchronous Event-Based Data (2020), https://arxiv.org/abs/ 2001.03455 
+
+4. Davies, M., Srinivasa, N., Lin, T.H., Chinya, G., Cao, Y., Choday, S.H., Dimou, G., Joshi, P., Imam, N., Jain, S., Liao, Y., Lin, C.K., Lines, A., Liu, R., Mathaikutty, D., McCoy, S., Paul, A., Tse, J., Venkataramanan, G., Weng, Y.H., Wild, A., Yang, Y., Wang, H.: Loihi: A Neuromorphic Manycore Processor with On-Chip Learning. IEEE Micro 38 (1), 82–99 (2018). https://doi.org/10.1109/MM.2018.112130359 
+
+5. Ding, J., Yu, Z., Liu, J.K., et al.: Neuromorphic computing paradigms enhance robustness through spiking neural networks. Nature Communications 16 , 10175 (2025). https://doi.org/10.1038/s41467-025-65197-x 
+
+6. El Shair, Z.A., Hassani, A., Rawashdeh, S.A.: CSTR: A Compact Spatio-Temporal Representation for Event-Based Vision. IEEE Access 11 , 102899–102916 (2023). 
+
+https://doi.org/10.1109/ACCESS.2023.3316143 
+
+7. Fan, L., Li, Y., Shen, H., Li, J., Hu, D.: From Dense to Sparse: Low-Latency and Speed-Robust Event-Based Object Detection. IEEE Transactions on Intelligent Vehicles 9(10), 6298–6312 (2024). https://doi.org/10.1109/TIV.2024.3365991 
+
+8. Furber, S., Galluppi, F., Temple, S., Plana, L.: The SpiNNaker project. Institute of Electrical and Electronics Engineers. Proceedings 102 (5), 652–665 (Feb 2014). 
+
+https://doi.org/10.1109/JPROC.2014.2304638 
+
+9. Gallego, G., Delbruck, T., Orchard, G., Bartolozzi, C., Taba, B., Censi, A., Leutenegger, S., Davison, A.J., Conradt, J., Daniilidis, K., Scaramuzza, D.: Event-Based Vision: A Survey. IEEE Transactions on Pattern Analysis and Machine Intelligence 44 (1), 154–180 (Jan 2022). https://doi.org/10.1109/tpami.2020. 3008413 , http://dx.doi.org/10.1109/TPAMI.2020.3008413 
+
+10. Gava, L., Monforte, M., Iacono, M., Bartolozzi, C., Glover, A.: PUCK: Parallel Surface and Convolution-kernel Tracking for Event-Based Cameras (2022), https: //arxiv.org/abs/2205.07657 
+
+11. Gehrig, D., Loquercio, A., Derpanis, K.G., Scaramuzza, D.: End-to-End Learning of Representations for Asynchronous Event-Based Data (2019), https://arxiv. org/abs/1904.08245 
+
+12. Gehrig, M., Scaramuzza, D.: Recurrent Vision Transformers for Object Detection with Event Cameras (2023), https://arxiv.org/abs/2212.05598 
+
+13. Hay, O.A., Alansari, S., Alansari, M., Zweiri, Y.: Comparing Representations for Event Camera-Based Visual Object Tracking. In: Proceedings of the IEEE/CVF International Conference on Computer Vision Workshops (ICCVW). pp. 4686– 4695 (2025). https://doi.org/10.1109/ICCVW69036.2025.00486 
+
+14. He, K., Zhang, X., Ren, S., Sun, J.: Deep Residual Learning for Image Recognition. CoRR abs/1512.03385 (2015), http://arxiv.org/abs/1512.03385 
+
+15. Ieng, S.H., Carneiro, J., Osswald, M., Benosman, R.: Neuromorphic Event-Based Generalized Time-Based Stereovision. Frontiers in Neuroscience 12 , 442 (07 2018). 
+
+https://doi.org/10.3389/fnins.2018.00442 16 F. Lundell et al. 16. Knutsson, H., Westin, C.F.: Normalized and differential convolution. Proceedings of IEEE Conference on Computer Vision and Pattern Recognition pp. 515–523 (1993), https://api.semanticscholar.org/CorpusID:15601756 
+
+17. Lagorce, X., Orchard, G., Gallupi, F., Shi, B.E., Benosman, R.: HOTS: A Hierarchy of Event-Based Time-Surfaces for Pattern Recognition. IEEE TPAMI 39 (7), 1346– 1359 (2017) 18. Li, J., Li, J., Zhu, L., Xiang, X., Huang, T., Tian, Y.: Asynchronous Spatio-Temporal Memory Network for Continuous Event-Based Object Detection. IEEE Transactions on Image Processing 31 , 2975–2987 (2022). https://doi.org/10. 1109/TIP.2022.3162962 
+
+19. Lichtsteiner, P., Posch, C., Delbruck, T.: A 128×128 120 dB 15 μs Latency Asyn-chronous Temporal Contrast Vision Sensor. IEEE Journal of Solid-State Circuits 
+
+43 (2), 566–576 (2008) 20. Lin, T., Maire, M., Belongie, S.J., Bourdev, L.D., Girshick, R.B., Hays, J., Perona, P., Ramanan, D., Dollár, P., Zitnick, C.L.: Microsoft COCO: Common Objects in Context. CoRR abs/1405.0312 (2014), http://arxiv.org/abs/1405.0312 
+
+21. Oktay, O., Schlemper, J., Folgoc, L.L., Lee, M.C.H., Heinrich, M.P., Misawa, K., Mori, K., McDonagh, S.G., Hammerla, N.Y., Kainz, B., Glocker, B., Rueck-ert, D.: Attention U-Net: Learning Where to Look for the Pancreas. CoRR 
+
+abs/1804.03999 (2018), http://arxiv.org/abs/1804.03999 
+
+22. Posch, C., Serrano-Gotarredona, T., Linares-Barranco, B., Delbruck, T.: Retinomorphic Event-Based Vision Sensors: Bioinspired Cameras With Spiking Output. Proceedings of the IEEE 102 (10), 1470–1484 (2014). https://doi.org/ 10.1109/JPROC.2014.2346153 
+
+23. Ronneberger, O., Fischer, P., Brox, T.: U-Net: Convolutional Networks for Biomed-ical Image Segmentation. CoRR abs/1505.04597 (2015), http://arxiv.org/ abs/1505.04597 
+
+24. Silva, D., Smagulova, K., Elsheikh, A., Fouda, M.E., Eltawil, A.: A recurrent YOLOv8-based framework for event-based object detection. Frontiers in Neuro-science 18 (01 2025). https://doi.org/10.3389/fnins.2024.1477979 
+
+25. Sironi, A., Brambilla, M., Bourdis, N., Lagorce, X., Benosman, R.: HATS: His-tograms of Averaged Time Surfaces for Robust Event-based Object Classification (2018), https://arxiv.org/abs/1803.07913 
+
+26. de Tournemire, P., Nitti, D., Perot, E., Sironi, A.: A Large Scale Event-based Detection Dataset for Automotive. arXiv preprint arXiv:2001.08499 (2020) 27. Unser, M.: Splines: A perfect fit for signal and image processing. IEEE Signal Processing Magazine 16 (6), 22–38 (1999) 28. Yaseen, M.: What is YOLOv8: An In-Depth Exploration of the Internal Features of the Next-Generation Object Detector (2024), https://arxiv.org/abs/2408. 15857 
+
+29. Zhou, X., Wang, D., Krähenbühl, P.: Objects as Points (2019), https://arxiv. org/abs/1904.07850 
+
+30. Zhu, A., Yuan, L., Chaney, K., Daniilidis, K.: EV-FlowNet: Self-Supervised Optical Flow Estimation for Event-based Cameras. In: RSS (2018)

@@ -1,0 +1,1033 @@
+From Interpretability Methods
+to Interpretable Models
+Julien Colin1,2, Nuria Oliver1* and Thomas Serre2,3*
+1 ELLIS Alicante, Spain
+2 Carney Institute for Brain Science, Brown University, USA
+3 Department of Cognitive and Psychological Sciences, Brown University, USA
+Abstract. More than a decade in, explainable AI (XAI) for computer
+vision has assembled a mature toolbox: attribution, feature visualization,
+concept-based, and circuit-based methods. Yet almost all of the field’s
+effort has gone into building and comparing these methods, and little
+into the question they were meant to answer—how interpretable are our
+models, and are we making progress as they evolve? We argue for shifting
+the field’s focus from methods to models, along two complementary lines.
+One is already within reach: existing tools let us characterize and com-
+pare what different models represent and compute. The other is harder,
+and largely neglected: whether a model can actually be understood by
+the humans who rely on it—the independent evaluators on whom trust
+and certification depend, not the experts confirming what they already
+expect. It can only be measured, not inferred. We review why the tool-
+box is mature enough to support both, survey the thin body of work
+comparing models, draw a parallel to systems neuroscience, and close
+with a model-centric XAI agenda.
+1
+Introduction
+Artificial intelligence now drives decisions in high-stakes domains: medical image
+interpretation [1–3], autonomous driving [4,5], and robotic control [6]. These sys-
+tems are accurate enough to deploy, yet remain largely black boxes to the people
+who rely on them. Understanding them nonetheless matters: to catch failures be-
+fore they cause harm [7,8], to meet emerging legal expectations of explanation [9],
+and to learn from models that make new scientific discoveries [10,11]. As models
+grow more capable and more widely deployed, the gap between what they do and
+what we understand widens [12], making interpretability a pressing need [13].
+These pressures are beginning to acquire regulatory teeth: interpretability is in-
+creasingly named in certification frameworks—most explicitly by EASA, which
+lists “AI explainability” as a trustworthiness building block for aviation [14],
+and by the EU AI Act, whose high-risk provisions require systems transparent
+enough for humans to interpret and oversee their outputs [15]—an expectation
+that, while not yet a hard requirement, rises in proportion to risk.
+⋆Equal senior contribution. E-mail: julien_colin@brown.edu
+arXiv:2609.05399v1  [cs.CV]  4 Sep 2026
+
+
+2
+J. Colin et al.
+What interpretability actually means, though, has never been settled: the
+term has been used for many distinct properties [16, 17], and what they share
+is that it is ultimately human-centric—an explanation counts only if a person
+can actually understand it [18]. In computer vision, one effort has been to make
+models interpretable by design [19]4: building transparency into the architec-
+ture itself—prototype networks that classify by comparison to visualizable ex-
+emplars [20], concept bottleneck models that route predictions through human-
+named concepts [21], or self-explaining networks that emit an explanation as
+part of the forward pass [22]—trading architectural flexibility for transparency.
+A separate effort—explainable AI (XAI) [23], the focus of this paper—instead
+treats a trained model as a black box and explains its predictions after the fact.
+The line between the two is blurrier than it looks: designing a model to be
+explainable does not, on its own, make it interpretable.
+Over the past decade and a half, XAI has produced several complementary
+families of methods—attribution, feature visualization, concept-based, and, more
+recently, circuit-based. Much of the community’s effort, including work using
+human evaluations to ask how well a method lets us understand a model [24–26],
+went into making these methods better and comparing them against one another,
+rather than into using them to explain and compare models.
+This paper takes a different position. We do not claim that XAI methods
+are perfect, nor that method development should stop—only that the toolbox
+is now rich enough to redirect much of the field’s effort from how well a method
+explains a model to how interpretable a model is, and how that changes as models
+evolve. That shift has two sides: comparing what different models represent and
+compute, which existing tools already support, and measuring whether an inde-
+pendent evaluator can actually understand them—which expert analysis alone
+cannot establish. The moment is right: methods are mature enough to build on
+(Section 2), the model landscape is consolidating around a few families (Sec-
+tion 3), and—as systems neuroscience showed, building decades of insight with
+far cruder instruments—progress follows from studying the object rather than
+waiting for perfect tools. Yet remarkably little work turns the toolbox on models
+themselves (Section 4), leaving the field’s original question open; we close with
+an agenda for a model-centric XAI (Section 5).
+2
+The XAI toolbox has matured
+The case for studying models rather than methods rests on a premise: the meth-
+ods must be good enough to build on. This section argues that they are. We
+review the toolbox through three established families of XAI methods in com-
+puter vision, together with a fourth, more recent one that targets a model’s
+4 We retain interpretable by design as it is the term used in the literature. But since
+we take interpretable to refer to a model that can be understood by humans, these
+methods are, in our view, closer to explainable by design: they guarantee that an
+explanation is available, not that the model can be understood.
+
+
+From Methods to Interpretable Models
+3
+computation rather than its representations. These four form a deliberately se-
+lected core of complementary approaches, rather than an exhaustive taxonomy
+of XAI. Each answers a different interpretability question, and each has matured
+enough to serve as a reliable instrument for comparing models, even if none is a
+complete account of how a model reasons.
+Attribution methods. Given a model, an input, and its prediction, which pix-
+els drove this decision? This is perhaps the most fundamental interpretability
+question in computer vision, and the first to be systematically addressed by XAI
+through attribution methods [27]. Their goal is to identify the image regions
+most responsible for a model’s prediction, and a wide range of approaches has
+been developed over the past decade to do so: gradient-based [27–30], activation-
+based [31,32], perturbation-based [33–36]. The same question extends naturally
+beyond the final output to internal activations, where attribution instead iden-
+tifies which inputs drive a given intermediate computation [37,38]. The question
+can also be turned around: instead of asking what drove a prediction, counter-
+factual explanations ask what minimal change to the input would produce a
+different one [39,40]. In vision, however, the desired change is difficult to define:
+minimizing it risks an adversarial perturbation [41,42], while enforcing a mean-
+ingful change—increasingly through generative models [43,44]—risks sacrificing
+faithfulness to the model being explained [45]. As a result, counterfactual ex-
+planations are not yet established as a reliable general-purpose interpretability
+tool.
+Attribution methods themselves have arguably received the most scrutiny of
+the four families, from builders and critics alike. Early sanity checks revealed
+that several popular methods behaved no differently from edge detectors and
+were insensitive to model or label randomization [46]. Subsequent work exposed
+additional shortcomings related to reliability [47], robustness and manipulabil-
+ity [48, 49], evaluation methodology [50, 51], the very definition of faithfulness
+these methods are meant to satisfy [52], and, more recently, poor transfer from
+convolutional networks to transformer and multimodal architectures [13, 53].
+This sustained criticism has progressively narrowed the field toward methods
+with stronger theoretical grounding, such as those satisfying axiomatic proper-
+ties [30,54] or based on principled statistical foundations [36,55]. Consequently,
+recent advances have tended to refine this core set of methods rather than in-
+troduce fundamentally new approaches.
+Although attribution methods remain imperfect and continue to improve,
+they have already proven useful for helping humans understand model behavior.
+In particular, users can leverage attribution maps to reliably predict a model’s
+behavior on unseen inputs [24], as well as to improve performance in visual search
+and human-AI teaming tasks [25, 56]. Taken together, this evidence suggests
+that attribution methods are sufficiently mature to serve as reliable tools for
+comparing models, even if they are not perfect explanations of model reasoning.
+Feature visualization methods. While attribution methods are useful, they
+have an intrinsic limitation: they only explain where the model pays attention,
+
+
+4
+J. Colin et al.
+not what it pays attention to there. Feature visualization methods offer a com-
+plementary way to address this gap [57–60], either by showing natural images
+that highly activate a target element, or by generating a synthetic image to
+maximize its activation. The latter approach offers more flexibility, as it goes
+beyond dataset examples, but this flexibility comes at a cost: without properly
+constraining the optimization process, it tends to produce either adversarial-
+looking patterns or stimuli that might be visually appealing but unfaithful to
+what is actually encoded [58, 61, 62]. Recent work has largely addressed this
+weakness by constraining the optimization to a small set of parameters and im-
+posing a human-derived prior directly on the input, allowing the approach to
+scale to today’s leading vision models [63], although interpreting increasingly
+large foundation model can remain challenging. Both variants have since been
+evaluated for how well they let humans understand what a unit encodes, with
+encouraging results [64–67]. A complementary line forgoes synthesized images
+and instead describes what a unit encodes directly in natural language, in vision
+and language models alike [68–70].
+Concept-based methods. Attribution and feature visualization can explain
+any target, but historically, that target was individual neurons in a given layer.
+This proved too narrow, or too entangled, a basis for many units [59, 71, 72].
+TCAV [73] proposed a different basis instead: directions derived from human-
+defined concepts. One major weakness of this method is that it limits the vocab-
+ulary of explanations to whichever concepts are tested, which may not match
+those that the model relies on. ACE [74] addressed this by automating concept
+discovery directly from the model’s representations, an approach later extended
+by ICE [75], CRAFT [76], and sparse autoencoders (SAE) [77]. All of these
+automated methods can be viewed through the unifying lens of dictionary learn-
+ing [78], with different instantiations making different assumptions about how
+a model organizes its concepts [79,80]. Nevertheless, these methods are already
+useful: they support direct intervention on models [81], clarify which concepts
+different tasks recruit [82], expose the systematic blind spots of other models [83],
+and, more broadly, help humans understand models [76].
+Circuit-based methods. The newest family moves from what a model repre-
+sents to how it computes—reverse-engineering the specific circuits, the connected
+sets of features and weights, that implement a given behavior [84]. It was pio-
+neered on vision models by the Circuits program, which traced curve detectors
+and other mechanisms through InceptionV1 [85–88], and more work has followed
+since [89–93], though the approach has received comparatively more attention in
+language models. There, sparse autoencoders decompose representations into in-
+terpretable features at scale [77,94,95], and circuit analysis has isolated reusable,
+human-legible mechanisms: induction heads that copy patterns in context [96],
+a circuit for indirect-object identification [97], and localized, editable factual as-
+sociations [98]. The multimodal case sits in between: recent work frames the
+failures of vision-language models through the binding problem [99] and reads
+their symbol-like mechanisms directly from activations [100]. In vision proper,
+
+
+From Methods to Interpretable Models
+5
+the approach is still comparatively niche, but it completes the toolbox: where at-
+tribution, feature visualization, and concepts describe a model’s representations,
+circuit-based methods aim to explain its computation.
+3
+Why Now
+Imperfect tools can support cumulative science. The use of imperfect
+but informative tools is a recurring practice in science. We take neuroscience as
+an example. As early as the late 1950s, Lettvin and colleagues read bug- and
+dimming-detectors directly off the frog’s optic nerve [101]; Hubel and Wiesel
+mapped orientation-selective receptive fields in cat visual cortex with single elec-
+trodes and slits of light cast from a slide projector [102,103], a strikingly simple
+setup by modern standards; and, further up the ventral stream, Gross and col-
+leagues found inferotemporal neurons so selective they were discovered almost
+by accident, including a cell tuned to a hand and, famously, one that fired when
+the experimenters waved an actual toilet brush in front of the animal [104]. Later
+work uncovered highly selective neurons in the medial temporal lobe [105–107] in
+addition to distributed representations for faces and objects in ventral temporal
+cortex [108]. The instruments sharpened in step, from hand-crafted stimuli to
+reverse correlation for mapping receptive fields [109], and on to causal tools such
+as microstimulation [110] and lesion-based double dissociations [111] that inter-
+vene on a circuit rather than only observing it. Throughout, progress came from
+using whatever instrument was available and refining models as new findings
+exposed their limits.
+This precedent comes with a nuance. Single-electrode recordings, sampling
+one neuron at a time, favored a serial feedforward view of vision. Later work
+showed the cortex to be densely recurrent, with feedback from higher areas
+shaping even V1 responses [112] and recurrent processing necessary for compu-
+tations a feedforward model cannot explain [113,114]. This finding did not make
+the feedforward account wrong, as rapid feedforward processing remains a real
+and central part of vision, but certainly enriched the knowledge. The lesson for
+XAI is encouraging: imperfect tools can reveal a durable core of insight that
+better tools later refine rather than discard, so there is no need to wait for a
+perfect method before studying models.
+A converging model landscape. The space of computer vision models is
+shrinking in architectural diversity as it grows in raw number. Computer vision
+has evolved from a fragmented landscape of convolutional architectures [33,115–
+117] to a smaller number of dominant, general-purpose backbones and training
+paradigms: the Vision Transformer [118], language-supervised contrastive mod-
+els such as CLIP and its sigmoid-loss successors [119, 120], the self-supervised
+DINO family, now in its third generation [121–123], masked image modeling
+(MAE) [124], emerging predictive world-model objectives such as I-JEPA [125],
+and their extension to video [126–129]. Although these methods differ in supervi-
+sion, objectives and downstream capabilities, they increasingly share a common
+
+
+6
+J. Colin et al.
+transformer backbone and produce broadly comparable visual representations.
+This convergence shifts the bottleneck for XAI. Instead of developing new ex-
+planation methods for ever-changing architectures, it is now feasible to use ex-
+isting XAI tools to systematically compare how different training objectives and
+datasets shape internal representations and computations.
+Tools for comparing models. The goal of model comparison is not to es-
+tablish that models should converge on a single correct representation, but to
+characterize what they share, how they differ, and how those differences relate to
+properties we care about. Comparing models, however, is hard: each model’s rep-
+resentation lives in its own idiosyncratic basis. Prior work has worked around this
+with aggregate comparisons, via the number of unique concept detectors [71,72]
+or average human interpretability scores across a set of features [66,67], or with
+soft matching of functionally analogous features [130]. More recently, methods
+have emerged that support direct model comparison instead of aggregate or func-
+tional proxies, such as crosscoders and universal sparse autoencoders [131–134],
+which learn a concept space shared across models and allow comparison at a finer
+granularity. This converges with a fast-growing literature on measuring represen-
+tational alignment across systems [135–140]. Concept-based interpretability and
+representational alignment have largely developed as parallel tracks, but recent
+work shows they can be reconciled [141], making that literature particularly well
+suited to comparing models directly.
+4
+Interpretability methods to study models
+A small but growing body of work already turns interpretability tools on models
+themselves. At the scale of one model, a detailed circuit analysis of InceptionV1’s
+early layers [85, 86, 142] gave a qualitative account of what a vision network
+represents, surfacing features like curve detectors; an approach later turned on
+CLIP to reveal multimodal neurons that fire across both images and text [143];
+feature visualization scaled to modern architectures [63] coupled with concept-
+based methods produced an explorable atlas of the concepts a ResNet50 uses
+across every class of ImageNet [144]; and a 32,000-concept SAE dictionary for DI-
+NOv2 [82] helped characterize the specific concepts recruited by different tasks:
+“elsewhere” concepts for classification, boundary concepts for segmentation, and
+three families of monocular depth cues for depth estimation that mirror classical
+visual neuroscience. The same lens has since been turned on the models now in
+widest use: CLIP’s image representation has been decomposed head by head and
+labeled in text [145], the artifact tokens of vision transformers reverse-engineered
+as internal computation registers [146], and sparse autoencoders used to read in-
+terpretable, causally testable features out of both self-supervised backbones [147]
+and text-to-image diffusion models [148].
+Across models, the same tools address comparative questions. Interpretability
+dissociates from scale [66,149] and, more generally, from capability [66,71,130,
+149]. It behaves as a stable, measurable property of a model, though how to steer
+
+
+From Methods to Interpretable Models
+7
+it remains unclear [130]. Direct representational comparison has its own long-
+standing toolkit (e.g., centered kernel alignment [137] and model stitching [150])
+used, for instance, to ask whether vision transformers “see” like convolutional
+networks [151]; more recent work mines the units common to an entire model
+zoo [152] and labels neurons automatically to compare concept coverage across
+networks [69]. Whether models converge on the same concepts gets a mixed
+answer [72, 133, 153–155], echoing a broader literature on representational con-
+vergence [156, 157] and human–model alignment [158] that interpretability can
+both draw on and contribute to. Both outcomes are informative: convergence
+points to concepts that recur across models and may be especially fundamen-
+tal, while divergence maps the variation across which interpretability itself may
+differ.
+The human side of the question has its own, equally mature instrument:
+psychophysics. A growing body of work measures whether explanations im-
+prove human understanding of models, including forced-choice tasks that test
+whether people can identify which images a unit prefers [64, 65], studies ex-
+amining whether interpretability methods help users predict model behavior or
+improve human–AI team performance [24,25,56,76], and broader evaluations of
+how well people grasp machine generated explanations [26, 34, 74, 76, 159–164].
+Across this literature, human understanding is shaped by the complexity and
+granularity of the information presented, and by how much information must be
+retained to form an adequate mental model [159, 160, 164–166]. To date, how-
+ever, these methods have been used almost entirely to compare XAI methods.
+Turning on models and asking which model a person can understand best is the
+natural, and still largely untaken, next step.
+Part of the reason why this body of work remains limited may be structural.
+Machine learning venues tend to reward new methods and benchmark gains
+rather than careful, systematic evaluations of models. Tellingly, some of the most
+ambitious efforts to reverse-engineer what a network computes—the Circuits
+program and the work on monosemanticity—appeared as Distill articles and
+Transformer Circuits Thread posts rather than in peer-reviewed proceedings [85,
+88, 94, 167]. This is beginning to change [82], but the incentive to publish a
+systematic interpretability analysis of a model, or a head-to-head comparison
+across models, remains weak.
+5
+A Research Agenda for Model-Centric XAI
+We close by laying out what taking this shift would require.
+First, agree on what understanding means. The field has never converged
+on a single definition of interpretability: the term is used to refer to different
+properties [16,17], united primarily by the premise that it is ultimately human-
+centric [18]. This is not a semantic quibble: without agreement on what it means
+for a person to understand a model, there is no stable target for the compar-
+isons, metrics, and proxies the rest of this agenda calls for. Establishing what
+
+
+8
+J. Colin et al.
+constitutes understanding, and it should be demonstrated, is the prerequisite
+for everything that follows, and it is why automating its measurement before
+defining it (as discussed below) risks optimizing the wrong objective rather than
+a useful shortcut.
+Model-centric study is what drives method progress. Studying models
+directly is not a departure from developing new methods, it is a complementary
+way to identify what new developments are needed. A prime example of that
+is the deep dive into the neurons learned by InceptionV1 [85], which surfaced
+polysemantic units that resisted any single-neuron characterization, motivating
+the need for concept-based methods [76,77,168]. The same cross-validated study
+of a model that builds cumulative insight, as argued in Section 3, is also what
+exposes where our tools fall short. A model-centric agenda should treat this as
+a mechanism to use deliberately: sustained study of specific models is the most
+reliable way to discover what the field’s toolbox is still missing.
+Where do models actually stand? This is the question interpretability was
+meant to answer, yet it remains largely unresolved. Despite a mature and increas-
+ingly sophisticated toolbox, relatively little work has applied these methods sys-
+tematically across models (Section 4). As a result, we still do not know how much
+progress either approach—interpretable-by-design or post hoc interpretability—
+has made toward the original goal, nor which aspects of the problem remain
+unsolved. Answering this question is essential for directing future research. If
+the bottleneck lies in our interpretability methods, the priority should be devel-
+oping better tools; if it lies in the models, the focus should shift toward designing
+and training models that are inherently more understandable.
+Design and post hoc explanation remain uncompared. Interpretability-
+by-design and post hoc explanation have rarely been compared head to head,
+particularly with respect to the understanding they produce in human observers.
+By-design methods, ranging from B-cos networks [169] to label-free concept bot-
+tlenecks [170], explicitly impose structure meant to be interpretable, yet it re-
+mains largely unknown whether this structure leads to greater human under-
+standing than post hoc explanations of unconstrained “black-box” models. In-
+deed, recent work suggests that the distinction between the two paradigms may
+be less fundamental than it appears: both can instantiate the same geometric ob-
+ject, differing only in how the object is identified [171]. Whether either approach
+ultimately produces models that people understand better therefore remains an
+open empirical question which belongs squarely within a model-centric agenda.
+What predicts interpretability is still unresolved. Interpretability is dis-
+sociated from both scale and task performance [66, 130, 149], which raises an
+obvious question: what properties predict it? Alignment with human percep-
+tual or semantic organization is one candidate [130, 172–174], the locality of a
+feature’s activations another [130], and robustness a third [175–177]. We are ac-
+cumulating correlations about which models are more interpretable faster than
+
+
+From Methods to Interpretable Models
+9
+we are developing principled accounts of why. If alignment does turn out to drive
+interpretability, it becomes more than a diagnostic: deliberately shaping model
+representations toward human ones—using perception, psychophysics, and neu-
+roscience as reference points—could be a path to building interpretable models
+rather than only explaining them, closing the loop between measuring under-
+standing and engineering it.
+Structural insight is the tractable place to start. Some of this agenda
+can be pursued without a human in the loop, making structural comparison the
+natural place to start. It is currently the most tractable direction and the best
+suited to broad, coordinated progress. Crosscoders and universal sparse autoen-
+coders [131,133] now make it possible to compare representations and features
+across models directly, rather than relying on aggregate proxies or indirect func-
+tional matching [71,72,130]. The same tools also enable systematic comparisons
+between XAI methods that make different assumptions about how models orga-
+nize concepts [80], allowing disagreement between methods to become a source
+of insight rather than noise to be averaged away. More broadly, they provide
+a direct way to address the convergence question raised in Section 4 directly:
+whether differently trained models converge on the same concepts is fundamen-
+tally a question of structural comparison, and the tools to answer it at scale are
+now within reach.
+Human understanding remains the goal, and the bottleneck. Structural
+agreement between models is not the same as human understanding, and closing
+that gap is both the harder challenge and the ultimate objective of this agenda.
+Large-scale psychophysics has begun to shed light on what makes a representa-
+tion understandable to human observers [66,130,149], but scaling these evalua-
+tions remains prohibitively expensive. This limitation is becoming increasingly
+acute because tools such as crosscoders and universal sparse autoencoders can
+generate far more candidate representations than any human study can realisti-
+cally evaluate. Developing scalable, validated proxies for human understanding,
+proxies trusted as substitutes for direct human evaluation without replacing it
+entirely, is a tractable and underexplored direction. It is also what would com-
+plete the arc of this paper: transforming the same interpretability toolbox that
+originally served only to explain models into an instrument for building models
+that people can understand.
+But it is too early to automate the human measure. The bottleneck above
+invites an obvious shortcut: replace the human with a model. The first serious
+attempt does exactly this: the Machine Interpretability Score automates the
+human forced-choice task [64] by scoring how consistently a learned perceptual-
+similarity model groups a unit’s most activating images, and validates that score
+against human judgments before scaling it to millions of units [149]. The scale is
+impressive, but the measure presupposes what it sets out to establish: the auto-
+mated judge is itself a model of human perception, so interpretability collapses
+into agreement with a fixed proxy for what people find similar, which is precisely
+
+
+10
+J. Colin et al.
+what we do not yet understand. The concern is not that such proxies lack value,
+but that they risk being adopted before the underlying construct is well defined.
+The field still has yet to answer more fundamental questions: what psychophys-
+ical task best captures understanding? What metric should determine whether
+a person truly understands a model? Encoding provisional answers into an au-
+tomated evaluator risks prematurely fixing the definition of interpretability and
+ranking models by agreement with the proxy rather than by human understand-
+ing. The order matters: establish the human measure first, through principled
+psychophysics, and automate only once we know what we are automating. Even
+then, any automated proxy should remain anchored to, and regularly recalibrated
+against, direct human evaluation instead of replacing it.
+6
+Conclusion
+Explainable AI set out to make machine learning models understandable to hu-
+mans, and for the past fifteen years it has largely focused on developing the tools
+to do so. We have argued that those tools are finally mature enough to return to
+the question that motivated them: not whether a given method explains a model,
+but whether our models are becoming interpretable and to whom. It is a subtle
+shift in perspective with far-reaching consequences. It recasts interpretability as
+a property of models, instead of methods, that can be measured, compared, and
+steered as models evolve.
+The implications extend beyond interpretability research. As AI systems be-
+come more capable and broadly used, interpretability is fast becoming the foun-
+dation for trust, oversight, and certification. It is also our best opportunity to
+learn from these systems in return—to discover how they represent vision, lan-
+guage, and other domains where they now rival or surpass human performance.
+Systems neuroscience built a science around an object it could barely observe. We
+have the opposite predicament, models are fully accessible, yet they often remain
+opaque. Bridging the gap between complete access and genuine understanding
+is, we believe, the defining challenge of the next decade. The instruments are
+finally ready. What remains is the decision to turn them on the models and on
+the people they are ultimately meant to help.
+Acknowledgment
+We are grateful to Thomas Fel, whose discussions and feedback over the years
+have helped shape many of the ideas developed here. T.S. acknowledges support
+from the Office of Naval Research (N00014-24-1-2026), the ONR REPRISM
+MURI (N00014-24-1-2603), the National Science Foundation (IIS-2402875), and
+the Artificial and Natural Intelligence Toulouse Institute (ANR-19-PI3A-0004).
+J.C. and N.O. acknowledge support from the Regional Government of Valencia,
+Spain (Conselleria de Industria, Turismo, Innovación y Comercio, Dirección
+General de Innovación), the European Union’s Horizon Europe research and in-
+novation program (ELIAS, grant agreement 101120237), and Intel Corporation;
+
+
+From Methods to Interpretable Models
+11
+J.C. further acknowledges the Banco Sabadell Foundation.
+References
+1. Jiao, L., Hao, J., Li, R., et al.: Foundation Models Meet Medical Image Interpre-
+tation. Research 9, 1024 (2026)
+2. D’Antonoli, T.A., Bluethgen, C., Cuocolo, R., et al.: Foundation Models for
+Radiology: Fundamentals, Applications, Opportunities, Challenges, Risks, and
+Prospects. Diagnostic and Interventional Radiology (2025)
+3. Baharoon, M., Qureshi, W., Ouyang, J., et al.: Evaluating General Purpose Vi-
+sion Foundation Models for Medical Image Analysis: An Experimental Study of
+DINOv2 On Radiology Benchmarks. arXiv preprint arXiv:2312.02366 (2023)
+4. Gao, H., Wang, Z., Li, Y., et al.: A Survey for Foundation Models in Autonomous
+Driving. In: 2025 6th International Conference on Computer Vision and Data
+Mining (ICCVDM). pp. 63–71. IEEE (2025)
+5. Jiang, S., Huang, Z., Qian, K., et al.: A Survey on Vision-language-action Models
+for Autonomous Driving. In: Proceedings of the IEEE/CVF International Con-
+ference on Computer Vision. pp. 4524–4536 (2025)
+6. Kim, M.J., Pertsch, K., Karamcheti, S., et al.: OpenVLA: An Open-Source
+Vision-Language-Action Model. In: Conference on Robot Learning. pp. 2679–
+2713. PMLR (2025)
+7. Geirhos, R., Jacobsen, J.H., Michaelis, C., et al.: Shortcut Learning in Deep Neu-
+ral Networks. Nature Machine Intelligence 2(11), 665–673 (2020)
+8. D’Amour, A., Heller, K., Moldovan, D., et al.: Underspecification Presents Chal-
+lenges for Credibility in Modern Machine Learning. Journal of Machine Learning
+Research 23(226), 1–61 (2022)
+9. Kaminski, M.E.: The Right to Explanation, Explained. In: Research Handbook
+on Information Law and Governance. Edward Elgar Publishing (2021)
+10. Jumper, J., Evans, R., Pritzel, A., et al.: Highly Accurate Protein Structure Pre-
+diction with AlphaFold. Nature 596(7873), 583–589 (2021)
+11. Fawzi, A., Balog, M., Huang, A., et al.: Discovering Faster Matrix Multiplication
+Algorithms with Reinforcement Learning. Nature 610(7930), 47–53 (2022)
+12. Hewitt, J., Geirhos, R., Kim, B.: We can’t understand ai using our existing vo-
+cabulary. arXiv preprint arXiv:2502.07586 (2025)
+13. Kazmierczak, R., Berthier, E., Frehse, G., et al.: Explainability and Vision Foun-
+dation Models: A Survey. Information Fusion 122, 103184 (2025)
+14. European Union Aviation Safety Agency: EASA Artificial Intelligence Concept
+Paper Issue 2: Guidance for Level 1 & 2 Machine Learning Applications. Tech.
+rep., European Union Aviation Safety Agency (EASA) (Mar 2024)
+15. European Parliament and Council of the European Union: Regulation (EU)
+2024/1689 Laying Down Harmonised Rules on Artificial Intelligence (Artificial
+Intelligence Act). Official Journal of the European Union (2024), adopted 13 June
+2024; entered into force 1 August 2024
+16. Lipton, Z.C.: The Mythos of Model Interpretability. In: Workshop on Human
+Interpretability in Machine Learning, Proceedings of the International Conference
+on Machine Learning (ICML) (2016)
+
+
+12
+J. Colin et al.
+17. Doshi-Velez, F., Kim, B.: Towards a Rigorous Science of Interpretable Machine
+Learning. arXiv preprint arXiv:1702.08608 (2017)
+18. Miller, T.: Explanation in Artificial Intelligence: Insights from the Social Sciences.
+Artificial Intelligence 267, 1–38 (February 2019)
+19. Rudin, C.: Stop Explaining Black Box Machine Learning Models for High Stakes
+Decisions and Use Interpretable Models Instead. Nature Machine Intelligence 1,
+206–215 (2019)
+20. Chen, C., Li, O., Tao, C., et al.: This Looks Like that: Deep Learning for In-
+terpretable Image Recognition. In: Advances in Neural Information Processing
+Systems (NIPS) (2019)
+21. Koh, P.W., Nguyen, T., Tang, Y.S., et al.: Concept Bottleneck Models. In: Inter-
+national Conference on Machine Learning. pp. 5338–5348. PMLR (2020)
+22. Alvarez-Melis, D., Jaakkola, T.S.: Towards Robust Interpretability with Self-
+Explaining Neural Networks. In: Advances in Neural Information Processing Sys-
+tems (NIPS) (2018)
+23. Gilpin, L.H., Bau, D., Yuan, B.Z., et al.: Explaining Explanations: An Overview
+of Interpretability of Machine Learning. In: Proceedings of the IEEE International
+Conference on data science and advanced analytics (DSAA) (2018)
+24. Colin, J., Fel, T., Cadène, R., et al.: What I Cannot Predict, I Do Not Understand:
+A Human-Centered Evaluation Framework for Explainability Methods. Advances
+in Neural Information Processing Systems (NeurIPS) pp. 2832–2845 (2022)
+25. Kim, S.S.Y., Meister, N., Ramaswamy, V.V., et al.: HIVE: Evaluating the Human
+Interpretability of Visual Explanations. In: Proceedings of the IEEE European
+Conference on Computer Vision (ECCV) (2022)
+26. Sixt, L., Schuessler, M., Popescu, O.I., et al.: Do Users Benefit from Interpretable
+Vision? A User Study, Baseline, and Dataset. Proceedings of the International
+Conference on Learning Representations (ICLR) (2022)
+27. Simonyan, K., Vedaldi, A., Zisserman, A.: Deep Inside Convolutional Networks:
+Visualising Image Classification Models and Saliency Maps. In: Workshop, Pro-
+ceedings of the International Conference on Learning Representations (ICLR)
+(2013)
+28. Shrikumar, A., Greenside, P., Kundaje, A.: Learning Important Features Through
+Propagating Activation Differences. In: Proceedings of the International Confer-
+ence on Machine Learning (ICML) (2017)
+29. Smilkov, D., Thorat, N., Kim, B., et al.: SmoothGrad: removing noise by adding
+noise. In: Workshop on Visualization for Deep Learning, Proceedings of the In-
+ternational Conference on Machine Learning (ICML) (2017)
+30. Sundararajan, M., Taly, A., Yan, Q.: Axiomatic Attribution for Deep Networks.
+In: Proceedings of the International Conference on Machine Learning (ICML)
+(2017)
+31. Selvaraju, R.R., Cogswell, M., Das, A., et al.: Grad-CAM: Visual Explanations
+from Deep Networks via Gradient-Based Localization. In: Proceedings of the
+IEEE International Conference on Computer Vision (ICCV) (2017)
+32. Chattopadhay, A., Sarkar, A., Howlader, P., et al.: Grad-cam++: Generalized
+gradient-based visual explanations for deep convolutional networks. In: Proceed-
+ings of the IEEE/CVF Winter Conference on Applications of Computer Vision
+(WACV) (2018)
+33. Simonyan, K., Zisserman, A.: Very Deep Convolutional Networks for Large-scale
+Image Recognition. In: International Conference on Learning Representations
+(ICLR) (2015), arXiv:1409.1556
+
+
+From Methods to Interpretable Models
+13
+34. Ribeiro, M.T., Singh, S., Guestrin, C.: "Why Should I Trust You?": Explaining
+the Predictions of Any Classifier . In: Knowledge Discovery and Data Mining
+(KDD) (2016)
+35. Petsiuk, V., Das, A., Saenko, K.: RISE: Randomized Input Sampling for Ex-
+planation of Black-box Models. In: Proceedings of the British Machine Vision
+Conference (BMVC) (2018)
+36. Fel, T., Cadene, R., Chalvidal, M., et al.: Look at the Variance! Efficient Black-
+box Explanations with Sobol-based Sensitivity Analysis. In: Advances in Neural
+Information Processing Systems (NeurIPS) (2021)
+37. Dhamdhere, K., Sundararajan, M., Yan, Q.: How Important Is a Neuron?
+In: International Conference on Learning Representations (ICLR) (2019),
+arXiv:1805.12233
+38. Leino, K., Sen, S., Datta, A., et al.: Influence-Directed Explanations for Deep
+Convolutional Networks. In: IEEE International Test Conference (ITC) (2018),
+arXiv:1802.03788
+39. Wachter, S., Mittelstadt, B., Russell, C.: Counterfactual explanations without
+opening the black box: Automated decisions and the gdpr. Harv. JL & Tech. 31,
+841 (2017)
+40. Goyal, Y., Wu, Z., Ernst, J., Batra, D., Parikh, D., Lee, S.: Counterfactual visual
+explanations. In: International conference on machine learning. pp. 2376–2384.
+PMLR (2019)
+41. Freiesleben, T.: The intriguing relation between counterfactual explanations and
+adversarial examples. Minds and Machines 32(1), 77–109 (2022)
+42. Jeanneret, G., Simon, L., Jurie, F.: Adversarial counterfactual visual explanations.
+In: 2023 IEEE/CVF Conference on Computer Vision and Pattern Recognition
+(CVPR). pp. 16425–16435. IEEE (2023)
+43. Augustin, M., Boreiko, V., Croce, F., Hein, M.: Diffusion visual counterfactual
+explanations. Advances in Neural Information Processing Systems 35, 364–377
+(2022)
+44. Jeanneret, G., Simon, L., Jurie, F.: Diffusion models for counterfactual explana-
+tions. In: Proceedings of the Asian conference on computer vision. pp. 858–876
+(2022)
+45. Khan, B., Tariq, S.A., Zia, T., Ahsan, M., Windridge, D.: Faithful counterfactual
+visual explanations (fcve). Knowledge-Based Systems 294, 111668 (2024)
+46. Adebayo, J., Gilmer, J., Muelly, M., et al.: Sanity Checks for Saliency Maps. In:
+Advances in Neural Information Processing Systems (NIPS) (2018)
+47. Kindermans, P.J., Hooker, S., Adebayo, J., et al.: The (UN)Reliability of Saliency
+Methods. In: Explainable AI: Interpreting, Explaining and Visualizing Deep
+Learning, Lecture Notes in Computer Science, vol. 11700, pp. 267–280. Springer
+(2019)
+48. Ghorbani, A., Abid, A., Zou, J.: Interpretation of Neural Networks Is Fragile. In:
+Proceedings of the AAAI Conference on Artificial Intelligence (AAAI) (2017)
+49. Dombrowski, A.K., Alber, M., Anders, C.J., et al.: Explanations Can Be Manip-
+ulated and Geometry Is to Blame. In: Advances in Neural Information Processing
+Systems (NeurIPS) (2019)
+50. Yeh, C.K., Hsieh, C.Y., Suggala, A.S., et al.: On the (in)Fidelity and Sensitiv-
+ity for Explanations. In: Advances in Neural Information Processing Systems
+(NeurIPS) (2019)
+51. Hooker, S., Erhan, D., Kindermans, P.J., et al.: A Benchmark for Interpretability
+Methods in Deep Neural Networks. In: Advances in Neural Information Processing
+Systems (NeurIPS) (2019)
+
+
+14
+J. Colin et al.
+52. Jacovi, A., Goldberg, Y.: Towards Faithfully Interpretable NLP Systems: How
+Should We Define and Evaluate Faithfulness? Proceedings of the Annual Meeting
+of the Association for Computational Linguistics (ACL) (2020)
+53. Chefer, H., Gur, S., Wolf, L.: Transformer Interpretability Beyond Attention Vi-
+sualization. In: Proceedings of the IEEE/CVF conference on computer vision and
+pattern recognition. pp. 782–791 (2021)
+54. Lundberg, S., Lee, S.I.: A Unified Approach to Interpreting Model Predictions.
+In: Advances in Neural Information Processing Systems (NIPS) (2017)
+55. Bach, S., Binder, A., Montavon, G., Klauschen, F., Müller, K.R., Samek, W.:
+On Pixel-Wise Explanations for Non-Linear Classifier Decisions by Layer-Wise
+Relevance Propagation. Public Library of Science (PloS One) (2015)
+56. Taesiri, M.R., Nguyen, G., Nguyen, A.: Visual Correspondence-based Explana-
+tions Improve AI Robustness and Human-AI Team Accuracy. Advances in Neural
+Information Processing Systems (NeurIPS) (2022)
+57. Mahendran, A., Vedaldi, A.: Understanding Deep Image Representations by In-
+verting Them. Proceedings of the IEEE Conference on Computer Vision and
+Pattern Recognition (CVPR) (2015)
+58. Nguyen, A., Yosinski, J., Clune, J.: Multifaceted Feature Visualization: Uncov-
+ering the Different Types of Features Learned by Each Neuron in Deep Neural
+Networks. arXiv preprint arXiv:1602.03616 (2016)
+59. Olah, C., Mordvintsev, A., Schubert, L.: Feature Visualization. Distill (2017)
+60. Nguyen, A., Yosinski, J., Clune, J.: Understanding Neural Networks via Feature
+Visualization: A survey. arXiv preprint arXiv:1904.08939 (2019)
+61. Nguyen, A., Dosovitskiy, A., Yosinski, J., et al.: Synthesizing the Preferred Inputs
+for Neurons in Neural Networks via Deep Generator Networks. Advances in neural
+information processing systems 29 (2016)
+62. Nguyen, A., Clune, J., Bengio, Y., et al.: Plug & Play Generative Networks:
+Conditional Iterative Generation of Images in Latent Space. In: Proceedings of
+the IEEE conference on computer vision and pattern recognition. pp. 4467–4477
+(2017)
+63. Fel, T., Boissin, T., Boutin, V., et al.: Unlocking Feature Visualization for Deeper
+Networks with Magnitude Constrained Optimization. In: Advances in Neural In-
+formation Processing Systems (NeurIPS). vol. 36, pp. 37813–37826 (2023)
+64. Borowski, J., Zimmermann, R.S., Schepers, J., et al.: Exemplary Natural Images
+Explain CNN Activations Better than State-of-the-Art Feature Visualization. In:
+Proceedings of the International Conference on Learning Representations (ICLR)
+(2021)
+65. Zimmermann, R.S., Borowski, J., Geirhos, R., et al.: How Well Do Feature Visual-
+izations Support Causal Understanding of CNN Activations? Advances in Neural
+Information Processing Systems (NeurIPS) 34, 11730–11744 (2021)
+66. Zimmermann, R.S., Klein, T., Brendel, W.: Scale Alone Does Not Improve Mech-
+anistic Interpretability in Vision Models. Advances in Neural Information Pro-
+cessing Systems (NeurIPS) 36 (2023)
+67. Colin, J., Goetschalckx, L., Fel, T., et al.: Choosing the Right Basis for Inter-
+pretability: Psychophysical Comparison Between Neuron-based and Dictionary-
+based Representations. arXiv preprint arXiv:2411.03993 (2024)
+68. Hernandez, E., Schwettmann, S., Bau, D., et al.: Natural Language Descriptions of
+Deep Visual Features. In: Proceedings of the International Conference on Learning
+Representations (ICLR) (2022)
+
+
+From Methods to Interpretable Models
+15
+69. Oikarinen, T., Weng, T.W.: CLIP-Dissect: Automatic Description of Neuron Rep-
+resentations in Deep Vision Networks. In: Proceedings of the International Con-
+ference on Learning Representations (ICLR) (2023)
+70. Bills, S., Cammarata, N., Mossing, D., et al.: Language Models Can Explain
+Neurons in Language Models. OpenAI Blog (2023)
+71. Bau, D., Zhou, B., Khosla, A., et al.: Network Dissection: Quantifying Inter-
+pretability of Deep Visual Representations. In: Proceedings of the IEEE confer-
+ence on computer vision and pattern recognition. pp. 6541–6549 (2017)
+72. Fong, R., Vedaldi, A.: Net2Vec: Quantifying and Explaining How Concepts Are
+Encoded by Filters in Deep Neural Networks. In: Proceedings of the IEEE con-
+ference on computer vision and pattern recognition. pp. 8730–8738 (2018)
+73. Kim, B., Wattenberg, M., Gilmer, J., et al.: Interpretability Beyond Feature At-
+tribution: Quantitative Testing with Concept Activation Vectors (TCAV). In:
+International conference on machine learning. Proceedings of the International
+Conference on Machine Learning (ICML) (2018)
+74. Ghorbani, A., Wexler, J., Zou, J.Y., et al.: Towards Automatic Concept-based
+Explanations. In: Advances in Neural Information Processing Systems. pp. 9273–
+9282 (2019)
+75. Zhang, R., Madumal, P., Miller, T., et al.: Invertible Concept-based Explanations
+for CNN Models with Non-negative Concept Activation Vectors. In: Proceedings
+of the AAAI Conference on Artificial Intelligence. vol. 35, pp. 11682–11690 (2021)
+76. Fel, T., Picard, A., Bethune, L., et al.: CRAFT: Concept Recursive Activation
+FacTorization For Explainability. In: Proceedings of the IEEE Conference on
+Computer Vision and Pattern Recognition (CVPR) (2023)
+77. Gao, L., la Tour, T.D., Tillman, H., et al.: Scaling and Evaluating Sparse Au-
+toencoders. arXiv preprint arXiv:2406.04093 (2024)
+78. Mairal, J., Bach, F., Ponce, J., et al.: Sparse Modeling for Image and Vision
+Processing. Foundations and Trends® in Computer Graphics and Vision 8(2-3),
+85–283 (2014)
+79. Fel, T., Boutin, V., Béthune, L., et al.: A holistic approach to unifying automatic
+concept extraction and concept importance estimation. Advances in Neural In-
+formation Processing Systems 36, 54805–54818 (2023)
+80. Hindupur, S.S.R., Lubana, E.S., Fel, T., et al.: Projecting Assumptions: The
+Duality Between Sparse Autoencoders and Concept Geometry. In: Belgrave, D.,
+Zhang, C., Lin, H., et al. (eds.) Advances in Neural Information Processing Sys-
+tems. vol. 38, pp. 11649–11699. Curran Associates, Inc. (2025)
+81. Dhimoïla, G., Fel, T., Boutin, V., et al.: Cross-Modal Redundancy and the Geome-
+try of Vision–Language Embeddings. In: The Fourteenth International Conference
+on Learning Representations (ICLR) (2026), arXiv:2602.06218
+82. Fel, T., Wang, B., Lepori, M.A., et al.: Into the Rabbit Hull: From Task-Relevant
+Concepts in DINO To Minkowski Geometry. In: The Fourteenth International
+Conference on Learning Representations (2026)
+83. Bohacek, M., Fel, T., Agrawala, M., et al.: Uncovering Conceptual Blindspots
+in
+Generative
+Image
+Models
+Using
+Sparse
+Autoencoders.
+arXiv
+preprint
+arXiv:2506.19708 (2025)
+84. Elhage, N., Nanda, N., Olsson, C., et al.: A Mathematical Framework for Trans-
+former Circuits. Transformer Circuits Thread (2021)
+85. Olah, C., Cammarata, N., Schubert, L., et al.: Zoom in: An Introduction to Cir-
+cuits. Distill (2020)
+86. Olah, C., Cammarata, N., Schubert, L., et al.: An Overview of Early Vision in
+InceptionV1. Distill (2020)
+
+
+16
+J. Colin et al.
+87. Cammarata, N., Goh, G., Carter, S., et al.: Curve Detectors. Distill (2020)
+88. Cammarata, N., Carter, S., Goh, G., et al.: Thread: Circuits. Distill (2020)
+89. Hamblin, C., Konkle, T., Alvarez, G.: Pruning for feature-preserving circuits in
+cnns. arXiv preprint arXiv:2206.01627 (2022)
+90. Rajaram, A., Chowdhury, N., Torralba, A., Andreas, J., Schwettmann, S.: Auto-
+matic discovery of visual circuits. arXiv preprint arXiv:2404.14349 (2024)
+91. Kwon, D., Lee, S., Choi, J.: Granular concept circuits: Toward a fine-grained
+circuit discovery for concept representations. In: Proceedings of the IEEE/CVF
+International Conference on Computer Vision. pp. 2356–2365 (2025)
+92. Żukowska, N., Stammer, W., Schiele, B., Fischer, J.: Seeing through circuits:
+Faithful mechanistic interpretability for vision transformers. arXiv preprint
+arXiv:2604.14477 (2026)
+93. Thasarathan, H., Kowal, M., Fel, T., Derpanis, K.G.: Cross-model circuit discov-
+ery. In: Mechanistic Interpretability Workshop at ICML 2026
+94. Bricken, T., Templeton, A., Batson, J., et al.: Towards Monosemanticity: Decom-
+posing Language Models with Dictionary Learning. Transformer Circuits Thread
+(2023)
+95. Cunningham, H., Ewart, A., Riggs, L., et al.: Sparse Autoencoders Find Highly In-
+terpretable Features in Language Models. In: International Conference on Learn-
+ing Representations (ICLR) (2024), arXiv:2309.08600
+96. Olsson, C., Elhage, N., Nanda, N., et al.: In-context Learning and Induction
+Heads. Transformer Circuits Thread (2022)
+97. Wang, K., Variengien, A., Conmy, A., et al.: Interpretability in the Wild: A Circuit
+for Indirect Object Identification in GPT-2 Small. In: International Conference
+on Learning Representations (ICLR) (2023), arXiv:2211.00593
+98. Meng, K., Bau, D., Andonian, A., et al.: Locating and Editing Factual Associa-
+tions in GPT. In: Advances in Neural Information Processing Systems (NeurIPS)
+(2022)
+99. Campbell, D., Rane, S., Giallanza, T., et al.: Understanding the Limits of Vision
+Language Models Through the Lens of the Binding Problem. In: Advances in
+Neural Information Processing Systems (NeurIPS) (2024), arXiv:2411.00238
+100. Assouel, R., Campbell, D., Bengio, Y., et al.: Visual Symbolic Mechanisms:
+Emergent Symbol Processing in Vision Language Models. arXiv preprint
+arXiv:2506.15871 (2025), arXiv:2506.15871
+101. Lettvin, J.Y., Maturana, H.R., McCulloch, W.S., et al.: What the Frog’s Eye Tells
+the Frog’s Brain. Proceedings of the IRE 47(11), 1940–1951 (1959)
+102. Hubel, D.H., Wiesel, T.N.: Receptive Fields of Single Neurones in the Cat’s Striate
+Cortex. The Journal of physiology 148(3), 574 (1959)
+103. Hubel, D.H.: Eye, Brain, and Vision. Scientific American Library/Scientific Amer-
+ican Books (1995)
+104. Gross, C.G., Rocha-Miranda, C.E., Bender, D.B.: Visual Properties of Neurons in
+Inferotemporal Cortex of the Macaque. Journal of Neurophysiology 35(1), 96–111
+(1972)
+105. Quiroga, R.Q., Reddy, L., Kreiman, G., et al.: Invariant Visual Representation
+by Single Neurons in the Human Brain. Nature 435(7045), 1102–1107 (2005)
+106. Quiroga, R.Q., Kreiman, G., Koch, C., et al.: Sparse but Not ‘Grandmother-
+cell’Coding in the Medial Temporal Lobe. Trends in cognitive sciences 12(3),
+87–91 (2008)
+107. Quiroga, R.Q., Fried, I., Koch, C.: Brain Cells for Grandmother. Scientific Amer-
+ican 308(2), 30–35 (2013)
+
+
+From Methods to Interpretable Models
+17
+108. Haxby, J.V., Gobbini, M.I., Furey, M.L., et al.: Distributed and Overlapping Rep-
+resentations of Faces and Objects in Ventral Temporal Cortex. Science 293(5539),
+2425–2430 (2001)
+109. Ringach, D., Shapley, R.: Reverse Correlation in Neurophysiology. Cognitive Sci-
+ence 28(2), 147–166 (2004)
+110. Salzman, C.D., Britten, K.H., Newsome, W.T.: Cortical Microstimulation Influ-
+ences Perceptual Judgements of Motion Direction. Nature 346(6280), 174–177
+(1990)
+111. Goodale, M.A., Milner, A.D.: Separate Visual Pathways for Perception and Ac-
+tion. Trends in Neurosciences 15(1), 20–25 (1992)
+112. Hupé, J.M., James, A.C., Payne, B.R., et al.: Cortical Feedback Improves Dis-
+crimination Between Figure and Background by V1, V2 and V3 Neurons. Nature
+394(6695), 784–787 (1998)
+113. Felleman, D.J., Van Essen, D.C.: Distributed Hierarchical Processing in the Pri-
+mate Cerebral Cortex. Cerebral Cortex 1(1), 1–47 (1991)
+114. Lamme, V.A.F., Roelfsema, P.R.: The Distinct Modes of Vision Offered by Feed-
+forward and Recurrent Processing. Trends in Neurosciences 23(11), 571–579
+(2000)
+115. Krizhevsky, A., Hinton, G., et al.: Learning Multiple Layers of Features from Tiny
+Images (2009)
+116. Szegedy, C., Liu, W., Jia, Y., et al.: Going Deeper with Convolutions. In: Proceed-
+ings of the IEEE conference on computer vision and pattern recognition. pp. 1–9
+(2015)
+117. He, K., Zhang, X., Ren, S., et al.: Deep Residual Learning for Image Recogni-
+tion. In: Proceedings of the IEEE Conference on Computer Vision and Pattern
+Recognition (CVPR) (2016)
+118. Dosovitskiy, A., Beyer, L., Kolesnikov, A., et al.: An Image Is Worth 16X16 Words:
+Transformers for Image Recognition at Scale. In: Proceedings of the International
+Conference on Learning Representations (ICLR) (2021)
+119. Radford, A., Kim, J.W., Hallacy, C., et al.: Learning Transferable Visual Models
+from Natural Language Supervision. In: Proceedings of the International Confer-
+ence on Machine Learning (ICML). pp. 8748–8763. PmLR (2021)
+120. Zhai, X., Mustafa, B., Kolesnikov, A., et al.: Sigmoid Loss for Language Image
+Pre-training. In: Proceedings of the IEEE International Conference on Computer
+Vision (ICCV). pp. 11975–11986 (2023)
+121. Caron, M., Touvron, H., Misra, I., Jégou, H., Mairal, J., Bojanowski, P., Joulin,
+A.: Emerging properties in self-supervised vision transformers. In: Proceedings
+of the IEEE/CVF international conference on computer vision. pp. 9650–9660
+(2021)
+122. Oquab, M., Darcet, T., Moutakanni, T., et al.: DINOV2: Learning Robust Vi-
+sual Features without Supervision. Transactions on Machine Learning Research
+(2024), arXiv:2304.07193
+123. Siméoni,
+O.,
+Vo,
+H.V.,
+Seitzer,
+M.,
+et
+al.:
+DINOv3.
+arXiv
+preprint
+arXiv:2508.10104 (2025)
+124. He, K., Chen, X., Xie, S., et al.: Masked Autoencoders Are Scalable Vision Learn-
+ers. In: Proceedings of the IEEE/CVF conference on computer vision and pattern
+recognition. pp. 16000–16009 (2022)
+125. Assran, M., Duval, Q., Misra, I., et al.: Self-supervised Learning from Images with
+a Joint-embedding Predictive Architecture. In: Proceedings of the IEEE/CVF
+Conference on Computer Vision and Pattern Recognition. pp. 5563–5574 (2023)
+
+
+18
+J. Colin et al.
+126. Tong, Z., Song, Y., Wang, J., Wang, L.: Videomae: Masked autoencoders are
+data-efficient learners for self-supervised video pre-training. Advances in neural
+information processing systems 35, 10078–10093 (2022)
+127. Wang, L., Huang, B., Zhao, Z., Tong, Z., He, Y., Wang, Y., Wang, Y., Qiao, Y.:
+Videomae v2: Scaling video masked autoencoders with dual masking. In: Proceed-
+ings of the IEEE/CVF conference on computer vision and pattern recognition.
+pp. 14549–14560 (2023)
+128. Bardes, A., Garrido, Q., Ponce, J., Chen, X., Rabbat, M., LeCun, Y., Assran, M.,
+Ballas, N.: Revisiting feature prediction for learning visual representations from
+video. arXiv preprint arXiv:2404.08471 (2024)
+129. Assran, M., Bardes, A., Fan, D., Garrido, Q., Howes, R., Muckley, M., Rizvi, A.,
+Roberts, C., Sinha, K., Zholus, A., et al.: V-jepa 2: Self-supervised video models
+enable understanding, prediction and planning. arXiv preprint arXiv:2506.09985
+(2025)
+130. Colin, J., Goetschalckx, L., Oliver, N., et al.: Capability̸ = Interpretabil-
+ity: Human Interpretability of Vision Foundation Models. arXiv preprint
+arXiv:2605.20337 (2026)
+131. Lindsey, J., Templeton, A., Marcus, J., et al.: Sparse Crosscoders for Cross-Layer
+Features and Model Diffing. Transformer Circuits Thread (2024)
+132. Gorton, L.: Group crosscoders for mechanistic analysis of symmetry. arXiv
+preprint arXiv:2410.24184 (2024)
+133. Thasarathan, H., Forsyth, J., Fel, T., et al.: Universal Sparse Autoencoders: In-
+terpretable Cross-model Concept Alignment. In: Forty-second International Con-
+ference on Machine Learning (2025)
+134. Kassem, A., Jiralerspong, T., Rostamzadeh, N., Farnadi, G.: Delta-crosscoder:
+Robust crosscoder model diffing in narrow fine-tuning regimes. arXiv preprint
+arXiv:2603.04426 (2026)
+135. Kriegeskorte, N., Mur, M., Bandettini, P.A.: Representational similarity analysis-
+connecting the branches of systems neuroscience. Frontiers in systems neuro-
+science 2, 249 (2008)
+136. Morcos, A., Raghu, M., Bengio, S.: Insights on representational similarity in neu-
+ral networks with canonical correlation. Advances in neural information processing
+systems 31 (2018)
+137. Kornblith, S., Norouzi, M., Lee, H., et al.: Similarity of Neural Network Repre-
+sentations Revisited. In: International Conference on Machine Learning (ICML)
+(2019), arXiv:1905.00414
+138. Williams, A.H., Kunz, E., Kornblith, S., Linderman, S.: Generalized shape metrics
+on neural representations. Advances in neural information processing systems 34,
+4738–4750 (2021)
+139. Sucholutsky, I., Muttenthaler, L., Weller, A., et al.: Getting Aligned on Repre-
+sentational Alignment. arXiv preprint arXiv:2310.13018 (2023)
+140. Klabunde, M., Schumacher, T., Strohmaier, M., Lemmerich, F.: Similarity of neu-
+ral network models: A survey of functional and representational measures. ACM
+Computing Surveys 57(9), 1–52 (2025)
+141. Dhimoïla, G., Boutin, V., Picard, A.M., et al.: A Unifying Framework for Concept-
+Based Representational Similarity. arXiv preprint arXiv:2606.09653 (2026)
+142. Carter,
+S.,
+Armstrong,
+Z.,
+Schubert,
+L.,
+Johnson,
+I.,
+Olah,
+C.:
+Activa-
+tion
+atlas.
+Distill
+(2019).
+https : / / doi . org / 10 . 23915 / distill . 00015,
+https://distill.pub/2019/activation-atlas
+143. Goh, G., Cammarata, N., Voss, C., et al.: Multimodal Neurons in Artificial Neural
+Networks. Distill (2021)
+
+
+From Methods to Interpretable Models
+19
+144. Deng, J., Dong, W., Socher, R., et al.: ImageNet: A Large-Scale Hierarchical
+Image Database. In: Proceedings of the IEEE Conference on Computer Vision
+and Pattern Recognition (CVPR) (2009)
+145. Gandelsman, Y., Efros, A.A., Steinhardt, J.: Interpreting CLIP’S Image Represen-
+tation via Text-Based Decomposition. In: International Conference on Learning
+Representations (ICLR) (2024), arXiv:2310.05916
+146. Darcet, T., Oquab, M., Mairal, J., et al.: Vision Transformers Need Regis-
+ters. In: International Conference on Learning Representations (ICLR) (2024),
+arXiv:2309.16588
+147. Stevens, S., Chao, W.L., Berger-Wolf, T., et al.: Sparse Autoencoders for Scientif-
+ically Rigorous Interpretation of Vision Models. arXiv preprint arXiv:2502.06755
+(2025), arXiv:2502.06755
+148. Surkov, V., Wendler, C., Mari, A., et al.: Unpacking SDXL Turbo: In-
+terpreting Text-to-Image Models with Sparse Autoencoders. arXiv preprint
+arXiv:2410.22366 (2024), arXiv:2410.22366
+149. Zimmermann, R.S., Klindt, D., Brendel, W.: Measuring Per-Unit Interpretability
+at Scale without Humans. In: Globerson, A., Mackey, L., Belgrave, D., et al.
+(eds.) Advances in Neural Information Processing Systems (NeurIPS). vol. 37,
+pp. 48448–48483. Curran Associates, Inc. (2024)
+150. Bansal, Y., Nakkiran, P., Barak, B.: Revisiting Model Stitching to Compare
+Neural Representations. In: Advances in Neural Information Processing Systems
+(NeurIPS) (2021), arXiv:2106.07682
+151. Raghu, M., Unterthiner, T., Kornblith, S., et al.: Do Vision Transformers See Like
+Convolutional Neural Networks? In: Advances in Neural Information Processing
+Systems (NeurIPS) (2021), arXiv:2108.08810
+152. Dravid, A., Gandelsman, Y., Efros, A.A., et al.: Rosetta Neurons: Mining the
+Common Units in a Model Zoo. In: International Conference on Computer Vision
+(ICCV) (2023), arXiv:2306.09346
+153. Mikriukov, G., Schwalbe, G., Hellert, C., et al.: Revealing Similar Semantics In-
+side CNNS: An Interpretable Concept-Based Comparison of Feature Spaces. In:
+Machine Learning and Knowledge Discovery in Databases (ECML PKDD) Work-
+shops. pp. 3–20. Springer (2023)
+154. Mustapha, A., Khreich, W., Masri, W.: Inter-model Interpretability: Self-
+supervised Models as a Case Study. Array 22, 100350 (2024)
+155. Dorszewski, T., Tětková, L., Jenssen, R., et al.: From Colors to Classes: Emer-
+gence of Concepts in Vision Transformers. In: World Conference on Explainable
+Artificial Intelligence (xAI). pp. 28–47. Springer (2025)
+156. Huh, M., Cheung, B., Wang, T., et al.: The Platonic Representation Hy-
+pothesis. In: International Conference on Machine Learning (ICML) (2024),
+arXiv:2405.07987
+157. Gröger, F., Wen, S., Brbić, M.: Revisiting the Platonic Representation Hypothe-
+sis: An Aristotelian View. arXiv preprint arXiv:2602.14486 (2026)
+158. Muttenthaler, L., Dippel, J., Linhardt, L., et al.: Human Alignment of Neural Net-
+work Representations. In: International Conference on Learning Representations
+(ICLR) (2023), arXiv:2211.01201
+159. Narayanan, M., Chen, E., He, J., et al.: How Do Humans Understand Ex-
+planations from Machine Learning Systems? An Evaluation of the Human-
+Interpretability of Explanation (2018)
+160. Lage, I., Chen, E., He, J., et al.: An Evaluation of the Human-Interpretability
+of Explanation. In: Workshop on Correcting and Critiquing Trends in Machine
+Learning, Advances in Neural Information Processing Systems (NIPS) (2019)
+
+
+20
+J. Colin et al.
+161. Shen, H., Huang, T.H.: How useful are the machine-generated interpretations to
+general users? A human evaluation on guessing the incorrectly predicted labels.
+In: Proceedings of the AAAI Conference on Human Computation and Crowd-
+sourcing. vol. 8, pp. 168–172 (2020)
+162. Nguyen, G., Kim, D., Nguyen, A.: The effectiveness of feature attribution meth-
+ods and its correlation with automatic evaluation scores. Advances in Neural
+Information Processing Systems (NeurIPS) (2021)
+163. Casper, S., Bu, T., Li, Y., Li, J., Zhang, K., Hariharan, K., Hadfield-Menell,
+D.: Red teaming deep neural networks with feature synthesis tools. Advances in
+Neural Information Processing Systems 36, 80470–80516 (2023)
+164. Rong, Y., Leemann, T., Nguyen, T.T., Fiedler, L., Qian, P., Unhelkar, V., Seidel,
+T., Kasneci, G., Kasneci, E.: Towards human-centered explainable ai: A survey of
+user studies for model explanations. IEEE transactions on pattern analysis and
+machine intelligence 46(4), 2104–2122 (2023)
+165. Kulesza, T., Stumpf, S., Burnett, M., Yang, S., Kwan, I., Wong, W.K.: Too much,
+too little, or just right? ways explanations impact end users’ mental models. In:
+2013 IEEE Symposium on visual languages and human centric computing. pp.
+3–10. IEEE (2013)
+166. Poursabzi-Sangdeh, F., Goldstein, D.G., Hofman, J.M., Wortman Vaughan, J.W.,
+Wallach, H.: Manipulating and measuring model interpretability. In: Proceedings
+of the 2021 CHI conference on human factors in computing systems. pp. 1–52
+(2021)
+167. Templeton, A., Conerly, T., Marcus, J., et al.: Scaling Monosemanticity: Extract-
+ing Interpretable Features from Claude 3 Sonnet. Transformer Circuits Thread
+(2024)
+168. Elhage, N., Hume, T., Olsson, C., et al.: Toy Models of Superposition. Transformer
+Circuits Thread (2022)
+169. Böhle, M., Fritz, M., Schiele, B.: B-cos Networks: Alignment Is All We Need
+for Interpretability. In: IEEE/CVF Conference on Computer Vision and Pattern
+Recognition (CVPR) (2022), arXiv:2205.10268
+170. Oikarinen, T., Das, S., Nguyen, L.M., et al.: Label-Free Concept Bottleneck Mod-
+els. In: International Conference on Learning Representations (ICLR) (2023),
+arXiv:2304.06129
+171. Rocchi-Henry, A., Fel, T., Franchi, G.: A Geometric Unification of Concept Learn-
+ing with Concept Cones. arXiv preprint arXiv:2512.07355 (2025)
+172. Fel, T., Rodriguez Rodriguez, I.F., Linsley, D., et al.: Harmonizing the object
+recognition strategies of deep neural networks with humans. Advances in Neural
+Information Processing Systems (NeurIPS) 35, 9432–9446 (2022)
+173. Sundaram, S., Fu, S., Muttenthaler, L., et al.: When does perceptual alignment
+benefit vision representations? Advances in Neural Information Processing Sys-
+tems (NeurIPS) 37, 55314–55341 (2024)
+174. Muttenthaler, L., Greff, K., Born, F., et al.: Aligning machine and human visual
+representations across abstraction levels. Nature 647(8089), 349–355 (2025)
+175. Ross, A., Doshi-Velez, F.: Improving the adversarial robustness and interpretabil-
+ity of deep neural networks by regularizing their input gradients. In: Proceedings
+of the AAAI conference on artificial intelligence. vol. 32 (2018)
+176. Tsipras, D., Santurkar, S., Engstrom, L., Turner, A., Madry, A.: Robustness may
+be at odds with accuracy. arXiv preprint arXiv:1805.12152 (2018)
+177. Wang, Z., Fredrikson, M., Datta, A.: Robust models are more interpretable be-
+cause attributions look normal. In: International Conference on Machine Learning.
+pp. 22625–22651. PMLR (2022)

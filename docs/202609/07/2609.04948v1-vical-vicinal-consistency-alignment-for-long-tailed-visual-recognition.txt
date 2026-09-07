@@ -1,0 +1,578 @@
+Title: VICAL: Vicinal Consistency Alignment for Long-Tailed Visual Recognition
+
+URL Source: https://arxiv.org/pdf/2609.04948v1
+
+Published Time: Mon, 07 Sep 2026 00:47:44 GMT
+
+Number of Pages: 27
+
+Markdown Content:
+# VICAL: Vicinal Consistency Alignment for Long-Tailed Visual Recognition 
+
+Jianggang Zhu 1,2 , Zheng Wang 3 , Bin Zhu 4 , Yi-Ping Phoebe Chen 5 , and Jingjing Chen 1,2 ⋆ 
+
+> 1
+
+Institute of Trustworthy Embodied AI, Fudan University, Shanghai, China  
+
+> 2
+
+Shanghai Key Laboratory of Multimodal Embodied AI, Shanghai, China  
+
+> 3
+
+Zhejiang University of Technology, Hangzhou, China  
+
+> 4
+
+Singapore Management University, Singapore, Singapore  
+
+> 5
+
+La Trobe University, Melbourne, Australia 
+
+Abstract. Multi-expert models have become the dominant paradigm for long-tailed learning, largely attributed to their presumed ability to benefit from expert diversity. However, we revisit this central assump-tion and reveal that diversity induced by logit adjustment or explicit regularizers does not guarantee better ensemble accuracy. Our work sug-gests that multi-expert models benefit more from variance reduction than diversity maximization. We introduce VICAL , a VI cinal Consistency 
+
+AL ignment framework that improves long-tailed recognition not by en-forcing expert diversity, but by reducing prediction variance. Specifically, our approach comprises two key components: Self-Consistency Learn-ing and Deep Ensemble Distillation. Self-Consistency Learning discour-ages reliance on unstable high-frequency information, smoothing the lo-cal loss landscape and mitigating overfitting, especially for tail classes. Deep Ensemble Distillation promotes cross-expert low-frequency seman-tic agreement using a low-resolution view, thereby sidestepping opti-mization conflicts with established knowledge. Extensive experiments on CIFAR-LT, ImageNet-LT, and iNaturalist 2018 show that VICAL consis-tently outperforms state-of-the-art methods, validating the effectiveness of our consistency-driven design. Our code is available at VICAL. 
+
+Keywords: Long-Tailed Visual Recognition · Multi-Expert Models · Consistency Learning 
+
+## 1 Introduction 
+
+Computer vision has witnessed remarkable progress over the last decade, largely driven by the construction of large-scale and high-quality datasets such as Ima-geNet [30] and MS COCO [22]. However, many of these benchmarks implicitly assume a balanced label distribution, which does not reflect real-world data dis-tributions. In practice, data typically follow a long-tailed distribution, where a few head classes dominate the data volume while the majority of tail classes  
+
+> ⋆
+
+Corresponding author. Email: {jgzhu20, chenjingjing}@fudan.edu.cn arXiv:2609.04948v1 [cs.CV] 4 Sep 2026 2 Zhu et al. 0.5 0.6 0.7 0.8 0.9         
+
+> Q-Statistics
+> 55.8 55.9 56.0 56.1 56.2 56.3
+> Top-1 Acc.
+> 0.55 0.60 0.65 0.70
+> Correlation
+> 65.75 66.00 66.25 66.50 66.75 67.00
+> Diversity Acc.
+> =0.0
+> =0.5
+> =1.0
+> =1.5
+> =2.0
+
+Fig. 1: We use three different diversity metrics, i.e. , Q-statistics, correlation, and di-versity accuracy, to measure the relationship between model diversity and ensemble accuracy on CIFAR-100-LT. Each point denotes an independently trained model, and 
+
+λ controls the differences in logit adjustment strength across experts. A larger λ indi-cates more diverse experts by controlling the logit adjustment intensity for each expert. Varying λ changes expert agreement but produces no clear improvement in ensemble accuracy. (The Pearson correlation coefficients are 0.11 , 0.11 , and −0.13 for Q-statistics, correlation, and diversity accuracy.) 
+
+suffer from extreme data scarcity. Deep neural networks trained on such data exhibit a pronounced bias toward the head classes [17, 50], limiting applicability in domains such as medical diagnostics [15] and autonomous driving [28]. To address the imbalance, numerous approaches have been proposed [3, 8, 17, 25, 50, 51]. Among them, logit adjustment [25] is an effective approach to ad-just the classification boundary and achieve Fisher consistency. More recently, multi-expert models [1,36,45,47] have received significant attention due to their superior performance. This success is largely attributed to their ability to simul-taneously mitigate both model variance and bias [36], thereby reducing predic-tion uncertainty [39]. Some works [1, 45, 47] also hypothesize that this success derives from model diversity, which maximizes expert specialization by forc-ing each expert to focus on different data distributions. These approaches have achieved strong empirical performance, advancing long-tailed visual recognition. However, the fundamental premise of these diversity-driven methods, the re-lationship between explicit expert diversity enforcement and ensemble prediction accuracy , remains systematically unverified. In this paper, we re-evaluate this core assumption using multiple ensemble diversity metrics and surprisingly re-veal that expert diversity induced by logit adjustment or explicit loss regularizers does not universally yield better ensemble accuracy. More formally, the expected test error for ensemble models can be approximately decomposed as [37] 
+
+Error = N oise + Bias + V ariance − Diversity  (1) Eq. 1 states diversity is an entangled hidden dimension in the bias-variance decomposition of ensemble learning rather than an independent variable [37]. Current expert diversity-enforcing methods [36, 47] in long-tailed learning may overlook this crucial coupling. As shown in Fig. 1, we can obtain diverse out-VICAL 3
+
+puts with lower Q-statistics and correlation coefficients by controlling the logit adjustment intensities for each expert, but without a notable improvement in ensemble accuracy. We provide results on diversity induced by explicit regu-larizers [36] in the Supplementary Material, which show that explicitly forcing diversity degrades individual expert representation quality. These observations prompt us to reconsider the underlying factors that truly determine the effec-tiveness of multi-expert models. Guided by this insight, we propose the Vicinal Consistency Alignment frame-work, VICAL, for variance reduction rather than explicit expert diversity con-straints . Our approach is grounded in a key insight: a robust model should ex-hibit minimal prediction variation against both localized high-frequency per-turbations and global resolution shifts, especially for tail classes. Specifically, VICAL comprises two complementary components operating across decoupled frequency domains: Self-Consistency (SC) Learning and Deep Ensemble Distilla-tion (DED). First, SC enforces intra-expert prediction invariance by construct-ing a localized vicinity through the interpolation of strong augmented views. By aligning predictions between the original views and these heavily corrupted interpolations, SC penalizes the exploitation of unstable high-frequency pat-terns, effectively smoothing the local loss landscape of tail classes. Second, DED promotes inter-expert consistency by utilizing a low-resolution view to extract resolution-invariant semantics. Because this downsampled input inherently lacks high-frequency details, DED strictly confines the cross-expert alignment to low-frequency semantic agreement. This decoupling averts optimization conflicts, preserving the robust, individual features established by SC while filtering con-flicting knowledge. Together, these components significantly reduce prediction variance both within and across experts. Our main contributions can be summarized as follows: 
+
+– Our work first empirically re-evaluates the hypothesis that expert diversity induced by logit adjustment or explicit regularizers directly correlates with ensemble accuracy in long-tailed recognition. Our study reveals that utilizing logit adjustment or explicit regularizers to maximize diversity can compro-mise individual expert accuracy, thereby undermining the overall ensemble. 
+
+– We propose Vicinal Consistency Alignment (VICAL), a novel consistency learning framework that moves beyond explicit diversity constraints to im-plicit variance reduction. 
+
+– We implement VICAL through two core and complementary components: Self-Consistency Learning, which enables individual experts to discourage reliance on unstable high-frequency patterns, and Deep Ensemble Distilla-tion, which facilitates cross-expert alignment through low-frequency seman-tic agreement. 
+
+– VICAL showcases its superiority and generalizability through extensive ex-periments on popular long-tailed benchmarks, including CIFAR-LT, ImageNet-LT, and iNaturalist 2018, achieving significant gains over existing state-of-the-art methods. 4 Zhu et al. 
+
+## 2 Related Work 
+
+Long-Tailed Visual Recognition Conventional strategies for mitigating class imbalance primarily include re-sampling, re-weighting, and logit adjustment. Re-sampling [3, 17] techniques typically over-sample instances of tail classes or under-sample head classes, while re-weighting [3, 9] typically assigns higher loss weights to tail classes. Logit adjustment [25, 29] further refines this idea by ex-plicitly modifying decision boundaries to accommodate class imbalance. On the other hand, a large body of contrastive learning methods [8, 10, 51] has been adopted to enhance representation quality by learning a balanced feature space. 
+
+Multi-Expert Models Recently, multi-expert models [1, 21, 33, 36, 45, 47] have become the dominant paradigm in long-tailed recognition. These methods typ-ically train multiple experts independently or cooperatively, and aggregate pre-dictions of all experts during testing. A common hypothesis underpinning these approaches is that encouraging expert diversity can improve ensemble perfor-mance by allowing each expert to specialize in different categories. For example, RIDE [36] enforces diversity by penalizing the similarity of expert predictions using the explicit diversity regularizer. SADE [45], MDCS [47], and BalPoE [1] use varying logit adjustment intensities across experts, compelling each expert to specialize in distinct categories. However, the validity of this foundational premise has rarely been scrutinized. Our work initiates from this critical gap. 
+
+Consistency Learning Consistency learning is a powerful regularization tech-nique in semi-supervised learning [32,34,47], typically leveraging unlabeled data by enforcing output stability under input perturbations. These perturbations are commonly generated through varying data augmentation strategies, such as the strong-weak pair employed in FixMatch [32]. Beyond FixMatch, Mean Teacher [34] also uses generic consistency to propagate pseudo-labels to unla-beled data. Consistency learning has also been shown to improve model robust-ness and representation learning [14]. Mixup [43] creates vicinal samples by mix-ing instances from different classes, yielding more robust decision boundaries. GLMC [11] utilizes Mixup and CutMix [42] to achieve global and local mix-ture consistency for long-tailed learning. In contrast, VICAL adopts frequency-decoupled consistency, which acts as a spectral bottleneck to suppress high-frequency overfitting and enforce a robust, low-frequency consensus. This design reduces variance within and across experts in long-tailed recognition. 
+
+## 3 Do More Diverse Experts Yield Better Performance? 
+
+A line of recent methods [1, 2, 24, 45, 47, 49] has been proposed to improve the output diversity of multi-expert models by enabling each expert to focus on different categories. However, one premise for these practices to be effective is that diverse experts are beneficial for long-tailed learning, and this simple as-sumption has not been verified. In this section, we first provide preliminaries for long-tailed recognition and then evaluate whether improving the expert diver-sity through logit adjustment and an explicit regularizer in existing long-tailed learning approaches enhances recognition performance. VICAL 5
+
+3.1 Preliminaries 
+
+The goal of long-tailed visual recognition is to train on skewed data while achiev-ing promising performance on the balanced test set. Formally, let D = {xi, y i}Ni=1 
+
+be the training set where xi denotes the i-th image sample and yi is the corre-sponding label. For an ensemble model with M experts, given the input xi, the prediction probability of j-th class in m-th expert parameterized with θm is 
+
+pj (xi; θm) = exp (zmij )
+
+PCk=1 exp (zmik ) , (2) where zmij is the logit for class j of sample i, and C is the number of classes. The posterior in Eq. 2 does not account for the train-test class prior shift. After calibration by logit adjustment [25, 29], Eq. 2 can be reformulated as 
+
+pj (xi; θm) = exp (zmij + τm log( Pj )) 
+
+PCk=1 exp (zmik + τm log( Pk)) , (3) 
+
+Lmce = − log( pj (xi; θm)) . (4) Here, Pj is the class prior of class j, the hyperparameter λ controls calibration strength, and Lmce denotes the basic classification loss of individual experts. A large value of τm (>1) will render the prediction biased towards the tail class and a small value ( <1) towards the head class. Previous works [1, 24, 45, 47] assign small and large λs for head and tail experts, focusing on head and tail classes, respectively. Following the common setup [1,45,47], we set M = 3 in subsequent sections unless otherwise mentioned. 
+
+3.2 Statistical Analysis 
+
+In our work, we find that expert diversity induced by logit adjustment (See Fig. 1) or an explicit loss regularizer (See Supplementary Material) has no pos-itive correlation with ensemble performance. Specifically, we train multi-expert models on CIFAR-100-LT (IF=100) under varying logit adjustment intensities: 
+
+(τ1, τ 2, τ 3) = (1 − λ, 1, 1 + λ) (λ ∈ { 0, 0.5, 1, 1.5, 2}) for the long-tailed, uniform, and reversed experts, respectively. We measure diversity using Q-statistics [41] and the correlation coefficient ρ, with the diversity factor σ [47] as an auxiliary accuracy metric. As shown in Fig. 1, larger λ values yield lower Q-statistics and 
+
+ρ, indicating that more diverse predictions are obtained. However, this induced diversity fails to yield ensemble accuracy gains. Furthermore, when applying ex-plicit regularizers (See Supplementary Material), we observe a strong positive correlation between Q-statistics and ensemble accuracy. This indicates that arti-ficially pushing experts to be diverse harms overall performance, motivating our shift in focus from pursuing diversity to reducing model variance. 6 Zhu et al. 
+
+## 4 Vicinal Consistency Alignment 
+
+In this paper, we emphasize that reducing the variance of the multi-expert model is more effective than enforcing diversity in Eq. 1. To this end, we present a complementary and tiered consistency-learning framework, VICAL, to achieve vicinal consistency alignment, with two key components: Self-Consistency (SC) Learning and Deep Ensemble Distillation (DED). Specifically, we construct a vicinity for each instance using an interpolation of two strongly augmented full-resolution views, together with a separate low-resolution view. The vicinity is strictly confined to transformations of the same input. First, SC acts as the local smoother and stabilizes the individual expert’s prediction within the vicinity of each sample. Second, DED aligns the individual output of the low-resolution view with the global semantic consensus based on SC. Notably, by separating these objectives across different input resolutions, VICAL successfully reduces model variance both within and across experts while avoiding knowledge conflicts. In the following section, we will describe our proposed VICAL in greater detail. 
+
+4.1 Self-Consistency Learning Vanilla Self-Distillation Self-distillation (SD) is an elegant and efficient ap-proach to reducing model variance and improving prediction consistency [12, 34, 44]. Here, we consider an exponential moving average (EMA) model as the teacher to produce soft labels, which are more informative than hard labels. For simplicity, let pS and pT denote the predicted probability of the student and teacher model, respectively. The vanilla SD [34] of the i-th sample in the m-th expert can be expressed as: 
+
+Lsd = KL (pT (xi; ˆθm)|| pS (xi; θm)) , (5) where KL (·||· ) represents the Kullback–Leibler divergence and ˆθm denotes the EMA model of m-th expert, updated from the online model θm. We omit the parameters θm and ˆθm in the following sections for simplicity. 
+
+Inconsistent Loss Landscape We find vanilla SD inadequate for enforcing robustness within the vicinity of each training sample. Specifically, we construct an interpolated view ev = γv1 + (1 − γ)v 2 within the vicinity, where v1 and v2
+
+are two strong augmentations of the same image x, and γ ∼ Beta (α, α ), with 
+
+γ ∈ [0 , 1] . Since v1 and v2 are semantically correlated, the loss of the convex combination ev for the tail class is expected to be as smooth as that of the head class when varying with γ. However, as shown in Fig. 2a, the vanilla SD exhibits high sensitivity to γ for the tail class, suggesting a sharp loss landscape and substantial prediction uncertainty. 
+
+Local and High-frequency Perturbations To mitigate sharp loss varia-tions within the vicinity, we propose a self-consistency (SC) objective as the local smoother that penalizes prediction divergence across interpolated views. Specifi-cally, we employ two strong augmented views v1 and v2, and introduce unstable VICAL 70.0 0.2 0.4 0.6 0.8 1.0            
+
+> 01234567
+> Loss
+> Head Tail
+> (a) 0.0 0.2 0.4 0.6 0.8 1.0
+> 0123
+> Loss
+> Head Tail (b) All Many Med Few 0.5
+> 0.0 0.5 1.0 1.5 2.0
+> Acc. Gain (%)
+> 0.4 -0.3 -0.2 1.8 1.4 1.2 1.0 2.1
+> full-resolution low-resolution (c)
+
+Fig. 2: Loss landscapes as a function of the interpolation factor γ ∈ [0,1] between two augmented views v1 and v2 on CIFAR-100-LT (IF=100) with a single expert: (a) vanilla self-distillation , (b) SC . SC induces a smoother loss curve as γ varies, especially for the tail classes. (c) Accuracy gains over the SC baseline when DED uses a full-resolution or low-resolution input. 
+
+high-frequency perturbation via the interpolated view ev, which creates unnatu-ral edges, ghosts, and textural artifacts. By feeding this heavily corrupted view 
+
+ev into the online student network, we compel the model to align its prediction with the EMA teacher of the original views. Due to data scarcity, tail classes are highly sensitive to vicinal perturbations, thereby receiving stronger regulariza-tion during consistency alignment. Consequently, SC penalizes the exploitation of unstable high-frequency patterns and achieves prediction consistency within the vicinity for each expert. By suppressing these brittle features, SC alleviates overfitting in the tail classes and yields flatter local minima (See Fig. 2b). As illustrated in Fig. 3, the interpolated view ev is fed into the online network to produce the prediction pS (zm 
+
+> ev
+
+) of the m-th expert as the student distribution. The views v1 and v2 are fed into the target network to calculate the mean logits 
+
+zm to serve as the stable teacher. Formally, the modified objective function of the m-th expert can be expressed as 
+
+Lmsd = KL (pT (zm)|| pS (zm 
+
+> ev
+
+)) , (6) where zm = 12 (zm 
+
+> v1
+
++ zm 
+
+> v2
+
+) is the mean of EMA logits for v1 and v2 and serves as the stabilized target. 
+
+4.2 Deep Ensemble Distillation Global and Low-frequency Alignment Ensemble distillation offers a promis-ing approach for variance reduction [36]. While SC improves robustness to high-frequency perturbations introduced by interpolation, unconditionally forcing the student to align with the global ensemble consensus poses a severe risk of opti-mization conflict with established knowledge of SC. Concretely, if an extra full-resolution view were employed for distillation, ensemble averaging inherently blurs individual features established by SC, leading to degraded performance 8 Zhu et al. v! v"       
+
+> "v
+> v#Online Network
+> Expert 𝒎
+> Target Network
+> Expert 𝒎
+> EMA ̅𝑧 %
+> ℒ!" #
+> Self-Consistency Learning
+> 𝑧 &!
+> %
+> 𝑧 '&%
+> Aggregating ̅𝑧 !̅𝑧 %̅𝑧 (̅𝑧
+> Conflicting Knowledge Filter
+> Deep Ensemble Distillation
+> ……
+> stop-grad
+> Online Network
+> Expert 𝒎
+> Target Network
+> Expert 1
+> Target Network
+> Expert m
+> Target Network
+> Expert M
+> ℒ$%! #
+> 𝛾 1 − 𝛾
+
+Fig. 3: The framework of our proposed VICAL, consisting of Self-Consistency (SC) Learning and Deep Ensemble Distillation (DED). SC utilizes the interpolated view 
+
+ev to discourage reliance on unstable high-frequency patterns, significantly improving robustness of tail classes. DED strictly confines the cross-expert alignment to low-frequency semantic agreement via a low-resolution view vs, avoiding optimization con-flicts with the SC objective. DED further filters conflicting transfers while retaining complementary expert knowledge through the Conflicting Knowledge Filter. 
+
+compared to using SC alone (See Fig. 2c). To sidestep this conflict, our Deep Ensemble Distillation (DED) module restricts the distillation objective strictly to a low-resolution view vs. Because the downsampled vs lacks high-frequency information, this resolution asymmetry confines the ensemble alignment strictly to low-frequency semantics. Consequently, the DED module offers complemen-tary signals based on SC, and our design decouples the SC and DED objectives across different frequency domains. As shown in Fig. 3, the low-resolution view vs is fed into the online network and produces logits zm 
+
+> vs
+
+of the m-th expert. The outputs of all target models are averaged to obtain z, which provides the global semantic consensus. The logits 
+
+zm 
+
+> vs
+
+are forced to align with the mean z of full-resolution views, which enhances low-frequency consistency and improves overall robustness. 
+
+Conflicting Knowledge Filter To further ensure that each expert gains complementary knowledge, we introduce the Conflicting Knowledge Filter (CKF) that sidesteps incorrect knowledge transfer, preventing individual knowledge from degenerating into uncertain global consensus. The final ensemble distil-lation formulation can be expressed as 
+
+Lmens = 1
+
+|DCc |
+
+X
+
+> vs∈DCc
+
+KL (pT (z)|| pS (zm 
+
+> vs
+
+)) , (7) 
+
+Dc = {x|argmax( pT (z)) ̸ = y and argmax( pS (zm 
+
+> vs
+
+)) = y} (8) 
+
+where z denotes the aggregated logits across experts, and DCc denotes the com-plement of Dc, i.e. , the non-conflict knowledge set, excluding samples that the student correctly predicts but the teacher fails. The CKF maintains individual experts’ specialized knowledge while enforcing semantic-level agreement. VICAL 9Method CIFAR-100-LT CIFAR-10-LT ImageNet-LT 200 100 50 10 200 100 50 10 256 LDAM-DRW [3] 38.5 42.0 46.6 58.7 74.7 77.0 81.0 88.2 45.8 BCL ‡ [51] - 51.9 56.6 64.9 - 84.3 87.2 91.1 57.1 PaCo ‡ [8] 47.8 52.0 56.0 64.2 82.3 85.4 88.0 91.5 57.2 ProCo ‡ [10] - 52.8 57.1 65.5 - 85.9 88.2 91.9 58.0 RIDE [36] 44.6 48.0 51.7 61.8 77.8 81.2 83.7 86.3 56.8 SADE [45] 44.7 49.8 53.9 63.6 78.0 82.9 85.8 90.0 58.8 NCL ‡ [21] 49.5 54.2 58.2 63.8 82.2 85.5 87.3 91.1 60.5 BalPoE ‡ [1] - 55.9 60.1 68.1 - 86.8 88.5 91.9 61.6 MDCS ‡ [47] - 56.1 60.1 - - 87.2 88.3 - 60.2 ECL ‡ [39] 51.4 56.3 59.9 67.3 83.6 86.5 88.9 91.8 61.7 PRL [49] - 52.8 57.3 65.6 - - - - 60.7 NCL++ ‡ [33] - 56.3 59.8 - - 87.2 88.8 - 60.9 ICL ‡ [4] - 57.6 61.3 69.3 - 87.9 89.7 91.9 60.2 
+
+Ours ‡ 55.3 59.7 63.9 71.6 86.7 90.0 91.9 94.5 62.9 Table 1: Top-1 accuracy on CIFAR-LT using ResNet-32 as backbone and on ImageNet-LT using ResNeXt-50 as backbone. We report the results of 400 and 200 epochs for CIFAR-LT and ImageNet-LT, respectively. ‡ denotes models trained with strong aug-mentation [8]. The best result is shown in bold, and the second-best result is underlined. 
+
+4.3 Training and Inference Training The overall training objective comprises three components: cross-entropy loss Lmce of original views v1 and v2, self-consistency distillation Lmsd 
+
+of ev, and ensemble distillation loss of Lmens of vs. Finally, the loss is as follows: 
+
+L =
+
+> M
+
+X
+
+> m=1
+
+(Lmce + ηLmens + βLmsd ) , (9) where η and β are two hyperparameters to control the distillation strength, respectively. Note that each expert is trained with a uniform-aware objective to produce class-balanced predictions. 
+
+Inference The online network’s exposure to the interpolated samples degrades the precision of its Batch Normalization statistics. Consequently, we only keep the target network during the inference phase to produce high-quality predic-tions, and the online network is discarded. 
+
+## 5 Experiments 
+
+To validate the efficacy of our proposed VICAL, we conduct comprehensive experiments on long-tailed CIFAR-10 [3], long-tailed CIFAR-100 [3], ImageNet-LT [23], and iNaturalist 2018 [35]. Details of these datasets and extended exper-iments are available in the Supplementary Material. 10 Zhu et al. Method Many Med Few All 100 epochs RIDE [36] 70.9 72.4 73.1 72.6 ACE [2] - - - 72.9 BalPoE [1] 73.2 75.5 74.7 75.0 BalPoE ‡ [1] - - - 73.5 MDCS ‡ [47] 71.8 73.1 72.4 72.5                                                                           
+
+> Ours ‡74.3 77.3 76.2 76.6
+> 200 epochs TS-MOF [48] 72.8 73.6 70.5 72.3 ResLT [7] 73.0 72.6 73.1 72.9 ML [26] ---74.9 NCL++ ‡[33] 72.2 75.3 75.7 75.2 SHIKE ‡[16] ---75.4 ICL ‡[4] 74.9 75.9 76.1 75.9
+> Ours ‡75.5 78.1 77.3 77.5 Table 2: Top-1 accuracy on iNatural-ist 2018 using ResNet-50 as backbone. We report the results of 100 epochs and 200 epochs, respectively. ‡denotes models trained with RandAugment [6]. ME SC DED CKF Top-1 Acc. Eq. 6 Eq. 7 Eq. 8
+> ✓55.6
+> ✓✓57.8
+> ✓✓✓58.6
+> ✓✓✓✓59.1
+> Table 3: Ablation study on CIFAR-100-LT training for 250 epochs. ME: multi-expert model. SC: Self-Consistency Learn-ing. DED: Deep Ensemble Distillation. CKF: Conflicting Knowledge Filter. Methods Top-1 Acc. full-resolution 58.1 + high-pass 58.1 + low-pass 58.6 low-resolution 59.1
+> Table 4: Ablation study of applying spa-tial frequency filters (high-pass vs. low-pass) to the full-resolution input images for DED on CIFAR-100-LT.
+
+5.1 Experimental Settings Evaluation Protocol We follow the standard evaluation protocol [3, 8, 50, 51] and validate the top-1 accuracy for all categories on the corresponding bal-anced test set. Following common practice [17], we split the classes into three groups, i.e. , many-shot ( >100 images), medium-shot (20 ∼100 images), and few-shot ( <20 images), and report the respective accuracy of each group. 
+
+Implementation Details We implement our approach with PyTorch [27] and employ the SGD optimizer with a momentum of 0.9 by default. The models are trained for 400, 200, and 100/200 epochs, and the batch size is set to 64, 256, and 512 for CIFAR-LT, ImageNet-LT, and iNaturalist 2018, respectively. For network architecture and data augmentation strategy, we mainly follow [1,47]. The initial learning rate is 0.2 for iNaturalist 2018 and 0.1 for the other datasets. The learning rate follows a cosine annealing schedule for ImageNet-LT and iNaturalist 2018, and is multiplied by 0.1 at epochs 320 and 360 for CIFAR-LT. We set α
+
+to 1.0, η to 0.8, and β to 1.0 for all experiments. The momentum coefficient of the target network is set to 0.99 by default. The resolution of the low-resolution view is set to 16 ×16 for CIFAR-LT and 96 ×96 for the large-scale datasets. More details can be found in the Supplementary Material. VICAL 11                                                   
+
+> Methods Multi-Expert Intra-Expert Stabilization Inter-Expert Alignment Objective Decoupling Distillation Gate
+> PCL [18] ×Predictive Consistency ×××
+> GLMC [11] ×Inter-Class Mixup ×××
+> LTRL [46] ×Reflective Learning ×××
+> RIDE [36] ✓×Explicit Divergence ××
+> BalPoE [1] ✓Inter-class Mixup Explicit Divergence ××
+> MDCS [47] ✓Vanilla Self-Distillation Explicit Divergence ×Confident Sampling NCL++ [33] ✓Vanilla Self-Distillation Full-Resolution Mimicry ××(Unconditional) ICL [4] ✓×Full-Resolution Mimicry ××(Unconditional)
+> VICAL (Ours) ✓Vicinal Interpolation Low-Resolution Semantic Resolution Asymmetry CKF
+
+Table 5: Mechanism comparisons of VICAL against existing consistency-driven and multi-expert methods. Unlike prior approaches that rely on explicit divergence or cou-pled full-resolution distillation, VICAL decouples intra-expert local smoothing from inter-expert global semantic agreement, which avoids optimization conflicts. 0.2 0.4 0.6 0.8 1.0 1.2 
+
+> 57.0 57.5 58.0 58.5 59.0 59.5
+> Top-1 Acc.
+> Target Model Online Model
+
+(a) 0.6 0.8 1.0 1.2 1.4 1.6  
+
+> 57.0 57.5 58.0 58.5 59.0 59.5
+> Top-1 Acc.
+> Target Model Online Model
+
+(b) Many Med Few 020 40 60 80  
+
+> Percentage (%)
+> 88.7 11.0 0.3 74.5 23.5 2.0
+> Teacher Pred. Ground-Truth
+
+(c) 
+
+Fig. 4: Ablation study of the hyperparameters (a) η and (b) β on CIFAR-100-LT (IF=100). We report the best results achieved by the online and target models. (c) By the terminal training phase, the histogram of the conflicting knowledge set Dc.
+
+5.2 Main Results Comparison with state-of-the-art We compare VICAL with previous state-of-the-art methods such as NCL++ [33], MDCS [47] and BalPoE [1]. BalPoE serves as a representative baseline that integrates Mixup during training. Tab. 1 lists the results on CIFAR-LT and ImageNet-LT, and Tab. 2 shows the compar-ison on iNaturalist 2018. Our VICAL framework consistently achieves state-of-the-art performance across all datasets. Tab. 5 lists the core mechanism differ-ences of VICAL against existing consistency-driven and multi-expert approaches. Compared to NCL++ [33] and MDCS [47], which employ full-resolution views for distillation, VICAL achieves substantial improvement, validating the efficacy of our vicinal consistency alignment. 
+
+Component Analysis Tab. 3 presents the ablation study of all components of our VICAL on CIFAR-100-LT. The baseline achieves 55.6 % top-1 accuracy. Each module provides a substantial improvement, indicating that the components are complementary: SC aligns predictions within each expert, while DED achieves low-frequency semantic agreement across experts. 
+
+Effect of Hyperparameters Fig. 4a and Fig. 4b present the ablation studies of hyperparameters η and β. The target model achieves the best accuracy at 12 Zhu et al. Baseline VICAL   
+
+> 0.3 0.4 0.5 0.6 0.7 Error Rate
+> (a) Baseline VICAL
+> 0.65 0.70 0.75 0.80 0.85 Error Rate (b)
+
+Fig. 5: Model sensitivity to additive noise aligned with different Fourier basis vectors on the CIFAR-100-LT validation set: (a) Head and (b) Tail . The center represents 
+
+low-frequency , while the edges represent high-frequency . For head classes, VICAL is slightly more sensitive to extreme high-frequency noise. In contrast, VICAL substan-tially improves tail class robustness in the low-frequency region. 
+
+pT pS Ratio(%) Many Med Few All - - - 74.3 59.1 36.6 57.7 All All 100 74.8 59.8 38.4 58.6 Correct - 73 74.6 59.8 37.9 58.4 Wrong Wrong 25 73.6 59.3 38.4 58.0 Wrong Correct 2 67.7 55.1 34.2 53.2 Ours Ours 98 75.5 60.1 38.7 59.1 
+
+Table 6: We compare the results of several Conflicting Knowledge Filters on the CIFAR-100-LT (IF=100). The baseline is VICAL w/o DED. The Ratio denotes the percentage of samples used for DED throughout the training. 
+
+η = 0 .8 while the online network peaks at η = 0 .6. Similarly, the optimal value of β for the target model is 1. The superior performance of the target model is attributed to its clean inputs. In contrast, exposure to corrupted samples introduces noise into the online network and degrades its Batch Normalization statistics. Consequently, we use the target network during inference. 
+
+5.3 Further Analysis Frequency-based Analysis Fig. 2c shows the results when using views at different resolutions for DED. Tab. 4 further shows the results of applying dif-ferent filters, which confirms that discarding unstable high-frequency patterns effectively mitigates cross-expert knowledge conflicts. To validate our frequency-decoupled mechanism, Fig. 5 visualizes the model’s error rate on the CIFAR-100-LT validation set against Fourier basis noise, following [40]. VICAL signifi-cantly expands the low-frequency robustness region for tail classes, while increas-ing sensitivity to extreme high-frequency noise for head classes. This asymmet-ric shift demonstrates that VICAL restricts the exploitation of unstable high-frequency shortcuts, compelling the model to establish robust dependencies on low-frequency structures. VICAL 13 Method All Many Med Few Acc. Bias Var Acc. Bias Var Acc. Bias Var Acc. Bias Var CE 31.6 0.60 0.47 57.3 0.28 0.35 28.2 0.61 0.51 6.3 0.94 0.57 RIDE [36] 40.5 0.50 0.42 60.5 0.28 0.30 38.7 0.50 0.44 20.1 0.74 0.52 MDCS [47] 46.1 - 0.36 - - 0.24 - - 0.38 - - 0.46 MDCS † 48.2 0.43 0.37 68.9 0.22 0.24 55.1 0.34 0.34 30.4 0.63 0.48                                                          
+
+> λ=2 49.9 0.42 0.35 74.6 0.16 0.19 57.0 0.33 0.31 29.3 0.65 0.48
+> λ=0 49.9 0.42 0.35 74.4 0.17 0.20 56.8 0.32 0.32 29.5 0.65 0.48
+> +Mixup [43] 49.7 0.41 0.36 69.4 0.22 0.23 56.1 0.34 0.32 32.7 0.59 0.47
+> +AugMix [14] 49.3 0.42 0.36 71.7 0.19 0.22 55.7 0.33 0.32 30.7 0.62 0.48
+> Ours 52.3 0.39 0.33 73.6 0.18 0.19 59.3 0.31 0.29 33.9 0.59 0.45 Table 7: Comparisons of the mean accuracy, bias, and variance of baselines and our proposed method on CIFAR-100-LT (IF=100), following the previous setup [36, 47]. †
+> represents our reproduced results using the official code on the specified datasets for a fair comparison. λ= 0 refers to our proposed method without SC and DED.
+
+Identifying Conflicting Knowledge We provide Tab. 6 to identify which teacher-student prediction pairs create conflicts. Specifically, we divide the sam-ples into several groups based on whether the teachers’ and students’ predictions are correct. Although samples where the teacher is incorrect and the student is correct account for only 2 %, they can cause a significant performance drop and must be removed. In Fig. 4c, we provide the histogram of the conflicting knowl-edge set Dc. During the terminal training phase, for misclassified samples from difficult head classes, the ensemble consensus tends to predict them as another head class. CKF safeguards valuable individual expert knowledge from being compromised by uncertain consensus. 
+
+Heatmaps of Entropy Profiles To validate the efficacy of SC in improving consistency and reducing prediction uncertainty, we present heatmaps to show how the entropy of interpolated samples on the test dataset varies with respect to 
+
+γ in Fig. 6. Specifically, we train three ResNet-32 networks independently using Balanced Softmax [29] (BS) loss, BS jointly with vanilla SD, and BS jointly with our SC module on CIFAR-100-LT. The entropy of tail samples on the test set is typically higher than that of head samples. SC significantly reduces the uncertainty and induces a smoother entropy profile, especially for tail classes. 
+
+Model Bias and Variance We aim to enhance model robustness and reduce variance through the proposed VICAL. To validate the effectiveness, we follow the prior setup [36, 47] and train 20 independent models on subsets of CIFAR-100-LT. Tab. 7 shows the comparison results. Increasing λ enhances output di-versity as shown in Fig. 1, yet yields no corresponding improvement in model bias or variance. Mixup [43] and AugMix [14] enhance model robustness by inter-polating inputs across different classes and combining multiple random pertur-bations into a single input, respectively. Although Mixup and AugMix effectively mitigate bias in tail classes, this advantage comes at the cost of significant per-14 Zhu et al. 1234                   
+
+> Entropy
+> Baseline Vanilla SD Ours
+> 0.0 0.2 0.4 0.6 0.8 1.0
+> 1234
+> Entropy
+> 0.0 0.2 0.4 0.6 0.8 1.0 0.0 0.2 0.4 0.6 0.8 1.0 050 100 150 200 250 300 350 Sample Count
+
+Fig. 6: Heatmaps of the entropy profiles as a function of the interpolation factor γ ∈
+
+[0,1] between two full-resolution views v1 and v2 on the CIFAR-100-LT test set with a single expert. Head samples ( Top ) are more susceptible to γ, whereas tail samples (Bottom ) have higher entropy overall. SC reduces the entropy of interpolated samples, particularly for tail classes. 
+
+formance degradation in the head. In contrast, VICAL not only reduces variance and bias on tail classes but also preserves the head’s performance, demonstrating its superior regularization effect on long-tailed learning. 
+
+## 6 Conclusion 
+
+In this paper, we critically re-evaluate the prevailing hypothesis in long-tailed learning that assumes a positive correlation between model diversity and ensem-ble accuracy. We unveil that diversity induced by logit adjustment or explicit regularizers does not universally guarantee better ensemble accuracy. Motivated by these findings, we introduce Vicinal Consistency Alignment (VICAL), a novel framework that shifts the focus from explicit diversity constraints to implicit variance reduction. By penalizing reliance on unstable high-frequency patterns and enforcing low-frequency semantic agreement, VICAL improves the stabil-ity within each expert and sidesteps optimization conflicts through views at asymmetric resolutions. Extensive experiments show that VICAL consistently achieves state-of-the-art performance across benchmarks. More importantly, it effectively reduces both variance and bias, particularly for tail classes. Our work demonstrates that vicinal consistency alignment offers a powerful alternative for improving generalization in long-tailed recognition. VICAL 15 
+
+## Acknowledgements 
+
+This project was supported by the National Natural Science Foundation of China (NSFC) Projects under Grants No. 62522206 and No. 62521004. VICAL: Vicinal Consistency Alignment for Long-Tailed Visual Recognition 
+
+Supplementary Material 
+
+## 1 Datasets and Training Details 
+
+1.1 Datasets Long-tailed CIFAR We conduct experiments on CIFAR-10-LT and CIFAR-100-LT [3], the long-tailed variants of CIFAR-10 and CIFAR-100 [19], contain-ing 10 and 100 classes, respectively. Following common practice [3, 9, 50], we adopt standard long-tailed splits for fair comparison. The imbalance factor is 
+
+Nmax /N min and reflects the degree of imbalance in the data. The imbalance factors used in our experiments are 200, 100, 50, and 10. 
+
+ImageNet-LT ImageNet-LT [23] is a long-tailed version of the original Ima-geNet dataset, constructed by sampling a subset according to a Pareto distribu-tion with power value α = 6 . The resulting dataset contains 115.8K images from 1000 categories, with 1280 to 5 images per class. 
+
+iNaturalist 2018 The iNaturalist 2018 dataset [35] is a large-scale, real-world fine-grained benchmark with a natural long-tailed distribution. It consists of 437.5K images across 8,142 categories, exhibiting a high imbalance factor of 500. This dataset presents dual challenges of severe class imbalance and fine-grained visual recognition. 
+
+1.2 Training Details Backbone For CIFAR-LT, we follow [1] and use ResNet-32 [13] as the backbone, which shares the first block across experts and does not reduce the expert’s chan-nel dimension. We find it is necessary to achieve high performance on CIFAR-LT, and we reproduce BalPoE [1] and MDCS [47] using the same backbone for fair comparison. For ImageNet-LT and iNaturalist 2018, we utilize ResNeXt-50 [38] and ResNet-50 as the backbones. The first two shallow blocks serve as a shared net, and the deeper blocks form the expert-specific branches. The channel di-mension is reduced by 1/4, following common practice [26, 36, 45, 47]. Note that BalPoE does not adopt the channel-reduction architecture and consequently has more trainable parameters (See Tab. 3). We implement our method on CIFAR-LT, ImageNet-LT, and iNaturalist 2018 using 1, 4, and 8 NVIDIA RTX 3090 GPUs, respectively. 
+
+Data Augmentation For data augmentation, we mainly follow [8, 47, 51] to implement strong augmentation, i.e. , AutoAugment [5] for CIFAR-LT and Ran-dAugment [6] for large-scale datasets. The views v1 and v2 are generated by inde-pendently applying strong augmentation twice. The low-resolution view under-goes the same augmentation pipeline, varying only in spatial resolution, 16 ×16 for CIFAR-LT and 96 ×96 for large-scale datasets. VICAL 17 0.81 0.83 0.85 0.88 0.90 0.92           
+
+> Q-Statistics
+> 54.9 55.2 55.4 55.7 55.9 56.2
+> Top-1 Acc.
+> =0.6
+> =0.4
+> =0.2
+> =-0.0
+> =-0.2
+> =-0.4
+> =-0.6
+> 0.62 0.67 0.71 0.75 0.80 0.84
+> Correlation
+> 64.7 65.0 65.3 65.5 65.8 66.1
+> Diversity Acc.
+
+Fig. 1: We use three different diversity metrics, i.e. , Q-statistics, Correlation, and Di-versity accuracy, to measure the relationship between model diversity and ensemble accuracy on CIFAR-100-LT with an explicit diversity regularizer . Each point rep-resents an independently trained multi-expert model. κ controls the explicit diversity regularizer intensities. A larger κ value encourages each expert to align with the en-semble prediction p, while a negative κ forces predictions to diverge from this ensemble consensus. Ensemble accuracy shows a positive correlation with both Q-statistics and the correlation coefficient ρ. (The Pearson correlation coefficients are 0.76 , 0.76 , and 
+
+−0.31 for Q-statistics, Correlation, and Diversity accuracy.) 
+
+## 2 Experimental Setup of Section 3 
+
+2.1 Diversity Measures 
+
+In this paper, we employ two commonly used pairwise metrics, i.e. , Q-statistics [41] and correlation coefficient ρ, to measure the diversity of multi-expert models. 
+
+Q-statistic The Q-statistic quantifies the correlation between two classifiers in terms of classification predictions, ranging from [−1, 1] . Let N 11 (N 00 ) represent the number of samples that can be recognized by both classifiers correctly (incor-rectly). Similarly, N 10 and N 01 are defined as the number of samples recognized correctly by only one of the classifiers and incorrectly by the other classifier. The Q-statistic value of classifiers i and j can be calculated as follows: 
+
+Qij = N 11 N 00 − N 01 N 10 
+
+N 11 N 00 + N 01 N 10 . (1) The overall Q-statistic is the average of the Q-statistic value over all pairs of classifiers, i.e. ,
+
+Q = 1
+
+K(K − 1) 
+
+> K
+
+X
+
+> iK
+
+X 
+
+> j̸=i
+
+Qij , (2) where K is the number of classifiers and equals the number of experts M in our setting. For independent classifiers, the expectation of Q is 0. A positive Q-statistic indicates that the classifiers tend to be correct or incorrect on the same samples, whereas a negative value indicates that one classifier tends to be correct when the other is incorrect [20]. 18 Supplementary Material −0.6 −0.4 −0.2 0.0 0.2 0.4 0.6     
+
+> κ
+> 55.0 55.2 55.4 55.6 55.8 56.0 56.2
+> Ens. Acc.
+> Ensemble Individual 47 48 49 50 51 52 53
+> Ind. Acc.
+> (a) Baseline w/o SC w/o DED VICAL 0.00 0.25 0.50 0.75 1.00 1.25 1.50 1.75
+> Variance
+> 1.85 1.49 1.31 1.21 (b)
+
+Fig. 2: (a) Ensemble accuracy and mean individual expert accuracy across different 
+
+κ. A large positive κ yields better individual accuracy, thereby leading to an improved ensemble performance. (b) Inter-expert logit variance on the CIFAR-100-LT test set. We compute the variance of logits across experts. Lower values indicate stronger cross-expert consistency. 
+
+Correlation Coefficient We also use the Pearson correlation coefficient ρ to quantify the dependency of two classifiers i and j. Specifically, for each class 
+
+k ∈ { 1, . . . , C }, we calculate the Pearson correlation between the two classifiers’ predicted probability vectors across all test samples. The ρij is obtained by averaging these class-wise coefficients of classifiers i and j,
+
+ρij = 1
+
+C
+
+> C
+
+X
+
+> k=1
+
+P earson (P i
+
+> :,k
+
+, P j
+
+> :,k
+
+), (3) where P i and P j are probability matrices of two classifiers i and j, respectively. The overall correlation coefficient ρ is averaged over all classifier pairs. 
+
+Diversity Factor In addition to pairwise measures, we also employ the diversity factor [47] as an auxiliary metric, which is a kind of accuracy and is calculated as follows: 
+
+σ =
+
+SMm=1 Sm
+
+|Du| , Sm =
+
+n
+
+i | arg max  
+
+> c
+
+pmc (xi) = yi, (xi, y i) ∈ Du
+
+o
+
+, (4) where Sm is the set of all correctly recognized samples in the uniform test set 
+
+Du by the m-th expert. The diversity factor σ equals the top-1 accuracy when all experts’ outputs are identical, and attains its maximum when every sample is correctly classified by at least one expert. 
+
+2.2 Explicit Diversity Regularizer 
+
+In addition to varying logit adjustment intensities, we also provide a standard explicit constraint used in RIDE [36] to enforce diversity among experts directly. VICAL 19        
+
+> (a) 00.25 0.5 0.75 1.0 1.25 1.5
+> 58.2 58.4 58.6 58.8 59.0
+> Top-1 Acc. (b)
+
+Fig. 3: Ablations of (a) the teacher logit aggregation weight φ and (b) the Beta-distribution parameter α on CIFAR-100-LT (IF=100). 
+
+Let pm denote the m-th expert’s prediction probability. The diversity can be achieved by 
+
+Ldiv = κ
+
+> M
+
+X
+
+> m=1
+
+KL (p|| pm), (5) where p refers to the ensemble prediction probability and κ is the hyperparam-eter that controls explicit diversity intensity. A large positive κ encourages each expert to align with the ensemble consensus p, while a negative κ enforces di-vergence from this ensemble prediction. We jointly optimize the model using the diversity loss alongside Balanced Softmax loss [29] for each expert. RIDE [36] aims to achieve better performance via a negative κ; however, our experiments unveil an unexpected result. As shown in Fig. 1, a negative value of κ leads to lower Q-statistics and correlation coefficient ρ, indicating in-creased prediction diversity but at the cost of degraded ensemble performance. Furthermore, ensemble accuracy exhibits a slight negative correlation with di-versity accuracy σ. We hypothesize that enforcing diversity via an explicit regu-larizer inadvertently damages the learned representation quality of each expert. Conversely, positive κs enable each expert to reduce diversity while benefiting from ensemble consensus, thereby improving overall performance. Fig. 2a con-firms our hypothesis: a large positive κ yields superior individual experts. At 
+
+κ = −0.6, ensemble accuracy incurs only marginal degradation while individ-ual expert performance suffers substantial deterioration. In summary, explicit diversity enforcement proves suboptimal, motivating our shift to a consistency alignment framework. 20 Supplementary Material 
+
+## 3 Extended Experiments 
+
+Inter-Expert Variance Analysis We directly measure the variance among expert logits on CIFAR-100-LT, as shown in Fig. 2b. The baseline exhibits the highest variance of 1.85. Introducing DED and SC reduces it to 1.49 and 1.31, re-spectively. The complete VICAL framework achieves the lowest variance of 1.21. These results confirm that both components improve cross-expert consistency and jointly provide the strongest variance reduction. 
+
+Effect of SC Hyperparameters We first vary the aggregation weight in 
+
+¯zm = φz mv1 + (1 − φ)zmv2 to form the mixed teacher target. As shown in Fig. 3a, equal averaging ( φ = 0 .5) minimizes the loss for both head and tail classes, whereas extrapolative weights outside  [0 , 1]  increase the loss. Fig. 3b shows that performance is stable for α ∈ [0 .25 , 1.0] . We use α = 1 .0 in all experiments. 
+
+Effect of SC on Individual Experts We further validate our proposed Self-Consistency Learning module on a single expert. We compare several self-distillation variants using the same backbone and strong data augmentation strategy. As listed in Tab. 2, our proposed SC achieves the best results among these consis-tency alignment approaches. 
+
+Effect of the Number of Experts The VICAL framework demonstrates inher-ent scalability without additional hyperparameter tuning. Fig. 4 illustrates the performance of VICAL compared to NCL++ [33] on CIFAR-100-LT (IF=100) under varying numbers of experts. Our framework consistently outperforms NCL++ across all expert configurations and exhibits superior prediction sta-bility in the head and medium classes. 
+
+Computation Cost The VICAL framework is a multi-expert model with mul-tiple views as input, which inevitably incurs additional computation cost. For a fair comparison, we assess the performance of VICAL against NCL++ [33] and MDCS [47] at an equivalent computation cost. Specifically, we quantify the forward FLOPs for the online network per sample with multiple views as input. Tab. 1 demonstrates that VICAL consistently surpasses MDCS and NCL++ under equivalent computation cost, demonstrating the efficacy of our consistency-driven approach. We further compare model parameters and corre-sponding performance on ImageNet-LT. As shown in Tab. 3, BalPoE [1] and NCL++ [33] partly benefit from having more trainable parameters, whereas our method achieves significant gains under comparable model capacity. 
+
+Results on Multiple Test Distributions Following the previous setup [1, 45], we compare model generalization under multiple test distributions. Tab. 4 and Tab. 5 report the compared results on CIFAR-100-LT and ImageNet-LT, respectively. Our proposed VICAL surpasses other methods across different test distributions by a large margin, demonstrating the benefits of vicinal consistency alignment. 
+
+Visualization Results VICAL processes both full and low-resolution views: the low-resolution view ensures semantic consistency (consistent label), while the full-resolution view preserves the experts’ ability to capture diverse details. We use Grad-CAM [31] to visualize each expert’s capability of capturing different patterns, as shown in Fig. 5. VICAL 21 Method Many Med Few All MFLOPs ×Epochs MDCS - - - 56.1 204 ×400 MDCS † 74.8 59.0 34.5 57.1 321 ×400 NCL++ 70.8 55.5 40.7 56.3 561 ×400 Ours 73.4 59.2 37.4 57.6 522 ×155 Ours 75.5 60.1 38.7 59.1 522 ×250 Ours 76.0 61.7 39.2 59.7 522 ×400 
+
+Table 1: Computation cost on CIFAR-100-LT (IF=100). † refers to our reproduced results. We compare the performance of our method against MDCS and NCL++ at an equivalent computation cost. The same color indicates comparable compu-tation cost. Methods Top-1 Acc. BS 50.6 Vanilla SD 51.7 MDCS † [47] 51.6 NCL++ † [33] 53.1 SC 53.6 
+
+Table 2: Ablation study of variants of self-distillation with a single expert on CIFAR-100-LT training for 200 epochs. BS: Balanced Softmax. † refers to our reproduced results using asingle expert with intra-expert distillation. 2 3 4 5 6 7               
+
+> Number of experts
+> 56 57 58 59 60 61
+> Top-1 Acc.
+> All
+> Ours NCL++ 234567
+> Number of experts
+> 70.0 71.5 73.0 74.5 76.0 77.5
+> Top-1 Acc.
+> Many
+> Ours NCL++ 234567
+> Number of experts
+> 54.5 56.2 57.9 59.6 61.3 63.0
+> Top-1 Acc.
+> Med
+> Ours NCL++ 234567
+> Number of experts
+> 37.5 38.5 39.5 40.5 41.5 42.5
+> Top-1 Acc.
+> Few
+> Ours NCL++
+
+Fig. 4: Comparisons of our method and NCL++ on CIFAR-100-LT (IF=100) with different numbers of experts. While NCL++ achieves superior accuracy in the tail classes, this is accompanied by a high cost in many and medium-shot performance. 22 Supplementary Material 
+
+Fig. 5: Grad-CAM visualizations for three experts on iNaturalist 2018. Method Params Many Med Few All BalPoE [1] 66.1M 68.2 57.2 44.9 59.8 BalPoE ‡ [1] 66.1M - - - 61.6 NCL++ ‡ [33] 50.1M - - - 60.9 RIDE [36] 38.3M 67.6 53.5 35.9 56.4 SADE [45] 38.3M 66.5 57.0 43.5 58.8 ML [26] 38.3M 70.2 56.7 39.1 59.5 MDCS ‡ [47] 38.3M - - - 60.2 
+
+Ours ‡ 38.3M 72.8 60.8 42.6 62.9 Table 3: Top-1 accuracy on ImageNet-LT using ResNeXt-50 as backbone. We report the results of 200 epochs and the trainable parameters of all compared multi-expert models. ‡ denotes models trained with RandAugment [6]. VICAL 23 Method Prior Forward-LT Uni. Backward-LT 50 25 10 5 2 1 2 5 10 25 50 LADE × 56.0 55.5 52.8 51.0 48.0 45.6 43.2 40.0 38.3 35.5 34.0 RIDE × 63.0 59.9 57.0 53.6 49.4 48.0 42.5 38.1 35.4 31.6 29.2 SADE × 58.4 57.0 54.4 53.1 50.1 49.4 45.2 42.6 39.7 36.7 35.0 BalPoE × 65.1 63.1 60.8 58.4 54.8 52.0 48.6 44.6 41.8 38.0 36.1 BalPoE † × 71.4 69.4 66.1 63.6 59.7 56.4 53.0 49.0 46.2 41.9 39.5 MDCS † × 71.8 69.5 66.7 64.4 60.2 57.1 53.4 49.3 46.2 41.8 40.3 
+
+Ours × 73.3 71.6 69.1 66.4 62.5 59.7 56.2 52.6 49.7 45.4 43.6 
+
+LADE ✓ 62.6 60.2 55.6 52.7 48.2 45.6 43.8 41.1 41.5 40.7 41.6 BalPoE ✓ 70.3 66.8 62.7 59.3 54.8 52.0 49.2 46.9 46.2 45.4 46.1 BalPoE † ✓ 74.1 71.1 67.1 64.0 59.5 56.4 53.7 51.4 50.7 49.7 50.8 MDCS † ✓ 75.3 72.1 68.0 64.8 59.8 57.1 54.4 52.1 51.2 50.7 51.4 
+
+Ours ✓ 75.8 72.7 69.3 66.0 62.3 59.7 56.8 55.4 54.7 54.3 55.6 Table 4: Top-1 accuracy on multiple test distributions for ResNet-32 trained on CIFAR-100-LT (IF=100). Prior denotes whether the test set prior is used. † refers to our reproduced results, and other results are from [1]. Method Prior Forward-LT Uni. Backward-LT 50 25 10 5 2 1 2 5 10 25 50 LADE × 63.4 62.1 59.9 57.4 54.6 52.3 49.9 46.8 44.9 42.7 40.7 RIDE × 67.6 66.3 64.0 61.7 58.9 56.3 54.0 51.0 48.7 46.2 44.0 SADE × 65.5 64.4 63.6 62.0 60.0 58.8 56.8 54.7 53.1 51.1 49.8 BalPoE × 67.6 66.3 65.2 63.3 61.5 59.8 58.1 55.7 54.3 52.2 50.8 
+
+Ours × 72.1 70.9 69.3 67.3 65.0 62.9 60.7 57.7 55.8 53.3 51.3 
+
+LADE ✓ 65.8 63.8 60.6 57.5 54.5 52.3 50.4 48.8 48.6 49.0 49.2 SADE ∗ 69.4 67.4 65.4 63.0 60.6 58.8 57.1 55.5 54.5 53.7 53.1 BalPoE ✓ 72.5 70.2 67.3 64.6 61.8 59.8 58.3 57.2 56.6 56.6 56.9 
+
+Ours ✓ 74.7 72.8 70.1 67.3 64.8 62.9 61.4 60.0 60.0 59.8 59.7 Table 5: Top-1 accuracy on multiple test distributions for ResNeXt-50 trained on ImageNet-LT. Prior denotes whether the test set prior is used, and ∗ refers to implicit test prior estimation. 24 Supplementary Material 
+
+## 4 Broader Impact and Limitations 
+
+Our proposed VICAL demonstrates its superiority in imbalanced classification, suggesting its potential for fairness and reliability of vision systems in criti-cal applications. VICAL can also be directly applied to semi-supervised visual recognition tasks without requiring complex modifications. The framework’s em-phasis on stability and variance reduction may also contribute to more robust and trustworthy AI systems in real-world deployments. Despite remarkable efficacy, our VICAL framework has several limitations that suggest valuable future directions. The multi-expert architecture with vic-inal views increases training time compared to single-model baselines, although inference cost remains comparable. Moreover, the precise theoretical relation-ship between consistency learning and variance reduction in long-tailed settings deserves further formal analysis. 
+
+## References 
+
+1. Aimar, E.S., Jonnarth, A., Felsberg, M., Kuhlmann, M.: Balanced product of cali-brated experts for long-tailed recognition. In: Proceedings of the IEEE/CVF con-ference on computer vision and pattern recognition. pp. 19967–19977 (2023) 2. Cai, J., Wang, Y., Hwang, J.N.: Ace: Ally complementary experts for solving long-tailed recognition in one-shot. In: Proceedings of the IEEE/CVF international conference on computer vision. pp. 112–121 (2021) 3. Cao, K., Wei, C., Gaidon, A., Arechiga, N., Ma, T.: Learning imbalanced datasets with label-distribution-aware margin loss. Advances in neural information process-ing systems 32 (2019) 4. Chen, Y., Jian, Z., Ke, N., Hu, S., Jiao, J., Hong, Q., Wu, Q.: Enhancing mixture of experts with independent and collaborative learning for long-tail visual recognition. In: Proceedings of the Thirty-Fourth International Joint Conference on Artificial Intelligence. pp. 828–836 (2025) 5. Cubuk, E.D., Zoph, B., Mane, D., Vasudevan, V., Le, Q.V.: Autoaugment: Learning augmentation policies from data. arXiv preprint arXiv:1805.09501 (2018) 6. Cubuk, E.D., Zoph, B., Shlens, J., Le, Q.V.: Randaugment: Practical automated data augmentation with a reduced search space. In: Proceedings of the IEEE/CVF conference on computer vision and pattern recognition workshops. pp. 702–703 (2020) 7. Cui, J., Liu, S., Tian, Z., Zhong, Z., Jia, J.: Reslt: Residual learning for long-tailed recognition. IEEE transactions on pattern analysis and machine intelligence 45 (3), 3695–3706 (2022) 8. Cui, J., Zhong, Z., Liu, S., Yu, B., Jia, J.: Parametric contrastive learning. In: Proceedings of the IEEE/CVF international conference on computer vision. pp. 715–724 (2021) 9. Cui, Y., Jia, M., Lin, T.Y., Song, Y., Belongie, S.: Class-balanced loss based on effective number of samples. In: Proceedings of the IEEE/CVF conference on com-puter vision and pattern recognition. pp. 9268–9277 (2019) 10. Du, C., Wang, Y., Song, S., Huang, G.: Probabilistic contrastive learning for long-tailed visual recognition. IEEE Transactions on Pattern Analysis and Machine Intelligence 46 (9), 5890–5904 (2024) VICAL 25 11. Du, F., Yang, P., Jia, Q., Nan, F., Chen, X., Yang, Y.: Global and local mixture consistency cumulative learning for long-tailed visual recognitions. In: Proceedings of the IEEE/CVF conference on computer vision and pattern recognition. pp. 15814–15823 (2023) 12. Furlanello, T., Lipton, Z., Tschannen, M., Itti, L., Anandkumar, A.: Born again neural networks. In: International conference on machine learning. pp. 1607–1616. PMLR (2018) 13. He, K., Zhang, X., Ren, S., Sun, J.: Deep residual learning for image recognition. In: Proceedings of the IEEE conference on computer vision and pattern recognition. pp. 770–778 (2016) 14. Hendrycks, D., Mu, N., Cubuk, E.D., Zoph, B., Gilmer, J., Lakshminarayanan, B.: Augmix: A simple data processing method to improve robustness and uncertainty. arXiv preprint arXiv:1912.02781 (2019) 15. Holste, G., Zhou, Y., Wang, S., Jaiswal, A., Lin, M., Zhuge, S., Yang, Y., Kim, D., Nguyen-Mau, T.H., Tran, M.T., et al.: Towards long-tailed, multi-label disease classification from chest x-ray: Overview of the cxr-lt challenge. Medical Image Analysis 97 , 103224 (2024) 16. Jin, Y., Li, M., Lu, Y., Cheung, Y.m., Wang, H.: Long-tailed visual recognition via self-heterogeneous integration with knowledge excavation. In: Proceedings of the IEEE/CVF conference on computer vision and pattern recognition. pp. 23695– 23704 (2023) 17. Kang, B., Xie, S., Rohrbach, M., Yan, Z., Gordo, A., Feng, J., Kalantidis, Y.: Decoupling representation and classifier for long-tailed recognition. In: Eighth In-ternational Conference on Learning Representations (ICLR) (2020) 18. Kang, N., Chang, H., MA, B., Bai, S., Shan, S., Chen, X.: Predictive consistency learning for long-tailed recognition. In: 34th British Machine Vision Conference 2023, BMVC 2023, Aberdeen, UK, November 20-24, 2023. BMVA (2023) 19. Krizhevsky, A., Hinton, G., et al.: Learning multiple layers of features from tiny images (2009) 20. Kuncheva, L.I., Whitaker, C.J.: Measures of diversity in classifier ensembles and their relationship with the ensemble accuracy. Machine learning 51 , 181–207 (2003) 21. Li, J., Tan, Z., Wan, J., Lei, Z., Guo, G.: Nested collaborative learning for long-tailed visual recognition. In: Proceedings of the IEEE/CVF Conference on Com-puter Vision and Pattern Recognition. pp. 6949–6958 (2022) 22. Lin, T.Y., Maire, M., Belongie, S., Hays, J., Perona, P., Ramanan, D., Dollár, P., Zitnick, C.L.: Microsoft coco: Common objects in context. In: European conference on computer vision. pp. 740–755. Springer (2014) 23. Liu, Z., Miao, Z., Zhan, X., Wang, J., Gong, B., Yu, S.X.: Large-scale long-tailed recognition in an open world. In: Proceedings of the IEEE/CVF conference on computer vision and pattern recognition. pp. 2537–2546 (2019) 24. Ma, C., Elezi, I., Deng, J., Dong, W., Xu, C.: Three heads are better than one: Complementary experts for long-tailed semi-supervised learning. In: Proceedings of the AAAI Conference on Artificial Intelligence. vol. 38, pp. 14229–14237 (2024) 25. Menon, A.K., Jayasumana, S., Rawat, A.S., Jain, H., Veit, A., Kumar, S.: Long-tail learning via logit adjustment. arXiv preprint arXiv:2007.07314 (2020) 26. Park, C., Yim, J., Jun, E.: Mutual learning for long-tailed recognition. In: Pro-ceedings of the IEEE/CVF winter conference on applications of computer vision. pp. 2675–2684 (2023) 27. Paszke, A., Gross, S., Massa, F., Lerer, A., Bradbury, J., Chanan, G., Killeen, T., Lin, Z., Gimelshein, N., Antiga, L., et al.: Pytorch: An imperative style, high-26 Supplementary Material performance deep learning library. Advances in neural information processing sys-tems 32 (2019) 28. Peri, N., Dave, A., Ramanan, D., Kong, S.: Towards long-tailed 3d detection. In: Conference on Robot Learning. pp. 1904–1915. PMLR (2023) 29. Ren, J., Yu, C., Ma, X., Zhao, H., Yi, S., et al.: Balanced meta-softmax for long-tailed visual recognition. Advances in neural information processing systems 33 ,4175–4186 (2020) 30. Russakovsky, O., Deng, J., Su, H., Krause, J., Satheesh, S., Ma, S., Huang, Z., Karpathy, A., Khosla, A., Bernstein, M., Berg, A.C., Fei-Fei, L.: ImageNet Large Scale Visual Recognition Challenge. International Journal of Computer Vision (IJCV) 115 (3), 211–252 (2015) 31. Selvaraju, R.R., Cogswell, M., Das, A., Vedantam, R., Parikh, D., Batra, D.: Grad-cam: Visual explanations from deep networks via gradient-based localization. In: Proceedings of the IEEE international conference on computer vision. pp. 618–626 (2017) 32. Sohn, K., Berthelot, D., Carlini, N., Zhang, Z., Zhang, H., Raffel, C.A., Cubuk, E.D., Kurakin, A., Li, C.L.: Fixmatch: Simplifying semi-supervised learning with consistency and confidence. Advances in neural information processing systems 33 ,596–608 (2020) 33. Tan, Z., Li, J., Du, J., Wan, J., Lei, Z., Guo, G.: Ncl++: Nested collaborative learning for long-tailed visual recognition. Pattern Recognition 147 , 110064 (2024) 34. Tarvainen, A., Valpola, H.: Mean teachers are better role models: Weight-averaged consistency targets improve semi-supervised deep learning results. Advances in neural information processing systems 30 (2017) 35. Van Horn, G., Mac Aodha, O., Song, Y., Cui, Y., Sun, C., Shepard, A., Adam, H., Perona, P., Belongie, S.: The inaturalist species classification and detection dataset. In: Proceedings of the IEEE conference on computer vision and pattern recognition. pp. 8769–8778 (2018) 36. Wang, X., Lian, L., Miao, Z., Liu, Z., Yu, S.X.: Long-tailed recognition by routing diverse distribution-aware experts. arXiv preprint arXiv:2010.01809 (2020) 37. Wood, D., Mu, T., Webb, A.M., Reeve, H.W., Luján, M., Brown, G.: A unified the-ory of diversity in ensemble learning. Journal of machine learning research 24 (359), 1–49 (2023) 38. Xie, S., Girshick, R., Dollár, P., Tu, Z., He, K.: Aggregated residual transformations for deep neural networks. In: Proceedings of the IEEE conference on computer vision and pattern recognition. pp. 1492–1500 (2017) 39. Xu, Z., Chai, Z., Xu, C., Yuan, C., Yang, H.: Towards effective collaborative learn-ing in long-tailed recognition. IEEE Transactions on Multimedia 26 , 3754–3764 (2023) 40. Yin, D., Gontijo Lopes, R., Shlens, J., Cubuk, E.D., Gilmer, J.: A fourier per-spective on model robustness in computer vision. Advances in Neural Information Processing Systems 32 (2019) 41. Yule, G.U.: Vii. on the association of attributes in statistics: with illustrations from the material of the childhood society, &c. Philosophical Transactions of the Royal Society of London. Series A, Containing Papers of a Mathematical or Physical Character 194 (252-261), 257–319 (1900) 42. Yun, S., Han, D., Oh, S.J., Chun, S., Choe, J., Yoo, Y.: Cutmix: Regularization strategy to train strong classifiers with localizable features. In: Proceedings of the IEEE/CVF international conference on computer vision. pp. 6023–6032 (2019) 43. Zhang, H., Cisse, M., Dauphin, Y.N., Lopez-Paz, D.: mixup: Beyond empirical risk minimization. arXiv preprint arXiv:1710.09412 (2017) VICAL 27 44. Zhang, L., Song, J., Gao, A., Chen, J., Bao, C., Ma, K.: Be your own teacher: Improve the performance of convolutional neural networks via self distillation. In: Proceedings of the IEEE/CVF international conference on computer vision. pp. 3713–3722 (2019) 45. Zhang, Y., Hooi, B., Hong, L., Feng, J.: Self-supervised aggregation of diverse experts for test-agnostic long-tailed recognition. Advances in Neural Information Processing Systems 35 , 34077–34090 (2022) 46. Zhao, Q., Dai, Y., Lin, S., Hu, W., Zhang, F., Liu, J.: Ltrl: Boosting long-tail recognition via reflective learning. In: European Conference on Computer Vision. pp. 1–18. Springer (2024) 47. Zhao, Q., Jiang, C., Hu, W., Zhang, F., Liu, J.: Mdcs: More diverse experts with consistency self-distillation for long-tailed recognition. In: Proceedings of the IEEE/CVF International Conference on Computer Vision. pp. 11597–11608 (2023) 48. Zhao, Z., Gong, Z., Wang, P., Wen, H., Guo, C., Xue, B., Lin, X., Wang, Z., Zhang, Q., Wang, Y.: Ts-mof: Two-stage multi-objective fine-tuning for long-tailed recognition. In: Advances in Neural Information Processing Systems. vol. 38, pp. 5224–5252 (2025) 49. Zhao, Z., Wen, H., Wang, Z., Wang, P., Wang, F., Lai, S., Zhang, Q., Wang, Y.: Breaking long-tailed learning bottlenecks: A controllable paradigm with hypernetwork-generated diverse experts. Advances in Neural Information Process-ing Systems 37 , 7493–7520 (2024) 50. Zhou, B., Cui, Q., Wei, X.S., Chen, Z.M.: Bbn: Bilateral-branch network with cumulative learning for long-tailed visual recognition. In: Proceedings of the IEEE/CVF conference on computer vision and pattern recognition. pp. 9719–9728 (2020) 51. Zhu, J., Wang, Z., Chen, J., Chen, Y.P.P., Jiang, Y.G.: Balanced contrastive learn-ing for long-tailed visual recognition. In: Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition. pp. 6908–6917 (2022)
