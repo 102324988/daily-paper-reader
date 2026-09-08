@@ -41,17 +41,17 @@
 <section class="dpr-home-dashboard-card dpr-home-report-card">
   <div class="dpr-home-dashboard-header">
     <div>
-      <span class="dpr-home-dashboard-kicker">2026-09-07</span>
+      <span class="dpr-home-dashboard-kicker">2026-09-08</span>
       <h3 class="dpr-home-dashboard-title">今日汇总</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">共 15 篇</strong>
+    <strong class="dpr-home-dashboard-count">共 5 篇</strong>
   </div>
   <dl class="dpr-home-dashboard-stats">
     <div class="dpr-home-dashboard-stat"><dt>累计更新</dt><dd>1 次</dd></div>
-    <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>6</dd></div>
-    <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>9</dd></div>
+    <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>4</dd></div>
+    <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>1</dd></div>
   </dl>
-  <p class="dpr-home-dashboard-body">最近更新：2026-09-07 23:10:11 UTC<br>状态：成功</p>
+  <p class="dpr-home-dashboard-body">最近更新：2026-09-08 22:48:43 UTC<br>状态：成功</p>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-brief-card">
   <div class="dpr-home-dashboard-header">
@@ -62,7 +62,7 @@
     <strong class="dpr-home-dashboard-count">AI</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<p>今日共读15篇论文，精读6篇、速读9篇，重点聚焦视觉分割与三维几何识别。最值得关注的是无训练上下文分割方法FoRIS（9.0分）及CAD-free三维形状先验（9.0分），两者分别解决前景细化与外观失效时的几何补全问题。建议普通读者优先浏览这两篇精读，再按兴趣拓展至运动物体概念涌现等速读话题。</p>
+<p>今日处理5篇论文，重点精读多实体视觉检索与稀疏视觉选择两篇（均8.0分），速读跨域跟踪自适应一篇。最值得关注的是语义属性图用于多实体视觉检索，以及强化选择驱动的稀疏视觉方法。下一步可延伸探索视觉检索中的语义建模与跨域跟踪的免标注适应思路。</p>
   </div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-deep-card">
@@ -71,12 +71,12 @@
       <span class="dpr-home-dashboard-kicker">今日累计</span>
       <h3 class="dpr-home-dashboard-title">精读推荐</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">6 篇</strong>
+    <strong class="dpr-home-dashboard-count">4 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="FoRIS: Progressive Foreground Refinement for Training-Free In-Context Segmentation">FoRIS: Progressive Foreground Refinement for Training-Free In-Context Segmentation</span></li><li><span class="dpr-home-dashboard-paper-title" title="Where Appearance Fails, Geometry Recognizes: A CAD-Free 3D Shape Prior That Complements Vision Foundation Models">Where Appearance Fails, Geometry Recognizes: A CAD-Free 3D Shape Prior That Complements Vision Foundation Models</span></li><li><span class="dpr-home-dashboard-paper-title" title="FAVE: Foveated Adaptive Visual Encoding for Efficient Fine-Grained Visual Understanding">FAVE: Foveated Adaptive Visual Encoding for Efficient Fine-Grained Visual Understanding</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="SAGE: Semantic Attribute Graphs for Multi-Entity Visual Retrieval">SAGE: Semantic Attribute Graphs for Multi-Entity Visual Retrieval</span></li><li><span class="dpr-home-dashboard-paper-title" title="LookThere! Sparse Vision by Reinforced Selection">LookThere! Sparse Vision by Reinforced Selection</span></li><li><span class="dpr-home-dashboard-paper-title" title="LetOccVote: Learning Weakly Supervised 3D Occupancy through Consensus">LetOccVote: Learning Weakly Supervised 3D Occupancy through Consensus</span></li></ul>
   </div>
-  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">cv <strong>6</strong></span></div>
+  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">cv <strong>4</strong></span></div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-skim-card">
   <div class="dpr-home-dashboard-header">
@@ -84,12 +84,12 @@
       <span class="dpr-home-dashboard-kicker">今日累计</span>
       <h3 class="dpr-home-dashboard-title">速读推荐</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">9 篇</strong>
+    <strong class="dpr-home-dashboard-count">1 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Object Concepts Emerge from Motion">Object Concepts Emerge from Motion</span></li><li><span class="dpr-home-dashboard-paper-title" title="AdaptVPR: Route-Aware Hard Positive Generation for Robust Visual Place Recognition">AdaptVPR: Route-Aware Hard Positive Generation for Robust Visual Place Recognition</span></li><li><span class="dpr-home-dashboard-paper-title" title="LookThere! Sparse Vision by Reinforced Selection">LookThere! Sparse Vision by Reinforced Selection</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Cross-Domain Tracker Adaptation Without Target-Domain Labels via Vision-Language Agents">Cross-Domain Tracker Adaptation Without Target-Domain Labels via Vision-Language Agents</span></li></ul>
   </div>
-  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">cv <strong>9</strong></span></div>
+  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">cv <strong>1</strong></span></div>
 </section>
 </div>
 
