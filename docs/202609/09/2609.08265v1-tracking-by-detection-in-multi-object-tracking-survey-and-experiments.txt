@@ -1,0 +1,543 @@
+Title: Tracking-by-detection in Multi-object Tracking: Survey and Experiments
+
+URL Source: https://arxiv.org/pdf/2609.08265v1
+
+Published Time: Wed, 09 Sep 2026 03:30:06 GMT
+
+Number of Pages: 32
+
+Markdown Content:
+# Tracking-by-detection in Multi-object Tracking: Survey and Experiments 
+
+Yujin Yang 1†, Kyujin Shim 1†, Kangwook Ko 1, Changick Kim 1* 
+
+1* School of Electrical Engineering, Korea Advanced Institute of Science and Technology (KAIST), Daejeon, 34141, South Korea. *Corresponding author(s). E-mail(s): changick@kaist.ac.kr; Contributing authors: ujin.y@kaist.ac.kr; kjshim1028@kaist.ac.kr; kw.ko@kaist.ac.kr; 
+
+†These authors contributed equally to this work. 
+
+Abstract 
+
+Multi-object tracking (MOT) is an essential computer vision task that simul-taneously tracks multiple objects in video sequences, with various applications in surveillance, autonomous navigation, and human-computer interaction. The tracking-by-detection (TBD) paradigm, which combines object detection with temporal association, has emerged as a leading approach, driven by innova-tive algorithms. Despite recent progress, fair evaluation of TBD-based methods remains a challenge. Many studies introduce modules such as similarity metrics, data association strategies, or motion models, but they are often evaluated under inconsistent protocols, with different baseline trackers, hyperparameters, and datasets. Such inconsistencies obscure the genuine contribution of each module and hinder objective comparison. This survey systematically reviews TBD-based MOT techniques, including similarity measurements, data association, camera motion compensation, and interpolation strategies. Starting from a minimal base-line tracker, we fairly evaluate the contributions of each method across diverse datasets and accumulate well-balanced methods. Our findings establish a strong baseline tracker and provide a foundation for the principled design of robust and versatile MOT systems suitable for real-world deployment. 
+
+Keywords: Multi-object tracking, Tracking-by-detection, Object Tracking, Computer vision, Deep learning 
+
+1arXiv:2609.08265v1 [cs.CV] 8 Sep 2026 1 Introduction 
+
+Multi-object tracking (MOT) is a fundamental task in computer vision, focused on simultaneously tracking multiple objects across sequential data, such as video streams. This task is essential for various applications, including intelligent surveillance [1–4], autonomous vehicle navigation [5–8], and human-computer interaction [9, 10]. Despite its importance, MOT remains challenging due to persistent issues such as occlusions, significant variations in object appearance, and dynamic motion of both cameras and targets. To address these complexities, numerous approaches have been developed, with the tracking-by-detection (TBD) paradigm emerging as a dominant framework. In TBD, objects are first detected in each frame using advanced object detection algorithms [11], followed by temporal association of these detection results to construct complete object trajectories. By leveraging recent advancements in object detection, feature extraction, and data association, TBD-based trackers [3, 12–17] consistently achieve state-of-the-art performance, significantly advancing the field of MOT. Within the TBD framework, each tracker introduces distinctive innovations for MOT. SORT [12] is a seminal tracking-by-detection baseline that demonstrates how a carefully designed yet minimalist pipeline can achieve competitive perfor-mance. It employs a linear Kalman filter [18] with a constant-velocity motion model, where the state vector represents the bounding box center coordinates, scale, aspect ratio, and their respective velocities. For data association, SORT constructs an IoU-based cost matrix between predicted tracklets and current detections, and solves the assignment problem using the Hungarian algorithm [19]. Notably, it relies solely on motion and geometric cues without incorporating appearance features, enabling high computational efficiency and real-time operation. Building upon this foundation, subsequent trackers introduce additional com-ponents to enhance robustness. ByteTrack [14] improves tracking robustness by associating all detected bounding boxes, including those with low confidence scores, thereby minimizing missed tracks. BoT-SORT [15] further enhances performance by integrating re-identification models, optimizing the state vector of the Kalman fil-ter, and incorporating camera motion compensation to enhance stability in dynamic scenes. Hybrid-SORT [20] leverages weak cues, such as tracklet confidence and height-modulated Intersection-over-Union (IoU), to improve data association in challenging scenarios with significant object overlap. These advancements highlight the ongoing evolution of TBD-based MOT systems, with novel contributions continually enhancing the reliability and accuracy of object tracking in complex, dynamic environments. Despite significant advancements in TBD-based MOT methods, evaluating the effectiveness of individual tracking modules remains challenging due to inconsistencies in common components across studies, as shown in Table 1. Variations in detection algorithms, feature extraction methods, and hyperparameter settings hinder direct comparisons and obscure the relative merits of different approaches. Moreover, many trackers [14, 15, 21–23] are primarily evaluated on datasets such as MOT17 [24], which mainly involve linear motion and distinguishable object appearances. This limits the assessment of robustness in more challenging scenarios, such as non-linear motion or visually similar objects, as emphasized in datasets like DanceTrack [25]. In addition, 2Table 1 : Comparison of common tracking-by-detection components among different trackers. ‘NMS Thr.’ denotes threshold value for Non-Maximum Suppression, ‘CMC’ denotes Camera Motion Compensation, ‘Post-Proc.’ denotes Post-Processing.                                                             
+
+> Tracker Detector Feature Extractor NMS Thr. CMC Post-Proc. Validation SORT [12] FrCNN [26] -N/A --MOT15 DeepSORT [13] FrCNN [26] WRN [27] N/A --MOT16 ByteTrack [14] YOLOX-X [11] -0.70 -LI [14] MOT17, MOT20 MAATrack [28] CrowdDet [29] -0.50 GMC [30] LI MOT17, MOT20 StrongSORT [23] YOLOX-X BoT [31] 0.80 ECC [32] GSI + AFLink [23] MOT17, MOT20, DanceTrack BoT-SORT [15] YOLOX-X SBS-50 [33] 0.65 GMC LI MOT17, MOT20 Deep OC-SORT [34] YOLOX-X SBS-50 0.70 GMC LI MOT17, MOT20, DanceTrack HybridSORT [20] YOLOX-X SBS-50 0.70 ECC LI MOT17, MOT20, DanceTrack BoostTrack [35] YOLOX-X SBS-50 0.3 ECC GBI [36] MOT17, MOT20
+
+commonly used data-splitting protocols construct training and validation sets by tem-porally dividing the same video sequences, leading to overlap in scene context and object identities. To ensure fair and comprehensive evaluation, standardized protocols with diverse datasets and proper data splits are essential. In this manner, this survey paper systematically reviews and evaluates TBD-based MOT techniques, including key components such as similarity measurements, data association, camera motion compensation, and interpolation strategies. Our evalu-ation methodology employs a SORT [12]-based TBD tracker as an initial baseline and incrementally integrates the most effective method from each functional category step-by-step. We categorize existing techniques according to their role in the tracking pipeline and systematically assess the effectiveness and robustness of each compo-nent. To ensure fair comparison, hyperparameters are carefully optimized for each experiment. Through this process, we identify the most effective design choices and progressively incorporate them into a unified baseline tracker. All experiments are conducted on three diverse MOT benchmarks, namely MOT17 [24], MOT20 [37], and DanceTrack [25], which encompass a wide spectrum of motion dynamics, object densities, and scene complexities. We construct our splits using entirely different video sequences within each dataset. This protocol mitigates tempo-ral and scene-level overlap between splits, thereby enabling a more rigorous evaluation of generalization across unseen scenarios. Finally, we establish a generalized baseline tracker that demonstrates consistent performance across all evaluated datasets, providing a solid foundation and practical guidance for the development of robust and versatile MOT systems suitable for real-world deployment. The main contributions of our article are as follows: 
+
+• We systematically evaluate the effectiveness of tracking-by-detection (TBD) tech-niques by incrementally integrating the most effective methods from each functional category into a standardized baseline tracker, enabling precise assessment of individual contributions to MOT performance. 3• We conduct a fair and comprehensive comparison of recent TBD trackers, and derive practical insights and design guidelines for building reliable and versatile MOT systems in real-world scenarios. 
+
+• Our study establishes a strong and generalized baseline tracker that performs robustly across diverse datasets, addressing limitations of existing evaluations. The remainder of our paper is formed as follows. Section 2 introduces the problem formulation and SORT-based initial baseline tracker. Then, Section 3 presents the MOT techniques that are compared, and Section 4 provides an explanation of the object detector, feature extractor, datasets, and metrics we used. Based on this setup, Section 5 presents the detailed experimental results. Finally, Section 6 summarizes our findings, discusses their implications, and suggests potential directions for future research. 
+
+## 2 Preliminaries 
+
+2.1 Problem Formulation 
+
+Following the framework of tracking-by-detection paradigm, we first detect a set of detection results Dt = {dt
+
+> 1
+
+, ..., dtM } from the current frame at time t, where dti =(bti, s ti , fti). bti represents the bounding box location, sti is the predicted confidence score of the current detection, and fti indicates the appearance feature extracted from the patch cropped with the corresponding bounding box. As a second step, we predict the current bounding box location of each object track Tj that is tracked until the previous frames by using a motion model. Note that Tj is a set of merged detection results that are determined as the same object. Finally, we properly associate the detection results Dt and object tracks O = {T 1, ..., TN } through bipartite matching based on their computed pairwise distances, which are measured with their detected or estimated current locations and appearance information. This procedure is iterated over the timeline, thereby resulting in complete tracks from the input video. 
+
+2.2 Baseline Tracker 
+
+Our initial baseline tracker is based on the SORT [12] framework, the most basic algorithm of the TBD tracker, and operates by processing each input frame to detect and track multiple objects. Algorithm 1 outlines the key steps involved in the tracker, including object detection, track prediction, distance measurement, data association, and track management. In detail, for each frame f t in a video sequence V, we first detect objects resulting in a set of high confidence detection results Dt, whose confi-dence scores exceed the confidence score threshold τc (line 2 to 4). Next, the tracker predicts the current locations of the tracks O using a Kalman Filter [18], and the pre-dicted bounding boxes Bt are used to compute IoU cost matrix C1 with the detection results Dt (line 6 to 13). Based on the cost matrix and a matching threshold τm, bipar-tite matching is performed with the Hungarian algorithm [19], and we merge each matched detection result to the corresponding matched track (lines 14 to 15). We also update the set of tracks O and identify remaining unassociated detection results Dtr
+
+(lines 16 to 18). 4Algorithm 1 Baseline Tracker 
+
+Require: A input video sequence V; Kalman Filter KF ; confidence score threshold τc; matching threshold 
+
+τm; minimum length Lmin 
+
+Ensure: Complete tracks O
+
+1: Initialization: O ← ∅ ; Ou ← ∅ ;2: for frame f t in V do 
+
+3: # Detect objects in the current frame 4: Dt ← { dt 
+
+> 1
+
+, ..., dtM |si > τ c}
+
+5: 6: # Predict a current box location for each track 7: Bt ← ∅ 
+
+8: for T in O do 
+
+9: Bt ← B t ∪ { KF (T )}
+
+10: end for 
+
+11: 12: # Distance measurement and association 13: C1 ← IoU (Dt, Bt )14: Bipartite matching based on C1 and τm
+
+15: Associate each detection result to the matched track 16: O ← matched tracks 17: Ou ← remaining tracks 18: Dtr ← remaining detection results 19: 20: # Predict a current box location for each track 21: Btu ← ∅ 
+
+22: for T in Ou do 
+
+23: Btu ← B tu ∪ { KF (T )}
+
+24: end for 
+
+25: 26: # Distance measurement and association 27: C2 ← IoU (Dtr , Btu)28: Bipartite matching based on C2 and τm
+
+29: Associate each detection results to the matched track 30: Ou ← matched unconfirmed tracks 31: Dtrr ← remaining detection results 32: 33: # Confirm the unconfirmed tracks 34: for T in Ou do 
+
+35: if len (T ) > L min then 
+
+36: O ← O ∪ {T } 
+
+37: end if 
+
+38: end for 
+
+39: Ou ← O u \ O 
+
+40: 41: # Initialization 42: for d t in Dtrr do 
+
+43: if d t .c t > τ c then 
+
+44: Ou ← O u ∪ {{ dt }} 
+
+45: end if 
+
+46: end for 
+
+47: end for 
+
+48: 49: Return: O
+
+The tracker then focuses on unconfirmed tracks Ou, which are tracked for less than 
+
+Lmin number of frames until the last frame. Similar to the previous step, we predict their current locations, measure IoU distances with the remaining detection results 
+
+Dtr , and associate the matched pairs (lines 19 to 28). Then, we update the set of unconfirmed tracks Otu only with matched tracks and identify unassociated detection results Dtrr (lines 29 to 30). These separated association steps prioritize the confirmed tracks to be first associated with the detection results rather than the unconfirmed tracks, which can be short and noisy, blocking their possible disturbance. After the 5Detections t      
+
+> Tracks t-1
+> Frame t
+> Association
+> Feature Extractor Appearance Features t
+> Matched Tracks
+> CMC
+> Track Prediction Unmatched Detections Unmatched Tracks
+> Kalman Filter Prediction Strategy: Constant state vector
+> Track Update Tracks t
+> •Kalman Filter Update Strategy: CKWU, ORU
+> •ReID Feature Update Post-processing
+> Track Initialization Old Track Removal Basic parameters: maximum frame count Basic parameters: Track activation frame count
+> •Kalman State Vector
+> •Track Initialization
+> Object Detector
+> Basic parameters: NMS threshold
+
+Fig. 1 : An overview structure of a typical TBD-based MOT tracker. The contents in the dashed boxes are the main techniques that we applied in our experiments. associations, we check the length of each unconfirmed track and move the tracks that exceed a minimum length Lmin to O (lines 32 to 38). Finally, remaining unassociated detection results with high-confidence scores are initialized as new tracks and added to Ou (lines 40 to 45). Note that the re-matching of lost tracks is omitted in the pseudocode for simplicity. In the actual implementation, we chase the lost tracks using the motion model and try to match them with the detection results in the first association step for Llost number of frames. 
+
+## 3 Key Components of Tracking-by-Detection 
+
+The tracking-by-detection (TBD) framework has become a dominant paradigm in modern multi-object tracking, where tracking is formulated as associating detection results across consecutive frames. To improve tracking performance under diverse and challenging scenarios, numerous methods have been proposed, introducing design variations at different stages of the TBD pipeline. In this section, we categorize these methods based on their functional roles within the tracking process and systematically review representative design choices for each component. Specifically, we focus on key components—such as the Kalman filter state representation, track initialization strategies, data association mechanisms, cam-era motion compensation, and post-processing techniques—and summarize commonly adopted approaches as well as notable advancements proposed in prior works. As illus-trated in Fig. 1, each component corresponds to a specific stage within the overall tracking pipeline. 
+
+3.1 Kalman State Vector 
+
+In MOT, the Kalman filter predicts and updates the states of tracked objects over time. The Kalman filter iteratively performs two steps: prediction and update. In the prediction step, the object’s state in the next frame is estimated using a motion model, 6typically assuming constant velocity. In the update step, this prediction is refined by incorporating the associated detection, correcting the estimate based on the observed measurement. To represent the current state of a tracking object efficiently, the state vector typically includes parameters describing the object’s position, size, and motion. The design of the Kalman state vector plays a critical role in tracking performance, as it determines which spatial and motion attributes are modeled and propagated over time. Commonly used state vectors in MOT include: 
+
+• (cx, cy, s, a ): This Kalman state vector is applied for [12]. Here, cx and cy represent the center coordinates of the object bounding box, s denotes its scale (area), and a
+
+represents the aspect ratio. This formulation is useful for tracking objects, such as people or vehicles, where size and shape are essential. 
+
+• (cx, cy, a, h ): This Kalman state vector is introduced by [13]. In this variation, cx 
+
+and cy still represent the center coordinates, a is the aspect ratio, and h is the height of the object. This state vector is effective when the height is a more reliable feature for tracking than the overall scale, particularly in scenes where object height remains consistent. 
+
+• (cx, cy, w, h ): This Kalman state vector is introduced by [15]. In this configuration, 
+
+cx and cy define the center of the object, while w and h represent its width and height, respectively. This representation is widely used in object detection tasks, as it directly models the bounding box of the target object. 
+
+3.2 Track Initialization 
+
+Track initialization is a crucial step in TBD frameworks, as it determines how new tracks are created from unmatched detection results after association. Traditional TBD methods [14, 15, 38] rely on heuristic rules to minimize ghost tracks caused by false positives, often applying a higher confidence threshold for initialization than for asso-ciation. To utilize surrounding information, Occlusion-Aware Initialization (OAI) [39] enhances the track initialization by incorporating spatial context. OAI calculates the intersection-over-union (IoU) between unmatched detection results and existing track boxes, preventing initialization if the maximum IoU exceeds a predefined threshold, and reducing duplicate tracks. With confidence thresholds and tentative track strate-gies, OAI offers a robust solution for initializing tracks in complex, densely populated environments. 
+
+3.3 Kalman Filter Prediction & Update Strategy 
+
+Several strategies have been proposed for updating Kalman state vectors: fixing some parts of the state vectors of inactive tracks [28, 40], Confidence Weighted Kalman Update (CKWU) [40], and Observation-Centric Re-Update (ORU) [41]. The first strat-egy addresses issues caused by occlusion, where changes in box size lead to identity loss; solutions include preserving the height [28] or both height and width of inactive track boxes [40] during prediction. CKWU in ConfTrack [40] adjusts the Kalman filter update by incorporating the confidence score of the detection box. ORU, introduced by OC-SORT [41], mitigates accumulated errors in Kalman filter parameters during 7untracked periods by recalculating Kalman parameters using a virtual trajectory based on observations before and after the untracked period. 
+
+3.4 Basic Parameters 
+
+In MOT, several key parameters are used to enhance tracking accuracy. Non-maximum suppression (NMS) threshold helps eliminate duplicate detection results by filtering out overlapping bounding boxes, keeping only the one with the highest confidence score for each existing object. The minimum frame count for track activation sets the required number of consecutive frames in which an object must be detected to be considered a valid track, ensuring robustness to false positives. Meanwhile, the maximum frame count for lost frames defines how long a track can remain undetected before it is permanently deactivated, allowing for temporary occlusions while avoiding excessive track fragmentation. 
+
+3.5 Camera Motion Compensation 
+
+Camera motion compensation (CMC) is crucial for maintaining tracking accuracy in scenes with significant camera movement. It compensates for the motion of the camera to enhance the stability of object tracking. Two common methods are global motion compensation (GMC) [30] and enhanced correlation coefficient maximization (ECC) [32]. GMC models global camera motion across the entire scene, offering a simpler but effective correction for consistent background movement, improving overall tracking performance. Conversely, ECC aligns frames by maximizing the correlation between consecutive frames, compensating for complex motion. 
+
+3.6 Main Spatial Distance 
+
+In MOT, spatial distance metrics are critical for assessing the similarity between tracks and detected bounding boxes. Intersection over Union (IoU) usually serves as the standard metric, measuring the overlap between two given boxes, A and B, as defined by: 
+
+IoU = |A ∩ B||A ∪ B| . (1) To address limitations in IoU, advanced variants are proposed by adding penalty terms into IoU. Generalized-IoU (GIoU) [42] considers the smallest enclosing rectan-gular box C which contains both boxes A and B as shown in Fig. 2, 
+
+GIoU = IoU − |C \ (A ∪ B)||C| . (2) However, GIoU only focuses on the area perspective, Distance-IoU (DIoU) and Complete-IoU (CIoU) [43] introduce additional penalty terms with the center distance and aspect ratio, respectively, and are defined as 
+
+DIoU = IoU − ρ2(a, b )
+
+c2 , (3) 8C
+
+> cab
+
+AB
+
+Fig. 2 : Illustration of bounding boxes. A rectangular C is the smallest enclosing rectangle that contains boxes A and B. Dot a and dot b are the centers of boxes A
+
+and B, respectively. 
+
+CIoU = DIoU − αυ, (4) where 
+
+υ = 4
+
+π2 (arctan wA
+
+hA − arctan wB
+
+hB )2, (5) 
+
+α = υ
+
+(1 − IoU ) + υ . (6) Here, as shown in Fig. 2, a and b are the central points of boxes A and B, c is a diagonal length of the enclosing rectangle C, ρ(·) is the Euclidean distance, and wA, hA, wB ,and hB represent the width and height of boxes A and B, respectively. Complete-IoU (CIoU) [43] factors in both distance and aspect ratio, improving accuracy in object matching. Buffered IoU (BIoU) [38] further refines IoU by buffering boundaries for better localization, as shown in Fig. 3: 
+
+BIoU = IoU (buffered A, buffered B), (7) Buffer Scale b = b h − h
+
+2h , (8) where bh is the buffered height and h is the original height. Similarly, Height Modulated IoU (HMIoU) [20] adjusts IoU by emphasizing height differences, which is particularly effective for tracking objects with distinct vertical size characteristics. 
+
+HM IoU = HIoU · IoU, (9) 
+
+HIoU = height of A ∩ B
+
+height of C . (10) 9Buffered A Buffered B  
+
+> hb_h
+
+Fig. 3 : Illustration of buffered bounding boxes. Dashed rectangles are the buffered boxes that are utilized for BIoU[38]. 
+
+3.7 Additional Spatial Distance 
+
+Incorporating advanced spatial distance metrics into IoU calculations can significantly enhance tracking performance. Observation-Centric Momentum (OCM) [41] mitigates noise in motion direction estimation by leveraging state observations instead of estima-tions, thereby improving velocity consistency and tracking robustness. Hybrid-SORT [20] refines OCM by integrating a more robust and detailed model for more com-prehensive and precise object velocity representation. In addition, it introduces a confidence cost, which is the absolute difference between track and detection confi-dence scores. Similarly, BoostTrack [35] presents similarity matrix boost techniques, including Detection-Tracklet Confidence Similarity Boost, Mahalanobis Distance Sim-ilarity Boost, and Shape Similarity Boost, which refine the base similarity matrix by adding specially designed similarity metrics to improve the accuracy and reliability of object matching in complex tracking scenarios. 
+
+3.8 Tricks of Spatial Distance 
+
+Recent tricks in spatial distance metrics enhance the robustness of data association. BoostTrack [35] employs detection confidence boosting to elevate the confidence scores of true positive low-confidence detection results, termed Detecting Likely Objects (DLO), which often arise due to partial occlusions. Specifically, confidence scores of DLO are boosted using the maximum IoU with existing tracks. Conversely, for Detect-ing Unlikely Objects (DUO) that have low-confidence scores throughout a video due to persistent occlusions, BoostTrack computes their Mahalanobis distance with exist-ing tracks, finds boxes whose all distances exceed a predefined threshold, and increases their confidence scores by considering them as true positives. ConfTrack [40] introduces a Confidence-Fused Cost Matrix, which integrates IoU-based costs with appearance feature-based costs by multiplying the cost matrix with detection confidence scores, thereby constructing a single unified cost matrix. Similarly, PIA [44] leverages his-torical detection data alongside current detection results to compute the cost matrix, effectively incorporating temporal information to improve tracking robustness. 10 3.9 Appearance Feature Update 
+
+Appearance feature update strategies play a crucial role by enabling robust iden-tity preservation throughout the timeline under varying conditions. Three prominent approaches, namely Feature Bank [13], Exponential Moving Average (EMA) [45], and Dynamic Appearance [34], offer distinct mechanisms for managing the appear-ance features of tracked objects. The feature bank [13] approach maintains a static repository of appearance features for each object. Then, it uses them to calculate the maximum similarity value between each detection result and track, providing a stable reference for matching. On the other hand, EMA [45] is an adaptive mechanism for updating appearance features by blending newly observed appearance features with historical data using a weighted average. This strategy allows the tracker to gradually adapt to changes in object appearance while preserving the earlier observations. More specifically, the update process is defined as, 
+
+eki = αe k−1 
+
+> i
+
++ (1 − α)f ki , (11) where eki is an appearance feature for the ith tracks at frame k, and f ki is an appearance embedding of the current detection result. In the following experiments, we set α =0.9 similar to the previous works [15, 45]. The Dynamic Appearance [34] is a confidence-based EMA, where the weight for a feature from each detection result is calculated based on the detection confidence scores. It allows the tracker to concentrate on the features of high-confidence detection. From eq (11), it sets the α to be a variable αt, which depends on the confidence score 
+
+sdet of the current detection result as, 
+
+αt = αf + (1 − αf )(1 − sdet − σ
+
+1 − σ ), (12) where σ is a threshold value. In the experiments, we set αf = 0.95 following the previous method [34]. 
+
+3.10 Summation 
+
+There have been many trials to achieve a well-balanced summation between the spatial distance matrix Ds and the appearance distance matrix Da. The most com-mon approach is a weighted sum using the optimal weight between two distances determined by a grid search as, 
+
+D = λD a + (1 − λ)Ds. (13) Some trackers, such as ImprAsso [39], set the IoU threshold to this weighted sum to prevent wrong matches with objects showing a similar appearance and locating around a current tracking target as, 
+
+Di,j =
+
+{
+
+λd ai,j + (1 − λ)dsi,j if IoU > o min 
+
+dmax + ǫ otherwise . (14) 11 Association All detections       
+
+> Tracks Association High conf. detections
+> Tracks Association All detections (D,D)
+> Tracks
+> (a.1) (a.2) (a.3)
+> 1st Association
+> High conf. detections
+> Tracks
+> 2nd Association
+> Low conf. detections (b)
+> 1st Association
+> High Loc. conf. High Cls. conf. detections
+> Tracks 2nd Association
+> High Loc. conf. Low Cls. conf. detections
+> 3rd Association
+> Low Loc. conf. High Cls. conf. detections
+> 4th Association
+> Low Loc. conf. Low Cls. conf. detections (c)
+> hl
+
+Fig. 4 : Simplified structures of each association strategy. (a.1) is a basic structure of a one-stage association that uses all detections to match. (a.2) is an advanced one-stage association from BoostTrack [35] and (a.3) is another advanced one-stage association from Combined Matching [39]. (b) is a typical two-stage association structure. (c) is a four-stage association structure of LGTrack [47]. Geometric mean [46] and adaptive weighting [34], which depends on the discrimi-nativeness of box and track pairs based on the first and second-highest distance, are also suggested as, 
+
+D = √Da · Ds, (15) 
+
+D = Ds + [ aw + w]Da, (16) respectively, where 
+
+wi,j = [ ztrack diff (Da, i ) + zdet diff (Da, j )] /2, (17) 
+
+zdet diff (Da, j ) = min(max  
+
+> n
+
+Da[n, j ] − max 
+
+> m6=n
+
+Da[m, j ], ǫ ), (18) 
+
+ztrack diff (Da, i ) = min(max  
+
+> n
+
+Da[i, n ] − max 
+
+> m6=n
+
+Da[i, m ], ǫ ). (19) Here, ǫ is a hyper-parameter to prevent divergence of wi,j value and set to 0.5, and 
+
+αw is set to 0.75, in our experiments following the original work [34]. Finally, BOT-SORT [15] chooses the minimum element among spatial distance and appearance distance as, 
+
+Di,j = min {dai,j , dsi,j }. (20) 
+
+3.11 Association 
+
+Object association is a critical step in MOT, enabling the consistent matching of detected objects to existing tracks to maintain consistent identities across frames. Var-ious association strategies, including one-stage, two-stage, and four-stage approaches, have been developed to balance the trade-off between efficiency, accuracy, and robust-ness in diverse tracking scenarios. The simplified structures of each association strategy are shown in Fig. 4. The one-stage association, proposed in SORT [12], matches all existing tracks with new detection results in a single step. Advanced one-stage methods, such as BoostTrack [35] and Combined Matching [39], enhance this pro-cess. BoostTrack filters out low-confidence detection results, prioritizing associations 12 between high-confidence detection results and existing tracks. Combined Matching normalizes a cost matrix from low-confidence detection results by applying a scaling factor to align with that of high-confidence detection results, subsequently integrating both matrices to match all detections with tracks at once. The two-stage association, presented in ByteTrack [14], BoT-SORT [15], and many other trackers [34, 41], refines matching through a sequential process. The first stage associates high-confidence detection results with tracks based on spatial proximity or IoU, while the second stage reprocesses unmatched detection results using appear-ance features or secondary metrics to improve robustness. The four-stage association [47] further extends this framework by systematically addressing distinct tracking challenges across multiple stages. In the first stage, detection results with high localiza-tion and classification confidence are matched with existing tracks. The second stage pairs detection results with high localization but low classification confidence with unmatched tracks from the first stage. The third stage associates detection results with low localization but high classification confidence with remaining tracks, and the final stage matches detection results with both low localization and low classification con-fidence to any remaining tracks, ensuring comprehensive handling of diverse detection scenarios. 
+
+3.12 Score Fusion 
+
+In the final phase of the two-stage association process, new tracks are matched with remaining high-confidence detection results to ensure comprehensive track assignment. Certain approaches, such as those in ByteTrack [14] and BoT-SORT [15], employ a score fusion technique that multiplies detection confidence scores to the IoU cost matrix to prioritize more discriminative detection results as, 
+
+C = 1 − IoU (Dt, B t) ∗ s. (21) 
+
+3.13 Post-Processing 
+
+Interpolation is a widely adopted offline post-processing technique in MOT that enhances trajectory continuity and recovers missing detection results caused by occlu-sions, detection failures, or irregular outputs. Linear Interpolation (LI) [14], a basic approach, assumes uniform motion to bridge gaps in trajectories. To incorporate richer motion dynamics, StrongSORT++ [23] introduces Gaussian-smoothed Interpolation (GSI) [23, 48], while Gradient Boosting Interpolation [35, 36] further refines trajec-tory alignment to follow ground-truth trajectory more properly. These interpolation methods significantly improve the reliability of MOT systems in post-processed data analysis. Additionally, the appearance-free link model (AFLink) [23] enhances track association by connecting track pairs using spatiotemporal features extracted from their most recent positions and a classifier predicting their association scores to ensure robust track continuity. 13 4 Experimental Setup 
+
+4.1 Object Detector 
+
+In this work, we use YOLOX [11] as an object detector, similar to the previous works [14, 15, 20, 41]. The detector model for each dataset is trained with a combination of the corresponding training set, CrowdHuman [49], and the WiderPerson [50] dataset with eight RTX 3090 GPUs while also following the training configuration of the previous work [14]. For example, the learning rate starts at 5e-4 and decays with the cosine scheduler, while the total number of training epochs, weight decay, SGD momentum, and batch size are set as 80, 5e-4, 0.9, and 32, respectively. Also, various data augmentation techniques, such as mosaic, random perspective transformation, and mixup, are involved, and the model is initialized with the COCO [51] pre-trained weight. During the inference stage, thresholds about IoU and confidence scores for non-maximum suppression are set as 0.8 and 0.1, respectively. 
+
+4.2 Feature Extractor 
+
+Following prior works [15, 20, 34], we adopt the SBS-S50 model from the FastReID framework [33] as the feature extractor, leveraging its robust performance for multi-object tracking. The model is fine-tuned on the target dataset using default training configurations initialized from Market-1501 [52] pre-trained weights. Specifically, the training is conducted for 60 epochs with a batch size of 64 and learning rate of 3.5e-4 while employing cross-entropy and triplet loss functions [53] and a cosine annealing learning rate scheduling. For feature extraction, we first crop patches according to the detection results, resize to 128 × 348 pixels, and apply L2 normalization after the extraction. 
+
+4.3 Datasets 
+
+Three prominent and distinctive MOT datasets, MOT17 [24], MOT20 [37], and Dance-Track [25], are adopted for every evaluation of our work. MOT17 [24] consists of seven training and seven testing sequences, which are filmed in unconstrained envi-ronments such as streets and inside malls with diverse camera motion. On the other hand, MOT20 [37] includes four videos for each training and test set with highly crowded scenes and heavy occlusion. Finally, DanceTrack [25] comprises 40, 25, and 35 sequences for training, validation, and testing, respectively. More details about the datasets are shown in Table 2. MOT17 and MOT20 are both characterized by linear object motion and distinctive object appearances. However, MOT20 presents problems with higher object density and overlap, and MOT17 offers unstable cam-era motion. On the other hand, DanceTrack introduces distinctive challenges with its non-linear object motion and similar object appearances combined with complex camera movements. Since the datasets include varying conditions of camera motion, object density, motion patterns, and appearance similarity, each dataset is uniquely valuable for comprehensively assessing the MOT techniques. In addition, it can be a great guide to designing a generalized tracker for real-tracking scenarios by ensuring robust performance across all datasets. 14 MOT 17-02      
+
+> MOT 17-04
+> train validation train validation train validation
+> (a) Conventional split (b) Ours
+> MOT 17-02
+> MOT 17-04
+> train validation
+
+Fig. 5 : Train and validation split of MOT17: (a) conventional splitting protocol and (b) ours. In the conventional train and validation split used for most previous methods, the first half of each video sequence in the training set is used as the training split, and the remaining halves are used as the validation split. In this scheme, many objects that appear in the training dataset also appear in the validation split, undermining the fundamental purpose of having separate training and validation splits. On the other hand, we split the train set by separating each video sequence, making our evaluation more generalizable. 
+
+Table 2 : Characteristics of the three MOT datasets used in the evaluation. “# image”, “# box”, “mean # box”, and “mean # overlap” represent the num-ber of training images, the total number of bounding boxes in the training set, the mean number of bound-ing boxes per training image, and the mean number of overlapping neighbor bounding boxes per each bounding box, respectively. “object appear.” denotes the appearances of the objects in the same frame. 
+
+MOT17 MOT20 DanceTrack # image 5316 8931 41796 # box 112297 1134614 348930 mean # box 21.12 127.04 8.35 mean # overlap 1.81 4.26 1.81 camera motion O X Oobject motion linear linear non-linear mean movement 0.036 0.022 0.045 object appear. distinctive distinctive similar 
+
+To assess each technique, we construct validation sets for the datasets. However, MOT17 and MOT20 do not provide official validation splits. In most previous works [14, 15, 23], a common practice is to divide each training video temporally, using the 15 first half of the frames for training and the latter half for validation, as illustrated in Fig. 5. While this protocol increases the amount of data available for both splits, it intro-duces substantial overlap in scene context and target objects between training and validation sets. To avoid this issue, we adopt a different splitting strategy: instead of dividing individual videos temporally, we separate the dataset at the sequence level and assign different videos to the training and validation sets. This prevents identity and scene overlap across the splits, enabling a more reliable evalu-ation of generalization. More specifically, the sequences “MOT17-02”, “MOT17-10”, “MOT17-11”, and “MOT17-13” are used for training, while the remaining sequences “MOT17-04”, “MOT17-05”, and “MOT17-09” are adopted for validation during our evaluation processes. Similarly, for the MOT20 dataset, the sequences “MOT20-02” and “MOT20-05” are used for training, the sequences “MOT20-01” and “MOT20-03” are used for validation. 
+
+4.4 Metrics 
+
+To evaluate various aspects of each technique, we use well-known MOT metrics, includ-ing Higher-Order Tracking Accuracy (HOTA) [54], Multi-Object Tracking Accuracy (MOTA) [55], IDF1[56], Detection Accuracy (DetA)[54], and Association Accuracy (AssA)[54]. In this work, we use HOTA as the primary metric because it jointly accounts for detection and association quality (and localization), providing a balanced view of overall tracking performance. 
+
+## 5 Experiments 
+
+We conducted a comprehensive evaluation of MOT techniques from Tracking-by-Detection (TBD) approaches, using the baseline tracker detailed in Section 2.2 as the starting point. We incrementally integrated various techniques, including the Kalman filter, parameter optimization, camera motion compensation, spatial distance metrics, appearance features, summation strategies, association methods, and post-processing techniques. For each sub-task, only the techniques that increase tracking perfor-mance in all three datasets are added to the baseline to construct a new baseline for subsequent sub-tasks, ensuring a systematic assessment of the contribution of each component to overall tracking performance. 
+
+5.1 Kalman State Vector 
+
+Table 3 evaluates the impact of different Kalman state vector representations. The state vectors analyzed include ( cx, cy, s, a ) [12], ( cx, cy, a, h ) [13], and ( cx, cy, w, h )[15]. The state vector ( cx, cy, w, h ) achieves the best performance for all metrics across all datasets. These results indicate that incorporating width and height provides the most robust tracking performance, as this representation effectively captures both spatial localization and object dimensions, which are crucial for accurate association. The state vectors ( cx, cy, s, a ) and ( cx, cy, a, h ) perform slightly worse. Especially on DanceTrack, which features similar object appearances and complex motions, the 16 Table 3 : Comparison of different Kalman state vectors. The first row is the previous baseline, and the selected option, which will serve as the new baseline tracker for subsequent evaluation, is denoted by a gray row. The increased HOTA scores compared to the previous baseline are underlined, and the best scores are marked in bold.                                                               
+
+> MOT17 MOT20 DanceTrack state vector HOTA ↑MOTA ↑IDF1 ↑DetA ↑AssA ↑HOTA ↑MOTA ↑IDF1 ↑DetA ↑AssA ↑HOTA ↑MOTA ↑IDF1 ↑DetA ↑AssA ↑
+> (cx, cy, s, a) 63.91 78.66 77.85 65.21 63.17 66.40 84.97 86.20 66.80 66.20 53.26 90.86 52.55 79.70 35.76 (cx, cy, a, h) 64.33 79.10 78.91 65.25 63.93 66.38 84.92 87.55 66.26 66.66 47.95 89.24 51.70 71.69 32.23 (cx, cy, w, h) 65.07 79.59 79.79 65.32 65.32 67.33 85.20 87.91 67.03 67.82 55.71 91.47 56.36 79.90 39.00
+
+Table 4: Comparison of different track initialization strategies. Applying OAI increases HOTA across all three datasets.                                                
+
+> MOT17 MOT20 DanceTrack OAI HOTA ↑MOTA ↑IDF1 ↑DetA ↑AssA ↑HOTA ↑MOTA ↑IDF1 ↑DetA ↑AssA ↑HOTA ↑MOTA ↑IDF1 ↑DetA ↑AssA ↑
+> ✗65.07 79.59 79.79 65.32 65.32 67.33 85.20 87.91 67.03 67.82 55.71 91.47 56.36 79.90 39.00
+> ✓67.00 80.24 83.23 65.90 68.60 67.77 85.70 88.67 67.30 68.43 57.56 91.67 60.04 79.73 41.71
+
+Kalman state with ( cx, cy, w, h ) outperforms the others, demonstrating its adaptability to challenging scenarios. This result emphasizes the importance of precise dimen-sional representation in dynamic environments. The other representations show lower scores in HOTA, emphasizing the importance of precise dimensional representation in dynamic environments. In summary, the results highlight that the ( cx, cy, w, h ) state vector offers the best performance in terms of HOTA across all datasets, making it the most effective configuration for accurate and robust tracking. Therefore, the new baseline tracker for the remaining experiments follows the Kalman state vector of (cx, cy, w, h ). 
+
+5.2 Track Initialization 
+
+Table 4 examines the influence of Occlusion-aware Initialization (OAI) [39] on tracking performance across the datasets. The results indicate that enabling OAI improves most metrics across all datasets. This highlights the benefits of OAI in dense and complex tracking scenarios, where accurate initialization can prevent identity switches. On the DanceTrack dataset, which presents frequent occlusions, OAI provides the most significant improvement with HOTA increasing from 55.71 to 57.56. This result suggests that OAI is effective in challenging environments by facilitating robust track initialization. Overall, the use of OAI results in consistent gains across most metrics and datasets, with notable improvements. These findings underline the importance of spatial information during track initialization for tracking performance, and OAI is adopted in the following experiments. 
+
+5.3 Kalman Filter Prediction/Update Strategy 
+
+Table 5 provides an analysis of tracking performance based on the inclusion of con-stant Kalman state vectors [28, 40], Confidence Weighted Kalman Update (CWKU) [40], and Observation-centric Re-Update (ORU) [41]. The use of keeping height [28] 17 Table 5 : Comparison of different Kalman filter prediction/update strategies. Trackers with CWKU show improvements across all datasets.                                                                                                                                               
+
+> MOT17 MOT20 DanceTrack Constant CWKU ORU HOTA ↑MOTA ↑IDF1 ↑DetA ↑AssA ↑HOTA ↑MOTA ↑IDF1 ↑DetA ↑AssA ↑HOTA ↑MOTA ↑IDF1 ↑DetA ↑AssA ↑
+> ✗✗✗67.00 80.24 83.23 65.90 68.60 67.77 85.70 88.67 67.30 68.43 57.56 91.67 60.04 79.73 41.71 h✗✗66.95 79.86 82.69 65.92 68.49 67.75 85.68 88.63 67.30 68.40 58.12 91.71 60.53 79.75 42.52
+> w, h ✗✗66.99 79.87 83.38 65.80 68.69 67.77 85.71 88.67 67.27 68.45 57.81 91.65 60.10 79.91 41.96
+> ✗✓(0.6) ✗68.09 80.08 85.15 66.15 70.53 67.88 85.70 88.99 67.36 68.60 57.88 92.05 58.88 79.88 42.11
+> ✗✓(0.7) ✗68.08 80.04 85.13 66.14 70.52 68.03 85.75 89.12 67.41 68.85 57.92 92.03 59.05 80.01 42.12
+> ✗✓(0.6) ✓68.19 80.07 85.34 66.38 70.51 67.99 85.77 89.10 67.43 68.75 57.47 91.53 59.53 79.48 41.71
+> ✗✓(0.7) ✓68.11 80.00 85.20 66.26 70.47 67.98 85.75 89.00 67.41 68.74 57.17 92.07 58.17 79.99 41.03
+
+Table 6 : Comparison of different basic parameter settings. The selected option, which will serve as the new baseline tracker for subsequent evaluation, is denoted by a gray row.                                                                                                         
+
+> MOT17 MOT20 DanceTrack NMS thresh. act lost max HOTA ↑MOTA ↑IDF1 ↑DetA ↑AssA ↑HOTA ↑MOTA ↑IDF1 ↑DetA ↑AssA ↑HOTA ↑MOTA ↑IDF1 ↑DetA ↑AssA ↑
+> 0.8 3frame rate 68.09 80.08 85.15 66.15 70.53 68.03 85.75 89.12 67.41 68.85 57.92 92.03 59.05 80.01 42.12
+> 0.7 3frame rate 68.07 79.56 85.32 66.10 70.57 67.89 85.69 88.86 67.39 68.59 57.63 91.42 59.74 79.32 42.02 0.8 2frame rate 68.26 80.40 85.25 66.41 70.59 68.15 85.91 89.20 67.54 68.96 57.97 92.20 59.04 80.15 42.11 0.8 22×frame rate 68.20 80.37 85.16 66.40 70.50 68.17 85.94 89.31 67.55 69.00 57.80 92.23 58.79 80.05 41.91 0.8 230 68.19 80.37 85.12 66.40 70.47 68.17 85.90 89.30 67.54 69.00 57.76 92.22 58.70 80.03 41.87
+
+or both width and height [40] while updating inactive tracks does not produce a sig-nificant performance improvement compared to the baseline that updates all states. Although it shows a positive result in DanceTrack, fixing some states delivers slightly lower HOTA and MOTA scores compared to the baseline in MOT17. When CWKU is applied, performance generally improves across most metrics while setting the confi-dence score threshold to 0.6 or 0.7 following the original work [40]. When both CWKU and ORU are applied, the performance shows a mixed trend. For example, the HOTA score increases in MOT17 and MOT20 compared to the tracker only with CKWU. However, the performance on DanceTrack decreases slightly. Overall, the results sug-gest that fixing the Kalman state vector of inactive tracks does not offer positive effects on the results. In contrast, CWKU enhances tracking performance, while ORU may introduce marginal trade-offs in some cases. In the following experiments, we apply CKWU with a confidence score threshold between 0.6 and 0.7 and choose the best result. 
+
+5.4 Basic Parameters 
+
+Table 6 presents an analysis of the impact of various parameters, specifically the NMS threshold, track activation frame count (act), and the maximum allowable frames for a lost object (lost max). Across all datasets, an NMS threshold of 0.8 consistently yields higher performance than the threshold of 0.7, indicating that a higher NMS threshold generally leads to better tracking results by more effectively suppressing redundant detections. With an activation frame count of two frames, all aspects of performance improve compared to the configuration with an activation frame count of three, indi-cating that the tracker can catch new tracks more effectively by setting the activation frame count to two. When adjusting the lost max parameter, it is evident that setting this value to twice the frame rate or 30 frames has minimal impact on performance. 18 Table 7 : Comparison of different CMC methods. Both GMC and ECC bring improve-ments across all datasets, and GMC makes a bigger gap from the previous baseline tracker.                                                               
+
+> MOT17 MOT20 DanceTrack CMC HOTA ↑MOTA ↑IDF1 ↑DetA ↑AssA ↑HOTA ↑MOTA ↑IDF1 ↑DetA ↑AssA ↑HOTA ↑MOTA ↑IDF1 ↑DetA ↑AssA ↑
+> ✗68.26 80.40 85.25 66.41 70.59 68.15 85.91 89.20 67.54 68.96 57.97 92.20 59.04 80.15 42.11 GMC 68.61 80.89 85.91 66.51 71.21 68.26 85.86 89.39 67.49 69.22 58.23 92.21 59.59 80.00 42.57
+> ECC 68.35 80.86 85.79 66.37 70.83 68.21 86.01 89.36 67.59 69.02 58.27 92.27 59.98 80.09 42.57
+
+For example, in MOT17, the HOTA scores are slightly lower than when we set the lost max parameter as the frame rate of each video. However, longer values overperform in MOT20, indicating longer matching windows are especially suitable for crowded scenes but not for all general scenes. In summary, a higher NMS threshold of 0.8 and reducing the track activation frame count to two frames improves overall tracking per-formance, and increasing the lost max parameter does not lead to substantial changes in performance. Therefore, we set the NMS threshold as 0.8, the activation count as two frames, and the re-tracking windows as the frame rate length of each video in the new baseline tracker for the following experiments. 
+
+5.5 Camera Motion Compensation 
+
+Table 7 shows the impact of diverse camera motion compensation techniques. The three configurations compared are without CMC, with Global Motion Compensation (GMC) [30], and with Enhanced Correlation Coefficient Maximization (ECC) [32]. The results indicate that applying CMC, whether via GMC or ECC, leads to improvements in tracking performance across all datasets, indicating that compensating for camera motion leads to more stable and accurate tracking. GMC enhances performance the most in MOT17 and MOT20 with minor improvement in DanceTrack, indicating that compensating for camera motion leads to more stable and accurate tracking. Although gains are lower, ECC improves HOTA in MOT17 and MOT20, showing clear benefits in detection and identity preservation. In DanceTrack, ECC slightly outperforms GMC, achieving HOTA of 58.27, compared to 58.23 with GMC. Overall, the inclusion of CMC, particularly GMC, consistently improves track-ing metrics, demonstrating the importance of compensating for camera movement to enhance identity consistency and association accuracy in various tracking scenarios. In the following evaluation, we include GMC in the basic configuration of the baseline tracker. 
+
+5.6 Main Spatial Distance 
+
+The evaluation of spatial distance metrics, which are IoU, GIoU [42], DIoU [43], CIoU [43], BIoU [38] (with buffer scales of 0.1, 0.2, and 0.3), and HMIoU [20], is pre-sented in Table 8. The result reveals IoU as the most robust and effective metric. More specifically, IoU consistently outperforms alternatives, achieving strong HOTA scores of 68.61, 68.26, and 58.23 in MOT17, MOT20, and DanceTrack, respectively. It suggests that IoU is effective in handling object overlaps and maintaining stable 19 Table 8 : Comparison of matching with different spatial distances. IoU makes the most balanced performance across all datasets. 
+
+MOT17 MOT20 DanceTrack distance HOTA ↑ MOTA ↑ IDF1 ↑ DetA ↑ AssA ↑ HOTA ↑ MOTA ↑ IDF1 ↑ DetA ↑ AssA ↑ HOTA ↑ MOTA ↑ IDF1 ↑ DetA ↑ AssA ↑
+
+IoU 68.61 80.89 85.91 66.51 71.21 68.26 85.86 89.39 67.49 69.22 58.23 92.21 59.59 80.00 42.57 Mahalanobis 63.84 78.72 78.67 65.82 62.44 66.27 84.10 86.34 66.70 66.05 31.77 80.21 26.29 77.46 13.08 GIoU 67.78 80.57 85.04 66.54 69.51 68.19 85.83 89.25 67.46 69.13 57.51 91.81 59.41 79.84 41.58 DIoU 68.64 80.97 85.89 66.68 71.11 68.13 85.59 89.17 67.32 69.14 57.23 92.25 58.70 80.16 41.03 CIoU 68.64 80.97 85.89 66.68 71.11 68.13 85.59 89.17 67.32 69.14 57.24 92.25 58.70 80.14 41.06 BIoU(0.1) 68.24 80.19 85.10 66.15 70.85 68.20 86.01 89.39 67.57 69.02 57.94 92.26 59.52 80.44 41.90 BIoU(0.2) 68.36 80.16 85.47 66.15 71.11 68.16 85.93 89.32 67.48 69.04 57.92 92.05 59.97 79.89 42.16 BIoU(0.3) 67.39 80.43 83.85 66.36 68.92 67.97 85.83 89.04 67.39 68.74 57.96 91.94 60.21 79.42 42.48 HMIoU 67.61 80.83 84.54 66.76 68.97 68.14 85.66 89.01 67.44 69.03 58.76 91.79 59.17 80.69 42.97 
+
+Table 9 : Comparison of matching with different additional spatial distances. ROCM, conf., SMB, and Mahal. denote robust OCM, confidence cost, similarity matrix boost, and Mahalanobis, respectively. The numbers inside the brackets beside the SMB tech-niques represent the weight values when adding each metric to the base cost matrix. Similarity matrix boost with detection-tracklet confidence similarity draws the most balanced performance.                                                                                                                                                                                                                                             
+
+> MOT17 MOT20 DanceTrack OCM ROCM conf. SMB HOTA ↑MOTA ↑IDF1 ↑DetA ↑AssA ↑HOTA ↑MOTA ↑IDF1 ↑DetA ↑AssA ↑HOTA ↑MOTA ↑IDF1 ↑DetA ↑AssA ↑
+> ✗✗✗✗68.61 80.89 85.91 66.51 71.21 68.26 85.86 89.39 67.49 69.22 58.23 92.21 59.59 80.00 42.57
+> ✓✗✗✗68.55 80.38 85.63 66.38 71.23 68.12 85.94 89.16 67.53 68.90 58.00 92.22 59.79 80.19 42.11
+> ✗✓✗✗68.57 80.54 85.75 66.56 71.09 68.17 85.87 89.26 67.47 69.07 58.11 92.23 59.59 80.10 42.32
+> ✗✗✓✗68.49 80.94 86.01 66.43 71.06 68.20 85.97 89.29 67.54 69.05 58.40 92.35 59.70 80.23 42.67
+> ✗✓✓✗68.68 80.64 86.25 66.55 71.34 68.20 85.98 89.26 67.53 69.06 58.25 92.32 59.81 80.09 42.54
+> ✗✗✗conf. (0.75) 68.62 80.93 86.11 66.63 71.08 68.26 85.94 89.46 67.51 69.21 60.17 92.07 62.26 80.23 45.28
+> ✗✗✗shape (0.75) 68.76 80.93 86.69 66.52 71.52 68.19 85.94 89.37 67.51 69.06 60.32 92.00 62.20 80.22 45.52
+> ✗✗✗Mahal. (0.25) 68.51 80.84 85.58 66.35 71.19 68.17 85.64 89.27 67.36 69.17 57.44 92.10 58.30 80.22 41.30
+> ✗✗✗conf. (0.50) + shape (0.25) 68.79 81.01 86.75 66.57 71.53 68.24 85.94 89.40 67.51 69.16 60.37 92.08 62.71 80.26 45.57
+> ✗✗✗conf. (0.50) + Mahal. (0.25) 68.66 80.81 85.94 66.46 71.38 68.11 85.90 89.32 67.49 68.92 58.49 92.31 59.12 80.52 42.65
+> ✗✗✗shape (0.50) + Mahal. (0.25) 68.07 80.65 84.64 66.38 70.27 68.15 85.91 89.44 67.48 69.01 58.69 91.76 59.72 80.05 43.18
+> ✗✗✗conf. + shape + Mahal. 68.53 80.86 85.92 66.47 71.11 68.14 85.89 89.44 67.49 68.98 59.79 92.25 61.73 80.22 44.74
+
+identity tracking across various scenarios. While GIoU, DIoU, and CIoU offer com-parable results or marginal improvements in MOT17, they generally underperform in crowded or dynamic settings of MOT20 and DanceTrack. These results suggest that the additional penalty of GIOU for bounding box misalignment beyond the overlap region does not significantly enhance performance. Also, although DIoU and CIoU improve certain spatial constraints, such as box distance, they may not significantly enhance association accuracy in challenging scenarios. BIoU shows competitive per-formance at lower buffer scales of 0.1 and 0.2 but degrades at higher scales of 0.3. Finally, HMIoU excels in DanceTrack by leveraging height information, yet remains less effective overall. In conclusion, the simplicity and balanced performance of IoU make it the preferred and most efficient choice for general applications, and we also adopt IoU in the following evaluations. 
+
+5.7 Additional Spatial Distance 
+
+Table 9 presents the analysis of spatial distance techniques, including Object-Centric Momentum (OCM) [41], robust OCM (ROCM) [20], confidence cost (conf.)[20], and various forms of similarity matrix boosts (confidence, shape, and Mahalanobis 20 Table 10 : Comparison of matching with different tricks of spatial distance. The prior baseline without any tricks of spatial distance shows the best performance across all datasets.                                                                                                                                 
+
+> MOT17 MOT20 DanceTrack DLO DUO CF PIA HOTA ↑MOTA ↑IDF1 ↑DetA ↑AssA ↑HOTA ↑MOTA ↑IDF1 ↑DetA ↑AssA ↑HOTA ↑MOTA ↑IDF1 ↑DetA ↑AssA ↑
+> ✗✗✗✗68.62 80.93 86.11 66.63 71.08 68.26 85.94 89.46 67.51 69.21 60.17 92.07 62.26 80.23 45.28
+> ✓✗✗✗68.53 80.94 86.17 66.45 71.14 68.23 85.98 89.49 67.54 69.12 59.56 92.03 62.02 80.19 44.41
+> ✗✓✗✗68.50 80.89 86.14 66.45 71.08 68.21 85.81 89.41 67.44 69.17 59.84 92.47 61.75 80.34 44.74
+> ✓✓✗✗68.37 80.91 85.88 66.29 70.97 68.19 85.81 89.42 67.44 69.12 59.43 92.02 61.29 80.09 44.27
+> ✗✗✓✗66.88 79.45 83.81 65.57 68.67 67.27 84.92 88.03 66.81 67.91 60.03 91.58 61.30 80.10 45.14
+> ✗✗✗✓68.09 80.25 84.98 66.08 70.62 68.15 85.92 89.05 67.53 68.96 59.12 91.70 59.91 80.19 43.76
+
+distance)[35]. For the first three methods, OCM, ROCM, and confidence cost, the base-line tracker without these techniques achieves strong HOTA scores in MOT17, MOT20, and DanceTrack. The baseline tracker without these techniques achieves strong HOTA scores of 68.61, 68.26, and 52.83 in MOT17, MOT20, and Dance- Track, respectively. Introducing OCM slightly reduces HOTA in MOT17 and MOT20, suggesting that basic OCM may not significantly improve the tracking process. When robust OCM is applied with velocity-based adjustments, performance is similar to the original OCM. The application of the confidence cost degrades performance in MOT17 and MOT20 compared to the baseline, although it improves the HOTA score in DanceTrack. In the case of the similarity matrix boosts, particularly confidence and shape boosts, deliver the most substantial performance improvements. A confidence boost with a weight of 0.75 elevates HOTA to 68.62 in MOT17 and 60.17 in DanceTrack, with the other metrics. A shape boost also improves HOTA on MOT17 and Dance-Track, but slightly degrades performance on MOT20. Similarly, combining confidence and shape boosts with weights of 0.50 and 0.25 further enhances performance, achiev-ing higher HOTA in MOT17 and DanceTrack. However, performance in MOT20 shows slight declines with these boosts, suggesting sensitivities in crowded scenarios. The combined boost of confidence, shape, and Mahalanobis distance yields marginal gains over individual boosts. The results demonstrate that the most significant performance gains are from applying the confidence similarity matrix boost. Applying this boost technique enhances tracking accuracy, making it especially effective in dynamic sce-narios in DanceTrack. Therefore, we include the confidence similarity matrix boost in the new baseline for the succeeding experiments. 
+
+5.8 Tricks of Spatial Distance 
+
+Table 10 evaluates the impact of spatial distance enhancement tricks, which are Detect-ing Likely Objects (DLO) [35], Detecting Unlikely Objects (DUO) [35], Confidence Fused Cost Matrix (CF) [40], and Past Information Aggregation (PIA) [44], with the baseline configuration without any tricks. While the baseline achieves HOTA scores of 68.62, 68.26, and 60.17, respectively, applying DLO and DUO alone yields a slight decrease in the HOTA scores. Combining DLO and DUO even more reduces perfor-mance, with HOTA dropping to 68.37 in MOT17 and 59.43 in DanceTrack, suggesting potential conflicts in their adjustments. In addition, CF significantly and consistently underperforms compared to the baseline across all datasets, likely due to over-filtering valid detection result. PIA similarly shows performance degradation with HOTA scores 21 Table 11 : Comparison of matching with different appearance feature update strate-gies. Even though Feature Bank with a large number of features n shows great tracking quality, it takes a much longer time to inference so it’s hard to employ for real-time tracking. EMA shows the most balanced performance across all datasets.                                                                                                   
+
+> MOT17 MOT20 DanceTrack Feature Update nHOTA ↑MOTA ↑IDF1 ↑DetA ↑AssA ↑HOTA ↑MOTA ↑IDF1 ↑DetA ↑AssA ↑HOTA ↑MOTA ↑IDF1 ↑DetA ↑AssA ↑
+> Feature Bank 100 67.38 80.49 84.19 65.63 69.68 65.48 85.01 84.24 66.94 64.27 34.10 69.90 26.36 72.13 16.22 Feature Bank 50 67.74 80.39 84.69 65.77 70.27 65.84 85.23 84.48 67.19 64.74 34.98 71.09 27.41 71.79 17.13
+> Feature Bank 10 67.42 80.14 84.26 65.57 69.81 66.39 85.18 85.58 67.11 65.89 31.41 72.30 23.52 73.23 13.56 EMA -68.53 79.89 85.47 66.30 71.29 64.96 84.42 82.99 66.92 63.30 31.59 61.51 24.19 68.58 14.62 DA -65.64 79.07 80.43 65.94 65.85 57.35 80.84 70.38 65.92 50.22 26.13 53.03 18.90 66.86 10.28
+
+across all benchmarks. It suggests that linear assignment with an aggregated cost matrix may result in more mismatches between tracks and detections. In summary, these results provide the benefit of few individual DLOs and DUOs, while CFs and PIA degrade tracking accuracy. Therefore, we maintain the configuration of the current baseline for the following analysis. 
+
+5.9 Appearance Feature Update 
+
+Table 11 evaluates the impact of appearance feature update strategies, notably static Feature Bank [13] with 10, 50, and 100 features, Exponential Moving Average (EMA) [45], and Dynamic Appearance (DA) [34], using the ResNeSt[57]-based SBS-S50 fea-ture extractor from the FastReID framework [33]. In this experiment, the cost matrices are only based on cosine similarity between detection and track feature vectors for more transparent examination. The static Feature Bank strategy finds that the feature banks with more stored features achieve better performance on complicated scenarios, such as DanceTrack. For example, a feature bank with 50 features achieves HOTA of 34.98 in DanceTrack. However, its computational inefficiency with more than 10 fea-tures, even processing fewer frames than the frame rate in our empirical evaluations, renders it unsuitable for online MOT. Among online-MOT-available methods, EMA delivers the best balanced perfor-mance. In MOT17, it achieves the best HOTA with 68.53, demonstrating superior tracking stability and identity preservation through smoothed feature updates. Although its performance in MOT20 and DanceTrack indicates limitations in crowded and dynamic scenarios compared to the baseline, it’s slightly better than the fea-ture bank with 10 features in DanceTrack. Finally, DA consistently underperforms, with HOTA scores in all datasets, likely due to noise introduced by frequent updates incorporating detection confidence. Thus, EMA emerges as the most effective strat-egy, balancing robustness and efficiency, while the static Feature Bank requires strong computational overhead, and DA struggles with instability across diverse tracking conditions. 
+
+5.10 Summation 
+
+Table 12 shows the impact of different distance summation strategies, including only spatial distance, only appearance distance, weighted sum, threshold-weighted sum 22 Table 12 : Comparison of matching with different summation strategies. The weighted sum of the spatial distance and the appearance distance makes the most balanced improvement.                                                                                                                           
+
+> MOT17 MOT20 DanceTrack Summation HOTA ↑MOTA ↑IDF1 ↑DetA ↑AssA ↑HOTA ↑MOTA ↑IDF1 ↑DetA ↑AssA ↑HOTA ↑MOTA ↑IDF1 ↑DetA ↑AssA ↑
+> only spatial dist. 68.62 80.91 86.19 66.62 71.12 68.26 85.94 89.46 67.51 69.21 60.17 92.07 62.26 80.23 45.28 only appearance dist. 68.53 79.89 85.47 66.30 71.29 64.95 84.36 83.22 66.81 63.37 31.59 61.51 24.19 68.58 14.62 weighted sum 68.94 80.66 86.24 66.42 72.01 68.42 85.81 89.57 67.48 69.56 62.85 92.09 65.94 80.34 49.35
+> thresh. weighted sum 68.94 80.65 86.24 66.42 72.01 68.43 85.88 89.59 67.54 69.51 62.52 92.08 65.34 80.17 48.95 geometric mean 68.84 80.69 86.06 66.57 71.66 68.46 85.96 89.63 67.58 69.53 62.29 91.90 65.39 79.86 48.77 adaptive weighting 68.67 80.81 85.50 66.78 71.07 68.25 85.92 89.26 67.56 69.14 61.44 92.03 63.08 80.68 46.96 minimum 68.84 80.94 86.33 66.41 71.83 68.36 85.69 89.44 67.40 69.53 58.15 91.38 60.08 79.74 42.56
+
+[39], geometric mean [46], adaptive weighting [34], and minimum element among spa-tial distance and appearance distance[15]. Using only spatial distance yields robust performance with HOTA in all benchmarks, while relying solely on appearance dis-tance significantly underperforms, particularly in DanceTrack. This highlights the limitations of relying only on appearance features in dynamic scenes, where spatial positioning provides robust tracking. From this perspective, combining two features is expected to result in better performance. The weighted sum of spatial distance and appearance distance approaches bal-ance spatial and appearance information, resulting in the highest HOTA scores across all configurations. The weighted sum achieves HOTA of 68.94 in MOT17, 68.42 in MOT20, and 62.85 in DanceTrack. This indicates that integrating spatial and appearance information through weighted calculations provides an optimal tracking performance. The weighted sum method, with an optimized weight λ = 0 .7 determined via grid search. The geometric mean is slightly below the weighted sum, but shows a noticeable improvement in performance over the baseline. The threshold-weighted sum configuration and geometric mean perform comparably to the weighted sum, but this approach does not significantly outperform the standard weighted sum in DanceTrack. The adaptive weighting method shows lower scores in all datasets. The minimum-based approach achieves slightly lower scores than the previous baseline, particularly in DanceTrack, indicating that taking the minimum distance may overly limit the amount of information in complex environments. Overall, the weighted sum method achieves the best balance of spatial and appearance cues, consistently yielding high HOTA scores across all datasets. These results suggest that combining spatial and appearance information with balanced weighting is crucial, and we choose the weight summation as our combining method between spatial and appearance distances for the following evaluations. 
+
+5.11 Association 
+
+The evaluation of various association strategies, as presented in Table 13, demon-strates that the 2-stage association strategy[14] achieves the highest HOTA scores across all datasets, with 69.35 in MOT17, 68.58 in MOT20, and 63.27 in DanceTrack. These results highlight its superior balance of detection and association accuracy by prioritizing high-confidence detection results in the first stage, making it the most 23 Table 13 : Comparison of matching with different association strategies. 2-stage asso-ciation is the best balanced strategy for TBD.                                                                                                            
+
+> MOT17 MOT20 DanceTrack Association HOTA ↑MOTA ↑IDF1 ↑DetA ↑AssA ↑HOTA ↑MOTA ↑IDF1 ↑DetA ↑AssA ↑HOTA ↑MOTA ↑IDF1 ↑DetA ↑AssA ↑
+> 1-stage 68.94 80.66 86.24 66.42 72.01 68.42 85.81 89.57 67.48 69.56 62.85 92.09 65.94 80.34 49.35 1-stage (unconfirmed tracks) 68.88 80.67 86.09 66.34 71.97 68.44 85.81 89.62 67.48 69.59 62.98 92.67 65.78 80.85 49.26 1-stage (BoostTrack) 67.74 79.02 84.72 65.14 70.87 66.85 83.44 88.08 65.87 68.03 61.69 90.52 63.35 79.79 47.84 1-stage (Combined matching) 68.83 80.70 86.09 66.48 71.73 68.40 85.88 89.51 67.55 69.45 63.58 92.07 66.87 80.23 50.56
+> 2-stage 69.35 81.04 87.16 66.77 72.45 68.58 86.07 89.93 67.65 69.72 63.27 92.71 66.07 80.84 49.71 4-stage 67.78 79.96 84.56 65.82 70.24 67.24 84.27 88.16 66.47 68.20 61.39 91.05 64.36 79.27 47.74
+
+Table 14 : Comparison between matching with/without score fusion. Adopting score fusion makes slightly better HOTAs.                                                
+
+> MOT17 MOT20 DanceTrack Score Fusion HOTA ↑MOTA ↑IDF1 ↑DetA ↑AssA ↑HOTA ↑MOTA ↑IDF1 ↑DetA ↑AssA ↑HOTA ↑MOTA ↑IDF1 ↑DetA ↑AssA ↑
+> ✓69.35 81.04 87.16 66.7 772.45 68.58 86.07 89.93 67.65 69.72 63.27 92.71 66.07 80.84 49.71
+> ✗69.25 81.01 87.09 66.69 72.34 68.56 86.05 89.89 67.61 69.72 63.35 92.71 66.12 80.84 49.83
+
+effective strategy overall. The 1-stage association process[12], which is computation-ally simpler, yields slightly lower performance, indicating that the additional matching with low-confidence detection results through the second stage enhances the ability to handle complex scenarios and maintain the identity consistency of the tracker. In contrast, the 1-stage strategy from BoostTrack[35] and the 4-stage strategy[47] per-form less favorably, suggesting that using only high-confidence detection results or overcomplicating the association process may introduce noise or overfitting that can diminish robustness. The 1-stage combined matching strategy[39], which penalizes low-confidence detection results, performs competitively but offers marginal improvements over the basic 1-stage approach except in DanceTrack. These results demonstrate that the 2-stage association strategy provides the best balance of accuracy and robustness. It shows giving chances to low-confidence detections after prioritizing high-confidence detection results can guarantee robust tracking performance. Therefore, the tracker that will serve as the new baseline adopts the 2-stage strategy. 
+
+5.12 Score Fusion 
+
+Table 14 assesses the impact of score fusion[14] in the second association phase of the 2-stage tracker. The baseline configuration with score fusion achieves robust performance with HOTA scores of 69.35, 68.58, and 63.27, respectively, across the datasets. In con-trast, omitting the score fusion approach results in marginal performance degradation in MOT17 and MOT20, while bringing slight improvement in DanceTrack. These find-ings suggest that score fusion provides modest but valuable improvements. Although it shows slight HOTA degradation in DanceTrack, it still maintains detection-related performance. The added stability through score fusion suggests that it can be a bene-ficial refinement in environments with complex object interactions. Therefore, we keep including the score fusion in our tracker. 24 Table 15 : Comparison of matching with different post-processing methods. AFLink clearly affects the complex scenarios but solely applying gaussian interpolation draws the most balanced performance across datasets.                                                                                                                                                   
+
+> MOT17 MOT20 DanceTrack AFLink Interpolation HOTA ↑MOTA ↑IDF1 ↑DetA ↑AssA ↑HOTA ↑MOTA ↑IDF1 ↑DetA ↑AssA ↑HOTA ↑MOTA ↑IDF1 ↑DetA ↑AssA ↑
+> ✗✗69.35 81.04 87.16 66.77 72.45 68.58 86.07 89.93 67.65 69.72 63.27 92.71 66.07 80.84 49.71
+> ✓✗68.97 81.04 86.28 66.70 71.75 68.53 86.04 89.72 67.61 69.65 63.68 92.72 66.78 80.82 50.37
+> ✗LI 70.16 82.34 87.76 67.81 73.03 68.91 86.45 90.14 67.91 70.11 -----
+> ✗GSI 70.34 82.61 87.85 67.97 73.34 69.69 86.82 90.19 68.66 71.00 -----
+> ✗GBI 70.79 82.78 87.93 68.49 73.66 69.21 86.79 90.18 68.25 70.39 -----
+> ✓LI 69.72 82.32 86.86 67.72 72.21 68.85 86.54 89.90 67.94 69.96 -----
+> ✓GSI 69.82 82.28 86.88 67.73 72.54 69.62 86.70 90.05 68.63 70.90 -----
+> ✓GBI 70.28 82.64 86.99 68.32 72.80 69.14 86.67 90.02 68.22 70.29 -----
+
+5.13 Post-Processing 
+
+Table 15 compares several post-processing strategies, including Linear Interpolation (LI)[14], Gaussian Score Interpolation (GSI)[23, 48], Gaussian Blur Interpolation (GBI)[35, 36], and Affinity Link (AFLink)[23], across MOT17, MOT20, and Dance-Track. Interpolation-based methods are not evaluated on DanceTrack because the dataset does not provide ground-truth annotations for fully occluded objects. Inter-polation may link track segments across long occlusions where objects are not visible, leading to erroneous trajectory reconstruction and potential false positives because of the absence of ground-truth annotations. In this manner, we only evaluate Interpolation-based methods on MOT17 and MOT20. Applying interpolation generally improves performance on MOT17 and MOT20 compared to the baseline without post-processing. In particular, GBI achieves the best performance on MOT17 with HOTA of 70.79, while GSI shows the strongest results on MOT20, achieving the highest HOTA of 69.69 and improving both detection and association metrics. LI also consistently improves the baseline, indicating that reconnecting short-term track fragmentation effectively enhances trajectory continuity. AFLink shows different behaviors across datasets. While it slightly degrades per-formance on MOT17 and MOT20, it improves performance on DanceTrack, achieving the best HOTA of 63.68 and the highest association accuracy. This indicates that AFLink is particularly beneficial in highly dynamic scenarios where appearance and motion patterns vary significantly. However, combining AFLink with interpolation methods does not yield additional gains and generally performs slightly worse than using interpolation alone. Overall, Gaussian-based interpolation methods provide the most balanced performance across datasets. 
+
+5.14 Final Baseline 
+
+Based on the findings from the component-wise analysis, we construct a final base-line tracker by integrating the most effective design choices. Starting from the basic tracking pipeline, SORT, we adopt a Kalman state vector defined as ( cx, cy, w, h )[15] to provide a more direct spatial representation of bounding boxes. To improve robust-ness in practical scenarios, we incorporate Occlusion-aware Initialization (OAI)[39], Confidence Weighted Kalman-Update (CWKU)[40], and Global Motion Compen-sation (GMC)[30], which address occlusion handling, improve the reliability of 25 Table 16 : Performance comparison between the original SORT baseline and the pro-posed final baseline. Our tracker integrates the most effective components identified in the ablation studies and shows consistent improvements across MOT17, MOT20, and DanceTrack. Additional gains are obtained when post-processing is applied.                                                               
+
+> MOT17 MOT20 DanceTrack Tracker HOTA ↑MOTA ↑IDF1 ↑DetA ↑AssA ↑HOTA ↑MOTA ↑IDF1 ↑DetA ↑AssA ↑HOTA ↑MOTA ↑IDF1 ↑DetA ↑AssA ↑
+> First baseline(SORT) 63.91 78.66 77.85 65.21 63.17 66.40 84.97 86.20 66.80 66.20 53.26 90.86 52.55 79.70 35.76
+> Ours 69.35 81.04 87.16 66.77 72.45 68.58 86.07 89.93 67.65 69.72 63.27 92.71 66.07 80.84 49.71
+> Ours w/ post-processing 69.82 82.28 86.88 67.73 72.54 69.62 86.70 90.05 68.63 70.90 -----
+
+state updates, and compensate for camera-induced motion, respectively. To further enhance performance, several implementation refinements are applied, including set-ting the track activation frame count to 2, introducing Detection-Track Confidence Similarity Boost[35], and applying an Exponential Moving Average (EMA)[45] for smoother appearance feature updates and more stable association. Finally, we employ weighted sum score fusion and a two-stage association strategy[14], enabling more reliable matching under varying detection confidence levels. Trajectory continuity is additionally improved through post-processing, Gaussian-based interpolation[36, 48], establishing a strong and generalized baseline across diverse MOT scenarios. As shown in Table 15, the proposed baseline significantly improves performance over the original SORT tracker across all datasets, demonstrating substantial gains in both detection and association quality. Our final performance improves HOTA of 5.44, 2.18, and 10.01 on MOT18, MOT20, and DanceTrack, respectively. The increase on DanceTrack was the largest, which indicates our new baseline can deal better with complicated scenar-ios. Similar improvements are observed in IDF1 and AssA, indicating more reliable identity preservation and trajectory consistency. 
+
+## 6 Conclusion 
+
+In this work, we present a systematic analysis of the tracking-by-detection (TBD) paradigm by examining how individual design components influence the performance of multi-object tracking (MOT) systems. Through controlled experiments across three diverse benchmarks—MOT17, MOT20, and DanceTrack—we investigate the role of key tracking modules, including motion modeling, initialization strategies, data association mechanisms, and post-processing techniques. Our study highlights that the effectiveness of a tracker does not arise from a single component but rather from the careful integration of complementary design choices within the TBD pipeline. By evaluating these components under a consistent experimental protocol, we identify combinations that lead to stable and well-balanced tracking performance across datasets with different characteristics, such as dense crowds and highly dynamic motions. Beyond establishing a strong baseline, our analysis provides practical insights into the design of reliable TBD trackers and offers a clearer understanding of how individual modules interact within the overall tracking framework. We hope that these findings serve as a useful reference for future research and facilitate the development of more robust and versatile MOT systems for real-world applications. 26 Declarations 
+
+Funding The authors received no specific funding for this work. 
+
+Conflict of interest/Competing interests The authors declare that they have no competing interests. 
+
+Ethics approval and consent to participate Not applicable. 
+
+Consent for publication Not applicable. 
+
+Data availability Data sharing not applicable to this article as no datasets were generated during the current study. The figures and tables were derived from publicly available literature. 
+
+Materials availability Not applicable. 
+
+Code availability The source code supporting the findings of this study will be made publicly available in a GitHub repository upon acceptance of the manuscript. 
+
+Author contribution Conceptualization, Y.Y and K.S.; methodology, Y.Y. and K.S.; investigation, Y.Y and K.S.; software, Y.Y and K.S.; formal analysis, Y.Y., K.S., and K.K; writing–original draft preparation, Y.Y. and K.S; writing–review and editing, Y.Y., K.S and K.K; visualization, Y.Y and K.K.; supervision, C.K.; project administration, C.K. All authors have read and approved the final manuscript. 
+
+## References 
+
+[1] Ristani, E., Tomasi, C.: Features for Multi-target Multi-camera Tracking and Re-identification. In: Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition, pp. 6036–6046 (2018) [2] Elhoseny, M.: Multi-object detection and tracking (modt) machine learning model for real-time video surveillance systems. Circuits, Systems, and Signal Processing 
+
+39 (2), 611–630 (2020) [3] Liu, Z., Wang, X., Wang, C., Liu, W., Bai, X.: Sparsetrack: Multi-object tracking by performing scene decomposition based on pseudo-depth. IEEE Transac-tions on Circuits and Systems for Video Technology 35 (5), 4870–4882 (2025) https://doi.org/10.1109/TCSVT.2024.3524670 [4] Hassan, S., Mujtaba, G., Rajput, A., Fatima, N.: Multi-object tracking: a system-atic literature review. Multimedia Tools and Applications 83 (14), 43439–43492 (2024) [5] Luo, C., Yang, X., Yuille, A.: Exploring Simple 3d Multi-object Tracking for Autonomous Driving. In: Proceedings of the IEEE/CVF International Conference on Computer Vision, pp. 10488–10497 (2021) [6] Zhang, X., Fan, Z., Tan, X., Liu, Q., Shi, Y.: Spatiotemporal adaptive attention 3d multiobject tracking for autonomous driving. Knowledge-Based Systems 267 ,110442–110453 (2023) [7] Ravindran, R., Santora, M.J., Jamali, M.M.: Multi-object detection and tracking, 27 based on dnn, for autonomous vehicles: A review. IEEE Sensors Journal 21 (5), 5668–5677 (2020) [8] Chang, X., Pan, H., Sun, W., Gao, H.: Yoltrack: Multitask learning based real-time multiobject tracking and segmentation for autonomous vehicles. IEEE Transactions on Neural Networks and Learning Systems 32 (12), 5323–5333 (2021) [9] Guidolin, M., Tagliapietra, L., Menegatti, E., Reggiani, M.: Hi-ros: Open-source multi-camera sensor fusion for real-time people tracking. Computer Vision and Image Understanding 232 , 103694 (2023) [10] Wu, D., Han, W., Wang, T., Dong, X., Zhang, X., Shen, J.: Referring multi-object tracking. In: 2023 IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR), pp. 14633–14642 (2023). IEEE [11] Ge, Z., Liu, S., Wang, F., Li, Z., Sun, J.: Yolox: Exceeding yolo series in 2021. arXiv preprint arXiv:2107.08430 (2021) [12] Bewley, A., Ge, Z., Ott, L., Ramos, F., Upcroft, B.: Simple Online and Real-time Tracking. In: Proceedings of the IEEE International Conference on Image Processing, pp. 3464–3468 (2016) [13] Wojke, N., Bewley, A., Paulus, D.: Simple Online and Realtime Tracking with a Deep Association Metric. In: Proceedings of the IEEE International Conference on Image Processing, pp. 3645–3649 (2017) [14] Zhang, Y., Sun, P., Jiang, Y., Yu, D., Weng, F., Yuan, Z., Luo, P., Liu, W., Wang, X.: Bytetrack: Multi-object Tracking by Associating Every Detection Box. In: Proceedings of the European Conference on Computer Vision, pp. 1–21 (2022) [15] Aharon, N., Orfaig, R., Bobrovsky, B.-Z.: Bot-sort: Robust associations multi-pedestrian tracking. arXiv preprint arXiv:2206.14651 (2022) [16] Shim, K., Ko, K., Yang, Y., Kim, C.: Focusing on tracks for online multi-object tracking. In: Proceedings of the Computer Vision and Pattern Recognition Conference, pp. 11687–11696 (2025) [17] Jin, Y., Gao, F., Yu, J., Wang, J., Shuang, F.: Multi-object tracking: Decoupling features to solve the contradictory dilemma of feature requirements. IEEE Trans-actions on Circuits and Systems for Video Technology 33 (9), 5117–5132 (2023) https://doi.org/10.1109/TCSVT.2023.3249162 [18] Kalman, R.E.: A new approach to linear filtering and prediction problems. Journal of Basic Engineering 82 (1), 35–45 (1960) https://doi.org/10.1115/1.3662552 28 [19] Munkres, J.: Algorithms for the assignment and transportation problems. Jour-nal of the Society for Industrial and Applied Mathematics 5, 32–38 (1957) https://doi.org/10.1137/0105003 [20] Yang, M., Han, G., Yan, B., Zhang, W., Qi, J., Lu, H., Wang, D.: Hybrid-sort: Weak Cues Matter for Online Multi-object Tracking. In: Proceedings of the AAAI Conference on Artificial Intelligence, vol. 38, pp. 6504–6512 (2024) [21] Zhang, Y., Wang, C., Wang, X., Zeng, W., Liu, W.: Fairmot: On the fairness of detection and re-identification in multiple object tracking. International journal of computer vision 129 , 3069–3087 (2021) [22] Zhang, Y., Xie, H., Jia, Y., Meng, J., Sang, M., Qiu, J., Zhao, S., Yang, Y.: Aipt: Adaptive information perception for online multi-object tracking. Knowledge-Based Systems 285 , 111369 (2024) [23] Du, Y., Zhao, Z., Song, Y., Zhao, Y., Su, F., Gong, T., Meng, H.: Strongsort: Make deepsort great again. IEEE Transactions on Multimedia 25 , 8725–8737 (2023) [24] Milan, A., Leal-Taix´ e, L., Reid, I., Roth, S., Schindler, K.: Mot16: A benchmark for multi-object tracking. arXiv preprint arXiv:1603.00831 (2016) [25] Sun, P., Cao, J., Jiang, Y., Yuan, Z., Bai, S., Kitani, K., Luo, P.: Dancetrack: Multi-object Tracking in Uniform Appearance and Diverse Motion. In: Proceed-ings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition, pp. 20993–21002 (2022) [26] Ren, S., He, K., Girshick, R., Sun, J.: Faster r-cnn: Towards real-time object detec-tion with region proposal networks. Advances in neural information processing systems 28 (2015) [27] Zagoruyko, S., Komodakis, N.: Wide residual networks. arXiv preprint arXiv:1605.07146 (2016) [28] Stadler, D., Beyerer, J.: Modelling ambiguous assignments for multi-person tracking in crowds. In: Proceedings of the IEEE/CVF Winter Conference on Applications of Computer Vision (WACV) Workshops, pp. 133–142 (2022) [29] Chu, X., Zheng, A., Zhang, X., Sun, J.: Detection in crowded scenes: One pro-posal, multiple predictions. In: Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition, pp. 12214–12223 (2020) [30] Bradski, G.: The opencv library. dr. dobb’s journal of software tools,(4.7. 0). computer program] Available at: https://opencv. org [Accessed: 04 April 2023] (2000) [31] Luo, H., Jiang, W., Gu, Y., Liu, F., Liao, X., Lai, S., Gu, J.: A strong baseline and 29 batch normalization neck for deep person re-identification. IEEE Transactions on Multimedia 22 (10), 2597–2609 (2019) [32] Evangelidis, G.D., Psarakis, E.Z.: Parametric image alignment using enhanced correlation coefficient maximization. IEEE transactions on pattern analysis and machine intelligence 30 (10), 1858–1865 (2008) [33] He, L., Liao, X., Liu, W., Liu, X., Cheng, P., Mei, T.: Fastreid: A Pytorch Tool-box for General Instance Re-identification. In: Proceedings of the 31st ACM International Conference on Multimedia, pp. 9664–9667 (2023) [34] Maggiolino, G., Ahmad, A., Cao, J., Kitani, K.: Deep oc-sort: Multi-pedestrian tracking by adaptive re-identification. In: 2023 IEEE International Conference on Image Processing (ICIP), pp. 3025–3029 (2023) [35] Stanojevic, V.D., Todorovic, B.T.: Boosttrack: boosting the similarity measure and detection confidence for improved multiple object tracking. Machine Vision and Applications 35 (3), 1–15 (2024) [36] Zeng, K., You, Y., Shen, T., Wang, Q., Tao, Z., Wang, Z., Liu, Q.: Nct:noise-control multi-object tracking. Complex & Intelligent Systems 9(4), 4331–4347 (2023) [37] Dendorfer, P., Rezatofighi, H., Milan, A., Shi, J., Cremers, D., Reid, I., Roth, S., Schindler, K., Leal-Taix´ e, L.: Mot20: A benchmark for multi object tracking in crowded scenes. arXiv preprint arXiv:2003.09003 (2020) [38] Yang, F., Odashima, S., Masui, S., Jiang, S.: Hard to track objects with irreg-ular motions and similar appearances? make it easier by buffering the matching space. In: Proceedings of the IEEE/CVF Winter Conference on Applications of Computer Vision, pp. 4799–4808 (2023) [39] Stadler, D., Beyerer, J.: An improved association pipeline for multi-person track-ing. In: Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition, pp. 3170–3179 (2023) [40] Jung, H., Kang, S., Kim, T., Kim, H.: Conftrack: Kalman filter-based multi-person tracking by utilizing confidence score of detection box. In: Proceedings of the IEEE/CVF Winter Conference on Applications of Computer Vision (WACV), pp. 6583–6592 (2024) [41] Cao, J., Pang, J., Weng, X., Khirodkar, R., Kitani, K.: Observation-centric sort: Rethinking sort for robust multi-object tracking. In: Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition, pp. 9686–9696 (2023) 30 [42] Rezatofighi, H., Tsoi, N., Gwak, J., Sadeghian, A., Reid, I., Savarese, S.: Gener-alized intersection over union: A metric and a loss for bounding box regression. In: Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition, pp. 658–666 (2019) [43] Zheng, Z., Wang, P., Liu, W., Li, J., Ye, R., Ren, D.: Distance-iou loss: Faster and better learning for bounding box regression. In: Proceedings of the AAAI Conference on Artificial Intelligence, vol. 34, pp. 12993–13000 (2020) [44] Stadler, D., Beyerer, J.: Past information aggregation for multi-person tracking. In: 2023 IEEE International Conference on Image Processing (ICIP), pp. 321–325 (2023) [45] Wang, Z., Zheng, L., Liu, Y., Li, Y., Wang, S.: Towards real-time multi-object tracking. In: European Conference on Computer Vision, pp. 107–122 (2020). Springer [46] Ren, H., Han, S., Ding, H., Zhang, Z., Wang, H., Wang, F.: Focus on details: Online multi-object tracking with diverse fine-grained representation. In: Proceed-ings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition, pp. 11289–11298 (2023) [47] Meng, T., Fu, C., Huang, M., Wang, X., He, J., Huang, T., Shi, W.: Localization-guided track: A deep association multi-object tracking framework based on localization confidence of detections. arXiv:2309.09765 (2023) [48] Williams, C., Rasmussen, C.: Gaussian processes for regression. Advances in neural information processing systems 8 (1995) [49] Shao, S., Zhao, Z., Li, B., Xiao, T., Yu, G., Zhang, X., Sun, J.: Crowdhuman: A benchmark for detecting human in a crowd. arXiv preprint arXiv:1805.00123 (2018) [50] Zhang, S., Xie, Y., Wan, J., Xia, H., Li, S.Z., Guo, G.: Widerperson: Adiverse dataset for dense pedestrian detection in the wild. IEEE Transactions on Multimedia 22 (2), 380–393 (2019) [51] Lin, T.-Y., Maire, M., Belongie, S., Bourdev, L., Girshick, R., Hays, J., Perona, P., Ramanan, D., Zitnick, C.L., Doll´ ar, P.: Microsoft COCO: Common Objects in Context. In: Proceedings of the European Conference on Computer Vision, pp. 740–755 (2014) [52] Zheng, L., Shen, L., Tian, L., Wang, S., Wang, J., Tian, Q.: Scalable Per-son Re-identification: A Benchmark. In: Proceedings of the IEEE International Conference on Computer Vision, pp. 1116–1124 (2015) [53] Schroff, F., Kalenichenko, D., Philbin, J.: Facenet: A Unified Embedding for Face 31 Recognition and Clustering. In: Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition, pp. 815–823 (2015) [54] Luiten, J., Osep, A., Dendorfer, P., Torr, P., Geiger, A., Leal-Taix´ e, L., Leibe, B.: Hota: A higher order metric for evaluating multi-object tracking. International Journal of Computer Vision 129 , 548–578 (2021) [55] Stiefelhagen, R., Bernardin, K., Bowers, R., Garofolo, J., Mostefa, D., Soundararajan, P.: The CLEAR 2006 Evaluation. In: Multimodal Technologies for Perception of Humans, pp. 1–44 (2007) [56] Ristani, E., Solera, F., Zou, R., Cucchiara, R., Tomasi, C.: Performance Mea-sures and a Data Set for Multi-target, Multi-camera Tracking. In: The European Conference on Computer Vision Workshop (2016) [57] Zhang, H., Wu, C., Zhang, Z., Zhu, Y., Lin, H., Zhang, Z., Sun, Y., He, T., Mueller, J., Manmatha, R., et al. : Resnest: Split-attention networks. In: Proceed-ings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition, pp. 2736–2746 (2022) 32

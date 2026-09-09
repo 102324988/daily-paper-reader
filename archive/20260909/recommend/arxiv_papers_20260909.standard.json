@@ -1,0 +1,701 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-09-09T21:12:43.961771+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 14,
+    "deep_cap": 6,
+    "deep_selected": 6,
+    "quick_candidates": 19,
+    "quick_skim_target": 11,
+    "quick_selected": 11
+  },
+  "deep_dive": [
+    {
+      "id": "2609.06343v1",
+      "source": "arxiv",
+      "title": "Radiation, Rotation and Scale Invariant Feature Descriptor for Multimodal Image Matching",
+      "abstract": "Multimodal image matching is a fundamental task for multi-source information fusion. However, geometric distortions and nonlinear radiometric differences (NRD) severely limit performance, especially under radiometric, rotation, and scale variations. To address this issue, we propose a radiation, rotation, and scale invariant (RRSI) feature descriptor. First, a dual-head regional sampling (DHRS) module simultaneously performs Cartesian and Log-Polar sampling on keypoint neighborhoods, retaining spatial structural properties while enhancing robustness to rotation and scale variations. We then jointly encode geometric and radiometric relations between multimodal images in a unified deep feature space, enabling feature encoding, interaction, and fusion across intra-modal, dual-head sampled, and inter-modal regions. Furthermore, we introduce a bidirectional cross-modal generative reconstruction constraint during training. By decoding implicit features into structural patches of the counterpart modality, this mechanism anchors modality-invariant geometric topologies without additional inference overhead. Experiments on optical-infrared and optical-SAR datasets demonstrate highly competitive matching performance and strong robustness to rotation and scale variations. RRSI supports the full rotation range from 0 to 360 degrees and scale factors up to four. Its generalization ability is further validated on multimodal images from computer vision, remote sensing, and medical imaging. The implementation will be made publicly available at https://github.com/yeyuanxin110/RRSI .",
+      "authors": [
+        "Yuanxin Ye",
+        "Tengfeng Tang",
+        "Tao Peng",
+        "Zhiqiang Han",
+        "Jiayuan Li",
+        "Mi Wang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-06T02:32:03+00:00",
+      "link": "https://arxiv.org/pdf/2609.06343v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 10.0,
+      "llm_evidence_en": "radiation, rotation and scale invariant feature descriptor for multimodal image matching",
+      "llm_evidence_cn": "面向多模态图像匹配的辐射旋转尺度不变特征描述子",
+      "llm_evidence": "面向多模态图像匹配的辐射旋转尺度不变特征描述子",
+      "canonical_evidence": "面向多模态图像匹配的辐射旋转尺度不变特征描述子",
+      "llm_tldr_en": "Proposes RRSI, a radiation-rotation-scale invariant feature descriptor using dual-head Cartesian and Log-Polar sampling and joint encoding of geometric and radiometric relations in a deep feature space for multimodal image matching.",
+      "llm_tldr_cn": "多模态图像匹配常受非线性辐射差异、旋转和尺度变化影响，传统描述子难以同时保持辐射不变性与几何稳健性。本文提出RRSI特征描述子：先由双头区域采样模块同时执行笛卡尔和对数极坐标采样，保留空间结构并增强对旋转、尺度的鲁棒性；再在统一深度特征空间中联合编码图像的几何关系与辐射关系。在包含辐射、旋转和尺度变化的多模态匹配实验上，RRSI显著提升了匹配正确率。它为多源图像融合等任务提供了更鲁棒的底层特征支撑。",
+      "llm_tldr": "多模态图像匹配常受非线性辐射差异、旋转和尺度变化影响，传统描述子难以同时保持辐射不变性与几何稳健性。本文提出RRSI特征描述子：先由双头区域采样模块同时执行笛卡尔和对数极坐标采样，保留空间结构并增强对旋转、尺度的鲁棒性；再在统一深度特征空间中联合编码图像的几何关系与辐射关系。在包含辐射、旋转和尺度变化的多模态匹配实验上，RRSI显著提升了匹配正确率。它为多源图像融合等任务提供了更鲁棒的底层特征支撑。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "feature extraction in computer vision",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2609.08265v1",
+      "source": "arxiv",
+      "title": "Tracking-by-detection in Multi-object Tracking: Survey and Experiments",
+      "abstract": "Multi-object tracking (MOT) is an essential computer vision task that simultaneously tracks multiple objects in video sequences, with various applications in surveillance, autonomous navigation, and human-computer interaction. The tracking-by-detection (TBD) paradigm, which combines object detection with temporal association, has emerged as a leading approach, driven by innovative algorithms. Despite recent progress, fair evaluation of TBD-based methods remains a challenge. Many studies introduce modules such as similarity metrics, data association strategies, or motion models, but they are often evaluated under inconsistent protocols, with different baseline trackers, hyperparameters, and datasets. Such inconsistencies obscure the genuine contribution of each module and hinder objective comparison. This survey systematically reviews TBD-based MOT techniques, including similarity measurements, data association, camera motion compensation, and interpolation strategies. Starting from a minimal baseline tracker, we fairly evaluate the contributions of each method across diverse datasets and accumulate well-balanced methods. Our findings establish a strong baseline tracker and provide a foundation for the principled design of robust and versatile MOT systems suitable for real-world deployment.",
+      "authors": [
+        "Yujin Yang",
+        "Kyujin Shim",
+        "Kangwook Ko",
+        "Changick Kim"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-08T05:11:40+00:00",
+      "link": "https://arxiv.org/pdf/2609.08265v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 10.0,
+      "llm_evidence_en": "survey and experiments on tracking-by-detection MOT",
+      "llm_evidence_cn": "检测-关联式多目标跟踪综述与实验",
+      "llm_evidence": "检测-关联式多目标跟踪综述与实验",
+      "canonical_evidence": "检测-关联式多目标跟踪综述与实验",
+      "llm_tldr_en": "Survey and experiments on tracking-by-detection in multi-object tracking, showing how inconsistent evaluation protocols obscure the true contribution of similarity metrics, association and motion models; argues for unified evaluation.",
+      "llm_tldr_cn": "多目标跟踪是计算机视觉的重要任务，检测-关联（tracking-by-detection）是该领域的主流范式，但各工作常用不同基线跟踪器、超参数与数据集评估，导致相似度度量、数据关联和运动模型等模块的真实贡献被混淆。本文对TBD范式的各组成模块进行系统综述，并通过统一实验协议进行公平对比。结果显示统一协议能够厘清不同模块的作用，为研究者提供可靠的模块选型和评测基线，推动多目标跟踪领域评估标准化。",
+      "llm_tldr": "多目标跟踪是计算机视觉的重要任务，检测-关联（tracking-by-detection）是该领域的主流范式，但各工作常用不同基线跟踪器、超参数与数据集评估，导致相似度度量、数据关联和运动模型等模块的真实贡献被混淆。本文对TBD范式的各组成模块进行系统综述，并通过统一实验协议进行公平对比。结果显示统一协议能够厘清不同模块的作用，为研究者提供可靠的模块选型和评测基线，推动多目标跟踪领域评估标准化。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "visual tracking surveys",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2609.05953v1",
+      "source": "arxiv",
+      "title": "ProtoRAG: Prototype-Based Retrieval Augmentation for Few-Shot Fine-Grained Remote Sensing Object Detection",
+      "abstract": "Few-shot fine-grained object detection (FGOD) in remote sensing imagery is challenging because limited annotations must support both object localization and discrimination among visually similar subcategories. Although multimodal large language models (MLLMs) provide strong coarse object localization, they lack explicit visual evidence for reliable fine-grained recognition. To address this limitation, we propose ProtoRAG, a prototype-based retrieval-augmented framework that decouples coarse localization from fine-grained recognition by equipping MLLMs with an external object-level visual memory. To construct a reliable visual memory from limited support samples, we introduce Discriminative Prototype Space Learning (DPSL), which encourages discriminative and prototype-stable representations through supervised contrastive learning and prototype-consistency regularization. We further develop an uncertainty-guided candidate-constrained reasoning strategy that augments MLLMs with retrieved candidate-specific visual references and invokes multimodal reasoning only for ambiguous instances. Extensive experiments show that ProtoRAG consistently surpasses representative baselines in nine few-shot settings, outperforming the strongest baselines by 14.80, 2.27, and 4.04 mAP$_{50}$ on MAR20, HRSC2016, and FAIR1M-2.0, respectively.",
+      "authors": [
+        "Jian Wang",
+        "Yuxiang Hong",
+        "Chufeng Zhou",
+        "Chao Pang",
+        "Xiaokang Zhang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-05T07:40:19+00:00",
+      "link": "https://arxiv.org/pdf/2609.05953v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "prototype-based retrieval augmented framework for few-shot fine-grained object detection",
+      "llm_evidence_cn": "面向少样本细粒度遥感目标检测的检索增强框架",
+      "llm_evidence": "面向少样本细粒度遥感目标检测的检索增强框架",
+      "canonical_evidence": "面向少样本细粒度遥感目标检测的检索增强框架",
+      "llm_tldr_en": "ProtoRAG equips MLLMs with an object-level visual memory built by discriminative prototype learning, decoupling coarse localization from fine-grained recognition in few-shot remote-sensing object detection.",
+      "llm_tldr_cn": "少样本细粒度遥感目标检测同时需要目标定位和相似子类判别，多模态大模型有较强粗定位能力但缺乏细粒度视觉证据。为此提出ProtoRAG，将粗定位与细粒度识别解耦，通过判别性原型空间学习构造外部目标级视觉记忆，并用原型检索增强大模型。该方法缓解有限标注下的识别瓶颈，并提升少样本遥感目标的细粒度判别与定位性能。",
+      "llm_tldr": "少样本细粒度遥感目标检测同时需要目标定位和相似子类判别，多模态大模型有较强粗定位能力但缺乏细粒度视觉证据。为此提出ProtoRAG，将粗定位与细粒度识别解耦，通过判别性原型空间学习构造外部目标级视觉记忆，并用原型检索增强大模型。该方法缓解有限标注下的识别瓶颈，并提升少样本遥感目标的细粒度判别与定位性能。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "object detection methods",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2609.06581v1",
+      "source": "arxiv",
+      "title": "Reading Decoder Trajectories: Training-Free Counterfactual Query-Trajectory Reliability for Small-Object Detection",
+      "abstract": "Small-object detection remains challenging because limited pixels cause information loss and suppress the scale knowledge encoded in pretrained detectors. Existing approaches mainly improve representations through multiscale training, architecture redesign, or parameter adaptation, implicitly assuming that frozen models lack the required capability. We challenge this assumption and hypothesize that small-object knowledge already exists in frozen detectors but remains underactivated and unstable during query evolution. To test this hypothesis, we propose Counterfactual Query-Trajectory Reliability (CQTR), a training-free framework that elicits latent responses through counterfactual scale interventions and interprets candidate reliability from decoder-internal spatial convergence, semantic persistence, and cross-scale conflicts. A small unlabeled training subset selects the appropriate correction mechanism for each model-data stream, without parameter updates or target-domain annotations. Across 27 combinations of nine frozen detectors and three datasets, CQTR consistently improves average precision (AP) and average precision for small objects (APs). Closed-loop analyses further show that scale intervention activates latent responses, trajectory evidence predicts ground-truth support, and unlabeled routing selects the more effective branch. CQTR therefore reframes small-object detection from external scale augmentation to the activation and reliability assessment of latent scale knowledge.",
+      "authors": [
+        "Zhaoning Shi",
+        "Bo Ma"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-09-06T12:59:20+00:00",
+      "link": "https://arxiv.org/pdf/2609.06581v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Targets small-object detection with a training-free counterfactual query reliability method, matching object detection methods requirement.",
+      "llm_evidence_cn": "针对小目标检测提出无训练反事实查询轨迹可靠性方法，与目标检测方法需求直接匹配。",
+      "llm_evidence": "针对小目标检测提出无训练反事实查询轨迹可靠性方法，与目标检测方法需求直接匹配。",
+      "canonical_evidence": "针对小目标检测提出无训练反事实查询轨迹可靠性方法，与目标检测方法需求直接匹配。",
+      "llm_tldr_en": "Small-object detection is hard because frozen detectors often leave scale knowledge underactivated. The paper challenges this via CQTR, a training-free framework that applies counterfactual scale interventions to decoder query trajectories, eliciting latent small-object responses and improving detection without retraining.",
+      "llm_tldr_cn": "小目标检测性能受限于像素少以及预训练模型中尺度知识未被激活。现有方法主要依靠多尺度训练或网络结构改造，本文则假设冻结模型已具备相关能力。为此提出CQTR，一种训练无关的反事实尺度干预框架，通过读取解码器查询轨迹的可靠性来激发潜在表征。实验表明该方法无需重新训练即可增强小目标检测效果。",
+      "llm_tldr": "小目标检测性能受限于像素少以及预训练模型中尺度知识未被激活。现有方法主要依靠多尺度训练或网络结构改造，本文则假设冻结模型已具备相关能力。为此提出CQTR，一种训练无关的反事实尺度干预框架，通过读取解码器查询轨迹的可靠性来激发潜在表征。实验表明该方法无需重新训练即可增强小目标检测效果。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "object detection methods",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2609.07373v1",
+      "source": "arxiv",
+      "title": "TRAIL: Trajectory-Aware Visual Place Recognition against Unordered Databases",
+      "abstract": "Modern Visual Place Recognition (VPR) methods excel on standard benchmarks yet remain brittle in feature-poor environments. By treating each query image in isolation, they discard the sequential context in any real trajectory. We formalize a task that exploits this context: given a query sequence, localize the final image against an unordered reference database -- which, unlike sequence-to-sequence methods, requires no sequential structure in the database. We propose TRAIL (TRajectory-Aware Image Localization), a principled framework based on Conditional Random Fields (CRF) that combines learned functions for visual similarity and for camera-motion consistency, refining a distribution over candidate references as each query arrives. A lightweight post-processing layer atop any pre-trained VPR backbone, TRAIL improves a state-of-the-art baseline by up to 8.3 percentage points on our primary benchmark, transfers to unseen datasets without retraining, and delivers its largest gains where visual cues are scarce.",
+      "authors": [
+        "Dominik A. Kloepfer",
+        "Patrick Wenzel"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-07T11:49:42+00:00",
+      "link": "https://arxiv.org/pdf/2609.07373v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Visual place recognition is a visual recognition algorithm paper",
+      "llm_evidence_cn": "视觉地点识别属于视觉识别算法类论文",
+      "llm_evidence": "视觉地点识别属于视觉识别算法类论文",
+      "canonical_evidence": "视觉地点识别属于视觉识别算法类论文",
+      "llm_tldr_en": "Presents TRAIL, a CRF-based trajectory-aware visual place recognition method that combines visual similarity and camera-motion consistency to localize against unordered reference databases.",
+      "llm_tldr_cn": "视觉地点识别通常逐张处理查询图像，忽略了真实轨迹所蕴含的序列上下文，在特征稀疏环境下表现脆弱。TRAIL把该问题形式化为在无序参考库中定位查询序列的最终图像，并基于条件随机场融合视觉相似度与相机运动一致性，逐帧更新候选地点分布。与序列到序列方法不同，它不要求参考库具备序列结构。实验显示TRAIL在无序参考库上有效利用轨迹信息提升了定位精度，为实际地点识别提供了更合理的范式。",
+      "llm_tldr": "视觉地点识别通常逐张处理查询图像，忽略了真实轨迹所蕴含的序列上下文，在特征稀疏环境下表现脆弱。TRAIL把该问题形式化为在无序参考库中定位查询序列的最终图像，并基于条件随机场融合视觉相似度与相机运动一致性，逐帧更新候选地点分布。与序列到序列方法不同，它不要求参考库具备序列结构。实验显示TRAIL在无序参考库上有效利用轨迹信息提升了定位精度，为实际地点识别提供了更合理的范式。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "visual recognition algorithms",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2609.08283v1",
+      "source": "arxiv",
+      "title": "MARS-CLIP: Multi-Resolution and Attention Refined Zero-Shot Image Segmentation",
+      "abstract": "Contrastive Language-Image Pre-training (CLIP) has demonstrated impressive capabilities in zero-shot transfer but often struggles with dense prediction tasks due to low spatial resolution and the loss of structural information. To address these limitations, we propose MARS-CLIP (Multi-resolution and Attention Refined Segmentation for CLIP), a novel framework for zero-shot semantic segmentation. Our approach introduces two key strategies: (i) a multi-resolution feature extraction module that fuses local fine-grained features with global context to overcome input resolution constraints, and (ii) an attention refinement mechanism that injects spatial and color biases from intermediate layers into the final self-attention block to accurately restore object boundaries. A set of experiments on six public datasets demonstrates that MARS-CLIP significantly outperforms state-of-the-art methods.",
+      "authors": [
+        "Nagito Saito",
+        "Shintaro Ito",
+        "Koichi Ito",
+        "Takafumi Aoki"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-08T05:53:17+00:00",
+      "link": "https://arxiv.org/pdf/2609.08283v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Proposes MARS-CLIP, a zero-shot semantic segmentation framework, directly matching image segmentation techniques.",
+      "llm_evidence_cn": "提出MARS-CLIP零样本语义分割框架，直接对应图像分割技术需求。",
+      "llm_evidence": "提出MARS-CLIP零样本语义分割框架，直接对应图像分割技术需求。",
+      "canonical_evidence": "提出MARS-CLIP零样本语义分割框架，直接对应图像分割技术需求。",
+      "llm_tldr_en": "MARS-CLIP addresses CLIP's weak dense prediction by adding multi-resolution feature extraction and attention refinement, improving zero-shot semantic segmentation.",
+      "llm_tldr_cn": "CLIP具备零样本迁移能力但在稠密预测任务上常受低空间分辨率和结构信息损失限制。为此论文提出MARS-CLIP，一个零样本语义分割框架，通过多分辨率特征提取融合局部精细特征与全局上下文，缓解输入分辨率限制；并利用注意力精炼机制把中间层的空间与颜色先验注入最终自注意力，以恢复结构细节。在相关零样本分割基准上能取得更好的分割效果。该方法为CLIP在稠密预测中的空间结构保持提供了有效方案。",
+      "llm_tldr": "CLIP具备零样本迁移能力但在稠密预测任务上常受低空间分辨率和结构信息损失限制。为此论文提出MARS-CLIP，一个零样本语义分割框架，通过多分辨率特征提取融合局部精细特征与全局上下文，缓解输入分辨率限制；并利用注意力精炼机制把中间层的空间与颜色先验注入最终自注意力，以恢复结构细节。在相关零样本分割基准上能取得更好的分割效果。该方法为CLIP在稠密预测中的空间结构保持提供了有效方案。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "image segmentation techniques",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2609.05583v1",
+      "source": "arxiv",
+      "title": "An overview of 3D Vision-Language Models",
+      "abstract": "Vision-Language Models (VLMs) are reshaping computer vision by aligning visual and textual embeddings, allowing models to recognize visual concepts and reason about them using natural language. Traditional 3D deep-learning models, however, are typically trained for specific tasks, such as classification, segmentation, or detection, and do not naturally support cross-modal retrieval from their embedding spaces using text or images as queries. To address this issue, Contrastive Language-Image Pretraining (CLIP)-based methods align 3D embeddings with pretrained image and text representations, giving rise to 3D Vision-Language Models (3D VLMs) that support zero-shot classification, cross-modal retrieval, and open-vocabulary recognition of 3D shapes. This tutorial provides an overview of 3D VLMs, ranging from basic definitions of 3D representations and their encoding into embeddings to cross-modal contrastive alignment, modern multimodal frameworks, and 3D Vision-Large Language Models (3D VLLMs). We present the main definitions of contrastive learning for multimodal embedding alignment and highlight recent advances in language-guided 3D Gaussian splatting, 3D shape generation, and embodied AI for robotics.",
+      "authors": [
+        "Márcus Lobo",
+        "Vitor Matias",
+        "Afonso Paiva",
+        "Jeová Farias",
+        "Tiago Novello",
+        "Moacir Ponti"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-04T15:43:51+00:00",
+      "link": "https://arxiv.org/pdf/2609.05583v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "survey of current 3D vision-language modeling advances",
+      "llm_evidence_cn": "关于三维视觉语言模型最新进展的综述",
+      "llm_evidence": "关于三维视觉语言模型最新进展的综述",
+      "canonical_evidence": "关于三维视觉语言模型最新进展的综述",
+      "llm_tldr_en": "Provides a state-of-the-art overview of 3D VLMs built on CLIP-style alignment, showing how text-aligned 3D embeddings enable zero-shot and open-vocabulary 3D recognition.",
+      "llm_tldr_cn": "传统三维模型多为分类、分割或检测等单一任务定制，难以用文本或图像查询进行跨模态识别。本综述介绍基于 CLIP 方法将 3D 编码器与图像文本表示对齐形成 3D 视觉语言模型的主要途径，从而支持零样本分类、跨模态检索和开放词汇三维识别，系统梳理该领域的最新发展脉络。",
+      "llm_tldr": "传统三维模型多为分类、分割或检测等单一任务定制，难以用文本或图像查询进行跨模态识别。本综述介绍基于 CLIP 方法将 3D 编码器与图像文本表示对齐形成 3D 视觉语言模型的主要途径，从而支持零样本分类、跨模态检索和开放词汇三维识别，系统梳理该领域的最新发展脉络。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "Search for state of the art in computer vision",
+      "matched_requirement_id": "req-9",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2609.03077v1",
+      "source": "arxiv",
+      "title": "Position: Unlabeled IS NOT Equal to No Human Supervision in Visual Learning",
+      "abstract": "This position paper argues that the absence of labels does not imply the absence of human supervision in visual learning, and urges the research community to identify sources of supervision more explicitly. Many recent methods in computer vision build upon representations learned from large-scale unlabeled data, and are therefore grouped under the same umbrella term ``unsupervised.'' However, different data curation schemes and training objectives embed substantially different human priors on which models rely, and we argue that one ``unsupervised'' umbrella term is no longer capturing these distinctions. This ambiguity makes it harder to compare unsupervised learning research conducted under different assumptions, coinciding with a sharp decline in papers titled with ``unsupervised'' in flagship computer vision conferences since 2021, despite continued growth of the field. While we fully embrace pre-training as a strong foundation for modern computer vision, we advocate for a community-level effort toward greater conceptual clarity: authors are encouraged to disclose priors in data selection and learning objectives, and to specify which components of a learning pipeline depend on which assumptions. Standardized disclosure practices can improve academic communication, ensure fairer comparisons, and preserve methodological diversity in unsupervised learning.",
+      "authors": [
+        "Dong Lao"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.LG"
+      ],
+      "published": "2026-09-02T18:45:41+00:00",
+      "link": "https://arxiv.org/pdf/2609.03077v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Position paper on human supervision in visual learning; contributes conceptually to computer vision research and unsupervised methods.",
+      "llm_evidence_cn": "对视觉学习中人类监督来源的反思性观点文章，关系到计算机视觉研究方法论。",
+      "llm_evidence": "对视觉学习中人类监督来源的反思性观点文章，关系到计算机视觉研究方法论。",
+      "canonical_evidence": "对视觉学习中人类监督来源的反思性观点文章，关系到计算机视觉研究方法论。",
+      "llm_tldr_en": "This position paper argues that unlabeled data do not mean human-supervision-free in visual learning. It shows that different data curation schemes and training objectives embed distinct human priors, so a single unsupervised umbrella hampers comparability, and calls on the field to explicitly identify sources of supervision when building and benchmarking visual models.",
+      "llm_tldr_cn": "视觉学习中大量无标签训练数据仍依赖人工构建设计和训练目标，包含不同的人类先验。作者认为把所有这类方法都称为无监督会掩盖本质区别，导致研究难以比较。论文作为立场观点，呼吁研究者更明确地辨识视觉模型所依赖的监督来源。作者认为这有助于改善无监督视觉学习研究的严谨性和可比较性。",
+      "llm_tldr": "视觉学习中大量无标签训练数据仍依赖人工构建设计和训练目标，包含不同的人类先验。作者认为把所有这类方法都称为无监督会掩盖本质区别，导致研究难以比较。论文作为立场观点，呼吁研究者更明确地辨识视觉模型所依赖的监督来源。作者认为这有助于改善无监督视觉学习研究的严谨性和可比较性。",
+      "llm_tags": [
+        "query:cv:composite"
+      ],
+      "matched_query_tag": "query:cv:composite",
+      "matched_query_text": "Papers central to 计算机视觉相关论文, especially work that connects or combines: computer vision research papers; object detection methods; image segmentation techniques; visual recognition algorithms; feature extraction in computer vision; visual tracking surveys; Find papers on computer vision; Retrieve computer vision research articles; Search for state of the art in computer vision.",
+      "matched_requirement_id": "req-composite-cv",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2609.05523v1",
+      "source": "arxiv",
+      "title": "Infrastructure-based Monocular 3D Vehicle Localization Framework with Experimental Validation",
+      "abstract": "This paper presents a one-stage learning framework that maps monocular roadside-camera images directly to vehicle states in a ground-fixed coordinate frame. Unlike conventional approaches that first detect vehicles in the image plane and subsequently apply geometric post-processing, the proposed method leverages features from a pretrained object detector to jointly estimate each vehicle's ground-plane position, dimensions, and yaw angle. The framework therefore uses visual features not only for vehicle detection but also for direct spatial and orientation estimation. To support model training and evaluation, we develop a data-collection and label-generation pipeline based on synchronized video from a roadside camera and an unmanned aerial vehicle (UAV). Acting as a temporary top-view sensing platform, the UAV provides vehicle trajectories, dimensions, and orientations, which are transformed into the ground-fixed coordinate frame and temporally aligned with the roadside-camera images to generate ground-truth labels. The framework is evaluated using data collected during multiple experiments at the Mcity Test Facility. Results show that the proposed method can recover vehicle trajectories and orientations from monocular roadside imagery without a separate geometric post-processing stage, demonstrating its potential as a scalable approach to infrastructure-based perception at urban intersections.",
+      "authors": [
+        "Akos T. Kopeczi-Bocz",
+        "Tian Mi",
+        "Gabor Orosz",
+        "Denes Takacs"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.LG",
+        "eess.IV"
+      ],
+      "published": "2026-09-01T09:21:14+00:00",
+      "link": "https://arxiv.org/pdf/2609.05523v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Leverages features from a pretrained object detector in a one-stage framework for 3D vehicle localization, connecting to object detection methods.",
+      "llm_evidence_cn": "用预训练目标检测器特征进行单阶段三维车辆状态估计，与目标检测方法形成连接。",
+      "llm_evidence": "用预训练目标检测器特征进行单阶段三维车辆状态估计，与目标检测方法形成连接。",
+      "canonical_evidence": "用预训练目标检测器特征进行单阶段三维车辆状态估计，与目标检测方法形成连接。",
+      "llm_tldr_en": "The paper proposes a one-stage learning framework for roadside monocular 3D vehicle localization, directly estimating ground-plane position, dimensions, and yaw from pretrained object detector features instead of separate detection followed by geometry. A synchronized video and drone data and label pipeline supports experimental validation.",
+      "llm_tldr_cn": "传统路侧摄像机三维车辆定位在图像平面检测后还要做几何后处理，流程较重。该文提出单阶段框架，直接从预训练目标检测器的视觉特征回归车辆的地面位置、尺寸和偏航角。作者还基于同步路侧视频与无人机数据搭建标注与训练管线。实验验证了该框架能在真实路侧场景中估计三维车辆状态。",
+      "llm_tldr": "传统路侧摄像机三维车辆定位在图像平面检测后还要做几何后处理，流程较重。该文提出单阶段框架，直接从预训练目标检测器的视觉特征回归车辆的地面位置、尺寸和偏航角。作者还基于同步路侧视频与无人机数据搭建标注与训练管线。实验验证了该框架能在真实路侧场景中估计三维车辆状态。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "object detection methods",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.06051v1",
+      "source": "arxiv",
+      "title": "Image-Scale Robustness and Visual Recognition Performance: A Cross-Architecture Analysis",
+      "abstract": "The sensitivity of visual recognition models to changes in image scale is well established, yet the factors governing this sensitivity across heterogeneous architectures remain unclear. In this work, we investigate whether scale robustness exhibits a common quantitative structure across modern vision models. We evaluate 20 pretrained ImageNet-1K classifiers spanning seven architectural families, including convolutional, mobile, efficient, and Transformer-based architectures. By systematically reducing input image scale, we construct scale-accuracy response curves and define a characteristic scale as a compact measure of the onset of substantial recognition degradation. We then examine the relationship between characteristic scale and baseline recognition accuracy, model parameter count, architectural family, and representation stability. A strong inverse association is observed between baseline accuracy and characteristic scale (Pearson r = -0.890, R^2= 0.792, p < 10^-6). This relationship remains stable under bootstrap resampling, leave-one-architecture-out analysis, and leave-one-family-out analysis. In contrast, parameter count provides negligible additional explanatory power after controlling for baseline accuracy (p = 0.80), while architectural family does not provide significant incremental explanatory power. Furthermore, characteristic scale shows essentially no association with representation stability (r = -0.003, p = 0.991). These results indicate that, across the studied models, scale robustness is strongly organized by baseline recognition performance rather than simply by model size, architectural family, or representation stability. The study provides an empirical framework for characterizing scale robustness across vision architectures and identifies a reproducible accuracy-scale regularity that warrants further theoretical investigation.",
+      "authors": [
+        "Anish Monsley Kirupakaran"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-09-05T12:12:00+00:00",
+      "link": "https://arxiv.org/pdf/2609.06051v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Analyzes scale robustness and recognition performance across visual recognition architectures; addresses visual recognition algorithms.",
+      "llm_evidence_cn": "跨架构分析视觉识别模型的尺度鲁棒性与识别性能，直接关系视觉识别算法。",
+      "llm_evidence": "跨架构分析视觉识别模型的尺度鲁棒性与识别性能，直接关系视觉识别算法。",
+      "canonical_evidence": "跨架构分析视觉识别模型的尺度鲁棒性与识别性能，直接关系视觉识别算法。",
+      "llm_tldr_en": "The paper asks whether image-scale robustness has common quantitative structure across visual recognition architectures. It evaluates 20 pretrained ImageNet-1K classifiers of seven families, records scale-accuracy curves, and defines a characteristic scale quantifying the onset of recognition degradation for fair cross-model comparison.",
+      "llm_tldr_cn": "视觉识别模型对输入尺度缩小十分敏感，但跨架构的共同规律尚不清楚。该研究评估了七大类20个ImageNet预训练分类器，系统改变输入图像尺度并绘制尺度-精度响应曲线。由此定义特征尺度指标，用来衡量识别性能开始明显下降的临界点。所揭示的尺度鲁棒性定量结构有助于比较不同架构的识别表现。",
+      "llm_tldr": "视觉识别模型对输入尺度缩小十分敏感，但跨架构的共同规律尚不清楚。该研究评估了七大类20个ImageNet预训练分类器，系统改变输入图像尺度并绘制尺度-精度响应曲线。由此定义特征尺度指标，用来衡量识别性能开始明显下降的临界点。所揭示的尺度鲁棒性定量结构有助于比较不同架构的识别表现。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "visual recognition algorithms",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2609.05972v1",
+      "source": "arxiv",
+      "title": "Efficient and Robust Camera-independent Multiview 3D Geometric Reconstruction from Noisy Monocular Depth Estimation and Multiple Point Matching",
+      "abstract": "We present an efficient and robust method for 3D geometric reconstruction that is based solely on the camera-independent linear relationships among a given set of points, which are stable over time and robustly estimated using multiple point matches. We essentially learn, from correspondences between points across several frames, a linear geometric auto-regression matrix $\\mathbf{W}$, which establishes how a point in 3D can be expressed as a linear combination of all the others. This matrix is constant and does not depend on the world coordinate system or the camera pose---it is an intrinsic property of the point set. We also show that the principal eigenvectors of $\\mathbf{W}$, which all have eigenvalue $1$, provide a homogeneous representation of the 3D point configuration.   The first version of our method takes advantage of noisy monocular depth maps in order to obtain, from multiple frames, a robust geometric auto-regression matrix $\\mathbf{W}$ of linear relationships between the 3D points. Thus, we build on recent advances in deep learning, which now provide monocular depth estimation models that are fast but very often noisy. Our approach handles noise through robust linear estimation over several frames.   The second version of our method does not need monocular depth estimation maps. It applies in cases of weak-perspective projection, when the linear combinations between the 3D points can be robustly estimated from their 2D projections in the image.   Note that the camera projection matrix is never used in our derivations. Consequently, our method does not recover camera pose, but only 3D structure. This is a key difference between our method and the related literature on 3D geometric reconstruction.",
+      "authors": [
+        "Marius Leordeanu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-05T08:20:53+00:00",
+      "link": "https://arxiv.org/pdf/2609.05972v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "3D reconstruction using camera-independent linear point relations from monocular depth and point matches; computer vision topic broader than listed subtasks.",
+      "llm_evidence_cn": "利用点集间相机无关线性关系进行三维重建，是宽泛计算机视觉研究而非列出的子任务。",
+      "llm_evidence": "利用点集间相机无关线性关系进行三维重建，是宽泛计算机视觉研究而非列出的子任务。",
+      "canonical_evidence": "利用点集间相机无关线性关系进行三维重建，是宽泛计算机视觉研究而非列出的子任务。",
+      "llm_tldr_en": "An efficient multiview 3D reconstruction method learns camera-independent linear point relations from noisy monocular depth and point matches, avoiding dependence on camera pose.",
+      "llm_tldr_cn": "多视角三维重建常依赖相机参数与坐标系，在含噪单目深度估计下鲁棒性不足。论文提出仅利用点集间相机无关线性关系进行三维重建，通过多点匹配学习几何自回归矩阵，使重建结果不依赖相机位姿。作者进一步用该矩阵的主特征向量估计稳定三维结构。该方法提供了一种高效稳健的重建途径，可在相机参数不确定时保持几何可靠性。",
+      "llm_tldr": "多视角三维重建常依赖相机参数与坐标系，在含噪单目深度估计下鲁棒性不足。论文提出仅利用点集间相机无关线性关系进行三维重建，通过多点匹配学习几何自回归矩阵，使重建结果不依赖相机位姿。作者进一步用该矩阵的主特征向量估计稳定三维结构。该方法提供了一种高效稳健的重建途径，可在相机参数不确定时保持几何可靠性。",
+      "llm_tags": [
+        "query:cv:composite"
+      ],
+      "matched_query_tag": "query:cv:composite",
+      "matched_query_text": "Papers central to 计算机视觉相关论文, especially work that connects or combines: computer vision research papers; object detection methods; image segmentation techniques; visual recognition algorithms; feature extraction in computer vision; visual tracking surveys; Find papers on computer vision; Retrieve computer vision research articles; Search for state of the art in computer vision.",
+      "matched_requirement_id": "req-composite-cv",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2609.06410v1",
+      "source": "arxiv",
+      "title": "Visual Search Augmented Chain-of-Thought Reasoning for Attribute Value Extraction from Product Videos",
+      "abstract": "Existing approaches to visual attribute value extraction (AVE) primarily rely on static product images, failing to capture temporal cues, multi-angle views and fine-grained visual details. Directly applying video vision-language models (VLMs) to product AVE results in limited performance due to the lack of domain knowledge, and fine-tuning them requires extensive high-quality data and substantial computational resources. Thus, we propose visual search augmented chain-of-thought reasoning (ViS-CoT), a training-free, plug-and-play pipeline that can be easily applied to any open-source video VLM for video-to-text AVE in e-Commerce. Specifically, ViS-CoT employs visual clustering to identify representative frames, followed by visual search to retrieve semantically similar product knowledge that can enrich attribute cues. Next, an interleaved CoT reasoning module iteratively refines reasoning through visually-aligned auxiliary texts derived from captioning and automatic speech recognition. Finally, the integrated information guides the model toward accurate and fine-grained attribute predictions. Extensive experiments across 14 product categories on the VideoAVE dataset show that ViS-CoT consistently enhances multiple state-of-the-art video VLMs, achieving an average improvement of 17.91 percentage points in micro-F1.",
+      "authors": [
+        "Tong Wu",
+        "Ming Cheng",
+        "Jiazhen Hu",
+        "Jiaying Gong",
+        "Hoda Eldardiry"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL",
+        "cs.CV"
+      ],
+      "published": "2026-09-06T06:01:57+00:00",
+      "link": "https://arxiv.org/pdf/2609.06410v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "A computer vision research paper for product-video attribute extraction using visual search and video VLMs, relevant to general CV query.",
+      "llm_evidence_cn": "面向商品视频属性提取的视觉搜索增强思维链方法，属于计算机视觉研究论文。",
+      "llm_evidence": "面向商品视频属性提取的视觉搜索增强思维链方法，属于计算机视觉研究论文。",
+      "canonical_evidence": "面向商品视频属性提取的视觉搜索增强思维链方法，属于计算机视觉研究论文。",
+      "llm_tldr_en": "Visual attribute extraction from product videos is limited when using static images or fine-tuning video VLMs. This work presents ViS-CoT, a training-free pipeline that clusters representative frames and augments chain-of-thought reasoning with visual search, enabling open-source video VLMs to handle video-to-text attribute extraction without additional training data or compute.",
+      "llm_tldr_cn": "商品视频属性值提取如果只用静态图会丢失时态和多视角信息，而直接微调视频VLM又需要大量数据与算力。文章提出ViS-CoT，一种训练无关且即插即用的流程：通过视觉聚类选取代表性帧，再由视觉检索增强的思维链推理为视频VLM补充领域知识。该方法可应用于任意开源视频VLM，实现不经微调的视频到文本属性提取。",
+      "llm_tldr": "商品视频属性值提取如果只用静态图会丢失时态和多视角信息，而直接微调视频VLM又需要大量数据与算力。文章提出ViS-CoT，一种训练无关且即插即用的流程：通过视觉聚类选取代表性帧，再由视觉检索增强的思维链推理为视频VLM补充领域知识。该方法可应用于任意开源视频VLM，实现不经微调的视频到文本属性提取。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "computer vision research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.06078v1",
+      "source": "arxiv",
+      "title": "Report of the 8th LSVOS Challenge: Complex and Multimodal Video Object Segmentation",
+      "abstract": "This report summarizes the 8th Large-scale Video Object Segmentation (LSVOS) Challenge, held in conjunction with ECCV 2026. The challenge evaluates video segmentation in three complementary settings: complex semi-supervised video object segmentation on MOSEv2, text-guided referring video object segmentation on MeViSv2-Text, and audio-guided referring video object segmentation on MeViSv2-Audio. We describe the tasks and evaluation protocols and review the methods of the top three teams in each track. Across the nine leading solutions, foundation segmentation models are combined with target-aware memory, multimodal reasoning, explicit target-existence verification, agentic interaction, and corrective tracking. These systems illustrate a broader transition from single-model mask propagation toward modular pipelines that reason about object identity, query validity, and temporal reliability.",
+      "authors": [
+        "Chang Liu",
+        "Henghui Ding",
+        "Lingyi Hong",
+        "Ning Xu",
+        "Linjie Yang",
+        "Yuchen Fan",
+        "Canyang Wu",
+        "Jinrong Zhang",
+        "Xusheng He",
+        "Ce Bian",
+        "Xianjing Han",
+        "Jianlong Wu",
+        "Mingqi Gao",
+        "Sijie Li",
+        "Jungong Han",
+        "JeongRae Kim",
+        "Chaehyun Kim",
+        "Changwon Lim",
+        "Jungyoon Lee",
+        "Gyuil Lim",
+        "Doeon Kim",
+        "Seong-heum Kim",
+        "Pranjal Aggarwal",
+        "Sean Welleck",
+        "Yiwen Ren",
+        "Jianing Liu",
+        "Yingxin Wang",
+        "Kexin Zhang",
+        "Licheng Jiao",
+        "Lingling Li",
+        "Xu Liu",
+        "Jinxing Zhou",
+        "Suiyi Zhao",
+        "Yanghao Zhou",
+        "Ruohao Guo",
+        "Liangtao Shi",
+        "Jinxia Xie",
+        "Xiantao Hu",
+        "Ting Liu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-05T13:11:38+00:00",
+      "link": "https://arxiv.org/pdf/2609.06078v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Video object segmentation challenge report, directly relevant to image segmentation techniques",
+      "llm_evidence_cn": "视频目标分割挑战赛报告，直接关联图像分割技术",
+      "llm_evidence": "视频目标分割挑战赛报告，直接关联图像分割技术",
+      "canonical_evidence": "视频目标分割挑战赛报告，直接关联图像分割技术",
+      "llm_tldr_en": "Reports the 8th LSVOS video object segmentation challenge, reviewing nine top solutions across three tasks and showing gains from combining foundation models with target-aware memory, multimodal reasoning, and corrective tracking.",
+      "llm_tldr_cn": "视频目标分割在复杂场景与多模态引导下仍面临不小挑战，需要系统性评测来对应当前发展。第八届LSVOS挑战赛设定了半监督视频目标分割、文本引导和音频引导三种互补任务。报告描述了各任务的评测协议，并回顾了九个顶尖团队方案，它们结合基础分割模型、目标感知记忆、多模态推理与纠错跟踪。结果显示这些系统提升了复杂场景下的分割能力，为后续研究提供了清晰的参照和方向。",
+      "llm_tldr": "视频目标分割在复杂场景与多模态引导下仍面临不小挑战，需要系统性评测来对应当前发展。第八届LSVOS挑战赛设定了半监督视频目标分割、文本引导和音频引导三种互补任务。报告描述了各任务的评测协议，并回顾了九个顶尖团队方案，它们结合基础分割模型、目标感知记忆、多模态推理与纠错跟踪。结果显示这些系统提升了复杂场景下的分割能力，为后续研究提供了清晰的参照和方向。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "image segmentation techniques",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2609.06074v1",
+      "source": "arxiv",
+      "title": "NSFlow: End-to-End Differentiable Neuro-Symbolic Optical Flow for Visual Odometry",
+      "abstract": "Sparse optical flow provides stable inter-frame correspondence, playing a key role in Visual Odometry (VO) and Visual-Inertial Odometry (VIO). Classical optimization-based methods, such as Lucas-Kanade (LK), perform well under small displacements but are sensitive to large motions and illumination changes. Modern regression-based learning methods, while more robust in complex scenes, are often computationally heavy and lack explicit geometric consistency, making them less suitable for efficient VO/VIO front-ends. To bridge this gap, we propose a hybrid neuro-symbolic framework that combines the strengths of both paradigms. Our method uses a Convolutional Neural Network (CNN) to extract robust feature representations, which is fed into a differentiable LK optimizer to estimate optical flow in an end-to-end trainable manner. Through implicit differentiation, gradients are propagated across the iterative solver, enabling joint optimization of feature extraction and flow estimation. The resulting system integrates seamlessly into existing VO/VIO pipelines and runs in real-time on embedded platforms. Experiments show that our method outperforms conventional optimization-based flow in challenging conditions such as dynamic lighting and low texture, while also achieving higher accuracy and lower latency than purely regression-based alternatives. When deployed in a VIO system, our method demonstrates significant performance improvement, achieving an average error reduction of 42\\% on challenging datasets while enhancing tracking stability. The code is publicly available.",
+      "authors": [
+        "Yicheng Lin",
+        "Yuxiu Xu",
+        "WenDong Chen",
+        "Cong Li",
+        "Bin Han"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-05T13:09:10+00:00",
+      "link": "https://arxiv.org/pdf/2609.06074v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Computer vision research on hybrid neuro-symbolic optical flow used in visual odometry; does not cleanly match a narrower listed subtask.",
+      "llm_evidence_cn": "面向视觉里程计的光流估计属于计算机视觉研究，未对应更细化的检测或分割子题，归入综合计算机视觉需求。",
+      "llm_evidence": "面向视觉里程计的光流估计属于计算机视觉研究，未对应更细化的检测或分割子题，归入综合计算机视觉需求。",
+      "canonical_evidence": "面向视觉里程计的光流估计属于计算机视觉研究，未对应更细化的检测或分割子题，归入综合计算机视觉需求。",
+      "llm_tldr_en": "To make optical flow robust yet geometrically consistent for visual odometry, NSFlow combines CNN feature extraction with differentiable symbolic reasoning, yielding an efficient CV front-end.",
+      "llm_tldr_cn": "视觉里程计前端需要兼顾稀疏光流的稳健性与几何一致性：传统优化方法在大位移和光照变化下易失效，而纯回归方法计算量大且缺少显式几何约束。论文提出NSFlow，将CNN特征表示与可微分神经符号推理相结合的混合框架，使光流估计在复杂场景中更鲁棒，并保持可用于跟踪前端的效率。通过端到端训练，模型在保留几何一致性的同时降低计算开销。该工作为实时视觉里程计与相关视觉特征匹配提供了新思路。",
+      "llm_tldr": "视觉里程计前端需要兼顾稀疏光流的稳健性与几何一致性：传统优化方法在大位移和光照变化下易失效，而纯回归方法计算量大且缺少显式几何约束。论文提出NSFlow，将CNN特征表示与可微分神经符号推理相结合的混合框架，使光流估计在复杂场景中更鲁棒，并保持可用于跟踪前端的效率。通过端到端训练，模型在保留几何一致性的同时降低计算开销。该工作为实时视觉里程计与相关视觉特征匹配提供了新思路。",
+      "llm_tags": [
+        "query:cv:composite"
+      ],
+      "matched_query_tag": "query:cv:composite",
+      "matched_query_text": "Papers central to 计算机视觉相关论文, especially work that connects or combines: computer vision research papers; object detection methods; image segmentation techniques; visual recognition algorithms; feature extraction in computer vision; visual tracking surveys; Find papers on computer vision; Retrieve computer vision research articles; Search for state of the art in computer vision.",
+      "matched_requirement_id": "req-composite-cv",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2609.07939v1",
+      "source": "arxiv",
+      "title": "Bottom-up Modeling of Repeated Elements via Single Image Analysis-by-Synthesis",
+      "abstract": "We address the problem of discovering repeated elements from a single image. In contrast to existing approaches that depend on large annotated datasets, curated multi-image collections, or object segmentation masks, we show that a single image can suffice to learn a meaningful object model in a completely bottom-up fashion, without any prior knowledge beyond a coarse scale prior. Our method learns a tunable image-space prototype of the repeated elements through a reconstruction objective, enabling the model to identify and synthesize consistent object instances within the same image. Experiments on 116 real images from the FSC-147 dataset demonstrate that our method successfully learns coherent element models and captures intra-category variation on challenging images. Qualitative results reveal superior reconstructions and interpretable decompositions compared to classical decomposition, joint alignment, and 3D object modeling methods, while maintaining a simple 2D formulation. These results suggest that meaningful object discovery can emerge from single image learning alone.",
+      "authors": [
+        "Syrine Kalleli",
+        "Alexei A. Efros",
+        "Mathieu Aubry"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-07T19:53:11+00:00",
+      "link": "https://arxiv.org/pdf/2609.07939v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "unsupervised visual modeling of repeated elements via single-image analysis-by-synthesis, related to visual recognition",
+      "llm_evidence_cn": "通过单图分析合成自底向上学习重复物体的视觉模型，与视觉识别相关",
+      "llm_evidence": "通过单图分析合成自底向上学习重复物体的视觉模型，与视觉识别相关",
+      "canonical_evidence": "通过单图分析合成自底向上学习重复物体的视觉模型，与视觉识别相关",
+      "llm_tldr_en": "We show that one single image suffices to learn a tunable image-space prototype of repeated elements through a reconstruction objective, without annotated datasets, multi-image collections, or segmentation masks, on FSC-147 images.",
+      "llm_tldr_cn": "重复结构发现通常依赖大型标注数据集、多图集合或物体分割掩码。该文证明给定粗略尺度先验时，单张图像即可完全自底向上地学习有意义的重复物体模型：用重建目标学习可调图像空间原型，并能识别和合成同图中的一致实例。在FSC-147数据集的116张真实图像上，该方法成功学到了连贯的元件模型并捕获类内变化。这减少了视觉目标建模对标注与多视角数据的依赖。",
+      "llm_tldr": "重复结构发现通常依赖大型标注数据集、多图集合或物体分割掩码。该文证明给定粗略尺度先验时，单张图像即可完全自底向上地学习有意义的重复物体模型：用重建目标学习可调图像空间原型，并能识别和合成同图中的一致实例。在FSC-147数据集的116张真实图像上，该方法成功学到了连贯的元件模型并捕获类内变化。这减少了视觉目标建模对标注与多视角数据的依赖。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "visual recognition algorithms",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.06475v1",
+      "source": "arxiv",
+      "title": "Thinking with Cameras: Active Visual Reasoning via Dynamic Viewpoint Control for Surveillance Video Understanding",
+      "abstract": "Large vision-language models (LVLMs) have recently achieved remarkable progress in general-purpose video understanding. However, their application to surveillance videos remains challenging due to the lack of large-scale domain-specific datasets and the limitation of passive observation from fixed viewpoints. In surveillance scenarios, critical visual evidence can be easily missed when targets are distant, small, occluded, or move beyond the current camera view. In this work, we introduce CamVLM, a new framework for Thinking with Cameras, which enables LVLMs to actively acquire visual evidence through dynamic viewpoint control rather than passively analyzing fixed video streams. We first construct CCTV-Anomaly, a large-scale surveillance video understanding dataset containing 14,459 videos across 10 anomaly categories, with detailed captions and event annotations. We further formulate viewpoint control as an active visual perception problem and build CamTrack-53K, an object-centric viewpoint trajectory dataset for learning camera actions. Moreover, we propose a reinforcement learning based viewpoint policy optimization framework, which models camera control as a sequential decision-making process and learns long-horizon observation strategies beyond supervised trajectory imitation. Extensive experiments demonstrate that CamVLM achieves state-of-the-art performance under both passive observation and dynamic viewpoint settings, validating the effectiveness of active camera-based reasoning for surveillance video understanding. Our datasets, model, and code will be available at https://github.com/xiaozhang79/CamVLM .",
+      "authors": [
+        "Xiao Zhang",
+        "Wang Zeng",
+        "Sheng Jin",
+        "Wentao Liu",
+        "Chen Qian",
+        "Shichao Kan"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-06T08:48:02+00:00",
+      "link": "https://arxiv.org/pdf/2609.06475v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "active visual reasoning for surveillance video understanding",
+      "llm_evidence_cn": "监控视频理解中的主动视觉推理方法",
+      "llm_evidence": "监控视频理解中的主动视觉推理方法",
+      "canonical_evidence": "监控视频理解中的主动视觉推理方法",
+      "llm_tldr_en": "Introduces CamVLM, enabling LVLMs to control camera viewpoint dynamically and collect evidence actively, plus a new surveillance anomaly dataset for video understanding.",
+      "llm_tldr_cn": "面向监控视频的大视觉语言模型往往只能被动分析固定画面，漏掉距离远、尺度小、被遮挡或越出视野的目标。为此提出 CamVLM，让模型通过动态视角控制主动获取视觉证据，化被动观看为主动推理，并构建 CCTV-Anomaly 数据推动监控理解研究。实验表明该方法在目标分散或遮挡的监控场景下可更可靠地提取关键证据并完成推理。",
+      "llm_tldr": "面向监控视频的大视觉语言模型往往只能被动分析固定画面，漏掉距离远、尺度小、被遮挡或越出视野的目标。为此提出 CamVLM，让模型通过动态视角控制主动获取视觉证据，化被动观看为主动推理，并构建 CCTV-Anomaly 数据推动监控理解研究。实验表明该方法在目标分散或遮挡的监控场景下可更可靠地提取关键证据并完成推理。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "computer vision research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2609.07815v1",
+      "source": "arxiv",
+      "title": "VoT: Vision-of-Thought for Unified Multimodal Representation Alignment",
+      "abstract": "Current text-to-image systems typically employ a \"text encoder plus diffusion decoder\" paradigm, in which text semantics directly modulate continuous latent noise. Despite their success, these methods lack an explicit, interpretable intermediate representation that effectively bridges high-level linguistic semantics and low-level visual signals. In this paper, we propose Vision-of-Thought (VoT), a framework that introduces a discrete visual-thinking layer between vision-language models (VLMs) and diffusion transformers (DiTs). Instead of treating VLMs merely as text encoders, we use them as multimodal planners that generate discrete VoT tokens representing high-level visual plans, such as objects and layouts, before rendering pixels. We train a specialized VoT tokenizer in the VLM semantic space with a closed-loop objective that combines VLM alignment, feature reconstruction, and vector-quantization losses. These objectives make the tokens semantically readable by the VLM while preserving the visual information needed for generation. Experimental results demonstrate that VoT improves semantic alignment and provides a structured interface for interpretable and controllable generation.",
+      "authors": [
+        "Jingxiang Sun",
+        "Chao Liao",
+        "Zhengxiong Luo",
+        "Chaorui Deng",
+        "Chen-lin Zhang",
+        "Junke Wang",
+        "Ceyuan Yang",
+        "Haoqi Fan",
+        "Weilin Huang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI",
+        "cs.CL"
+      ],
+      "published": "2026-09-07T17:53:13+00:00",
+      "link": "https://arxiv.org/pdf/2609.07815v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "vision representation alignment and conditional visual generation research",
+      "llm_evidence_cn": "面向视觉表示对齐与条件生成的研究",
+      "llm_evidence": "面向视觉表示对齐与条件生成的研究",
+      "canonical_evidence": "面向视觉表示对齐与条件生成的研究",
+      "llm_tldr_en": "Proposes Vision-of-Thought (VoT), an interpretable discrete visual planning layer between vision-language models and diffusion transformers for text-to-image generation.",
+      "llm_tldr_cn": "当前文生图是文本编码器加扩散解码器，中间缺少可解释的高层视觉语义表示。VoT 在视觉语言模型和扩散 Transformer 之间加入离散视觉思维层，让多模态规划器先生成表示对象与布局的视觉令牌，再渲染像素，从而把跨层面的语义转换成可理解的视觉规划。该方法改善了生成过程可控性和可解释性，让统一多模态表示有更清晰的中间状态。",
+      "llm_tldr": "当前文生图是文本编码器加扩散解码器，中间缺少可解释的高层视觉语义表示。VoT 在视觉语言模型和扩散 Transformer 之间加入离散视觉思维层，让多模态规划器先生成表示对象与布局的视觉令牌，再渲染像素，从而把跨层面的语义转换成可理解的视觉规划。该方法改善了生成过程可控性和可解释性，让统一多模态表示有更清晰的中间状态。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "computer vision research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}

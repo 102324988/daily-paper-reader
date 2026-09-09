@@ -1,0 +1,281 @@
+{
+  "date": "20260909",
+  "date_label": "",
+  "generated_at": "2026-09-09 21:21:10 UTC",
+  "recommend_exists": true,
+  "run_count": 1,
+  "papers": [
+    {
+      "paper_id": "2609.06343v1",
+      "route": "202609/09/2609.06343v1-radiation-rotation-and-scale-invariant-feature-descriptor-for-multimodal-image-matching",
+      "title": "Radiation, Rotation and Scale Invariant Feature Descriptor for Multimodal Image Matching",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 10.0,
+      "evidence": "面向多模态图像匹配的辐射旋转尺度不变特征描述子",
+      "first_seen_at": "2026-09-09 21:21:10 UTC",
+      "updated_at": "2026-09-09 21:21:10 UTC"
+    },
+    {
+      "paper_id": "2609.08265v1",
+      "route": "202609/09/2609.08265v1-tracking-by-detection-in-multi-object-tracking-survey-and-experiments",
+      "title": "Tracking-by-detection in Multi-object Tracking: Survey and Experiments",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 10.0,
+      "evidence": "检测-关联式多目标跟踪综述与实验",
+      "first_seen_at": "2026-09-09 21:21:10 UTC",
+      "updated_at": "2026-09-09 21:21:10 UTC"
+    },
+    {
+      "paper_id": "2609.05953v1",
+      "route": "202609/09/2609.05953v1-protorag-prototype-based-retrieval-augmentation-for-few-shot-fine-grained-remote-sensing-object-detection",
+      "title": "ProtoRAG: Prototype-Based Retrieval Augmentation for Few-Shot Fine-Grained Remote Sensing Object Detection",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "面向少样本细粒度遥感目标检测的检索增强框架",
+      "first_seen_at": "2026-09-09 21:21:10 UTC",
+      "updated_at": "2026-09-09 21:21:10 UTC"
+    },
+    {
+      "paper_id": "2609.06581v1",
+      "route": "202609/09/2609.06581v1-reading-decoder-trajectories-training-free-counterfactual-query-trajectory-reliability-for-small-object-detection",
+      "title": "Reading Decoder Trajectories: Training-Free Counterfactual Query-Trajectory Reliability for Small-Object Detection",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "针对小目标检测提出无训练反事实查询轨迹可靠性方法，与目标检测方法需求直接匹配。",
+      "first_seen_at": "2026-09-09 21:21:10 UTC",
+      "updated_at": "2026-09-09 21:21:10 UTC"
+    },
+    {
+      "paper_id": "2609.07373v1",
+      "route": "202609/09/2609.07373v1-trail-trajectory-aware-visual-place-recognition-against-unordered-databases",
+      "title": "TRAIL: Trajectory-Aware Visual Place Recognition against Unordered Databases",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "视觉地点识别属于视觉识别算法类论文",
+      "first_seen_at": "2026-09-09 21:21:10 UTC",
+      "updated_at": "2026-09-09 21:21:10 UTC"
+    },
+    {
+      "paper_id": "2609.08283v1",
+      "route": "202609/09/2609.08283v1-mars-clip-multi-resolution-and-attention-refined-zero-shot-image-segmentation",
+      "title": "MARS-CLIP: Multi-Resolution and Attention Refined Zero-Shot Image Segmentation",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "提出MARS-CLIP零样本语义分割框架，直接对应图像分割技术需求。",
+      "first_seen_at": "2026-09-09 21:21:10 UTC",
+      "updated_at": "2026-09-09 21:21:10 UTC"
+    },
+    {
+      "paper_id": "2609.05583v1",
+      "route": "202609/09/2609.05583v1-an-overview-of-3d-vision-language-models",
+      "title": "An overview of 3D Vision-Language Models",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "关于三维视觉语言模型最新进展的综述",
+      "first_seen_at": "2026-09-09 21:21:10 UTC",
+      "updated_at": "2026-09-09 21:21:10 UTC"
+    },
+    {
+      "paper_id": "2609.06051v1",
+      "route": "202609/09/2609.06051v1-image-scale-robustness-and-visual-recognition-performance-a-cross-architecture-analysis",
+      "title": "Image-Scale Robustness and Visual Recognition Performance: A Cross-Architecture Analysis",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "跨架构分析视觉识别模型的尺度鲁棒性与识别性能，直接关系视觉识别算法。",
+      "first_seen_at": "2026-09-09 21:21:10 UTC",
+      "updated_at": "2026-09-09 21:21:10 UTC"
+    },
+    {
+      "paper_id": "2609.06078v1",
+      "route": "202609/09/2609.06078v1-report-of-the-8th-lsvos-challenge-complex-and-multimodal-video-object-segmentation",
+      "title": "Report of the 8th LSVOS Challenge: Complex and Multimodal Video Object Segmentation",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "视频目标分割挑战赛报告，直接关联图像分割技术",
+      "first_seen_at": "2026-09-09 21:21:10 UTC",
+      "updated_at": "2026-09-09 21:21:10 UTC"
+    },
+    {
+      "paper_id": "2609.06475v1",
+      "route": "202609/09/2609.06475v1-thinking-with-cameras-active-visual-reasoning-via-dynamic-viewpoint-control-for-surveillance-video-understanding",
+      "title": "Thinking with Cameras: Active Visual Reasoning via Dynamic Viewpoint Control for Surveillance Video Understanding",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "监控视频理解中的主动视觉推理方法",
+      "first_seen_at": "2026-09-09 21:21:10 UTC",
+      "updated_at": "2026-09-09 21:21:10 UTC"
+    },
+    {
+      "paper_id": "2609.03077v1",
+      "route": "202609/09/2609.03077v1-position-unlabeled-is-not-equal-to-no-human-supervision-in-visual-learning",
+      "title": "Position: Unlabeled IS NOT Equal to No Human Supervision in Visual Learning",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "对视觉学习中人类监督来源的反思性观点文章，关系到计算机视觉研究方法论。",
+      "first_seen_at": "2026-09-09 21:21:10 UTC",
+      "updated_at": "2026-09-09 21:21:10 UTC"
+    },
+    {
+      "paper_id": "2609.05972v1",
+      "route": "202609/09/2609.05972v1-efficient-and-robust-camera-independent-multiview-3d-geometric-reconstruction-from-noisy-monocular-depth-estimation-and-multiple-point-matching",
+      "title": "Efficient and Robust Camera-independent Multiview 3D Geometric Reconstruction from Noisy Monocular Depth Estimation and Multiple Point Matching",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "利用点集间相机无关线性关系进行三维重建，是宽泛计算机视觉研究而非列出的子任务。",
+      "first_seen_at": "2026-09-09 21:21:10 UTC",
+      "updated_at": "2026-09-09 21:21:10 UTC"
+    },
+    {
+      "paper_id": "2609.06074v1",
+      "route": "202609/09/2609.06074v1-nsflow-end-to-end-differentiable-neuro-symbolic-optical-flow-for-visual-odometry",
+      "title": "NSFlow: End-to-End Differentiable Neuro-Symbolic Optical Flow for Visual Odometry",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "面向视觉里程计的光流估计属于计算机视觉研究，未对应更细化的检测或分割子题，归入综合计算机视觉需求。",
+      "first_seen_at": "2026-09-09 21:21:10 UTC",
+      "updated_at": "2026-09-09 21:21:10 UTC"
+    },
+    {
+      "paper_id": "2609.07815v1",
+      "route": "202609/09/2609.07815v1-vot-vision-of-thought-for-unified-multimodal-representation-alignment",
+      "title": "VoT: Vision-of-Thought for Unified Multimodal Representation Alignment",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "面向视觉表示对齐与条件生成的研究",
+      "first_seen_at": "2026-09-09 21:21:10 UTC",
+      "updated_at": "2026-09-09 21:21:10 UTC"
+    },
+    {
+      "paper_id": "2609.05523v1",
+      "route": "202609/09/2609.05523v1-infrastructure-based-monocular-3d-vehicle-localization-framework-with-experimental-validation",
+      "title": "Infrastructure-based Monocular 3D Vehicle Localization Framework with Experimental Validation",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "用预训练目标检测器特征进行单阶段三维车辆状态估计，与目标检测方法形成连接。",
+      "first_seen_at": "2026-09-09 21:21:10 UTC",
+      "updated_at": "2026-09-09 21:21:10 UTC"
+    },
+    {
+      "paper_id": "2609.06410v1",
+      "route": "202609/09/2609.06410v1-visual-search-augmented-chain-of-thought-reasoning-for-attribute-value-extraction-from-product-videos",
+      "title": "Visual Search Augmented Chain-of-Thought Reasoning for Attribute Value Extraction from Product Videos",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "面向商品视频属性提取的视觉搜索增强思维链方法，属于计算机视觉研究论文。",
+      "first_seen_at": "2026-09-09 21:21:10 UTC",
+      "updated_at": "2026-09-09 21:21:10 UTC"
+    },
+    {
+      "paper_id": "2609.07939v1",
+      "route": "202609/09/2609.07939v1-bottom-up-modeling-of-repeated-elements-via-single-image-analysis-by-synthesis",
+      "title": "Bottom-up Modeling of Repeated Elements via Single Image Analysis-by-Synthesis",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "通过单图分析合成自底向上学习重复物体的视觉模型，与视觉识别相关",
+      "first_seen_at": "2026-09-09 21:21:10 UTC",
+      "updated_at": "2026-09-09 21:21:10 UTC"
+    }
+  ]
+}
