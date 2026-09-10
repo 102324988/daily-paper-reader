@@ -41,17 +41,17 @@
 <section class="dpr-home-dashboard-card dpr-home-report-card">
   <div class="dpr-home-dashboard-header">
     <div>
-      <span class="dpr-home-dashboard-kicker">2026-09-09</span>
+      <span class="dpr-home-dashboard-kicker">2026-09-10</span>
       <h3 class="dpr-home-dashboard-title">今日汇总</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">共 17 篇</strong>
+    <strong class="dpr-home-dashboard-count">共 19 篇</strong>
   </div>
   <dl class="dpr-home-dashboard-stats">
     <div class="dpr-home-dashboard-stat"><dt>累计更新</dt><dd>1 次</dd></div>
-    <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>6</dd></div>
+    <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>8</dd></div>
     <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>11</dd></div>
   </dl>
-  <p class="dpr-home-dashboard-body">最近更新：2026-09-09 21:21:10 UTC<br>状态：成功</p>
+  <p class="dpr-home-dashboard-body">最近更新：2026-09-10 21:27:35 UTC<br>状态：成功</p>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-brief-card">
   <div class="dpr-home-dashboard-header">
@@ -62,7 +62,7 @@
     <strong class="dpr-home-dashboard-count">AI</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<p>今日精读6篇、速读11篇，重点关注多模态图像匹配与多目标跟踪两大方向。最值得看的是满分综述《Tracking-by-detection in Multi-object Tracking》，及提出新特征描述子的《Radiation, Rotation and Scale Invariant Feature Descriptor》，前者系统梳理跟踪范式，后者解决多模态匹配难题。建议普通读者优先从两篇精读文章的摘要与实验结论入手，再按需扩展至3D视觉语言模型等速读主题。</p>
+<p>今天共筛出 19 篇论文，精读 8 篇、速读 11 篇，重点覆盖相机-LiDAR 融合分割、360°显著目标检测与视觉里程计等方向。最值得看的是满分 10.0 的 CLFTv2——用分层特征金字塔实现高效相机-LiDAR 融合语义分割，其次 9.0 的 SphereSOD 用几何-结构耦合学习做 360°显著目标检测。普通读者可先读这两篇的摘要与方法图，再按兴趣从速读里挑 NSFlow（神经符号光流视觉里程计）或零样本 6DoF 位姿估计了解趋势。</p>
   </div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-deep-card">
@@ -71,12 +71,12 @@
       <span class="dpr-home-dashboard-kicker">今日累计</span>
       <h3 class="dpr-home-dashboard-title">精读推荐</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">6 篇</strong>
+    <strong class="dpr-home-dashboard-count">8 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Radiation, Rotation and Scale Invariant Feature Descriptor for Multimodal Image Matching">Radiation, Rotation and Scale Invariant Feature Descriptor for Multimodal Image Matching</span></li><li><span class="dpr-home-dashboard-paper-title" title="Tracking-by-detection in Multi-object Tracking: Survey and Experiments">Tracking-by-detection in Multi-object Tracking: Survey and Experiments</span></li><li><span class="dpr-home-dashboard-paper-title" title="ProtoRAG: Prototype-Based Retrieval Augmentation for Few-Shot Fine-Grained Remote Sensing Object Detection">ProtoRAG: Prototype-Based Retrieval Augmentation for Few-Shot Fine-Grained Remote Sensing Object Detection</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="CLFTv2: Efficient Camera-LiDAR Fusion for Semantic Segmentation via Hierarchical Feature Pyramids">CLFTv2: Efficient Camera-LiDAR Fusion for Semantic Segmentation via Hierarchical Feature Pyramids</span></li><li><span class="dpr-home-dashboard-paper-title" title="SphereSOD: Geometry-Structure Coupled Learning for 360 Salient Object Detection">SphereSOD: Geometry-Structure Coupled Learning for 360 Salient Object Detection</span></li><li><span class="dpr-home-dashboard-paper-title" title="Marigold V2: Revisiting Diffusion Transformers for Monocular Depth Estimation">Marigold V2: Revisiting Diffusion Transformers for Monocular Depth Estimation</span></li></ul>
   </div>
-  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">cv <strong>6</strong></span></div>
+  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">cv <strong>8</strong></span></div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-skim-card">
   <div class="dpr-home-dashboard-header">
@@ -87,7 +87,7 @@
     <strong class="dpr-home-dashboard-count">11 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="An overview of 3D Vision-Language Models">An overview of 3D Vision-Language Models</span></li><li><span class="dpr-home-dashboard-paper-title" title="Image-Scale Robustness and Visual Recognition Performance: A Cross-Architecture Analysis">Image-Scale Robustness and Visual Recognition Performance: A Cross-Architecture Analysis</span></li><li><span class="dpr-home-dashboard-paper-title" title="Report of the 8th LSVOS Challenge: Complex and Multimodal Video Object Segmentation">Report of the 8th LSVOS Challenge: Complex and Multimodal Video Object Segmentation</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="NSFlow: End-to-End Differentiable Neuro-Symbolic Optical Flow for Visual Odometry">NSFlow: End-to-End Differentiable Neuro-Symbolic Optical Flow for Visual Odometry</span></li><li><span class="dpr-home-dashboard-paper-title" title="Spatial Attention Supervision for Defect Localization: Exploiting Ground-Truth Masks as Training Signal in Diffusion-Augmented Defect Detection">Spatial Attention Supervision for Defect Localization: Exploiting Ground-Truth Masks as Training Signal in Diffusion-Augmented Defect Detection</span></li><li><span class="dpr-home-dashboard-paper-title" title="Back to the Feature: Zero-Shot 6DoF Pose Estimation via Dense Local Features">Back to the Feature: Zero-Shot 6DoF Pose Estimation via Dense Local Features</span></li></ul>
   </div>
   <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">cv <strong>11</strong></span></div>
 </section>

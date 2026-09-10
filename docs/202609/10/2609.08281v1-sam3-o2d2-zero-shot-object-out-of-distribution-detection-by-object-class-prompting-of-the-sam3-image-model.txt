@@ -1,0 +1,776 @@
+Title: SAM3-O2D2: Zero-Shot Object Out-of-Distribution Detection by Object Class Prompting of the SAM3-Image Model
+
+URL Source: https://arxiv.org/pdf/2609.08281v1
+
+Published Time: Wed, 09 Sep 2026 03:22:13 GMT
+
+Number of Pages: 15
+
+Markdown Content:
+# SAM3-O2D2 : Zero-Shot Object Out-of-Distribution Detection by Object Class Prompting of the SAM3-Image Model 
+
+# Lucas G¨ ornhardt Timo Bartels Tim Fingscheidt Technische Universit¨ at Braunschweig, Institute for Communications Technology 
+
+{lucas.goernhardt, timo.bartels, t.fingscheidt }@tu-bs.de 
+
+# Abstract 
+
+Object detectors have shown remarkable performance in various fields, among these medical imaging, surveillance, and autonomous driving. However, they are prone to over-confidence when encountering unseen objects in real-world deployments, causing potential safety issues. To address this, detecting out-of-distribution (OOD) objects is essen-tial for reliable object detection. Modern approaches lever-age the broad semantic knowledge of foundation models such as CLIP for post-hoc few- and zero-shot OOD de-tection. However, these methods typically perform OOD assessment in feature space, which can be sensitive to ob-ject detector localization errors and variations in object appearance. Moreover, the current state-of-the-art (SOTA) zero-shot method performs computationally costly diffusion in inference. In this work, for our proposed zero-shot ob-ject OOD detection method SAM3-O2D2 , we employ the 
+
+SAM3-image foundation model in an efficient manner. Specifically, we prompt SAM3 only with the object detec-tor’s predicted classes and compare the predictions of the object detector and SAM3 . An object is in-distribution (ID), if SAM3 also detects an object at the corresponding loca-tion. If SAM3 does not detect the prompted object, this in-dicates a mismatch between the detector’s prediction and the image content, suggesting that the object is OOD. Ex-perimental results show that our method significantly sur-passes the so-far zero-shot SOTA method. Specifically, we achieve new SOTA AuROC and FPR95 metrics over both ID datasets Pascal-VOC and BDD100K and both OOD datasets MS-COCO and OpenImages. 
+
+# 1. Introduction 
+
+Detecting out-of-distribution (OOD) objects is crucial for the safe deployment of object detection systems in the real world. Object detectors are typically trained on a closed set of in-distribution (ID) classes, resulting in overconfidence when encountering unseen objects during deployment. Mo-
+
+SAM3-Image Object Detector SAM3-Image  
+
+> Car Car Cow
+
+input image 
+
+SAM3 detections object detector detections ”cow ””car ””cow ”2 calls 
+
+no detection detection 
+
+> Car
+
+✗✓
+
+Ours: ID/OOD labels: ✓/✗
+
+Figure 1. In our zero-shot object OOD detection , we prompt 
+
+SAM3-image [2] with objects from the object detector for object OOD detection. 
+
+tivated by this challenge, extensive research has studied image-level OOD detection [4, 23, 26, 29, 38], where the entire image is treated as a single sample and is classified as either ID or OOD. However, this setting is insufficient for many real-world applications, such as autonomous driv-ing [9], where images contain multiple objects that require independent OOD assessment. Consequently, object OOD detection has emerged as a more suitable formulation for such object-level require-ments [5, 6]. In this task, each detected object must be in-dependently classified as ID ( ✓) or OOD ( ✗), see Fig. 1. Classical approaches [5, 6] rely on training of additional detection modules alongside the object detector to distin-guish between ID and OOD objects. However, these meth-1arXiv:2609.08281v1 [cs.CV] 8 Sep 2026 ods require access to full ID training data and need to be retrained for each newly deployed object detector. More-over, the performance of such small models falls behind the performance of modern vision-language foundation models such as CLIP [31]. Recent few-shot methods [19, 47] address these limita-tions by leveraging CLIP [31] for object OOD detection. They use pre-trained image and text encoders to extract local and global visual representations and compare them with text embeddings obtained from class prompts. While these approaches achieve strong performance, they still re-quire fine-tuning of additional modules for each ID dataset. In contrast, RONIN [30] proposes a zero-shot approach based on class-conditioned inpainting. Given a predicted object and its class label, RONIN uses a text-conditioned diffusion model to inpaint the object region according to the predicted class and then measures the agreement between the original object, the inpainted object, and the text prompt using vision-language feature similarities. Despite achiev-ing state-of-the-art (SOTA) zero-shot object OOD detection performance, RONIN has two important limitations. First, its reliance on diffusion-based inpainting leads to high com-putational cost, which limits its practical applicability. Sec-ond, its OOD decision is based on similarities in an abstract feature space, which is not necessarily robust and focused, as the embeddings entangle object appearance such as size and lighting and are not robust against detector localization errors, i.e., poorly localized bounding boxes. We, however, take a different approach. In contrast to the 
+
+CLIP -based methods [19, 30, 47] we leverage a different foundation model, namely SAM3-image [2] and propose 
+
+SAM3-O2D2 . In contrast to CLIP - and diffusion-based ap-proaches [19, 30, 47], our method performs OOD detection directly at the prediction level. It achieves SOTA zero-shot object OOD detection performance while requiring lower computational cost than diffusion-based inference. The high-level concept is illustrated in Fig. 1. The input image is first processed by some object detector, which produces ob-ject predictions such as car and cow . The predicted class labels are used as text prompts for two SAM3-image calls, which returns objects corresponding to each prompted con-cept. As illustrated in Fig. 1, SAM3-image confirms the detector’s car prediction at the same location, but does not detect a cow . This mismatch indicates that the visual con-tent is inconsistent with the predicted class cow and instead corresponds to an OOD object, here an elephant . Thus, our method marks predictions confirmed by SAM3-image 
+
+as ID ( ✓) and unmatched predictions as OOD ( ✗), leverag-ing its broad semantic knowledge. Moreover, by operating directly in the detection space rather than in an abstract fea-ture space, our method provides a more interpretable OOD decision. This simplifies failure-case analysis, which is im-portant for practical deployment, and improves robustness to near-OOD objects, as reflected by our empirical results. Our contributions are as follows. First, we introduce a framework for leveraging off-the-shelf text-promptable foundation detection models, such as SAM3 , for object OOD detection and propose SAM3-O2D2 , which con-stantly improves with the rapid developments in the field of foundation models over time. Second, our proposed 
+
+SAM3-O2D2 requires no retraining and can be paired with arbitrary object detectors. It is straightforward to imple-ment, making it highly suitable for practical deployment. Third, we evaluate our method on two ID datasets and two OOD datasets covering a diverse range of semantic scenes, and finally on one open-world setup, showing that it sub-stantially outperforms the current SOTA zero-shot object OOD detection method RONIN [30], while even requiring lower computational complexity. The remainder of the paper is structured as follows. Sec-tion 2 summarizes the related works. Section 3 details the proposed method for zero-shot object OOD detection. Sec-tion 4 describes the experimental setup, including datasets and metrics. Section 5 presents the experimental results. Finally, we conclude in Section 6. 
+
+# 2. Related Works 
+
+Image-Level OOD Detection : In the image-level out-of-distribution (OOD) detection task, an image must be clas-sified either as in-distribution (ID) or OOD. Early ap-proaches to this task rely on distinguishing between ID and OOD based on the confidence score of the classifier [12– 14, 20, 22, 39]. Alternative approaches measure distances in the feature space of the classifier [17, 25, 27, 36] or leverage representation and activation statistics [34, 37, 45]. Other approaches rely on generative models [10, 11, 18, 24, 35, 50] or leverage likelihoods-based scores [32, 44]. How-ever, this task formulation does not account for real-world settings in which one image may contain multiple objects which need separate ID or OOD assessment. 
+
+Object OOD Detection : In the object OOD detection task, each object predicted by an object detector needs to be clas-sified either as ID or OOD. Traditional approaches to this task [5, 6, 41–43] require training of the object detector to-gether with additional modules to separate ID objects from OOD objects. To avoid retraining the detector itself, SAFE 
+
+[40] proposes a post-hoc solution that only trains an addi-tional MLP to classify objects as ID or OOD. However, this still requires training on the full ID dataset for each newly deployed object detector. 
+
+Foundation Models for OOD Detection : These limita-tions have motivated the use of vision-language founda-tion models, such as CLIP [31], for few-shot and zero-shot OOD detection. While in the task of image-level OOD de-tection, this direction is extensively explored [3, 7, 15, 26, 28, 29, 38, 48], research on object OOD detection remains 2limited [19, 30, 47]. Specifically, the few-shot method 
+
+RUNA [47] uses two pretrained image encoders to extract global image features and regional object features, which are combined with text embeddings obtained from the pre-dicted class labels to compute an OOD score for each ob-ject. The few-shot method UNI-OOD [19] improves over 
+
+RUNA by using two identical pre-trained image and text en-coder pairs to extract features of the target object and its background separately, which are then used to calculate an OOD score. However, both methods still require few-shot fine-tuning of custom modules on top of the pre-trained 
+
+CLIP [31] image and text encoders. The zero-shot object OOD detection method RONIN 
+
+[30] therefore proposes a retraining-free approach. It lever-ages an off-the-shelf diffusion model to inpaint the object regions predicted by the object detector, conditioned on the corresponding predicted class labels. After obtaining the inpainted objects, RONIN [30] measures the text-to-image similarities using CLIP [31] between the text prompt and both the inpainted and original object, as well as the vi-sual similarity between the original and inpainted object. These three similarities are used to calculate an OOD score. However, the use of diffusion-based inpainting leads to high computational cost, limiting its applicability for prac-tical deployment. Furthermore, OOD assessment in feature space can be sensitive to detector localization errors and variations in object appearance variability. We address these limitations by proposing SAM3-O2D2 ,a post-hoc zero-shot object OOD detection method that requires no retraining for different object detectors or datasets. Instead of relying on feature-space similarity, 
+
+SAM3-O2D2 performs OOD assessment at the more robust prediction level while requiring lower computational cost than an iterative diffusion-based inference. 
+
+# 3. Methods 
+
+In this section, we describe our method SAM3-O2D2 for zero-shot object out-of-distribution (OOD) detection. The overall architecture of the proposed method is illustrated in Fig. 2. First, we describe how the object predic-tions produced by the object detector are used to prompt 
+
+SAM3-image and obtain class-wise predictions. We then detail how we use resulting SAM3 detections to identify OOD objects among the object detector predictions. 
+
+3.1. Prompting SAM3 with Predicted Classes (Ours) 
+
+Object Detector Inference : The input image x ∈
+
+IH×W ×C , with I = [0 , 1] and H, W , and C denoting the image height, width, and number of channels, respectively, is processed by both the object detector and the SAM3 im-age encoder. The object detector outputs predicted objects 
+
+y = ( b, c), consisting of bounding boxes b = ( bm) and object classes c = ( cm). Here, m ∈ M = {1, 2, . . . , M }
+
+denotes the object index, and M is the number of predicted objects. Each predicted object class cm = s is repre-sented as a class text string c(s), e.g ., car , and each bound-ing box is defined as bm ∈ I 2 with pixel positions set 
+
+I = {(1 , 1) , . . . , (H, W )}. Here, s ∈ S = {1, . . . , S }
+
+denotes the class index and S the number of ID classes. 
+
+Text Embedding Selection : The predicted object classes 
+
+c = (cm) are then used to select the text embeddings of the corresponding class strings. These embeddings are precomputed offline by the SAM3 text encoder using the set C = {c(1) , . . . , c(S)} of all in-distribution (ID) dataset class text strings. The resulting set of embeddings Z =
+
+{z(1) , z(2) , . . . , z(S)}, z(s) ∈ Rd, is stored and used during inference. Note that d is the dimensionality of the embed-ding space. As an example, suppose that the object detec-tor predicts M = 7 objects of the R = 3 classes car ,
+
+person , and bus , corresponding to the class text strings 
+
+c(1) , c(4) , and c(10) , respectively, where R denotes the num-ber of unique predicted classes. The text embedding selec-tion step then retrieves the corresponding precomputed em-beddings z(1) , z(4) , and z(10) to prompt the SAM3 detector. 
+
+SAM3 Detector Inference : The SAM3 detector is inferred once for each unique predicted class R. Thus, in the ex-ample above, the SAM3 detector is inferred R = 3 times. For each prompted text embedding of class s, SAM3 outputs 
+
+v(s) = ( b(s), u(s)), with bounding boxes b(s) = ( b(s) 
+
+> m
+
+) ∈IM (s)×2 and confidence scores u(s) = ( u(s) 
+
+> m
+
+) ∈ [0 , 1] M (s)
+
+.Here, m ∈ M (s) = {1, . . . , M (s)} indexes the SAM3 pre-dictions for class s and M (s) denotes their number. We fur-ther define Y(s) 
+
+> m
+
+to be the set of all pixels inside bounding box b(s) 
+
+> m
+
+predicted by SAM3 .
+
+3.2. OOD Detection (Ours) 
+
+Bounding Box Selection : After obtaining class-wise pre-dictions from SAM3 , the corresponding bounding boxes of the object detector for OOD calculation need to be retrieved. This is done by the bounding box selection step (see Fig. 2). Using the object detector predictions b and c, the bound-ing box selection step groups the predicted boxes bm by their predicted class label cm, yielding class-specific bound-ing boxes b(s) = (b(s)ˆm ) corresponding to class s, e.g ., 
+
+b(1) , b(4) , and b(10) for the above example of R = 3 and 
+
+s ∈ { 1, 4, 10 }. Here, ˆm ∈ M (s) = {1, . . . , M (s)} is the index for predicted bounding boxes corresponding to class 
+
+s and M (s) the number of predicted bounding boxes corre-sponding to class s. Here, we define Y(s)ˆm as the set of all pixels inside bounding box b(s)ˆm . The object detector bound-ing boxes and SAM3 predictions corresponding to the same class, e.g ., b(1) and v(1) corresponding to c(1) = car , are then used to identify OOD objects predicted by the object detector, cf. Fig. 1. 3SAM3 
+
+Detector 
+
+SAM3 
+
+Detector OOD Calculation OOD Calculation 
+
+Offline 
+
+x SAM3 Image Encoder 
+
+SAM3 Text Encoder Text Embeddings Text Embedding Selection 
+
+C = {c(1) , c(2) , . . . , c(S)}Z = {z(1) , z(2) , . . . , z(S)}{z(1) , z(2) , . . . , z(S)}
+
+SAM3 
+
+Detector text strings of dataset classes, e.g ., ” car ”input image Object Detector Bounding Box Selection OOD Calculation 
+
+(z(1) , z(4) , z(10) )e.g ., selected text embeddings, 
+
+e.g ., corresponding to ”car ”, person ”, ” bus ”
+
+bcy = ( b, c)
+
+predicted objects consisting of bounding boxes and classes predicted object classes 
+
+e.g .,” car ”, ” person ”, ” bus ” ⇒ R = 3 (b(1) , b(4) , b(10) )e.g ., 
+
+e.g ., corresponding to ”car ”, person ”, ” bus ”
+
+e.g ., (v(1) , v(4) , v(10) )
+
+SAM3 predicted bounding boxes and scores 
+
+e.g ., R = 3 calls 
+
+e.g ., R = 3 calls number of unique predicted classes           
+
+> Figure 2. Overview of our proposed architecture for zero-shot object OOD detection. Shown is an example, where the object detector predicts objects of class indices s= 1 ,4and 10 , which are the R= 3 unique predicted classes.
+
+OOD Calculation : First, the intersection over union (IoU) 
+
+IoU (b(s)ˆm , b(s) 
+
+> m
+
+) = |Y (s)ˆm ∩ Y (s) 
+
+> m
+
+||Y (s)ˆm ∪ Y (s) 
+
+> m
+
+|
+
+(1) is calculated between bounding box pixels of all objects pre-dicted by the object detector, Y(s)ˆm , and SAM3 , Y(s) 
+
+> m
+
+, that correspond to the same class s. We then apply an IoU threshold θIoU ∈ [0 , 1] and define 
+
+M(s)ˆm = {m ∈ M (s) | IoU (b(s)ˆm , b(s) 
+
+> m
+
+) ≥ θIoU }. (2) For each object detector prediction with index ˆm, the set 
+
+M(s)ˆm contains all SAM3 predictions of the same class s
+
+whose bounding boxes sufficiently overlap with the pre-dicted object. Then, an object detector prediction with in-dex ˆm is marked as ID ( ✓) if at least one of the SAM3 pre-diction confidences u(s) 
+
+> m
+
+, m ∈ M (s)ˆm (2), exceeds a score threshold θscore ∈ [0 , 1] , with 
+
+M(s)ID = { ˆm ∈ M (s) | ∃ m ∈ M (s)ˆm : u(s) 
+
+> m
+
+≥ θscore }, (3) being the set of all ID objects corresponding to class s. Con-sequently, all predicted objects that are not marked as ID are considered OOD ( ✗). The set of OOD predictions for class 
+
+s is therefore given by 
+
+M(s)OOD = M(s) \ M (s)ID . (4) Intuitively, our method flags objects as OOD when they are not detected by SAM3 at the same location under the same class prompt. In this way, we leverage the broad semantic knowledge of SAM3 to verify whether the image content is aligned with the class predicted by the object detector. For example, in Fig. 1, the object detector incorrectly classifies an elephant as cow , however, SAM3 , when prompted with cow , does not predict an object at that location because the visual content does not correspond to a cow . In contrast to previous CLIP -based approaches [19, 30, 47] which measure the similarity between the predicted class and the image content of the predicted bounding box in an abstract feature space, our approach performs this comparison di-rectly at the prediction level. This has two advantages. First, OOD detection errors are easier to interpret, as illustrated later by qualitative results in Section 5.3. This facilitates re-finement for future real-world applications, e.g ., by enrich-ing class prompts with descriptive adjectives, which is sup-ported by SAM3 . Second, prediction-level agreement pro-vides a more robust OOD signal than feature-space similar-ity, whose embeddings inherently entangle object appear-ance such as size and lighting and are not robust against detector bounding-box localization errors. 
+
+# 4. Experimental Setup 
+
+Data : Following the standard evaluation setup of object OOD detection [5, 6, 30], we use Pascal-VOC [8] and BDD100K [46] as in-distribution (ID) datasets and eval-4uate out-of-distribution (OOD) detection performance on two subsets from MS-COCO [21] and OpenImages [16]. These subsets are constructed such that their test images contain no label overlap with the corresponding ID datasets. Additionally, as employed by our main baseline [30], we use the first 400 images of Pascal-VOC, OpenImages, and MS-COCO and the first 200 images of BDD100K to bal-ance object count between ID and OOD datasets. 
+
+Metrics : OOD detection performance is evaluated using the area under the receiver operating characteristic curve (Au-ROC) and the false positive rate at a true positive rate of 
+
+95% (FPR95). Following the standard convention [5, 6, 30], a true positive denotes an ID object correctly classified as ID, whereas a false positive denotes an OOD object incor-rectly classified as ID. We obtain the ROC curves for Au-ROC calculation as typical in the field. For our particular method, we obtain the ROC curves by varying the confi-dence score threshold θscore in (3), while we firmly use a particular IoU threshold θIoU (2) and keep it fixed. We do not report average precision (AP) of the object detec-tor, since our method does not modify the object detector. Accordingly, AP results are only provided in Appendix A. 
+
+Models : Following [5, 30], for all reported methods, we use DeformableDETR [49] as object detector pre-trained on the respective ID datasets. For SAM3-O2D2 , we also use the off-the-shelf SAM3-image model [2]. We used the 
+
+facebook/sam3 weights and standard preprocessing 1.
+
+Baselines : Our main baseline is the so-far SOTA zero-shot object OOD method RONIN [30]. Due to a lack of zero-shot methods for object OOD detection, we follow [30] and ad-ditionally compare our method with image-level zero-shot OOD detection approaches applied to the object task, by cropping each object and treating it as an image. Specif-ically, CLIP -based ODIN [20] and EnergyScore [22], 
+
+Mahalanobis [45], KNN [36], MCM [26], CLIPN [38], 
+
+TAG [23], and GL-MCM [29] are reported. We also report two basic training-based methods VOS [6] and SIREN [5]. 
+
+# 5. Experimental Results and Discussion 
+
+5.1. Main Results 
+
+In Tab. 1, we compare our zero-shot method for object OOD detection to so-far state-of-the-art (SOTA) zero-shot meth-ods across two ID datasets, namely Pascal-VOC (top seg-ment) and BDD100K (bottom segment). We measure OOD detection performance using AuROC (%, higher is better) and FPR95 (%, lower is better). An overall average rank over both metrics and both OOD datasets is reported (cf. [33]). The baseline results are adopted from [30]. We observe that EnergyScore [22] achieves a de-cent 3rd rank on the Pascal-VOC ID dataset (top), while 
+
+Mahalanobis secures a rank 3.1 on the BDD100K ID 
+
+> 1available at https://huggingface.co/facebook/sam3
+
+dataset (bottom). Both, however, fall behind when ap-plied to the respective other ID dataset. For both ID datasets, Pascal-VOC (top) and BDD100K (bottom), the overall strongest zero-shot object OOD baseline is RONIN 
+
+[30], with an average rank of 2.0 on Pascal-VOC and 2.6
+
+on BDD100K. Our SAM3-O2D2 zero-shot object OOD de-tection method, however, excels consistently across both ID datasets, both OOD datasets, and both metrics, achieving new SOTA performance with an overall average rank of 1.0.
+
+Results using the full test sets can be found in Appendix B. In Tab. 2, we conduct a sensitivity analysis of the IoU threshold θIoU , which is used in the OOD calculation to pre-select SAM3 predictions (2). We report results using Pascal-VOC as the ID dataset and MS-COCO and Open-Images as OOD datasets, and measure OOD detection per-formance using AuROC and FPR95. We observe that our method is largely insensitive to the choice of the IoU thresh-old θIoU . However, on our datasets we observe a tendency towards better performance for a low θIoU . Interestingly, 
+
+all threshold configurations outperform the strongest base-line RONIN [30], which achieved an average rank of 2.0
+
+with Pascal-VOC as ID dataset, as shown in Tab. 1. Al-though θIoU = 0 .1 yields the best performance in Tab. 2, selecting the smallest threshold may not generalize well to other test configurations. The reason is as follows: In the established evaluation setup for object OOD detection [5, 6, 19, 30, 40, 47], ID and OOD objects do not co-occur within the same image. Under this assumption, weakly lo-calized SAM3 predictions can still help identify ID objects and reduce false negatives, without the risk of simultane-ously classifying an OOD object in the same image as ID. In more general open-world settings, however, where ID and OOD objects may co-occur, a very low IoU threshold would increase the risk of false positives by accepting in-sufficiently localized matches. Accordingly, for a broader generalization of our method, we propose the suboptimal 
+
+θIoU = 0 .2 for thresholding the SAM3 predictions in (2). Note that with the better choice of θIoU = 0 .1, our results in Tab. 1 would have been even stronger. More performance details on the influence of θIoU are in Appendix C and re-sults of a more realistic open-world setting in Appendix D. In Fig. 3, we compare object OOD detection perfor-mance and runtime per processed frame of our proposed 
+
+SAM3-O2D2 with the strongest zero-shot baseline RONIN 
+
+[30], which achieved strong ranks 2.0 and 2.6 with Pascal-VOC and BDD100K ID data, respectively, as reported in Tab. 1. The three marks for RONIN [30], from left to right, correspond to configurations with 5, 10 , and 20 diffusion steps, respectively, where the strongest latter is the config-uration reported in Tab. 1. The runtime is measured using an NVIDIA A100 40GB and the OOD detection perfor-mance is measured by AuROC (top) and FPR95 (bottom). Runtime is measured only for the OOD detection method, 5Table 1. Object OOD detection results on ID datasets Pascal-VOC and BDD100K and on OOD datasets MS-COCO and OpenImages. We report AuROC (%) and FPR95 (%). We adopt baseline results from [30]. Best results in bold , second-best results underlined. 
+
+Out-of-distribution (OOD) datasets In-distribution Method Zero-shot? MS-COCO OpenImages Average (ID) dataset AuROC ↑ FPR95 ↓ AuROC ↑ FPR95 ↓ rank ↓
+
+Pascal-VOC 
+
+VOS [6] ✗ 88 .75 48 .15 83 .65 54 .63 7.3
+
+SIREN [5] ✗ 78 .68 64 .70 75 .12 66 .69 11 .8
+
+ODIN [20] ✓ 88 .22 41 .65 86 .46 55 .87 6.8
+
+Energy Score [22] ✓ 90 .26 29 .48 91 .24 24 .57 3.0
+
+Mahalanobis [45] ✓ 83 .26 63 .30 87 .11 45 .22 8.2
+
+KNN [36] ✓ 85 .52 58 .56 84 .62 45 .00 7.2
+
+MCM [26] ✓ 83 .15 62 .47 81 .45 71 .52 11 .2
+
+CLIPN [38] ✓ 85 .45 43 .09 89 .31 41 .74 5.2
+
+TAG [23] ✓ 78 .35 61 .03 87 .69 48 .48 8.8
+
+OLE [4] ✓ 86 .13 54 .23 88 .07 49 .13 6.5
+
+GL-MCM [29] ✓ 78 .64 78 .56 82 .89 69 .35 12 .0
+
+RONIN [30] ✓ 92.31 25.36 93.10 18.91 2.0
+
+SAM3-O2D2 (ours) ✓ 97 .52 6.56 94 .62 16 .52 1.0
+
+BDD100K 
+
+VOS [6] ✗ 78 .34 65 .45 80 .42 59 .23 8.8
+
+SIREN [5] ✗ 89 .37 42 .86 91 .78 37 .97 5.5
+
+ODIN [20] ✓ 55 .18 96 .51 57 .87 95 .56 12 .3
+
+Energy Score [22] ✓ 74 .49 71 .75 73 .09 53 .33 9.5
+
+Mahalanobis [45] ✓ 90 .74 31 .75 93.81 23.33 3.1
+
+KNN [36] ✓ 86 .58 35 .87 92 .75 31 .11 4.8
+
+MCM [26] ✓ 55 .82 95 .56 57 .05 92.22 11 .5
+
+CLIPN [38] ✓ 92 .14 28 .49 85 .78 44 .76 4.8
+
+TAG [23] ✓ 90 .50 46 .30 76 .67 55 .30 7.5
+
+OLE [4] ✓ 78 .14 57 .14 85 .36 40 .00 7.5
+
+GL-MCM [29] ✓ 50 .82 96 .83 58 .88 94 .44 12 .3
+
+RONIN [30] ✓ 92.90 26.03 91 .90 23.33 2.6
+
+SAM3-O2D2 (ours) ✓ 98 .46 4.55 98 .40 5.00 1.0     
+
+> Table 2. Sensitivity analysis of our SAM3-O2D2 w.r.t. the IoU threshold θIoU (2) on Pascal-VOC (ID) and MS-COCO and Open-Images (both OOD). We report AuROC (%) and FPR95 (%).
+
+θIoU MS-COCO OpenImages AuROC ↑ FPR95 ↓ AuROC ↑ FPR95 ↓
+
+0.10 97.60 6.11 94.88 15.62 0.15 97.54 6.56 94.72 15.62 0.20 97.52 6.56 94.62 16.52 0.25 97.51 6.56 94.51 17.72 0.30 97.40 7.47 94.40 17.72 excluding the object detector, since both methods employ the identical DeformableDETR [49] detector. As the run-time per frame can vary for both methods, we report the av-erage runtime over all frames with at least on predicted ob-ject in the respective ID and OOD datasets. We observe that 
+
+SAM3-O2D2 is processed substantially faster than even the fastest RONIN [30] configuration with five diffusion steps. Specifically, our method achieves a runtime of 0.1 s per frame, compared to 0.48 s for the fastest RONIN [30] con-figuration. At the same time, it achieves significantly better object OOD detection performance than even the strongest 
+
+RONIN [30] configuration. In Fig. 4, we analyze the amount of unique predicted classes of the DeformableDETR [49] object detector in the OOD datasets MS-COCO (top) and OpenImages (bot-tom). The statistics are shown in green for the object de-tector trained on the Pascal-VOC ID dataset and in purple for the object detector trained on the BDD100K ID dataset. We observe that for both OOD datasets and both ID-trained models, the amount R of unique predicted classes is rela-tively low, with most images containing either R = 0 or 
+
+R = 1 predicted classes. This comes with positive con-sequences for our proposed SAM3-O2D2 approach. It indi-60.1 0.3 0.5 0.7 0.9 1.190 92 94 96 98                  
+
+> RONIN [30]
+> SAM3-O2D2 (ours)
+> SAM3-O2D2 ,R≤3(ours)
+> runtime (s) AuROC (%)
+> 0.10.30.50.70.91.10510 15 20 25 30
+> RONIN [30]
+> SAM3-O2D2 (ours)
+> SAM3-O2D2 ,R≤3(ours)
+> runtime (s) FPR95 (%)
+
+Figure 3. Performance-speed comparison of our SAM3-O2D2 
+
+(red) to the so-far SOTA baseline RONIN [30] (blue) on an 
+
+NVIDIA A100 40GB with ID datset Pascal-VOC and OOD datasets MS-COCO ( ) and OpenImages ( ). Our method em-ploys θIoU = 0 .2 (2). The green symbols mark our approach limited to R ≤ 3.
+
+cates that the computational overhead of inferring the SAM3 
+
+detector R times per image is limited in practice, since the 
+
+SAM3 detector is not at all inferred in 37...76% of the frames (R = 0 ) and is inferred a single time only in 19...53% of the frames ( R = 1 ). For real-world deployment of our 
+
+SAM3-O2D2 , the computational cost could be bounded by enforcing a maximum number of unique prompted classes, 
+
+e.g ., R ≤ 3. If the object detector predicts more than 3
+
+unique classes, we prompt only the R = 3 classes with the lowest average detector confidence across their correspond-ing predictions. All remaining predictions are considered ID. The performance of our approach limited to a maximum of R ≤ 3 SAM3 calls per frame is shown in green color ,in Fig. 3, always nearby the respective red markers , of our unbounded method (any R). This limitation comes with some performance loss, however, our computationally lim-ited SAM3-O2D2 method still excels RONIN in all cases. In Tab. 3 we further analyze the runtime (ms) on an 
+
+NVIDIA A100 40GB of the SAM3-image [2] used in our zero-shot SAM3-O2D2 . Specifically, we report the iso-lated runtime of the individual components used during in-ference, the SAM3 image encoder and the SAM3 detector, when inferred with R = 1 , R = 2 , and R = 3 prompts. We observe that roughly 60% of the runtime reported in Fig. 3           
+
+> 012345678910 020 40 60 80
+> % of frames
+
+MS-COCO (OOD dataset)             
+
+> 012345678910 020 40 60 80
+> number Rof unique predicted classes % of frames
+
+OpenImages (OOD dataset) 
+
+> ID dataset
+> Pascal-VOC BDD100K
+> ID dataset
+> Pascal-VOC BDD100K
+
+Figure 4. Analysis of amount R of unique predicted classes per OOD dataset, using the DeformableDETR [49] object detector. Table 3. Runtime of the single components of the SAM3-image 
+
+for our SAM3-O2D2 in ms on an Nvidia A100 40GB .
+
+Component SAM3 SAM3 detector image encoder R = 1 R = 2 R = 3 
+
+Runtime (ms) 63 .4 36 .0 48 .8 53 .1
+
+is caused by the SAM3 image encoder. This runtime cannot be reduced by bounding R, since the image encoder always has to be inferred once per image. Additionally, we observe that the runtime of the SAM3 detector does not scale linearly with the number of prompts R, since the SAM3 detector can be inferred in a batched manner. Furthermore, as shown in Fig. 4, only a few samples are affected when bounding R.Together, these factors explain why bounding the method to 
+
+R ≤ 3 yields only a very minor speedup in Fig. 3. Adding 
+
+63 .4 ms for inferring the SAM3 image encoder and the worst case 53 .1 ms for R = 3 batched calls of the SAM3 detector, yields 116 .5 ms, which is the frame-individual worst case of the R ≤ 3 constrained green method’s runtime in Fig. 3. In Appendix E, we provide additional comparisons on com-putational complexity. In Appendix F, we additionally provide comparisons with state-of-the-art few-shot object OOD detection methods. 
+
+5.2. Sensitivity Analysis Ablation 
+
+Now, we investigate the sensitivity of the so-far SOTA 
+
+RONIN [30] and our SAM3-O2D2 method to object detec-tor bounding-box localization errors and object appearance. 7Table 4. Robustness to bounding box localization errors . Com-parison of our SAM3-O2D2 and RONIN [30] baseline under object detector localization errors on Pascal-VOC as ID dataset and MS-COCO as OOD dataset. We report AuROC (%) / FPR95 (%). 
+
+Localization SAM3-O2D2 RONIN 
+
+error ϵ (ours) [30] 
+
+0 97 .52 /6.56 90 .70 /27 .84 0.1 97 .51 /6.58 90 .59 /29 .69 0.3 97 .54 /6.58 90 .10 /29 .48 0.5 97 .54 /6.58 88 .43 /34 .64 
+
+In Tab. 4, we analyze the robustness of our method, 
+
+SAM3-O2D2 , and the strongest baseline, RONIN [30], to bounding-box localization errors of the object detector with Pascal-VOC as ID and MS-COCO as OOD dataset. To in-duce localization errors, we follow the approach of B¨ ar et al. [1] and perturb the bounding box coordinates predicted by the object detector according to some noise strength ϵ ≥ 0.Specifically, we add uniformly sampled noise to the bound-ing box coordinates (upper left, lower right), with the noise scaled by the corresponding bounding box width and height. More details on generating the erroneous bounding boxes and the exact definition of the noise strength can be found in Appendix G. After obtaining the erroneous object detector bounding boxes, both object OOD detection methods are evaluated as usual. The performance of RONIN [30] with no noise ( ϵ = 0 ) differs slightly from the values reported in Tab. 1, as we re-evaluated their strongest method for the robustness analysis using their published source code. We observe that RONIN [30] degrades continuously with simulated growing object detector bounding-box localiza-tion error, leading to an increase in FPR of 6.8% absolute for ϵ = 0 .5. Our SAM3-O2D2 , however, shows very ro-bust performance on both metrics across all evaluated error strengths ϵ. This supports our claim that performing OOD detection directly at prediction level, rather than in the fea-ture space of models like CLIP [31], is advantageous due to its higher robustness to bounding-box localization errors. 
+
+In Tab. 5, we analyze how different object-appearance factors, such as lighting and object size, affect our method, SAM3-O2D2 , and the strongest baseline, RONIN 
+
+[30]. For lighting, we compute the median luminance 
+
+Y ∈ [0 , 1] within each bounding box predicted by 
+
+DeformableDETR [49]. We then assign objects to high-lighting ( Y ≥ 0.3) and low-lighting ( Y < 0.3) categories. For object size, we follow the MS-COCO definition [21] and categorize objects as small, medium, or large. Finally, we compute the object OOD detection metrics separately for the ID and OOD objects in each category. We observe that both methods perform worse under low-lighting conditions than under high-lighting conditions.       
+
+> Table 5. Robustness to different object appearances. Compari-son of our SAM3-O2D2 and RONIN [30] baseline under different object appearances on Pascal-VOC as ID dataset and MS-COCO as OOD dataset. We report AuROC (%) / FPR95 (%).
+
+Object SAM3-O2D2 RONIN 
+
+appearance (ours) [30] Lighting high ( Y ≥ 0.3) 98 .18 /06 .49 90 .20 /30 .88 
+
+low ( Y < 0.3) 94 .85 /10 .78 85 .31 /36 .27 
+
+Object size large 98 .29 /03 .72 94 .71 /21 .14 
+
+medium 94 .74 /14 .49 74 .65 /52 .17 
+
+small 90 .76 /21 .74 51 .09 /86 .96 
+
+However, the absolute performance drop is somewhat larger for RONIN [30] than for our SAM3-O2D2 . This effect is even more pronounced for object size. While SAM3-O2D2 
+
+still performs well on small objects, achieving 90 .76% Au-ROC, RONIN [30] degrades to near-chance performance with 51 .09% AuROC. This further supports our claim that our method provides a more robust OOD signal with re-spect to object appearance than feature-space similarity employed by RONIN [30] and other baselines. 
+
+5.3. Qualitative Results and Failure Analysis 
+
+In Appendix H we provide qualitative results showing sev-eral success and failure cases and a failure analysis of our proposed SAM3-O2D2 .
+
+# 6. Conclusions 
+
+In this paper, we introduce SAM3-O2D2 , a zero-shot ob-ject out-of-distribution (OOD) detection method that ef-ficiently leverages the SAM3-image foundation model. 
+
+Our method outperforms all baselines across both in-distribution (ID) datasets, both OOD datasets, and both metrics, while significantly requiring lower computational cost than the current SOTA method. Accordingly, our 
+
+SAM3-O2D2 method constitutes a new state-of-the-art in zero-shot object OOD detection. We further analyze and demonstrate the robustness of prediction-level OOD assess-ment compared to feature-space similarity. 
+
+# Acknowledgments 
+
+The research leading to these results is funded by the German Federal Ministry for Economic Affairs and Energy within the project “Safe AI Engineering – Sicherheitsargu-mentation bef¨ ahigendes AI Engineering ¨ uber den gesamten Lebenszyklus einer KI-Funktion”. The authors would like to thank the consortium for the successful cooperation. 8References 
+
+[1] Andreas B¨ ar, Jonas Uhrig, Jeethesh Pai Umesh, Marius Cordts, and Tim Fingscheidt. A Novel Benchmark for Refinement of Noisy Localization Labels in Autolabeled Datasets for Object Detection. In Proc. of CVPR - Work-shops , pages 3851–3860, Vancouver, BC, Canada, 2023. 8, 13 [2] Nicolas Carion, Laura Gustafson, Yuan-Ting Hu, Shoub-hik Debnath, Ronghang Hu, Didac Suris, Chaitanya Ryali, Kalyan Vasudev Alwala, Haitham Khedr, Andrew Huang, Jie Lei, Tengyu Ma, Baishan Guo, Arpit Kalla, Markus Marks, Joseph Greer, Meng Wang, Peize Sun, Roman R¨ adle, Triantafyllos Afouras, Effrosyni Mavroudi, Kather-ine Xu, Tsung-Han Wu, Yu Zhou, Liliane Momeni, Rishi Hazra, Shuangrui Ding, Sagar Vaze, Francois Porcher, Feng Li, Siyuan Li, Aishwarya Kamath, Ho Kei Cheng, Piotr Doll´ ar, Nikhila Ravi, Kate Saenko, Pengchuan Zhang, and Christoph Feichtenhofer. SAM 3: Segment Anything with Concepts. arXiv:2511.16719 , 2025. 1, 2, 5, 7, 14 [3] Guangyi Chen, Weiran Yao, Xiangchen Song, Xinyue Li, Yongming Rao, and Kun Zhang. PLOT: Prompt Learning with Optimal Transport for Vision-Language Models. In 
+
+Proc. of ICLR , pages 1–13, Kigali, Rwanda, 2023. 2 [4] Choubo Ding and Guansong Pang. Zero-Shot Out-of-Distribution Detection with Outlier Label Exposure. In Proc. of IJCNN , pages 1–8, Yokohama, Japan, 2024. 1, 6 [5] Xuefeng Du, Gabriel Gozum, Yifei Ming, and Yixuan Li. SIREN: Shaping Representations for Detecting Out-of-Distribution Objects. In Proc. of NeurIPS , pages 20434– 20449, virtual, 2022. 1, 2, 4, 5, 6 [6] Xuefeng Du, Zhaoning Wang, Mu Cai, and Yixuan Li. VOS: Learning What You Don’t Know by Virtual Outlier Synthe-sis. In Proc. of ICLR , pages 1–14, virtual, 2022. 1, 2, 4, 5, 6[7] Sepideh Esmaeilpourcharandabi, Bing Liu, Eric Robertson, and Lei Shu. Zero-Shot Out-of-Distribution Detection Based on the Pre-trained Model CLIP. In Proc. of AAAI , pages 6568–6576, virtual, 2022. 2 [8] Mark Everingham, Luc Van Gool, Christopher K. I. Williams, John Winn, and Andrew Zisserman. The PAS-CAL Visual Object Classes (VOC) Challenge. International Journal of Computer Vision , 88(2):303–338, 2010. 4, 12 [9] Tim Fingscheidt, Hanno Gottschalk, and Sebastian Houben, editors. Deep Neural Networks and Data for Automated Driving: Robustness, Uncertainty Quantification, and In-sights Towards Safety . Springer International Publishing, Cham, 2022. 1 [10] Ruiyuan Gao, Chenchen Zhao, Lanqing Hong, and Qiang Xu. DIFFGUARD: Semantic Mismatch-Guided Out-of-Distribution Detection Using Pre-Trained Diffusion Models. In Proc. of ICCV , pages 1579–1589, Paris, France, 2023. 2 [11] Mark S. Graham, Walter H.L. Pinaya, Petru-Daniel Tudosiu, Parashkev Nachev, Sebastien Ourselin, and Jorge Cardoso. Denoising Diffusion Models for Out-of-Distribution Detec-tion. In Proc. of CVPR - Workshops , pages 2948–2957, Van-couver, BC, Canada, 2023. 2 [12] Dan Hendrycks and Kevin Gimpel. A Baseline for Detect-ing Misclassified and Out-of-Distribution Examples in Neu-ral Networks. In Proc. of ICLR , pages 1–12, Toulon, France, 2017. 2 [13] Dan Hendrycks, Steven Basart, Mantas Mazeika, Andy Zou, Joseph Kwon, Mohammadreza Mostajabi, Jacob Steinhardt, and Dawn Song. Scaling Out-of-Distribution Detection for Real-World Settings. In Proc. of ICML , pages 8759–8773, Baltimore, MD, USA, 2022. [14] Yen-Chang Hsu, Yilin Shen, Hongxia Jin, and Zsolt Kira. Generalized ODIN: Detecting Out-of-Distribution Image Without Learning From Out-of-Distribution Data. In Proc. of CVPR , pages 10951–10960, Seattle, WA, USA, 2020. 2 [15] Xue Jiang, Feng Liu, Zhen Fang, Hong Chen, Tongliang Liu, Feng Zheng, and Bo Han. Negative Label Guided OOD De-tection with Pretrained Vision-Language Models. In Proc. of ICLR , pages 1–12, Vienna, Austria, 2024. 2 [16] Alina Kuznetsova, Hassan Rom, Neil Alldrin, Jasper R. R. Uijlings, Ivan Krasin, Jordi Pont-Tuset, Shahab Kamali, Ste-fan Popov, Matteo Malloci, Tom Duerig, and Vittorio Fer-rari. The Open Images Dataset V4: Unified Image Classifi-cation, Object Detection, and Visual Relationship Detection at Scale. International Journal of Computer Vision (IJCV) ,128(7):1956—-1981, 2020. 5, 12 [17] Kimin Lee, Kibok Lee, Honglak Lee, and Jinwoo Shin. A Simple Unified Framework for Detecting Out-of-Distribution Samples and Adversarial Attacks. In Proc. of NeurIPS , pages 7167– 7177, Montr´ eal, QC, Canada, 2018. 2[18] Jingyao Li, Pengguang Chen, Zexin He, Shaozuo Yu, Shu Liu, and Jiaya Jia. Rethinking Out-of-Distribution (OOD) Detection: Masked Image Modeling Is All You Need. In Proc. of CVPR , pages 11578–11589, Vancouver, BC, Canada, 2023. 2 [19] Yuchuan Li, Azadeh Motamedi, Hyock Ju Kwon, Chul B Park, and Il-Min Kim. UNI-OOD: Unified Object-and Image-level Out-of-Distribution Detection via Cross-Context Attentive Vision-Language Modeling. In Proc. of CVPR , pages 6282–6292, Denver, CO, USA, 2026. 2, 3, 4, 5, 13, 14 [20] S. Liang, Y. Li, and R. Srikant. Enhancing the Reliability of Out-Of-Distribution Image Detection in Neural Networks. In 
+
+Proc. of ICLR , pages 1–27, Vancouver, BC, Canada, 2018. 2, 5, 6 [21] Tsung-Yi Lin, Michael Maire, Serge Belongie, James Hays, Pietro Perona, Deva Ramanan, Piotr Doll´ ar, and C Lawrence Zitnick. Microsoft COCO: Common Objects in Context. In 
+
+Proc. of ECCV , pages 740–755, Zurich, Switzerland, 2014. 5, 8, 12 [22] Weitang Liu, Xiaoyun Wang, John Owens, and Yixuan Li. Energy-based Out-of-Distribution Detection. In Proc. of NeurIPS , pages 21464–21475, virtual, 2020. 2, 5, 6 [23] Xixi Liu and Christopher Zach. TAG: Text Prompt Aug-mentation for Zero-Shot Out-of-Distribution Detection ´. In 
+
+Proc. of ECCV , pages 364–380, Milano, Italy, 2024. 1, 5, 6 [24] Zhenzhen Liu, Jin Peng Zhou, Yufan Wang, and Kilian Q Weinberger. Unsupervised Out-of-Distribution Detection 
+
+9with Diffusion Inpainting. In Proc. of ICML , pages 22528– 22538, Honolulu, HI, USA, 2023. 2 [25] Haodong Lu, Dong Gong, Shuo Wang, Jason Xue, Lina Yao, and Kristen Moore. Learning with Mixture of Prototypes for Out-of-Distribution Detection. In Proc. of ICLR , pages 1–14, Vienna, Austria, 2024. 2 [26] Yifei Ming, Ziyang Cai, Jiuxiang Gu, Yiyou Sun, Wei Li, and Yixuan Li. Delving into Out-of-Distribution Detection with Vision-Language Representations. In Proc. of NeurIPS ,pages 35087–35102, virtual, 2022. 1, 2, 5, 6 [27] Yifei Ming, Yiyou Sun, Ousmane Dia, and Yixuan Li. How to Exploit Hyperspherical Embeddings for Out-of-Distribution Detection? In Proc. of ICLR , pages 1–13, Ki-gali, Rwanda, 2023. 2 [28] Atsuyuki Miyai, Qing Yu, Go Irie, and Kiyoharu Aizawa. LoCoOp: Few-Shot Out-of-Distribution Detection via Prompt Learning. In Proc. of NeurIPS , pages 76298–76310, New Orleans, LA, USA, 2023. 2 [29] Atsuyuki Miyai, Qing Yu, Go Irie, and Kiyoharu Aizawa. GL-MCM: Global and Local Maximum Concept Matching for Zero-Shot Out-of-Distribution Detection. International Journal of Computer Vision , 133(6):3586—-3596, 2025. 1, 2, 5, 6 [30] Quang-Huy Nguyen, Jin Peng Zhou, Zhenzhen Liu, Khanh-Huyen Bui, Kilian Q. Weinberger, Wei-Lun Chao, and Dung D. Le. Detecting Out-of-Distribution Objects through Class-Conditioned Inpainting. In Proc. of WACV , pages 1937–1947, Tucson, AZ, USA, 2026. 2, 3, 4, 5, 6, 7, 8, 12, 13, 14 [31] Alec Radford, Jong Wook Kim, Chris Hallacy, Aditya Ramesh, Gabriel Goh, Sandhini Agarwal, Girish Sastry, Amanda Askell, Pamela Mishkin, Jack Clark, Gretchen Krueger, and Ilya Sutskever. Learning Transferable Visual Models From Natural Language Supervision. In Proc. of ICML , pages 8748–8763, virtual, 2021. 2, 3, 8 [32] Jie Ren, Peter J. Liu, Emily Fertig, Jasper Snoek, Ryan Poplin, Mark Depristo, Joshua Dillon, and Balaji Lakshmi-narayanan. Likelihood Ratios for Out-of-Distribution Detec-tion. In Proc. of NeurIPS , pages 14707–14718, Vancouver, BC, Canada, 2019. 2 [33] Kohei Saijo, Wangyou Zhang, Robin Scheibler, Samuele Cornell, Chenda Li, Zhaoheng Ni, Anurag Kumar, Marvin Sach, Yihui Fu, Tim Fingscheidt, and Shinji Watanabe. In-terspeech 2025 URGENT Speech Enhancement Challenge. In Proc. of Interspeech , pages 858–862, Rotterdam, The Netherlands, 2025. 5 [34] Chandramouli Shama Sastry and Sageev Oore. Detecting Out-of-Distribution Examples with Gram Matrices. In Proc. of ICML , pages 8491–8501, virtual, 2020. 2 [35] Thomas Schlegl, Philipp Seeb¨ ock, Sebastian M. Waldstein, Ursula Schmidt-Erfurth, and Georg Langs. Unsupervised anomaly detection with generative adversarial networks to guide marker discovery. In Proc. of Information Processing in Medical Imaging , pages 146–157, Cham, 2017. Springer International Publishing. 2 [36] Yiyou Sun, Yifei Ming, Xiaojin Zhu, and Yixuan Li. Out-of-Distribution Detection with Deep Nearest Neighbors. In 
+
+Proc. of ICML , pages 20827–20840, Baltimore, MD, USA, 2022. 2, 5, 6 [37] Jihoon Tack, Sangwoo Mo, Jongheon Jeong, and Jinwoo Shin. CSI: Novelty Detection via Contrastive Learning on Distributionally Shifted Instances. In Proc. of NeurIPS ,pages 11839–11852, virtual, 2020. 2 [38] Hualiang Wang, Yi Li, Huifeng Yao, and Xiaomeng Li. CLIPN for Zero-Shot OOD Detection: Teaching CLIP to Say No. In Proc. of ICCV , pages 1802–1812, Paris, France, 2023. 1, 2, 5, 6 [39] Hongxin Wei, Renchunzi Xie, Hao Cheng, Lei Feng, Bo An, and Yixuan Li. Mitigating Neural Network Overconfidence with Logit Normalization. In Proc. of ICML , pages 23631– 23644, Baltimore, MD, USA, 2022. 2 [40] Samuel Wilson, Tobias Fischer, Feras Dayoub, Dimity Miller, and Niko Sunderhauf. SAFE: Sensitivity-Aware Fea-tures for Out-of-Distribution Object Detection. In Proc. of ICCV , pages 23508–23519, Los Alamitos, CA, USA, 2023. 2, 5 [41] Aming Wu and Cheng Deng. Discriminating Known from Unknown Objects via Structure-Enhanced Recurrent Varia-tional AutoEncoder. In Proc. of CVPR , pages 23956–23965, Vancouver, BC, Canada, 2023. 2 [42] Aming Wu and Cheng Deng. Percept, Memory, and Imag-ine: World Feature Simulating for Open-Domain Unknown Object Detection. In Proc. of CVPR , pages 4682–4691, Nashville, TN, USA, 2025. [43] Aming Wu, Da Chen, and Cheng Deng. Deep Feature Deblurring Diffusion for Detecting Out-of-Distribution Ob-jects. In Proc. of ICCV , pages 13335–13345, Paris, France, 2023. 2 [44] Zhisheng Xiao, Qing Yan, and Yali Amit. Likelihood Re-gret: An Out-of-Distribution Detection Score For Variational Auto-encoder. In Proc. of NeurIPS , pages 20685–20696, vir-tual, 2020. 2 [45] Zhisheng Xiao, Qing Yan, and Yali Amit. Do We Really Need to Learn Representations from In-domain Data for Out-lier Detection? arXiv:2105.09270 , 2021. 2, 5, 6 [46] Fisher Yu, Wenqi Xian, Yingying Chen, Fangchen Liu, Mike Liao, Vashisht Madhavan, and Trevor Darrell. BDD100K: A Diverse Driving Video Database With Scalable Annotation Tooling. arXiv:1805.04687 , 2018. 4, 12 [47] Bin Zhang, Jinggang Chen, Xiaoyang Qu, Guokuan Li, Kai Lu, Jiguang Wan, Jing Xiao, and Jianzong Wang. RUNA: Object-level Out-of-Distribution Detection via Regional Un-certainty Alignment of Multimodal Representations. In 
+
+Proc. of AAAI , pages 26418–26426, Philadelphia, PA, USA, 2025. 2, 3, 4, 5, 14 [48] Kaiyang Zhou, Jingkang Yang, Chen Change Loy, and Ziwei Liu. Learning to Prompt for Vision-Language Models. In-ternational Journal of Computer Vision , 130(9):2337–2348, 2022. 2 [49] Xizhou Zhu, Weijie Su, Lewei Lu, Bin Li, Xiaogang Wang, and Jifeng Dai. Deformable DETR: Deformable Transform-ers for End-to-End Object Detection. In Proc. of ICLR , pages 1–16, virtual, 2021. 5, 6, 7, 8, 12, 15 [50] Bo Zong, Qi Song, Martin Renqiang Min, Wei Cheng, Cristian Lumezanu, Daeki Cho, and Haifeng Chen. Deep 
+
+10 Autoencoding Gaussian Mixture Model for Unsupervised Anomaly Detection. In Proc. of ICLR , pages 1–14, Vancou-ver, BC, Canada, 2018. 2 
+
+11 A. AP Results of the Object Detector 
+
+In Tab. 6 we report the average precision (AP) metric (%) of the DeformableDETR [49] object detector on the ID datasets Pascal-VOC [8] and BDD100K [46]. This object detector is used for evaluating all object out-of-distribution (OOD) detection methods. 
+
+# B. Results on Full Test Sets 
+
+In Tab. 7, we evalaute our SAM3-O2D2 for object OOD detection using entire Pascal-VOC and BDD100K as ID datasets and entire MS-COCO and OpenImages as OOD datasets. We report AuROC and FPR95 metrics and ob-serve that also on the entire test sets SAM3-O2D2 outper-forms RONIN [30] by an even larger margin than on the official reported numbers by [30] in Tab. 1. 
+
+# C. Performance Influence of the IoU Threshold 
+
+In Tab. 8, we analyze the effect of the IoU threshold θIoU 
+
+in (2) on object out-of-distribution (OOD) detection perfor-mance. The results are obtained using in-distribution (ID) datasets Pascal-VOC [8] (top segment) and BDD100K [46] (bottom segment) and the OOD datasets MS-COCO [21] and OpenImages [16]. We measure object OOD detection performance using AuROC and FPR95. Consistent with the results in Tab. 2 (main paper), ob-ject OOD performance increases with lower θIoU , achiev-ing best performance across all metrics and datasets even at 
+
+θIoU = 0 . However, as discussed in Section 5.1, choosing a very small IoU threshold, such as θIoU = 0 , would not generalize well to other test configurations. In particular, if ID and OOD objects co-occur in the same image, accepting weakly (or not at all) localized matches would substantially increase the FPR. This is why we propose θIoU = 0 .2 for our main results in Tab. 1 (main paper). For fairness, how-ever, future work solely evaluating on this particular setting, where ID and OOD objects cannot co-occur in the same image, should also report the performance of SAM3-O2D2 
+
+with θIoU = 0 .
+
+# D. Evaluation in an Open-World Setup 
+
+In Tab. 9, we evaluate our proposed SAM3-O2D2 on a more realistic open-world setup, where ID and OOD ob-jects can occur within the same image. For this setup, we use the DeformableDETR [49] trained on Pascal-VOC as ID dataset and evaluate on the full MS-COCO [21] validation set. For the open-world , we introduce a new labeling protocol for ID and OOD objects. First, we match DeformableDETR predictions to ground-truth ob-jects based on their IoU. A prediction is considered matched if its IoU with a ground-truth object is greater than 0.3. If a prediction is matched to a ground-truth object of the same         
+
+> Table 6. Object detection performance of the
+> DeformableDETR [49] object detector on the in-distribution (ID) datasets Pascal-VOC [8] and BDD100K [46]. We report mean average precision (AP) (%).
+
+Dataset Pascal-VOC BDD100K AP (%) 60 .6 31 .3     
+
+> Table 7. Object OOD detection results using SAM3-O2D2 on Pascal-VOC and BDD100K as ID datasets and MS-COCO and OpenImages as OOD datasets. We report AuROC (%) / FPR95 (%).
+
+Method MS-COCO OpenImages ID dataset: Pascal-VOC 
+
+RONIN [30] 89.67 / 30.30 91.43 / 25.19 
+
+SAM3-O2D2 97.72 / 6.24 93.87 / 15.97 
+
+ID dataset: BDD100K 
+
+RONIN [30] 78.41 / 57.91 83.86 / 44.37 
+
+SAM3-O2D2 97.99 / 5.25 98.47 / 3.26       
+
+> Table 8. Performance influence of θIoU in our SAM3-O2D2 on Pascal-VOC and BDD100K as ID datasets and MS-COCO and OpenImages as OOD datasets. We report AuROC (%) and FPR95 (%). Best results in bold .
+
+θIoU MS-COCO OpenImages AuROC ↑ FPR95 ↓ AuROC ↑ FPR95 ↓
+
+ID dataset: Pascal-VOC 0 98.14 5.20 96.18 12.01 
+
+0.1 97.60 6.11 94.88 15.62 0.2 97.52 6.56 94.62 16.52 0.3 97.40 7.47 94.40 17.72 ID dataset: BDD100K 0 99.42 1.99 99.57 0.71 
+
+0.1 98.65 3.98 98.49 5.71 0.2 98.46 4.55 98.40 5.00 0.3 98.01 4.83 97.91 5.00 class, we label it as ID. If it is matched to a ground-truth object of a class not being part of the ID dataset, we label it as OOD. In this evaluation for object OOD detection, we ig-nore all other predictions. Under this protocol, ID and OOD objects can co-occur within the same image. We then apply the object OOD methods as usual to the predicted objects to identify the OOD objects. We observe that, as expected, the open-world setup is more challenging for both the base-line RONIN [30] and our SAM3-O2D2 , with both meth-ods performing worse than in the Pascal-VOC MS-COCO 12 Table 9. Object OOD detection results on an open-world setup on the full MS-COCO validation set. We report AuROC (%) and FPR95 (%). Best results in bold .
+
+Method AuROC ↑ FPR95 ↓
+
+RONIN [30] 81 .72 51 .21 
+
+SAM3-O2D2 (θIoU = 0 .0) 92 .15 20 .63 
+
+SAM3-O2D2 (θIoU = 0 .2) 94 .11 16 .19      
+
+> Table 10. Computational complexity in terms of TFLOPs of
+> RONIN [30] and our SAM3-O2D2 . Best results in bold .
+
+Method R = 1 R = 2 R = 3 
+
+RONIN [30] 32 .19 64 .39 96 .58 
+
+SAM3-O2D2 4.30 4.59 4.87 
+
+setup in Tab. 1. However, our proposed SAM3-O2D2 out-performs RONIN by an even larger margin in the more real-istic setup, demonstrating the better practical applicability of our method. Furthermore, our method with θIoU = 0 .2
+
+outperforms the variant with θIoU = 0 .0, supporting our choice of this threshold for better generalization to realistic open-world setups. 
+
+# E. Comparison of Computational Complexity 
+
+In Tab. 10, we compare compuational complexity in terms of TFLOPs of the strongest zero-shot baseline RONIN [30] and our SAM3-O2D2 for the case of R = 1 , R = 2 , and 
+
+R = 3 unique prompted classes. For both methods, we use the configurations reported in Tab 1. Specifically, RONIN 
+
+uses 20 diffusion steps and a diffusion-model input resolu-tion of 512 ×512 , whereas SAM3-O2D2 uses an input reso-lution of 1008 × 1008 . We observe that, for all values of R,
+
+SAM3-O2D2 requires substantially fewer FLOPs. Further-more, the computational complexity of RONIN scales lin-early with the number of prompted classes, since its main source of FLOPs is the diffusion model, which must be evaluated once for each additional class. For SAM3-O2D2 ,in contrast, only the SAM3 detector is evaluated addition-ally for each prompted class, which limits the increase in FLOPs. 
+
+# F. Comparison with Few-Shot Methods 
+
+In Tab. 11, we compare our zero-shot SAM3-O2D2 to state-of-the-art few-shot methods for object OOD detection using Pascal-VOC and BDD100K as ID datasets and MS-COCO and OpenImages as OOD datasets. We report AuROC and FPR95 metrics. As expected, due to their advantageous ac-cess to task-specific data, the few-shot baseline UNI-OOD 
+
+[19] outperforms the zero-shot baseline RONIN [30] across all datasets and metrics. Our proposed zero-shot method, 
+
+SAM3-O2D2 with θIoU = 0.2, however, is competitive with the few-shot UNI-OOD [19] and outperforms it in all settings with MS-COCO as the OOD dataset. Moreover, 
+
+SAM3-O2D2 with θIoU = 0 .0 surpasses UNI-OOD [19] even more generally, being best in 7 out of 8 dataset-metric combinations. 
+
+# G. Simulation of Bounding-Box Localization Error 
+
+In the following, we describe how we use the approach of B¨ ar et al. [1] to simulate bounding-box localization errors of the object detector. 
+
+Preliminaries : A bounding box predicted by the object detector is defined as bm ∈ I 2 with pixel positions set 
+
+I = {(1 , 1) , . . . , (H, W )} and H and W being the image height and width, respectively. The bounding-box coordi-nates 
+
+bm = (( hL
+
+> m
+
+, w L
+
+> m
+
+), (hR
+
+> m
+
+, w R
+
+> m
+
+)) , (5) are given by a top-left corner (hL
+
+> m
+
+, w L
+
+> m
+
+) ∈ I and a bottom-right corner (hR
+
+> m
+
+, w R
+
+> m
+
+) ∈ I . Then, the size of the bounding box is given by Hm × Wm with 
+
+Hm = |hL 
+
+> m
+
+− hR
+
+> m
+
+|, (6) 
+
+Wm = |wL 
+
+> m
+
+− wR
+
+> m
+
+|, (7) where Hm and Wm denote the object height and width, re-spectively. 
+
+Error Simulation : To induce bounding-box localization errors, we perturb the object detector bounding boxes bm
+
+using some noise coordinate factor ϵ ≥ 0, also referred to as noise strength. Depending on this noise strength, we ob-tain object-specific uniform distributions 
+
+Uh(−uh, u h), with uh = ϵ
+
+2 Hm, (8) 
+
+Uw(−uw, u w), with uw = ϵ
+
+2 Wm, (9) which are used to perturb the bounding-box coordinates. To this end, we sample offsets 
+
+∆hL
+
+> m
+
+, ∆hR 
+
+> m
+
+∼ Uh(−uh, u h), (10) 
+
+∆wL
+
+> m
+
+, ∆wR 
+
+> m
+
+∼ Uw(−uw, u w), (11) from the object-specific uniform distribution for the height coordinates ∆hL
+
+> m
+
+, ∆hR 
+
+> m
+
+and width coordinates 
+
+∆wL
+
+> m
+
+, ∆wR
+
+> m
+
+. Finally, we obtain the erroneous bounding box ˜bm = (( hL
+
+> m
+
+, w L
+
+> m
+
+) + (∆ hL
+
+> m
+
+, ∆wL
+
+> m
+
+),
+
+(hR
+
+> m
+
+, w R
+
+> m
+
+) + (∆ hR
+
+> m
+
+, ∆wR
+
+> m
+
+)) , (12) by adding the offsets to the original bounding-box coordi-nates predicted by the object detector. The offsets are lim-ited in a way that no disturbed bounding box is extended towards pixel positions outside the image. 13 Table 11. Object OOD detection results comparison of SAM3-O2D2 with zero- and few-shot methods on Pascal-VOC and BDD100K as ID datasets and MS-COCO and OpenImages as OOD datasets. Baseline results are adopted from the respective papers. We report AuROC (%) and FPR95 (%) metrics. Best results in bold , second-best underlined. 
+
+Out-of-distribution (OOD) datasets In-distribution Method MS-COCO OpenImages (ID) dataset AuROC ↑ FPR95 ↓ AuROC ↑ FPR95 ↓
+
+Few-shot methods Pascal-VOC 
+
+RUNA [47] 92.48 30.67 93.63 26.07 
+
+UNI-OOD [19] 95.07 22.24 96.25 14.30 Zero-shot methods 
+
+RONIN [30] 92.31 25.36 93.10 18.91 
+
+SAM3-O2D2 (θIoU = 0 .2) (ours) 97.52 6.56 94.62 16.52 
+
+SAM3-O2D2 (θIoU = 0 .0) (ours) 98.14 5.20 96.18 12.01 
+
+Few-shot methods BDD100K 
+
+RUNA [47] 93.92 16.85 96.76 9.95 
+
+UNI-OOD [19] 95.91 11.32 98.52 3.68 Zero-shot methods 
+
+RONIN [30] 92.90 26.03 91.90 23.33 
+
+SAM3-O2D2 (θIoU = 0 .2) (ours) 98.46 4.55 98.40 5.00 
+
+SAM3-O2D2 (θIoU = 0 .0) (ours) 99.42 1.99 99.57 0.71 
+
+# H. Qualitative Results and Failure Analysis 
+
+Qualatative Results : In Fig. 5, we show qualitative re-sults of our SAM3-O2D2 method. Illustrated are success cases (top and middle rows) and failure cases (bottom row) for Pascal-VOC ID objects (left), MS-COCO OOD ob-jects (middle), and OpenImages OOD objects (right). The shown labels in Fig. 5 are the output of the object de-tector DeformableDETR and are then used to prompt 
+
+SAM3-image [2] according to our proposed SAM3-O2D2 
+
+method. For ID success cases (top and middle left), 
+
+SAM3-image predicts bounding boxes at the correspond-ing object detector locations, correctly marking the objects as ID ( ✓). Similarly, for OOD success cases (top and mid-dle right), SAM3 does not predict corresponding bounding boxes, correctly marking the objects as OOD ( ✗). In the ID failure case (bottom left), the ID object chair is marked as OOD ( ✗) because SAM3-image fails to predict an object at that location under the chair prompt. This is the case because the object is closer to an armchair . In the OOD failure case on MS-COCO, the object detector predicts two objects, both labeled as potted plant . The right object is not confirmed by SAM3 and is therefore correctly classi-fied as OOD ( ✗). The left object in reality is a pineapple ,not a potted plant . However, SAM3 also predicts an object at that location under the potted plant prompt, and therefore incorrectly classifies it as ID ( ✓). In the OOD failure case on OpenImages (bottom right), the predicted object potted plant is not confirmed by a SAM3 pre-diction and is therefore correctly classified as OOD ( ✗). The second object predicted by the object detector is a bottle 
+
+in the top-left region of the image. Since this bottle is also detected by SAM3 , it is incorrectly marked as ID ( ✓)under the evaluation protocol, where OOD images are as-sumed not to contain any ID objects. Accordingly, in the standard evaluation protocol used in the field, all detected objects in an OOD image are expected to be marked as OOD. However, a bottle is clearly visible in this im-age, suggesting a dataset-labeling issue rather than a true method failure, since our task is object OOD detection. We observed this type of error more frequently on OpenImages, which may partially explain the performance gap in Tab. 1 (main paper) compared to the other datasets. 
+
+Failure Analysis : For failure analysis, we use the operating point corresponding to the FPR95 metric with Pascal-VOC as the ID dataset and MS-COCO as the OOD dataset from Tab. 1. At this operating point, the false negative rate (FNR) is 5.00% and the false positive rate (FPR) is 6.56% . For false negatives, i.e ., ID objects that are marked as OOD be-cause they are not detected by SAM3 , we observe two types of failures. The first type corresponds to errors made by the object detector, such as predicting the wrong class or predicting objects at locations where no object is present. These incorrect predictions are not verified by SAM3 and are therefore marked as OOD, although they originate from 14 ID dataset Pascal VOC MS-COCO OpenImages OOD datasets Failure cases  Success cases 
+
+DeformableDETR prediction SAM3 prediction Classified as: ✓ ID ✗ OOD               
+
+> Person ✓
+> Horse ✓
+> Bird ✓
+> Chair ✗
+> Cow ✗Cow ✗
+> Boat ✗
+> Potted plant ✓
+> Potted plant ✗
+> Bird ✗
+> Cat ✗
+> Bottle ✓
+> Potted plant ✗
+
+Figure 5. Qualitative results of our SAM3-O2D2 method for object OOD detection. In the top and middle row, success cases for the ID dataset Pascal-VOC (left) and the OOD datasets MS-COCO (middle) and OpenImages (right) are shown. In the bottom row, failure cases for the respective datasets are illustrated. Objects and labels are predicted by the DeformableDETR [49] and classified by our 
+
+SAM3-O2D2 as ID ( ✓) or OOD ( ✗). 
+
+an ID image. The second type corresponds to true method failures, where SAM3 fails to confirm a real ID object. The overall FNR of 5.00% decomposes into 0.27% false neg-atives where a real object is not confirmed by SAM3 and 
+
+4.73% false negatives caused by object-detector errors. Ac-cordingly, only a small fraction of false negatives are due to failures of our proposed SAM3-O2D2 method. From a broader error-detection perspective, where OOD objects are only one possible cause of detection errors, this fur-ther expands the possibilities of practical deployment of 
+
+SAM3-O2D2 . Distinguishing between OOD objects and standard detector failures is typically simpler task for prac-tical systems, compared to detecting erroneous detections. For false positives, the two types of errors occurring are the ones discussed in the qualitative results. 15

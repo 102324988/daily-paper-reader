@@ -1,0 +1,703 @@
+Title: SphereSOD: Geometry-Structure Coupled Learning for 360 Salient Object Detection
+
+URL Source: https://arxiv.org/pdf/2609.07571v1
+
+Published Time: Wed, 09 Sep 2026 02:26:43 GMT
+
+Number of Pages: 12
+
+Markdown Content:
+> 1
+
+# SphereSOD: Geometry-Structure Coupled Learning for 360 Salient Object Detection 
+
+Junsong Zhang †, Zhijie Shen †, Shuai Zheng, Feng Li, Runmin Cong, Yao Zhao,, Chunyu Lin*, (a) DDS (b) FANet       
+
+> ERP input Ground truth
+> (c) Ours
+> Geometry adaptation Geometry-structure coupling Projection fusion (a) DDS (b) FANet (c) SphereSOD (ours) Geometry-adaptive features Multi-projection fusion Geometry-adaptive perception + structure-conditioned recovery
+
+Fig. 1. Brief comparison between SphereSOD and other 360 ◦ SOD methods. (a) DDS [1] splits ERP images into regions with region-specific convolution kernels. (b) FANet [2] adaptively fuses the ERP image with six cube-map faces. (c) Our SphereSOD instead couples geometry-adaptive perception with structure-conditioned recovery directly in ERP space. 
+
+Abstract —360° salient object detection (SOD) aims to ac-curately segment salient regions across a full field of view. However, equirectangular projection (ERP) introduces severe spatial distortion when mapping the spherical domain onto a planar representation. Existing methods mainly focus on com-pensating projection distortion while overlooking the interaction between panoramic geometry and salient object structure during feature perception and prediction refinement. To this end, we propose SphereSOD, an ERP-native framework that couples panoramic geometry with evolving salient structures. Specifi-cally, spherical geometry governs feature sampling and spatial weighting, while coarse-grained saliency and contour prediction influence context aggregation during the progressive decoding process. SphereSOD first initializes deformable sampling based on spherical projection geometry and then employs bounded, content-adaptive offsets, yielding features that are better aligned with the underlying panoramic geometry. Subsequently, the decoder performs structure-guided context aggregation and pro-gressive refinement to recover complete salient regions and accurate boundaries. Extensive experiments on three public 360° SOD benchmarks demonstrate state-of-the-art performance and a favorable accuracy-efficiency trade-off, supporting structure-preserving inference directly in ERP space as a promising alternative to projection-heavy panoramic pipelines. 
+
+Index Terms —360 ◦ vision, salient detection, distortion 
+
+I. I NTRODUCTION 
+
+With the rapid development of augmented reality (AR), virtual reality (VR), and immersive visual applications, panoramic imaging has become an important representation for capturing surrounding environments. Unlike conventional perspective images, 360 ◦ images provide a complete field of view within a single observation, offering rich contextual information for comprehensive scene understanding. Salient object detection (SOD), which aims to identify and segment visually important regions, provides an effective means of extracting informative content from such large-field-of-view imagery and benefits various downstream tasks, including semantic segmentation [3], [4], scene classification [5], image editing [6]–[8], and object tracking [9], [10]. Although perspective-image SOD methods have achieved remarkable progress [11]–[21], directly applying them to 360 ◦
+
+images remains challenging. The core difficulty arises from the mismatch between spherical scene geometry and planar image operations. Equirectangular projection (ERP) introduces geometric distortion and places horizontally adjacent spheri-cal locations at opposite image boundaries. These geometric inconsistencies alter the spatial relationships assumed by con-ventional feature sampling and context aggregation, causing errors in feature perception to propagate into incomplete salient regions and inaccurate object boundaries. Therefore, the challenge of 360 ◦ SOD is not merely to compensate for projection distortion, but to keep panoramic geometry involved in the recovery of salient object structure. Existing 360 ◦ SOD methods address ERP distortion through two common, sometimes overlapping directions. One direction adapts feature extraction directly to non-uniform ERP geom-etry. For example, DDS [1] learns region-specific convolution kernels for partitioned ERP regions, while DATFormer [22] introduces distortion-adaptive modules and relation matrices into a transformer. These methods improve feature represen-tation under spatially varying distortion. However, geometric adaptation is typically implemented as a representation-level operation, and how panoramic geometry should interact with evolving region and boundary estimates during subsequent prediction refinement remains less explored. Another direction introduces alternative projections for less-distorted local observations. For example, [23] combines per-spective views with object-level semantic ranking, FANet [2] selectively fuses ERP and cubemap projection (CMP) features, MPFRNet [24] jointly exploits ERP and four cube-unfolding (CU) views, and SIHENet and SCFANet [25], [26] combine local CMP cues with global ERP information. Although complementary views improve local perception, projection conversion divides the spherical domain into separate repre-sentations and requires extra transformation, alignment, and fusion, which may break the continuity of boundary-spanning objects and add processing overhead. More fundamentally, reducing distortion through representation conversion does not arXiv:2609.07571v1 [cs.CV] 7 Sep 2026 2
+
+by itself determine how spherical geometry should guide the recovery of complete salient regions and boundaries. These observations suggest that panoramic geometry mod-eling and salient-structure recovery should not be treated as isolated processes. We therefore propose SphereSOD, an ERP-native framework that couples panoramic geometry with evolving salient structures across feature perception and pro-gressive decoding. Here, salient object structure refers to the spatial organization of foreground regions and their bound-aries, represented by evolving saliency and contour predictions during decoding. In SphereSOD, spherical geometry governs where visual evidence is sampled and how spatial context is weighted, whereas saliency and contour predictions determine which regions and boundaries to emphasize during aggre-gation. Their interaction connects geometry-adaptive feature perception with structure-conditioned progressive recovery di-rectly in ERP space, without additional projection conversion. Specifically, at the encoder stage, we propose the Prior-Guided Multi-scale Encoder (PG-ME). PG-ME initializes de-formable sampling from spherical projection geometry, en-abling feature extraction to adapt to latitude-dependent dis-tortion in ERP images. It further introduces bounded content-adaptive offsets to constrain sampling within relevant local regions and reduce interference from irrelevant areas. Mean-while, circular continuity preserves the horizontal consistency of ERP. In this way, PG-ME produces geometry-aligned fea-tures while maintaining local salient information. At the decoder stage, we design the Dual-branch Prior-guided Progressive Decoder (DPPD) for structure-guided con-text aggregation and progressive refinement. Guided by task-related structural cues, DPPD aggregates saliency-relevant context and progressively reconstructs complete salient regions and accurate boundaries. Furthermore, overlap-normalized up-sampling and probability-context residual refinement preserve structural details during resolution recovery. As shown in Fig. 1, SphereSOD yields more complete object structures and clearer boundaries than existing 360 ◦ SOD methods. We conduct extensive experiments on three datasets, includ-ing 360-SOD [1], 360-SSOD [23], and ODI-SOD [27]. Results show that SphereSOD achieves state-of-the-art performance with a favorable accuracy-efficiency trade-off. The main con-tributions are summarized as follows:  
+
+> •
+
+We propose SphereSOD, an ERP-native framework that couples panoramic geometry with evolving salient struc-tures, connecting geometry-adaptive feature perception to structure-conditioned progressive recovery for 360 ◦ SOD.  
+
+> •
+
+We develop PG-ME and DPPD to realize geometry-adaptive feature perception and structure-aware progres-sive refinement, respectively, enabling accurate salient object recovery without multi-projection fusion.  
+
+> •
+
+Extensive experiments on three public benchmarks show that SphereSOD achieves state-of-the-art performance with favorable computational efficiency. II. R ELATED WORK 
+
+A. SOD in 2D Images 
+
+SOD in 2D images has been extensively studied, with methods broadly divided into traditional handcrafted-feature and deep learning-based approaches. Early methods rely on manually designed cues such as texture [28], [29], color [30], [31], and background priors [32], [33], but their dependence on domain knowledge limits adaptability and efficiency. With the development of deep learning, CNN-based meth-ods have become dominant. [34] integrates global and local information for saliency modeling, [35] enhances multi-scale context through a cascaded structure, [36] refines features and models cross-modal interactions, and [37] fuses high-level se-mantics with low-level details via short connections and multi-scale supervision. Moreover, [11], [17], [38] introduce edge maps as auxiliary guidance for more accurate localization. More recently, Transformer-based methods model long-range dependencies beyond CNN receptive fields. [39] pro-poses a pure Transformer for sequence-to-sequence saliency prediction with saliency and edge supervision, [40] combines CNNs and Transformers for complementary local-global mod-eling, and [41] adopts a dual-branch structure to separately learn local details and global context. 
+
+B. SOD in 360 ◦ Omnidirectional Images 
+
+With the rapid development of virtual reality (VR), saliency detection in panoramic images has attracted increasing at-tention. Early studies mainly focus on fixation prediction in 360 ◦ images and videos. [42] employs generative adversarial imitation learning (GAIL) to simulate human head-movement trajectories. [43] proposes a spatiotemporal network for 360 ◦
+
+video saliency prediction with cube filling to reduce distor-tion. Salnet360 [44] adapts conventional 2D SOD models to panoramic scenes by partitioning each image into six regions and merging CNN-based saliency maps. [45] introduces a spherical U-Net with shared spherical convolution kernels. However, fixation prediction models human visual attention, while 360 ◦ SOD requires pixel-level localization with accurate boundaries, making it more challenging and less explored. For 360 ◦ SOD, [1] builds the first dedicated dataset with a distortion-adaptive module and multi-scale context integration, and [27] contributes a large-scale dataset with a sample-adaptive view transformer for distortion, boundary disconti-nuity, and scale variation. [23] formulates SOD as a multi-stage task with object-level semantic saliency ranking and leverages 2D images to improve accuracy. DATFormer [22] integrates distortion-adaptive modules with relation matrices. FANet [2] adaptively fuses ERP images and six cube-map faces. MPFRNet [24] dynamically weights multiple cube-map projections to alleviate incomplete object representation. SC-FANet [25] captures global ERP cues with ViT and local cube-map cues via CNN, while SIHENet [26] embeds ERP features into less-distorted CMP contexts to exploit cross-projection and cross-level complementarity. [46] learns saliency features from tangent-projection images and models their geometric correlations with ERP images. Although these methods improve 360 ◦ SOD performance, they still exhibit notable limitations. ERP distortion-adaptive methods mainly focus on feature extraction, with limited consideration of panoramic geometry in subsequent structural recovery. Multi-projection methods alleviate local distortion ZHANG et al. : SPHERESOD: GEOMETRY-STRUCTURE COUPLED LEARNING FOR 360 SALIENT OBJECT DETECTION 3Fuse Upsampling PG-DSA LN LeFF ++    
+
+> LN
+> Global Token Converter
+> Global Tokens
+> Spatial features Panorama
+> RGB
+> Saliency map Saliency contour ON-rT2T+PGTR+DP ON-rT2T+PGTR+DP DP PCRD 1/16 scale 1/8 scale 1/4 scale full scale 1) FE Input Output Legends 2) PG-ME 3) GTC 4) DPPD
+> Feature Extraction
+> Prior-guided
+> Multi-scale Encoder Global Token Converter Dual-branch Prior-guided Progressive Decoder LayerNorm Locally-enhanced Feed-Forward Add Primary path Auxiliary path LN LeFF +FE PG-ME GTC
+> DPPD
+> Primary predictions Auxiliary
+> predictions
+> Global Tokens Spatial features
+> Fig. 2. Overview of our proposed SphereSOD. The SphereSOD comprises four major parts: feature extraction based on Swin-s, prior-guided multi-scale encoder (PG-ME), global token converter (GTC), and the dual-branch prior-guided progressive decoder (DPPD).
+
+but introduce extra projection and fusion overhead and may disrupt the continuity of boundary-spanning objects. To ad-dress these issues, we propose SphereSOD, an ERP-native framework that connects geometry-adaptive perception with structure-conditioned recovery by jointly modeling panoramic geometry and evolving salient structures throughout encoding and decoding. Specifically, we design a Prior-Guided Multi-scale Encoder (PG-ME) to adapt feature sampling to spherical projection geometry and a Dual-branch Prior-guided Progres-sive Decoder (DPPD) to aggregate context and progressively refine predictions under evolving saliency and contour cues. This design recovers complete salient regions and clear bound-aries directly in ERP space, without multi-projection fusion. III. M ETHOD 
+
+A. Architecture Overview 
+
+In Fig. 2, we show our complete framework. The overall design of SphereSOD follows a geometry-structure coupled paradigm: panoramic geometry guides where features are perceived, while evolving salient structures condition how pre-dictions are progressively recovered, all directly in ERP space. SphereSOD takes a panorama as input and outputs a predicted saliency map and contour. During the encoder stage, we em-ploy Swin-s to extract features at four different resolutions. To fully leverage the global semantics from the deepest layer of the Swin Transformer, the high-level semantic features f 4 are concatenated with f 3 along the channel dimension and then fused through an MLP, thereby yielding features that integrate both global semantics and local details. Then, these features are provided to the prior-guided multi-scale encoder (PG-ME), which applies the prior-guided deformable self-attention (PG-DSA) across three scales, leveraging spherical sampling prior, local semantic prior, and horizontal continuity prior to produce geometry-aligned features. Subsequently, f 3 is passed through the global token converter (GTC), which transforms it into global saliency and contour contextual tokens and spatial features for the subsequent decoder. Finally, the dual-branch prior-guided progressive decoder (DPPD) is designed to progressively refine saliency and contour predictions from coarse scale to full resolution through overlap-normalized reverse T2T upsampling (ON-rT2T), prior-guided token re-finement (PGTR), primary auxiliary dual prediction (DP), and probability-context residual decoder (PCRD). DPPD jointly optimizes a token-similarity-based primary branch for global semantic alignment and a projection-based auxiliary branch for local detail preservation. In this way, spherical geometry governs feature sampling and spatial weighting across PG-ME and DPPD, while evolving saliency and contour predictions condition progressive recovery, coupling panoramic geometry with salient structures throughout perception and decoding. 
+
+B. Prior-guided Multi-scale Encoder (PG-ME) 
+
+Panoramic SOD aims to localize the complete regions and precise boundaries of salient objects, which requires both local contextual discrimination and adaptation to the spherical dis-tortion and horizontal continuity introduced by equirectangular projection (ERP). To this end, we introduce the PG-ME, which leverages the local semantic prior of salient objects to constrain deformable sampling to semantically relevant local neighbor-hoods via bounded content-adaptive offsets. Meanwhile, it incorporates the spherical sampling prior and circular padding to adapt to the distortion and continuity. Specifically, as shown in Fig. 2, PG-ME is composed of two stacked standard transformer blocks at each scale. The input features are first normalized by LayerNorm and then fed into the core prior-guided deformable self-attention (PG-DSA) module, followed by a residual connection. Subsequently, the features pass through another LayerNorm and the Locally-enhanced Feed-Forward (LeFF) module, with a second resid-ual connection applied to yield the final output of the PG-ME. 4Q                           
+
+> K
+> Linear Projection Input Feature
+> Circular
+> padding
+> Circular
+> padding
+> Offset
+> generator
+> Offset
+> generator proj(C,9) proj(C,9) Softmax A
+> RBounded offset Bounded offset PSSOutput
+> Project Project Circular
+> padding
+> Circular
+> padding
+> proj(C,C) proj(C,C) Reshape
+> SSMatrix Add
+> Sampling multiplication
+> SMatrix Add
+> Sampling multiplication
+> Distortion sampling prior
+> Local semantics prior
+> Fig. 3. Overview of PG-DSA, which is supported by three priors. f3 (B,N,C) LN LN ()
+> MH-SA Transformer block x4 MH-SA Transformer block x4
+> (B,N+2,C) MH-SA( PE) x4
+> LLLLLL
+> KV
+> Q
+> KVQK
+> T
+> QK
+> T
+> QK
+> T
+> Matrix
+> multiplication Add
+> LLLinear Sigmoid SA: attention
+> saliency contour :
+> attention CA: QK
+> T
+> QK
+> T
+> QK
+> T
+> (B,N,C) (B,N,C)
+> FFN FFN (B,1,C) LN LN FFN FFN (B,1,C)
+> (B,N,C)
+> SA
+> CA
+> Fig. 4. Architecture of the GTC. It generates global task tokens ( Tgs,
+> Tgc) for the primary path and task-enhanced spatial features ( Fs,Fc,F)for the auxiliary path.
+
+As illustrated in Fig. 3, in PG-DSA, the input features are first linearly projected into query Q and key K. The query Q
+
+is passed through a linear projection layer proj to compute the attention scores of the sampling points, which are then normalized by Softmax to obtain the attention weights A.In addition, Q is fed into the offset generator to predict the raw offsets R. To ensure the horizontal continuity of offset prediction in ERP, circular padding is applied in the offset generator. To focus on semantically relevant local contexts and prevent irrelevant long-range interference, we impose a local-semantics prior on the offset prediction, constraining the raw offsets R to obtain the bounded residual offsets △p:
+
+△p = tanh (R) · Rmax · g, g = σ(γ) (1) where the tanh function constrains the raw offsets to the range of (−1, 1) , and Rmax denotes the maximum offset magnitude (set to 1.5 empirically). The gate g serves as a learnable offset gate ( σ denotes the sigmoid function and γ is a learnable parameter) to adaptively adjust the offset magnitude. The gate 
+
+g is initialized to 0.1 to suppress excessive offset magnitudes at the early training stage. Subsequently, the distortion sampling prior provides initial locations on the ERP plane. The bounded offset △p is then applied to these prior positions to derive the final sampling points P . After the addition, circular padding is further applied to handle longitude continuity. Finally, the key 
+
+K is linearly projected and reshaped into multi-head features, bilinearly sampled at the sampled points, weighted by attention weights A, and projected to yield the final PG-DSA output. 
+
+C. Global Token Converter (GTC) 
+
+Although the features processed by PG-ME acquire local contextual awareness and panoramic geometric adaptability, they still lack global semantics for saliency and contour prediction. To model task-relevant contexts globally, we follow VST++ [47] and introduce the Global Token Converter (GTC). It is worth noting that the GTC is not the core contribution of this work; however, we describe it here for completeness. As shown in Fig. 4, considering both high-level semantics and computational efficiency, the GTC is applied only to the 1/16 scale features. First, the input features f 3 ∈ RB×N ×C
+
+pass through four standard multi-head self-attention layers to establish global context. Then, we introduce two learnable global tokens, namely the saliency token T gs and the contour token T gc , and concatenate them to the two ends of the patch token F , resulting in a sequence of length N + 2 . To further model the spatial relationships among patches, this sequence is fed into another four layers of multi-head self-attention modules with positional encoding. Afterward, the updated features are decoupled into three outputs. For the patch feature F , we use the saliency token 
+
+T gs and the contour token T gc as the key and value ( K, V ), respectively, while taking the patch feature as the query Q.Through a Sigmoid-activated attention ( QK T → Sigmoid )and a residual connection with the original patch feature F ,we obtain the task-enhanced saliency feature Fs and contour feature Fc. Meanwhile, the two updated global task tokens are passed through their respective LayerNorm and Feed-Forward Network (FFN) layers to generate the final global saliency token T gs and global contour token T gc .
+
+D. Dual-branch Prior-guided Progressive Decoder (DPPD) 
+
+Although GTC provides global semantics, the decoder still lacks explicit guidance from panoramic geometry and salient structures, limiting region discrimination and boundary preci-sion. To address this, we propose DPPD, which injects priors into decoding to guide context aggregation and progressively refine predictions. 
+
+1) Overlap-normalized Reverse T2T Upsampling (ON-rT2T): Reverse T2T upsamples tokens by folding projected 
+
+k×k patches into a 2D map with stride s (s < k ). However, the 
+
+F old operation directly sums overlapping regions. This uneven accumulation creates a spatial amplitude bias, degrading high-frequency boundary localization. To address this, we propose ON-rT2T. Specifically, folding the projected tokens yields the accumulated map U . Simulta-neously, applying the same F old to an all-ones tensor produces a coverage count map D. The final upsampled feature ˆU is obtained by element-wise division: 
+
+U = Fold(Proj( T )) , D = Fold( 1), ˆU = U
+
+max( D, 1) (2) 
+
+where max (D, 1) avoids division by zero. ON-rT2T con-verts overlap summation into averaging, removing spatial bias without extra parameters. The upsampled features are then concatenated with the low-level encoder features and fused by linear projection to supplement fine local details. 
+
+2) Prior-guided Token Refinement (PGTR): After each upsampling step, guided by three priors associated with panoramic geometry and salient-object structure, PGTR re-places the costly token-to-pixel self-attention with O(N )
+
+weighted pooling. Specifically, as shown in Fig. 5, given the upsampled spatial feature f and the saliency and contour coarse predictions from the previous stage Ps and Pc, we ZHANG et al. : SPHERESOD: GEOMETRY-STRUCTURE COUPLED LEARNING FOR 360 SALIENT OBJECT DETECTION 5(B,1,N) (B,1,H,W)              
+
+> reshape reshape
+> (B,64) (B,64) Double constrained
+> (B,1,N) (B,64,N) reshape (B,64,H,W) x(B,1,H,W) Weighted pool Weighted pool
+> (B,64,H,W) xNext-layer
+> (B,1,H,W) (B,1,H,W) (B,1,H,W)
+> (B,1,H,W)
+> Primary (global)
+> Auxiliary (local) LL
+> LL
+> NNLLNL
+> ON-rT2T
+> NNLLNL
+> NNLLNL
+> NN
+> LL
+> Norm
+> Linear
+> ,,,
+> ,,,
+> Similarity
+> Fig. 5. Overview of PGTR (top) and Dual Prediction (bottom). In PGTR, blue and green denote the saliency and contour branches, respectively. In Dual Prediction, the primary branch predicts via similarity with the updated tokens, while the auxiliary branch predicts directly from the task-enhanced features.
+
+reshape them into 2D maps x, Ms, and Mc, respectively. Here, x ∈ RB×64 ×H×W denotes the spatial feature, and 
+
+Ms, Mc ∈ RB×1×H×W denote the prior maps. PGTR consists of two branches, i.e. , saliency (blue) and contour (green) branches, each guided by the following three types of priors. 
+
+Foreground contrast prior. In panoramic images, salient objects tend to differ more from their half-circumference re-gion than from adjacent surroundings, which holds for 68.5% and 72.1% of the 360-SOD and 360-SSOD training images in CIELab histogram distance. Based on this prior, the saliency branch rolls the feature by half the width and subtracts it from the original feature to obtain the saliency contrast feature Cs:
+
+xanti = Roll( x, W 
+
+> 2
+
+), Cs = x − xanti (3) where Cs is later fused as a weak residual modulated by a learnable αsal (initialized to 0) and the gates gs, g c (defined later in Eq.13, Eq.15). For the contour branch, we extract the edges and apply the same half-width shift to yield the contour contrast feature Cc:
+
+E = Edge( x), Eanti = Roll(E , W 
+
+> 2
+
+) (4) 
+
+Cc = E + αcon (E − Eanti ) (5) where Roll( ·, W 
+
+> 2
+
+) and Edge( ·) denote the half-width shift and edge extraction, respectively. Since contours are sparse, we formulate this contrast term as a weak residual controlled by 
+
+αcon (initialized to 0) to ensure stable early training. 
+
+Sal-con prior. This prior guides context aggregation toward structurally informative regions. For the saliency branch, the weights are directly obtained from the coarse saliency pre-diction, i.e. , Ws = M s. For the contour branch, to exclude irrelevant high-frequency textures, we take the maximum of the coarse contour prediction and the saliency boundary: 
+
+Wc = max  B(M s), Mc
+
+ (6) where B(·) denotes the panoramic boundary extractor, and 
+
+max( ·) denotes the element-wise maximum operation. 
+
+Pano-distortion prior. Since ERP severely stretches polar regions, equal aggregation overweights distorted areas. Thus, we introduce a latitude-aware weight w:
+
+w = max   cos( πy  
+
+> 2
+
+), 0.25  (7) where y ∈ [−1, 1] denotes the normalized latitude coordinate. 
+
+cos( πy  
+
+> 2
+
+) equals 1 at the equator ( y = 0 ) and decays to 0 toward the poles ( y = ±1). To avoid excessively small weights in the polar regions, we truncate it to a minimum of 0.25 .Guided by these priors, each branch uses Ws/W c × w as the final spatial weight for weighted average pooling. The saliency branch pools x and its half-width-shifted feature xanti 
+
+separately and fuses them with a weak residual, while the contour branch directly pools Cc:
+
+Zfg =
+
+P
+
+> h,w
+
+(Wsw) ⊙ x
+
+P
+
+> h,w
+
+(Wsw) , Zanti =
+
+P
+
+> h,w
+
+(Wsw) ⊙ xanti 
+
+P
+
+> h,w
+
+(Wsw) (8) 
+
+Zs = Z fg + αsal (Z fg − Zanti ) (9) 
+
+Zc =
+
+P
+
+> h,w
+
+(Wcw) ⊙ Cc
+
+P
+
+> h,w
+
+(Wcw) (10) where the summation is over all spatial positions (h, w ) and 
+
+⊙ denotes element-wise multiplication. The denominator is used for weight normalization. αsal is initialized to zero and introduces the contrast context as a learnable weak residual. The resulting global contexts Zs, Zc ∈ RB×64 are task-relevant global representations at this scale. Finally, we inject the global representations and positional encodings into the corresponding previous-stage global tokens, and update the tokens through residual connections: 
+
+Tg′ 
+
+> s
+
+= T gs + ϕs
+
+ Tgs + PE s + ψs(Z s) (11) 
+
+Tg′ 
+
+> c
+
+= T gc + ϕc
+
+ Tgc + PE c + ψc(Z c) (12) where Tgs and Tgc denote the previous-stage global tokens, PE s
+
+and PE c are positional encodings, and ϕs,c and ψs,c denote linear projections. The updated global tokens Tg′ 
+
+> s
+
+, Tg′ 
+
+> c
+
+and spatial features are fed into the dual prediction. 
+
+3) Dual prediction: As shown in the lower part of Fig. 5, DPPD performs dual-branch prediction at each scale from the PGTR outputs. The primary branch uses the updated global tokens as task representations and fuses the original feature with gated contrast-enhanced features to obtain the enhanced primary feature: 
+
+ˆF = x + 0 .5 · gs ⊙ Cs + 0 .5 · gc ⊙ Cc (13) where ⊙ denotes element-wise multiplication, gs/gc are saliency/contour gates controlling the enhancement strength. 
+
+ˆF is normalized and projected to obtain the primary-branch feature Fp, which computes position-wise similarities (denoted as ⟨⟩ ) with the updated global tokens: 
+
+Sp = ⟨Fp, Tg′ 
+
+> s
+
+⟩ , Sc = ⟨Fp, Tg′ 
+
+> c
+
+⟩ (14) here we obtain the primary-branch saliency prediction Sp and contour prediction Sc. Meanwhile, ˆF is passed to the next ON-rT2T stage for progressive high-resolution refinement. 6CC            
+
+> (B,16,H,W)
+> UP UP UP UP
+> (B,1,H,W)
+> UP UP UP UP
+> (B,1,H,W) primary residual residual LD-RT2T LD-RT2T (B,1,H,W) (B,1,H,W) (B,1,H,W) CC(B,20,H,W)
+> Add
+> Sigmoid
+> UP UP
+> CCConcatenate
+> Upsampling Conv(20,1) DWConv auxiliary
+> +0-high
+> low
+> Similarity
+> ,,
+> ,,
+> Fig. 6. Illustration of PCRD. Taking the coarse predictions as the base, PCRD modulates the residuals with the predicted gate to achieve boundary refinement, yielding high-quality full-resolution predictions.
+
+The auxiliary branch performs dense prediction directly from task-specific enhanced features, without using global tokens. Specifically, the original feature x is added to each gated contrast enhancement to obtain the saliency-enhanced feature ˆFs and the contour-enhanced feature ˆFc:
+
+ˆFs = x + gs ⊙ Cs, ˆFc = x + gc ⊙ Cc (15) they are normalized and projected into local features Fls and 
+
+Flc, then classified linearly to yield the auxiliary predictions Sa
+
+and Ca, complementing the primary branch with local details. Note that the 1/16 scale differs slightly. Lacking a previous coarse prediction, it directly uses the GTC outputs (Fig. 4). Specifically, the primary branch matches the patch feature F
+
+with global tokens Tgs and Tgc , while the auxiliary branch pre-dicts from the task-enhanced features Fs and Fc. Starting from the 1/8 scale, each stage follows the standard pipeline—ON-rT2T, PGTR, and dual prediction—guided by the previous coarse prediction. 
+
+4) Probability-context Residual Decoder (PCRD): After three refinement stages, direct bilinear upsampling from 1/4-scale blurs salient boundaries. To efficiently recover details, we propose PCRD (Fig. 6). It takes inputs from the 1/4 stage, spatial features ( F, F4s , F4c , collectively f 4 
+
+> a
+
+in Fig. 2), primary predictions ( S4p, C4p), auxiliary predictions ( S4a, C4a), and updated global tokens ( Tgs , Tgc , collectively f 4 
+
+> p
+
+in Fig. 2). We first concatenate the three 1/4-scale spatial features and upsample them via a 16 -channel low-dimensional re-verse T2T (LD-RT2T), producing the full-scale feature Fld ∈
+
+RB×16 ×H×W . This preserves structural details for bound-ary refinement with low computational cost. Meanwhile, the coarse predictions are bilinearly upsampled into full-scale logit bases ( Bs, Bc for primary branch and Bas , Bac for auxiliary branch ) to serve as references for residual refinement. To stabilize gate and residual learning, we build the context in the probability domain. The primary logit bases are mapped by Sigmoid to Ps and Pc ∈ [0 , 1] , and two priors, uncertainty 
+
+U and saliency difference Danti , are derived from Ps:
+
+U = 1 − 2 · Ps − 1 , Danti = P s − Roll(P s, W 
+
+> 2
+
+) (16) where U is high near uncertain regions (near contours, Ps ≈
+
+0.5) and low near confident regions (background or object interiors, Ps ≈ 0, 1), thus indicating where refinement is needed. Danti captures the saliency contrast between the fore-ground and its half-width-shifted region. We concatenate these probability-domain maps with the low-dimensional feature to form the context Ω:
+
+Ω = Concat c(F ld , Ps, Pc, U, Danti ) ∈ RB×20 ×H×W (17) where Ω has 20 channels ( 16 + 4 ). Its bounded values ensure numerically stable inputs for both gate and residual prediction. In the primary branch, the residuals combine context residuals from heads Hsp(Ω) and Hcp(Ω) with token responses rs and 
+
+rc, computed by similarity ( ⟨⟩ ) between Fld and the previous global tokens Tgs and Tgc . The summation yields the final residuals ∆S and ∆C :
+
+∆S = H sp(Ω) + r s, ∆C = H cp(Ω) + r c (18) The auxiliary residuals are directly predicted from the context without token responses, using heads Hsa(Ω) and Hca(Ω) .The gate G is generated from the context via a panoramic depthwise separable convolution ( DWConv ), a 1 × 1 convo-lution ( Conv(20 , 1) ), and a Sigmoid activation: 
+
+G = σ Conv 1×1(DWConv(Ω))  ∈ [0 , 1] B×1×H×W (19) The modulation of the residuals by the gate exhibits explicit boundary sensitivity. As visualized by ∆S and G in Fig. 6, ∆S exhibits small positive values inside objects, large positive/negative values along inner/outer boundaries, and near-zero values in the background. Meanwhile, G is strictly positive, with stronger responses inside objects and weaker responses near boundaries. After multiplying G and ∆S , the gate amplifies positive residuals inside objects to enhance saliency, while its weaker values at boundaries moderately constrain the positive/negative residuals, jointly sharpening contours and suppressing boundary leakage. Finally, the gate-modulated residuals are added to the base logits to obtain full-resolution primary- and auxiliary-branch predictions: 
+
+S1p = B s + G · ∆S , C1p = B c + ∆C (20) 
+
+S1a = B as + G · Hsa(Ω) , C1a = B ac + H ca(Ω) (21) Here, G is applied only to the saliency branch, as contours al-ready represent boundaries and require no additional filtering. 
+
+E. Loss Function 
+
+BCE Loss. Binary cross-entropy (BCE) measures pixel-level discrepancy and serves as the fundamental supervision signal. We apply BCE to both saliency and contour predictions across all S scales, using downsampled ground truth (GT) for supervision. The multi-scale BCE loss Lbce is defined as: 
+
+Lbce =
+
+> S
+
+X
+
+> i=1
+
+wi
+
+h
+
+BCE (P isal , G isal )+ BCE (P icon , G icon )
+
+i
+
+(22) ZHANG et al. : SPHERESOD: GEOMETRY-STRUCTURE COUPLED LEARNING FOR 360 SALIENT OBJECT DETECTION 7
+
+where P isal and P icon denote the saliency and contour predic-tions at the i-th scale, respectively, while Gisal and Gicon are the corresponding downsampled GT. wi is the scale weight, empirically set to w1=1 .0, w2=0 .8, w3=0 .5, and w4=0 .5
+
+from high to low resolutions. 
+
+IoU Loss. Since pixel-wise BCE may overlook small objects under foreground-background imbalance, we further apply IoU loss to saliency and contour predictions across all 
+
+S scales to enforce regional overlap consistency. The multi-scale IoU loss Liou is defined as: 
+
+Liou =
+
+> S
+
+X
+
+> i=1
+
+wi
+
+h
+
+IoU (P isal , G isal ) + IoU (P icon , G icon )
+
+i
+
+(23) where the scale weights wi are the same as in Lbce . The base loss Lbase combines BCE and IoU, and the auxiliary counterpart Laux base is defined similarly. 
+
+Lbase = Lbce + Liou (24) 
+
+Align Loss. Neither BCE nor IoU explicitly constrains the intensity distribution consistency between the prediction and GT. To address this, we introduce the alignment loss Lalign 
+
+to align the pixel-wise deviation directions from the global average, thereby improving structural consistency. Given the full-resolution saliency prediction P 1 
+
+> sal
+
+and GT G1
+
+> sal
+
+, we first mean-center them to obtain their deviations: 
+
+φP = P 1 
+
+> sal
+
+− μP , φG = G1 
+
+> sal
+
+− μG (25) where μP and μG are the global means of P 1 
+
+> sal
+
+and G1
+
+> sal
+
+, re-spectively. We then compute the pixel-wise alignment between their deviations and normalize it. 
+
+ξ = 2 · φP · φG
+
+φ2 
+
+> P
+
++ φ2 
+
+> G
+
++ ϵ , ϕ = (ξ + 1) 2
+
+4 (26) Here ϵ is a small constant to avoid division by zero. ξ ∈ [−1, 1] 
+
+is utilized to measure the directional consistency between the prediction and GT deviations: it approaches 1 when they are in the same direction and approaches −1 when they are opposite. 
+
+ϕ maps to [0 , 1] to amplify well-aligned regions. The alignment loss Lalign is defined as: 
+
+Lalign = 1 −
+
+P 
+
+> hw
+
+ϕH × W (27) 
+
+Lalign captures global intensity distribution consistency, com-pensating for the pixel-wise and foreground-only limitations of BCE and IoU. We apply it to the full-resolution primary and auxiliary saliency predictions. The total loss Ltotal is: 
+
+Ltotal = Lbase + Laux base + Lalign + Laux align (28) IV. E XPERIMENTS 
+
+A. Datasets and Implementation Details 
+
+We evaluate our method on three 360 ◦ SOD benchmarks: 360-SOD [1] (400 train / 100 test), 360-SSOD [23] (850 train / 255 test), and ODI-SOD [27] (4263 train / 2000 test). All experiments are conducted on a single GTX 3090 GPU with a batch size of 2. We use the Adam optimizer [60] with an initial learning rate of 0.0001, decayed by a factor of 0.1. Following [22], contour maps are generated from GT saliency maps for contour supervision. We use Swin-S [61] as the backbone and implement the model in PyTorch [62]. For data augmentation, each ERP image is resized to 
+
+1024 × 512 . We apply random horizontal flipping (prob. 0.5) and circular rolling (prob. 0.7), where the roll offset is uniformly sampled from [5% , 95%] of the width. Color jittering (prob. 0.5) further changes brightness, contrast, and saturation by ±0.3, and hue by ±0.05 .
+
+B. Evaluation Metrics 
+
+We assess our model with four standard saliency detection metrics: S-measure ( Sm) [63], MAE [64], F-measure ( Fβ )[65], and E-measure ( Em) [66]. Higher Sm/Fβ /Em and lower MAE are better. Sm evaluates structural similarity: 
+
+Sm = αS o + (1 − α)Sr (29) where So and Sr denote object-aware and region-aware struc-tural similarity, and α is usually set to 0.5 by default. MAE measures the average pixel-wise discrepancy between the predicted saliency map S and the ground truth GT :
+
+M AE = 1
+
+H × W
+
+> H
+
+X
+
+> y=1
+> W
+
+X
+
+> x=1
+
+|S(x, y ) − GT (x, y )| (30) where W and H are the width and height of the image. Fβ
+
+summarizes the trade-off between precision P and recall R:
+
+Fβ = (1 + β2) · P · Rβ2 · P + R (31) where β2 is set to 0.3 to emphasize precision. Following common practice, we report the adaptive/mean/max Fβ . Em
+
+prediction–ground-truth agreement via an enhanced alignment matrix that fuses per-pixel matching with image-level statis-tics, capturing both local and global similarity: 
+
+Em = 1
+
+H × W
+
+> H
+
+X
+
+> y=1
+> W
+
+X
+
+> x=1
+
+·FM (x, y ) (32) where FM is the enhanced alignment matrix computed from the saliency map and ground truth. We also report the adaptive/mean/max Em. These metrics reflect complementary aspects of performance: structural similarity ( Sm), absolute error (MAE), precision–recall trade-off ( Fβ ), and alignment at both global and local levels ( Em). 
+
+C. Comparison Results 
+
+To validate our method, we compare it with SOTA methods on three datasets, including 360 ◦ SOD methods [1], [2], [22]– [27], [46], [48] and 2D SOD methods [49]–[59]. 
+
+1) Quantitative Analysis: As shown in Tables I, II and III, our method achieves the best performance across all metrics on the three benchmarks. Compared with the second-best methods, the gains in Sm, M AE , adpE , and adpF 
+
+are: 360-SOD: 2.07%, 17.65%, 4.29%, and 4.40%; 360-SSOD: 5.06%, 7.14%, 3.42%, and 17.74%; ODI-SOD: 4.85%, 25.71%, 3.95%, and 8.89%, respectively. 8
+
+TABLE I QUANTITATIVE COMPARISON OF SPHERE SOD WITH OTHER METHODS ON THE 360-SOD DATASET IN TERMS OF Sm , MAE, F-M EASURE , AND 
+
+E-M EASURE . ↑ (↓) INDICATES HIGHER (LOWER ) IS BETTER . T HE TOP THREE RESULTS ARE HIGHLIGHTED IN RED , GREEN , AND BLUE .
+
+Dataset Metric Ours 360 ◦ Models 2D Models 
+
+SIHE SCFA MPFR LD DDS FANet DAT HUA BIPG PG GFI SCW BPFI GCPA HVP MI ACCo LDF SCRN [26] [25] [24] [48] [1] [2] [22] [46] [49] [50] [51] [52] [53] [54] [55] [56] [57] [58] [59] 
+
+> 360-SOD Dataset
+
+Sm ↑ .889 .871 .871 .842 .768 .799 .826 .849 .847 .811 .750 .831 .830 .788 .674 .709 .719 .770 .815 .792 
+
+M AE ↓ .014 .017 .018 .019 .029 .023 .021 .017 .017 .024 .030 .021 .021 .024 .040 .052 .050 .025 .023 .024 
+
+adpE ↑ .936 .932 .923 .890 .858 .854 .883 - - .884 .755 .895 .886 .829 .791 .679 .696 .866 .827 .834 
+
+meanE ↑ .935 .931 .925 .875 .844 .865 .873 .907 .908 .885 .745 .894 .886 .819 .770 .734 .770 .768 .851 .846 
+
+maxE ↑ .939 .937 .930 .885 .866 .904 .900 .919 - .890 .786 .900 .887 .865 .785 .842 .824 .869 .877 .877 
+
+adpF ↑ .831 .796 .793 .745 .617 .638 .700 - - .717 .648 .735 .752 .603 .491 .423 .443 .717 .633 .615 
+
+meanF ↑ .836 .813 .808 .755 .641 .695 .748 .774 .786 .727 .629 .753 .754 .672 .501 .545 .545 .676 .715 .675 
+
+maxF ↑ .848 .830 .824 .765 .656 .722 .770 .793 - .740 .646 .769 .759 .708 .508 .655 .655 .735 .740 .707 TABLE II QUANTITATIVE COMPARISON ON THE 360-SSOD DATASET . N OTATIONS FOLLOW TABLE I. 
+
+Dataset Metric Ours 360 ◦ Models 2D Models 
+
+SIHE SCFA LD FANet DAT BIPG PG GFI SCW BPFI GCPA HVP MI ACCo LDF SCRN [26] [25] [48] [2] [22] [49] [50] [51] [52] [53] [54] [55] [56] [57] [58] [59] 
+
+> 360-SSOD Dataset
+
+Sm ↑ .795 .788 .791 .756 .717 .770 .760 .712 .767 .760 .766 .741 .773 .732 .747 .752 .748 
+
+M AE ↓ .026 .028 .029 .034 .039 .026 .030 .041 .034 .029 .030 .035 .030 .059 .031 .033 .031 
+
+adpE ↑ .879 .876 .867 .841 .717 - .864 .793 .842 .856 .773 .836 .782 .660 .797 .713 .766 
+
+meanE ↑ .882 .871 .860 .845 .727 .832 .817 .731 .829 .813 .795 .811 .800 .778 .758 .749 .780 
+
+maxE ↑ .889 .886 .870 .863 .735 .865 .855 .790 .848 .854 .851 .837 .854 .819 .853 .854 .851 
+
+adpF ↑ .657 .558 .551 .461 .516 - .523 .457 .516 .523 .420 .468 .435 .344 .432 .391 .414 
+
+meanF ↑ .682 .567 .560 .492 .520 .644 .517 .425 .526 .511 .483 .469 .500 .453 .465 .454 .470 
+
+maxF ↑ .701 .576 .570 .511 .532 .657 .524 .452 .536 .518 .512 .479 .529 .513 .503 .511 .500 TABLE III QUANTITATIVE COMPARISON ON THE ODI-SOD DATASET . N OTATIONS FOLLOW TABLE I. 
+
+Dataset Metric Ours 360 ◦ Models 2D Models 
+
+SIHE View SCFA DDS FANet DAT BIPG PG GFI SCW BPFI GCPA HVP MI ACCo LDF SCRN [26] [27] [25] [1] [2] [22] [49] [50] [51] [52] [53] [54] [55] [56] [57] [58] [59] 
+
+> ODI-SOD Dataset
+
+Sm ↑ .887 .846 .831 .840 .791 .730 .828 .815 .808 .779 .814 .822 .826 .732 .803 .681 .802 .817 
+
+M AE ↓ .026 .036 .035 .037 .045 .050 .036 .042 .044 .051 .043 .040 .042 .061 .040 .094 .046 .045 
+
+adpE ↑ .922 .887 .886 .878 .808 .778 .866 .864 .854 .816 .862 .870 .845 .795 .853 .616 .839 .816 
+
+meanE ↑ .918 .888 - .880 - .771 .858 .861 .851 .801 .852 .861 .850 .787 .869 .725 .821 .839 
+
+maxE ↑ .924 .894 - .886 - .790 .884 .867 .857 .810 .859 .869 .862 .795 .881 .865 .862 .867 
+
+adpF ↑ .846 .777 .759 .763 .630 .608 .711 .738 .715 .696 .744 .759 .702 .607 .708 .439 .690 .664 
+
+meanF ↑ .850 .789 - .776 - .610 .754 .744 .727 .692 .745 .760 .738 .616 .757 .551 .721 .726 
+
+maxF ↑ .859 .808 .822 .793 .761 .632 .778 .759 .743 .700 .753 .770 .757 .627 .779 .754 .748 .754 
+
+2) Qualitative Analysis: 360-SOD dataset: Fig. 7 com-pares our saliency maps with other SOTA methods on 360-SOD. In multi-object scenes (Rows 1,3,6), our method more accurately identifies, locates, and segments all salient objects. Under severe distortion (Row 2), it still robustly localizes the target. For detail-rich scenes (Rows 4,5), it better preserves object details and produces more accurate boundaries. 
+
+360-SSOD dataset: Fig. 8 shows visual comparisons on 360-SSOD. In multi-object scenes (Rows 1,4,6), our method reliably detects and segments all salient objects. For complex-detail scenes (Rows 2,3), it achieves finer segmentation with clearer boundaries. In the large-object scene (Row 5), it also preserves object details while accurately delineating contours. 
+
+ODI-SOD dataset: Fig. 9 shows visual comparisons on ODI-SOD. In scenes with both large and small objects (Rows 1,5,6), our method detects all targets and preserves fine local details. In detail-complex scenes (Rows 2,3), it effectively 
+
+TABLE IV COMPLEXITY COMPARISON AGAINST MULTI -PROJECTION FUSION METHODS ON THE 360-SOD DATASET .Method FANet [2] MPFRNet [24] SCFANet [25] HUA [46] Ours FLOPs (G) 241.39 84.91 713.69 276.32 135.27 Params (M) 25.40 117.72 226.13 115.94 71.18 
+
+suppresses background interference and recovers accurate boundaries. In the large complex scene (Row 4), competing methods often produce internal holes or missed detections, whereas ours yields complete regions and precise contours. 
+
+3) Complexity Comparison: To compare computational complexity, we report the FLOPs and parameters of our method and representative multi-projection fusion methods (results from [46]) on 360-SOD, at 1024 × 512 with a batch size 1 (Table IV). Our method attains only 135.27G FLOPs ZHANG et al. : SPHERESOD: GEOMETRY-STRUCTURE COUPLED LEARNING FOR 360 SALIENT OBJECT DETECTION 9RGB GT DATFormer DDS FANet LD Stage-wise Ours SIHENet SCFANet MPFRNet                     
+
+> Fig. 7. Qualitative comparison results of our method and other SOTA models on the 360-SOD dataset. RGB GT LD Stage-wise BIPG PG GFI Ours SIHENet SCFANet DATFormer
+> Fig. 8. Qualitative comparison results of our method and other SOTA models on the 360-SSOD dataset. RGB GT BIPG PG GFI SCW Ours SIHENet SCFANet DATFormer
+> Fig. 9. Qualitative comparison results of our method and other SOTA models on the ODI-SOD dataset.
+
+(56.0% of FANet [2], 19.0% of SCFANet [25] and 49.0% of HUA [46]), 71.18M parameters (far fewer than MPFR-Net [24], SCFANet [25] and HUA [46] ). This is because our method discards extra projection transformations and couples panoramic geometry with salient structures for encoding and decoding on a single ERP, achieving markedly lower overhead while comprehensively outperforming these methods. 
+
+4) Generalization across Backbones: To verify that the gain stems from our design rather than the Swin-S backbone, we replace it with a weaker ResNet-50 and retrain two variants under identical settings: a plain baseline (without PG-DSA and DPPD) and our full model. As shown in Table V, the full model consistently surpasses the baseline on all three datasets, confirming that the improvement stems from the proposed design rather than the backbone. 
+
+D. Ablation Study 
+
+To validate each design in SphereSOD, we conduct sys-tematic ablation experiments on 360-SOD and ODI-SOD datasets (Table VI). The experiments are organized into four groups, covering the core modules, internal components, data augmentation strategies, and loss functions. 10 
+
+TABLE V GENERALIZATION TO A WEAKER BACKBONE (R ES NET -50). Dataset Method Sm ↑ MAE ↓ mean E ↑ mean F ↑
+
+360-SOD Baseline 0.8099 0.0245 0.8666 0.7255 Ours 0.8327 0.0208 0.8992 0.7640 
+
+360-SSOD Baseline 0.7383 0.0337 0.8223 0.5904 Ours 0.7660 0.0289 0.8541 0.6220 
+
+ODI-SOD Baseline 0.7902 0.0541 0.8344 0.6979 Ours 0.8305 0.0399 0.8775 0.7677 
+
+TABLE VI ABLATION STUDY ON 360-SOD AND ODI-SOD DATASETS . E ACH COMPONENT GROUP IS EVALUATED BY REMOVING OR REPLACING THE CORRESPONDING MODULE . T HE BEST RESULT PER COLUMN IS IN BOLD .Method 360-SOD ODI-SOD                                                                                                                                                      
+
+> Sm↑MAE ↓mean E↑mean F↑Sm↑MAE ↓mean E↑mean F↑
+> Ours .889 .014 .935 .836 .887 .026 .918 .850
+> Group 1: Modules
+> w/o PG-DSA .875 .015 .923 .825 .871 .031 .909 .823 w/o DPPD .874 .016 .921 .806 .868 .031 .903 .823 Baseline (w/o both) .859 .017 .916 .804 .849 .040 .883 .783
+> Group 2: Components
+> w/o Bounded Offset .879 .016 .919 .821 .881 .027 .914 .845 w/o Circular Padding .879 .016 .929 .825 .880 .027 .917 .848 w/o ON-rT2T .881 .016 .923 .818 .882 .026 .915 .847 w/o sal-con Prior .879 .016 .922 .817 .880 .029 .909 .831 w/o foreground contrast Prior .882 .017 .928 .822 .878 .027 .917 .839 w/o pano-distortion Prior .881 .016 .921 .827 .881 .029 .913 .838 w/o Gate .882 .016 .929 .827 .882 .027 .916 .841
+> Group 3: Augmentation
+> w/o Horizontal Roll .879 .017 .919 .822 .881 .025 .917 .850 w/o Color Jitter .883 .015 .929 .826 .879 .027 .915 .838 w/o Random Flip .884 .015 .928 .827 .883 .026 .913 .846
+> Group 4: Loss
+> only BCE Loss .878 .017 .910 .807 .879 .029 .899 .824 w/o IoU Loss .885 .016 .922 .809 .881 .028 .901 .825 w/o Align Loss .884 .018 .929 .827 .883 .026 .919 .850
+
+1) Effectiveness of Modules: We first evaluate the two core modules: PG-ME (with PG-DSA) and DPPD. As shown in Group 1, removing PG-DSA consistently degrades perfor-mance, reducing Sm by 0.014 on 360-SOD and 0.016 on ODI-SOD. Replacing DPPD with a standard decoder leads to larger drops in mean F , confirming the importance of cascaded re-finement for region accuracy and boundary quality. Removing both modules causes the most severe degradation, with clear drops in Sm, mean F , and MAE on both datasets. These results demonstrate that PG-DSA and DPPD are complementary and jointly contribute to robust panoramic SOD. 
+
+2) Effectiveness of Components: Group 2 analyzes the internal components. For PG-DSA, removing the bounded offset constraint or circular padding reduces Sm on both datasets, indicating that constrained deformation and longi-tudinal continuity are both important for ERP images. In the decoder, replacing ON-rT2T with standard reverse T2T decreases mean F , showing that overlap normalization helps reduce upsampling bias. Removing the sal-con, foreground contrast, or pano-distortion prior also degrades performance, with the sal-con prior causing the largest mean F drop on both datasets. This verifies that these priors provide complementary guidance for task-relevant context aggregation. In addition, re-moving the PCRD gate reduces Sm and mean F , demonstrating its effectiveness in adaptive residual refinement. 
+
+3) Effectiveness of Data Augmentation: Group 3 evaluates the data augmentation strategies. The panorama-specific hori-zontal roll is the most effective on 360-SOD, where removing it decreases Sm by 0.010 and increases MAE from 0.014 to 0.017. On ODI-SOD, it also improves Sm and mean E, al-though the MAE remains competitive without it. This suggests that horizontal roll better exploits the longitudinal continuity of ERP images and improves spatial diversity. Color jitter and random flipping also bring consistent gains, providing complementary photometric and geometric regularization. 
+
+4) Effectiveness of Loss Functions: Group 4 studies the loss functions. Using only multi-scale BCE gives clearly inferior results on both datasets, indicating that pixel-wise supervision alone is insufficient for accurate region-level structure and global consistency. Adding IoU loss significantly improves mean F , especially on 360-SOD and ODI-SOD, showing its benefit for region-level overlap. Align Loss further improves the overall performance, particularly reducing MAE and im-proving Sm on 360-SOD, while maintaining competitive re-sults on ODI-SOD. These results confirm that BCE, IoU, and Align Loss provide complementary supervision for accurate and structurally consistent saliency prediction. V. C ONCLUSION 
+
+This paper presents SphereSOD, an ERP-native frame-work for panoramic SOD that couples panoramic geometry with evolving salient structures, thereby connecting geometry-adaptive feature perception with structure-conditioned progres-sive recovery directly in ERP space. At the encoding stage, PG-ME initializes deformable sampling from spherical pro-jection geometry to adapt to distortion. Meanwhile, bounded adaptive offsets constrain sampling to semantically relevant neighborhoods and circular padding preserves wrap-around continuity. At the decoding stage, DPPD mitigates upsampling bias via ON-rT2T, integrates foreground-contrast, saliency-contour, and distortion priors through PGTR to guide con-textual aggregation, and refines boundaries via PCRD gated residual learning. In addition, the primary–auxiliary dual-branch prediction mechanism complements global semantics with local details, helping preserve structure during progres-sive resolution recovery. Extensive experiments on 360-SOD, 360-SSOD, and ODI-SOD show that SphereSOD outperforms existing panoramic and 2D methods, validating the effective-ness of coupling panoramic geometry and salient structures throughout feature perception and progressive decoding. REFERENCES [1] J. Li, J. Su, C. Xia, and Y. Tian, “Distortion-adaptive salient object detection in 360 omnidirectional images,” IEEE Journal of Selected Topics in Signal Processing , vol. 14, no. 1, pp. 38–48, 2019. [2] M. Huang, Z. Liu, G. Li, X. Zhou, and O. Le Meur, “Fanet: Features adaptation network for 360 omnidirectional salient object detection,” 
+
+IEEE Signal Processing Letters , vol. 27, pp. 1819–1823, 2020. [3] Z. Zhao, S. Feng, Y. Zhai, W. Zhao, and G. Li, “Infrared thermal image instance segmentation method for power substation equipment based on visual feature reasoning,” IEEE Transactions on Instrumentation and Measurement , vol. 72, pp. 1–13, 2023. [4] W. Wang, J. Shen, and F. Porikli, “Saliency-aware geodesic video object segmentation,” in Proceedings of the IEEE conference on computer vision and pattern recognition , 2015, pp. 3395–3402. [5] F. Zhang, B. Du, and L. Zhang, “Saliency-guided unsupervised feature learning for scene classification,” IEEE transactions on Geoscience and Remote Sensing , vol. 53, no. 4, pp. 2175–2184, 2014. ZHANG et al. : SPHERESOD: GEOMETRY-STRUCTURE COUPLED LEARNING FOR 360 SALIENT OBJECT DETECTION 11 
+
+[6] B. Cheng, W. Wu, D. Tao, S. Mei, T. Mao, and J. Cheng, “Random cropping ensemble neural network for image classification in a robotic arm grasping system,” IEEE Transactions on Instrumentation and Mea-surement , vol. 69, no. 9, pp. 6795–6806, 2020. [7] W. Wang, J. Shen, and H. Ling, “A deep network solution for attention and aesthetics aware photo cropping,” IEEE transactions on pattern analysis and machine intelligence , vol. 41, no. 7, pp. 1531–1544, 2018. [8] W. Wang, J. Shen, Y. Yu, and K.-L. Ma, “Stereoscopic thumbnail creation via efficient stereo saliency detection,” IEEE transactions on visualization and computer graphics , vol. 23, no. 8, pp. 2014–2027, 2016. [9] Y. Wang, Y. Tian, J. Chen, K. Xu, and X. Ding, “A survey of visual slam in dynamic environment: The evolution from geometric to semantic approaches,” IEEE Transactions on Instrumentation and Measurement ,vol. 73, pp. 1–21, 2024. [10] S. Hong, T. You, S. Kwak, and B. Han, “Online tracking by learning discriminative saliency map with convolutional neural network,” in 
+
+International conference on machine learning . PMLR, 2015, pp. 597– 606. [11] J.-X. Zhao, J.-J. Liu, D.-P. Fan, Y. Cao, J. Yang, and M.-M. Cheng, “Eg-net: Edge guidance network for salient object detection,” in Proceedings of the IEEE/CVF international conference on computer vision , 2019, pp. 8779–8788. [12] X. Zhao, Y. Pang, L. Zhang, H. Lu, and L. Zhang, “Suppress and bal-ance: A simple gated network for salient object detection,” in European conference on computer vision . Springer, 2020, pp. 35–51. [13] C. Pan, J. Liu, W. Q. Yan, F. Cao, W. He, and Y. Zhou, “Salient object detection based on visual perceptual saturation and two-stream hybrid networks,” IEEE Transactions on Image Processing , vol. 30, pp. 4773– 4787, 2021. [14] J.-J. Liu, Q. Hou, M.-M. Cheng, J. Feng, and J. Jiang, “A simple pooling-based design for real-time salient object detection,” in Proceedings of the IEEE/CVF conference on computer vision and pattern recognition ,2019, pp. 3917–3926. [15] G. Ma, S. Li, C. Chen, A. Hao, and H. Qin, “Rethinking image salient object detection: Object-level semantic saliency reranking first, pixelwise saliency refinement later,” IEEE Transactions on Image Processing ,vol. 30, pp. 4238–4252, 2021. [16] Z. Wu, L. Su, and Q. Huang, “Cascaded partial decoder for fast and accurate salient object detection,” in Proceedings of the IEEE/CVF conference on computer vision and pattern recognition , 2019, pp. 3907– 3916. [17] J. Su, J. Li, Y. Zhang, C. Xia, and Y. Tian, “Selectivity or invari-ance: Boundary-aware salient object detection,” in Proceedings of the IEEE/CVF international conference on computer vision , 2019, pp. 3799– 3808. [18] R. Cong, N. Yang, H. Liu, D. Zhang, Q. Huang, S. Kwong, and W. Zhang, “Trnet: Two-tier recursion network for co-salient object detec-tion,” IEEE Transactions on Circuits and Systems for Video Technology ,2025. [19] J. Jin, Q. Jiang, Q. Wu, B. Xu, and R. Cong, “Underwater salient object detection via dual-stage self-paced learning and depth emphasis,” IEEE Transactions on Circuits and Systems for Video Technology , 2024. [20] R. Cong, J. Lei, H. Fu, M.-M. Cheng, W. Lin, and Q. Huang, “Review of visual saliency detection with comprehensive information,” IEEE Transactions on circuits and Systems for Video Technology , vol. 29, no. 10, pp. 2941–2959, 2018. [21] M. Xu, S. Wang, Y. Hu, H. Tang, R. Cong, and L. Nie, “Cross-model nested fusion network for salient object detection in optical remote sensing images,” IEEE Transactions on Cybernetics , 2025. [22] Y. Zhao, L. Zhao, Q. Yu, L. Sheng, J. Zhang, and D. Xu, “Distortion-aware transformer in 360° salient object detection,” in Proceedings of the 31st ACM International Conference on Multimedia , 2023, pp. 499–508. [23] G. Ma, S. Li, C. Chen, A. Hao, and H. Qin, “Stage-wise salient object detection in 360 omnidirectional image via object-level semantical saliency ranking,” IEEE Transactions on VisuaSlization and Computer Graphics , vol. 26, no. 12, pp. 3535–3545, 2020. [24] R. Cong, K. Huang, J. Lei, Y. Zhao, Q. Huang, S. Kwong et al. , “Multi-projection fusion and refinement network for salient object detection in 360 degrees omnidirectional image,” IEEE Transactions on Neural Networks and Learning Systems , vol. 35, p. 9495–9507, 2023. [25] Z. He, F. Shao, G. Chen, X. Chai, and Y.-S. Ho, “Scfanet: Semantics and context feature aggregation network for 360 salient object detection,” 
+
+IEEE Transactions on Multimedia , vol. 26, pp. 2276–2288, 2023. [26] Z. He, F. Shao, Z. Xie, X. Chai, and Y.-S. Ho, “Sihenet: Semantic interaction and hierarchical embedding network for 360 salient object detection,” IEEE Transactions on Instrumentation and Measurement ,2024. [27] J. Wu, C. Xia, T. Yu, and J. Li, “View-aware salient object detection for 360 omnidirectional image,” IEEE Transactions on Multimedia , vol. 25, pp. 6471–6484, 2022. [28] C. Scharfenberger, A. Wong, K. Fergani, J. S. Zelek, and D. A. Clausi, “Statistical textural distinctiveness for salient region detection in natural images,” in Proceedings of the IEEE conference on computer vision and pattern recognition , 2013, pp. 979–986. [29] L. Zhang, J. Ai, B. Jiang, H. Lu, and X. Li, “Saliency detection via absorbing markov chain with learnt transition probability,” IEEE Transactions on image processing , vol. 27, no. 2, pp. 987–998, 2017. [30] R. Valenti, N. Sebe, and T. Gevers, “Image saliency by isocentric curvedness and color,” in 2009 IEEE 12th international conference on Computer vision . IEEE, 2009, pp. 2185–2192. [31] M.-M. Cheng, N. J. Mitra, X. Huang, P. H. Torr, and S.-M. Hu, “Global contrast based salient region detection,” IEEE transactions on pattern analysis and machine intelligence , vol. 37, no. 3, pp. 569–582, 2014. [32] Y. Xu, X. Hong, F. Porikli, X. Liu, J. Chen, and G. Zhao, “Saliency integration: An arbitrator model,” IEEE Transactions on Multimedia ,vol. 21, no. 1, pp. 98–113, 2018. [33] H. Jiang, J. Wang, Z. Yuan, Y. Wu, N. Zheng, and S. Li, “Salient object detection: A discriminative regional feature integration approach,” in 
+
+Proceedings of the IEEE conference on computer vision and pattern recognition , 2013, pp. 2083–2090. [34] R. Zhao, W. Ouyang, H. Li, and X. Wang, “Saliency detection by multi-context deep learning,” in Proceedings of the IEEE conference on computer vision and pattern recognition , 2015, pp. 1265–1274. [35] X. Li, F. Yang, H. Cheng, J. Chen, Y. Guo, and L. Chen, “Multi-scale cascade network for salient object detection,” in Proceedings of the 25th ACM international conference on Multimedia , 2017, pp. 439–447. [36] R. Cong, H. Liu, C. Zhang, W. Zhang, F. Zheng, R. Song, and S. Kwong, “Point-aware interaction and cnn-induced refinement network for rgb-d salient object detection,” in Proceedings of the 31st ACM international conference on multimedia , 2023, pp. 406–416. [37] Q. Hou, M.-M. Cheng, X. Hu, A. Borji, Z. Tu, and P. H. Torr, “Deeply supervised salient object detection with short connections,” in 
+
+Proceedings of the IEEE conference on computer vision and pattern recognition , 2017, pp. 3203–3212. [38] X. Qin, D.-P. Fan, C. Huang, C. Diagne, Z. Zhang, A. C. Sant’Anna, A. Suarez, M. Jagersand, and L. Shao, “Boundary-aware segmen-tation network for mobile and web applications,” arXiv preprint arXiv:2101.04704 , 2021. [39] N. Liu, N. Zhang, K. Wan, L. Shao, and J. Han, “Visual saliency transformer,” in Proceedings of the IEEE/CVF international conference on computer vision , 2021, pp. 4722–4732. [40] J. Chen, Y. Lu, Q. Yu, X. Luo, E. Adeli, Y. Wang, L. Lu, A. L. Yuille, and Y. Zhou, “Transunet: Transformers make strong encoders for medical image segmentation,” arXiv preprint arXiv:2102.04306 , 2021. [41] Y. Qiu, Y. Liu, L. Zhang, H. Lu, and J. Xu, “Boosting salient object detection with transformer-based asymmetric bilateral u-net,” IEEE Transactions on Circuits and Systems for Video Technology , vol. 34, no. 4, pp. 2332–2345, 2023. [42] M. Xu, L. Yang, X. Tao, Y. Duan, and Z. Wang, “Saliency prediction on omnidirectional image with generative adversarial imitation learning,” 
+
+IEEE Transactions on Image Processing , vol. 30, pp. 2087–2102, 2021. [43] H.-T. Cheng, C.-H. Chao, J.-D. Dong, H.-K. Wen, T.-L. Liu, and M. Sun, “Cube padding for weakly-supervised saliency prediction in 360 videos,” in Proceedings of the IEEE conference on computer vision and pattern recognition , 2018, pp. 1420–1429. [44] R. Monroy, S. Lutz, T. Chalasani, and A. Smolic, “Salnet360: Saliency maps for omni-directional images with cnn,” Signal Processing: Image Communication , vol. 69, pp. 26–34, 2018. [45] Z. Zhang, Y. Xu, J. Yu, and S. Gao, “Saliency detection in 360 videos,” in Proceedings of the European conference on computer vision (ECCV) ,2018, pp. 488–503. [46] Q. Zhang, K. Ji, J. Zhang, X. Wang, Z. Pan, and J. Jiang, “Hierarchi-cal uncertainty-aware salient object detection for 360 images via bi-projection collaborative learning,” IEEE Transactions on Multimedia ,2025. [47] N. Liu, Z. Luo, N. Zhang, and J. Han, “Vst++: Efficient and stronger visual saliency transformer,” IEEE Transactions on Pattern Analysis and Machine Intelligence , vol. 46, no. 11, pp. 7300–7316, 2024. [48] M. Huang, G. Li, Z. Liu, and L. Zhu, “Lightweight distortion-aware network for salient object detection in omnidirectional images,” IEEE Transactions on Circuits and Systems for Video Technology , vol. 33, no. 10, pp. 6191–6197, 2023. 12 
+
+[49] Z. Yao and L. Wang, “Boundary information progressive guidance network for salient object detection,” IEEE Transactions on Multimedia ,vol. 24, pp. 4236–4249, 2021. [50] C. Xie, C. Xia, M. Ma, Z. Zhao, X. Chen, and J. Li, “Pyramid grafting network for one-stage high resolution saliency detection,” in Proceedings of the IEEE/CVF conference on computer vision and pattern recognition ,2022, pp. 11 717–11 726. [51] G. Zhu, J. Li, and Y. Guo, “Supplement and suppression: Both boundary and nonboundary are helpful for salient object detection,” IEEE Trans-actions on Neural Networks and Learning Systems , vol. 34, no. 9, pp. 6615–6627, 2021. [52] S. Yu, B. Zhang, J. Xiao, and E. G. Lim, “Structure-consistent weakly supervised salient object detection with local saliency coherence,” in 
+
+Proceedings of the AAAI conference on artificial intelligence , vol. 35, no. 4, 2021, pp. 3234–3242. [53] T. Chen, X. Hu, J. Xiao, and G. Zhang, “Bpfinet: Boundary-aware progressive feature integration network for salient object detection,” 
+
+Neurocomputing , vol. 451, pp. 152–166, 2021. [54] Z. Chen, Q. Xu, R. Cong, and Q. Huang, “Global context-aware progres-sive aggregation network for salient object detection,” in Proceedings of the AAAI conference on artificial intelligence , vol. 34, no. 07, 2020, pp. 10 599–10 606. [55] Y. Liu, Y.-C. Gu, X.-Y. Zhang, W. Wang, and M.-M. Cheng, “Lightweight salient object detection via hierarchical visual perception learning,” IEEE transactions on cybernetics , vol. 51, no. 9, pp. 4439– 4449, 2020. [56] Y. Pang, X. Zhao, L. Zhang, and H. Lu, “Multi-scale interactive network for salient object detection,” in Proceedings of the IEEE/CVF conference on computer vision and pattern recognition , 2020, pp. 9413–9422. [57] G. Li, Z. Liu, D. Zeng, W. Lin, and H. Ling, “Adjacent context coordination network for salient object detection in optical remote sensing images,” IEEE Transactions on Cybernetics , vol. 53, no. 1, pp. 526–538, 2022. [58] J. Wei, S. Wang, Z. Wu, C. Su, Q. Huang, and Q. Tian, “Label decoupling framework for salient object detection,” in Proceedings of the IEEE/CVF conference on computer vision and pattern recognition ,2020, pp. 13 025–13 034. [59] Z. Wu, L. Su, and Q. Huang, “Stacked cross refinement network for edge-aware salient object detection,” in Proceedings of the IEEE/CVF international conference on computer vision , 2019, pp. 7264–7273. [60] D. P. Kingma, “Adam: A method for stochastic optimization,” arXiv preprint arXiv:1412.6980 , 2014. [61] Z. Liu, Y. Lin, Y. Cao, H. Hu, Y. Wei, Z. Zhang, S. Lin, and B. Guo, “Swin transformer: Hierarchical vision transformer using shifted windows,” in Proceedings of the IEEE/CVF international conference on computer vision , 2021, pp. 10 012–10 022. [62] A. Paszke, S. Gross, F. Massa, A. Lerer, J. Bradbury, G. Chanan, T. Killeen, Z. Lin, N. Gimelshein, L. Antiga et al. , “Pytorch: An imperative style, high-performance deep learning library,” Advances in neural information processing systems , vol. 32, 2019. [63] V. Sitzmann, A. Serrano, A. Pavel, M. Agrawala, D. Gutierrez, B. Masia, and G. Wetzstein, “Saliency in vr: How do people explore virtual envi-ronments?” IEEE transactions on visualization and computer graphics ,vol. 24, no. 4, pp. 1633–1642, 2018. [64] A. Borji, M.-M. Cheng, H. Jiang, and J. Li, “Salient object detection: A benchmark,” IEEE transactions on image processing , vol. 24, no. 12, pp. 5706–5722, 2015. [65] R. Achanta, S. Hemami, F. Estrada, and S. Susstrunk, “Frequency-tuned salient region detection,” in 2009 IEEE conference on computer vision and pattern recognition . IEEE, 2009, pp. 1597–1604. [66] D.-P. Fan, M.-M. Cheng, Y. Liu, T. Li, and A. Borji, “Structure-measure: A new way to evaluate foreground maps,” in Proceedings of the IEEE international conference on computer vision , 2017, pp. 4548–4557.

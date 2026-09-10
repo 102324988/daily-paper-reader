@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-09-09T21:12:43.963209+00:00",
-  "updated_date": "20260909",
+  "generated_at": "2026-09-10T21:17:43.799696+00:00",
+  "updated_date": "20260910",
   "carryover_days": 9,
   "tag_states": {
     "cv": {
-      "updated_date": "20260909",
+      "updated_date": "20260910",
       "carryover_days": 9,
       "items": [
         {
@@ -30,19 +30,19 @@
             "query:cv"
           ],
           "llm_score": 8.0,
-          "llm_evidence_en": "global descriptor learning for cross-modal visual recognition",
-          "llm_evidence_cn": "跨模态视觉识别中的全局描述子学习",
-          "llm_evidence": "跨模态视觉识别中的全局描述子学习",
-          "canonical_evidence": "跨模态视觉识别中的全局描述子学习",
-          "llm_tldr_en": "Proposes DXPR, using a vision foundation model on unified depth images to learn modality-invariant global descriptors for camera-to-LiDAR place recognition under appearance changes.",
-          "llm_tldr_cn": "针对机器人和自动驾驶中相机与激光雷达地图间跨模态定位难、缺乏统一编码器的问题，提出 DXPR：将相机图像和激光雷达扫描转换为统一深度图像，利用视觉基础模型与聚合头学习模态无关全局描述子，并设计几何感知重叠难样本挖掘。实验表明在季节、天气和光照变化下仍能保持鲁棒的跨模态地点识别，提升仅相机定位的实际可用性。",
-          "llm_tldr": "针对机器人和自动驾驶中相机与激光雷达地图间跨模态定位难、缺乏统一编码器的问题，提出 DXPR：将相机图像和激光雷达扫描转换为统一深度图像，利用视觉基础模型与聚合头学习模态无关全局描述子，并设计几何感知重叠难样本挖掘。实验表明在季节、天气和光照变化下仍能保持鲁棒的跨模态地点识别，提升仅相机定位的实际可用性。",
+          "llm_evidence_en": "cross-modal place recognition using vision foundation models",
+          "llm_evidence_cn": "基于视觉基础模型的跨模态地点识别",
+          "llm_evidence": "基于视觉基础模型的跨模态地点识别",
+          "canonical_evidence": "基于视觉基础模型的跨模态地点识别",
+          "llm_tldr_en": "DXPR converts camera images and LiDAR scans into unified depth representations so a single vision foundation model learns modality-invariant descriptors for robust cross-modal place recognition.",
+          "llm_tldr_cn": "论文针对机器人在季节、天气与光照剧烈变化下仅用相机在激光雷达地图中定位困难的问题，提出DXPR框架，将相机图像与激光雷达扫描统一为深度图像表示，使单一视觉基础模型主干学习模态不变全局描述子，并引入几何感知重叠挖掘。实验表明该跨模态方法在恶劣环境下实现鲁棒定位，为无专用编码器的跨模态视觉识别提供了新思路。",
+          "llm_tldr": "论文针对机器人在季节、天气与光照剧烈变化下仅用相机在激光雷达地图中定位困难的问题，提出DXPR框架，将相机图像与激光雷达扫描统一为深度图像表示，使单一视觉基础模型主干学习模态不变全局描述子，并引入几何感知重叠挖掘。实验表明该跨模态方法在恶劣环境下实现鲁棒定位，为无专用编码器的跨模态视觉识别提供了新思路。",
           "llm_tags": [
             "query:cv"
           ],
           "matched_query_tag": "query:cv",
-          "matched_query_text": "feature extraction in computer vision",
-          "matched_requirement_id": "req-5",
+          "matched_query_text": "visual recognition algorithms",
+          "matched_requirement_id": "req-4",
           "selection_source": "carryover_cache",
           "paper_id": "2609.09005v1",
           "carry_days": 1
@@ -73,19 +73,19 @@
             "query:cv"
           ],
           "llm_score": 8.0,
-          "llm_evidence_en": "Proposes a visual recognition network for deepfake detection using hierarchical CLIP and DINO features.",
-          "llm_evidence_cn": "提出利用CLIP与DINO层次化特征进行深度伪造检测的视觉识别网络。",
-          "llm_evidence": "提出利用CLIP与DINO层次化特征进行深度伪造检测的视觉识别网络。",
-          "canonical_evidence": "提出利用CLIP与DINO层次化特征进行深度伪造检测的视觉识别网络。",
-          "llm_tldr_en": "Deepfake detectors relying on a single pretrained representation overfit; UCF-Net fuses CLIP and DINO across transformer depths with uncertainty-aware cascaded aggregation to improve generalization.",
-          "llm_tldr_cn": "针对单一预训练表示驱动的深伪检测器容易过拟合训练分布的问题，论文提出不确定性感知的级联融合网络UCF-Net。该方法联合CLIP的语言对齐语义先验与DINO的自监督视觉结构先验，在Transformer不同深度提取层次化特征，并通过分层专家聚合自适应融合。实验表明该融合策略能提升对未见伪造内容的泛化能力。这项工作展示了多基础模型协同和不确定性建模在视觉识别任务中的价值。",
-          "llm_tldr": "针对单一预训练表示驱动的深伪检测器容易过拟合训练分布的问题，论文提出不确定性感知的级联融合网络UCF-Net。该方法联合CLIP的语言对齐语义先验与DINO的自监督视觉结构先验，在Transformer不同深度提取层次化特征，并通过分层专家聚合自适应融合。实验表明该融合策略能提升对未见伪造内容的泛化能力。这项工作展示了多基础模型协同和不确定性建模在视觉识别任务中的价值。",
+          "llm_evidence_en": "Feature fusion for deepfake image detection",
+          "llm_evidence_cn": "用于深度伪造检测的特征融合",
+          "llm_evidence": "用于深度伪造检测的特征融合",
+          "canonical_evidence": "用于深度伪造检测的特征融合",
+          "llm_tldr_en": "UCF-Net is an uncertainty-aware cascaded fusion network for deepfake detection that combines CLIP semantic priors and DINO visual-structure priors via hierarchical feature extraction and layer-wise expert aggregation.",
+          "llm_tldr_cn": "随着生成与篡改人脸愈发逼真，深度伪造威胁数字媒体可信度。现有基于视觉基础模型的检测器多依赖单一预训练表征，易过拟合特定训练分布，泛化到未见伪造时性能下降。论文提出不确定性感知级联融合网络UCF-Net，融合CLIP的语言对齐语义先验与DINO的自监督视觉结构先验，跨Transformer深度提取层次特征并做逐层专家聚合。实验表明其提升了对未见伪造的泛化检测能力。",
+          "llm_tldr": "随着生成与篡改人脸愈发逼真，深度伪造威胁数字媒体可信度。现有基于视觉基础模型的检测器多依赖单一预训练表征，易过拟合特定训练分布，泛化到未见伪造时性能下降。论文提出不确定性感知级联融合网络UCF-Net，融合CLIP的语言对齐语义先验与DINO的自监督视觉结构先验，跨Transformer深度提取层次特征并做逐层专家聚合。实验表明其提升了对未见伪造的泛化检测能力。",
           "llm_tags": [
             "query:cv"
           ],
           "matched_query_tag": "query:cv",
-          "matched_query_text": "visual recognition algorithms",
-          "matched_requirement_id": "req-4",
+          "matched_query_text": "feature extraction in computer vision",
+          "matched_requirement_id": "req-5",
           "selection_source": "carryover_cache",
           "paper_id": "2609.07670v1",
           "carry_days": 1
@@ -112,13 +112,13 @@
             "query:cv"
           ],
           "llm_score": 8.0,
-          "llm_evidence_en": "Develops a task-driven active perception front-end for instance detection at high resolution; relevant to object detection.",
-          "llm_evidence_cn": "面向实例检测设计任务驱动的由粗到细瞥视前端，与目标检测方法直接相关。",
-          "llm_evidence": "面向实例检测设计任务驱动的由粗到细瞥视前端，与目标检测方法直接相关。",
-          "canonical_evidence": "面向实例检测设计任务驱动的由粗到细瞥视前端，与目标检测方法直接相关。",
-          "llm_tldr_en": "CF-GAP uses coarse-to-fine glimpses and task information as an active perception front-end to help existing instance detectors handle high-resolution cluttered scenes.",
-          "llm_tldr_cn": "现有视觉模型常将整张高分图像缩放到固定尺寸，导致在杂乱场景中定位特定目标时丢失关键细节。论文提出Coarse-to-Fine Glimpse-based Active Perception（CF-GAP），作为任务驱动前端，让检测器把有限视野按由粗到细的顺序聚焦于相关区域。CF-GAP利用任务信息引导一系列瞥视，在不改变底层检测模型的情况下提升高分辨率实例检测能力。该方法为检测模型的高效处理提供了一种可插拔的主动感知方案。",
-          "llm_tldr": "现有视觉模型常将整张高分图像缩放到固定尺寸，导致在杂乱场景中定位特定目标时丢失关键细节。论文提出Coarse-to-Fine Glimpse-based Active Perception（CF-GAP），作为任务驱动前端，让检测器把有限视野按由粗到细的顺序聚焦于相关区域。CF-GAP利用任务信息引导一系列瞥视，在不改变底层检测模型的情况下提升高分辨率实例检测能力。该方法为检测模型的高效处理提供了一种可插拔的主动感知方案。",
+          "llm_evidence_en": "task-driven active perception for instance detection",
+          "llm_evidence_cn": "面向实例检测的任务驱动主动感知前端",
+          "llm_evidence": "面向实例检测的任务驱动主动感知前端",
+          "canonical_evidence": "面向实例检测的任务驱动主动感知前端",
+          "llm_tldr_en": "Vision models process whole images and cannot zoom into task-relevant regions, hurting high-resolution instance detection; CF-GAP is a task-driven front-end that directs coarse-to-fine glimpses to enhance existing detectors.",
+          "llm_tldr_cn": "现有视觉模型整体处理图像，缺乏按任务选择性放大相关区域的能力，在高分辨率杂乱场景中定位特定目标时易丢失关键细节。本文提出由粗到精的注视式主动感知CF-GAP，作为任务驱动前端增强现有实例检测器。它利用任务信息在场景中依次引导有限视角的注视序列。该方法在保持检测精度的同时提升了高分辨率场景下的处理效率与定位能力。",
+          "llm_tldr": "现有视觉模型整体处理图像，缺乏按任务选择性放大相关区域的能力，在高分辨率杂乱场景中定位特定目标时易丢失关键细节。本文提出由粗到精的注视式主动感知CF-GAP，作为任务驱动前端增强现有实例检测器。它利用任务信息在场景中依次引导有限视角的注视序列。该方法在保持检测精度的同时提升了高分辨率场景下的处理效率与定位能力。",
           "llm_tags": [
             "query:cv"
           ],
@@ -130,40 +130,160 @@
           "carry_days": 1
         },
         {
-          "id": "2609.06726v1",
+          "id": "2609.08914v1",
           "source": "arxiv",
-          "title": "Back to the Feature: Zero-Shot 6DoF Pose Estimation via Dense Local Features",
-          "abstract": "We present B2TFPose, a training-free zero-shot method for 6DoF pose estimation of unseen objects from RGB images. Using a single frozen DINOv3 vision transformer as its only pretrained component within the pose estimation pipeline, B2TFPose extracts dense patch-level features that generalize across the synthetic-to-real domain gap without any task-specific fine-tuning, revisiting the classical local feature matching paradigm through the lens of large-scale self-supervised foundation models. Three contributions advance the training-free state of the art. A geodesic non-maximum suppression strategy retrieves a viewpoint-diverse template set for coarse-to-fine correspondence matching. Render-guided Re-Correspondence (RRC) synthesizes object-specific views at the estimated pose and re-establishes dense 2D-3D correspondences to sharpen the initial estimate without additional learned parameters. A multi-mask hypothesis selection strategy jointly scores competing segmentation candidates to resolve segmentation ambiguity. On the seven core datasets of the BOP Benchmark, B2TFPose achieves 40.7 mean AR without refinement and 56.4 with refinement, establishing state-of-the-art performance among training-free RGB methods and outperforming trained counterparts including GigaPose and GenFlow, at competitive inference speed.",
+          "title": "CoSA: Correlation-Guided Change A ttention with Learnable Residual Gating for Remote Sensing Change Detection",
+          "abstract": "Pixel-level annotation of fixed traffic-camera imagery is expensive, while crosswalk models trained from street-level imagery face a substantial viewpoint and appearance shift when applied to elevated CCTV. We investigate a data-efficient target-domain pipeline using 241 manually annotated CCTV images and 5,926 unlabeled CCTV frames. A source-domain experiment trains a 31.0M-parameter custom U-Net on 3,300 first-person-view (FPV) images and obtains 93.05% IoU on its 330-image FPV test split. This result is a source baseline, not transferred performance: the released CCTV notebook instantiates a 42.0M-parameter DeepLabV3-ResNet50 from torchvision weights, and no compatible mapping from the U-Net checkpoint is implemented. Training on 201 manual CCTV images and selecting on 40 held-out manual masks yields 88.91% IoU. The model then predicts all unlabeled frames; image-level certainty and a largest-component area prior rank the candidates, and the top 1,000 attain mean certainty 0.976 and mean combined score 0.988. A repository audit shows that the reported second-stage 98.52% IoU was measured on a 150-image split containing only teacher-generated pseudo-masks. Because of a directory-layout mismatch, the executed combined-data loader found zero manual samples and split 1,000 pseudo-labeled samples into 850 training and 150 evaluation samples. We therefore report 98.52% as internal pseudo-label agreement rather than human-ground-truth accuracy. The defensible target-domain result is 88.91% IoU on the 40 manual validation images. Batch-one FP32 inference at 512 x 512 requires 12.98 ms, corresponding to 77.03 FPS, on an NVIDIA RTX A6000 48 GB GPU. These findings support the practicality of confidence-and-geometry filtering while also showing why pseudo-label evaluation must remain isolated from the labels used for self-training.",
           "authors": [
-            "Ali Rafiaei",
-            "Michael Greenspan"
+            "Abdirashid Omar",
+            "Jonghyuk Park"
           ],
           "primary_category": "cs.CV",
           "categories": [
             "cs.CV"
           ],
-          "published": "2026-09-06T16:57:27+00:00",
-          "link": "https://arxiv.org/pdf/2609.06726v1",
+          "published": "2026-09-08T15:43:58+00:00",
+          "link": "https://arxiv.org/pdf/2609.08914v1",
           "tags": [
             "keyword:cv",
             "query:cv"
           ],
           "llm_score": 8.0,
-          "llm_evidence_en": "zero-shot 6DoF pose estimation via dense local features",
-          "llm_evidence_cn": "基于稠密局部特征的零样本6DoF位姿估计",
-          "llm_evidence": "基于稠密局部特征的零样本6DoF位姿估计",
-          "canonical_evidence": "基于稠密局部特征的零样本6DoF位姿估计",
-          "llm_tldr_en": "Presents B2TFPose, a training-free zero-shot 6DoF pose estimator that extracts dense patch features with a frozen DINOv3 transformer, uses geodesic NMS for viewpoint-diverse templates and render-guided re-correspondence to match unseen objects.",
-          "llm_tldr_cn": "针对未见物体的6DoF姿态估计通常需要任务微调或CAD模型支撑，本文提出训练完全免费的B2TFPose。该方案仅使用单个冻结DINOv3视觉Transformer提取稠密补丁特征，通过测地线非极大值抑制挑选视角多样的模板，并利用渲染引导重对应生成物体专属匹配。零样本设置下，该方法在合成到真实域泛化上取得领先结果，表明经典局部特征匹配与大尺度自监督Transformer结合仍是处理未知物体的有效范式。",
-          "llm_tldr": "针对未见物体的6DoF姿态估计通常需要任务微调或CAD模型支撑，本文提出训练完全免费的B2TFPose。该方案仅使用单个冻结DINOv3视觉Transformer提取稠密补丁特征，通过测地线非极大值抑制挑选视角多样的模板，并利用渲染引导重对应生成物体专属匹配。零样本设置下，该方法在合成到真实域泛化上取得领先结果，表明经典局部特征匹配与大尺度自监督Transformer结合仍是处理未知物体的有效范式。",
+          "llm_evidence_en": "Change attention and segmentation pipeline for remote sensing change detection",
+          "llm_evidence_cn": "面向遥感变化检测的变化注意力与分割流程",
+          "llm_evidence": "面向遥感变化检测的变化注意力与分割流程",
+          "canonical_evidence": "面向遥感变化检测的变化注意力与分割流程",
+          "llm_tldr_en": "CoSA proposes correlation-guided change attention with learnable residual gating for remote sensing change detection, and studies a data-efficient CCTV segmentation pipeline using U-Net and DeepLabV3 baselines.",
+          "llm_tldr_cn": "固定交通摄像头图像的像素级标注代价高昂，且街景模型迁移到高位监控存在视角与外观差异。本文提出CoSA相关性引导变化注意力与可学习残差门控用于遥感变化检测，并研究数据高效的监控域分割流程，以U-Net与DeepLabV3为基线。实验给出源域与目标域的基线结果，揭示了跨域迁移的困难。",
+          "llm_tldr": "固定交通摄像头图像的像素级标注代价高昂，且街景模型迁移到高位监控存在视角与外观差异。本文提出CoSA相关性引导变化注意力与可学习残差门控用于遥感变化检测，并研究数据高效的监控域分割流程，以U-Net与DeepLabV3为基线。实验给出源域与目标域的基线结果，揭示了跨域迁移的困难。",
           "llm_tags": [
             "query:cv"
           ],
           "matched_query_tag": "query:cv",
-          "matched_query_text": "visual recognition algorithms",
-          "matched_requirement_id": "req-4",
+          "matched_query_text": "image segmentation techniques",
+          "matched_requirement_id": "req-3",
           "selection_source": "carryover_cache",
-          "paper_id": "2609.06726v1",
+          "paper_id": "2609.08914v1",
+          "carry_days": 1
+        },
+        {
+          "id": "2609.09876v1",
+          "source": "arxiv",
+          "title": "From Pixels to Hierarchical Sequences: Quadtree Mask Encoding for Vision-Language Binary Change Detection",
+          "abstract": "Dense change detection in remote sensing requires vision-language models (VLMs) to compare bi-temporal images and generate accurate pixel-level masks. Existing VLMs are largely confined to change captioning outputs, and the few that produce pixel-level masks still rely on external decoders or flat text-as-mask serialization, which are less effective for small and fragmented changes. We introduce QUAKE-CD, a framework that recasts dense change prediction as syntax-verifiable structured generation. QUAKE-CD represents binary change masks as grammar-constrained quadtree token sequences, making the masks compact, syntactically checkable, and deterministically decodable within an autoregressive generation space. We further construct QUAKE-CoT, which pairs these sequences with chain-of-thought traces grounded in visual evidence, and jointly optimizes textual reasoning and spatial dense prediction through a progressive curriculum followed by grammar-gated dual-reward RL. On QUAKE-CoT, QUAKE-CD achieves 78.31% accumulated F1, outperforming decoder-based and flat text-as-mask VLMs while producing more faithful bi-temporal reasoning.",
+          "authors": [
+            "Xiao An",
+            "Ruikang Zhang",
+            "Chen Zhong",
+            "Xuli Shen",
+            "Jiaxing Sun",
+            "Jiang Wu",
+            "Wei He"
+          ],
+          "primary_category": "cs.CV",
+          "categories": [
+            "cs.CV"
+          ],
+          "published": "2026-09-09T08:29:37+00:00",
+          "link": "https://arxiv.org/pdf/2609.09876v1",
+          "tags": [
+            "keyword:cv",
+            "query:cv"
+          ],
+          "llm_score": 8.0,
+          "llm_evidence_en": "dense change detection with pixel-level masks via VLM",
+          "llm_evidence_cn": "视觉语言模型稠密变化检测与像素级掩码",
+          "llm_evidence": "视觉语言模型稠密变化检测与像素级掩码",
+          "canonical_evidence": "视觉语言模型稠密变化检测与像素级掩码",
+          "llm_tldr_en": "QUAKE-CD recasts dense change detection as grammar-constrained quadtree token generation, producing compact, verifiable pixel-level masks for VLMs.",
+          "llm_tldr_cn": "针对视觉语言模型在遥感稠密变化检测中难以生成精确像素级掩码、对细小碎片变化效果不佳的问题，本文提出QUAKE-CD框架，将二值变化掩码编码为语法约束的四叉树词元序列，在自回归生成空间中实现紧凑、可校验且可确定性解码的稠密预测。实验表明该方法优于依赖外部解码器或扁平文本序列化的方案，为视觉语言模型提供了结构化像素级掩码生成范式。",
+          "llm_tldr": "针对视觉语言模型在遥感稠密变化检测中难以生成精确像素级掩码、对细小碎片变化效果不佳的问题，本文提出QUAKE-CD框架，将二值变化掩码编码为语法约束的四叉树词元序列，在自回归生成空间中实现紧凑、可校验且可确定性解码的稠密预测。实验表明该方法优于依赖外部解码器或扁平文本序列化的方案，为视觉语言模型提供了结构化像素级掩码生成范式。",
+          "llm_tags": [
+            "query:cv"
+          ],
+          "matched_query_tag": "query:cv",
+          "matched_query_text": "image segmentation techniques",
+          "matched_requirement_id": "req-3",
+          "selection_source": "carryover_cache",
+          "paper_id": "2609.09876v1",
+          "carry_days": 1
+        },
+        {
+          "id": "2609.09491v1",
+          "source": "arxiv",
+          "title": "Learning Global Camera Poses from Noisy View-Graphs for Structure from Motion",
+          "abstract": "Camera pose estimation is a key step in 3D reconstruction and view-synthesis pipelines. We present a deep, global Structure-from-Motion framework based on learned view-graph aggregation. Our method employs a permutation-equivariant, edge-conditioned graph neural network that takes noisy pairwise relative poses as input and outputs globally consistent camera extrinsics. The network is trained without ground-truth supervision, relying solely on a relative-pose consistency objective. This is followed by 3D point triangulation and robust bundle adjustment. Our approach is efficient, scalable to more than a thousand images, and robust to graph density. We evaluate our method on MegaDepth, 1DSfM, Strecha, and BlendedMVS. These experiments demonstrate that our method achieves superior rotation and translation accuracy compared to deep track-centric methods while registering more images across many scenes, and competitive results compared to state-of-the-art classical pipelines, while being much faster.",
+          "authors": [
+            "Fadi Khatib",
+            "Meirav Galun",
+            "Ronen Basri"
+          ],
+          "primary_category": "cs.CV",
+          "categories": [
+            "cs.CV"
+          ],
+          "published": "2026-09-08T22:14:03+00:00",
+          "link": "https://arxiv.org/pdf/2609.09491v1",
+          "tags": [
+            "keyword:cv",
+            "query:cv"
+          ],
+          "llm_score": 8.0,
+          "llm_evidence_en": "global SfM camera pose via graph neural network",
+          "llm_evidence_cn": "图神经网络全局相机位姿估计",
+          "llm_evidence": "图神经网络全局相机位姿估计",
+          "canonical_evidence": "图神经网络全局相机位姿估计",
+          "llm_tldr_en": "A deep global Structure-from-Motion framework uses a permutation-equivariant graph network to aggregate noisy relative poses into globally consistent camera extrinsics.",
+          "llm_tldr_cn": "针对含噪相对位姿难以求解全局一致相机外参的问题，本文提出一种深度全局运动恢复结构框架，采用置换等变、边条件的图神经网络聚合视图图，无需真值监督即可回归全局一致的相机外参。在MegaDepth、1DSfM、Strecha与BlendedMVS等数据集上实验表明，方法高效、可扩展至上千张图像并对图密度鲁棒，为大规模三维重建提供了稳健方案。",
+          "llm_tldr": "针对含噪相对位姿难以求解全局一致相机外参的问题，本文提出一种深度全局运动恢复结构框架，采用置换等变、边条件的图神经网络聚合视图图，无需真值监督即可回归全局一致的相机外参。在MegaDepth、1DSfM、Strecha与BlendedMVS等数据集上实验表明，方法高效、可扩展至上千张图像并对图密度鲁棒，为大规模三维重建提供了稳健方案。",
+          "llm_tags": [
+            "query:cv"
+          ],
+          "matched_query_tag": "query:cv",
+          "matched_query_text": "computer vision research papers",
+          "matched_requirement_id": "req-1",
+          "selection_source": "carryover_cache",
+          "paper_id": "2609.09491v1",
+          "carry_days": 1
+        },
+        {
+          "id": "2609.09359v1",
+          "source": "arxiv",
+          "title": "DensePol: Dense-Angle Polarization Dataset for Learning-Based Polarimetric Vision",
+          "abstract": "Polarimetric vision is gaining increasing attention because it provides physical cues about scene shape, material, and reflection that are difficult to recover from RGB alone. Recent work has therefore explored predicting polarization directly from conventional RGB images; however, the fidelity of these methods strongly depends on the polarization supervision used for training. Most existing datasets rely on Division-of-Focal-Plane (DoFP) cameras with four spatially interleaved analyzer orientations, which provide limited angular redundancy and introduce interpolation and instantaneous-field-of-view errors. We introduce DensePol, a high-redundancy RGB--polarization dataset based on Division-of-Time (DoT) acquisition, capturing 180 full-resolution analyzer orientations at $1^\\circ$ intervals. DensePol contains 2,018 paired RGB--polarization images with the angular measurements and fitting residuals retained. Dense angular sampling substantially improves polarization stability, reducing AoLP deviation from $13.36^\\circ$ to $2.21^\\circ$. We further introduce a deterministic diffusion-based RGB-to-polarization framework with cyclic AoLP representation and a local DoLP refiner. Experiments demonstrate improved polarization prediction and downstream surface-normal estimation. The dataset and code will be publicly available.",
+          "authors": [
+            "Param Sangani",
+            "Ahmad Moori",
+            "Erik Blasch",
+            "Guna Seetharaman",
+            "Hadi Aliakbarpour"
+          ],
+          "primary_category": "cs.CV",
+          "categories": [
+            "cs.CV"
+          ],
+          "published": "2026-09-08T18:48:33+00:00",
+          "link": "https://arxiv.org/pdf/2609.09359v1",
+          "tags": [
+            "keyword:cv",
+            "query:cv"
+          ],
+          "llm_score": 8.0,
+          "llm_evidence_en": "Polarimetric vision dataset for learning-based computer vision.",
+          "llm_evidence_cn": "面向学习型偏振视觉的计算机视觉数据集。",
+          "llm_evidence": "面向学习型偏振视觉的计算机视觉数据集。",
+          "canonical_evidence": "面向学习型偏振视觉的计算机视觉数据集。",
+          "llm_tldr_en": "DensePol is a high-redundancy RGB-polarization dataset built via division-of-time acquisition, providing richer angular supervision for learning-based polarimetric vision.",
+          "llm_tldr_cn": "针对偏振视觉中现有数据集因分焦平面相机角度冗余有限、存在插值和瞬时视场误差而限制预测保真度的问题，本文提出基于分时采集的高冗余RGB-偏振数据集DensePol，可捕获180个全分辨率偏振角度。该数据集为偏振预测提供了更可靠的监督信号，有助于提升从RGB估计偏振的精度，推动学习型偏振视觉的发展。",
+          "llm_tldr": "针对偏振视觉中现有数据集因分焦平面相机角度冗余有限、存在插值和瞬时视场误差而限制预测保真度的问题，本文提出基于分时采集的高冗余RGB-偏振数据集DensePol，可捕获180个全分辨率偏振角度。该数据集为偏振预测提供了更可靠的监督信号，有助于提升从RGB估计偏振的精度，推动学习型偏振视觉的发展。",
+          "llm_tags": [
+            "query:cv"
+          ],
+          "matched_query_tag": "query:cv",
+          "matched_query_text": "computer vision research papers",
+          "matched_requirement_id": "req-1",
+          "selection_source": "carryover_cache",
+          "paper_id": "2609.09359v1",
           "carry_days": 1
         }
       ]

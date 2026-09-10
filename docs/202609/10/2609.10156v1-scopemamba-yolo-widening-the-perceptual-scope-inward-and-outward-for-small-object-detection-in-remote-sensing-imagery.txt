@@ -1,0 +1,664 @@
+Title: ScopeMamba-YOLO: Widening the Perceptual Scope Inward and Outward for Small Object Detection in Remote Sensing Imagery
+
+URL Source: https://arxiv.org/pdf/2609.10156v1
+
+Published Time: Thu, 10 Sep 2026 01:30:07 GMT
+
+Number of Pages: 18
+
+Markdown Content:
+1
+
+# ScopeMamba-YOLO: Widening the Perceptual Scope Inward and Outward for Small Object Detection in Remote Sensing Imagery 
+
+Junjie Fan, Yijun Mai, Linduo Wei, Jiayu Rao, Junmin Bao, Qiushi Jin, Guijia Li, and Yong Qi 
+
+Abstract —Small object detection in unmanned aerial vehicle (UAV) and remote sensing imagery requires preserving high-resolution detail while modeling long-range context. Adding a stride-4 detection level and removing the stride-32 stage benefits tiny targets but weakens peripheral spatial support, whereas directly inserting selective scanning into the main feature path can interfere with weak local cues. We propose ScopeMamba-YOLO, built around an off-path, zero-gated selective-scanning principle that decouples contextual modeling from the convolu-tional stream. The principle is instantiated by a Cascaded Global-Context Module (CGCM) in the backbone and a Selective-Scan PAN (SS-PAN) in the neck. An Adaptive Multi-scale Strip (AMS) Block reduces the cost of high-resolution feature extraction, while a Scale-Adaptive DFL (SA-DFL) head reallocates distri-butional support and regression capacity across scales with only 0.008M additional parameters. Controlled experiments show that matched main-path selective scanning reduces mAP 50 by 0.98 pp, whereas off-path CGCM improves the final configuration by 0.67 pp over the three-seed no-CGCM mean; operator controls indicate that this gain is not explained by auxiliary branch capacity alone. ERF analysis further shows that the complete context pathway increases the peripheral energy ratio from 0.008 to 0.090 at stride 8. On VisDrone-2019, ScopeMamba-S achieves 50.8% mAP 50 with 3.57M parameters, exceeding YOLOv8s by 10.8 pp while using 32% of its parameters; ScopeMamba-M reaches 52.6% mAP 50 with 6.48M parameters. Consistent improvements are also observed on AI-TOD, especially for very-tiny and tiny objects. 
+
+Index Terms —Small object detection, UAV imagery, remote sensing, state space model, Mamba, receptive field, YOLO. 
+
+I. I NTRODUCTION 
+
+# OBJECT detection in remote sensing imagery is a fun-damental prerequisite for a broad spectrum of Earth-observation applications, including urban planning, traffic monitoring, disaster assessment, precision agriculture, and 
+
+This work was supported by the National Key R&D Program of China under Grant 2019YFE0123800 and the Postgraduate Research & Practice Innovation Program of Jiangsu Province under Grant 26CXJH1269. (Corresponding author: Yong Qi.) 
+
+Junjie Fan, Qiushi Jin, and Yong Qi are with the School of Intel-lectual Property, Nanjing University of Science and Technology, Nanjing 210094, China (e-mail: junjiefan@njust.edu.cn; 226119010095@njust.edu.cn; qyong@njust.edu.cn). Yijun Mai, Jiayu Rao, Junmin Bao, and Guijia Li are with the School of Computer Science and Engineering, Nanjing Univer-sity of Science and Technology, Nanjing 210094, China (e-mail: maiyijun@njust.edu.cn; jiayurao@njust.edu.cn; sunshine6126@njust.edu.cn; 124106010774@njust.edu.cn). Linduo Wei is with the School of Economics and Management, Nanjing University of Science and Technology, Nanjing 210094, China (e-mail: weilinduo@njust.edu.cn). 
+
+maritime surveillance [1]–[3]. Benefiting from deep convo-lutional neural networks (CNNs), generic detectors—whether two-stage pipelines built upon region proposals [4], [5] or one-stage frameworks that regress objects directly from dense feature maps [6]–[9]—have achieved remarkable success on natural-image benchmarks such as MS COCO [10]. When transplanted to aerial scenarios, however, their performance degrades substantially, and the gap is most pronounced for small objects. In images captured from high altitudes with wide fields of view, vehicles, ships, and pedestrians frequently occupy fewer than 32 × 32 pixels, and often fewer than 
+
+16 × 16 [11], [12]. On UAV and tiny-object benchmarks such as VisDrone [13] and AI-TOD [12], such instances constitute the overwhelming majority of annotations (Fig. 1), making small-object detection a central challenge for practical remote sensing systems. 0 20 40 60 80 100 Object size √
+
+area (px) bands = nominal detection level 
+
+0500 1000 1500 2000 2500 Count    
+
+> P2 (s4) P3 (s8) P4 (s16)
+> ≥100 (clipped)
+
+Fig. 1. Bounding box size distribution (square root of area) in the VisDrone-2019 dataset. The vertical dashed lines delineate the nominal detection level bands, matching specific object sizes to their nominally associated detection strides (e.g., P2 for targets < 16 pixels, P3 for targets < 32 pixels). 
+
+The difficulty stems from an inherent contradiction between what a small object can offer and what recognizing it demands. On the one hand, a small object carries extremely limited appearance evidence—sparse texture, ambiguous boundaries, and a low signal-to-noise ratio—so its discriminative features are easily attenuated or completely submerged during the repeated downsampling of hierarchical backbones [11], [14], [15]. On the other hand, correctly recognizing such a weak signal requires more , rather than less, supporting information: fine-grained local detail is needed to distinguish a vehicle from arXiv:2609.10156v1 [cs.CV] 9 Sep 2026 2
+
+a rooftop fixture, while long-range contextual cues (roads, harbors, parking lots) are needed to suppress the background clutter that dominates aerial scenes and occupies the vast majority of image area [2], [16], [17]. In other words, the 
+
+perceptual scope of the detector must be widened in two opposite directions simultaneously: inward , toward higher-resolution, fine-grained representations of the object itself; and outward , toward scene-level contextual dependencies that reach far beyond it. Existing solutions often emphasize one side of this resolution–context trade-off. To preserve fine-grained infor-mation, prior works exploit multi-scale feature pyramids and their bidirectional variants [14], [18], [19], slicing-based high-resolution inference [20], and small-object-friendly label assignment [21], [22]. For lightweight aerial detectors, acommon structural choice is to add a stride-4 (P2) detection level while removing the stride-32 (P5) stage [23]–[25]. This reallocation substantially improves small-object accuracy in our ablations, but it also removes the deepest feature stage and reduces peripheral spatial support, as quantified later by the ERF analysis. Complementary approaches enlarge contextual support through coarse-to-fine processing [26]–[28], attention mechanisms [29], [30], transformer prediction heads [23], and large-kernel or selective receptive-field designs [31], [32]. Self-attention [33] provides global modeling but incurs quadratic complexity with respect to token number, which becomes costly on the high-resolution feature maps required for small-object detection. The resulting design challenge is therefore to preserve high-resolution detail while retaining broader contextual support at manageable cost. Recently, state space models (SSMs) [34], and in particular the selective SSM Mamba [35], [36], have emerged as a compelling alternative for modeling long-range dependencies with linear complexity. Vision adaptations such as Vision Mamba [37] and VMamba [38] extend this capability to dense visual representations, which has driven a rapid migration of Mamba into remote sensing [39]–[41] and, more recently, into YOLO-style small object detectors [24], [42]–[47]. In principle, such a linear-cost global operator is well suited to recovering the broader contextual support weakened by high-resolution scale reallocation. In practice, however, existing designs typically embed selective scanning directly into the main feature path of the backbone or neck. Considerable effort has therefore been devoted to refining the scan order and block design [48], [49], while the question of where the scan should sit relative to the detail-carrying stream has received much less attention. On a shared pathway, the scan competes with fine-grained convolutions for limited channel capacity and propagates state over feature maps in which background tokens vastly outnumber the few tokens belonging to a small object. For tiny targets, this coupling creates a risk that long-range aggregation may dilute weak local evidence rather than reinforce it. Our controlled experiments provide empirical evidence con-sistent with this concern. In an earlier matched configura-tion, direct main-path selective scanning reduces mAP 50 by 0.98 pp at unchanged computation, whereas under the final configuration the off-path CGCM improves mAP 50 by 0.67 pp over the no-CGCM control. Although these observations come from different stages of the design trajectory, together they motivate a core design principle: decoupling long-range context modeling from the detail-carrying main path, allowing selective scanning to complement rather than replace the local representation stream. To resolve this contradiction, we propose ScopeMamba-YOLO, an efficient detector for UAV and remote sensing imagery built on a single through-line: reallocate the detec-tion scales toward the resolution regime where small objects survive, read those high-resolution features anisotropically at reduced cost, reach back out to broader scene context through off-path selective scanning, and regress boxes with a distributional regression budget adapted to each detection scale. Rather than replacing main-path convolutions with state space blocks, we introduce an off-path, zero-gated selective-scanning principle: the scan runs on a low-cost side branch— pooled to 14 resolution in the backbone and narrowed in the neck—and re-enters the main path only through zero-initialized gates, so that the network is functionally identical to its convolutional skeleton at initialization and the convo-lutional stream retains full ownership of the representation. The principle is instantiated by the Cascaded Global-Context Module (CGCM) in the backbone and the Selective-Scan PAN (SS-PAN) in the neck, which broaden the long-range spatial support weakened by removing the P5 stage while retaining the fine-grained convolutional stream. The Adaptive Multi-scale Strip (AMS) Block reduces the resource cost of the reallocated backbone through anisotropic feature extrac-tion, and the Scale-Adaptive DFL (SA-DFL) head assigns scale-specific distributional support and regression capacity with only 0.008M additional parameters. Four variants (N, S, M, and L) span a wide accuracy–efficiency range. On VisDrone-2019, ScopeMamba-N exceeds YOLOv8n by 9.8 mAP 50 points with 34% of its parameters, ScopeMamba-S exceeds YOLOv8s by 10.8 points with 32% of its parameters, and ScopeMamba-M reaches the accuracy level of the recent Mamba-based HEdge-MamYOLO [44] with less than one-third of its parameters (6.48M versus 20.8M); consistent gains are also observed on AI-TOD. The main contributions of this article are summarized as follows. 1) We propose ScopeMamba-YOLO, an efficient detector tailored for small objects in UAV and remote sensing imagery. By decoupling scene-level context modeling from the fine-grained convolutional stream, the pro-posed framework jointly preserves high-resolution object evidence and broadens contextual support, achieving a favorable accuracy–parameter trade-off across four scalable variants (N, S, M, and L). 2) We formulate the off-path, zero-gated selective-scanning principle, instantiated by the CGCM in the backbone and the SS-PAN in the neck. It broadens long-range spa-tial support without directly replacing the fine-grained convolutional stream. Controlled in-path and off-path experiments, operator controls, and effective-receptive-field analysis provide complementary evidence for this integration strategy and indicate that the observed off-3
+
+path gain is not explained by auxiliary branch capacity alone. 3) We design the AMS Block as a resource-aware feature extraction engine. Its adaptive strip kernels and cross-directional gating capture anisotropic structures at close to depthwise-line cost, reducing the parameters and GFLOPs of the reallocated baseline by 24% and 9%, re-spectively, while maintaining comparable accuracy and providing part of the resource budget for the context pathways. 4) We introduce the SA-DFL head, which assigns each detection scale its own distributional regression budget. Because the per-scale bin allocation also changes the regression-branch width, SA-DFL jointly reallocates dis-tributional support and regression capacity across feature levels. Among the proposed design changes, SA-DFL provides the largest marginal mAP 50 gain per added pa-rameter, while additional regression and quality-branch controls favor this scale-adaptive regression design over the tested alternatives under our experimental setting. II. R ELATED WORK 
+
+A. Small Object Detection in Aerial Imagery 
+
+Object detection has matured along two-stage [4], [5] and one-stage [6]–[8] paradigms, yet both were designed for natural images and degrade sharply on the tiny, densely distributed instances that dominate aerial benchmarks such as VisDrone [13] and AI-TOD [12]. Research on aerial small objects has followed several complementary lines. One raises the effective input resolution through slicing-aided infer-ence [20]; a second reforms the supervision with scale-robust label assignment [21], [22]; a third exploits the sparsity of foreground in aerial scenes by routing computation to object-dense subregions in a coarse-to-fine manner [17], [26]–[28], [50]. For UAV deployment, where onboard compute and real-time inference impose strict limits, a fourth line redesigns the detector itself to be small and fast [15], [16], [25], [51]. Within this last line, a widely adopted structural prior is to reallocate the detection scales toward higher resolution. Since a small object survives only a few downsampling stages before its evidence vanishes, the shallow stride-4 P2 level is attached to recover fine spatial detail, while the deepest stride-32 P5 level—which contributes little to sub-16-pixel targets—is pruned to bound the added cost [16], [23]–[25]. We adopt the same reallocation prior and, through the AMS Block, further trim the parameter overhead it entails. The prior, however, is not free in a way that is rarely made explicit: abruptly discarding the deepest stage shrinks the overall receptive field of the network, so the global context that P5 used to provide is lost precisely when it is most needed to separate small objects from clutter. The following two directions attempt to remedy this deficiency. 
+
+B. Context Modeling and Receptive Field Expansion 
+
+To compensate for a limited or deliberately reduced re-ceptive field, a large body of work enlarges the spatial con-text accessible to each detection feature. Along the convo-lutional line, large-kernel and selective-kernel designs such as LSKNet [31] and PKINet [32] widen the effective re-ceptive field for remote sensing objects, while channel and spatial attention modules [29], [30] and transformer prediction heads [23] inject scene-level cues. Along the fusion line, fea-ture pyramids and their bidirectional variants [14], [18], [19], together with context-aware necks such as FFCA-YOLO [16] and frequency-aware fusion designs [44], recombine multi-level features to propagate semantics across scales. These strategies are effective but share two structural limits. First, feature fusion redistributes information across pyramid levels but does not by itself guarantee recovery of the long-range spatial dependencies weakened by deep-stage pruning. Second, self-attention [33], [52], [53] and DETR-style detectors [54]– [56] can model genuinely global relations, but their quadratic cost is prohibitive on the high-resolution feature maps that small object detection requires. This motivates global-context mechanisms whose computational cost remains manageable on the high-resolution feature maps required for tiny-object detection. 
+
+C. State Space Models for Visual Representation 
+
+State space models offer exactly such a mechanism. The structured SSM S4 [34] and the selective, hardware-aware Mamba [35], [36] capture long-range dependencies with linear complexity, and vision adaptations such as Vision Mamba [37] and VMamba [38] extend this global receptive field to dense prediction, with subsequent work refining the serialization of 2-D features into scan sequences [48], [49]. Their efficiency has driven wide adoption in remote sensing for classifi-cation [39], dense prediction [40], change detection [41], and pan-sharpening [57], as well as a fast-growing fam-ily of Mamba-based detectors: Mamba YOLO [42] couples selective scanning with a real-time head, MiM-ISTD [58] adapts it to infrared small targets, and SODMAMBA-DETR [59], SSMNet [45], MV-YOLO [43], MVMamba [46], LGHVSS-Mamba-YOLO [47], PGI-ViMamba [60], HEdge-MamYOLO [44], and LEM-YOLO [61] tailor SSM blocks to small targets in aerial and remote sensing imagery, from UAV scenes to ship detection. These detectors confirm the value of linear-complexity long-range modeling, while much of their design effort focuses on the operator—which directions to scan, how to combine selective scanning with convolution or attention inside ablock, and how to reduce its cost. In many existing designs, the SSM replaces or augments blocks on the main feature path of the backbone or neck, so sparse small-object tokens share representation capacity with local feature extraction and participate in state propagation over feature maps in which background tokens are numerically dominant. For tiny targets, this coupling creates a risk that weak local evidence may be diluted during long-range aggregation. Relatively few designs explicitly decouple the global scan from the detail-carrying stream, and controlled studies that isolate this placement dimension remain limited. Motivated by this gap, we move selective scanning off the main path and use CGCM and SS-PAN to broaden the long-range spatial support weakened by P5 removal while retaining the high-resolution feature stream. 4
+
+We then evaluate the consequences of this integration strategy through controlled experiments. III. P ROPOSED METHOD 
+
+A. Overview and Scale Reallocation 
+
+ScopeMamba-YOLO is built on the YOLOv8 skeleton and follows a single through-line: Reallocate the detection scales toward the resolution regime where small objects survive, 
+
+Read those high-resolution features with anisotropy-aware operators at reduced cost, Reach back out to scene-level context through off-path selective scanning, and Regress boxes with a distributional regression budget matched to each scale. Fig. 2 shows the resulting architecture; this subsection fixes the scale layout that everything else is built on. 
+
+1) High-Resolution Reallocation (HRR): Following the es-tablished practice for aerial small-object detection [23], [24], we add a stride-4 (P2, 160 ×160 at a 640 ×640 input) detection branch and remove the stride-32 (P5) stage and its detection head entirely, detecting on P2/P3/P4 with strides {4, 8, 16 }.We treat this reallocation as an adopted prior rather than a contribution: the bounding-box statistics of VisDrone (Fig. 1) show that the overwhelming majority of instances fall below the area regime for which a stride-32 grid retains even a single-cell response, whereas targets larger than the P4 regime are rare. HRR therefore provides a suitable base allocation of spatial budget for the present small-object setting, but it is not free. Pruning the P5 pathway removes roughly 7M parameters from the YOLOv8s skeleton and also weakens the peripheral spatial support available to the remaining high-resolution detection features, as quantified later by the ERF analysis. The detector therefore gains resolution at the cost of reduced contextual reach. Sections III-C and III-D address this trade-off by broadening long-range spatial support without reverting the high-resolution scale allocation; Section III-B first reduces the resource cost of that allocation. 
+
+2) Data flow: The backbone (layers 0–11 in Fig. 2) is a Context-Cascaded Backbone : a convolutional spatial main path (stem → C2f at P2 → SCDown → AMS-Block at P3 
+
+→ SCDown → AMS-Block → SPPF at P4), flanked by two low-resolution context streams g3 and g4 that re-enter the main path only through zero-initialized multiplicative gates. Because the network no longer has a stride-32 stage, SPPF is relocated to the end of the P4 stage. The neck first runs a top-down pathway that fuses P4 →P3 →P2 using DySample up-sampling and enriches the P2 map with directional semantics from the P3 level, followed by the bottom-up pathway of SS-PAN, whose P3 and P4 fusion nodes carry zero-gated selective-scan branches. The SA-DFL head consumes the three resulting maps ( P final 2 , P ′′  
+
+> 3
+
+, P ′′  
+
+> 4
+
+), which at a 640 2 input yield 
+
+160 2+80 2+40 2 = 33 ,600 anchors. 
+
+B. AMS-Block: Anisotropic Multi-Scale Reading 
+
+Aerial scenes contain pronounced anisotropic structures at both the object and contextual levels, including elongated vehicles and ships as well as targets distributed along roads, lanes, and waterways. Such directional patterns are not always well matched by stacks of isotropic 3×3 kernels, which are also relatively costly on the high-resolution P2/P3 feature maps. The AMS-Block (Adaptive Multi-scale Strip) replaces the bottleneck inside C2f with a four-branch anisotropic unit (Fig. 3) and is paired with SCDown [62] downsampling, which factorizes a strided convolution into a 1×1 channel mixer followed by a stride-2 depthwise convolution. Given an input x ∈ RC×H×W , the unit splits the channels into four equal groups x1, . . . , x 4. The first group passes through a local depthwise 3×3 convolution, fℓ = DW 3×3(x1),and the fourth is an identity shortcut. The second and third groups pass through adaptive strip branches in the horizontal and vertical directions. Taking the horizontal branch as an example, a channel-wise gate blends a short and a long strip kernel according to global content: 
+
+αh = σ Wg GAP( x2), (1) 
+
+fh = αh ⊙ DW 1×5(x2) + (1 − αh) ⊙ DW 1×11 (x2), (2) where GAP is global average pooling, Wg a 1×1 projection, 
+
+σ the sigmoid, and ⊙ channel-wise multiplication; the vertical branch fv is defined symmetrically with 5×1 and 11 ×1
+
+kernels. The two directional streams then modulate each other through cross-directional gating, 
+
+˜fh = fh ⊙ σ gv→h(fv ), ˜fv = fv ⊙ σ gh→v (fh), (3) so that, e.g., evidence of a vertical structure suppresses or sharpens the horizontal reading at the same location. The unit output is 
+
+y = x + Wf
+
+ fℓ; ˜fh; ˜fv ; x4
+
+, (4) with [·; ·] channel concatenation and Wf a 1×1 fusion. Strip kernels touch k pixels instead of k2, so the unit covers an 
+
+11 × 11 extent at close to depthwise-line cost. The AMS-Block primarily serves as a resource-efficient feature extraction component. When introduced into the P3/P4 stages of the HRR baseline, it keeps mAP 50 nearly unchanged while reducing the parameter count by approximately 24% and GFLOPs by approximately 9% (Section IV-D). The resulting parameter saving provides part of the budget required by the subsequent context pathways. 
+
+C. Off-Path Zero-Gated Selective Scanning and the CGCM 1) Preliminaries: selective state-space models: A struc-tured state-space model (SSM) maps a 1-D input x(t) to an output y(t) through a latent state h(t) ∈ RN :
+
+h′(t) = Ah(t) + Bx(t), y(t) = Ch(t), (5) which, discretized with step ∆ under a zero-order hold, 
+
+¯A = exp(∆ A), ¯B = (∆ A)−1 exp(∆ A) − I∆B, (6) yields the linear recurrence 
+
+ht = ¯Aht−1 + ¯Bxt, yt = Cht. (7) Mamba [35] makes ∆, B and C functions of the input (selective scanning), so each token can decide what to retain from or contribute to the running state, while the recurrence keeps the cost linear in sequence length. To lift the operator 5P2
+
+s= 4, 160 ²
+
+P3
+
+s= 8, 80 ²
+
+P4
+
+s= 16 , 40 ²
+
+UAV image 
+
+3 × 640  × 640 
+
+Conv  3×3, s 2
+
+Conv  3×3, s 2 C2f
+
+SCDown  AMS -Block 
+
+Ctx -SSM g ₃
+
+¼ res ( 20 ²)
+
+SCDown  ⊙ AMS -Block 
+
+Ctx -SSM g ₄
+
+¼ res ( 10 ²)
+
+⊙ SPPF  DySample   
+
+> ↑2×
+> CC2f
+
+DySample  
+
+> ↑2×
+> C
+
+C2f Dir -Ctx 
+
+Inject 
+
+P₃′
+
+P₂′
+
+Context -Cascaded Backbone 
+
+SS -PAN: directional top -down fusion 
+
+> A
+
+P₃′ →  bottom -up PAN  
+
+> B
+
+P₄ (SPPF)  → bottom -up PAN 
+
+P₂ final  → bottom -up PAN 
+
+SS -PAN: bottom -up selective -scan fusion 
+
+Conv, s 2 
+
+> C
+
+C2f-
+
+SDMamba  Conv, s 2 
+
+> C
+
+C2f-
+
+SDMamba 
+
+P₃″
+
+P₄″
+
+> A
+> B
+> SA -DFL Head
+
+P₂ (final, s= 4): K ₁ = 24  regression bins 
+
+P₃″ (s= 8): K ₂ = 16 
+
+P₄″ (s= 16 ): K ₃ = 10 
+
+multi -scale 
+
+detections 
+
+Legend                  
+
+> Standard conv
+> AMS -Block
+> Off -path SSM context (CGCM)
+> DySample ↑+ directional inject
+> Zero -gated Mamba (scan branch)
+> SA -DFL head
+> ⊙zero -initialized gated injection
+> x · ( 1+ tanh( W ₀g ) )
+> Cconcatenation
+> Across -block connector
+> detection scales: P 2/P 3/P 4
+> (strides 4/8/16 ), P 5pruned
+> Fig. 2. Overall architecture of ScopeMamba-YOLO. The network detects on P2/P3/P4 (strides 4/8/16) with the P5 stage removed (high-resolution reallocation). In the Context-Cascaded Backbone, AMS-Blocks perform anisotropic multi-scale reading, while two off-path context streams (CGCM context streams g3,g4;orange) run selective scans on 14-resolution features and modulate the main path through zero-initialized gates ( ⊙). The SS-PAN neck consists of a top-down pathway using DySample up-sampling and directional context injection (cyan), together with a bottom-up pathway whose P3/P4 fusion nodes carry zero-gated selective-scan branches (purple). The SA-DFL head performs scale-adaptive distributional box regression with per-scale bin budgets K=[24 ,16 ,10] .
+
+to 2-D features we use a non-causal four-directional variant, NCSSD2D: the feature map is serialized along four scan orders (rows left →right and right →left, columns top →bottom and bottom →top), each order is processed by a selective scan, and the four outputs are merged (Fig. 4d). Every position thus aggregates evidence from the entire map at O(HW ) cost—the property that makes a global-context stage affordable at all. 
+
+2) The placement principle: How selective scanning is integrated with the detail-carrying stream is critical for small-object detection. In an earlier matched P2/ −P5 configura-tion, inserting the scan inside the backbone block reduces mAP 50 from 0.4949 to 0.4851 while leaving computation unchanged at 47.6 GFLOPs (Section IV-C). This negative result motivates an integration strategy in which selective scanning provides contextual modulation without directly re-placing the main convolutional stream. We therefore impose three constraints, which together define our off-path zero-gated selective-scanning formulation (Fig. 4a): 1) Off-path, modulation only. The scan does not replace the main-path feature transformation. It runs on a side branch and produces a modulation signal, allowing the convolutional stream to preserve the fine-grained repre-sentation used for small-object localization. 2) Reduced cost. In the backbone, the context branch oper-ates on 4×-pooled, 32-channel features. The resulting 14 -resolution representation reduces the token count by 16 ×
+
+and limits the cumulative CGCM overhead to +0 .44 
+
+GFLOPs across the two backbone context stations. In the 6C2f shell ( n =  2 for ScopeMamba -S )                                                       
+
+> xConv 1×1split AMS -Block 1AMS -Block 2Concat Conv 1×1y
+> y₀
+> y₁z₁
+> z₂
+> Concat( y ₀, y ₁, z ₁, z ₂)
+> AM S-Block x∈ℝC×H×W
+> channel split C/ 4×4
+> DW 3×3
+> local
+> DW 1×5DW 1×11
+> +
+> αh1−αh
+> gate
+> DW 5×1DW 11 ×1
+> +
+> αv1−αv
+> gate
+> identity
+> ⊙⊙
+> fhfv
+> σ( · ) σ( · )
+> f̃ hf̃ v
+> Concat
+> Conv 1×1
+> +
+> output
+> adaptive strip: f = α ⊙DW short + ( 1−α ) ⊙DW long ,α = σ( WgGAP( x ) )
+> Fig. 3. The AMS-Block. The C2f shell is unchanged; each internal unit splits channels four ways into a local DW 3×3branch, adaptive horizontal and vertical strip branches (each blending a short and a long strip kernel under a GAP-driven gate), and an identity branch, followed by cross-directional gating, 1×1fusion, and a residual connection.
+
+neck, where the scan acts on the full-resolution fusion map, spatial pooling is not used; instead, the branch operates at half the output width (Section III-D). 3) Zero-initialized gating. The contextual signal enters through a projection initialized at zero, making the augmented network functionally identical to its con-volutional skeleton at initialization and allowing the context branch to be introduced progressively during optimization. The gain is also not explained by the mere presence of an auxiliary branch. At the final off-path CGCM node, a cost-matched convolutional branch changes mAP 50 by only +0 .04 
+
+pp and EMA by −0.32 pp relative to the three-seed no-branch mean, whereas selective scanning provides a +0 .67 pp gain (Section IV-C). 
+
+3) Station 1: Cascaded Global-Context Module (CGCM): 
+
+The first instantiation lives in the backbone (Fig. 4b). From the P3 stage output F3 ∈ RC×H×W a context stream is computed as 
+
+g3 = W↑ NCSSD2D  LN  W↓ AvgPool 4(F3) , (8) where AvgPool 4 pools by a factor of four (a 20 × 20 grid at 
+
+640 2 input), W↓ projects to a 32-channel working width, LN is LayerNorm, the scan uses state size dstate =8 , and W↑ restores the stage width. The context is injected multiplicatively at the entrance of the P4 stage: 
+
+ˆF = F ·  1 + tanh( W0 g), (9) with g bilinearly aligned to F and the projection W0 zero-initialized, so the gate spans (0 , 2) and equals the identity at step 0. A second context g4 is then computed—by an identical chain, from a 10 × 10 grid— from the already-modulated P4 features and injected before SPPF. This cascade is what the module is named for: scene evidence gathered at P3 conditions the P4 computation, and the refreshed P4 evidence is folded in once more before the final spatial pooling, so context accumulates along depth instead of being applied once. The 20 × 20 scanned grid of g3 allows each contextual output to aggregate information across the pooled P3 feature map without applying selective scanning to the full-resolution backbone representation. The same formulation is applied at P4 through g4, providing cascaded contextual modulation while preserving the main convolutional pathway. 
+
+D. Selective-Scan PAN (SS-PAN) 
+
+We denote the redesigned neck as the Selective-Scan PAN (SS-PAN) . It consists of two complementary pathways: a top-down pathway that uses DySample up-sampling and direc-tional context injection to propagate semantic information to-ward the high-resolution P2 feature, and a bottom-up pathway in which the P3 and P4 fusion nodes incorporate zero-gated selective-scan branches. 
+
+1) Directional top-down pathway: Up-sampling in the top-down pathway uses DySample [63]. After the two fusion stages produce P ′
+
+> 2
+
+, a lightweight injection enriches the P2 map with directional semantics from P ′
+
+> 3
+
+. Specifically, P ′ 
+
+> 3
+
+is up-sampled and aligned to a 64-channel semantic map s, which is decomposed directionally as in (3), 
+
+sdir = sh ⊙σ gv→h(sv ) + sv ⊙σ gh→v (sh), (10) where sh = DW 1×5(s) and sv = DW 5×1(s). The resulting directional semantic signal is applied through the same zero-initialized multiplicative gate as (9), yielding P final 2 . This injection follows the same general design language as the CGCM—a zero-gated contextual correction on top of the main feature pathway—and is treated as a lightweight neck component rather than as a separate contribution. 
+
+2) Bottom-Up Selective-Scan Fusion: The bottom-up fu-sion nodes at P3 and P4 replace C2f with C2f-SDMamba (Fig. 4c): 
+
+y = C2f( x) + γ ΦSSM (x), γ = 0 at init , (11) where the branch ΦSSM compresses x with a 1×1 convolu-tion to half the output width, normalizes, applies NCSSD2D (dstate =16 ), refines with a residual depthwise 3×3, and ex-pands back with a 1×1 convolution. The node follows the same off-path formulation used in the backbone: the C2f main path is left unchanged, while the selective-scan branch provides a global recalibration signal for the concatenated multi-scale features and is introduced progressively from zero. The branch is therefore intended to complement, rather than replace, the local fusion pathway. We place the scans at the P3 and P4 bottom-up fusion nodes; the negative configurations in Section IV-F show that removing one scan node or tapering the scan width reduces accuracy, while the tapered configuration provides no parameter advan-tage. 7(a) Where to place the selective scan?    
+
+> Conv SSM Conv
+
+✕         
+
+> in -path insertion (earlier matched config.)
+> ⇒−0.98 pp
+> Conv Conv ⊙Conv
+> AvgPool ¼ SSM tanh( W ₀· )
+
+✓         
+
+> off -path CGCM (final config.)
+> ⇒+0.67 pp vs. 3-seed control
+> identity mapping at init ( W ₀=0)
+> cost -matched conv branch: + 0.04 pp
+
+(b) Station  1: CGCM (backbone)   
+
+> F₃(P 3)
+
+SCDown  ⊙ AMS  ⊙ SPPF        
+
+> AvgPool
+> 4×
+> 1×1
+> C→32 LN NCSSD 2D1×1
+> 32 →Ctanh(W ₀·)
+> g₃
+> g₄
+> ¼ res ( 20 ²)4-dir selective scan zero -init
+> cascade: g ₄comes from the g ₃-modulated stage,
+> accumulating scene evidence before SPPF
+
+(c) Station  2: SS -PAN node         
+
+> x (fused feature)
+> C2f
+> Conv 1×1↓
+> LN
+> NCSSD 2D
+> DW 3×3+ id
+> Conv 1×1↑
+> ×γ+
+> y
+> γ = 0init
+> C2f main path
+> (intact)
+> y = C 2f( x ) + γ · Φ SSM ( x )
+
+(d) NCSSD 2D: non -causal four -directional selective scan          
+
+> rows →rows ←cols ↓cols ↑
+> +global evidence along four scan orders,
+> selection parameters Δ, B, C
+> injection:
+
+ƶF = F · (  1 + tanh( W ₀ g ) ), W₀ = 0 at init 
+
+Fig. 4. The off-path zero-gated selective-scanning principle and its two instantiations. (a) Integration strategy matters: in an earlier matched P2/ −P5 configuration, embedding selective scanning inside the backbone block reduces mAP 50 by 0.98 pp at unchanged GFLOPs, whereas under the final configuration the off-path CGCM improves mAP 50 by 0.67 pp over a three-seed no-branch control; a cost-matched convolutional branch at the same off-path node changes mAP 50 by only +0 .04 pp. (b) Station 1: the Cascaded Global-Context Module in the backbone, with the g3 chain shown in full and the cascaded g4
+
+computed from the already-modulated stage. (c) A bottom-up selective-scan fusion node within SS-PAN. (d) The NCSSD2D operator shared by both stations: a non-causal four-directional selective scan with linear complexity in the number of tokens. Decoupled head with scale -adaptive distributional regression                                                       
+
+> P₂(final)
+> 160 ²
+> cls: 2×Conv 3×3+1×1
+> reg: 2×Conv 3×3+1×1→4K₁
+> nc
+> K₁=24 bins
+> d̂ = Σ ⱼj · p ⱼ
+> P₃″
+> 80 ²
+> cls: 2×Conv 3×3+1×1
+> reg: 2×Conv 3×3+1×1→4K₂
+> nc
+> K₂=16
+> d̂ = Σ ⱼj · p ⱼ
+> P₄″
+> 40 ²
+> cls: 2×Conv 3×3+1×1
+> reg: 2×Conv 3×3+1×1→4K₃
+> nc
+> K₃=10
+> d̂ = Σ ⱼj · p ⱼ
+> K = [ 24 ,16 ,10 ] at strides [ 4,8,16 ](Nano: K = [ 16 ,12 ,8]).
+> The expectation is in feature -grid units, then scaled by the stride,
+> so P 2receives the largest distributional support.
+> Hidden width c i= max( 16 ,⌊C₁/4⌋,4Ki). ScopeMamba -S shown.
+
+Fig. 5. The SA-DFL head. The decoupled head structure is standard; the regression branch of each scale predicts a distribution over its own number of bins ( K1=24 , K2=16 , K3=10 for strides 4/8/16), decoded by expectation. Bins are indexed in stride units, so the per-scale bin budget determines the supported regression range rather than changing the spacing between adjacent bins. 
+
+E. Scale-Adaptive DFL Head 
+
+Distribution Focal Loss [64] regresses each box side as the expectation of a discrete distribution over K bins indexed in stride units. Standard YOLOv8 uses a common K=16 at all detection levels. After the P2/P3/P4 reallocation, however, the same image-space offset corresponds to different numbers of feature-grid units at different strides. We therefore assign a scale-specific bin budget Ki to each regression branch. Changing Ki adjusts the distributional support available at that level; under the decoding used here, it does not reduce the spacing between adjacent bin indices. The regression branch of scale i predicts logits z ∈ R4Ki and decodes each side distance as 
+
+ˆd =
+
+> Ki−1
+
+X
+
+> j=0
+
+j · pj , p = softmax( zside ), (12) with per-scale output channels n(i) 
+
+> o
+
+= nc +4 Ki and regression hidden width 
+
+ci = max  16 , ⌊C1/4⌋, 4Ki
+
+, (13) where C1 is the first head input width. Because the regression-branch width scales with 4Ki,changing the per-scale bin allocation simultaneously reallo-cates regression capacity across feature levels. We therefore attribute the observed improvement to the joint scale-adaptive regression design—distributional support together with regres-sion capacity—rather than to finer bin spacing alone. Training uses a scale-indexed DFL term, with each detection level supervised using its corresponding Ki, alongside the standard CIoU and BCE classification losses; no additional inputs or quality branches are introduced. The primary configuration uses K=[24 , 16 , 10] for strides [4 , 8, 16] (Fig. 5). This modifi-8                                           
+
+> TABLE I SCOPE MAMBA -YOLO VARIANTS . A LL FOUR SHARE THE SAME TOPOLOGY ;ONLY THE COMPOUND SCALING FACTORS (DEPTH d,WIDTH
+> w)AND ,FOR THE NANO TIER ,THE SA-DFL BIN LIST DIFFER . P ARAMS AND GFLOP S ARE REPORTED AT 640 ×640 INPUT UNDER THE 10-CLASS
+> VIS DRONE CONFIGURATION .Variant dwK(P2/P3/P4) Params GFLOPs ScopeMamba-N 0.33 0.25 [16, 12, 8] 1.01M 15.87 ScopeMamba-S 0.33 0.50 [24, 16, 10] 3.57M 53.69 ScopeMamba-M 0.67 0.625 [24, 16, 10] 6.48M 92.17 ScopeMamba-L 0.67 0.75 [24, 16, 10] 9.17M 127.78
+
+cation adds only 0.008M parameters while providing a positive accuracy gain in the cumulative ablation (Section IV-D4). 
+
+F. Model Scaling 
+
+ScopeMamba-YOLO follows YOLOv8 compound scaling: nominal per-layer channel widths are multiplied by w and rounded to multiples of eight, and the repeat counts of C2f-family blocks are scaled by d. All four variants in Table I instantiate the same topology; no module is added, removed, or rewired across tiers. The single hyperparameter that does change is the Nano bin list. By (13), the regression hidden width is dominated by 4Ki once the model is narrow: at Nano width ( C1=64 ), retaining K=[24 , 16 , 10] would pin the regression branches at widths [96 , 64 , 40] —wider than their own inputs and immune to width scaling. Shrinking to K=[16 , 12 , 8] restores proportional scaling ( [64 , 48 , 32] ), mirroring how YOLOv8 itself caps head widths per tier; Section IV-D4 shows that this choice performs best among the tested Nano-scale bin allocations. We report the S variant as the primary model throughout the experiments. IV. EXPERIMENTS In this section, we present comprehensive experimental results to validate the effectiveness of the proposed method. Benchmark evaluations are conducted on two representative object detection datasets: VisDrone-2019 [13] and AI-TOD [12]. We adopt YOLOv8s as our baseline detector. To quantify detection performance, we adopt the standard mean average precision (mAP) metric, including mAP 50 and 
+
+mAP 50 −95 , as well as the number of parameters and FLOPs to evaluate the model complexity. All experiments are conducted on Ubuntu using PyTorch and an NVIDIA RTX 4090 GPU. Input images are uniformly resized to 640 × 640 . Models are optimized using stochastic gradient descent (SGD) with an initial learning rate of 0.01, momentum of 0.937, and weight decay of 0.0005, with a batch size of 8. The maximum number of training epochs is 500 for VisDrone-2019 and 400 for AI-TOD, and early stopping with a patience of 30 epochs is applied uniformly. No pre-trained parameters are used in any experiment. 
+
+A. Experimental Dataset 
+
+VisDrone-2019: This dataset [13] contains 6,471 training images, 548 validation images captured by drones, and 1,610 test images. Our ScopeMamba results, controlled baselines, and ablation experiments are evaluated on the official 548-image validation split. The resolution of these images is approximately 1000–1500 pixels. These images are annotated with bounding boxes across ten categories: pedestrian, bicycle, tricycle, people, truck, car, bus, van, motor, and awning-tricycle. Object detection on this dataset remains challenging due to heavy occlusion, extreme scale variation, uneven spatial distribution, and the distinct lack of large targets. To provide a statistical foundation for our architectural design, Fig. 1 il-lustrates the bounding box size distribution of the dataset. The overwhelming concentration of objects in the extremely small regimes explicitly motivates our high-resolution reallocation strategy. 
+
+AI-TOD: This benchmark [12] is curated for tiny object detection in aerial images, comprising 28,036 images and 700,621 instances across eight categories. We adopt the official partition of 11,214 training and 2,804 validation images and conduct evaluation on the official validation split. Images are uniformly resized from their native 800 × 800 resolution to 640 × 640 . AI-TOD is characterized by extremely small and densely distributed objects, with a mean target size of approximately 12.8 pixels. In addition to mAP 50 , mAP 75 ,and mAP 50 −95 , we report scale-specific metrics for very tiny (2–8 pixels, AP vt ), tiny (8–16 pixels, AP t), and small (16–32 pixels, AP s) objects. To accommodate the high target density, the maximum number of detections per image is set to 1,500. 
+
+B. Comparisons with State-of-the-Art Methods 
+
+We compare ScopeMamba-YOLO with the baseline and recent aerial-object detectors. For VisDrone-2019, the results of comparison methods are taken from the corresponding cited publications. For AI-TOD, the comparison methods are reproduced from their publicly released implementations under the unified training and evaluation protocol described above. 
+
+1) VisDrone-2019: Table II compares ScopeMamba-YOLO with the baseline and recent aerial-object detectors on VisDrone-2019. Fig. 6 additionally visualizes mAP 50 against parameter count. Across the evaluated scales, the Scope-Mamba variants show a favorable accuracy–parameter trade-off relative to the compared methods. 
+
+Comparison with Baseline YOLO Models: ScopeMamba consistently improves detection accuracy over the YOLOv8 entries across the evaluated model scales while using substan-tially fewer parameters. ScopeMamba-N improves mAP 50 by 9.8 pp (0.439 versus 0.341) with 1.01M parameters, compared with 3.00M for YOLOv8n. At the Small scale, ScopeMamba-S improves mAP 50 by 10.8 pp over YOLOv8s while reducing the parameter count from 11.10M to 3.57M. ScopeMamba-L reaches 0.536 mAP 50 with 9.17M parameters, compared with 0.454 and 43.60M parameters for YOLOv8l. 
+
+Comparison with SSM-based Detectors: Compared with recent SSM-based detectors, ScopeMamba achieves a fa-vorable accuracy–parameter trade-off. Mamba-YOLO reports 0.451 mAP 50 with 37.17M parameters, whereas ScopeMamba-S reaches 0.508 with 3.57M parameters. HEdge-MamYOLO reaches 0.525 mAP 50 with 20.80M parameters and 151.2 GFLOPs; ScopeMamba-M reaches 0.526 with 6.48M param-eters and 92.17 GFLOPs. 9       
+
+> TABLE II COMPREHENSIVE PERFORMANCE COMPARISON ON THE VIS DRONE -2019 D ATASET . M ODELS ARE CATEGORIZED BY SCALE (N ANO , S MALL , M EDIUM ,LARGE )FROM TOP TO BOTTOM . B EST RESULTS ARE HIGHLIGHTED IN BOLD ,AND SECOND -BEST RESULTS ARE UNDERLINED .
+
+Model Params (M) GFLOPs mAP 50 mAP 50 −95 
+
+YOLOv8n [65] 3.00 8.1 0.341 0.195 YOLOv10-n [62] 2.71 8.4 0.333 0.190 YOLOv11-n [66] 2.59 6.5 0.334 0.191 SFBF-YOLO-n [24] 1.06 13.7 0.410 0.243 
+
+ScopeMamba-N (Ours) 1.01 15.87 0.439 0.266 
+
+YOLOv8s 11.10 28.7 0.400 0.238 YOLOv10-s 8.10 24.8 0.391 0.229 YOLOv11-s 9.43 21.6 0.396 0.232 HEdge-MamYOLO-B [44] 7.42 42.8 0.469 0.289 SFBF-YOLO-s 3.61 42.6 0.479 0.292 LMF-UAV(s) [67] 6.30 17.6 0.364 0.213 PC-YOLO11s [68] 7.10 - 0.438 0.263 UAV-YOLO [69] 10.30 - 0.470 0.292 DMFF-YOLO [70] 7.65 - 0.447 0.272 BDH-YOLO [71] 9.39 - 0.429 0.262 
+
+ScopeMamba-S (Ours) 3.57 53.69 0.508 0.314 
+
+YOLOv8m 25.90 79.1 0.435 0.263 HEdge-MamYOLO 20.80 151.2 0.525 0.328 SFBF-YOLO-m 9.52 100.6 0.503 0.307 SOD-YOLO-m [72] 6.30 65.8 0.485 0.295 PVswin-YOLOv8-s [73] 21.60 - 0.433 0.264 Drone-DETR [74] 21.47 73.9 0.504 0.311 
+
+ScopeMamba-M (Ours) 6.48 92.17 0.526 0.332 
+
+YOLOv8l 43.60 164.9 0.454 0.279 YOLOv9-c [75] 50.90 237.8 0.481 0.299 Mamba-YOLO [42] 37.17 94.3 0.451 0.276 SOD-YOLO-l 17.60 167.0 0.515 0.320 LMF-UAV(l) 14.70 61.8 0.411 0.246 EFA-Net [76] 37.40 108.2 0.516 0.296 YOLO-DCTI [77] 37.60 - 0.498 0.274 RemDet-L [78] - 67.4 0.473 -RemDet-X - 114.0 0.483 -CEASC(GFL V1) [79] - 150.0 0.507 -CEASC(FSAF) - 153.0 0.489 -CEASC(Faster-RCNN) - 133.0 0.434 -
+
+ScopeMamba-L (Ours) 9.17 127.78 0.536 0.337 
+
+Comparison with Other UAV-Specific SOTAs: Scope-Mamba also compares favorably with specialized detectors designed for aerial imagery. ScopeMamba-M reaches 0.526 mAP 50 and 0.332 mAP 50 −95 with 6.48M parameters, exceed-ing the reported accuracy of Drone-DETR, SFBF-YOLO-m, and SOD-YOLO-l while using fewer parameters than most of these alternatives. These comparisons further demonstrate the favorable accuracy–parameter trade-off of the proposed model. Fig. 6 visualizes the accuracy–parameter trade-off among the compared detectors. Relative to the corresponding YOLOv8 entries, the ScopeMamba variants consistently achieve higher mAP 50 with fewer parameters. Compared with recent SSM-based detectors, ScopeMamba-S reaches 0.508 mAP 50 with 3.57M parameters, whereas Mamba-YOLO re-ports 0.451 with 37.17M parameters; ScopeMamba-M reaches 0.526 with 6.48M parameters, compared with 0.525 and 20.80M parameters for HEdge-MamYOLO. These results indicate a favorable accuracy–parameter trade-off for the ScopeMamba series among the methods included in this comparison. Evidence for the proposed integration strategy itself is provided separately by the controlled experiments in Section IV-C. 
+
+2) AI-TOD: Table III compares ScopeMamba-YOLO with representative detectors on AI-TOD in terms of overall accu-racy, size-specific AP/AR, model complexity, and computa-tional cost. Fig. 7 further breaks down the AI-TOD results by object size. At the S scale, ScopeMamba-S improves over YOLOv8-S by 4.57 pp on AP vt (10.30 versus 5.73) and 4.58 pp on 
+
+AP t (25.55 versus 20.97), whereas the improvement on AP s
+
+is more modest at 0.41 pp (29.51 versus 29.10). The larger gains in the very-tiny and tiny regimes are consistent with the objective of reallocating spatial resolution toward small targets while preserving broader contextual information. We do not attribute these bucket-level gains to individual modules, since the module-wise ablations in this study are conducted on VisDrone-2019 rather than AI-TOD. Fig. 8 provides representative qualitative comparisons on 10    
+
+> TABLE III COMPARISON OF DIFFERENT METHODS ON THE AI-TOD D ATASET .
+
+Model Params(M) Resolution mAP 50 −95 mAP 50 mAP 75 AP vt AP t AP s AR vt AR t AR s GFLOPs 
+
+ALSS-YOLO-S [80] 2.18 640 × 640 12.90 31.77 7.55 2.22 12.83 19.94 3.67 22.98 30.45 8.50 
+
+ALSS-YOLO-M 2.74 640 × 640 12.94 32.83 7.83 2.40 12.42 20.20 4.92 22.42 31.33 10.40 
+
+ScopeMamba-N 1.01 640 × 640 19.71 45.24 13.70 6.77 20.64 24.33 12.78 37.88 38.41 15.86 L-FFCA-YOLO [16] 5.06 640 × 640 22.83 51.80 16.34 10.70 24.60 29.85 25.53 45.22 43.56 37.20 YOLOv9-S [75] 7.29 640 × 640 20.33 47.54 14.16 7.52 20.13 27.96 13.65 33.68 39.17 27.08 YOLOv10s [62] 8.07 640 × 640 19.78 45.54 13.95 6.64 20.38 26.97 15.09 35.89 40.43 24.80 MAF-YOLO-S [81] 8.51 640 × 640 22.89 49.81 18.24 5.12 23.74 32.09 14.28 39.06 45.15 25.21 YOLO11s [66] 9.43 640 × 640 20.25 46.87 14.66 9.03 20.51 27.78 13.34 33.49 40.45 21.60 
+
+YOLOv8-S [65] 11.14 640 × 640 20.80 48.45 14.69 5.73 20.97 29.10 9.56 34.41 40.65 28.45 
+
+ScopeMamba-S 3.56 640 × 640 23.67 52.35 17.69 10.30 25.55 29.51 21.89 43.66 45.80 53.67 YOLOv8m 25.86 640 × 640 23.51 52.68 18.53 13.30 23.46 31.24 20.59 38.05 42.38 78.70 
+
+TPH-YOLOv5-L [23] 41.55 640 × 640 25.17 56.65 18.16 12.88 27.14 33.15 21.72 42.06 42.61 108.00 
+
+ScopeMamba-M 6.48 640 × 640 24.87 54.68 18.22 9.43 28.30 31.98 22.08 43.33 46.05 92.15 
+
+ScopeMamba-L 9.17 640 × 640 26.64 56.86 20.91 11.03 27.75 34.29 23.00 43.76 47.87 127.76  
+
+> Fig. 6. Accuracy ( mAP 50 ) versus parameter count on the VisDrone-2019 dataset. Among the compared methods, the ScopeMamba variants occupy a favorable region of the accuracy–parameter plane across different model scales.
+
+AI-TOD scenes containing dense and very small targets. 
+
+C. Integration Strategy for Selective Scanning 
+
+The Contextual Reach Dilemma. A common small-object detection design adds a high-resolution stride-4 (P2) detection level while removing the stride-32 (P5) stage to control model size. This allocation improves the representation of tiny targets but also removes the deepest feature stage. Our ERF analysis below shows that the resulting P2/ −P5 configuration has substantially lower peripheral spatial support than the origi-nal YOLOv8s. This motivates the question examined in this section: how can broader contextual support be reintroduced without restoring the full P5 pathway? AP vt AP t AP s AP m
+
+Object-size bucket ( √
+
+area : vt<8, t<16, s<32, m<64 px) 0.00 0.05 0.10 0.15 0.20 0.25 0.30 0.35 AP (COCO, maxDets=500)  
+
+> YOLOv8s YOLOv8s + P2/-P5 ScopeMamba-S (Ours)
+> Fig. 7. Scale-specific performance comparison on the AI-TOD dataset. ScopeMamba-S shows its largest improvements over YOLOv8-S in the very-tiny and tiny object regimes. The figure reports model-level differences rather than a per-module ablation.
+
+Main-Path vs. Off-Path Integration. Recent Mamba-based detectors commonly place SSM blocks directly on the main backbone or neck pathway. We examine this choice using two complementary controls from different stages of the ablation lineage. First, in an earlier P2/ −P5 configuration with the default head, the control configuration without the selective-scan branch achieves 0.4949 mAP 50 with 3.44M parameters and 47.6 GFLOPs. Replacing the corresponding identity branch in the matched backbone block with selec-tive scanning yields 0.4851 mAP 50 with 3.45M parameters at the same 47.6 GFLOPs. This matched in-path control therefore yields a −0.98 pp change. Second, under the final configuration, removing the off-path CGCM produces a three-seed mean of 0.5011, whereas the complete model reaches 0.5078, corresponding to a +0 .67 pp gain. Because the in-path and off-path controls were measured at different stages of the model lineage, we do not subtract these two effects or 11 
+
+Fig. 8. Qualitative detection results on the AI-TOD validation set. Yellow dashed circles indicate representative ground-truth targets missed by YOLOv8s but detected by ScopeMamba-S in dense or very-tiny object regions. 12 
+
+interpret them as a 1.65-pp placement-only gain. Instead, they provide complementary evidence that direct in-path insertion is unfavorable in the matched early-stage control, whereas the proposed off-path formulation contributes positively under the final configuration. To inspect the spatial behavior of the off-path modulation, Fig. 9 visualizes the magnitude of the CGCM gate. The response is distributed over broad scene structures rather than being confined to localized object regions, which is consistent with the intended role of CGCM as a scene-level context modulator. Input CGCM gate |tanh(Conv 1 × 1(g)) |               
+
+> 0.0 0.2 0.4 0.6 0.8 1.0
+> modulation strength
+> Fig. 9. Visualization of the CGCM gate modulation strength
+> |tanh(Conv 1×1(g)) |.Broad spatial responses extend beyond object-local regions, consistent with the scene-level contextual role of the off-path CGCM branch.
+
+At the off-path position, the operator identity also matters. Relative to the three-seed no-branch mean of 0.5011, a cost-matched convolutional branch changes mAP 50 by only +0 .04 
+
+pp and EMA by −0.32 pp, whereas selective scanning im-proves it by +0 .67 pp. These results are interpreted against the observed run-to-run variation of the control rather than as a formal significance test. 
+
+The Operator Bracket: Why Selective Scan? We next test whether the positive off-path result can be explained simply by adding an auxiliary branch. At the CGCM node, we replace the selective scan with a cost-matched convolutional branch and with Efficient Multi-scale Attention (EMA) [82], while retaining the same off-path wrapping and gating strategy. As shown in Table IV, the three-seed no-branch control has a mean mAP 50 of 0.5011 with a standard deviation of 0.34 pp. The convolutional branch reaches 0.5015 ( +0 .04 pp) and EMA reaches 0.4979 ( −0.32 pp), both within the observed seed variation of the control, whereas selective scanning reaches 0.5078 ( +0 .67 pp). At the selective-scan nodes within SS-PAN, selective scanning likewise outperforms both the no-branch configuration and the EMA substitution. Among the operators tested at these nodes, the selective scan therefore provides the strongest and most consistent gain, supporting the use of a long-range state-space operator rather than attributing the improvement to auxiliary branch capacity alone. 
+
+Broadening Reach. The two context mechanisms operate under different computational regimes: CGCM performs selec-tive scanning on spatially pooled backbone features, whereas the selective-scan branches within SS-PAN operate at native neck resolution with reduced channel width. We next examine whether their combined use broadens the spatial support weakened by removing the P5 stage. To visually and quantitatively corroborate this, we probe the effective receptive field (ERF) of the shared high-resolution P3 (Stride-8) detection cell. For each of the 200 VisDrone validation images uniformly resized to 640 × 640 , we back-propagate the channel-summed response of the center cell of the P3 feature map to the input layer. We accumulate the absolute input-gradient magnitude across channels, and the final ERF map, denoted as S(x, y ), is averaged over the 200 images. To quantify peripheral spatial support in the effective receptive field, we define the Peripheral Energy Ratio (PER) as the fraction of total ERF mass lying strictly outside the central 50% × 50% (320 × 320 ) region: 
+
+PER = 1 −
+
+P 
+
+> (x,y )∈C
+
+S(x, y )
+
+P 
+
+> (x,y )
+
+S(x, y ) , (14) where C denotes the centered half-size bounding box. A higher PER indicates broader gradient-based spatial sensitivity to the image periphery, whereas a lower value indicates a more center-concentrated effective receptive field. As depicted in Fig. 10B, removing the deep P5 stage substantially concentrates the ERF around the image center and weakens its peripheral support. The corresponding PER decreases to 0.008, indicating that only a small fraction of the total ERF energy remains outside the central half-size region. Conversely, with the off-path integration of CGCM and SS-PAN (Fig. 10C), the PER increases from 0.008 to 0.090, an approximately 11 × increase over the P2/ −P5 baseline. Rela-tive to the unpruned YOLOv8s PER of 0.147, ScopeMamba-S recovers approximately 61% of the measured peripheral ERF energy while retaining the high-resolution P2/ −P5 scale allocation. This indicates that the proposed context pathway substantially extends the spatial reach of the high-resolution detection feature, consistent with its intended role in providing long-range contextual information for small-object detection. 
+
+D. Ablation Study 
+
+To evaluate the contribution and resource cost of each com-ponent, we conduct a cumulative ablation on VisDrone-2019, progressing from the YOLOv8s baseline to ScopeMamba-S. Table V reports mAP 50 , parameter count, and GFLOPs at every step, while Fig. 11 visualizes the corresponding accuracy–parameter trajectory. Across the full trajectory, the parameter count decreases by approximately 68% (from 11.14M to 3.57M) while mAP 50 
+
+increases by 9.54 pp. The adopted HRR prior accounts for 13 
+
+TABLE IV PLACEMENT AND OPERATOR CONTROLS ON VIS DRONE -2019 AT THE SMALL (S) SCALE . T HE IN -PATH PAIR WAS EVALUATED AT AN EARLIER P2/ −P5 
+
+> STAGE WITH THE DEFAULT HEAD
+
+, WHEREAS THE OFF -PATH CONTROLS WERE EVALUATED ON THE FINAL CONFIGURATION . T HEREFORE , DELTAS ARE INTERPRETED WITHIN EACH GROUP RATHER THAN ACROSS GROUPS .
+
+Configuration Branch Params (M) GFLOPs mAP 50 ∆ vs. Control 
+
+In-path control: earlier P2/ −P5 configuration with default head 
+
+Backbone block No scan branch 3.44 47.6 0.4949 –Backbone block In-path selective scan 3.45 47.6 0.4851 −0.98 pp 
+
+Off-path CGCM control: final configuration 
+
+Backbone CGCM None (3-seed mean) 3.39 53.25 0.5011 –Backbone CGCM Convolution 3.57 53.69 0.5015 +0 .04 pp Backbone CGCM EMA [82] 3.55 53.68 0.4979 −0.32 pp Backbone CGCM Selective scan (ours) 3.57 53.69 0.5078 +0.67 pp 
+
+Off-path SS-PAN scan-branch control: final configuration 
+
+SS-PAN scan branches None 3.35 52.61 0.4969 –SS-PAN scan branches EMA [82] 3.46 53.28 0.5013 +0 .44 pp SS-PAN scan branches Selective scan (ours) 3.57 53.69 0.5078 +1.09 pp 
+
+Note: The three no-CGCM runs are 0.5048, 0.5004, and 0.4980 (mean 0.5011; standard deviation 0.34 pp). 
+
+Fig. 10. Effective Receptive Field (ERF) measured at the shared P3 detection feature (Stride 8). (A) The original YOLOv8s exhibits a PER of 0.147. (B) Removing P5 while introducing the P2 detection level concentrates the ERF near the center and reduces PER to 0.008. (C) ScopeMamba-S increases PER to 0.090 through the off-path context pathway, an 11 × expansion over the P2/ −P5 baseline and approximately 61% of the peripheral reach measured in the unpruned YOLOv8s. 
+
+7.93 pp of this gain by moving the detection scales toward higher spatial resolution. Starting from that reallocated base-line, the subsequent backbone, neck, and regression redesign— including AMS, CGCM, SS-PAN, and SA-DFL—adds a fur-ther 1.61 pp while reducing the parameter count by approx-imately 0.57M. The additional computational cost introduced by the high-resolution pathway and subsequent modules is reported directly in Table V and discussed component by component below. 
+
+1) Effect of HRR (Reallocate): Replacing the stride-32 P5 detection level with a stride-4 P2 level increases mAP 50 from 0.4124 to 0.4917, corresponding to a 7.93 pp gain, while reducing the parameter count from 11.14M to 4.14M. The higher-resolution feature maps, however, increase computation from 28.45 to 51.10 GFLOPs. HRR therefore provides the main accuracy gain in the cumulative trajectory, at the cost of substantially higher computation. 
+
+2) Effect of AMS-Block (Read): Adding the AMS-Block reduces the parameter count from 4.14M to 3.13M and 0246810 12      
+
+> Params (M)
+> Baseline (YOLOv8s) +HRR (P2/ P5)
+> +AMS +CGCM +SS-PAN +SA-DFL (ScopeMamba-S)
+> 0.40 0.42 0.44 0.46 0.48 0.50 0.52
+> mAP 50
+> 0.4124 0.4917 0.4910 0.4955 0.5018 0.5078
+> backbone redesign 0.84M / 4.12G / +0.38pp
+
+Fig. 11. Cumulative ablation trajectory on the VisDrone-2019 dataset (Small scale). The dual-axis design explicitly maps the correspondence between performance gains (left axis, mAP 50 ) and capacity reductions (right axis, Params in Millions) at each integration step. 14       
+
+> TABLE V CUMULATIVE ABLATION EXPERIMENT ON THE VIS DRONE -2019 D ATASET (S MALL SCALE ).
+> ∆INDICATES THE MARGINAL CHANGE RELATIVE TO THE PRECEDING STEP .
+
+Integration Step Params (M) ∆ Params GFLOPs ∆ GFLOPs mAP 50 ∆ mAP 50 
+
+1. Baseline (YOLOv8s) 11.14 - 28.45 - 0.4124 -2. + HRR (P2/ −P5) 4.14 −7.00 M 51.10 +22.65 G 0.4917 +0.0793 3. + AMS-Block 3.13 −1.01 M 46.54 −4.56 G 0.4910 −0.0007 4. + CGCM 3.30 +0.17 M 46.98 +0.44 G 0.4955 +0.0045 5. + SS-PAN 3.56 +0.26 M 49.43 +2.45 G 0.5018 +0.0063 
+
+6. + SA-DFL (ScopeMamba-S) 3.57 +0.01 M 53.69 +4.25 G 0.5078 +0.0060 
+
+GFLOPs from 51.10 to 46.54, while mAP 50 changes only from 0.4917 to 0.4910 ( −0.07 pp). To examine whether anisotropic kernel geometry contributes beyond the parameter reduction, we replace the strip kernels with isotropic square kernels of comparable receptive extent in the final configuration. This control reaches 0.4963 mAP 50 compared with 0.5078 for the anisotropic configuration, a difference of −1.15 pp at near-equal computational cost. The result supports the use of directional strip kernels in the adopted AMS configuration, while the associated parameter reduction helps offset the cost of the subsequent context modules. 
+
+3) Effect of SS-PAN (Reach): SS-PAN denotes the com-plete redesigned neck described in Section III-D, compris-ing DySample-based top-down fusion, directional P2 context injection, and bottom-up selective-scan fusion. In the cumu-lative ablation, introducing SS-PAN increases mAP 50 from 0.4955 to 0.5018, corresponding to a 0.63 pp gain for an additional 0.26M parameters. To isolate the role of selective scanning within the neck, we further remove only the bottom-up selective-scan branches from the final configuration. This reduces mAP 50 from 0.5078 to 0.4969, a 1.09 pp drop at the Small scale.       
+
+> TABLE VI SCALE -D EPENDENT CONTRIBUTION OF THE SELECTIVE -S CAN
+> BRANCHES WITHIN SS-PAN. A PERFORMANCE DROP (−∆)WHEN THE SCAN BRANCHES ARE REMOVED INDICATES THEIR CONTRIBUTION AT THAT SCALE .
+
+Scale Scan ON Scan OFF ∆ mAP 50 
+
+Nano 0.4394 0.4340 −0.0054 Small 0.5078 0.4969 −0.0109 Medium 0.5263 0.5236 −0.0027 
+
+To examine whether the contribution of the selective-scan branches within SS-PAN is specific to the Small variant, we additionally remove these branches from the Nano and Medium configurations. As shown in Table VI, their removal reduces mAP 50 by 0.54 pp, 1.09 pp, and 0.27 pp for the N, S, and M variants, respectively. The consistent direction of these changes indicates that the selective-scan component of SS-PAN contributes positively across the three evaluated scales, although the magnitude of the effect is scale dependent. 
+
+4) Effect of SA-DFL (Regress): The Scale-Adaptive Distri-bution Focal Loss (SA-DFL) head adds only 0.008M parame-ters and increases mAP 50 from 0.5018 to 0.5078, correspond-ing to a 0.60 pp gain in the cumulative ablation. Its main re-source cost is computational rather than parametric. We further compare different per-scale reg_max allocations at the Nano scale in Fig. 12; among the tested configurations, the scale-adaptive allocation achieves the highest mAP 50 . Since the regression-branch width scales with 4Ki (Eq. 13), changing the per-scale bin allocation also reallocates regression capacity across feature levels. We therefore interpret the observed gain as the effect of the joint scale-adaptive regression design rather than as evidence for finer bin spacing alone. 0.39 0.40 0.41 0.42 0.43 0.44 mAP 50 (VisDrone, Nano) [16,8,6] [12,8,6] [16,10,6] [16,12,8] SA-DFL reg_max [P2,P3,P4]  0.4006 0.4126 0.4350    
+
+> 0.4394 (chosen)
+> Clean single-variable: [16,12,8] vs [16,10,6] (+0.44 pp). [12,8,6]/[16,8,6] carry minor confounds.
+> Fig. 12. Sensitivity analysis of the reg_max bin allocation in the SA-DFL head evaluated at the Nano scale. Note that the x-axis starting point is set to 0.39 to distinctly highlight the fine-grained accuracy differences between structural configurations.
+
+Additional in-house regression-head and loss variants were also evaluated during development, including alternative quality-branch designs and NWD [21]. None provided a con-sistent improvement over the adopted SA-DFL configuration in the tested settings. These exploratory controls are therefore used as supporting negative results rather than as evidence that the adopted regression formulation is globally optimal. 
+
+E. Leave-One-Out (LOO) Analysis and Robustness 
+
+To characterize the run-to-run variation of the CGCM control, we train the final configuration without CGCM using three random seeds. The three runs obtain mAP 50 values of 0.5048, 0.5004, and 0.4980, yielding a mean of 0.5011 and a standard deviation of 0.34 pp. The complete ScopeMamba-S reaches 0.5078, which is 0.67 pp above this mean and also above the highest value observed among the three control runs. 15 
+
+This multi-seed comparison and the cumulative ablation quantify different effects. In Table V, adding CGCM at Step 4 increases a single-run trajectory from 0.4910 to 0.4955, corre-sponding to +0 .45 pp. In the final configuration, the compar-ison against the three-seed no-CGCM mean gives +0 .67 pp. We therefore use +0 .45 pp when describing the cumulative integration trajectory and +0 .67 pp when discussing the final-configuration CGCM control. Because multi-seed variance is measured only for the no-CGCM control, the observed σ = 0.34 pp is used as an empirical reference for run-to-run variation rather than as a formal significance estimate for all other architectural variants. Accordingly, comparisons such as SS-PAN removal, in-path insertion, and isotropic-kernel substitution are reported directly in percentage points rather than converted into cross-variant σ
+
+multiples. 
+
+F. Discussion on Negative Results 
+
+For completeness, we report several representative config-urations that did not improve the final model. These controls help delimit the design choices supported by the experiments. 
+
+Placement and Dimensional Constraints. Directly em-bedding selective scanning in the main backbone path re-duces mAP 50 by 0.98 pp in the matched early-stage control (Section IV-C). At the Nano scale, halving the scan width in the neck reaches 0.4289 mAP 50 , compared with 0.4326 when the branch is removed entirely, while also using more parameters. Thus, the tested tapered configuration provides no improvement in either accuracy or parameter efficiency and does not offer a better trade-off than the adopted configuration. 
+
+Operator Substitution. At the backbone node, replacing the selective scan with a cost-matched convolution produces 0.5015 mAP 50 , close to the three-seed no-branch mean of 0.5011, while EMA reaches 0.4979. At the neck node, EMA reaches 0.5013 compared with 0.5078 for selective scanning. Among the operators tested at these nodes, selective scanning therefore provides the strongest and most consistent improve-ment, supporting its use for long-range contextual modeling in the proposed off-path formulation. 
+
+Quality-Branch Stacking. Under the final flagship con-figuration with only the detection head swapped, we eval-uated in-house quality-branch designs based on directional decomposition and cross-scale alignment, reaching 0.4987 and 0.4983, respectively—both approximately 0.9 pp below the SA-DFL configuration (0.5078). Additional variants ex-plored during development (foreground-guided sparsity, edge-auxiliary supervision, and asymmetric heads) were likewise not carried forward. These results suggest that, under the tested configurations, the joint scale-adaptive regression design is more effective than adding score–quality alignment branches. 
+
+Loss Shaping. Similarly, layering specialized localization losses (e.g., Inner-IoU or degenerate-box variants) on top of the flagship SA-DFL configuration reduces mAP 50 to 0.4980 and 0.4973, respectively, both more than 0.9 pp below the flagship result of 0.5078. In a separate matched pairing, NWD yields a marginal +0 .04 pp change in mAP 50 while reducing mAP 50 −95 by 0.31 pp, indicating a metric trade-off rather than a consistent localization improvement. These results do not support adding the tested loss-shaping variants to the final SA-DFL configuration. 
+
+Capacity Reallocation Controls. Finally, reallocating pa-rameter budgets toward network depth rather than CGCM-based context injection did not improve performance ( −0.43 
+
+pp at the Small scale), suggesting that additional depth does not provide the same benefit as the proposed context pathway. A related spatial control replaces the anisotropic strip kernels of AMS with isotropic square kernels of equivalent receptive field (Sec. IV-D). This substitution results in a 1.15 pp drop in accuracy, indicating that directional selectivity is a more effective design factor than raw kernel extent in this control. 
+
+Summary. Taken together, these negative results favor the adopted off-path selective-scanning formulation, scale-adaptive distributional regression, and anisotropic feature ex-traction over the tested alternatives, including direct main-path insertion, auxiliary quality branches, additional loss shaping, and increased network depth. 
+
+G. Qualitative Analysis 
+
+To qualitatively compare the two complete detectors, Fig. 13 presents representative VisDrone-2019 validation scenes con-taining dense, occluded, and low-illumination tiny objects. In the highlighted regions, ScopeMamba-S detects more anno-tated pedestrians and vehicles than the YOLOv8s baseline, including several examples missed under dense crowding, weak local appearance cues, and low-light conditions. These complete-model observations are consistent with the quan-titative results; module-wise effects are evaluated separately through the controlled experiments in Sections IV-D and IV-C. V. C ONCLUSION 
+
+This article investigates small-object detection in UAV and remote sensing imagery as a trade-off between preserving high-resolution object evidence and maintaining sufficiently broad contextual support. ScopeMamba-YOLO addresses this trade-off through off-path, zero-gated selective scanning, in-stantiated by CGCM in the backbone and selective-scan fusion in SS-PAN, while preserving the fine-grained convolutional stream. The AMS Block reduces the cost of high-resolution feature extraction, and SA-DFL reallocates distributional sup-port and regression capacity across detection scales. Controlled experiments support the proposed integration strategy: direct main-path selective scanning can be detrimen-tal under a matched setting, whereas the off-path formulation provides positive gains that are not reproduced by cost-matched auxiliary branches. ERF analysis further shows that the proposed context pathway increases the peripheral energy ratio from 0.008 to 0.090 at the stride-8 feature, corresponding to an approximately 11 × expansion over the P2/ −P5 baseline. Across VisDrone-2019 and AI-TOD, the four ScopeMamba variants achieve favorable accuracy–parameter trade-offs, with particularly clear improvements for very-tiny and tiny ob-jects; ScopeMamba-M reaches the accuracy level of HEdge-MamYOLO with less than one-third of its parameters. 16 
+
+Fig. 13. Qualitative comparison on the VisDrone-2019 dataset. (a) Original images with the region of interest (ROI) highlighted by a red dashed box. (b) Ground-truth annotations. (c) Detection results of YOLOv8s. (d) Detection results of ScopeMamba-S. Yellow dashed circles mark representative annotated targets missed by YOLOv8s but detected by ScopeMamba-S under dense, occluded, or low-illumination conditions. 
+
+The remaining limitations mainly concern computation and generalization. The stride-4 pathway and native-resolution selective scanning in SS-PAN retain non-negligible computa-tional cost, while the present evaluation is limited to 640 ×640 
+
+inputs without pretraining and to YOLO-style detection. Fu-ture work will therefore focus on reducing context-pathway latency and examining the proposed integration strategy under higher-resolution, pretrained, oriented, and multi-modal detec-tion settings. REFERENCES [1] G. Cheng and J. Han, “A survey on object detection in optical remote sensing images,” ISPRS J. Photogramm. Remote Sens. , vol. 117, pp. 11–28, 2016. [2] K. Li, G. Wan, G. Cheng, L. Meng, and J. Han, “Object detection in optical remote sensing images: A survey and a new benchmark,” ISPRS J. Photogramm. Remote Sens. , vol. 159, pp. 296–307, 2020. [3] G.-S. Xia, X. Bai, J. Ding, Z. Zhu, S. Belongie, J. Luo, M. Datcu, M. Pelillo, and L. Zhang, “DOTA: A large-scale dataset for object detection in aerial images,” in Proc. IEEE/CVF Conf. Comput. Vis. Pattern Recognit. (CVPR) , 2018, pp. 3974–3983. [4] S. Ren, K. He, R. Girshick, and J. Sun, “Faster R-CNN: Towards real-time object detection with region proposal networks,” IEEE Trans. Pattern Anal. Mach. Intell. , vol. 39, no. 6, pp. 1137–1149, 2017. [5] K. He, G. Gkioxari, P. Doll´ ar, and R. Girshick, “Mask R-CNN,” in Proc. IEEE Int. Conf. Comput. Vis. (ICCV) , 2017, pp. 2961–2969. [6] W. Liu, D. Anguelov, D. Erhan, C. Szegedy, S. Reed, C.-Y. Fu, and A. C. Berg, “SSD: Single shot multibox detector,” in Proc. Eur. Conf. Comput. Vis. (ECCV) , 2016, pp. 21–37. [7] T.-Y. Lin, P. Goyal, R. Girshick, K. He, and P. Doll´ ar, “Focal loss for dense object detection,” in Proc. IEEE Int. Conf. Comput. Vis. (ICCV) ,17 
+
+2017, pp. 2980–2988. [8] Z. Tian, C. Shen, H. Chen, and T. He, “FCOS: Fully convolutional one-stage object detection,” in Proc. IEEE/CVF Int. Conf. Comput. Vis. (ICCV) , 2019, pp. 9627–9636. [9] J. Redmon, S. Divvala, R. Girshick, and A. Farhadi, “You only look once: Unified, real-time object detection,” in Proc. IEEE Conf. Comput. Vis. Pattern Recognit. (CVPR) , 2016, pp. 779–788. [10] T.-Y. Lin, M. Maire, S. Belongie, J. Hays, P. Perona, D. Ramanan, P. Doll´ ar, and C. L. Zitnick, “Microsoft COCO: Common objects in context,” in Proc. Eur. Conf. Comput. Vis. (ECCV) , 2014, pp. 740–755. [11] G. Cheng, X. Yuan, X. Yao, K. Yan, Q. Zeng, X. Xie, and J. Han, “Towards large-scale small object detection: Survey and benchmarks,” 
+
+IEEE Trans. Pattern Anal. Mach. Intell. , vol. 45, no. 11, pp. 13 467– 13 488, 2023. [12] J. Wang, W. Yang, H. Guo, R. Zhang, and G.-S. Xia, “Tiny object detection in aerial images,” in 2020 25th International Conference on Pattern Recognition (ICPR) . IEEE, 2021, pp. 3791–3798. [13] P. Zhu, L. Wen, D. Du, X. Bian, H. Fan, Q. Hu, and H. Ling, “Detection and tracking meet drones challenge,” IEEE Trans. Pattern Anal. Mach. Intell. , vol. 44, no. 11, pp. 7380–7399, 2022. [14] T.-Y. Lin, P. Doll´ ar, R. Girshick, K. He, B. Hariharan, and S. Belongie, “Feature pyramid networks for object detection,” in Proc. IEEE Conf. Comput. Vis. Pattern Recognit. (CVPR) , 2017, pp. 2117–2125. [15] J. Sun, Y. Guo, X. Zhi, X. Wu, J. Wang, Z. Xu, B. Pu, and Z. Gao, “WE-YOLO: Wavelet enhanced YOLO for small object detection in optical aerial remote sensing images,” IEEE Journal of Selected Topics in Applied Earth Observations and Remote Sensing , vol. 19, pp. 12 538– 12 554, 2026. [16] Y. Zhang, M. Ye, G. Zhu, Y. Liu, P. Guo, and J. Yan, “FFCA-YOLO for small object detection in remote sensing images,” IEEE Trans. Geosci. Remote Sens. , vol. 62, pp. 1–15, 2024. [17] K. Liu, Z. Fu, S. Jin, Z. Chen, F. Zhou, R. Jiang, Y. Chen, and J. Ye, “ESOD: Efficient small object detection on high-resolution images,” 
+
+IEEE Transactions on Image Processing , vol. 34, pp. 183–195, 2025. [18] S. Liu, L. Qi, H. Qin, J. Shi, and J. Jia, “Path aggregation network for instance segmentation,” in Proc. IEEE/CVF Conf. Comput. Vis. Pattern Recognit. (CVPR) , 2018, pp. 8759–8768. [19] M. Tan, R. Pang, and Q. V. Le, “EfficientDet: Scalable and efficient ob-ject detection,” in Proc. IEEE/CVF Conf. Comput. Vis. Pattern Recognit. (CVPR) , 2020, pp. 10 781–10 790. [20] F. C. Aky¨ on, S. O. Altinuc, and A. Temizel, “Slicing aided hyper inference and fine-tuning for small object detection,” in Proc. IEEE Int. Conf. Image Process. (ICIP) , 2022, pp. 966–970. [21] C. Xu, J. Wang, W. Yang, H. Yu, L. Yu, and G.-S. Xia, “Detecting tiny objects in aerial images: A normalized wasserstein distance and a new benchmark,” ISPRS J. Photogramm. Remote Sens. , vol. 190, pp. 79–93, 2022. [22] ——, “RFLA: Gaussian receptive field based label assignment for tiny object detection,” in Proc. Eur. Conf. Comput. Vis. (ECCV) , 2022, pp. 526–543. [23] X. Zhu, S. Lyu, X. Wang, and Q. Zhao, “TPH-YOLOv5: Improved YOLOv5 based on transformer prediction head for object detection on drone-captured scenarios,” in Proc. IEEE/CVF Int. Conf. Comput. Vis. Workshops (ICCVW) , 2021, pp. 2778–2788. [24] Q. Hua, H. Xu, F. Zhang, C. Dong, B. H. Lim, and Y. Zhang, “SFBF-YOLO for small object detection in UAV and remote sensing images,” 
+
+IEEE Transactions on Geoscience and Remote Sensing , vol. 64, pp. 1– 15, 2026, art. no. 5624215. [25] X. Zheng, J. Bi, K. Li, G. Zhang, and P. Jiang, “SMN-YOLO: Lightweight YOLOv8-based model for small object detection in remote sensing images,” IEEE Geoscience and Remote Sensing Letters , vol. 22, pp. 1–5, 2025, art. no. 8001305. [26] F. Yang, H. Fan, P. Chu, E. Blasch, and H. Ling, “Clustered object detection in aerial images,” in Proc. IEEE/CVF Int. Conf. Comput. Vis. (ICCV) , 2019, pp. 8311–8320. [27] C. Li, T. Yang, S. Zhu, C. Chen, and S. Guan, “Density map guided object detection in aerial images,” in Proc. IEEE/CVF Conf. Comput. Vis. Pattern Recognit. Workshops (CVPRW) , 2020, pp. 190–191. [28] Y. Huang, J. Chen, and D. Huang, “UFPMP-Det: Toward accurate and efficient object detection on drone imagery,” in Proc. AAAI Conf. Artif. Intell. , 2022, pp. 1026–1033. [29] J. Hu, L. Shen, and G. Sun, “Squeeze-and-excitation networks,” in Proc. IEEE/CVF Conf. Comput. Vis. Pattern Recognit. (CVPR) , 2018, pp. 7132–7141. [30] S. Woo, J. Park, J.-Y. Lee, and I. S. Kweon, “CBAM: Convolutional block attention module,” in Proc. Eur. Conf. Comput. Vis. (ECCV) , 2018, pp. 3–19. [31] Y. Li, Q. Hou, Z. Zheng, M.-M. Cheng, J. Yang, and X. Li, “Large selective kernel network for remote sensing object detection,” in Proc. IEEE/CVF Int. Conf. Comput. Vis. (ICCV) , 2023, pp. 16 794–16 805. [32] X. Cai, Q. Lai, Y. Wang, W. Wang, Z. Sun, and Y. Yao, “Poly kernel inception network for remote sensing detection,” in Proc. IEEE/CVF Conf. Comput. Vis. Pattern Recognit. (CVPR) , 2024, pp. 27 706–27 716. [33] A. Vaswani, N. Shazeer, N. Parmar, J. Uszkoreit, L. Jones, A. N. Gomez, Ł. Kaiser, and I. Polosukhin, “Attention is all you need,” in Proc. Adv. Neural Inf. Process. Syst. (NeurIPS) , 2017, pp. 5998–6008. [34] A. Gu, K. Goel, and C. R´ e, “Efficiently modeling long sequences with structured state spaces,” in Proc. Int. Conf. Learn. Represent. (ICLR) ,2022. [35] A. Gu and T. Dao, “Mamba: Linear-time sequence modeling with selective state spaces,” in First Conference on Language Modeling (COLM) . OpenReview.net, 2024. [36] T. Dao and A. Gu, “Transformers are SSMs: Generalized models and efficient algorithms through structured state space duality,” in Proc. Int. Conf. Mach. Learn. (ICML) , 2024. [37] L. Zhu, B. Liao, Q. Zhang, X. Wang, W. Liu, and X. Wang, “Vision mamba: Efficient visual representation learning with bidirectional state space model,” in Proc. Int. Conf. Mach. Learn. (ICML) , 2024. [38] Y. Liu, Y. Tian, Y. Zhao, H. Yu, L. Xie, Y. Wang, Q. Ye, and Y. Liu, “VMamba: Visual state space model,” in Proc. Adv. Neural Inf. Process. Syst. (NeurIPS) , 2024. [39] K. Chen, B. Chen, C. Liu, W. Li, Z. Zou, and Z. Shi, “RSMamba: Remote sensing image classification with state space model,” IEEE Geosci. Remote Sens. Lett. , vol. 21, pp. 1–5, 2024. [40] S. Zhao, H. Chen, X. Zhang, P. Xiao, L. Bai, and W. Ouyang, “RS-Mamba for large remote sensing image dense prediction,” IEEE Trans. Geosci. Remote Sens. , vol. 62, pp. 1–14, 2024. [41] H. Chen, J. Song, C. Han, J. Xia, and N. Yokoya, “ChangeMamba: Re-mote sensing change detection with spatiotemporal state space model,” 
+
+IEEE Trans. Geosci. Remote Sens. , vol. 62, pp. 1–20, 2024. [42] Z. Wang, C. Li, H. Xu, X. Zhu, and H. Li, “Mamba YOLO: A simple baseline for object detection with state space model,” in Proceedings of the AAAI Conference on Artificial Intelligence , vol. 39, no. 8, 2025, pp. 8205–8213. [43] S. Wu, X. Lu, C. Guo, and H. Guo, “MV-YOLO: An efficient small object detection framework based on mamba,” IEEE Transactions on Geoscience and Remote Sensing , vol. 63, pp. 1–14, 2025, art. no. 5632814. [44] C. Wang, Z. Cao, J. Wang, Y. Jiang, M. Deng, L. Bu, and G. Deng, “HEdge-MamYOLO: High-frequency edge information-facilitated cross-domain feature interaction mamba for drone images small-object detection,” IEEE Transactions on Geoscience and Remote Sensing , vol. 64, pp. 1–16, 2026, art. no. 5619216. [45] Q. Rong, H. Jing, and M. Zhang, “Scale sensitivity mamba network for object detection in remote sensing images,” IEEE Sensors Journal ,vol. 25, no. 23, pp. 43 339–43 351, 2025. [46] Y. Feng, S. Jing, Y. Zhao, H. Lv, Y. Zhang, and M. Sun, “MVMamba: A multiscale vision mamba based on state-space duality for remote sensing object detection,” IEEE Geoscience and Remote Sensing Letters , vol. 23, pp. 1–5, 2026, art. no. 6001205. [47] C. Jiang, R. Zhang, Y. Liu, Y. Xie, Y. Xu, Y. Li, and Y. Gong, “LGHVSS-Mamba YOLO: High-precision small object detection via dynamic state space modeling and multi-scale feature optimizing in complex scenarios,” Digital Signal Processing , vol. 176, p. 106086, 2026. [48] Y. Shi, M. Dong, and C. Xu, “Multi-scale VMamba: Hierarchy in hierarchy visual state space model,” in Advances in Neural Information Processing Systems , vol. 37, 2024, pp. 25 687–25 708. [49] F. Xie, W. Zhang, Z. Wang, and C. Ma, “QuadMamba: Learning quadtree-based selective scan for visual state space model,” in Advances in Neural Information Processing Systems , vol. 37, 2024, pp. 117 682– 117 707. [50] C. Yang, Z. Huang, and N. Wang, “QueryDet: Cascaded sparse query for accelerating high-resolution small object detection,” in Proc. IEEE/CVF Conf. Comput. Vis. Pattern Recognit. (CVPR) , 2022, pp. 13 668–13 677. [51] T. Hou, C. Leng, J. Wang, Z. Pei, J. Peng, I. Cheng, and A. Basu, “MFEL-YOLO for small object detection in UAV aerial images,” Expert Systems with Applications , vol. 291, p. 128459, 2025. [52] A. Dosovitskiy, L. Beyer, A. Kolesnikov, D. Weissenborn, X. Zhai, T. Unterthiner, M. Dehghani, M. Minderer, G. Heigold, S. Gelly, J. Uszkoreit, and N. Houlsby, “An image is worth 16 ×16 words: Transformers for image recognition at scale,” in Proc. Int. Conf. Learn. Represent. (ICLR) , 2021. 18 
+
+[53] Z. Liu, Y. Lin, Y. Cao, H. Hu, Y. Wei, Z. Zhang, S. Lin, and B. Guo, “Swin transformer: Hierarchical vision transformer using shifted windows,” in Proc. IEEE/CVF Int. Conf. Comput. Vis. (ICCV) , 2021, pp. 10 012–10 022. [54] N. Carion, F. Massa, G. Synnaeve, N. Usunier, A. Kirillov, and S. Zagoruyko, “End-to-end object detection with transformers,” in Proc. Eur. Conf. Comput. Vis. (ECCV) , 2020, pp. 213–229. [55] X. Zhu, W. Su, L. Lu, B. Li, X. Wang, and J. Dai, “Deformable DETR: Deformable transformers for end-to-end object detection,” in Proc. Int. Conf. Learn. Represent. (ICLR) , 2021. [56] Y. Zhao, W. Lv, S. Xu, J. Wei, G. Wang, Q. Dang, Y. Liu, and J. Chen, “DETRs beat YOLOs on real-time object detection,” in Proc. IEEE/CVF Conf. Comput. Vis. Pattern Recognit. (CVPR) , 2024, pp. 16 965–16 974. [57] X. He, K. Cao, K. Yan, R. Li, C. Xie, J. Zhang, and M. Zhou, “Pan-mamba: Effective pan-sharpening with state space model,” Inf. Fusion ,vol. 115, p. 102779, 2025. [58] T. Chen, Z. Ye, Z. Tan, T. Gong, Y. Wu, Q. Chu, B. Liu, N. Yu, and J. Ye, “MiM-ISTD: Mamba-in-mamba for efficient infrared small target detection,” IEEE Trans. Geosci. Remote Sens. , vol. 62, pp. 1–13, 2024. [59] Y. Sun, X. Hu, F. Wang, X. Wu, Y. Zhou, J. Zhao, and R. Zhu, “SODMAMBA-DETR: A small object DETR detector based on amamba encoder,” in 2025 IEEE International Conference on Multimedia and Expo (ICME) , 2025, pp. 1–6. [60] Y. Liu, Y. Ji, Q. Ren, B. Shi, N. Liu, M. Lu, and N. Wu, “An innovative small-target detection approach against information attenuation: Fusing enhanced programmable gradient information and a novel mamba mod-ule,” Sensors , vol. 25, no. 7, p. 2117, 2025. [61] F. Yao, Q. Sun, Y. Ding, B. Xiao, and T. Liu, “LEM-YOLO: Locality-enhanced mamba-YOLO algorithm for ship detection in remote sensing imagery,” in 2025 IEEE 3rd International Conference on Computer, Vision and Intelligent Technology (ICCVIT) , 2025. [62] A. Wang, H. Chen, L. Liu, K. Chen, Z. Lin, J. Han, and G. Ding, “YOLOv10: Real-time end-to-end object detection,” in Proc. Adv. Neu-ral Inf. Process. Syst. (NeurIPS) , 2024. [63] W. Liu, H. Lu, H. Fu, and Z. Cao, “Learning to upsample by learning to sample,” in Proceedings of the IEEE/CVF International Conference on Computer Vision (ICCV) , 2023, pp. 6027–6037. [64] X. Li, W. Wang, L. Wu, S. Chen, X. Hu, J. Li, J. Tang, and J. Yang, “Generalized focal loss: Learning qualified and distributed bounding boxes for dense object detection,” in Advances in Neural Information Processing Systems , vol. 33, 2020, pp. 21 002–21 012. [65] G. Jocher, A. Chaurasia, and J. Qiu, “Ultralytics YOLOv8,” https: //github.com/ultralytics/ultralytics, 2023. [66] R. Khanam and M. Hussain, “YOLOv11: An overview of the key architectural enhancements,” arXiv preprint arXiv:2410.17725 , 2024. [67] W. Yang, Q. He, and Z. Li, “A lightweight multidimensional feature network for small object detection on UAVs,” Pattern Analysis and Applications , vol. 28, no. 1, p. 29, 2025. [68] Z. Wang, Y. Su, F. Kang, L. Wang, Y. Lin, Q. Wu, H. Li, and Z. Cai, “PC-YOLO11s: A lightweight and effective feature extraction method for small target image detection,” Sensors , vol. 25, no. 2, p. 348, 2025. [69] G. Wang, Y. Chen, P. An, H. Hong, J. Hu, and T. Huang, “UAVYOLOv8: A small-object-detection model based on improved YOLOv8 for UAV aerial photography scenarios,” Sensors , vol. 23, no. 16, p. 7190, 2023. [70] X. Qiu, Y. Chen, C. Sun, J. Li, and M. Niu, “DMFF-YOLO: YOLOv8 based on dynamic multiscale feature fusion for object detection on UAV aerial photography,” IEEE Access , vol. 12, pp. 125 160–125 169, 2024. [71] J. Sui, D. Chen, X. Zheng, and H. Wang, “A new algorithm for small target detection from the perspective of unmanned aerial vehicles,” IEEE Access , vol. 12, pp. 29 690–29 697, 2024. [72] Y. Li, Q. Li, J. Pan, Y. Zhou, H. Zhu, H. Wei, and C. Liu, “SOD-YOLO: Small-object-detection algorithm based on improved YOLOv8 for UAV images,” Remote Sensing , vol. 16, no. 16, p. 3057, 2024. [73] N. U. A. Tahir, Z. Long, Z. Zhang, M. Asim, and M. Elaffendi, “PVswin-YOLOv8s: UAV-based pedestrian and vehicle detection for traffic management in smart cities using improved YOLOv8,” Drones ,vol. 8, no. 3, p. 84, 2024. [74] W. Wang, Y. Liu, Z. Cui, L. Shan, B.-C. Zheng, Z. Wei, X. Zhang, and S. Yamane, “Drone detr: Enhancing real-time detection transformer for drone small object imagery,” The Journal of Supercomputing , vol. 81, no. 16, p. 1564, 2025. [75] C.-Y. Wang, I.-H. Yeh, and H.-Y. M. Liao, “YOLOv9: Learning what you want to learn using programmable gradient information,” in Proc. Eur. Conf. Comput. Vis. (ECCV) , 2024, pp. 1–21. [76] X. Liu, G. Zhang, and B. Zhou, “An efficient feature aggregation network for small object detection in uav aerial images,” The Journal of Supercomputing , vol. 81, no. 4, p. 548, 2025. [77] L. Min, Z. Fan, Q. Lv, M. Reda, L. Shen, and B. Wang, “YOLO-DCTI: Small object detection in remote sensing base on contextual transformer enhancement,” Remote Sensing , vol. 15, no. 16, p. 3970, 2023. [78] C. Li, R. Zhao, Z. Wang, H. Xu, and X. Zhu, “RemDet: Rethinking efficient model design for UAV object detection,” in Proceedings of the AAAI Conference on Artificial Intelligence , vol. 39, no. 5, 2025, pp. 4643–4651. [79] B. Du, Y. Huang, J. Chen, and D. Huang, “Adaptive sparse convolutional networks with global context enhancement for faster object detection on drone images,” in Proc. IEEE/CVF Conf. Comput. Vis. Pattern Recognit. (CVPR) , 2023, pp. 13 435–13 444. [80] A. He, X. Li, X. Wu, C. Su, J. Chen, S. Xu, and X. Guo, “ALSS-YOLO: An adaptive lightweight channel split and shuffling network for TIR wildlife detection in UAV imagery,” IEEE Journal of Selected Topics in Applied Earth Observations and Remote Sensing , vol. 17, pp. 17 308–17 326, 2024. [81] Z. Yang, Q. Guan, K. Zhao, J. Yang, X. Xu, H. Long, and Y. Tang, “Multi-branch auxiliary fusion YOLO with re-parameterization hetero-geneous convolutional for accurate object detection,” in Pattern Recog-nition and Computer Vision , ser. Lecture Notes in Computer Science, vol. 15042. Springer, 2024, pp. 492–505. [82] D. Ouyang, S. He, G. Zhang, M. Luo, H. Guo, J. Zhan, and Z. Huang, “Efficient multi-scale attention module with cross-spatial learning,” in 
+
+ICASSP 2023 - 2023 IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP) . IEEE, 2023, pp. 1–5.
