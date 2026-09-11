@@ -1,0 +1,644 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-09-11T21:19:37.626660+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 8,
+    "deep_cap": 6,
+    "deep_selected": 6,
+    "quick_candidates": 10,
+    "quick_skim_target": 11,
+    "quick_selected": 10
+  },
+  "deep_dive": [
+    {
+      "id": "2609.06491v1",
+      "source": "arxiv",
+      "title": "Diffuse2Seg: Diffusion Models Can Segment Anything Without Supervision",
+      "abstract": "Open-world entity segmentation aims to predict masks for arbitrary objects across domains and at multiple granularities, from parts to whole objects. In this setting, SAM sets a strong standard: trained on SA-1B, comprising 11M images and over 1B carefully annotated masks, it achieves remarkable zero-shot performance. Collecting such labels is expensive and time-consuming, however, which limits how far this recipe can scale. Text-to-image diffusion models offer a way around this. Their intermediate features transfer well across perception tasks, and since object structure emerges as the model denoises a noise sample into an image conditioned on a text prompt, that structure is already encoded in these representations. They can therefore be exploited for open-world entity segmentation without retraining or supervision. Building on this observation, we introduce Diffuse2Seg, which repurposes generative diffusion models for automatic mask generation by propagating a grid of point prompts through their self-attention representations in an edge-preserving manner. Diffuse2Seg produces multi-granular instance masks and outperforms prior state-of-the-art label generators by 4.3-7.1 p.p. in AR_1000 across five domains. Training an instance segmentation model on these generated masks advances detector-free open-world segmentation by 7.4 and 7.7 p.p. on \"things\" and \"stuff+things\" datasets and surpasses the detector-based UnSAM on \"stuff+things\" by 2.1 p.p. in AR_1000. Finally, we show that a model trained on Diffuse2Seg labels provides a strong initialization for semi-supervised learning, outperforming its fully supervised counterpart with already 5k labeled images.",
+      "authors": [
+        "Christoph Hümmer",
+        "Joachim Sicking",
+        "Fabian Hüger",
+        "Hanno Gottschalk"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-06T09:07:02+00:00",
+      "link": "https://arxiv.org/pdf/2609.06491v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "diffusion models enable unsupervised open-world entity segmentation",
+      "llm_evidence_cn": "扩散模型实现无监督开放世界实体分割",
+      "llm_evidence": "扩散模型实现无监督开放世界实体分割",
+      "canonical_evidence": "扩散模型实现无监督开放世界实体分割",
+      "llm_tldr_en": "Diffuse2Seg exploits intermediate features of text-to-image diffusion models, where object structure emerges during denoising, to perform open-world entity segmentation without supervision, avoiding SAM's costly mask annotation.",
+      "llm_tldr_cn": "开放世界实体分割需跨域、多粒度预测任意物体掩码，SAM依赖SA-1B大规模标注，成本高昂且难以扩展。本文提出Diffuse2Seg，利用文本到图像扩散模型的中间特征，因物体结构在去噪生成过程中自然涌现而被编码其中，从而无需监督即可分割任意物体。方法在开放世界分割上展现强零样本能力，为摆脱昂贵标注的分割范式提供新路径。",
+      "llm_tldr": "开放世界实体分割需跨域、多粒度预测任意物体掩码，SAM依赖SA-1B大规模标注，成本高昂且难以扩展。本文提出Diffuse2Seg，利用文本到图像扩散模型的中间特征，因物体结构在去噪生成过程中自然涌现而被编码其中，从而无需监督即可分割任意物体。方法在开放世界分割上展现强零样本能力，为摆脱昂贵标注的分割范式提供新路径。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "image segmentation techniques",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2609.11310v1",
+      "source": "arxiv",
+      "title": "Your Model Already Knows Don't Teach It, Learn to Ask It: Soft Prompting for Few-Shot Adaptation of Vision-Language Models",
+      "abstract": "We address few-shot object detection with vision-language models (VLMs) in out-of-domain settings such as aerial, industrial, and medical imagery, using only ten annotated images for supervision. Existing adaptation methods are discrete prompt optimization and LoRA fine-tuning. We revisit a third option: soft prompting, where a small number of continuous prompt tokens are optimized while the pretrained backbone remains frozen.   We identify two key design choices. First, placing prompt tokens at the cross-modal boundary between visual and text tokens outperforms other placements (10.0 vs. 8.4 mAP). Second, initializing prompts from the empty space token outperforms semantic and random initialization.   With these choices, one to three learned tokens (7,168 parameters on average) match the best LoRA configuration on Roboflow20-VL (14.2 mAP, 10-shot) while training over 20,000x fewer parameters. Soft prompting remains harder to optimize, exhibiting higher variance across random seeds. Unlike LoRA, however, it causes no forgetting: the LoRA rank matching our accuracy reduces NaturalBench VQA accuracy by 35% relative, rising to 56% at the largest rank, whereas soft prompting leaves pretrained performance unchanged.   The learned tokens behave like prompts rather than weights. They transfer to a newer model without retraining (+0.8 mAP on Qwen3.5-9B) and can be verbalized into readable prompts competitive with prompt-search methods (matching DetPO and outperforming GEPA).   The approach also extends beyond detection. On RoboCasa manipulation tasks, the frozen $π_{0.5}$ vision-language-action policy benefits from soft prompting, matching the LoRA baseline on two of three tasks when tokens are placed at the gradient bottleneck. These results suggest modern VLMs already encode much of what is needed for specialized domains; the challenge is learning how to ask.",
+      "authors": [
+        "Gautam Rajendrakumar Gare",
+        "Siyi Li",
+        "Hewei Wang",
+        "Cesar Daniel Hernandez",
+        "Wei Zhao",
+        "Wolfgang M. Pauli",
+        "John Galeotti",
+        "Deva Ramanan"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI",
+        "cs.LG",
+        "eess.IV",
+        "stat.ML"
+      ],
+      "published": "2026-09-10T09:38:11+00:00",
+      "link": "https://arxiv.org/pdf/2609.11310v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "few-shot object detection with vision-language models",
+      "llm_evidence_cn": "视觉语言模型的少样本目标检测",
+      "llm_evidence": "视觉语言模型的少样本目标检测",
+      "canonical_evidence": "视觉语言模型的少样本目标检测",
+      "llm_tldr_en": "This paper revisits soft prompting for few-shot object detection with VLMs, placing prompt tokens at the cross-modal boundary and initializing from the empty-space token to reach 10.0 mAP.",
+      "llm_tldr_cn": "在航空、工业与医学等域外场景中，少样本目标检测仅有十张标注图像可用，现有适配方法多为离散提示优化与LoRA微调。本文重新审视第三种选择即软提示，冻结预训练骨干，仅优化少量连续提示令牌，并系统研究提示位置与初始化策略。实验发现把提示令牌置于视觉与文本令牌的跨模态边界处、并以空空间令牌初始化效果最佳，mAP从8.4提升至10.0。其意义在于为视觉语言模型的少样本域外适配提供了轻量有效的方案。",
+      "llm_tldr": "在航空、工业与医学等域外场景中，少样本目标检测仅有十张标注图像可用，现有适配方法多为离散提示优化与LoRA微调。本文重新审视第三种选择即软提示，冻结预训练骨干，仅优化少量连续提示令牌，并系统研究提示位置与初始化策略。实验发现把提示令牌置于视觉与文本令牌的跨模态边界处、并以空空间令牌初始化效果最佳，mAP从8.4提升至10.0。其意义在于为视觉语言模型的少样本域外适配提供了轻量有效的方案。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "object detection methods",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2609.03829v2",
+      "source": "arxiv",
+      "title": "Phase-Aware Spatial-Frequency Fusion for Few-Shot Fine-Grained Image Classification",
+      "abstract": "Few-shot fine-grained image classification (FSFGIC) aims to classify similar images with limited labeled examples. This work highlights the critical yet underutilized role of phase information in capturing structural relationships within an image. This study introduces a novel plug-and-play amplitude-phase integration (API) module that effectively combines local and global frequency amplitude and phase information for obtaining more comprehensive feature descriptors. Additionally, a dedicated network, named PSF-Net, is proposed that adaptively fuses phase-based spatial and frequency information for FSFGIS. The designed PSF-Net can be easily integrated into standard episodic training architectures for end-to-end training from scratch. Extensive experiments on five public datasets demonstrate that the method outperforms existing state-of-the-art benchmarks.",
+      "authors": [
+        "Ruiling Liu",
+        "Linyue Zhang",
+        "Wenyi Zeng",
+        "Jiamiao Lu",
+        "Weichuang Zhang",
+        "Changming Sun",
+        "Zejun Zhang",
+        "Xiao Zhao"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-09-03T13:28:07+00:00",
+      "link": "https://arxiv.org/pdf/2609.03829v2",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Phase-aware spatial-frequency feature descriptors for fine-grained recognition",
+      "llm_evidence_cn": "用于细粒度识别的相位感知空频特征描述子",
+      "llm_evidence": "用于细粒度识别的相位感知空频特征描述子",
+      "canonical_evidence": "用于细粒度识别的相位感知空频特征描述子",
+      "llm_tldr_en": "Few-shot fine-grained classification needs discriminative features from limited labels. This work stresses phase information for structural relations and proposes an amplitude-phase integration module plus PSF-Net, adaptively fusing phase-based spatial and frequency cues, integrable into episodic training.",
+      "llm_tldr_cn": "小样本细粒度图像分类需在极少标注下区分相似类别，现有方法对图像相位信息利用不足。本文强调相位在刻画图像结构关系中的关键作用，提出即插即用的幅度-相位整合模块，融合局部与全局的频率幅度和相位信息以获得更全面的特征描述子，并设计PSF-Net自适应融合相位相关的空间与频率信息。该网络可嵌入标准情景式训练框架，从头端到端训练，实验验证了其在细粒度识别上的有效性。",
+      "llm_tldr": "小样本细粒度图像分类需在极少标注下区分相似类别，现有方法对图像相位信息利用不足。本文强调相位在刻画图像结构关系中的关键作用，提出即插即用的幅度-相位整合模块，融合局部与全局的频率幅度和相位信息以获得更全面的特征描述子，并设计PSF-Net自适应融合相位相关的空间与频率信息。该网络可嵌入标准情景式训练框架，从头端到端训练，实验验证了其在细粒度识别上的有效性。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "visual recognition algorithms",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2609.04846v1",
+      "source": "arxiv",
+      "title": "LetOccVote: Learning Weakly Supervised 3D Occupancy through Consensus",
+      "abstract": "Weakly supervised 3D occupancy prediction reduces the reliance on costly 3D annotations by learning from 2D pseudo-labels generated by vision foundation models. However, existing methods typically use these imperfect pseudo-labels directly as supervision, making occupancy learning vulnerable to erroneous geometric and semantic targets. We observe that agreement across repeated observations provides an inexpensive and reliable cue for assessing pseudo-label reliability. Based on this observation, we propose \\textbf{LetOccVote}, a weakly supervised Gaussian-based occupancy framework that leverages cross-frame voting to improve both geometric and semantic supervision. For geometry, Depth Vote exploits cross-frame geometric agreement to refine supported pseudo depth and reject contradictory estimates before volumetric lifting and depth supervision. For semantics, Semantic Vote aggregates pseudo-semantic observations in a shared 3D space to identify reliable and contested evidence, strengthening reliable semantic supervision while filtering unreliable pseudo-label segments. The entire framework is trained solely with 2D pseudo-label supervision without requiring 3D occupancy annotations. On Occ3D-nuScenes, LetOccVote achieves 53.27 IoU and 20.39 mIoU, establishing state-of-the-art performance among methods with 2D pseudo-label supervision.",
+      "authors": [
+        "Chi Zhang",
+        "Qi Song",
+        "Feifei Li",
+        "Jie Li",
+        "Rui Huang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-04T08:03:57+00:00",
+      "link": "https://arxiv.org/pdf/2609.04846v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "weakly supervised 3D occupancy prediction with vision foundation models",
+      "llm_evidence_cn": "基于视觉基础模型的弱监督三维占据预测",
+      "llm_evidence": "基于视觉基础模型的弱监督三维占据预测",
+      "canonical_evidence": "基于视觉基础模型的弱监督三维占据预测",
+      "llm_tldr_en": "LetOccVote is a weakly supervised Gaussian-based 3D occupancy framework that uses cross-frame voting consensus to assess and refine noisy 2D pseudo-labels, improving geometric and semantic supervision without costly 3D annotations.",
+      "llm_tldr_cn": "针对弱监督三维占据预测依赖不完美二维伪标签、直接监督易受错误几何与语义目标影响的问题，本文观察到重复观测间的一致性可作为评估伪标签可靠性的廉价线索，提出基于高斯的占据框架LetOccVote，通过跨帧投票共识精炼几何与语义监督。其深度投票机制利用跨帧几何一致性改进伪标签质量，从而在降低三维标注依赖的同时提升占据预测性能。",
+      "llm_tldr": "针对弱监督三维占据预测依赖不完美二维伪标签、直接监督易受错误几何与语义目标影响的问题，本文观察到重复观测间的一致性可作为评估伪标签可靠性的廉价线索，提出基于高斯的占据框架LetOccVote，通过跨帧投票共识精炼几何与语义监督。其深度投票机制利用跨帧几何一致性改进伪标签质量，从而在降低三维标注依赖的同时提升占据预测性能。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "computer vision research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2609.09876v1",
+      "source": "arxiv",
+      "title": "From Pixels to Hierarchical Sequences: Quadtree Mask Encoding for Vision-Language Binary Change Detection",
+      "abstract": "Dense change detection in remote sensing requires vision-language models (VLMs) to compare bi-temporal images and generate accurate pixel-level masks. Existing VLMs are largely confined to change captioning outputs, and the few that produce pixel-level masks still rely on external decoders or flat text-as-mask serialization, which are less effective for small and fragmented changes. We introduce QUAKE-CD, a framework that recasts dense change prediction as syntax-verifiable structured generation. QUAKE-CD represents binary change masks as grammar-constrained quadtree token sequences, making the masks compact, syntactically checkable, and deterministically decodable within an autoregressive generation space. We further construct QUAKE-CoT, which pairs these sequences with chain-of-thought traces grounded in visual evidence, and jointly optimizes textual reasoning and spatial dense prediction through a progressive curriculum followed by grammar-gated dual-reward RL. On QUAKE-CoT, QUAKE-CD achieves 78.31% accumulated F1, outperforming decoder-based and flat text-as-mask VLMs while producing more faithful bi-temporal reasoning.",
+      "authors": [
+        "Xiao An",
+        "Ruikang Zhang",
+        "Chen Zhong",
+        "Xuli Shen",
+        "Jiaxing Sun",
+        "Jiang Wu",
+        "Wei He"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-09T08:29:37+00:00",
+      "link": "https://arxiv.org/pdf/2609.09876v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "dense change detection with pixel-level masks via VLM",
+      "llm_evidence_cn": "视觉语言模型稠密变化检测与像素级掩码",
+      "llm_evidence": "视觉语言模型稠密变化检测与像素级掩码",
+      "canonical_evidence": "视觉语言模型稠密变化检测与像素级掩码",
+      "llm_tldr_en": "QUAKE-CD recasts dense change detection as grammar-constrained quadtree token generation, producing compact, verifiable pixel-level masks for VLMs.",
+      "llm_tldr_cn": "针对视觉语言模型在遥感稠密变化检测中难以生成精确像素级掩码、对细小碎片变化效果不佳的问题，本文提出QUAKE-CD框架，将二值变化掩码编码为语法约束的四叉树词元序列，在自回归生成空间中实现紧凑、可校验且可确定性解码的稠密预测。实验表明该方法优于依赖外部解码器或扁平文本序列化的方案，为视觉语言模型提供了结构化像素级掩码生成范式。",
+      "llm_tldr": "针对视觉语言模型在遥感稠密变化检测中难以生成精确像素级掩码、对细小碎片变化效果不佳的问题，本文提出QUAKE-CD框架，将二值变化掩码编码为语法约束的四叉树词元序列，在自回归生成空间中实现紧凑、可校验且可确定性解码的稠密预测。实验表明该方法优于依赖外部解码器或扁平文本序列化的方案，为视觉语言模型提供了结构化像素级掩码生成范式。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "image segmentation techniques",
+      "matched_requirement_id": "req-3",
+      "selection_source": "carryover_cache",
+      "paper_id": "2609.09876v1"
+    },
+    {
+      "id": "2609.07547v1",
+      "source": "arxiv",
+      "title": "Re-engineering SORT-based algorithms for low-cost small object tracking from omnidirectional footage",
+      "abstract": "Multi-object tracking (MOT) has advanced rapidly in urban surveillance and autonomous driving, yet many trackers rely on ReID- and transformer-based appearance encoders and are designed for standard FoV cameras. These assumptions break down for low-cost omnidirectional deployments, where equirectangular projection introduces seam discontinuities and targets appear to be small and fast-moving. We address multi-object tracking of flying animals captured in remote environments using omnidirectional cameras. We propose a lightweight framework that re-engineers SORT-based tracking for this geometry, including (i) a Seam-Aware Motion Model that keeps the Kalman state continuous across the seam, (ii) a composite seam-aware association cost that pairs a wrapped Euclidean term with GIoU, and (iii) OmniSmall, a new benchmark of omnidirectional wildlife footage. On our new dataset, with ground-truth detections, our modifications improved over OCSORT by +8.51 HOTA, +9.41 MOTA, and +10.17 IDF1; with YOLOX detections the gain narrows to +1.95 HOTA. Our proposed methods improved tracking performance on OmniSmall and remained competitive on JRDB without adding appearance encoders while keeping the tracking stage CPU-only. Our dataset and source code are available at: https://github.com/Xin-Shu/OmniSORT.git.",
+      "authors": [
+        "Xin Shu",
+        "Meegan Gower",
+        "Yvonne Buckley",
+        "Anil Kokaram"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-07T14:29:21+00:00",
+      "link": "https://arxiv.org/pdf/2609.07547v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Re-engineered SORT-based tracking for small objects in omnidirectional video",
+      "llm_evidence_cn": "面向全向视频小目标的SORT改进跟踪",
+      "llm_evidence": "面向全向视频小目标的SORT改进跟踪",
+      "canonical_evidence": "面向全向视频小目标的SORT改进跟踪",
+      "llm_tldr_en": "Existing trackers rely on ReID and transformer appearance encoders designed for standard FoV cameras, which break down for low-cost omnidirectional setups with seam discontinuities and small fast targets. This work re-engineers SORT with a seam-aware motion model and association for tracking flying animals.",
+      "llm_tldr_cn": "现有多目标跟踪器多依赖ReID和Transformer外观编码器，且面向标准视场相机，在低成本全向相机部署中因等距投影的接缝不连续和小而快速的目标而失效。本文提出轻量框架，重新设计基于SORT的跟踪方法，引入接缝感知运动模型使卡尔曼状态跨接缝连续，并设计复合接缝感知关联策略。该工作面向远程环境飞行动物的跟踪任务，拓展了视觉跟踪在特殊成像几何下的适用性。",
+      "llm_tldr": "现有多目标跟踪器多依赖ReID和Transformer外观编码器，且面向标准视场相机，在低成本全向相机部署中因等距投影的接缝不连续和小而快速的目标而失效。本文提出轻量框架，重新设计基于SORT的跟踪方法，引入接缝感知运动模型使卡尔曼状态跨接缝连续，并设计复合接缝感知关联策略。该工作面向远程环境飞行动物的跟踪任务，拓展了视觉跟踪在特殊成像几何下的适用性。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "visual tracking surveys",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2609.09025v1",
+      "source": "arxiv",
+      "title": "Task-driven Processing with Coarse-to-Fine Glimpse-based Active Perception",
+      "abstract": "State-of-the-art vision models process images in their entirety, lacking the ability to selectively zoom in on relevant regions. This limitation is particularly acute in scenarios where processing must be conditioned on a specific task - such as instance detection, which requires localizing a specific object in a high-resolution, cluttered scene. In such settings, critical details are easily lost as images are often resized to match the model dimensions and computational constraints. We introduce Coarse-to-Fine Glimpse-based Active Perception (CF-GAP), a task-driven front-end that enhances high-resolution processing of existing instance detectors. CF-GAP selectively directs a sequence of limited view glimpses across the scene, utilizing task information to iteratively refine focus on the most relevant regions. These localized regions are then processed at high resolution by a downstream instance detector. By avoiding full-image processing and eliminating irrelevant confounding information, CF-GAP improves Average Precision (AP) by up to 20% across various state-of-the-art instance detectors on the HR-InsDet and Robotools benchmarks, while further enabling lightweight detectors to outperform their larger counterparts.",
+      "authors": [
+        "Oleh Kolner",
+        "Thomas Ortner",
+        "Stanisław Woźniak",
+        "Angeliki Pantazi"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-08T16:54:07+00:00",
+      "link": "https://arxiv.org/pdf/2609.09025v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "task-driven front-end enhancing instance detection in high-resolution scenes",
+      "llm_evidence_cn": "任务驱动前端增强高分辨率场景中的实例检测",
+      "llm_evidence": "任务驱动前端增强高分辨率场景中的实例检测",
+      "canonical_evidence": "任务驱动前端增强高分辨率场景中的实例检测",
+      "llm_tldr_en": "CF-GAP is a task-driven front-end that guides a sequence of limited-view glimpses across high-resolution cluttered scenes, enhancing existing instance detectors for precise object localization without retraining.",
+      "llm_tldr_cn": "现有视觉模型整图处理，无法针对任务选择性放大关键区域，在实例检测等需定位高分辨率杂乱场景目标时细节易丢失。本文提出由粗到细的瞥视主动感知CF-GAP，作为任务驱动前端，按任务信息依次引导有限视窗扫描场景，增强现有实例检测器的高分辨率处理能力。方法在不重训检测器的前提下提升小目标与细节定位效果，为高分辨率视觉感知提供高效方案。",
+      "llm_tldr": "现有视觉模型整图处理，无法针对任务选择性放大关键区域，在实例检测等需定位高分辨率杂乱场景目标时细节易丢失。本文提出由粗到细的瞥视主动感知CF-GAP，作为任务驱动前端，按任务信息依次引导有限视窗扫描场景，增强现有实例检测器的高分辨率处理能力。方法在不重训检测器的前提下提升小目标与细节定位效果，为高分辨率视觉感知提供高效方案。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "object detection methods",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2609.07670v1",
+      "source": "arxiv",
+      "title": "Harnessing CLIP and DINO: An Uncertainty-Aware Cascaded Fusion Network for Generalizable Deepfake Image Detection",
+      "abstract": "The growing realism and accessibility of manipulated and generated faces threaten the trustworthiness of digital media. To detect such forgeries, deepfake detectors based on vision foundation models have shown promising performance, but they typically rely on a single pretrained representation and are prone to overfitting to particular training distributions. To improve generalization to unseen forgeries, we propose UCF-Net, an uncertainty-aware cascaded fusion network that harnesses CLIP's language-aligned semantic priors and DINO's self-supervised visual-structure priors. UCF-Net extracts hierarchical features across Transformer depths, uses layer-wise expert aggregation to adaptively combine each encoder's multi-level cues, and performs weighted fusion of the resulting representations based on entropy-derived uncertainty. We further consolidate public deepfake datasets into a unified benchmark of approximately 4M images and construct a separate cross-generator evaluation set with over 8K face images from eight recent generators. On the unified benchmark, UCF-Net achieves the best mean AUC among the evaluated methods in both in-domain and cross-domain evaluations. On the cross-generator set, it adapts effectively with limited target-domain data, although zero-shot transfer remains challenging.",
+      "authors": [
+        "Xuechao Zou",
+        "Yi Zhou",
+        "Kai Li",
+        "Shun Zhang",
+        "Yuhui Chen",
+        "Congyan Lang",
+        "Junliang Xing"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-09-07T15:59:19+00:00",
+      "link": "https://arxiv.org/pdf/2609.07670v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Vision foundation model feature fusion for deepfake image detection",
+      "llm_evidence_cn": "基于视觉基础模型特征融合的深伪图像检测",
+      "llm_evidence": "基于视觉基础模型特征融合的深伪图像检测",
+      "canonical_evidence": "基于视觉基础模型特征融合的深伪图像检测",
+      "llm_tldr_en": "Deepfake detectors relying on a single pretrained representation overfit to training distributions. UCF-Net fuses CLIP semantic priors and DINO self-supervised structural priors with uncertainty-aware cascaded fusion and layer-wise expert aggregation, improving generalization to unseen forgeries.",
+      "llm_tldr_cn": "现有深伪检测器多依赖单一预训练表示，容易过拟合特定训练分布，面对未见伪造时泛化能力不足。本文提出UCF-Net，一种不确定性感知的级联融合网络，同时利用CLIP的语义先验与DINO的自监督视觉结构先验，跨Transformer层级提取特征并进行逐层专家聚合。实验表明该融合策略提升了检测器对未知伪造的泛化性能，为计算机视觉中的图像取证任务提供了新思路。",
+      "llm_tldr": "现有深伪检测器多依赖单一预训练表示，容易过拟合特定训练分布，面对未见伪造时泛化能力不足。本文提出UCF-Net，一种不确定性感知的级联融合网络，同时利用CLIP的语义先验与DINO的自监督视觉结构先验，跨Transformer层级提取特征并进行逐层专家聚合。实验表明该融合策略提升了检测器对未知伪造的泛化性能，为计算机视觉中的图像取证任务提供了新思路。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "computer vision research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2609.04365v1",
+      "source": "arxiv",
+      "title": "Ultrasound-Based Prediction of Cirrhosis Decompensation Using Large-Scale Computer Vision Models",
+      "abstract": "Decompensation represents a critical transition in the course of cirrhosis, yet clinicians have limited non-invasive tools to reliably predict its onset. In this study, we propose a novel imaging-based approach that leverages large-scale computer vision models to analyze routine abdominal ultrasound images and extract predictive features beyond those captured by traditional laboratory-based risk scores. Ultrasound is widely available, low cost, and suitable for longitudinal surveillance, making it an attractive modality for scalable risk stratification and long-term follow-up. Our framework integrates automated ultrasound data processing with modern deep learning architectures to identify patients at high risk of decompensation prior to the occurrence of clinical deterioration. This non-invasive strategy offers a practical complement to existing clinical scoring systems and may enable earlier, more proactive management of patients with compensated cirrhosis.",
+      "authors": [
+        "Guangyi Zhang",
+        "Peiyun Ni",
+        "Eugene Cheah",
+        "Rajat Chandra",
+        "Peng Guo",
+        "Raymond T. Chung",
+        "Anthony E. Samir"
+      ],
+      "primary_category": "eess.IV",
+      "categories": [
+        "eess.IV",
+        "cs.AI",
+        "cs.CV"
+      ],
+      "published": "2026-09-03T18:25:16+00:00",
+      "link": "https://arxiv.org/pdf/2609.04365v1",
+      "tags": [
+        "keyword:cv"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "large-scale computer vision models for ultrasound feature extraction",
+      "llm_evidence_cn": "用于超声特征提取的大规模计算机视觉模型",
+      "llm_evidence": "用于超声特征提取的大规模计算机视觉模型",
+      "canonical_evidence": "用于超声特征提取的大规模计算机视觉模型",
+      "llm_tldr_en": "This study applies large-scale computer vision models to routine abdominal ultrasound images, extracting features beyond lab-based scores to predict cirrhosis decompensation risk.",
+      "llm_tldr_cn": "失代偿是肝硬化病程中的关键转折，但临床缺乏可靠的无创预测工具。本文提出一种影像方法，利用大规模计算机视觉模型分析常规腹部超声图像，提取超越传统实验室风险评分的预测特征，并将自动超声数据处理与现代深度学习架构整合，用于识别高失代偿风险患者。超声成本低、易获取，适合纵向随访，因此该框架有望支持可扩展的风险分层与长期监测。其意义在于把大规模视觉模型引入常规超声，为肝硬化失代偿提供低成本无创预测手段。",
+      "llm_tldr": "失代偿是肝硬化病程中的关键转折，但临床缺乏可靠的无创预测工具。本文提出一种影像方法，利用大规模计算机视觉模型分析常规腹部超声图像，提取超越传统实验室风险评分的预测特征，并将自动超声数据处理与现代深度学习架构整合，用于识别高失代偿风险患者。超声成本低、易获取，适合纵向随访，因此该框架有望支持可扩展的风险分层与长期监测。其意义在于把大规模视觉模型引入常规超声，为肝硬化失代偿提供低成本无创预测手段。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "feature extraction in computer vision",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.10917v1",
+      "source": "arxiv",
+      "title": "HiPerViT: A Hierarchical Perceiver-Vision Transformer Architecture for Multi-Scale Texture Recognition",
+      "abstract": "Texture recognition remains challenging for modern vision models because discriminative evidence is often carried by higher-order spatial statistics rather than by object shape alone. While Vision Transformers provide strong long-range modeling capacity, their standard object-centric representations do not explicitly expose such statistical structure, which limits texture sensitivity in fine-grained recognition settings. We present HiPerViT, a compact vision-only architecture that injects an explicit second-order statistical prior into a transformer-based recognition pipeline. The method combines global and local image views with a compact bilinear descriptor encoded as a statistical token, and integrates this token with first-order spatial representations through Perceiver-style latent distillation. This design enables direct interaction between spatial tokens and second-order feature co-occurrence statistics, providing the model with explicit access to texture-relevant information without requiring multimodal pretraining or ensemble construction. Across six texture recognition benchmarks, HiPerViT achieves consistent improvements over strong vision-only baselines under the reported evaluation protocols, including gains of +3.05 percentage points on DTD, +10.48 on GTOS-Mobile, and +10.10 on 1200Tex. Beyond benchmark performance, our analyses show that these gains are largely invariant to the backbone depth used to extract second-order statistics and to the ordering of interaction and distillation stages. This pattern suggests that the primary source of improvement is not a specific fusion topology, but the explicit availability of second-order statistical information as a first-class representational signal. These results support explicit statistical tokenization as an effective and robust design principle for texture-centric visual recognition.",
+      "authors": [
+        "João Pedro C. A. de Sá",
+        "Odemir Martinez Bruno"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-10T00:05:01+00:00",
+      "link": "https://arxiv.org/pdf/2609.10917v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "transformer-based multi-scale texture recognition architecture",
+      "llm_evidence_cn": "基于Transformer的多尺度纹理识别架构",
+      "llm_evidence": "基于Transformer的多尺度纹理识别架构",
+      "canonical_evidence": "基于Transformer的多尺度纹理识别架构",
+      "llm_tldr_en": "HiPerViT injects an explicit second-order statistical prior as a bilinear statistical token into a transformer recognition pipeline, improving fine-grained multi-scale texture recognition.",
+      "llm_tldr_cn": "纹理识别的判别信息常来自高阶空间统计而非物体形状，标准视觉Transformer的物体中心表征难以显式建模这类结构。本文提出HiPerViT，将显式二阶统计先验注入Transformer识别流程，用全局与局部视图构造紧凑双线性描述子并编码为统计令牌。实验表明该方法在多尺度细粒度纹理识别中提升了纹理敏感度。其意义在于说明显式统计先验可与长程建模能力互补，为纹理识别提供紧凑的纯视觉方案。",
+      "llm_tldr": "纹理识别的判别信息常来自高阶空间统计而非物体形状，标准视觉Transformer的物体中心表征难以显式建模这类结构。本文提出HiPerViT，将显式二阶统计先验注入Transformer识别流程，用全局与局部视图构造紧凑双线性描述子并编码为统计令牌。实验表明该方法在多尺度细粒度纹理识别中提升了纹理敏感度。其意义在于说明显式统计先验可与长程建模能力互补，为纹理识别提供紧凑的纯视觉方案。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "visual recognition algorithms",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2609.08914v1",
+      "source": "arxiv",
+      "title": "CoSA: Correlation-Guided Change A ttention with Learnable Residual Gating for Remote Sensing Change Detection",
+      "abstract": "Pixel-level annotation of fixed traffic-camera imagery is expensive, while crosswalk models trained from street-level imagery face a substantial viewpoint and appearance shift when applied to elevated CCTV. We investigate a data-efficient target-domain pipeline using 241 manually annotated CCTV images and 5,926 unlabeled CCTV frames. A source-domain experiment trains a 31.0M-parameter custom U-Net on 3,300 first-person-view (FPV) images and obtains 93.05% IoU on its 330-image FPV test split. This result is a source baseline, not transferred performance: the released CCTV notebook instantiates a 42.0M-parameter DeepLabV3-ResNet50 from torchvision weights, and no compatible mapping from the U-Net checkpoint is implemented. Training on 201 manual CCTV images and selecting on 40 held-out manual masks yields 88.91% IoU. The model then predicts all unlabeled frames; image-level certainty and a largest-component area prior rank the candidates, and the top 1,000 attain mean certainty 0.976 and mean combined score 0.988. A repository audit shows that the reported second-stage 98.52% IoU was measured on a 150-image split containing only teacher-generated pseudo-masks. Because of a directory-layout mismatch, the executed combined-data loader found zero manual samples and split 1,000 pseudo-labeled samples into 850 training and 150 evaluation samples. We therefore report 98.52% as internal pseudo-label agreement rather than human-ground-truth accuracy. The defensible target-domain result is 88.91% IoU on the 40 manual validation images. Batch-one FP32 inference at 512 x 512 requires 12.98 ms, corresponding to 77.03 FPS, on an NVIDIA RTX A6000 48 GB GPU. These findings support the practicality of confidence-and-geometry filtering while also showing why pseudo-label evaluation must remain isolated from the labels used for self-training.",
+      "authors": [
+        "Abdirashid Omar",
+        "Jonghyuk Park"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-08T15:43:58+00:00",
+      "link": "https://arxiv.org/pdf/2609.08914v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "segmentation pipeline with U-Net and DeepLabV3 under viewpoint shift",
+      "llm_evidence_cn": "视角偏移下的U-Net与DeepLabV3分割流程",
+      "llm_evidence": "视角偏移下的U-Net与DeepLabV3分割流程",
+      "canonical_evidence": "视角偏移下的U-Net与DeepLabV3分割流程",
+      "llm_tldr_en": "This study builds a data-efficient CCTV segmentation pipeline with 241 annotated images, showing a source-domain U-Net reaches 93.05% IoU but does not transfer to elevated CCTV views.",
+      "llm_tldr_cn": "固定交通摄像头图像的像素级标注成本高昂，而基于街景图像训练的模型迁移到高处CCTV时会遭遇显著的视角与外观偏移。本文研究数据高效的目标域流程，使用241张人工标注CCTV图像与5926帧无标注帧，并在源域以3300张第一视角图像训练U-Net分割模型。源域U-Net在其测试集上取得93.05% IoU，但作者强调这只是源基线而非迁移性能，且U-Net权重无法直接映射到所发布的DeepLabV3-ResNet50笔记本。该工作凸显跨视角分割迁移的困难，为CCTV分割提供经验。",
+      "llm_tldr": "固定交通摄像头图像的像素级标注成本高昂，而基于街景图像训练的模型迁移到高处CCTV时会遭遇显著的视角与外观偏移。本文研究数据高效的目标域流程，使用241张人工标注CCTV图像与5926帧无标注帧，并在源域以3300张第一视角图像训练U-Net分割模型。源域U-Net在其测试集上取得93.05% IoU，但作者强调这只是源基线而非迁移性能，且U-Net权重无法直接映射到所发布的DeepLabV3-ResNet50笔记本。该工作凸显跨视角分割迁移的困难，为CCTV分割提供经验。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "image segmentation techniques",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2609.09005v1",
+      "source": "arxiv",
+      "title": "DXPR: Depth-Based Vision-LiDAR Cross-Modal Place Recognition Using Vision Foundation Models",
+      "abstract": "We present DXPR, a depth-based cross-modal place recognition (CMPR) framework that uses vision foundation models (VFMs) to match monocular camera queries against a LiDAR map without modality-specific encoders. This enables robots and autonomous vehicles to robustly localize using only cameras within pre-built LiDAR maps, even under severe seasonal, weather, and illumination changes. The key idea is to convert both camera images and LiDAR scans into a unified depth image representation so that a single VFM backbone with an aggregation head can learn modality-invariant global descriptors. To make pairwise metric learning faithful to scene geometry, we introduce a geometry-aware overlap miner: after cross-modal scale alignment of camera and LiDAR depth, we forward-warp measurements between views to compute a pixel-level overlap score. This score relabels ambiguous pairs and adaptively modulates the positive margin in a multi-similarity loss to avoid overfitting on weakly overlapping views. Extensive experiments on KITTI odometry and Boreas demonstrate strong performance and robustness across seasons, weather, and day/night. On KITTI, DXPR achieves near-perfect Recall@1 on most sequences and outperforms prior CMPR baselines. On Boreas, DXPR achieves intra-sequence performance on par with a strong single-modal baseline (DINOv2-SALAD), while showing clear improvements in the more challenging inter-sequence setting. Compared with RangeBEV, our method consistently performs better in both intra- and inter-sequence evaluations, demonstrating robustness under diverse seasonal and illumination changes.",
+      "authors": [
+        "Yungsoo Han",
+        "Youngseok Jang",
+        "Seungwon Roh",
+        "Jeongyeon Seo",
+        "H. Jin Kim"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-08T16:42:47+00:00",
+      "link": "https://arxiv.org/pdf/2609.09005v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "depth-based vision-LiDAR cross-modal place recognition using vision foundation models",
+      "llm_evidence_cn": "基于深度视觉-LiDAR跨模态与视觉基础模型的地点识别",
+      "llm_evidence": "基于深度视觉-LiDAR跨模态与视觉基础模型的地点识别",
+      "canonical_evidence": "基于深度视觉-LiDAR跨模态与视觉基础模型的地点识别",
+      "llm_tldr_en": "DXPR converts camera images and LiDAR scans into unified depth representations so a single vision foundation model learns modality-invariant descriptors, enabling camera-only localization in LiDAR maps under severe appearance changes.",
+      "llm_tldr_cn": "跨模态地点识别需在季节、天气与光照剧变下稳健定位，传统方法依赖模态专用编码器。本文提出DXPR，将单目相机图像与LiDAR扫描统一转为深度图表示，用单一视觉基础模型骨干加聚合头学习模态无关的全局描述子。方法引入几何感知重叠挖掘器，在跨模态尺度对齐后进行成对度量学习，使机器人与自动驾驶车辆仅用相机即可在预建LiDAR地图中定位。",
+      "llm_tldr": "跨模态地点识别需在季节、天气与光照剧变下稳健定位，传统方法依赖模态专用编码器。本文提出DXPR，将单目相机图像与LiDAR扫描统一转为深度图表示，用单一视觉基础模型骨干加聚合头学习模态无关的全局描述子。方法引入几何感知重叠挖掘器，在跨模态尺度对齐后进行成对度量学习，使机器人与自动驾驶车辆仅用相机即可在预建LiDAR地图中定位。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "visual recognition algorithms",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2609.09359v1",
+      "source": "arxiv",
+      "title": "DensePol: Dense-Angle Polarization Dataset for Learning-Based Polarimetric Vision",
+      "abstract": "Polarimetric vision is gaining increasing attention because it provides physical cues about scene shape, material, and reflection that are difficult to recover from RGB alone. Recent work has therefore explored predicting polarization directly from conventional RGB images; however, the fidelity of these methods strongly depends on the polarization supervision used for training. Most existing datasets rely on Division-of-Focal-Plane (DoFP) cameras with four spatially interleaved analyzer orientations, which provide limited angular redundancy and introduce interpolation and instantaneous-field-of-view errors. We introduce DensePol, a high-redundancy RGB--polarization dataset based on Division-of-Time (DoT) acquisition, capturing 180 full-resolution analyzer orientations at $1^\\circ$ intervals. DensePol contains 2,018 paired RGB--polarization images with the angular measurements and fitting residuals retained. Dense angular sampling substantially improves polarization stability, reducing AoLP deviation from $13.36^\\circ$ to $2.21^\\circ$. We further introduce a deterministic diffusion-based RGB-to-polarization framework with cyclic AoLP representation and a local DoLP refiner. Experiments demonstrate improved polarization prediction and downstream surface-normal estimation. The dataset and code will be publicly available.",
+      "authors": [
+        "Param Sangani",
+        "Ahmad Moori",
+        "Erik Blasch",
+        "Guna Seetharaman",
+        "Hadi Aliakbarpour"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-08T18:48:33+00:00",
+      "link": "https://arxiv.org/pdf/2609.09359v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "polarimetric vision dataset",
+      "llm_evidence_cn": "偏振视觉数据集",
+      "llm_evidence": "偏振视觉数据集",
+      "canonical_evidence": "偏振视觉数据集",
+      "llm_tldr_en": "Polarimetric vision provides physical cues beyond RGB, but existing datasets suffer limited angular redundancy; the paper introduces DensePol, a high-redundancy Division-of-Time RGB-polarization dataset with 180 full-resolution angles.",
+      "llm_tldr_cn": "偏振视觉可提供RGB难以获取的形状、材质与反射线索，但现有方法依赖分焦平面相机采集的偏振监督，角度冗余有限且引入插值与视场误差。本文提出DensePol数据集，采用分时采集方式捕获180个全分辨率偏振角度，提供高冗余的RGB-偏振监督。该数据集提升了偏振预测的保真度，为学习式偏振视觉研究奠定了更可靠的数据基础。",
+      "llm_tldr": "偏振视觉可提供RGB难以获取的形状、材质与反射线索，但现有方法依赖分焦平面相机采集的偏振监督，角度冗余有限且引入插值与视场误差。本文提出DensePol数据集，采用分时采集方式捕获180个全分辨率偏振角度，提供高冗余的RGB-偏振监督。该数据集提升了偏振预测的保真度，为学习式偏振视觉研究奠定了更可靠的数据基础。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "computer vision research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2609.09394v1",
+      "source": "arxiv",
+      "title": "OmniPoint: Universal Monocular Metric Pointcloud from Any Camera",
+      "abstract": "Recovering metric 3D geometry from monocular images is a fundamental computer vision task, yet current methods remain heavily fragmented by fixed camera model assumptions and inflexible input schemes. We present OmniPoint, a unified framework designed to generalize metric reconstruction across diverse imaging sensors, including pinhole, fisheye, and equirectangular projections, while accommodating varying geometric priors. To overcome projection rigidity, OmniPoint abandons conventional planar depth regression. It instead adopts a decoupled ray and distance representation alongside a decoupled training objective, explicitly separating the camera projection model from the scene structure. To address the severe scarcity of training data for alternative cameras, we introduce a bidirectional augmentation strategy that explicitly bridges labeled perspective data and unlabeled omnidirectional domains in 3D space. Furthermore, to seamlessly integrate optional inputs like camera intrinsics or sparse depth without destabilizing the network through feature distribution shifts, we propose a robust information injection mechanism. This mechanism utilizes learnable input state embeddings to resolve architectural ambiguity and applies vectorized Gaussian smoothing to densify irregular measurements. Extensive experiments demonstrate that OmniPoint achieves state-of-the-art zero-shot performance across multiple benchmarks, establishing a robust new standard for unified monocular 3D reconstruction.",
+      "authors": [
+        "Botao Ye",
+        "Marc Pollefeys",
+        "Ming-Hsuan Yang",
+        "Abhijit Kundu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-08T19:45:58+00:00",
+      "link": "https://arxiv.org/pdf/2609.09394v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "unified monocular metric 3D reconstruction across cameras",
+      "llm_evidence_cn": "跨相机统一单目度量三维重建",
+      "llm_evidence": "跨相机统一单目度量三维重建",
+      "canonical_evidence": "跨相机统一单目度量三维重建",
+      "llm_tldr_en": "OmniPoint is a unified framework that recovers metric 3D geometry from monocular images across pinhole, fisheye and equirectangular cameras, using a decoupled ray-and-distance representation instead of planar depth regression.",
+      "llm_tldr_cn": "单目图像的度量三维几何恢复长期受固定相机模型假设限制，不同成像传感器间方法割裂。本文提出OmniPoint统一框架，支持针孔、鱼眼和等距柱状投影等多样相机，并适应不同几何先验。方法放弃传统平面深度回归，改用解耦的射线与距离表示及解耦训练目标，将相机投影模型与场景结构显式分离。该框架缓解了替代相机训练数据稀缺问题，为通用单目度量重建提供了统一方案。",
+      "llm_tldr": "单目图像的度量三维几何恢复长期受固定相机模型假设限制，不同成像传感器间方法割裂。本文提出OmniPoint统一框架，支持针孔、鱼眼和等距柱状投影等多样相机，并适应不同几何先验。方法放弃传统平面深度回归，改用解耦的射线与距离表示及解耦训练目标，将相机投影模型与场景结构显式分离。该框架缓解了替代相机训练数据稀缺问题，为通用单目度量重建提供了统一方案。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "computer vision research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2609.09491v1",
+      "source": "arxiv",
+      "title": "Learning Global Camera Poses from Noisy View-Graphs for Structure from Motion",
+      "abstract": "Camera pose estimation is a key step in 3D reconstruction and view-synthesis pipelines. We present a deep, global Structure-from-Motion framework based on learned view-graph aggregation. Our method employs a permutation-equivariant, edge-conditioned graph neural network that takes noisy pairwise relative poses as input and outputs globally consistent camera extrinsics. The network is trained without ground-truth supervision, relying solely on a relative-pose consistency objective. This is followed by 3D point triangulation and robust bundle adjustment. Our approach is efficient, scalable to more than a thousand images, and robust to graph density. We evaluate our method on MegaDepth, 1DSfM, Strecha, and BlendedMVS. These experiments demonstrate that our method achieves superior rotation and translation accuracy compared to deep track-centric methods while registering more images across many scenes, and competitive results compared to state-of-the-art classical pipelines, while being much faster.",
+      "authors": [
+        "Fadi Khatib",
+        "Meirav Galun",
+        "Ronen Basri"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-08T22:14:03+00:00",
+      "link": "https://arxiv.org/pdf/2609.09491v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "deep global structure-from-motion camera pose estimation",
+      "llm_evidence_cn": "深度全局运动恢复结构相机位姿估计",
+      "llm_evidence": "深度全局运动恢复结构相机位姿估计",
+      "canonical_evidence": "深度全局运动恢复结构相机位姿估计",
+      "llm_tldr_en": "This paper presents a deep global Structure-from-Motion framework using a permutation-equivariant, edge-conditioned graph neural network to aggregate noisy relative poses into globally consistent camera extrinsics without ground-truth supervision.",
+      "llm_tldr_cn": "相机位姿估计是三维重建与视图合成流程的关键步骤，但从含噪的相对位姿中恢复全局一致的位姿仍具挑战。本文提出一种深度全局运动恢复结构框架，基于可学习的视图图聚合。方法使用置换等变、边条件图神经网络，输入含噪成对相对位姿并输出全局一致的相机外参，训练无需真值监督，仅依赖相对位姿一致性目标，随后进行三维点三角化与鲁棒光束法平差。实验在多个数据集上表明方法高效、可扩展至千余张图像且对图密度鲁棒。",
+      "llm_tldr": "相机位姿估计是三维重建与视图合成流程的关键步骤，但从含噪的相对位姿中恢复全局一致的位姿仍具挑战。本文提出一种深度全局运动恢复结构框架，基于可学习的视图图聚合。方法使用置换等变、边条件图神经网络，输入含噪成对相对位姿并输出全局一致的相机外参，训练无需真值监督，仅依赖相对位姿一致性目标，随后进行三维点三角化与鲁棒光束法平差。实验在多个数据集上表明方法高效、可扩展至千余张图像且对图密度鲁棒。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "computer vision research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2609.11279v1",
+      "source": "arxiv",
+      "title": "SAMV-DUSt3R: Instance-Centric 3D Scene Decoupling from Sparse Multi-Views",
+      "abstract": "With the rising demand to decouple objects from 3D scenes, we propose SAMV-DUSt3R, an end-to-end model that injects SAM2 2D masks into MV-DUSt3R reconstruction. A Cross Flow Mask Block uses these masks to steer the network toward the target instance, jointly improving shape accuracy and achieving object-level disentanglement without multi-stage pipelines. To ensure reconstruction stability, a lightweight Spatial RankGNN selects the optimal reference view with a selection accuracy of 73.5\\%. Extensive experiments demonstrate that our method boosts average reconstruction precision by 11\\% across various metrics compared to state-of-the-art baselines. These results reveal a strong instance-disentanglement capability and clear benefits for driving, robotics, AR/VR, and heritage digitisation.",
+      "authors": [
+        "Langxu Zhao",
+        "Zuan Gu",
+        "Yingdan Zhang",
+        "Pengfei Zhao",
+        "Tianhan Gao"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-10T09:12:48+00:00",
+      "link": "https://arxiv.org/pdf/2609.11279v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "SAM2 masks for instance-centric 3D decoupling",
+      "llm_evidence_cn": "SAM2掩码实现实例中心三维解耦",
+      "llm_evidence": "SAM2掩码实现实例中心三维解耦",
+      "canonical_evidence": "SAM2掩码实现实例中心三维解耦",
+      "llm_tldr_en": "SAMV-DUSt3R injects SAM2 2D masks into MV-DUSt3R reconstruction via a Cross Flow Mask Block, achieving object-level disentanglement from sparse multi-views and improving reconstruction precision by 11 percent.",
+      "llm_tldr_cn": "从稀疏多视角中解耦三维场景中的物体日益重要，但现有方法往往依赖多阶段流程且难以稳定重建。本文提出端到端模型SAMV-DUSt3R，将SAM2的二维掩码注入MV-DUSt3R重建，通过跨流掩码块引导网络聚焦目标实例。模型还使用轻量Spatial RankGNN选取最优参考视角，选择准确率达73.5%。实验显示平均重建精度比先进基线提升约11%，展现出强实例解耦能力，对驾驶与机器人等应用具有价值。",
+      "llm_tldr": "从稀疏多视角中解耦三维场景中的物体日益重要，但现有方法往往依赖多阶段流程且难以稳定重建。本文提出端到端模型SAMV-DUSt3R，将SAM2的二维掩码注入MV-DUSt3R重建，通过跨流掩码块引导网络聚焦目标实例。模型还使用轻量Spatial RankGNN选取最优参考视角，选择准确率达73.5%。实验显示平均重建精度比先进基线提升约11%，展现出强实例解耦能力，对驾驶与机器人等应用具有价值。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "image segmentation techniques",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}

@@ -41,17 +41,17 @@
 <section class="dpr-home-dashboard-card dpr-home-report-card">
   <div class="dpr-home-dashboard-header">
     <div>
-      <span class="dpr-home-dashboard-kicker">2026-09-10</span>
+      <span class="dpr-home-dashboard-kicker">2026-09-11</span>
       <h3 class="dpr-home-dashboard-title">今日汇总</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">共 19 篇</strong>
+    <strong class="dpr-home-dashboard-count">共 16 篇</strong>
   </div>
   <dl class="dpr-home-dashboard-stats">
     <div class="dpr-home-dashboard-stat"><dt>累计更新</dt><dd>1 次</dd></div>
-    <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>8</dd></div>
-    <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>11</dd></div>
+    <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>6</dd></div>
+    <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>10</dd></div>
   </dl>
-  <p class="dpr-home-dashboard-body">最近更新：2026-09-10 21:27:35 UTC<br>状态：成功</p>
+  <p class="dpr-home-dashboard-body">最近更新：2026-09-11 21:28:54 UTC<br>状态：成功</p>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-brief-card">
   <div class="dpr-home-dashboard-header">
@@ -62,7 +62,9 @@
     <strong class="dpr-home-dashboard-count">AI</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<p>今天共筛出 19 篇论文，精读 8 篇、速读 11 篇，重点覆盖相机-LiDAR 融合分割、360°显著目标检测与视觉里程计等方向。最值得看的是满分 10.0 的 CLFTv2——用分层特征金字塔实现高效相机-LiDAR 融合语义分割，其次 9.0 的 SphereSOD 用几何-结构耦合学习做 360°显著目标检测。普通读者可先读这两篇的摘要与方法图，再按兴趣从速读里挑 NSFlow（神经符号光流视觉里程计）或零样本 6DoF 位姿估计了解趋势。</p>
+<p>今日日报成功收录16篇，精读6篇、速读10篇，两篇9.0分论文领跑。</p>
+<p>最值得看的是《Diffuse2Seg》用扩散模型做无监督分割，以及《Your Model Already Knows...》用软提示提升视觉语言模型少样本适配。</p>
+<p>普通读者可先精读这两篇9分论文，再速览主动感知、多尺度纹理识别与CLIP+DINO深伪检测方向。</p>
   </div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-deep-card">
@@ -71,12 +73,12 @@
       <span class="dpr-home-dashboard-kicker">今日累计</span>
       <h3 class="dpr-home-dashboard-title">精读推荐</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">8 篇</strong>
+    <strong class="dpr-home-dashboard-count">6 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="CLFTv2: Efficient Camera-LiDAR Fusion for Semantic Segmentation via Hierarchical Feature Pyramids">CLFTv2: Efficient Camera-LiDAR Fusion for Semantic Segmentation via Hierarchical Feature Pyramids</span></li><li><span class="dpr-home-dashboard-paper-title" title="SphereSOD: Geometry-Structure Coupled Learning for 360 Salient Object Detection">SphereSOD: Geometry-Structure Coupled Learning for 360 Salient Object Detection</span></li><li><span class="dpr-home-dashboard-paper-title" title="Marigold V2: Revisiting Diffusion Transformers for Monocular Depth Estimation">Marigold V2: Revisiting Diffusion Transformers for Monocular Depth Estimation</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Diffuse2Seg: Diffusion Models Can Segment Anything Without Supervision">Diffuse2Seg: Diffusion Models Can Segment Anything Without Supervision</span></li><li><span class="dpr-home-dashboard-paper-title" title="Your Model Already Knows Don&#x27;t Teach It, Learn to Ask It: Soft Prompting for Few-Shot Adaptation of Vision-Language Models">Your Model Already Knows Don&#x27;t Teach It, Learn to Ask It: Soft Prompting for Few-Shot Adaptation of Vision-Language Models</span></li><li><span class="dpr-home-dashboard-paper-title" title="Phase-Aware Spatial-Frequency Fusion for Few-Shot Fine-Grained Image Classification">Phase-Aware Spatial-Frequency Fusion for Few-Shot Fine-Grained Image Classification</span></li></ul>
   </div>
-  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">cv <strong>8</strong></span></div>
+  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">cv <strong>6</strong></span></div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-skim-card">
   <div class="dpr-home-dashboard-header">
@@ -84,12 +86,12 @@
       <span class="dpr-home-dashboard-kicker">今日累计</span>
       <h3 class="dpr-home-dashboard-title">速读推荐</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">11 篇</strong>
+    <strong class="dpr-home-dashboard-count">10 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="NSFlow: End-to-End Differentiable Neuro-Symbolic Optical Flow for Visual Odometry">NSFlow: End-to-End Differentiable Neuro-Symbolic Optical Flow for Visual Odometry</span></li><li><span class="dpr-home-dashboard-paper-title" title="Spatial Attention Supervision for Defect Localization: Exploiting Ground-Truth Masks as Training Signal in Diffusion-Augmented Defect Detection">Spatial Attention Supervision for Defect Localization: Exploiting Ground-Truth Masks as Training Signal in Diffusion-Augmented Defect Detection</span></li><li><span class="dpr-home-dashboard-paper-title" title="Back to the Feature: Zero-Shot 6DoF Pose Estimation via Dense Local Features">Back to the Feature: Zero-Shot 6DoF Pose Estimation via Dense Local Features</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Task-driven Processing with Coarse-to-Fine Glimpse-based Active Perception">Task-driven Processing with Coarse-to-Fine Glimpse-based Active Perception</span></li><li><span class="dpr-home-dashboard-paper-title" title="HiPerViT: A Hierarchical Perceiver-Vision Transformer Architecture for Multi-Scale Texture Recognition">HiPerViT: A Hierarchical Perceiver-Vision Transformer Architecture for Multi-Scale Texture Recognition</span></li><li><span class="dpr-home-dashboard-paper-title" title="Harnessing CLIP and DINO: An Uncertainty-Aware Cascaded Fusion Network for Generalizable Deepfake Image Detection">Harnessing CLIP and DINO: An Uncertainty-Aware Cascaded Fusion Network for Generalizable Deepfake Image Detection</span></li></ul>
   </div>
-  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">cv <strong>11</strong></span></div>
+  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">cv <strong>10</strong></span></div>
 </section>
 </div>
 

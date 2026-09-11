@@ -1,0 +1,268 @@
+Title: Re-engineering SORT-based algorithms for low-cost small object tracking from omnidirectional footage
+
+URL Source: https://arxiv.org/pdf/2609.07547v1
+
+Published Time: Wed, 09 Sep 2026 02:25:25 GMT
+
+Number of Pages: 6
+
+Markdown Content:
+# Re-engineering SORT-based algorithms for low-cost small object tracking from omnidirectional footage 
+
+Xin Shu ∗, Meegan Gower ∗, Yvonne Buckley †, Anil Kokaram ∗∗Sigmedia Group, Electronic and Electrical Engineering, Trinity College Dublin 
+
+†School of Zoology, Trinity College Dublin 
+
+{xins,gowerm,buckleyy,anil.kokaram }@tcd.ie 
+
+Abstract —Multi-object tracking (MOT) has advanced rapidly in urban surveillance and autonomous driving, yet many trackers rely on ReID- and transformer-based appearance encoders and are designed for standard FoV cameras. These assumptions break down for low-cost omnidirectional deployments, where equirect-angular projection introduces seam discontinuities and targets appear to be small and fast-moving. We address multi-object tracking of flying animals captured in remote environments using omnidirectional cameras. We propose a lightweight framework that re-engineers SORT-based tracking for this geometry, includ-ing (i) a Seam-Aware Motion Model that keeps the Kalman state continuous across the seam, (ii) a composite seam-aware association cost that pairs a wrapped Euclidean term with GIoU, and (iii) OmniSmall, a new benchmark of omnidirectional wildlife footage. On our new dataset, with ground-truth detections, our modifications improved over OCSORT by +8.51 HOTA, +9.41 MOTA, and +10.17 IDF1; with YOLOX detections the gain narrows to +1.95 HOTA. Our proposed methods improved tracking performance on OmniSmall and remained competitive on JRDB without adding appearance encoders while keeping the tracking stage CPU-only. Our dataset and source code are available at: https://github.com/Xin-Shu/OmniSORT.git. 
+
+Index Terms —multi-object tracking, omnidirectional video, small object tracking, track-by-detection, wildlife monitoring 
+
+I. I NTRODUCTION 
+
+Multi-object tracking (MOT) plays a central role in many computer vision applications, with growing interest in online and real-time trackers. Algorithms such as SORT [1] and the variants [2]–[6] have shown strong performance in structured, urban scenes. However, their application to low-cost, remote deployments, such as monitoring wild animals using omni-directional cameras, remains underexplored. These scenarios are marked by non-Euclidean image geometry, tiny object scale, and strict power and compute constraints, which together inhibit deployments of many conventional MOT pipelines. Our work targets small-object tracking in omnidirectional footage, a regime that differs from standard field-of-view (FoV) cameras in both geometry and target scale. The equirect-angular geometry typical of omnidirectional footage causes object motion to appear non-linear when it is not, and cross-ing seam boundaries causes discontinuous trajectories. These issues violate the linear assumptions used in standard trackers. 
+
+Supported by the project Digitising Biodiversity sponsored by grant from the Kinsella Foundation to Trinity College Dublin. 
+
+Small objects (typically below 32 × 32 pixels [7]) in such footage also dramatically reduce the effectiveness of appear-ance models used for matching or association in many SOTA trackers. A rectangular box around a flying target is mostly background at any scale, and at these sizes the few foreground pixels left carry too little texture for a learned embedding to tell identities apart. The insets in Fig. 1 show that at this small scale, most of the box area is occupied by background regardless of motion. Hence appearance models are less dis-criminative because the matching score will be dominated by background. Furthermore, limited connectivity and power make it impractical to rely on ReID- and transformer-based appearance encoders [2], [8], [9]. SORT and similar motion-based trackers are attractive due to their simplicity and low resource demands, but their reliance on smooth motion and IoU-based matching leads to frequent identity switches in our setting. In this paper, we re-engineer two SORT-based tracking frameworks [1], [5] to address these challenges while preserv-ing a lightweight design. Our contributions are as follows: (1) we introduce a Seam-Aware Motion Model (SAMM) that maintains horizontal continuity across the left-right equirectan-gular seam; (2) we propose Ef use , a cost that combines Omni-Euclidean (OmniEuc) distance with Generalised Intersection over Union (GIoU) [10] for robust object association in omni-directional footage; (3) we present OmniSmall , a new bench-mark for small-object tracking in omnidirectional footage capturing real-world trajectories under severe distortion and left-right seam crossings. Our proposed method outperformed the SORT and OC-SORT baselines on the OmniSmall dataset and achieved com-petitive performance on the JRDB dataset [11], while adding no appearance model and no GPU dependency at the tracking stage. II. B ACKGROUND 
+
+The tracking-by-detection (TBD) paradigm remains dom-inant in MOT, where detectors provide per-frame object lo-cations and trackers maintain temporal identity consistency. Simple Online and Realtime Tracking (SORT) [1] introduced a widely adopted approach using a Kalman filter [12] for prediction and the Hungarian algorithm [13] for frame-to-frame data association, with Intersection over Union (IoU) as arXiv:2609.07547v1 [cs.CV] 7 Sep 2026 Fig. 1. Representative frames from four omnidirectional sequences illustrating object trajectories. Coloured bounding boxes accumulated over time visualise the per-object tracks in the equirectangular projection. The upper-right frame shows honey bees around a flower bed (after a 90 ◦ vertical rotation of the projection), while the remaining frames show avian species. Insets show zoomed-in crops of several tracked identities, highlighting strong appearance ambiguity. 
+
+the association cost. Subsequent works have refined the motion model [4]–[6], [14], introduced learned appearance cues [2], [3], [15], or adopted stronger association strategies [4], [6], [14]. These extensions have been validated on urban surveil-lance and autonomous driving benchmarks, where targets are pedestrian- or vehicle-scale, motion is locally linear in image coordinates, and re-identification features are discriminative. All three assumptions break for our deployment regime: small targets carry little appearance signal because the bounding box is dominated by background; flying-animal motion in equirectangular projection is non-linear and discontinuous at the seam; and ReID- or transformer-based appearance en-coders [8], [9], [16], [17] exceed the compute budget of a remote, battery-powered camera. SORT itself remains attrac-tive in this setting precisely because it makes none of these assumptions about appearance, but the IoU-based association and the linear Kalman prediction fail when targets are small, fast, and projected onto a wrapped image plane. Three bodies of work address different aspects of our prob-lem. Firstly, omnidirectional tracking itself has attracted grow-ing interest as a single camera can capture the full surround-ings. Benchmarks, such as CVIP360 [18] and 360VOT [19], characterise how equirectangular distortion and seam discon-tinuities affect tracking; both focus, however, on conven-tional targets in controlled surveillance scenes (CVIP360) or single-object protocols (360VOT) rather than our problem of multi-object tracking of small, fast targets. The most related learning-based work, OmniTrack [20], adapts MOT to omnidirectional imagery via panorama-aware feature learning and appearance association, achieving good performance on human-scale targets while inheriting the compute and ap-pearance assumptions that our work is explicitly designed to avoid. Secondly, work in small-object tracking [7] addresses targets below 32 × 32 pixels that render IoU-based metrics and appearance encoders unreliable. In that work, motion-only association becomes the dominant signal, but only for images from standard FoV cameras. Thirdly, work in wildlife and ecological MOT [21], [22] has driven practical demand for low-cost, deployable tracking but has not yet engaged with omnidirectional capture. The intersection of these three regimes (small targets, omnidirectional projection, and a strict on-device compute envelope) is where SORT-style trackers would be most useful and is the gap this paper addresses. In TBD, the association cost is central to linking predicted box locations with detections. IoU becomes unreliable when boxes do not overlap, and several extensions have been pro-posed (e.g., DIoU and CIoU [23]). We adopt Generalised IoU (GIoU) [10], which extends IoU with a penalty based on the smallest enclosing region Cmn of two boxes bm, b n, so that non-overlapping boxes are still ordered by separation: IoU (m,n ) = |bm ∩ bn||bm ∪ bn| , ∈ [0 , 1] (1) GIoU (m,n ) = IoU (m,n ) − |Cmn | − | bm ∪ bn||Cmn | , ∈ (−1, 1] (2) Following standard MOT practice, we report HOTA [24], MOTA [25], IDF1 [26], and IDSw [25]: together these capture detection quality, association quality, identity preservation, and switch frequency, with HOTA as the primary measure since it jointly weights detection and association. III. P ROPOSED METHODS 
+
+Our modifications to SORT [1] and OCSORT [5] focus on enhancing data association and motion modelling to better handle the geometric distortions and motion characteristics unique to tracking small objects from omnidirectional footage. A. SAMM: Seam-Aware Motion Model 
+
+Object motion is modelled with a Kalman filter ( Kalman unit ) using the SORT [1] constant-velocity formulation, ex-tended with an aspect-ratio derivative ( ˙r), giving the state vector ki = [u, v, s, r, ˙u, ˙v, ˙s, ˙r]: (u, v ) denote the centre coordinates of the bounding box, s is the scale (area), r is the aspect ratio, and ˙u, ˙v, ˙s, ˙r are the corresponding derivatives. In omnidirectional imagery, objects may cross the image seam (i.e., the left–right boundary of an equirectangular projection), causing an apparent discontinuity in coordinates (e.g., the green trajectory in the lower-right image in Fig. 1). This disrupts the velocity estimation of the Kalman filter. We introduce a seam-aware correction: when the relative change in the horizontal velocity, | ˙uf +1 − ˙uf |/ max( | ˙uf |, ϵ ), exceeds a threshold τ , we interpret it as a seam crossing and wrap the updated horizontal velocity onto the signed principal interval 
+
+[− 12 , 12 ) to undo the seam-induced velocity jump [27], as described in Algorithm 1. This keeps the horizontal component of the motion model continuous across the equirectangular seam. In this paper we set τ = 10 .0 and ϵ = 10 −6.
+
+Algorithm 1: SAMM Input: 
+
+Observed boxes at frame f + 1 :{Bob  
+
+> (f+1 ,i )
+
+}Ni=1 ,
+
+b ← [u, v, w, h ] normalised in [0 , 1] ,Tracked Kalman unit at frame f : {K(f,j )}Jj=1 ,
+
+k ← [u, v, s, r, ˙u, ˙v, ˙s, ˙r],Velocity-change ratio threshold: τ
+
+Output: Tracked Kalman unit at frame f + 1 : {Kl}Ll=1  
+
+> 1
+
+Seam-aware Kalman prediction (position): 
+
+ˆkj ← [ˆ u, ˆv, ˆs, ˆr, ˆ˙u, ˆ˙v, ˆ˙s, ˆ˙r] ← kj .predict () ,
+
+ˆu = ˆ u mod 1  
+
+> 2
+
+Update tracked Kalman unit (speed): Associate bj to tracked Kalman unit kj at frame f + 1 
+
+k(f,j ) ← [u, v, s, r, ˙u, ˙v, ˙s, ˙r]f ,
+
+b(f +1 ,j ) ← [u, v, w, h ]f +1 
+
+k(f +1 ,j ) ← k(f,j ).update( b(f +1 ,j ))Velocity correction: if (| ˙uf +1 − ˙uf | / max( | ˙uf |, ϵ )) > τ :
+
+˙uf +1 =  ( ˙ uf +1 + 12 ) mod 1  − 12 
+
+> 3
+
+Return: {Kl}Ll=1 .
+
+B. OmniEuc: Seam-Aware Euclidean Distance 
+
+In small-object tracking for omnidirectional views, IoU-based association can be unreliable. Small objects occupy only a few pixels but often move quickly, so Kalman-predicted locations are more likely to have no intersection with the ob-servations at the next frame. Therefore, we propose to replace IoU with a Euclidean distance as the primary association cost for small-object tracking. We define an Omni-Euclidean (OmniEuc) distance as the main seam-aware association cost for omnidirectional track-ing. In equirectangular images, targets may wrap across the left–right seam, causing apparent jumps that inflate standard Euclidean distances in image coordinates. To address this, we normalise box centres to [0 , 1] and compute the minimum between the direct centre distance and the wrapped counterpart obtained by shifting by one image width, as formalised in Algorithm 2. This yields a robust association cost that remains small for seam-crossing trajectories and large for unrelated detections. 
+
+Algorithm 2: OmniEuc Input: Observed boxes at frame f : {Bob  
+
+> i
+
+}Ni=1 ,Predicted boxes at frame f : {Bpr  
+
+> j
+
+}Mj=1 ,
+
+b ← [u, v, w, h ] normalised in [0 , 1] 
+
+Output: Omni-Distance matrix E ∈ RM ×N 
+
+> 1
+
+Denote centre locations of boxes as: 
+
+(uob  
+
+> i
+
+, v ob  
+
+> i
+
+),(upr  
+
+> j
+
+, v pr  
+
+> j
+
+); 
+
+> 2
+
+Compute standard Euclidean distance: 
+
+dij ←
+
+q
+
+(uob  
+
+> i
+
+− upr  
+
+> j
+
+)2 + ( vob  
+
+> i
+
+− vpr  
+
+> j
+
+)2; 
+
+> 3
+
+Compute wrapped Euclidean distance: 
+
+∆u = |uob  
+
+> i
+
+− upr  
+
+> j
+
+|, ∆v = |vob  
+
+> i
+
+− vpr  
+
+> j
+
+|
+
+∆˜ u = min(∆ u, 1 − ∆u),
+
+˜dij ← p(∆˜ u)2 + (∆ v)2 
+
+> 4
+
+Return: 
+
+Eij = √22 × min( dij , ˜dij ),
+
+Eij ∈ [0 , 1] .
+
+C. Ef use : Composite Association Cost 
+
+Euclidean distance and IoU-based cost capture different as-pects of similarity. Euclidean distance (in our case, OmniEuc) remains informative even when boxes do not overlap or lie across the left-right seams, while IoU and GIoU [10] are more useful when detections and predictions are well aligned and the patches overlap. In our setting, small objects and non-linear motions often cause Kalman-predicted locations to have little or no overlap with the detected observations in the next frame, so IoU-based costs become unreliable for identifying correct associations. To exploit the complementary properties of Eu-clidean and IoU measures, we define a composite association cost ( Ef use ∈ [0 , 1] ) that employs a weighted combination of the normalised OmniEuc and GIoU-derived costs as follows. 
+
+EGIoU = 12 × (1 − GIoU) 
+
+Ef use = λE OmniEuc + (1 − λ)EGIoU 
+
+(3) where λ ∈ [0 , 1] is the weight chosen to trade off the relative importance of EOmniEuc and EGIoU . Both terms are association costs normalised to [0 , 1] , where lower values indicate better matches. In this work λ is a single weight per dataset, tracker, and detection source, optimised by grid search on the training split. The overall pipeline flow of our system is shown in Fig. 2 (left), which also more clearly highlights the differences from existing SORT variants. IV. D ATA AND EXPERIMENT SETUP 
+
+We constructed OmniSmall from omnidirectional wildlife footage. We recorded eight clips of natural flying be-haviour using QooCam 8K Enterprise 1 (7680 ×3840, 30 FPS,  
+
+> 1Kandao Technology: QooCam 8K Enterprise Fig. 2. Proposed OmniSORT pipeline ( left ), highlighting standard SORT components and the seam-aware modifications introduced in this work. HOTA comparison on JRDB and OmniSmall under ground-truth (GT) and YOLOX detections ( right ). Each group reports the performance of the evaluated tracking methods under one dataset and detection setting.
+
+1,551 frames) and Ricoh THETA X 2 (5760 ×2880, 10 FPS, 900 frames) cameras. Both cameras produce equirectangular frames with 360 ◦ horizontal coverage and hence a left-right wrap-around seam. A selected BBC Earth documentary clip 3
+
+(5120 ×2560, 100 frames) was also included as a dense-flock stress test. OmniSmall contains 2,551 frames with manually annotated bounding boxes and identity labels for visible animals. Labels were assigned only while targets were visible; temporary exits therefore produce gaps and re-entries in trajectories. Evaluation was also performed on JRDB [11], [28], apanoramic pedestrian-tracking benchmark recorded with amulti-camera rig on a mobile robot, stitched into a cylindri-cal panorama. Both datasets wrap horizontally and therefore contain a left-right seam. The JRDB annotations include a visibility or occlusion status for each object. Objects labelled as fully or partially visible were treated as ground-truth targets, while invisible or fully occluded objects were ignored. Table I compares OmniSmall with JRDB. Small boxes were defined as those with area below 32 2 pixels. 87.12% of OmniSmall boxes satisfy this small-object criterion [7], against 5.24% in JRDB. For object detection, a single-class YOLOX detector [29] was trained separately on each dataset using tiled crops; iden-tity labels were not used for detector training. On JRDB, we follow the public training and validation splits; on OmniSmall, a chronological frame-level training-test split with a 2:8 ratio prevented training on future frames from the evaluation seg-ment. This is to simulate the practical deployment in a remote field. High-resolution frames were processed in overlapping tiles: 1024 × 1024 with 200-pixel overlap for OmniSmall and 480 × 480 with 100-pixel overlap for JRDB. Tile-level detections were mapped back to full-frame coordinates and linear Soft-NMS [30] was applied with an IoU threshold of 
+
+0.45 and a confidence threshold of 0.10 . All trackers were evaluated on the same set of detections.                         
+
+> 2Ricoh THETA X
+> 3Red Kite Bird Feeding Frenzy — BBC Earth Unplugged TABLE I DATASET STATISTICS FOR OMNI SMALL AND JRDB. Statistic OmniSmall JRDB Sequences 954 Frames 2,551 55,554 Tracks 199 3,292 Annotated boxes 20,771 1,256,363 Mean boxes per frame 8.14 22.62 Mean box size (pixels) 27 .02 ×16 .24 78 .02 ×169 .55
+> Mean box area / frame area (%) 0.0063 1.0754 Small boxes (%) 87.12 5.24
+
+V. R ESULTS AND DISCUSSION 
+
+For a fair comparison, we excluded trackers that employ appearance-based features and focused on TBD baselines. All baselines were run at published defaults. We first compared performance across trackers using ground-truth detections to isolate the tracking-stage contribution from detector noise. Table II shows that the proposed seam-aware association was most beneficial on OmniSmall, where targets are small and overlap-based association is least reliable. With ground-truth detections, OmniOCSORT improved over OCSORT on OmniSmall by +8.51 HOTA, +9.41 MOTA, and +10.17 IDF1, while IDSw fell from 382 to 62. OmniSORT improved over SORT by +27.12 HOTA and +13.22 MOTA. On JRDB, both seam-aware variants remained competitive: OmniSORT increased HOTA from 62.43 to 67.69 and OmniOCSORT increased HOTA from 66.24 to 67.01 (Fig. 2, right). This contrast supports the intended operating regime of the method: small, fast targets in seam-affected omnidirectional footage, where overlap-only association is less reliable. Performance with YOLOX detections (Table III) was lower than with GT detections, as expected: missed detections break trajectories into new identities and damage all met-rics. OCSORT’s observation-centric re-update recovers tracks disrupted by missed detections, making OmniOCSORT the more robust variant under detector noise. OmniSORT fell slightly below the SORT baseline on JRDB (25.35 vs 26.45 HOTA): with noisy pedestrian-scale boxes a centre-distance cost can accept a false positive that non-overlap would reject, which suggests Ef use is better suited to small objects, as in OmniSmall. TABLE II PERFORMANCE COMPARISON ON JRDB AND OMNI SMALL DATASETS WITH GROUND -TRUTH DETECTIONS . B EST SCORES IN EACH COLUMN ARE SHOWN IN BOLD AND THE SECOND BEST IS UNDERLINED .                                                                                                                                                                                                            
+
+> Method JRDB-panorama OmniSmall-omnidirectional
+> λHOTA ↑MOTA ↑IDF1 ↑IDSw ↓FPS ↑λHOTA ↑MOTA ↑IDF1 ↑IDSw ↓FPS ↑
+> SORT [1] –62.43 95.80 55.22 13819 446 –66.98 86.02 80.31 559 836 ByteTrack [14] –65.34 96.07 60.49 12856 575 –71.84 90.88 90.12 94 1459
+> OCSORT [5] –66.24 96.14 56.20 13470 380 –85.61 89.75 83.99 382 670 HybridSORT [6] –66.80 96.00 56.86 11345 205 –64.98 74.97 60.61 1247 273 OmniSORT + Ef use (ours) 0.3 67.69 95.82 58.44 8968 402 0.7 94.10 99.24 94.00 42 1032 OmniOCSORT + Ef use (ours) 0.2 67.01 96.22 57.84 9415 311 0.7 94.12 99.16 94.16 62 716 TABLE III PERFORMANCE COMPARISON ON JRDB AND OMNI SMALL DATASETS WITH YOLOX DETECTIONS . B EST SCORES IN EACH COLUMN ARE SHOWN IN
+> BOLD AND THE SECOND BEST IS UNDERLINED .
+> Method JRDB-panorama OmniSmall-omnidirectional
+> λHOTA ↑MOTA ↑IDF1 ↑IDSw ↓FPS ↑λHOTA ↑MOTA ↑IDF1 ↑IDSw ↓FPS ↑
+> SORT [1] –26.45 27.94 25.94 22563 332 –39.04 20.31 45.88 117 1152 ByteTrack [14] –31.92 46.02 35.45 8965 719 –30.29 17.11 32.59 29 3175
+> OCSORT [5] –26.45 27.42 25.85 22966 252 –39.81 22.14 46.76 127 863 HybridSORT [6] –29.53 35.83 30.16 16663 174 –37.75 22.45 44.19 152 518 OmniSORT + Ef use (ours) 0.2 25.35 27.94 24.35 22594 320 0.7 41.11 25.42 49.33 137 1122 OmniOCSORT + Ef use (ours) 0.2 27.70 35.20 27.58 18209 260 0.7 41.76 26.97 50.72 108 862
+
+On OmniSmall, OmniOCSORT with Ef use achieved the best performance, and its IDSw of 108 was second only to ByteTrack (29). On JRDB, where detections were dense and noisy, the score-aware ByteTrack achieved the best results, with HybridSORT second; OmniOCSORT improved over the SORT and OCSORT baselines (HOTA 27.70 vs 26.45) but did not match the dedicated two-stage score association of ByteTrack and HybridSORT. This indicates that under noisy pedestrian-scale detections the dominant signal remains de-pendent on detection-confidence handling and the multi-stage association, which our single-stage variants do not replicate. We measured tracking-stage FPS on a single CPU core (AMD Ryzen 9 3900 12-Core Processor), since the proposed components affect only association and motion update; the tiled detector remains the dominant cost of the full pipeline. Under this protocol, OmniSORT with Ef use ran at 320 / 1122 FPS and OmniOCSORT with Ef use ran at 260 / 862 FPS on JRDB/OmniSmall with YOLOX detections. The seam-aware variants therefore remained within the same CPU-only tracking regime as the SORT-based baselines. VI. A BLATION STUDY 
+
+To isolate the contribution of each proposed component, the ablation study was conducted on OmniSmall using ground-truth detections, incrementally building on the SORT and OCSORT baselines. The results are reported in Table IV. SAMM alone reduced HOTA from 66.98 to 20.05 for SORT and from 85.61 to 23.67 for OCSORT. The velocity-change test is relative, | ˙uf +1 − ˙uf |/ max( | ˙uf |, ϵ ), so for slow or near-stationary tracks the denominator saturates at ϵ and the wrap is applied beyond genuine seam events; in isolation this perturbs the velocity state while IoU-based association still requires overlap, and tracks are lost. The fused cost tolerates these perturbations because association no longer depends on overlap, so the combined configuration recovers and exceeds the baseline. The fusion weight λ was swept in steps of 0.1 across [0 , 1] .Both trackers achieved the highest HOTA at λ = 0 .7, while both endpoint configurations yielded lower HOTA. The single-term endpoints are complementary rather than redundant: OmniEuc alone is stronger for SORT (73.75 vs 60.53 HOTA) while GIoU alone is stronger for OCSORT (65.71 vs 52.23), and both fall well below the fused setting at λ = 0 .7 (94.10 and 94.12). Statistical significance was assessed with paired per-sequence exact sign-flip tests against the corresponding baselines. Summarising the three per-metric tests by their average p-value across HOTA, MOTA, and IDF1, the selected 
+
+λ = 0 .7 configurations yielded ¯p = 0 .0039 for both trackers. VII. C ONCLUSION 
+
+We presented OmniSORT and OmniOCSORT, two lightweight SORT-based trackers re-engineered for deployable field studies using omnidirectional cameras. By incorporating SAMM and Ef use , our approach improved identity preservation for small, fast targets in seam-affected omnidirectional footage while maintaining execution speed. Experiments showed large identity-aware gains on OmniSmall, especially when association quality is isolated using ground-truth detections, and competitive but mixed transfer to JRDB. These results suggest that the seam-aware motion model and composite association cost together target geometry-and scale-specific failure modes of IoU-based association that off-the-shelf SORT variants leave unaddressed, and OmniSmall provides a dedicated benchmark for studying small-object tracking in omnidirectional footage, though its scale limits the power of the per-sequence significance tests. Future work will strengthen the detector and integrate detection confidence into the seam-aware association, explore an adaptive fusion weight λ in place of the current per-setting grid search, and narrow the remaining gap to score-aware trackers while preserving the appearance-free, CPU-only design intended for low-cost field deployment. TABLE IV COMPONENT ABLATION AND λ SENSITIVITY ON OMNI SMALL WITH GT 
+
+> DETECTIONS
+
+. T HE UPPER BLOCK OF EACH TRACKER COMPARES INDIVIDUAL COMPONENT SUBSTITUTIONS ; THE LOWER BLOCK SWEEPS THE REPRESENTATIVE FUSION WEIGHT λ IN Ef use . T HE ¯p COLUMN REPORTS THE AVERAGE p-VALUE ACROSS THE HOTA, MOTA, AND IDF1  
+
+> PAIRED TESTS AGAINST THE BASELINE
+
+(0.0039 IS THE EXACT -TEST FLOOR OF ¯p AT nseq =9 ). A LL CONFIGURATIONS BELOW THE + SAMM  
+
+> ROW INCLUDE
+
+SAMM. B EST PER TRACKER IN BOLD .Tracker Configuration HOTA MOTA IDF1 ¯p
+
+SORT baseline (IoU) 66.98 86.02 80.31 —+ SAMM 20.05 18.29 14.20 0.0052 + GIoU ( λ = 0 .0) 60.53 69.20 56.14 0.0938 + OmniEuc ( λ = 1 .0) 73.75 92.65 68.73 0.0260 OmniSORT + Ef use 
+
+λ = 0 .1 69.86 78.58 66.04 0.2526 
+
+λ = 0 .3 85.33 90.52 83.68 0.0221 
+
+λ = 0 .5 91.07 94.83 90.67 0.0039 
+
+λ = 0 .7 94.10 99.24 94.00 0.0039 
+
+λ = 0 .9 92.67 98.92 92.48 0.0039 OCSORT baseline (IoU) 85.61 89.75 83.99 —+ SAMM 23.67 24.82 18.16 0.0052 + GIoU ( λ = 0 .0) 65.71 76.17 60.67 0.0104 + OmniEuc ( λ = 1 .0) 52.23 71.03 36.29 0.1888 OmniOCSORT + Ef use 
+
+λ = 0 .1 73.45 82.27 69.29 0.0078 
+
+λ = 0 .3 87.25 91.88 86.01 0.0078 
+
+λ = 0 .5 90.96 94.82 90.73 0.0039 
+
+λ = 0 .7 94.12 99.16 94.16 0.0039 
+
+λ = 0 .9 66.78 84.96 56.02 0.0846 
+
+REFERENCES [1] A. Bewley, Z. Ge, L. Ott, F. Ramos, and B. Upcroft, “Simple online and realtime tracking,” in 2016 IEEE International Conference on Image Processing (ICIP) , 2016, pp. 3464–3468. [2] N. Wojke, A. Bewley, and D. Paulus, “Simple online and realtime tracking with a deep association metric,” in 2017 IEEE International Conference on Image Processing (ICIP) , 2017, pp. 3645–3649. [3] N. Aharon, R. Orfaig, and B.-Z. Bobrovsky, “BoT-SORT: Robust Associations Multi-Pedestrian Tracking,” 2022. [Online]. Available: https://arxiv.org/abs/2206.14651 [4] Y. Du, Z. Zhao, Y. Song, Y. Zhao, F. Su, T. Gong, and H. Meng, “StrongSORT: Make DeepSORT Great Again,” IEEE Transactions on Multimedia , vol. 25, pp. 8725–8737, 2023. [5] J. Cao, J. Pang, X. Weng, R. Khirodkar, and K. Kitani, “Observation-Centric SORT: Rethinking SORT for Robust Multi-Object Tracking,” in Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) , June 2023, pp. 9686–9696. [6] M. Yang, G. Han, B. Yan, W. Zhang, J. Qi, H. Lu, and D. Wang, “Hybrid-SORT: Weak Cues Matter for Online Multi-Object Tracking,” 
+
+Proceedings of the AAAI Conference on Artificial Intelligence , vol. 38, no. 7, pp. 6504–6512, Mar. 2024. [7] Y. Zhu, C. Li, Y. Liu, X. Wang, J. Tang, B. Luo, and Z. Huang, “Tiny Object Tracking: A Large-Scale Dataset and a Baseline,” IEEE Transactions on Neural Networks and Learning Systems , vol. 35, no. 8, pp. 10 273–10 287, 2024. [8] W. Li, R. Zhao, T. Xiao, and X. Wang, “DeepReID: Deep Filter Pairing Neural Network for Person Re-identification,” in Proceedings of the 2014 IEEE Conference on Computer Vision and Pattern Recognition ,ser. CVPR ’14. USA: IEEE Computer Society, 2014, p. 152–159. [9] S. He, H. Luo, P. Wang, F. Wang, H. Li, and W. Jiang, “Tran-sReID: Transformer-Based Object Re-Identification,” in Proceedings of the IEEE/CVF International Conference on Computer Vision (ICCV) ,October 2021, pp. 15 013–15 022. [10] H. Rezatofighi, N. Tsoi, J. Gwak, A. Sadeghian, I. Reid, and S. Savarese, “Generalized Intersection Over Union: A Metric and a Loss for Bound-ing Box Regression,” in Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) , June 2019. [11] R. Mart´ ın-Mart´ ın, M. Patel, H. Rezatofighi, A. Shenoi, J. Gwak, E. Frankel, A. Sadeghian, and S. Savarese, “JRDB: A Dataset and Benchmark of Egocentric Robot Visual Perception of Humans in Built Environments,” IEEE Transactions on Pattern Analysis and Machine Intelligence , vol. 45, no. 6, pp. 6748–6765, 2023. [12] R. E. Kalman, “A New Approach to Linear Filtering and Prediction Problems,” Journal of Basic Engineering , vol. 82, no. 1, pp. 35–45, 03 1960. [13] H. W. Kuhn, “The Hungarian method for the assignment problem,” 
+
+Naval research logistics quarterly , vol. 2, no. 1-2, pp. 83–97, 1955. [14] Y. Zhang, P. Sun, Y. Jiang, D. Yu, F. Weng, Z. Yuan, P. Luo, W. Liu, and X. Wang, “ByteTrack: Multi-object Tracking by Associating Every Detection Box,” in Computer Vision – ECCV 2022 , S. Avidan, G. Bros-tow, M. Ciss´ e, G. M. Farinella, and T. Hassner, Eds. Cham: Springer Nature Switzerland, 2022, pp. 1–21. [15] G. Maggiolino, A. Ahmad, J. Cao, and K. Kitani, “Deep OC-Sort: Multi-Pedestrian Tracking by Adaptive Re-Identification,” in 2023 IEEE International Conference on Image Processing (ICIP) , 2023, pp. 3025– 3029. [16] N. Wojke and A. Bewley, “Deep Cosine Metric Learning for Person Re-identification,” in 2018 IEEE Winter Conference on Applications of Computer Vision (WACV) . IEEE, 2018, pp. 748–756. [17] H. Luo, Y. Gu, X. Liao, S. Lai, and W. Jiang, “Bag of Tricks and a Strong Baseline for Deep Person Re-Identification,” in Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) Workshops , June 2019. [18] G. Mazzola, L. Lo Presti, E. Ardizzone, and M. La Cascia, “A Dataset of Annotated Omnidirectional Videos for Distancing Applications,” Journal of Imaging , vol. 7, no. 8, 2021. [19] H. Huang, Y. Xu, Y. Chen, and S.-K. Yeung, “360VOT: A New Benchmark Dataset for Omnidirectional Visual Object Tracking,” in 
+
+Proceedings of the IEEE/CVF International Conference on Computer Vision (ICCV) , October 2023, pp. 20 566–20 576. [20] K. Luo, H. Shi, S. Wu, F. Teng, M. Duan, C. Huang, Y. Wang, K. Wang, and K. Yang, “Omnidirectional Multi-Object Tracking,” in 
+
+Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) , June 2025, pp. 21 959–21 969. [21] L. Zhang, J. Gao, Z. Xiao, and H. Fan, “AnimalTrack: A Benchmark for Multi-Animal Tracking in the Wild,” International Journal of Computer Vision , vol. 131, no. 2, pp. 496–513, 2023. [22] H. Naik, A. Chan, J. Yang, J. Delcourt, I. D. Couzin, and P. Bartashevich, “BuckTales: A Multi-UAV Dataset for Multi-Object Tracking and Re-Identification of Wild Antelopes,” in Advances in Neural Information Processing Systems (NeurIPS), Datasets and Benchmarks Track , 2024. [23] Z. Zheng, P. Wang, W. Liu, J. Li, R. Ye, and D. Ren, “Distance-IoU Loss: Faster and Better Learning for Bounding Box Regression,” Proceedings of the AAAI Conference on Artificial Intelligence , vol. 34, no. 07, pp. 12 993–13 000, Apr. 2020. [24] J. Luiten, A. Oˇ sep, P. Dendorfer, P. Torr, A. Geiger, L. Leal-Taix´ e, and B. Leibe, “HOTA: A Higher Order Metric for Evaluating Multi-object Tracking,” International Journal of Computer Vision , vol. 129, no. 2, pp. 548–578, 2021. [25] K. Bernardin and R. Stiefelhagen, “Evaluating Multiple Object Tracking Performance: The CLEAR MOT Metrics,” EURASIP Journal on Image and Video Processing , vol. 2008, no. 1, p. 246309, 2008. [26] E. Ristani, F. Solera, R. Zou, R. Cucchiara, and C. Tomasi, “Performance Measures and a Data Set for Multi-target, Multi-camera Tracking,” in 
+
+Computer Vision – ECCV 2016 Workshops , G. Hua and H. J´ egou, Eds. Cham: Springer International Publishing, 2016, pp. 17–35. [27] I. Markovi´ c, J. ´ Cesi´ c, and I. Petrovi´ c, “On wrapping the Kalman filter and estimating with the SO(2) group,” in 2016 19th International Conference on Information Fusion (FUSION) , 2016, pp. 2245–2250. [28] Y. He, W. Yu, J. Han, X. Wei, X. Hong, and Y. Gong, “Know Your Surroundings: Panoramic Multi-Object Tracking by Multimodality Col-laboration,” in Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) Workshops , June 2021, pp. 2969–2980. [29] Z. Ge, S. Liu, F. Wang, Z. Li, and J. Sun, “YOLOX: Exceeding YOLO Series in 2021,” arXiv preprint arXiv:2107.08430 , 2021. [30] N. Bodla, B. Singh, R. Chellappa, and L. S. Davis, “Soft-NMS– Improving Object Detection With One Line of Code,” in Proceedings of the IEEE International Conference on Computer Vision (ICCV) , Oct 2017.

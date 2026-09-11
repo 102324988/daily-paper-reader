@@ -1,0 +1,265 @@
+{
+  "date": "20260911",
+  "date_label": "",
+  "generated_at": "2026-09-11 21:28:54 UTC",
+  "recommend_exists": true,
+  "run_count": 1,
+  "papers": [
+    {
+      "paper_id": "2609.06491v1",
+      "route": "202609/11/2609.06491v1-diffuse2seg-diffusion-models-can-segment-anything-without-supervision",
+      "title": "Diffuse2Seg: Diffusion Models Can Segment Anything Without Supervision",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "扩散模型实现无监督开放世界实体分割",
+      "first_seen_at": "2026-09-11 21:28:54 UTC",
+      "updated_at": "2026-09-11 21:28:54 UTC"
+    },
+    {
+      "paper_id": "2609.11310v1",
+      "route": "202609/11/2609.11310v1-your-model-already-knows-dont-teach-it-learn-to-ask-it-soft-prompting-for-few-shot-adaptation-of-vision-language-models",
+      "title": "Your Model Already Knows Don't Teach It, Learn to Ask It: Soft Prompting for Few-Shot Adaptation of Vision-Language Models",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "视觉语言模型的少样本目标检测",
+      "first_seen_at": "2026-09-11 21:28:54 UTC",
+      "updated_at": "2026-09-11 21:28:54 UTC"
+    },
+    {
+      "paper_id": "2609.03829v2",
+      "route": "202609/11/2609.03829v2-phase-aware-spatial-frequency-fusion-for-few-shot-fine-grained-image-classification",
+      "title": "Phase-Aware Spatial-Frequency Fusion for Few-Shot Fine-Grained Image Classification",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "用于细粒度识别的相位感知空频特征描述子",
+      "first_seen_at": "2026-09-11 21:28:54 UTC",
+      "updated_at": "2026-09-11 21:28:54 UTC"
+    },
+    {
+      "paper_id": "2609.04846v1",
+      "route": "202609/11/2609.04846v1-letoccvote-learning-weakly-supervised-3d-occupancy-through-consensus",
+      "title": "LetOccVote: Learning Weakly Supervised 3D Occupancy through Consensus",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "基于视觉基础模型的弱监督三维占据预测",
+      "first_seen_at": "2026-09-11 21:28:54 UTC",
+      "updated_at": "2026-09-11 21:28:54 UTC"
+    },
+    {
+      "paper_id": "2609.07547v1",
+      "route": "202609/11/2609.07547v1-re-engineering-sort-based-algorithms-for-low-cost-small-object-tracking-from-omnidirectional-footage",
+      "title": "Re-engineering SORT-based algorithms for low-cost small object tracking from omnidirectional footage",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "面向全向视频小目标的SORT改进跟踪",
+      "first_seen_at": "2026-09-11 21:28:54 UTC",
+      "updated_at": "2026-09-11 21:28:54 UTC"
+    },
+    {
+      "paper_id": "2609.09025v1",
+      "route": "202609/11/2609.09025v1-task-driven-processing-with-coarse-to-fine-glimpse-based-active-perception",
+      "title": "Task-driven Processing with Coarse-to-Fine Glimpse-based Active Perception",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "任务驱动前端增强高分辨率场景中的实例检测",
+      "first_seen_at": "2026-09-11 21:28:54 UTC",
+      "updated_at": "2026-09-11 21:28:54 UTC"
+    },
+    {
+      "paper_id": "2609.09876v1",
+      "route": "202609/11/2609.09876v1-from-pixels-to-hierarchical-sequences-quadtree-mask-encoding-for-vision-language-binary-change-detection",
+      "title": "From Pixels to Hierarchical Sequences: Quadtree Mask Encoding for Vision-Language Binary Change Detection",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "视觉语言模型稠密变化检测与像素级掩码",
+      "first_seen_at": "2026-09-11 21:28:54 UTC",
+      "updated_at": "2026-09-11 21:28:54 UTC"
+    },
+    {
+      "paper_id": "2609.10917v1",
+      "route": "202609/11/2609.10917v1-hipervit-a-hierarchical-perceiver-vision-transformer-architecture-for-multi-scale-texture-recognition",
+      "title": "HiPerViT: A Hierarchical Perceiver-Vision Transformer Architecture for Multi-Scale Texture Recognition",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "基于Transformer的多尺度纹理识别架构",
+      "first_seen_at": "2026-09-11 21:28:54 UTC",
+      "updated_at": "2026-09-11 21:28:54 UTC"
+    },
+    {
+      "paper_id": "2609.07670v1",
+      "route": "202609/11/2609.07670v1-harnessing-clip-and-dino-an-uncertainty-aware-cascaded-fusion-network-for-generalizable-deepfake-image-detection",
+      "title": "Harnessing CLIP and DINO: An Uncertainty-Aware Cascaded Fusion Network for Generalizable Deepfake Image Detection",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "基于视觉基础模型特征融合的深伪图像检测",
+      "first_seen_at": "2026-09-11 21:28:54 UTC",
+      "updated_at": "2026-09-11 21:28:54 UTC"
+    },
+    {
+      "paper_id": "2609.08914v1",
+      "route": "202609/11/2609.08914v1-cosa-correlation-guided-change-a-ttention-with-learnable-residual-gating-for-remote-sensing-change-detection",
+      "title": "CoSA: Correlation-Guided Change A ttention with Learnable Residual Gating for Remote Sensing Change Detection",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "视角偏移下的U-Net与DeepLabV3分割流程",
+      "first_seen_at": "2026-09-11 21:28:54 UTC",
+      "updated_at": "2026-09-11 21:28:54 UTC"
+    },
+    {
+      "paper_id": "2609.09005v1",
+      "route": "202609/11/2609.09005v1-dxpr-depth-based-vision-lidar-cross-modal-place-recognition-using-vision-foundation-models",
+      "title": "DXPR: Depth-Based Vision-LiDAR Cross-Modal Place Recognition Using Vision Foundation Models",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "基于深度视觉-LiDAR跨模态与视觉基础模型的地点识别",
+      "first_seen_at": "2026-09-11 21:28:54 UTC",
+      "updated_at": "2026-09-11 21:28:54 UTC"
+    },
+    {
+      "paper_id": "2609.09359v1",
+      "route": "202609/11/2609.09359v1-densepol-dense-angle-polarization-dataset-for-learning-based-polarimetric-vision",
+      "title": "DensePol: Dense-Angle Polarization Dataset for Learning-Based Polarimetric Vision",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "偏振视觉数据集",
+      "first_seen_at": "2026-09-11 21:28:54 UTC",
+      "updated_at": "2026-09-11 21:28:54 UTC"
+    },
+    {
+      "paper_id": "2609.09394v1",
+      "route": "202609/11/2609.09394v1-omnipoint-universal-monocular-metric-pointcloud-from-any-camera",
+      "title": "OmniPoint: Universal Monocular Metric Pointcloud from Any Camera",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "跨相机统一单目度量三维重建",
+      "first_seen_at": "2026-09-11 21:28:54 UTC",
+      "updated_at": "2026-09-11 21:28:54 UTC"
+    },
+    {
+      "paper_id": "2609.09491v1",
+      "route": "202609/11/2609.09491v1-learning-global-camera-poses-from-noisy-view-graphs-for-structure-from-motion",
+      "title": "Learning Global Camera Poses from Noisy View-Graphs for Structure from Motion",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "深度全局运动恢复结构相机位姿估计",
+      "first_seen_at": "2026-09-11 21:28:54 UTC",
+      "updated_at": "2026-09-11 21:28:54 UTC"
+    },
+    {
+      "paper_id": "2609.11279v1",
+      "route": "202609/11/2609.11279v1-samv-dust3r-instance-centric-3d-scene-decoupling-from-sparse-multi-views",
+      "title": "SAMV-DUSt3R: Instance-Centric 3D Scene Decoupling from Sparse Multi-Views",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "SAM2掩码实现实例中心三维解耦",
+      "first_seen_at": "2026-09-11 21:28:54 UTC",
+      "updated_at": "2026-09-11 21:28:54 UTC"
+    },
+    {
+      "paper_id": "2609.04365v1",
+      "route": "202609/11/2609.04365v1-ultrasound-based-prediction-of-cirrhosis-decompensation-using-large-scale-computer-vision-models",
+      "title": "Ultrasound-Based Prediction of Cirrhosis Decompensation Using Large-Scale Computer Vision Models",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "用于超声特征提取的大规模计算机视觉模型",
+      "first_seen_at": "2026-09-11 21:28:54 UTC",
+      "updated_at": "2026-09-11 21:28:54 UTC"
+    }
+  ]
+}
