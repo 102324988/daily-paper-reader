@@ -1,0 +1,250 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-09-12T21:14:54.332723+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 3,
+    "deep_cap": 6,
+    "deep_selected": 3,
+    "quick_candidates": 3,
+    "quick_skim_target": 11,
+    "quick_selected": 3
+  },
+  "deep_dive": [
+    {
+      "id": "2609.05937v1",
+      "source": "arxiv",
+      "title": "Beyond Classification: Structured Supervision Aligns Visual Evidence with Medical Semantics",
+      "abstract": "Vision Transformers (ViTs) have shown immense potential in medical image analysis. However, standard pre-training via global image classification suffers from spatial collapse, where models rely heavily on background shortcuts rather than localising critical foreground lesions. To overcome this limitation and align visual evidence with precise medical semantics, we systematically investigate alternative pre-training paradigms.Specifically, we evaluate three independent forms of structured supervision: topological priors via graph self-supervision, dense pixel-level constraints via segmentation, and cross-modal semantic grounding via image-text pairs. Notably, our empirical analysis reveals that while all three forms of structured supervision successfully alleviate the global pooling bottleneck and steer visual attention towards foreground regions, image-text alignment achieves the most superior performance. By embedding high-dimensional diagnostic logic, the cross-modal approach not only anchors attention on precise visual evidence but also enables profound abstract reasoning. Extensive experiments demonstrate that this semantically enriched pre-training fundamentally enhances the model's feature representation. Consequently, when fine-tuned for downstream clinical classification tasks, our models achieve superior accuracy and yield highly interpretable attention maps focused on true pathological features, vastly outperforming vanilla classification baselines.",
+      "authors": [
+        "Hexiang Bai",
+        "Hanyang Xu",
+        "Xiaoxue Li",
+        "Xiaoliang Wu",
+        "Shangde Gao",
+        "Hongxia Xu",
+        "Ke Liu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-05T07:03:08+00:00",
+      "link": "https://arxiv.org/pdf/2609.05937v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "structured supervision aligning visual evidence for medical visual recognition",
+      "llm_evidence_cn": "结构化监督对齐医学视觉识别中的视觉证据",
+      "llm_evidence": "结构化监督对齐医学视觉识别中的视觉证据",
+      "canonical_evidence": "结构化监督对齐医学视觉识别中的视觉证据",
+      "llm_tldr_en": "This paper addresses spatial collapse in ViT medical pre-training by comparing structured supervision forms: graph self-supervision, dense segmentation constraints, and image-text grounding, aligning visual evidence with medical semantics.",
+      "llm_tldr_cn": "医学图像分析中，ViT通过全局分类预训练易出现空间坍缩，模型依赖背景捷径而非定位关键病灶。本文系统比较三种结构化监督：基于图自监督的拓扑先验、基于分割的稠密像素约束，以及基于图文对的跨模态语义对齐。实验表明这些结构化监督能更好地将视觉证据与医学语义对齐，为医学视觉识别预训练提供了新范式。",
+      "llm_tldr": "医学图像分析中，ViT通过全局分类预训练易出现空间坍缩，模型依赖背景捷径而非定位关键病灶。本文系统比较三种结构化监督：基于图自监督的拓扑先验、基于分割的稠密像素约束，以及基于图文对的跨模态语义对齐。实验表明这些结构化监督能更好地将视觉证据与医学语义对齐，为医学视觉识别预训练提供了新范式。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "visual recognition algorithms",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2609.06507v1",
+      "source": "arxiv",
+      "title": "A Cloud-Based Hybrid Model for Real-Time Detection of BRTA-Approved Licence Plates Using YOLO Tiny and Haar Cascade",
+      "abstract": "Accurate vehicle license plate detection is essential for applications such as intelligent transportation systems, toll collection, parking management, and law enforcement. In Bangladesh, this task presents distinct challenges due to the complexity of localized license plates and environmental factors like lighting, occlusion, motion blur, and obstructions such as dirt or mud. These challenges often render conventional methods ineffective. This paper introduces a novel hybrid approach, combining the YOLO Tiny deep learning model with the Haar-Cascade classifier, for enhanced detection and localization of Bengali license plates. A key innovation of our system is the integration of a dynamic retraining pipeline, which allows the model to adapt to evolving real-world conditions. This retraining mechanism significantly boosts performance in low-confidence scenarios by continuously improving the model's accuracy as new data is encountered. Additionally, a publicly accessible dataset of BRTA-compliant license plates, captured under diverse and challenging conditions, has been developed to support this approach. Experimental results demonstrate that our approach not only achieves superior detection accuracy and computational efficiency over conventional models but also ensures consistent performance in resource-constrained environments, particularly in Bangladesh.",
+      "authors": [
+        "Debashis Kar Suvra",
+        "Tahsina Farah Sanam"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-06T09:49:09+00:00",
+      "link": "https://arxiv.org/pdf/2609.06507v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Hybrid YOLO Tiny and Haar Cascade model for real-time license plate detection",
+      "llm_evidence_cn": "结合YOLO Tiny与Haar级联的实时车牌检测混合模型",
+      "llm_evidence": "结合YOLO Tiny与Haar级联的实时车牌检测混合模型",
+      "canonical_evidence": "结合YOLO Tiny与Haar级联的实时车牌检测混合模型",
+      "llm_tldr_en": "Bengali license plate detection suffers from lighting, occlusion, and blur that defeat conventional methods. This paper combines YOLO Tiny with a Haar-Cascade classifier and a dynamic retraining pipeline for robust real-time detection.",
+      "llm_tldr_cn": "孟加拉国车牌因本地化样式复杂及光照、遮挡、运动模糊等因素，使传统检测方法效果不佳。本文提出结合YOLO Tiny深度学习模型与Haar级联分类器的混合方法，并引入动态重训练流程以增强检测与定位能力。该系统面向智能交通、收费与执法等实时应用，提升了复杂环境下孟加拉车牌的检测鲁棒性。",
+      "llm_tldr": "孟加拉国车牌因本地化样式复杂及光照、遮挡、运动模糊等因素，使传统检测方法效果不佳。本文提出结合YOLO Tiny深度学习模型与Haar级联分类器的混合方法，并引入动态重训练流程以增强检测与定位能力。该系统面向智能交通、收费与执法等实时应用，提升了复杂环境下孟加拉车牌的检测鲁棒性。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "object detection methods",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2609.11463v1",
+      "source": "arxiv",
+      "title": "BruNet: A Cross-Domain Transfer Framework for Bruise Segmentation",
+      "abstract": "Segmenting bruises is a challenging task in medical imaging due to limited data and annotations, diffuse boundaries, and highly variable appearance. In this work, we propose BruNet, a segmentation framework that combines a ViT-based visual encoder (a self-supervised DINOv3 or a pretrained LingBot-Vision backbone) with a SAM-based mask decoder. BruNet is trained on the HAM10000 skin lesion dataset and evaluated on a separate bruise dataset without additional fine-tuning. Although a small number of prior studies have explored machine learning and computer vision for bruise analysis, existing work has primarily focused on detection, classification, or colour analysis rather than pixel-level localisation. To the best of our knowledge, this is the first study to address automatic bruise segmentation. Our results show that BruNet outperforms CNN-based models, state-of-the-art segmentation models, ChatGPT-4o/5-assisted SAM2 zero-shot baselines, and the medical-oriented MedSAM model, demonstrating strong cross-domain generalisation to bruise segmentation.",
+      "authors": [
+        "Qiming Wang",
+        "Richard J. Motley",
+        "Ebube E. Obi",
+        "Xianfang Sun",
+        "Paul L. Rosin"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-10T12:35:20+00:00",
+      "link": "https://arxiv.org/pdf/2609.11463v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Image segmentation framework combining ViT encoder with SAM mask decoder for bruise localization",
+      "llm_evidence_cn": "结合ViT编码器与SAM掩码解码器的瘀伤图像分割框架",
+      "llm_evidence": "结合ViT编码器与SAM掩码解码器的瘀伤图像分割框架",
+      "canonical_evidence": "结合ViT编码器与SAM掩码解码器的瘀伤图像分割框架",
+      "llm_tldr_en": "Bruise segmentation is hard due to limited annotations and diffuse boundaries. BruNet combines a ViT-based self-supervised encoder with a SAM mask decoder, trained on skin lesion data and transferred without fine-tuning to achieve pixel-level bruise localization.",
+      "llm_tldr_cn": "医学图像中的瘀伤分割因标注数据稀缺、边界弥散且外观高度多变而十分困难，既有研究多集中于检测、分类或颜色分析，缺乏像素级定位。本文提出BruNet分割框架，将基于ViT的自监督视觉编码器与SAM掩码解码器相结合，在皮肤病变数据集上训练后直接迁移至独立瘀伤数据集。实验表明无需额外微调即可完成瘀伤像素级分割，是首个相关研究，展示了通用分割模型跨域迁移的潜力。",
+      "llm_tldr": "医学图像中的瘀伤分割因标注数据稀缺、边界弥散且外观高度多变而十分困难，既有研究多集中于检测、分类或颜色分析，缺乏像素级定位。本文提出BruNet分割框架，将基于ViT的自监督视觉编码器与SAM掩码解码器相结合，在皮肤病变数据集上训练后直接迁移至独立瘀伤数据集。实验表明无需额外微调即可完成瘀伤像素级分割，是首个相关研究，展示了通用分割模型跨域迁移的潜力。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "image segmentation techniques",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2609.06928v1",
+      "source": "arxiv",
+      "title": "Emo-DVS: A Multimodal Benchmark for Privacy-Aware Emotion Recognition with Event Cameras",
+      "abstract": "Emotion analysis is a fundamental task in computer vision, but its practical deployment remains constrained by the privacy risks inherent to conventional RGB cameras. Bio-inspired event cameras present a promising hardware-level solution because they capture asynchronous brightness changes, thereby reducing exposure of facial identity details while leveraging high dynamic range for robust perception under challenging illumination conditions. Despite these advantages, existing event-based methods struggle in complex real-world settings due to limited dataset scales, simple acquisition conditions, and reliance on single-modality visual cues. To address these, we establish a challenging tri-modal benchmark with event, audio, and text modalities and propose the Information-Guided Gated Fusion (IGF) framework, which first pre-trains an event encoder on the FAU subset of Emo-DVS to capture fine-grained facial dynamics, then employs adaptive modality gating to suppress modality-specific noise, and finally leverages mutual information maximization to align robust cross-modal representations. To alleviate data scarcity, we introduce Emo-DVS, the first large-scale event-based emotion analysis dataset, which couples dynamic illumination with the Facial Action Unit (FAU) subset and emotion subset. Extensive experiments demonstrate that IGF achieves state-of-the-art performance.",
+      "authors": [
+        "Jiaqi Chen",
+        "Qinfu Xu",
+        "Hao Zhuang",
+        "Liyuan Pan"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-09-07T01:55:44+00:00",
+      "link": "https://arxiv.org/pdf/2609.06928v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "emotion recognition benchmark using event cameras in computer vision",
+      "llm_evidence_cn": "基于事件相机的隐私保护情感识别基准",
+      "llm_evidence": "基于事件相机的隐私保护情感识别基准",
+      "canonical_evidence": "基于事件相机的隐私保护情感识别基准",
+      "llm_tldr_en": "Emo-DVS builds a challenging tri-modal benchmark with event, audio, and text modalities for privacy-aware emotion recognition, addressing limited scale and single-modality cues of existing event-based methods.",
+      "llm_tldr_cn": "情感分析是计算机视觉的基础任务，但传统RGB相机带来隐私风险，事件相机虽能降低身份泄露并适应复杂光照，现有事件方法却受限于数据规模小、采集条件简单和单一模态。本文构建了包含事件、音频与文本的三模态基准Emo-DVS，覆盖复杂真实场景下的隐私感知情感识别。该基准为事件相机情感分析提供了更全面的评测平台，推动多模态隐私保护视觉研究。",
+      "llm_tldr": "情感分析是计算机视觉的基础任务，但传统RGB相机带来隐私风险，事件相机虽能降低身份泄露并适应复杂光照，现有事件方法却受限于数据规模小、采集条件简单和单一模态。本文构建了包含事件、音频与文本的三模态基准Emo-DVS，覆盖复杂真实场景下的隐私感知情感识别。该基准为事件相机情感分析提供了更全面的评测平台，推动多模态隐私保护视觉研究。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "visual recognition algorithms",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2609.11126v1",
+      "source": "arxiv",
+      "title": "Beyond Benchmarks: Using VLMs to Reveal Systematic Classification Failures Under Real World Conditions",
+      "abstract": "Verification and validation (V&V) of classification models is crucial to enable a wide range of sensor processing applications. Currently, the V&V process relies on time-consuming manual inspection of erroneous samples to find meaningful patterns. This work explores the use of Vision Language Models (VLMs) to speed up this laborious process. VLMs are trained to embed images into a semantically meaningful vector representation, from which human-interpretable systematic errors can be distilled. Deploying such VLM-based methods in a defence context introduces two major challenges: (1) the defence domain is underrepresented in the training data of VLMs, and (2) surroundings and context are less diverse than for other domains. This study provides an initial assessment of the suitability of VLM-based methods for V&V of defence applications. We propose a VLM-based error slice detection (ESD) method that independently groups and labels systematic errors made by a classification model. We demonstrate that this method is able to identify operationally-relevant artificially added perturbations in a non-military dataset. In a military context, our method clusters and describes images based on their surroundings, but also exhibits overlap between cluster descriptions. We further investigate the difference in embedding variation between our military and non-military dataset, which remains a topic of interest. Although the results do not yet warrant fully automated V&V through VLM-based ESD, they show that VLMs could be used to accelerate V&V processes in the future.",
+      "authors": [
+        "Dieuwertje Alblas",
+        "Alma M. Liezenga",
+        "Jan Erik van Woerden",
+        "Fedor Taggenbrock",
+        "Dalia Aljawaheri",
+        "Klamer Schutte"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI",
+        "cs.ET"
+      ],
+      "published": "2026-09-10T06:13:53+00:00",
+      "link": "https://arxiv.org/pdf/2609.11126v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Uses vision-language models to analyze classification model errors in real-world conditions",
+      "llm_evidence_cn": "利用视觉语言模型分析分类模型在真实条件下的系统误差",
+      "llm_evidence": "利用视觉语言模型分析分类模型在真实条件下的系统误差",
+      "canonical_evidence": "利用视觉语言模型分析分类模型在真实条件下的系统误差",
+      "llm_tldr_en": "Classification model verification relies on slow manual inspection of errors. This work uses vision-language models to embed images and distill human-interpretable systematic failure patterns, addressing defence-domain data gaps.",
+      "llm_tldr_cn": "分类模型的验证与确认依赖人工检查错误样本，耗时且难以发现规律。本文探索用视觉语言模型将图像嵌入语义向量空间，从而提取可解释的系统性分类失败模式。研究聚焦国防领域训练数据不足与场景多样性低两大挑战，表明VLM可加速V&V流程并揭示真实条件下的识别缺陷。该工作为视觉识别模型的可靠性评估提供了自动化新思路。",
+      "llm_tldr": "分类模型的验证与确认依赖人工检查错误样本，耗时且难以发现规律。本文探索用视觉语言模型将图像嵌入语义向量空间，从而提取可解释的系统性分类失败模式。研究聚焦国防领域训练数据不足与场景多样性低两大挑战，表明VLM可加速V&V流程并揭示真实条件下的识别缺陷。该工作为视觉识别模型的可靠性评估提供了自动化新思路。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "visual recognition algorithms",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.09610v1",
+      "source": "arxiv",
+      "title": "Marker-free eye-gaze estimation using a single image and depth from defocus",
+      "abstract": "This paper presents a marker-free eye-gaze estimation approach using a single 2D camera, such as an integrated laptop webcam. The gaze-related features are estimated from iris localization and head pose estimated by using depth from defocus. A variational Bayesian multinomial logistic regression framework is used as mapping from the estimated features to the position of regard, based on an 8-dimensional feature vector of head-pose and iris-displacement parameters. No external marker is needed. Experiments were conducted by estimating the gaze of people watching a computer screen at different distances and compared against five existing methods. The obtained scores demonstrate the effectiveness of the proposed approach.",
+      "authors": [
+        "David Hurtubise-Martin",
+        "Feriel Fass",
+        "Djemel Ziou",
+        "Marie-Flavie Auclair-Fortier"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-09T02:07:40+00:00",
+      "link": "https://arxiv.org/pdf/2609.09610v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "gaze-related feature extraction and mapping in a vision pipeline",
+      "llm_evidence_cn": "视觉流程中的注视特征提取与映射",
+      "llm_evidence": "视觉流程中的注视特征提取与映射",
+      "canonical_evidence": "视觉流程中的注视特征提取与映射",
+      "llm_tldr_en": "This work estimates eye gaze from a single 2D image without markers, deriving head pose via depth from defocus and iris features, then mapping an 8-dimensional feature vector to gaze position with variational Bayesian multinomial logistic regression, outperforming five methods.",
+      "llm_tldr_cn": "本文针对无标记眼动估计问题，提出仅使用单张二维相机图像（如笔记本摄像头）的方法。方法从虹膜定位与由散焦深度估计的头部姿态中提取注视相关特征，采用变分贝叶斯多项逻辑回归将八维头姿与虹膜位移特征映射到注视位置，无需外部标记。在不同距离观看屏幕的实验与五种现有方法对比中取得更优表现，验证了方法的有效性。",
+      "llm_tldr": "本文针对无标记眼动估计问题，提出仅使用单张二维相机图像（如笔记本摄像头）的方法。方法从虹膜定位与由散焦深度估计的头部姿态中提取注视相关特征，采用变分贝叶斯多项逻辑回归将八维头姿与虹膜位移特征映射到注视位置，无需外部标记。在不同距离观看屏幕的实验与五种现有方法对比中取得更优表现，验证了方法的有效性。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "feature extraction in computer vision",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}

@@ -41,17 +41,17 @@
 <section class="dpr-home-dashboard-card dpr-home-report-card">
   <div class="dpr-home-dashboard-header">
     <div>
-      <span class="dpr-home-dashboard-kicker">2026-09-11</span>
+      <span class="dpr-home-dashboard-kicker">2026-09-12</span>
       <h3 class="dpr-home-dashboard-title">今日汇总</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">共 16 篇</strong>
+    <strong class="dpr-home-dashboard-count">共 6 篇</strong>
   </div>
   <dl class="dpr-home-dashboard-stats">
     <div class="dpr-home-dashboard-stat"><dt>累计更新</dt><dd>1 次</dd></div>
-    <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>6</dd></div>
-    <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>10</dd></div>
+    <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>3</dd></div>
+    <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>3</dd></div>
   </dl>
-  <p class="dpr-home-dashboard-body">最近更新：2026-09-11 21:28:54 UTC<br>状态：成功</p>
+  <p class="dpr-home-dashboard-body">最近更新：2026-09-12 21:19:08 UTC<br>状态：成功</p>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-brief-card">
   <div class="dpr-home-dashboard-header">
@@ -62,9 +62,7 @@
     <strong class="dpr-home-dashboard-count">AI</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<p>今日日报成功收录16篇，精读6篇、速读10篇，两篇9.0分论文领跑。</p>
-<p>最值得看的是《Diffuse2Seg》用扩散模型做无监督分割，以及《Your Model Already Knows...》用软提示提升视觉语言模型少样本适配。</p>
-<p>普通读者可先精读这两篇9分论文，再速览主动感知、多尺度纹理识别与CLIP+DINO深伪检测方向。</p>
+<p>2026-09-12 日报精选 6 篇，精读医学语义对齐与车牌实时检测两项高分工作。最值得关注：结构化监督让视觉证据对齐医学语义，以及 YOLO Tiny+Haar 的云端实时车牌识别方案。普通读者可优先了解医学 AI 如何减少误判，并留意隐私友好的情绪识别新基准。</p>
   </div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-deep-card">
@@ -73,12 +71,12 @@
       <span class="dpr-home-dashboard-kicker">今日累计</span>
       <h3 class="dpr-home-dashboard-title">精读推荐</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">6 篇</strong>
+    <strong class="dpr-home-dashboard-count">3 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Diffuse2Seg: Diffusion Models Can Segment Anything Without Supervision">Diffuse2Seg: Diffusion Models Can Segment Anything Without Supervision</span></li><li><span class="dpr-home-dashboard-paper-title" title="Your Model Already Knows Don&#x27;t Teach It, Learn to Ask It: Soft Prompting for Few-Shot Adaptation of Vision-Language Models">Your Model Already Knows Don&#x27;t Teach It, Learn to Ask It: Soft Prompting for Few-Shot Adaptation of Vision-Language Models</span></li><li><span class="dpr-home-dashboard-paper-title" title="Phase-Aware Spatial-Frequency Fusion for Few-Shot Fine-Grained Image Classification">Phase-Aware Spatial-Frequency Fusion for Few-Shot Fine-Grained Image Classification</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Beyond Classification: Structured Supervision Aligns Visual Evidence with Medical Semantics">Beyond Classification: Structured Supervision Aligns Visual Evidence with Medical Semantics</span></li><li><span class="dpr-home-dashboard-paper-title" title="A Cloud-Based Hybrid Model for Real-Time Detection of BRTA-Approved Licence Plates Using YOLO Tiny and Haar Cascade">A Cloud-Based Hybrid Model for Real-Time Detection of BRTA-Approved Licence Plates Using YOLO Tiny and Haar Cascade</span></li><li><span class="dpr-home-dashboard-paper-title" title="BruNet: A Cross-Domain Transfer Framework for Bruise Segmentation">BruNet: A Cross-Domain Transfer Framework for Bruise Segmentation</span></li></ul>
   </div>
-  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">cv <strong>6</strong></span></div>
+  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">cv <strong>3</strong></span></div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-skim-card">
   <div class="dpr-home-dashboard-header">
@@ -86,12 +84,12 @@
       <span class="dpr-home-dashboard-kicker">今日累计</span>
       <h3 class="dpr-home-dashboard-title">速读推荐</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">10 篇</strong>
+    <strong class="dpr-home-dashboard-count">3 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Task-driven Processing with Coarse-to-Fine Glimpse-based Active Perception">Task-driven Processing with Coarse-to-Fine Glimpse-based Active Perception</span></li><li><span class="dpr-home-dashboard-paper-title" title="HiPerViT: A Hierarchical Perceiver-Vision Transformer Architecture for Multi-Scale Texture Recognition">HiPerViT: A Hierarchical Perceiver-Vision Transformer Architecture for Multi-Scale Texture Recognition</span></li><li><span class="dpr-home-dashboard-paper-title" title="Harnessing CLIP and DINO: An Uncertainty-Aware Cascaded Fusion Network for Generalizable Deepfake Image Detection">Harnessing CLIP and DINO: An Uncertainty-Aware Cascaded Fusion Network for Generalizable Deepfake Image Detection</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Emo-DVS: A Multimodal Benchmark for Privacy-Aware Emotion Recognition with Event Cameras">Emo-DVS: A Multimodal Benchmark for Privacy-Aware Emotion Recognition with Event Cameras</span></li><li><span class="dpr-home-dashboard-paper-title" title="Marker-free eye-gaze estimation using a single image and depth from defocus">Marker-free eye-gaze estimation using a single image and depth from defocus</span></li><li><span class="dpr-home-dashboard-paper-title" title="Beyond Benchmarks: Using VLMs to Reveal Systematic Classification Failures Under Real World Conditions">Beyond Benchmarks: Using VLMs to Reveal Systematic Classification Failures Under Real World Conditions</span></li></ul>
   </div>
-  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">cv <strong>10</strong></span></div>
+  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">cv <strong>3</strong></span></div>
 </section>
 </div>
 

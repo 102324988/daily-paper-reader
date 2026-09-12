@@ -1,0 +1,175 @@
+Title: A Cloud-Based Hybrid Model for Real-Time Detection of BRTA-Approved Licence Plates Using YOLO Tiny and Haar Cascade
+
+URL Source: https://arxiv.org/pdf/2609.06507v1
+
+Published Time: Wed, 09 Sep 2026 01:14:29 GMT
+
+Number of Pages: 6
+
+Markdown Content:
+# A Cloud-Based Hybrid Model for Real-Time Detection of BRTA-Approved Licence Plates Using YOLO Tiny and Haar Cascade 
+
+Debashis Kar Suvra 
+
+Institute of Appropriate Technology Bangladesh University of Engineering and Technology 
+
+Dhaka, Bangladesh 0421292001@iat.buet.ac.bd 
+
+Tahsina Farah Sanam 
+
+Institute of Appropriate Technology Bangladesh University of Engineering and Technology 
+
+Dhaka, Bangladesh tahsina@iat.buet.ac.bd 
+
+Abstract —Accurate vehicle license plate detection is essen-tial for applications such as intelligent transportation systems, toll collection, parking management, and law enforcement. In Bangladesh, this task presents distinct challenges due to the complexity of localized license plates and environmental factors like lighting, occlusion, motion blur, and obstructions such as dirt or mud. These challenges often render conventional methods ineffective. This paper introduces a novel hybrid approach, combining the YOLO Tiny deep learning model with the Haar-Cascade classifier, for enhanced detection and localization of Bengali license plates. A key innovation of our system is the integration of a dynamic retraining pipeline, which allows the model to adapt to evolving real-world conditions. This retraining mechanism significantly boosts performance in low-confidence scenarios by continuously improving the model’s accuracy as new data is encountered. Additionally, a publicly accessible dataset of BRTA-compliant license plates, captured under diverse and challenging conditions, has been developed to support this approach. Experimental results demonstrate that our approach not only achieves superior detection accuracy and computational efficiency over conventional models but also ensures consistent performance in resource-constrained environments, particularly in Bangladesh. 
+
+Index Terms —License plate recognition, BRTA-approved li-cense plates, Object detection, YOLO Tiny, Haar-Cascade, Com-puter vision. 
+
+I. I NTRODUCTION 
+
+Traditional license plate recognition (LPR) systems, de-signed primarily for recognizing English alphanumeric char-acters, face significant challenges when applied to region-specific standards [1]. The Bangladesh Road Transport Author-ity (BRTA) issues license plates incorporating Bengali script and unique designs in Bangladesh. These factors pose distinct challenges for conventional LPR systems, leading to frequent inaccuracies. Bengali script, known for its intricate characters and varying font styles, further complicates the recognition process, making it difficult for existing systems to perform effectively. Little is known about the impact of these variations on ex-isting recognition systems [2]. Most research relies on a single traditional approach [3], which struggles to address real-world complexities. In addition to inconsistent lighting, occlusions from surrounding objects, and motion blur from fast-moving vehicles, the non-uniformity in vehicle types and license plate formats compounds the difficulty of recognition systems [4], [5]. In practical deployments, these environmental and design factors severely impact detection accuracy, underscoring the need for robust, localized solutions tailored to the distinctive characteristics of Bengali license plates and the unique variety of vehicle To address these limitations, this paper introduces a hybrid approach that leverages the efficiency of YOLO Tiny v4, a deep learning-based object detection model, alongside the Haar-Cascade classifier for precise license plate localization. YOLO Tiny v4’s lightweight architecture [6] facilitates real-time vehicle detection under diverse conditions, including long-range scenarios. Our approach optimizes computational efficiency by uniquely integrating Haar-Cascade for precise license plate localization within detected vehicle bounding boxes. Combined with a dynamic retraining pipeline, this hybrid method represents a key innovation, particularly in its adaptability to complex, low-confidence scenarios, ensuring consistent detection accuracy in resource-limited contexts. This layered approach significantly enhances both speed and accuracy compared to applying either method independently. Most studies focus on either deep learning or traditional computer vision techniques [7], [8]. Still, these approaches struggle to handle the intricacies of Bengali characters and the environmental challenges commonly encountered in real-world conditions and adapting to changes. Moreover, many existing models require significant computational resources and on-ground infrastructure installations [9], making them impractical for real-time applications in resource-constrained environments like Bangladesh. In contrast, our system only requires an IP camera and a stable internet connection, making it a more feasible solution for real-time deployment in such environments. A notable gap in current research is the lack of adaptive sys-tems capable of continuously learning and improving [10]. Our dynamic retraining pipeline addresses this gap by enabling the model to automatically adapt to new conditions in real-time, arXiv:2609.06507v1 [cs.CV] 6 Sep 2026 retraining itself on data from low-confidence detections. This continuous learning mechanism ensures the system maintains high accuracy, even in rapidly changing environments. A major obstacle in Bengali license plate recognition is the lack of publicly available datasets, with most being limited in scope or inaccessible, significantly impeding research. Exist-ing systems are often unable to handle real-world challenges like variable lighting, fast-moving vehicles, and occluded plates, reducing their practical effectiveness. Furthermore, this study contributes a new public dataset tai-lored specifically for Bengali license plates, featuring images captured under varied real-world conditions, including diverse lighting and motion speeds. This dataset aims to facilitate future research and pave the way for more effective LPR systems in regions like Bangladesh. In conclusion, this paper not only addresses the technical challenges of recognizing BRTA-compliant Bengali license plates but also fills significant research gaps in the field of localized script recognition. By introducing a hybrid solution that combines YOLO Tiny v4 and Haar-Cascade, along with providing a publicly accessible dataset, this work lays the foundation for developing more efficient and accurate vehicle and license plate detection systems for complex, real-world environments. II. L ITERATURE REVIEW 
+
+Real-time object detection has witnessed remarkable ad-vancements in recent years, driven by integrating deep learning techniques. While traditional methods, such as Haar cascades and HOG(Histogram of Oriented Gradients), laid the foun-dation for early object detection systems, their limitations in handling complex scenes and multiple object classes paved the way for CNN-based approaches. Pioneering work intro-duced a robust framework for face detection using Haar-like features and AdaBoost, laying the foundation for subsequent research [11]. However, the introduction of CNNs marked a pivotal turning point in object detection, enabling significant progress in accuracy and speed [12]. Region-based CNNs (R-CNN) proposed, and their variants played a crucial role in achieving real-time object detection [13]. One-stage detectors, such as SSD [14] and YOLO [15], further accelerated the adoption of real-time object detection by achieving impressive speed and accuracy trade-offs. Recent advancements have been fueled by improvements in model architectures and the availability of large-scale annotated datasets. EfficientDet [16] has demonstrated remarkable efficiency and accuracy, while domain-tailored models like YOLOv4-tiny [17] underscore the adaptability of these systems. As the field continues to evolve, the balance between accuracy and computational efficiency remains a central challenge, driving ongoing innovations in this critical area of computer vision. Computer vision (CV) is a field of artificial intelligence (AI) that enables computers and machines to derive meaning-ful information from digital images and videos. It involves developing algorithms to automatically extract and analyze visual features from photos and videos, such as objects, faces, and scenes. CV has a wide range of applications, including image search, facial recognition, video surveillance, medical imaging, and robotics [18]. On the other hand, cloud computing is a model for enabling ubiquitous, convenient, on-demand network access to a shared pool of configurable computing resources (e.g., networks, servers, storage, appli-cations, and services) that can be rapidly provisioned and released with minimal management effort or service provider interaction [19]. Cloud computing offers several advantages for CV applications, including scalability, cost-effectiveness, and accessibility. CV applications can be very computation-ally demanding, especially when processing large volumes of images or videos. Cloud computing provides a scalable platform for CV applications, allowing users to access alarge pool of computing resources on demand. This makes it possible to scale CV applications up or down as needed without investing in and managing their own hardware and software infrastructure. Cloud computing can help to reduce the cost of developing and deploying CV applications. This is because cloud providers offer various pay-as-you-go pricing options, which can help businesses avoid the upfront costs of purchasing and maintaining hardware and software. III. P ROPOSED METHODOLOGY 
+
+This approach combines deep learning and machine learning to create an efficient and reliable Bengali license plate recog-nition system. Using transfer learning on pre-trained models, a hybrid method of YOLOv4-tiny for vehicle detection and Haar-Cascade for plate localization, and real-time video anal-ysis, we ensure robust performance across diverse conditions while maintaining computational efficiency for scalability. 
+
+A. Data Collection & Dataset Development 
+
+This study’s significant contribution is the creation of a custom dataset comprising both images and videos of vehi-cles displaying BRTA-compliant license plates, addressing the scarcity of Bengali license plate datasets. Assembling this data presented challenges due to the limited availability of such datasets. High-quality videos were captured using a Cruiser SE+ 4MP IP camera installed at the main gate of the Institute of Appropriate Technology (IAT) at the Bangladesh University of Engineering and Technology (BUET). The camera was positioned at an optimal height of 1.5 meters with a 6mm focal length, ensuring a clear view of passing vehicles. In addition to the fixed camera, supplementary images were collected using a mobile phone. Throughout the data collection process, ethical guidelines were strictly adhered to, ensuring both privacy and legal compliance, enhancing the dataset’s reliability and the trustworthiness of our system. 
+
+1) Diverse Lighting Conditions and Weather Variations: 
+
+Videos in the dataset were captured under varying lighting conditions, including bright sunlight, moderate daylight, and low-light night scenes. This diversity ensures that the model maintains robustness and accuracy across different lighting environments, whether during the day or at night. Additionally, images captured in various weather conditions, such as clear skies and rain, further provide comprehensive testing for the model’s performance in real-world scenarios. 
+
+2) Diverse Vehicle Types: The dataset includes images of different vehicle types commonly seen on Bangladeshi roads, such as cars, motorcycles, auto-rickshaws, vans, and buses. This variation ensures that the model generalizes well across different vehicle classes, broadening its applicability on diverse road conditions. 
+
+B. YOLOv4 tiny for Vehicle Detection 
+
+For vehicle detection, the system employs the YOLOv4-tiny model, pre-trained on the MS COCO dataset, which contains a wide range of object classes, including vehicles. The model efficiently detects objects in real time by predicting bounding boxes and confidence scores for each grid cell. A confidence threshold filters out low-confidence detections, ensuring reliable results during object detection For each grid cell, YOLOv4-tiny predicts bounding boxes with their coordinates ( x, y, w, h ) and confidence scores ( C): 
+
+B = ( x, y, w, h, C )
+
+Where:  
+
+> •
+
+(x, y ) are the center coordinates of the bounding box relative to the grid cell,  
+
+> •
+
+(w, h ) are the width and height of the bounding box,  
+
+> •
+
+C is the confidence score indicating the probability of the box containing an object. 
+
+P (class |B) = exp( B · Wc)
+
+PNi=1 exp( B · Wi)
+
+Where:  
+
+> •
+
+P (class |B) is the probability of the bounding box con-taining a particular class,  
+
+> •
+
+B is the concatenation of bounding box coordinates and confidence score,  
+
+> •
+
+Wc is the weight vector for the class c, 
+
+> •
+
+N is the total number of classes. A confidence score threshold is applied during post-processing, and bounding boxes with confidence scores below this threshold are discarded. This helps filter out specific detections. 
+
+C. Haar-Cascade for License Plate Localization 
+
+The Haar Cascade Classifier [20] is a machine-learning object detection method used for license plate detection. It is a pre-trained model [21] generated from a dataset containing positive and negative samples. Positive samples consist of annotated license plate regions of BRTA-aligned license plates from all over Bangladesh, while negative samples represent areas without license plates. The classifier undergoes training to learn patterns that distinguish between the positive and negative samples. Mathematically, the training process involves optimizing a set of weights and thresholds in the classifier. Let’s denote the positive samples as P and the negative samples as N . For each feature in the Haar-like feature set, the classifier learns a weight ( w) and a threshold ( t). The final decision function can be represented as: 
+
+H(x, y ) = X
+
+> i
+
+wi · fi(x, y ) − t
+
+Where:  
+
+> •
+
+H(x, y ) is the decision function,  
+
+> •
+
+wi is the weight for feature i, 
+
+> •
+
+fi(x, y ) is the value of feature i at position (x, y ), 
+
+> •
+
+t is the threshold. During training, the weights and thresholds are adjusted to minimize classification errors, effectively discriminating between positive and negative samples [21]. For Haar-like features, each feature is a simple rectangular filter, and the value of the feature is the difference between the sum of pixel intensities in the white and black rectangles. The selection and arrangement of these features contribute to the classifier’s ability to recognize specific patterns, such as those found in license plates. After successfully detecting the license plate, our tech-nology meticulously checks the data to ensure the utmost confidence and accuracy before saving it for storage. The system examines the confidence rates associated with the recognized license plates when a vehicle is spotted. It chooses the highest confidence rate which is more than 80%, ensuring the recorded data is as accurate and dependable as possible. 
+
+D. Fine Tuning, Transfer learning & Hybrid Approach 
+
+The pretraining process begins with a YOLOv4-Tiny model that has been trained on a large dataset. In this model, the earlier layers—responsible for feature extraction (e.g., detecting edges, textures, and shapes) are retained during the transfer learning process [22]. The final layers, specifically the detection head layers, which include the output layer responsible for predicting bounding boxes [23], object classes, and confidence scores, are fine-tuned using a custom dataset of Bengali license plates. During transfer learning, only the detection head layers are retrained using our dataset, allowing the model to spe-cialize in identifying Bengali license plates under real-world conditions. The early layers remain frozen to preserve their learned features, ensuring computational efficiency. Anchors were carefully selected based on the aspect ratio of license plates, and we used a batch size of 16, which was suitable given the memory limitations of our hardware. The learning rate was set to 0.001 to balance convergence speed and stability. Training began with pre-trained weights, leveraging the knowledge from existing datasets while adapting the model to the unique characteristics of Bengali script and varying environmental conditions. 
+
+1) Efficiency Strategies: This dynamic approach adapts to varying scenarios, focusing computational resources on regions where vehicles are closer to the camera around 1 meter or more. It ensures that only relevant regions undergo Low confidence vehicle data    
+
+> (60-79)% captured by
+> YOLO
+> Preprocessing and data
+> augmentation
+> Model retraining : transfer
+> learning
+> Performance evaluation and
+> model validation
+> Model versioning and rollback
+> mechanism Fig. 1. Model retraining pipeline
+> Fig. 2. Detection of BRTA-approved license plate using hybrid model
+
+subsequent processing, mitigating unnecessary computations on distant or irrelevant objects. This adaptability increases accuracy, particularly in scenarios with varying distances between the camera and detected vehicles. After YOLOv4 efficiently identifies and localizes vehicles in the entire frame, the subsequent processing for license plate recognition is con-centrated solely on the extracted ROI. This targeted application of computational resources is defined by: 
+
+RProcessed = {Bi | Bi ∈ RROI }
+
+Computational resources are conserved by employing YOLOv4 for initial vehicle detection and restricting subse-quent processing to the ROI. This approach optimizes pro-cessing speed and minimizes the likelihood of false positives in license plate recognition. The result is a more resource-efficient system with enhanced responsiveness. 
+
+2) Cascade Approach and Elimination of Irrelevant Re-gions: The cascade approach involving YOLOv4 followed by the Haar-cascade-based License Plate detector ensures a sequential and targeted examination of the video frame. This process avoids unnecessary computations on irrelevant regions, contributing to increased accuracy in Bangla license plate detection. A hierarchical processing approach is applied, where YOLOv4 performs broad vehicle detection, followed by the Haar Cascade focusing on license plates. This sequential approach ensures accurate detection without unnecessary com-putation, boosting system performance. 
+
+E. System Integration and Performance Evaluation 
+
+To establish a scalable and efficient testing environment, we utilized cloud technology. A Flask server was deployed on a cloud platform to host our hybrid model, providing a flexible and accessible interface for real-time testing. Real-time video streams were ingested using the Real-Time Streaming Protocol (RTSP), simulating live traffic scenarios and allowing for comprehensive evaluation of the model’s performance. Upon receiving a video frame, the YOLOv4 Tiny model was employed to detect vehicles within the scene. Once a vehicle was successfully identified, the Haar-Cascade classifier was activated as a ”wake-up” mechanism to focus on the region of interest. The Haar-Cascade classifier was then used to localize the BRTA-aligned license plate within the detected vehicle region. The final output of the system consisted of the detected vehicle and its corresponding license plate. This testing setup provided a robust and scalable environ-ment for evaluating the performance of our hybrid model in a real-world context. IV. E XPERIMENTAL STUDY 
+
+In this section, we present the experimental evaluation of the proposed hybrid approach, combining YOLO Tiny v4 and the Haar-Cascade classifier for license plate detection and recognition. The performance metrics evaluated include precision, recall, F1 score, accuracy, and frames per second (FPS). We also assessed the impact of various data augmen-tation techniques. The experiments used a dataset of BRTA-compliant Bengali license plates, captured under real-world conditions with challenges like varying lighting, occlusions, and vehicle motion. 
+
+A. Experimental Setup 
+
+In developing our method, we prioritized real-time infer-ence speed while ensuring accessibility for a wider audience. While some approaches, such as [24] emphasize high-speed processing using powerful GPUs like the NVIDIA Titan XP, these resources are often out of reach for many. To replicate real-world deployment conditions and ensure accurate perfor-mance metrics, we conducted all experiments within the AMD Ryzen Setup (ARS). ARS features an AMD Ryzen 3 2200G processor with Radeon Vega Graphics, operating at 3.50 GHz, equipped with 16GB of RAM. Ubuntu 22.04 LTS, a stable and widely used Linux distribution, was selected as the operating system to ensure compatibility. We collected data using a Dahua IMOU CRUISER SE+4MP IP camera with a 20 Mbps TABLE I PERFORMANCE METRICS OF HYBRID MODEL WITH DATA AUGMENTATION TECHNIQUES                               
+
+> Data Augmentation Technique Precision (%) Recall (%) F1 Score (%) Accuracy (%) FPS
+> No Data Augmentation 76 74 75 72 10 Scaling 80 78 79 76 19 Contrast Adjustment 75 72 73 69 18 Dynamic Range Enhancement 82 80 81 78 16 Noise Reduction 79 77 78 75 15
+
+internet connection. Test videos were preprocessed to a stan-dardized resolution of 464x464 pixels for consistent inference times and performance comparisons. Initial experiments were conducted in the AMD Ryzen Setup (ARS) to ensure real-time inference speed, followed by a cloud-based deployment using a Flask server for scalable real-world testing. Real-time video streams were processed through RTSP for both environments to ensure consistency. The hybrid model, using pre-trained weights and config-urations, was tested with live footage from a Dahua IMOU CRUISER SE+4MP IP camera streaming via RTSP. A confi-dence threshold of 0.8 ensured reliable vehicle detection, while a 0.1 non-maximum suppression threshold reduced redundant bounding boxes for accurate results [21], [25]. For license plate detection, the application employs a Haar Cascade classifier with a scaling factor of 1.05, a minimum of 5 neighbors, and a minimum plate size of (60, 80) pixels. The processed frames are streamed through a Flask web server. 
+
+1) Data Augmentation Techniques: Data augmentation plays a crucial role in improving the robustness and general-ization of machine learning models [26]. Table I demonstrates the effects of various augmentation techniques on the per-formance metrics of a hybrid model. Techniques like scaling adjust image dimensions, contrast adjustment modifies lighting variations, and dynamic range enhancement improves visibility under different lighting conditions. Noise reduction further refines the signal by minimizing unwanted variations. These strategies significantly impact precision, recall, F1 score, accu-racy, and FPS, underscoring their importance in enhancing the model’s performance for tasks like license plate recognition. 
+
+B. Result and Comparative Discussion 
+
+In the experimental evaluation, we used the YOLOv4-Tiny model, pre-trained on the MS COCO dataset for vehicle detection. Due to the limited size of our dataset, only the final layers for bounding box prediction and classification were fine-tuned, while the pre-trained layers for feature extraction were kept frozen to retain general detection capabilities. As shown in Table I, the performance metrics of the hybrid model with various data augmentation techniques demonstrate significant improvements in precision, recall, F1 score, accu-racy, and frames per second (FPS). The fine-tuning focused on improving performance under specific conditions like lighting variations and occlusions. Although our dataset was insuffi-cient for full retraining, this selective adjustment enhanced the model’s adaptation to localized challenges. The hybrid model was tested with live RTSP streams, ensuring real-time performance while balancing computational efficiency and accuracy. The performance metrics of the license plate recognition models are summarized in Table II, highlighting the precision, recall, F1 score, accuracy, and frames per second (FPS) for each model. Figure 3 illustrates the performance analysis for models with and without data augmentation tech-niques.  
+
+> Fig. 3. The performance analysis for models with and without data augmen-tation techniques
+
+V. C ONCLUSION 
+
+This study introduces a novel hybrid approach to tackle the challenges of detecting and recognizing BRTA-compliant Bengali license plates, which are unique due to their script and diverse environmental conditions. By integrating the speed and efficiency of YOLO Tiny v4 for vehicle detection with the precision of the Haar-Cascade classifier for license plate localization, the proposed system significantly improves per-formance over traditional methods. The model achieved high accuracy, with a precision of 94%, recall of 93%, and an F1 score of 93%, demonstrating its effectiveness in real-world applications. Our solution addresses the specific challenges of recognizing Bengali scripts in varied environmental condi-tions, such as lighting and motion blur, making it well-suited for resource-constrained real-time applications. A key contri-bution of our system is the integration of a dynamic retraining pipeline, which allows the model to continuously adapt to changing conditions, significantly improving performance in low-confidence detection scenarios. TABLE II PERFORMANCE METRICS OF LICENSE PLATE RECOGNITION MODELS 
+
+Model Precision (%) Recall (%) F1 Score (%) Accuracy (%) FPS 
+
+YOLO Tiny v4 93 91 92 89 40 Haar-Cascade 75 70 73 70 19 YOLO Tiny v4 + Cascade (Hybrid) 94 93 93 91 30 
+
+In addition, the use of data augmentation techniques, par-ticularly dynamic range enhancement, further strengthened the model’s resilience to challenging conditions such as lighting variations and occlusions. This improvement ensures the sys-tem’s reliability in real-world deployments, where traditional methods often struggle. The creation of a dedicated public dataset for Bengali license plates also contributes to advancing the field, providing a valuable resource for further research in non-Latin script recognition. In summary, the hybrid framework enhances both the accu-racy and computational efficiency of license plate detection and recognition, offering a robust solution tailored to the specific needs of regions like Bangladesh. This work lays the groundwork for future research in developing even more advanced systems by integrating additional deep learning techniques and refining data augmentation strategies, ensuring adaptability and performance in diverse and complex environ-ments. REFERENCES [1] N. T. Cam, D. T. N. Tram, and D. Nguyen, “Vehicle license plates recognition using object detection and classification algorithms,” in 
+
+International Conference on Intelligent Computing & Optimization .Springer, 2023, pp. 244–252. [2] H. Shi and D. Zhao, “License plate recognition system based on improved yolov5 and gru,” IEEE Access , vol. 11, pp. 10 429–10 439, 2023. [3] M. A. Islam, G. M. Chowdhury, and M. N. M. Haque, “Bangla license plate detection, recognition and authentication with morphological pro-cess and template matching,” in 2021 2nd International Conference for Emerging Technology (INCET) , 2021, pp. 1–6. [4] R. Rahman, A. F. Rakib, M. Rahman, T. Helaly, and T. S. Pias, “A real-time end-to-end bangladeshi license plate detection and recognition system for all situations including challenging environmental scenarios,” in 2021 5th International Conference on Electrical Engineering and Information Communication Technology (ICEEICT) , 2021, pp. 1–6. [5] M. R. Chowdhury, M. M. Shahriar, E. J. Meem, S. Hossain, and M. G. Rabiul Alam, “Bengali license plate recognition from noisy video footage using deep learning,” in 2021 IEEE 12th Annual Information Technology, Electronics and Mobile Communication Conference (IEM-CON) , 2021, pp. 0169–0175. [6] G. Wang, H. Ding, Z. Yang, B. Li, Y. Wang, and L. Bao, “Trc-yolo: A real-time detection method for lightweight targets based on mobile devices,” IET Computer Vision , vol. 16, no. 2, pp. 126–142, 2022. [7] M. Pias, A. K. Mutasim, and M. A. Amin, “Bangladeshi number plate detection: Cascade learning vs. deep learning,” in Proceedings of the 15th International Workshop on Content-Based Multimedia Indexing ,2017, pp. 1–6. [8] U. Saha, I. U. Ahamed, and M. I. Hossain, “Yolov8 for bangla license plate recognition: Advancing real-time object detection in localized contexts,” in 2024 7th International Conference on Informatics and Computational Sciences (ICICoS) , 2024, pp. 413–418. [9] M. Amzad Hossain, I. A. Suvo, A. Ray, M. Ariful Islam Malik, and M. Mridha, “Number plate recognition system for vehicles using machine learning approach,” in International Conference on Innovative Computing and Communications: Proceedings of ICICC 2020, Volume 2. Springer, 2021, pp. 799–814. [10] M. S. Rahman, M. Z. Hassan, S. N. Hossain, N. Masrur, and J. Rabbi, “Bangladeshi local vehicle recognition with a comprehensive dataset using transfer learning techniques,” in 2022 4th International Conference on Sustainable Technologies for Industry 4.0 (STI) , 2022, pp. 1–6. [11] P. Viola and M. Jones, “Rapid object detection using a boosted cascade of simple features,” in Proceedings of the 2001 IEEE computer society conference on computer vision and pattern recognition. CVPR 2001 ,vol. 1. Ieee, 2001, pp. I–I. [12] A. Krizhevsky, I. Sutskever, and G. E. Hinton, “Imagenet classification with deep convolutional neural networks,” Advances in neural informa-tion processing systems , vol. 25, 2012. [13] R. Girshick, J. Donahue, T. Darrell, and J. Malik, “Rich feature hierarchies for accurate object detection and semantic segmentation,” in Proceedings of the IEEE conference on computer vision and pattern recognition , 2014, pp. 580–587. [14] W. Liu, D. Anguelov, D. Erhan, C. Szegedy, S. Reed, C.-Y. Fu, and A. C. Berg, “Ssd: Single shot multibox detector,” in Computer Vision– ECCV 2016: 14th European Conference, Amsterdam, The Netherlands, October 11–14, 2016, Proceedings, Part I 14 . Springer, 2016, pp. 21–37. [15] J. Redmon, S. Divvala, R. Girshick, and A. Farhadi, “You only look once: Unified, real-time object detection,” in Proceedings of the IEEE conference on computer vision and pattern recognition , 2016, pp. 779– 788. [16] M. Tan, R. Pang, and Q. V. Le, “Efficientdet: Scalable and efficient object detection,” in Proceedings of the IEEE/CVF conference on computer vision and pattern recognition , 2020, pp. 10 781–10 790. [17] A. Bochkovskiy, C.-Y. Wang, and H.-Y. M. Liao, “Yolov4: Op-timal speed and accuracy of object detection,” arXiv preprint arXiv:2004.10934 , 2020. [18] M.-H. Guo, T.-X. Xu, J.-J. Liu, Z.-N. Liu, P.-T. Jiang, T.-J. Mu, S.-H. Zhang, R. R. Martin, M.-M. Cheng, and S.-M. Hu, “Attention mechanisms in computer vision: A survey,” Computational visual media ,vol. 8, no. 3, pp. 331–368, 2022. [19] H. Cloud, “The nist definition of cloud computing,” National Institute of Science and Technology, Special Publication , vol. 800, no. 2011, p. 145, 2011. [20] OpenCV. Cascade classifier - opencv documentation. [Online]. Available: https://docs.opencv.org/3.4/db/d28/tutorial cascade classifier. html [21] A. Ashrafee, A. M. Khan, M. S. Irbaz, A. Nasim, and M. Abdullah, “Real-time bangla license plate recognition system for low resource video-based applications,” in Proceedings of the IEEE/CVF Winter Conference on Applications of Computer Vision , 2022, pp. 479–488. [22] D. P. Carrasco, H. A. Rashwan, M. ´ A. Garc´ ıa, and D. Puig, “T-yolo: Tiny vehicle detection based on yolo and multi-scale convolutional neural networks,” Ieee Access , vol. 11, pp. 22 430–22 440, 2021. [23] H. Feng, G. Mu, S. Zhong, P. Zhang, and T. Yuan, “Benchmark analysis of yolo performance on edge intelligence devices,” Cryptography , vol. 6, no. 2, p. 16, 2022. [24] R. Laroca, E. Severo, L. A. Zanlorensi, L. S. Oliveira, G. R. Gonc ¸alves, W. R. Schwartz, and D. Menotti, “A robust real-time automatic license plate recognition based on the yolo detector,” in 2018 international joint conference on neural networks (ijcnn) . IEEE, 2018, pp. 1–10. [25] OpenVINO Toolkit, “Open Model Zoo.” [Online]. Available: https: //github.com/openvinotoolkit/open model zoo [26] K. Maharana, S. Mondal, and B. Nemade, “A review: Data pre-processing and data augmentation techniques,” Global Transitions Pro-ceedings , vol. 3, no. 1, pp. 91–99, 2022.

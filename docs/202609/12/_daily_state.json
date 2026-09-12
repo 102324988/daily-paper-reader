@@ -1,0 +1,105 @@
+{
+  "date": "20260912",
+  "date_label": "",
+  "generated_at": "2026-09-12 21:19:08 UTC",
+  "recommend_exists": true,
+  "run_count": 1,
+  "papers": [
+    {
+      "paper_id": "2609.05937v1",
+      "route": "202609/12/2609.05937v1-beyond-classification-structured-supervision-aligns-visual-evidence-with-medical-semantics",
+      "title": "Beyond Classification: Structured Supervision Aligns Visual Evidence with Medical Semantics",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "结构化监督对齐医学视觉识别中的视觉证据",
+      "first_seen_at": "2026-09-12 21:19:08 UTC",
+      "updated_at": "2026-09-12 21:19:08 UTC"
+    },
+    {
+      "paper_id": "2609.06507v1",
+      "route": "202609/12/2609.06507v1-a-cloud-based-hybrid-model-for-real-time-detection-of-brta-approved-licence-plates-using-yolo-tiny-and-haar-cascade",
+      "title": "A Cloud-Based Hybrid Model for Real-Time Detection of BRTA-Approved Licence Plates Using YOLO Tiny and Haar Cascade",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "结合YOLO Tiny与Haar级联的实时车牌检测混合模型",
+      "first_seen_at": "2026-09-12 21:19:08 UTC",
+      "updated_at": "2026-09-12 21:19:08 UTC"
+    },
+    {
+      "paper_id": "2609.11463v1",
+      "route": "202609/12/2609.11463v1-brunet-a-cross-domain-transfer-framework-for-bruise-segmentation",
+      "title": "BruNet: A Cross-Domain Transfer Framework for Bruise Segmentation",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "结合ViT编码器与SAM掩码解码器的瘀伤图像分割框架",
+      "first_seen_at": "2026-09-12 21:19:08 UTC",
+      "updated_at": "2026-09-12 21:19:08 UTC"
+    },
+    {
+      "paper_id": "2609.06928v1",
+      "route": "202609/12/2609.06928v1-emo-dvs-a-multimodal-benchmark-for-privacy-aware-emotion-recognition-with-event-cameras",
+      "title": "Emo-DVS: A Multimodal Benchmark for Privacy-Aware Emotion Recognition with Event Cameras",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "基于事件相机的隐私保护情感识别基准",
+      "first_seen_at": "2026-09-12 21:19:08 UTC",
+      "updated_at": "2026-09-12 21:19:08 UTC"
+    },
+    {
+      "paper_id": "2609.09610v1",
+      "route": "202609/12/2609.09610v1-marker-free-eye-gaze-estimation-using-a-single-image-and-depth-from-defocus",
+      "title": "Marker-free eye-gaze estimation using a single image and depth from defocus",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "视觉流程中的注视特征提取与映射",
+      "first_seen_at": "2026-09-12 21:19:08 UTC",
+      "updated_at": "2026-09-12 21:19:08 UTC"
+    },
+    {
+      "paper_id": "2609.11126v1",
+      "route": "202609/12/2609.11126v1-beyond-benchmarks-using-vlms-to-reveal-systematic-classification-failures-under-real-world-conditions",
+      "title": "Beyond Benchmarks: Using VLMs to Reveal Systematic Classification Failures Under Real World Conditions",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "利用视觉语言模型分析分类模型在真实条件下的系统误差",
+      "first_seen_at": "2026-09-12 21:19:08 UTC",
+      "updated_at": "2026-09-12 21:19:08 UTC"
+    }
+  ]
+}
