@@ -1,0 +1,444 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-09-13T21:53:03.595330+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 3,
+    "deep_cap": 6,
+    "deep_selected": 3,
+    "quick_candidates": 8,
+    "quick_skim_target": 11,
+    "quick_selected": 8
+  },
+  "deep_dive": [
+    {
+      "id": "2609.07072v1",
+      "source": "arxiv",
+      "title": "Detect Anything in Graphic Design: Element-Level Rewards for Autoregressive Detection",
+      "abstract": "Graphic designs, such as posters, advertisements, and infographics, are an important medium for communicating information and shaping understanding. Unlike natural images, they consist of layered elements with explicit compositional order. However, existing object detection models treat these elements as an unordered set, leaving compositional order unexploited. To address this limitation, we present Detect Anything in Graphic Design (DAD), a model that formulates graphic design detection as compositional deconstruction. It decodes elements in compositional order, using lower-layer elements to better detect higher-layer ones. The key feature of DAD is amodal detection, which predicts the full bounding box of each element, including regions occluded by elements placed above it. Building on this formulation, we propose Element Relative Policy Optimization (EleRPO), which extends GRPO from sequence-level supervision to element-level optimization. EleRPO provides fine-grained training signals that capture how each detected element contributes to overall detection quality, and works synergistically with compositional order to improve detection performance. To support training and evaluation, we build a dataset of 10 million graphic designs. Experiments show that DAD outperforms all baselines and achieves human-level performance in amodal detection, supporting effective image-to-layer decomposition. EleRPO consistently improves over GRPO across nine detection benchmarks.",
+      "authors": [
+        "Jiangning Zhu",
+        "Bowen Li",
+        "Shenyu Qiao",
+        "Yima Gu",
+        "Zhao Zhang",
+        "Yuhui Yuan",
+        "Shixia Liu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.LG"
+      ],
+      "published": "2026-09-07T06:01:07+00:00",
+      "link": "https://arxiv.org/pdf/2609.07072v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "formulates graphic design detection as compositional object detection",
+      "llm_evidence_cn": "将平面设计元素检测建模为目标检测任务",
+      "llm_evidence": "将平面设计元素检测建模为目标检测任务",
+      "canonical_evidence": "将平面设计元素检测建模为目标检测任务",
+      "llm_tldr_en": "Existing object detectors treat graphic design elements as an unordered set, ignoring compositional order. DAD reformulates detection as compositional deconstruction with amodal box prediction, decoding lower layers first to aid higher-layer detection.",
+      "llm_tldr_cn": "现有目标检测模型把平面设计中的元素当作无序集合处理，忽略了其显式的层次组合顺序，导致检测效果受限。本文提出DAD模型，将平面设计检测重新表述为按组合顺序逐层解构的过程，用下层元素辅助上层元素检测，并引入非模态检测以预测元素完整边界框。该工作拓展了目标检测在结构化设计图像上的适用性。",
+      "llm_tldr": "现有目标检测模型把平面设计中的元素当作无序集合处理，忽略了其显式的层次组合顺序，导致检测效果受限。本文提出DAD模型，将平面设计检测重新表述为按组合顺序逐层解构的过程，用下层元素辅助上层元素检测，并引入非模态检测以预测元素完整边界框。该工作拓展了目标检测在结构化设计图像上的适用性。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "object detection methods",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2609.05959v1",
+      "source": "arxiv",
+      "title": "FineHOI: Part-Aware Dense Representations for Zero-Shot Human-Object Interaction Detection",
+      "abstract": "Human-Object Interaction (HOI) detection aims to localize humans and objects in images and classify their interactions. Zero-shot HOI focuses on recognizing interactions that are not observed during training, requiring models to generalize beyond seen verb-object compositions. Recent approaches leverage Vision-Language Models (VLMs), benefiting from rich semantic representations. However, they often rely on global or detector-centric features that compress interaction cues and hinder fine-grained spatial reasoning. To overcome this limitation, we propose FineHOI, a zero-shot HOI framework that explicitly models interactions from dense patch-level features. Our approach is motivated by the observation that human-object interactions are defined by localized spatial relationships, which are not preserved by global and detector-centric representations. To this end, we introduce an Adaptive Part-Level Attention module that decomposes humans and objects into semantically coherent parts via unsupervised clustering, and re-weights them based on their interaction relevance. These representations are then integrated through a Region-Aware Interaction Transformer that integrates part-aware and global features and produces the final HOI embedding. Extensive experiments demonstrate that FineHOI consistently outperforms existing zero-shot HOI methods, achieving particularly strong gains on unseen interactions. Code is available at https://github.com/francescotonini/fine-hoi.",
+      "authors": [
+        "Francesco Tonini",
+        "Lorenzo Vaquero",
+        "Mohammad Mahdi Derakhshani",
+        "Cees Snoek",
+        "Elisa Ricci",
+        "Cigdem Beyan"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-05T07:53:11+00:00",
+      "link": "https://arxiv.org/pdf/2609.05959v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "human-object interaction detection, an object detection task",
+      "llm_evidence_cn": "人-物交互检测，属目标检测任务",
+      "llm_evidence": "人-物交互检测，属目标检测任务",
+      "canonical_evidence": "人-物交互检测，属目标检测任务",
+      "llm_tldr_en": "Proposes FineHOI, a zero-shot human-object interaction detection framework that models interactions from dense patch-level features instead of global or detector-centric features, improving fine-grained spatial reasoning on unseen verb-object compositions.",
+      "llm_tldr_cn": "论文聚焦零样本人-物交互检测，需泛化到训练中未见的动词-物体组合，而现有基于视觉语言模型的方法依赖全局或检测器中心特征，压缩了交互线索并削弱细粒度空间推理。作者提出FineHOI框架，基于密集的patch级特征显式建模人-物交互，以保留更精细的空间关系。实验表明该方法在零样本HOI检测上取得改进。其贡献在于说明密集部件级表示能有效提升未见交互组合的识别泛化能力。",
+      "llm_tldr": "论文聚焦零样本人-物交互检测，需泛化到训练中未见的动词-物体组合，而现有基于视觉语言模型的方法依赖全局或检测器中心特征，压缩了交互线索并削弱细粒度空间推理。作者提出FineHOI框架，基于密集的patch级特征显式建模人-物交互，以保留更精细的空间关系。实验表明该方法在零样本HOI检测上取得改进。其贡献在于说明密集部件级表示能有效提升未见交互组合的识别泛化能力。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "object detection methods",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2609.07738v1",
+      "source": "arxiv",
+      "title": "TFTrack: A Template-Free Framework for Efficient 3D Point Cloud Tracking",
+      "abstract": "LiDAR-based 3D Single Object Tracking (3D SOT) is critical for robotic perception and navigation and aims to localize dynamic objects across frames in sparse point clouds. Existing methods, rooted in the Siamese tracking paradigm from 2D vision, rely on costly dual-input designs and excessive motion modeling guided by template priors, hindering their efficiency. Our in-depth analysis reveals: (i) the template paradigm is redundant, as the previous bounding box center encodes sufficient historical context; (ii) complex motion modeling is unnecessary, as geometric alignment provides adequate motion priors. Based on the above findings, we propose the first Template-Free Tracking framework (TFTrack). The novel framework eliminates the need for template-search pairings and operates directly on the current frame guided solely by the prior bounding box center and size. We instantiate this paradigm into three variants: TFTrack-Voxel, TFTrack-Pillar, and TFTrack-Point, to explore different 3D representations under a unified framework, ensuring flexibility across sparse and dense scenes. Extensive experiments on KITTI and nuScenes benchmarks show that TFTrack is competitive with leading template-based trackers, while reducing FLOPs by approximately 50% and running at approximately 120 FPS. By simplifying overcomplicated motion-centric designs, TFTrack establishes a new minimalist paradigm for efficient 3D point cloud tracking, paving the way for real-time and resource-efficient deployment in embedded robotic systems, such as autonomous vehicles. The code is available at https://github.com/tftrack-anonymous/TFTrack/tree/main.",
+      "authors": [
+        "Zhaofeng Hu",
+        "Sifan Zhou",
+        "Jiahao Nie",
+        "Ziyu Zhao",
+        "Weizi Li",
+        "Ci-jyun Liang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-09-07T16:43:18+00:00",
+      "link": "https://arxiv.org/pdf/2609.07738v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "template-free 3D point cloud single object tracking",
+      "llm_evidence_cn": "无模板的三维点云单目标跟踪",
+      "llm_evidence": "无模板的三维点云单目标跟踪",
+      "canonical_evidence": "无模板的三维点云单目标跟踪",
+      "llm_tldr_en": "TFTrack is a template-free framework for 3D LiDAR single object tracking, showing that the previous box center and geometric alignment suffice, removing costly dual-input designs.",
+      "llm_tldr_cn": "针对LiDAR三维单目标跟踪沿用二维孪生范式、依赖昂贵双输入设计与模板先验运动建模导致效率低的问题，本文分析发现模板范式冗余且复杂运动建模非必要，提出首个无模板跟踪框架TFTrack。方法利用前一帧边界框中心编码历史上下文，并以几何对齐提供运动先验，去除模板输入。实验表明该框架在保持跟踪精度的同时显著提升效率，为机器人感知中的三维跟踪提供轻量方案。",
+      "llm_tldr": "针对LiDAR三维单目标跟踪沿用二维孪生范式、依赖昂贵双输入设计与模板先验运动建模导致效率低的问题，本文分析发现模板范式冗余且复杂运动建模非必要，提出首个无模板跟踪框架TFTrack。方法利用前一帧边界框中心编码历史上下文，并以几何对齐提供运动先验，去除模板输入。实验表明该框架在保持跟踪精度的同时显著提升效率，为机器人感知中的三维跟踪提供轻量方案。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "visual tracking surveys",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2609.10855v1",
+      "source": "arxiv",
+      "title": "Evaluation of Vision-Language Models Across Diverse Coastal Environments",
+      "abstract": "Vision-language models (VLMs) enable robotic per- ception by associating visual observations with natural-language concepts. Yet their performance in coastal environments remains largely unexplored. We introduce a densely labeled coastal dataset containing more than 1,000 images collected across seven missions in three regions of Oahu, Hawaii, with 18 semantic classes and over 7,400 annotated instances. We evaluate seven modern VLMs through three complementary experiments mea- suring text-to-mask, mask-to-mask, and mask-to-text alignment. Broad landscape classes are generally recognized more accurately than conventional object and coastal classes, with coastal con- cepts presenting the greatest challenge. However, comparisons of shared conventional classes across coastal and terrestrial datasets reveal no consistent performance difference attributable solely to environmental context. Mask-to-mask matching also remains similar across conventional and coastal classes, while alternative textual labels substantially improve recognition of several coastal concepts. These results suggest that lower performance on coastal classes (at least on the objects/query categories evaluated) is heavily influenced by segmentation and linguistic representation.",
+      "authors": [
+        "Seth Knoop",
+        "Chad R. Samuelson",
+        "Gabriel R. Slade",
+        "Brady Moon",
+        "Joshua G. Mangelson"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.RO"
+      ],
+      "published": "2026-09-09T21:47:01+00:00",
+      "link": "https://arxiv.org/pdf/2609.10855v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "evaluation of VLMs for visual recognition and segmentation",
+      "llm_evidence_cn": "评估视觉语言模型的视觉识别与分割",
+      "llm_evidence": "评估视觉语言模型的视觉识别与分割",
+      "canonical_evidence": "评估视觉语言模型的视觉识别与分割",
+      "llm_tldr_en": "This paper introduces a densely labeled coastal dataset and evaluates seven vision-language models via text-to-mask, mask-to-mask and mask-to-text alignment, showing broad landscape classes are recognized better than coastal concepts.",
+      "llm_tldr_cn": "视觉语言模型在机器人感知中日益重要，但其在海岸等复杂环境中的表现尚不明确。本文构建了一个密集标注的海岸数据集，包含三个区域、七次任务采集的一千余张图像、18个语义类别与七千四百余个标注实例。作者通过文本到掩码、掩码到掩码与掩码到文本三类实验评估七个主流VLM，发现大尺度地物识别优于常规物体与海岸类别。该工作揭示了VLM在海岸语义理解上的不足。",
+      "llm_tldr": "视觉语言模型在机器人感知中日益重要，但其在海岸等复杂环境中的表现尚不明确。本文构建了一个密集标注的海岸数据集，包含三个区域、七次任务采集的一千余张图像、18个语义类别与七千四百余个标注实例。作者通过文本到掩码、掩码到掩码与掩码到文本三类实验评估七个主流VLM，发现大尺度地物识别优于常规物体与海岸类别。该工作揭示了VLM在海岸语义理解上的不足。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "visual recognition algorithms",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2609.06490v1",
+      "source": "arxiv",
+      "title": "OracleZoom: On-Policy Self-Distillation Inspired Reference-Constrained Recursive Image Super Resolution",
+      "abstract": "Recursive Super-Resolution (SR) extends fixed-scale SR to extreme magnification by repeatedly feeding predictions back into the same model, analogous to zooming an image repeatedly. However, ground truth availability at every scale, especially at depth, remains challenging as the required source resolution grows geometrically, leaving deeper predictions unsupervised. We present OracleZoom, an on-policy distillation-inspired, reference-constrained framework that trains on its trajectory while carrying the last ground-truth evidence beyond the supervision boundary. Direct and cross-scale supervision constrain verifiable content, while a no-reference quality objective guides unresolved fine-scale detail. A KL-constrained pretrained latent prior limits quality-driven drift, while EMA consistency stabilizes the supervision boundary. Across seven datasets, OracleZoom achieves the state-of-the-art SR quality across zooming scales, averaging 0.713 CLIPIQA, with larger gains on deeper scales, while significantly reducing hallucinations. Code, data, and models are available at https://dipta007.github.io/OracleZoom/ .",
+      "authors": [
+        "Shubhashis Roy Dipta",
+        "Sourajit Saha",
+        "Shaswati Saha",
+        "Nobin Sarwar"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI",
+        "cs.CL",
+        "cs.LG"
+      ],
+      "published": "2026-09-06T09:06:27+00:00",
+      "link": "https://arxiv.org/pdf/2609.06490v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "recursive image super-resolution framework",
+      "llm_evidence_cn": "递归图像超分辨率框架",
+      "llm_evidence": "递归图像超分辨率框架",
+      "canonical_evidence": "递归图像超分辨率框架",
+      "llm_tldr_en": "OracleZoom is an on-policy self-distillation inspired, reference-constrained framework for recursive super-resolution, carrying ground-truth evidence beyond the supervision boundary with direct and cross-scale objectives.",
+      "llm_tldr_cn": "递归超分辨率通过反复将预测结果反馈回模型实现极端放大，但深层尺度缺乏真值监督。本文提出OracleZoom，一种受在线策略自蒸馏启发的参考约束框架，在训练轨迹上学习并把最后的真值证据延续到监督边界之外，同时用直接与跨尺度监督约束可验证内容，并以无参考质量目标引导细粒度细节。方法在极端放大任务上缓解了深层无监督问题，为递归超分提供了新的训练范式。",
+      "llm_tldr": "递归超分辨率通过反复将预测结果反馈回模型实现极端放大，但深层尺度缺乏真值监督。本文提出OracleZoom，一种受在线策略自蒸馏启发的参考约束框架，在训练轨迹上学习并把最后的真值证据延续到监督边界之外，同时用直接与跨尺度监督约束可验证内容，并以无参考质量目标引导细粒度细节。方法在极端放大任务上缓解了深层无监督问题，为递归超分提供了新的训练范式。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "computer vision research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.08013v1",
+      "source": "arxiv",
+      "title": "A Black-Box Adversarial Attack on Human Pose Estimation and Keypoint-Based Action Recognition Models",
+      "abstract": "Human pose estimation and keypoint-based action recognition models are increasingly deployed as components of video understanding pipelines, yet their vulnerability to adversarial attacks remains insufficiently studied. Temporally coherent black-box attacks have been previously studied in visual object tracking, where the attack feedback can be defined using bounding-box overlap measures such as Intersection over Union (IoU). However, human pose estimation produces keypoint configurations rather than enclosing boxes, making box-level similarity poorly suited for measuring pose degradation. We propose OKS Attack, a decision-based black-box attack that uses Object Keypoint Similarity (OKS) as the attack feedback signal, directly targeting the spatial structure of human poses rather than their enclosing boxes. Experiments on the Penn Action dataset show that OKS Attack consistently reduces pose quality across evaluated pose estimators, with mean OKS decreases ranging from 0.0802 to 0.1494. In a downstream cross-dataset action-recognition evaluation, the attack reduces accuracy by 6.18 to 13.86 percentage points and outperforms query-matched random-noise perturbations. The attack is effective across both top-down and single-stage pose estimation models. The source code will be made publicly available at https://github.com/KacperM33/OKS_attack",
+      "authors": [
+        "Kacper Mroczek",
+        "Michal Kepski"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-07T21:49:16+00:00",
+      "link": "https://arxiv.org/pdf/2609.08013v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "black-box adversarial attack on human pose estimation and action recognition",
+      "llm_evidence_cn": "针对人体姿态估计与动作识别的黑盒对抗攻击",
+      "llm_evidence": "针对人体姿态估计与动作识别的黑盒对抗攻击",
+      "canonical_evidence": "针对人体姿态估计与动作识别的黑盒对抗攻击",
+      "llm_tldr_en": "OKS Attack is a decision-based black-box attack on human pose estimation and keypoint action recognition that uses Object Keypoint Similarity as feedback, since box-level IoU is ill-suited to keypoint configurations.",
+      "llm_tldr_cn": "人体姿态估计与基于关键点的动作识别日益嵌入视频理解流程，但其对抗脆弱性研究不足，且以往面向视觉目标跟踪的黑盒攻击依赖边界框 IoU 反馈。作者提出 OKS Attack，以目标关键点相似度作为攻击反馈信号，直接针对关键点构型进行决策式黑盒攻击，克服框级相似度不适用的问题。该工作揭示了姿态与动作识别模型的安全隐患，为关键点类视觉模型提供了更贴合的对抗评估手段。",
+      "llm_tldr": "人体姿态估计与基于关键点的动作识别日益嵌入视频理解流程，但其对抗脆弱性研究不足，且以往面向视觉目标跟踪的黑盒攻击依赖边界框 IoU 反馈。作者提出 OKS Attack，以目标关键点相似度作为攻击反馈信号，直接针对关键点构型进行决策式黑盒攻击，克服框级相似度不适用的问题。该工作揭示了姿态与动作识别模型的安全隐患，为关键点类视觉模型提供了更贴合的对抗评估手段。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "computer vision research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.08607v1",
+      "source": "arxiv",
+      "title": "GOLF: Global Observation with Local Focus for Calibration-Aware Stereo Interaction Field Estimation",
+      "abstract": "We present GOLF, the first-place solution to the SHOW3D Interaction Field Estimation Challenge at HANDS@ECCV 2026. Given synchronized egocentric stereo views, the task is to predict a 3D vector from each of 21 hand joints to the closest point on the manipulated object. GOLF combines dense global context, locally sampled hand/object evidence, and common-frame Plücker-ray geometry. We adapt DINOv3 ViT-H+/16 with LoRA and trainable LayerNorm parameters, then jointly decode both interaction fields. Our primary model achieves an official score of 27.61 and a mean ADE of 27.96 mm on the hidden test set. An equal-weight ensemble with a complementary directly fine-tuned variant improves these results to an official score of 27.47 and a mean ADE of 27.82 mm, securing first place.",
+      "authors": [
+        "Minqiang Zou",
+        "Riqiang Jin",
+        "Zhi Lv",
+        "Dong Luo",
+        "Lianghai Tian",
+        "Zhenyu Zhao",
+        "Qi Xu",
+        "Tong Wu",
+        "Mochen Yu",
+        "Yao Tang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-08T11:42:44+00:00",
+      "link": "https://arxiv.org/pdf/2609.08607v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "stereo 3D pose and interaction field estimation",
+      "llm_evidence_cn": "立体三维位姿与交互场估计",
+      "llm_evidence": "立体三维位姿与交互场估计",
+      "canonical_evidence": "立体三维位姿与交互场估计",
+      "llm_tldr_en": "GOLF, the first-place solution to the SHOW3D Interaction Field Estimation Challenge, combines dense global context, local hand-object evidence and Plucker-ray geometry, adapting DINOv3 with LoRA to predict 3D hand-object interaction fields.",
+      "llm_tldr_cn": "在双手操作场景中估计手部关节到物体的三维交互场需要兼顾全局上下文与局部细节。本文提出GOLF，作为SHOW3D交互场估计挑战赛的冠军方案，融合稠密全局上下文、局部采样的手物证据与共帧Plucker射线几何，并对DINOv3 ViT-H+/16进行LoRA适配与联合解码。模型在隐藏测试集上取得27.61的官方分数与27.96毫米的平均ADE，展示了立体视觉下手物交互建模的有效性。",
+      "llm_tldr": "在双手操作场景中估计手部关节到物体的三维交互场需要兼顾全局上下文与局部细节。本文提出GOLF，作为SHOW3D交互场估计挑战赛的冠军方案，融合稠密全局上下文、局部采样的手物证据与共帧Plucker射线几何，并对DINOv3 ViT-H+/16进行LoRA适配与联合解码。模型在隐藏测试集上取得27.61的官方分数与27.96毫米的平均ADE，展示了立体视觉下手物交互建模的有效性。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "computer vision research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.08705v1",
+      "source": "arxiv",
+      "title": "Enhancing Table Structure Recognition via Bounding Box Guidance",
+      "abstract": "Table Structure Recognition (TSR) aims to extract the bounding boxes of cells and table structure (e.g., HTML) from table images. Although current approaches have made significant progress, the latest image-to-sequence methods overlook the explicit utilization of the bounding box information when predicting HTML sequences, leading to error predictions in complex scenes. In this paper, we introduce a novel framework BGTR (Bounding Box-Guided Table Recognizer). To more effectively utilize bounding box information, we first predict the bounding boxes of cells and then use this information to guide the generation of HTML sequences. While utilizing bounding box information can enhance the accuracy of HTML sequences, for natural scene tables, the data volume is too small to allow for sufficient training of bbox-guided HTML generation. In response, we adopt a progressive training method for natural scene tables and introduce SNSTab, a synthetically generated natural scene table dataset. Our experiments on five benchmark datasets demonstrate SOTA performance.",
+      "authors": [
+        "Lei Hu",
+        "Shuangping Huang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-08T13:04:39+00:00",
+      "link": "https://arxiv.org/pdf/2609.08705v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "table structure recognition predicting cell bounding boxes",
+      "llm_evidence_cn": "预测单元格边界框的表格结构识别",
+      "llm_evidence": "预测单元格边界框的表格结构识别",
+      "canonical_evidence": "预测单元格边界框的表格结构识别",
+      "llm_tldr_en": "Introduces BGTR, a bounding-box-guided table recognizer that first predicts cell bounding boxes and then uses them to guide HTML sequence generation, improving table structure recognition accuracy in complex scenes.",
+      "llm_tldr_cn": "论文针对表格结构识别中图像到序列方法在预测HTML时忽视单元格边界框信息、复杂场景下易出错的问题，提出边界框引导的表格识别框架BGTR。该方法先预测单元格边界框，再利用这些边界框信息引导HTML序列的生成，从而提升结构预测准确性。在复杂与自然场景表格上，边界框信息的引入改善了识别效果。该工作为表格结构识别提供了利用显式几何线索的有效思路。",
+      "llm_tldr": "论文针对表格结构识别中图像到序列方法在预测HTML时忽视单元格边界框信息、复杂场景下易出错的问题，提出边界框引导的表格识别框架BGTR。该方法先预测单元格边界框，再利用这些边界框信息引导HTML序列的生成，从而提升结构预测准确性。在复杂与自然场景表格上，边界框信息的引入改善了识别效果。该工作为表格结构识别提供了利用显式几何线索的有效思路。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "object detection methods",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.11081v1",
+      "source": "arxiv",
+      "title": "TailProp: content-adaptive light- and heavy-tailed propagation for vision",
+      "abstract": "Science-inspired vision models show that explicit propagation dynamics can provide structured and interpretable alternatives to conventional token mixing. Existing formulations, however, typically construct and adapt visual propagation within a particular dynamical family, while visual representations can require substantially different spatial interactions across samples, channels, and network stages. We explore cross-regime adaptive propagation and introduce TailProp, a hierarchical vision backbone built upon the Tail Propagation Operator (TPO). TPO uses Gaussian and Cauchy stable-process propagators as complementary bases with rapidly decaying and heavy-tailed spatial influence, and predicts a content-conditioned channel-wise coefficient to adaptively combine them. Because this coefficient is spatially shared, the two responses are fused directly in the DCT domain with a single DCT/IDCT pair, yielding $O(N^{1.5})$ spatial mixing for square feature maps with $N=HW$ and fixed channel width. Across image classification, object detection, semantic segmentation, robustness, and cross-backbone restoration, TailProp consistently outperforms matched propagation baselines; TailProp-B reaches 84.4% Top-1 accuracy on ImageNet-1K, 50.3/44.8 box/mask AP under the 3x Mask R-CNN schedule, and 50.8% mIoU on ADE20K. Controlled ablations further show that these gains are not explained by single-basis propagation, an additional same-family branch, or within-family adaptive order alone, supporting complementary two-basis propagation as an effective design principle for visual representation learning.",
+      "authors": [
+        "Jiahao Kong",
+        "Zihan Li"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.LG"
+      ],
+      "published": "2026-09-10T04:38:45+00:00",
+      "link": "https://arxiv.org/pdf/2609.11081v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "content-adaptive propagation backbone for visual representation",
+      "llm_evidence_cn": "面向视觉表示的内容自适应传播骨干网络",
+      "llm_evidence": "面向视觉表示的内容自适应传播骨干网络",
+      "canonical_evidence": "面向视觉表示的内容自适应传播骨干网络",
+      "llm_tldr_en": "Existing propagation models adapt within one dynamical family, while visual features need diverse spatial interactions. TailProp uses Gaussian and Cauchy propagators with content-conditioned coefficients as a hierarchical vision backbone.",
+      "llm_tldr_cn": "现有传播式视觉模型通常局限于单一动力学族内自适应，难以满足样本、通道与网络阶段间差异化的空间交互需求。本文提出TailProp分层视觉骨干网络，其核心Tail传播算子以高斯与柯西稳定过程传播子为互补基，并预测内容条件化的通道系数进行自适应组合。该方法为视觉特征提取提供了更具结构性与可解释性的传播建模方式。",
+      "llm_tldr": "现有传播式视觉模型通常局限于单一动力学族内自适应，难以满足样本、通道与网络阶段间差异化的空间交互需求。本文提出TailProp分层视觉骨干网络，其核心Tail传播算子以高斯与柯西稳定过程传播子为互补基，并预测内容条件化的通道系数进行自适应组合。该方法为视觉特征提取提供了更具结构性与可解释性的传播建模方式。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "feature extraction in computer vision",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.11236v1",
+      "source": "arxiv",
+      "title": "HALDETECT at ImageEval 2026 Shared Tasks: Answer-First Contrastive Grounding with QLoRA",
+      "abstract": "Large multimodal models tend to hallucinate visual detail fluently, which limits their deployment for fine-grained interpretation. We present HALDETECT, our system for the English hallucination-detection track (Task 1b) of ImageEval 2026, in which a system must identify, from an image and three culturally plausible statements, the single visually grounded one. We frame the item as one contrastive decision, emit the answer before its explanation, and structure reasoning around colour/texture, shape/form, and context. Our best submitted adapter fine-tunes Qwen2.5-VL-7B-Instruct with 4-bit QLoRA while freezing the vision encoder and reaches Contrastive Instability (CI) 0.035 on the 1,000-item test set; we placed third of eight teams. Development experiments show that answer order can matter more than model scale and that adaptation beats prompting alone. Retrospective paired analysis of the released gold labels confirms the QLoRA gain over the best prompt but not the small gap between the devtest-selected and best-test adapters, and reseeding all four training sizes shows that the apparent data-scaling curve does not survive a seed change. The 35 residual errors are culturally plausible function, material, and recognition distinctions; naive adapter voting does not help.",
+      "authors": [
+        "Syed Mohaiminul Hoque",
+        "Md Sakhawat Hossain"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-09-10T08:35:29+00:00",
+      "link": "https://arxiv.org/pdf/2609.11236v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "visual grounding for fine-grained visual interpretation, contrastive grounding with QLoRA",
+      "llm_evidence_cn": "细粒度视觉理解的视觉定位与对比式微调",
+      "llm_evidence": "细粒度视觉理解的视觉定位与对比式微调",
+      "canonical_evidence": "细粒度视觉理解的视觉定位与对比式微调",
+      "llm_tldr_en": "HALDETECT tackles multimodal hallucination in fine-grained visual interpretation by framing statement selection as a contrastive decision and fine-tuning Qwen2.5-VL with 4-bit QLoRA, reaching CI 0.035 and third place at ImageEval 2026.",
+      "llm_tldr_cn": "大型多模态模型常流畅地编造视觉细节，严重限制其在细粒度视觉理解中的可靠部署。作者提出 HALDETECT，把从图像与三条陈述中选出视觉有据者建模为单一对比决策，先输出答案再给出解释，并用4比特 QLoRA 微调 Qwen2.5-VL-7B-Instruct 同时冻结视觉编码器。在1000项测试集上取得0.035的对比不稳定性，在八支队伍中位列第三。该方案表明答案优先的对比式微调可有效缓解视觉幻觉，为细粒度视觉识别提供可行路径。",
+      "llm_tldr": "大型多模态模型常流畅地编造视觉细节，严重限制其在细粒度视觉理解中的可靠部署。作者提出 HALDETECT，把从图像与三条陈述中选出视觉有据者建模为单一对比决策，先输出答案再给出解释，并用4比特 QLoRA 微调 Qwen2.5-VL-7B-Instruct 同时冻结视觉编码器。在1000项测试集上取得0.035的对比不稳定性，在八支队伍中位列第三。该方案表明答案优先的对比式微调可有效缓解视觉幻觉，为细粒度视觉识别提供可行路径。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "visual recognition algorithms",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.11516v1",
+      "source": "arxiv",
+      "title": "LoopVAE: Recurrent Depth Across Scales for Visual Tokenization",
+      "abstract": "Hierarchical visual tokenizers typically allocate different processing blocks to different spatial scales. We ask how much of this computation can use the same parameters. LoopVAE reuses a scale- and loop-conditioned core within and across scales, while keeping resolution-changing transitions independent. A four-block core executes 28 block applications per encoder or decoder. On ImageNet-256, the 29M-parameter convolutional model reaches 0.28 rFID and 32.54 dB PSNR under an approximately 30-epoch two-stage training budget, using approximately 65% fewer parameters than the 84M reference VAEs. A non-adversarial Transformer ablation with the same execution graph finds competitive PSNR and SSIM under global sharing, although unshared blocks improve LPIPS. Targeted loop interventions show that completing the trained recurrence improves reconstruction and that even small feature updates can have substantial downstream effects. Truncation also exposes output-range errors, distinguishing useful recurrent computation from reliable early exit. Runtime profiling reveals the execution tradeoff: fewer stored weights require more arithmetic and longer runtime in the tested configurations. With convolutional and Transformer operators and single- or multi-resolution latent interfaces, LoopVAE establishes recurrent depth across scales as a parameter-sharing design axis for visual tokenization.",
+      "authors": [
+        "Zhiying Lu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-10T13:20:03+00:00",
+      "link": "https://arxiv.org/pdf/2609.11516v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "hierarchical visual tokenization with shared parameters",
+      "llm_evidence_cn": "参数复用的分层视觉标记化",
+      "llm_evidence": "参数复用的分层视觉标记化",
+      "canonical_evidence": "参数复用的分层视觉标记化",
+      "llm_tldr_en": "Hierarchical tokenizers use separate blocks per scale. LoopVAE reuses a scale- and loop-conditioned core across scales, reaching 0.28 rFID on ImageNet-256 with 65% fewer parameters than reference VAEs.",
+      "llm_tldr_cn": "传统分层视觉分词器为不同空间尺度分配独立处理模块，参数冗余且效率有限。本文提出LoopVAE，在尺度内与跨尺度复用受尺度与循环条件约束的核心模块，仅保留分辨率变换模块独立。在ImageNet-256上，29M参数模型取得0.28 rFID与32.54 dB PSNR，参数量比参考VAE减少约65%，为高效视觉表示学习提供了新方案。",
+      "llm_tldr": "传统分层视觉分词器为不同空间尺度分配独立处理模块，参数冗余且效率有限。本文提出LoopVAE，在尺度内与跨尺度复用受尺度与循环条件约束的核心模块，仅保留分辨率变换模块独立。在ImageNet-256上，29M参数模型取得0.28 rFID与32.54 dB PSNR，参数量比参考VAE减少约65%，为高效视觉表示学习提供了新方案。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "feature extraction in computer vision",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

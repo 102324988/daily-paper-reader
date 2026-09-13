@@ -1,0 +1,403 @@
+Title: Enhancing Table Structure Recognition via Bounding Box Guidance
+
+URL Source: https://arxiv.org/pdf/2609.08705v1
+
+Published Time: Wed, 09 Sep 2026 04:01:29 GMT
+
+Number of Pages: 23
+
+Markdown Content:
+# Enhancing Table Structure Recognition via Bounding Box Guidance 
+
+Lei Hu and Shuangping Huang ⋆
+
+South China University of Technology, Guangzhou, China 
+
+eehulei@mail.scut.edu.cn, eehsp@scut.edu.cn 
+
+Abstract. Table Structure Recognition (TSR) aims to extract the bound-ing boxes of cells and table structure (e.g., HTML) from table images. Although current approaches have made significant progress, the lat-est image-to-sequence methods overlook the explicit utilization of the bounding box information when predicting HTML sequences, leading to error predictions in complex scenes. In this paper, we introduce a novel framework BGTR (Bounding Box-Guided Table Recognizer). To more effectively utilize bounding box information, we first predict the bound-ing boxes of cells and then use this information to guide the generation of HTML sequences. While utilizing bounding box information can en-hance the accuracy of HTML sequences, for natural scene tables, the data volume is too small to allow for sufficient training of bbox-guided HTML generation. In response, we adopt a progressive training method for natural scene tables and introduce SNSTab , a synthetically gener-ated natural scene table dataset. Our experiments on five benchmark datasets demonstrate SOTA performance. 
+
+Keywords: Table structure recognition · Image-to-sequence · Bounding box guidance · Dataset. 
+
+## 1 Introduction 
+
+Tables are a crucial medium for structured information dissemination. Table de-tection (TD) aims to extract the position of tables from document images, and many methods [1,8,22] have shown excellent results. Table Structure Recognition (TSR) aims to transform images containing tables into structured data, which is both crucial and challenging. Leveraging the advancements of transformer [25], which have proven highly effective in various fields [7], image-to-sequence meth-ods [20,13,29,3] have demonstrated promising results in TSR. These methods employ an encoder-decoder architecture to simultaneously predict the HTML (Hyper Text Markup Language) sequence and the bounding box (bbox) of table cells. In predicting HTML sequences, they rely solely on image information and overlook the explicit utilization of bbox information. However, table structure and formatting can be highly complex, and bbox information is essential for pars-ing the structure of tables. Therefore, exclusive reliance on image information  
+
+> ⋆
+
+Corresponding author. arXiv:2609.08705v1 [cs.CV] 8 Sep 2026 2 L. Hu et al. w/ bbox-guided  w/o bbox-guided ground truth  
+
+(a)                
+
+> Digital Document Tables
+> Dataset Samples Datasets Samples PubTabNet [33] 500K FinTabNet [32] 100K SynthTabNet [20] 600K PubTables-1M [23] 758K
+> Natural Scene Tables
+> TabRecSet [28] 38K WTW [17] 14K iFLYTAB [30] 17K TAL [5] 15K
+
+(b) Fig. 1: The motivation behind the proposed method. (a) Comparison of HTML visualization with and without bbox-guided generation on TabRecSet [28], the red dotted boxes indicate error results, the blue dotted boxes indicate spanning cells. The results indicate that using bboxes for guidance achieves better perfor-mance in spanning cells. (b) A comparison between two types of datasets reveals that the sample size of the digital document table dataset is significantly larger than that of the natural scene table dataset. may lead to error predictions in complex scenes, like spanning cells (Fig. 1 (a)). In this paper, we introduce a novel framework BGTR (Bounding Box-Guided 
+
+Table Recognizer). Unlike previous image-to-sequence methods [20,13,29,3], we explicitly utilize bbox information to obtain accurate HTML sequences. We first use a Bbox Predictor to predict bboxes. Then, during HTML sequence decoding, we enable the Bbox-Guided Structure Decoder to perceive both the image and bbox information of the table, resulting in accurate HTML sequences. Although utilizing bbox information can improve the accuracy of the HTML sequence, for natural scene tables, as shown in Fig. 1 (b), the data volume is small, and the structure and style of tables in natural scenes are complex, mak-ing it insufficient for adequate training of bbox-guided HTML generation. In response, we adopt a progressive training method for natural scene tables and introduce SNSTab . Progressive training method includes a foundation training BGTR 3
+
+stage and a advancement training stage. In the foundation training stage, we aim to train the model with a large number of tables from natural scenes, thereby enabling it to learn how to more effectively utilize bbox information for guiding the generation of HTML sequences, this approach leads to improve the model’s foundational understanding of tables. In the advancement training stage, train-ing is conducted on a specific natural scene table dataset (e.g., TabRecSet [28] and iFLYTAB [30]). SNSTab is a synthetically generated natural scene table dataset containing 500k table images for the foundation training stage. It in-cludes wired tables, wireless tables, inclined tables, and curved tables, featuring diverse table structures and backgrounds. This variety enables the model to comprehensively learn various aspects of table knowledge during the foundation training stage, thereby achieving better results in complex scenes like spanning cells and deformed tables, as shown in Fig. 7. Extensive experiments demonstrate the effectiveness of our proposed BGTR and the progressive training method, achieving state-of-the-art performance on five public benchmarks. To sum up, our contributions are as follows: 
+
+– We propose BGTR , a novel framework that explicitly utilizes bbox infor-mation for guiding HTML sequence generation, which aims at enhancing structural recognition accuracy in challenging table scenes. 
+
+– To ensure that bbox-guided HTML generation is adequately trained in natu-ral scenes, we adopt a progressive training method and introduce SNSTab , a synthetically generated natural scene table dataset for the foundation train-ing stage. 
+
+– Our experiments on five benchmark datasets demonstrate state-of-the-art performance. 
+
+## 2 Related Work 
+
+2.1 Table Structure Recognition 
+
+With the rapid development of deep learning, a variety of table structure recog-nition methods have emerged, which can be divided into three categories: graph-based methods, split-and-merge methods, and image-to-sequence methods. 
+
+Graph-based Methods. These methods utilize cells or text boxes as the basic elements of the table, employing a graph network to determine the row and column relationships between them. GraphTSR [4] utilized graph attention networks to the TSR task, determining the row and column relationships of ad-jacent cells through graph edge classification. TabStruct-Net [21] implemented a unified end-to-end framework for cell detection and cell relationship analy-sis. GFTE [14] employed a graph-based convolutional network that integrates image features, position features, and textual features to predict relationships between cells. NCGM [16] enabled cooperation among geometry, appearance, and content modalities, leveraging their interaction to enhance multi-modal rep-resentation in intricate situations. However, these methods are limited by their 4 L. Hu et al. 
+
+reliance on additional bbox data or OCR accuracy, leading to potential errors in table structure recognition, and additionally, they need complex post-processing methods. 
+
+Split-and-merge Methods. Typically, these methods comprise two mod-els: the split model and the merge model. The split model initially detects the row and column regions of the table and then intersects them to obtain the grid cells of the table. Subsequently, the merge model is employed to determine which adjacent grid cells need to be merged. SPLERGE [24] became the first to use the split-and-merge framework for the TSR task, addressing an issue where previous methods struggled with resolving spanning cells. By utilizing textual informa-tion, SEM [31] achieved enhanced results on complex tables with spanning cells. To address geometric distortion in table images, TSRFormer [15] approached the detection of row and column regions as a linear regression problem. However, two-stage training can be complex and resource-intensive, potentially leading to longer training times and difficulties in optimization compared to more stream-lined, end-to-end methods. 
+
+Image-to-sequence Methods. These methods treat the table as a struc-tured sequence (e.g., HTML or LATEX), using an encoder-decoder framework to convert the table image into a structured sequence that fully describes the table structure. EDD [33] employed a CNN-based encoder to extract the visual features from table images and utilized two LSTM-based decoders to simultane-ously recognize the table structure and cell content. TableMaster [29] introduced a transformer-based [25] architecture, achieving significant progress in the TSR task by recognizing the table structure and cell bboxes simultaneously. Based on TableMaster [29], VAST [13] treated bbox prediction as a coordinate sequence generation task and introduced a visual-alignment loss that significantly im-proved bbox accuracy. However, bbox information is essential for parsing the structure of table, unlike previous methods that produce inaccurate HTML se-quence predictions in complex table scenes due to the lack of bbox information, this paper utilizes bbox information to guide the generation of HTML sequences, resulting in more accurate HTML sequences. 
+
+2.2 Existing Datasets 
+
+While the size of table datasets has significantly increased, existing datasets pri-marily focus on digital documents [20,33,32,23], such as PDF files. Building a digital document table dataset is relatively straightforward because annotated information can be directly extracted from PDF files. However, tables captured in natural scenes through cameras cannot be automatically annotated, and man-ual annotation is a time-consuming process. Additionally, natural scene tables are more complex, often inclined, rotated, and curved, further increasing the an-notation difficulty. Due to these challenges, there is a substantial disparity in the number of table datasets between natural scenes and digital documents, as illus-trated in Fig. 1 (b). To address this issue, we propose a large-scale synthetically generated natural scene table dataset. BGTR 5条了，卖完        
+
+> 国
+> ，国产产品 记者 11 日从
+> 从宝山 eltoHerac
+> sentenc 镬子的烟火味，再一 anscy
+> 医院检验科 律师库 Renditio
+> random merge
+> random text
+> image generation
+> table
+> transformation
+> background
+> synthesis
+> ( c )
+> ( a )
+> ( b )
+
+Fig. 2: The production process of SNSTab: (a) table generation. (b) table trans-formation. (c) background synthesis. 
+
+## 3 SNSTab 
+
+SNSTab contains 500k synthetic images of natural scene tables, including wired tables, wireless tables, provincial line tables, inclined tables, curved tables and large tables. Although image generation has achieved significant success in other fields [6], its application in table recognition remains quite limited. To our knowl-edge, SNSTab is the first large-scale natural scene table synthesis dataset. SNSTab’s annotations contain the coordinates of the table cells, the text in-side the cells, and the HTML sequence that describes the table structure. The creation of the SNSTab dataset involves three phases: table generation, table transformation, and background synthesis, as shown in Fig. 2. 
+
+Table generation. This step is to generate digital document table images. We randomly generate table images based on the open source tool Table Genera-tion 1. First, we will generate a grid with a random number of rows and columns; Then, we will randomly merge the adjacent grids to get spanning cells, and gen-erate random text for each grid; Finally, we convert the above table into HTML sequences, and get the final table image through the browser rendering. 
+
+Table transformation. Since tables in the nature scene tend to be inclined or rotated. Therefore, after automatically generating tables, we apply thin plate spline (TPS) [2] to randomly transform them. This simulation captures the com-plexities observed in natural scenes. As shown in Fig. 2 (b), we take the four ver-tices of the table image and the midpoints of the four sides as the source points, the target points are then obtained by randomly moving the source points within the range of the red dotted line. After the TPS transformation, the coordinates of the cells are also transformed. 
+
+Background synthesis. In addition to their complex structures, tables in natural scenes often exhibit a variety of backgrounds. We captured 400 back-ground images of natural scenes, including paper, walls, daily-life items, and more. For each table image, a random background image is first selected, and then a random area of the same size as the table image is extracted from the  
+
+> 1
+
+https://github.com/WenmuZhou/TableGeneration 6 L. Hu et al. Method     
+
+> Result
+> Complex Simple
+> 193
+> 294 88
+> Table Image
+> <tr> <td rowspan=2> </td> <td colspan=2> </td> </tr>
+> <tr> <td></td> <td></td> </tr>
+> <tr> <td></td> < em >< /em > <td></td> </tr>
+> <tr> <td></td> <td></td> <td></td> </tr>
+> HTML Sequences
+
+Fig. 3: A simple example of using HTML sequences to represent a table structure, different colors in the figure represent different rows of the table. background image. Finally, the table image is merged with the selected back-ground to produce the final image. For more details of the dataset and for additional dataset samples, please refer to the supplementary materials. 
+
+## 4 Method 
+
+4.1 Preliminary 
+
+In this paper, we utilize HTML sequences to represent the table structure, as shown in Fig. 3. Given a table image, our model outputs HTML sequences of the table and the corresponding cell bboxes. To better facilitate prediction, we tokenize HTML sequences into HTML tokens. For cells without spanning, non-empty cells and empty cells are denoted by < td >< /td > and < em >< /em > , respectively. In the case of spanning cells, the tokens are divided into three parts: < td , colspan = N or rowspan = N , and >< /td > . Here, < td 
+
+indicates the beginning of the spanning cells, N specifies the count of cells that are spanning, and >< /td > marks the end of the spanning cells. < tr > and 
+
+< /tr > respectively represent the beginning and the end of each row in a table. We use HN = {hi}Ni=1 ∈ RN ×1 to denote HTML sequences, where N is the sequence length and hi denotes the i-th HTML token. We use BN = {bj }Nj=1 ∈
+
+RN ×4 to denote the bbox of table cells. For each cell, its bbox is represented as [x1, y 1, x 2, y 2], where [x1, y 1] denotes the coordinates of the top-left corner, and [x2, y 2] represents the coordinates of the bottom-right corner. Moreover, the HTML tokens have a one-to-one correspondence with the bboxes, and the bbox value is non-zero only if the HTML token is < td >< /td > and < td .
+
+4.2 Overall Architecture 
+
+The overall framework of BGTR is illustrated in Fig. 4. Given a table image, denoted as P ∈ RH×W ×3, where H and W represent the height and width of the image, respectively. We employ an Image Encoder to extract image fea-tures, resulting in the feature map Fencoder ∈ R H   
+
+> 8×W
+> 8×d
+
+, where d denotes the dimension of the features. After applying 2D positional encoding, the flattened BGTR 7HTML Sequence                      
+
+> ( Shifted Right) Embedding
+> Shared
+> Decoder
+> Bbox
+> Decoder
+> Bbox
+> Method Result
+> Complex Simple
+> 190 93
+> 294 88
+> Method Result
+> Complex Simple
+> 190 93
+> 294 88
+> HTML Sequence
+> <thead> <tr> <td
+> rowspan=2 ></td> <td
+> ⋯</tr> </tbody>
+> Bbox-Guided Structure Decoder
+> Masked Self-Attention
+> q
+> k
+> v
+> q
+> k
+> v
+> Masked Cross-Attention
+> Linear ＆Softmax
+> Bbox
+> Predictor
+> Input Image
+> Image
+> Encoder
+
+Fig. 4: Architecture of BGTR. The Bbox Predictor aims to acquire the bboxes of table cells and consists of three parts: an image encoder, a shared decoder, and a bbox decoder. The Bbox-Guided Structure Decoder generates the HTML sequence. image features are obtained as Fimage ∈ R HW  
+
+> 64 ×d
+
+. The image features Fimage are further fed into the Shared Decoder for decoding, resulting in decoded features 
+
+F1 
+
+> share
+
+∈ RN ×d. The Shared Decoder is used to reduce the gap between the image and the sequence, making it more aligned with the sequential features. F1 
+
+> share
+
+is first fed into the Bbox Decoder to obtain bboxes BN . Then, F1 
+
+> share
+
+is sent into the Bbox-Guided Structure Decoder (Sec. 4.3), using the predicted bbox infor-mation to guide the generation of HTML sequences HN . For additional details regarding the Image Encoder, Shared Decoder, and Bbox Decoder, please refer to Sec. 5.2. 
+
+4.3 Bbox-Guided Structure Decoder 
+
+To more effectively utilize bbox information, we first predict the bboxes of cells and then utilize the bbox information to enhance the accuracy of HTML se-quence prediction. Since we employ an autoregressive decoding approach, we utilize parallel training methods during training to accelerate the training speed. Specifically, the Bbox-Guided Structure Decoder receives F1 
+
+> share
+
+∈ RN ×d from the Shared Decoder and Fbbox ∈ RN ×d from the Bbox Decoder as input. In the Bbox Decoder, after Fbbox passes through a linear layer and a sigmoid layer, the bboxes BN ∈ RN ×4 are obtained. F1 
+
+> share
+
+initially passes through a masked self-attention layer, resulting in F2 
+
+> share
+
+∈ RN ×d. Here, the mask refers to the prediction of the current time step HTML token being based on the output of previous time steps. Subsequently, F2 
+
+> share
+
+and Fbbox are fed into a masked cross-attention layer. Here, the mask indicates that the prediction of the current time step HTML token is based on the bbox outputs of both the current and previous time steps. F2 
+
+> share
+
+serves as the query vector, while Fbbox serve as the key/value vectors. By utilizing the cross-attention mechanism, bbox information Fbbox be-comes effectively integrated into F1
+
+> share
+
+. The use of Fbbox for decoding allows the model to comprehensively understand the position and relative relationships of each cell while predicting HTML sequences. This process allows the model to 8 L. Hu et al. SNSTab   
+
+> (a) Foundation training stage
+> (b) Advancement training stage
+> shared
+> Natural scene table datasets
+> Shared
+> Decoder
+> shared
+> HTML
+> Shared
+> Decoder
+> Structure
+> Decoder
+> Bbox
+> Decoder Bbox
+> Bbox
+> Bbox
+> Decoder
+> Structure
+> Decoder HTML
+
+Fig. 5: An overview of the progressive training method. (a) Foundation training stage training on SNSTab. (b) Advancement training stage training on natural scene table datasets (e.g., TabRecSet [28] and iFLYTAB [30]). generate HTML sequences guided by bbox information. After passing through a linear layer and a softmax layer, the decoder’s output yields the final HTML sequences HN = {hi}Ni=1 ∈ RN ×1.
+
+4.4 Progressive Training Method 
+
+As illustrated in Fig. 5, this section will discuss the implementation of the pro-gressive training method. 
+
+Foundation training stage. In the foundation training stage, the pur-pose is for the model to acquire common knowledge about tables. Due to the diverse types and varied structures of tables in natural scenes, the foundation training stage requires a large number of data samples. Based on this, we in-troduce SNSTab, a large synthetic table dataset in natural scenes. For further details about SNSTab, please refer to Sec. 3 and the supplementary material. After completing the foundation training stage on SNSTab, the model develops a foundational capability for recognizing table structures in natural scenes. Ad-ditionally, it can learn how to effectively utilize bbox information to guide the generation of HTML sequences, particularly in complex scenes such as spanning cells and deformed tables (Fig. 7). 
+
+Advancement training stage. Building on the foundation training stage, the advancement training stage is conducted on a specific natural scene table dataset. With the common knowledge acquired in the foundation training stage, the model demonstrates improved convergence speed and enhanced overall train-ing effectiveness in the advancement training stage. And in this stage, the Shared Decoder and the Bbox-Guided Structure Decoder are initialized using the train-BGTR 9
+
+ing from the foundation training stage. Due to certain differences in the data between the two stages, the Bbox decoder is trained from scratch. Through the progressive training process, the issue of insufficient data leading to inadequate training of bbox-guided HTML generation in natural scenes has been significantly alleviated. 
+
+4.5 Loss Functions 
+
+Our model adopts an end-to-end training approach and includes two loss func-tions. For the Bbox Decoder, L1 loss is employed to supervise the prediction of bboxes, which is denoted as Lbbox . For Bbox-Guided Structure Decoder, cross-entropy loss is utilized to supervise the prediction of HTML tokens, which is denoted as Lhtml . The final loss function is formulated as follows: 
+
+L = λLhtml + Lbbox , (1) where λ is the hyperparameter. 
+
+## 5 Experiments 
+
+5.1 Datasets and Evaluation Metric Datasets. Our method is evaluated on five popular public benchmarks, in-cluding TabRecSet [28], iFLYTAB [30], PubTabNet [33], FinTabNet [32] and SynthTabNet [20]. 
+
+TabRecSet [28] is a natural scene table dataset featuring tables from diverse scenes with various forms. It has 32.07K images and 38.17K tables, the number of images is not equal to the number of tables because some images contain multiple tables. As TabRecSet did not provide a predefined split, we randomly divided the dataset into train and test splits(80%,20%), resulting in 30.6k training table images and 7.5k testing table images. 
+
+iFLYTAB [30] has 12,104 training samples and 5,187 testing samples. It contains both wired and wireless tables from natural scenes and digital docu-ments. 
+
+PubTabNet [33] contains 500,777 training images and 9,115 validating im-ages, each accompanied by annotation information detailing the table structure and text content along with their positions. All the tables are extracted from the scientific articles, and annotations are automatically obtained from the PDF source files. 
+
+FinTabNet [32] is a large-scale dataset containing 91596 training tables, 10,635 validating tables and 10,656 testing tables. All the tables are sourced from the annual reports of the S&P 500 companies. Following [32,20,13,19], we use validating sets for testing. 
+
+SynthTabNet [20] is a synthetically generated dataset with diverse table styles, complex structures, and an increased number of rows and columns. It contains 480k training images, 60k validating images, and 60k testing images. In addition to the bounding boxes of the non-empty cell, it also has the bounding boxes of the empty cell. 10 L. Hu et al. 
+
+Table 1: Comparison with state-of-the-art methods. PT indicates that pro-gressive training method is used. S indicates simple tables. C indicates com-plex tables. Bold indicates the best performance, while underline indicates the second-best performance. ⋆ indicates the image-to-sequence method. † means pre-training on PubTabNet [33].                                                                                                                
+
+> Method PubTab FinTab SynthTab TabRecSet iFLYTAB TEDS-S TEDS TEDS-S TEDS-S TEDS-S TEDS-S SCAll EDD ⋆[33] 89.90 88.30 90.06 -95.01 77.71 91.03 †-GTE [32] 93.01 -87.10 -----TableMaster ⋆[29] 96.04 96.16 --97.20 84.11 94.14 84.63 SEM [31] -93.70 -----75.90 NCGM [16] -95.40 ------TableFormer ⋆[20] 96.75 93.60 96.80 96.70 ----VAST ⋆[13] 97.23 96.31 98.63 -----GridFormer [19] 97.00 95.84 98.63 -----SEMv2 [30] 97.50 ------92.00
+> TSRFormer [15] 97.50 -------BGTR ⋆97.63 96.57 98.89 99.11 98.35 89.27 96.23 91.02 BGTR (PT) ⋆----98.65 92.47 97.21 92.00
+
+Table 2: Comparison of cell bbox detection results on PubTabNet. PP indicates the post-processing.           
+
+> Method mAP mAP(PP) EDD +BBox [20] 79.2 82.7 TableFormer [20] 82.1 86.8
+> BGTR 91.9 -
+
+Evaluation Metric. The Tree-Edit-Distance-based Similarity (TEDS) [33] is employed as the evaluation metric, treating tables as tree structures. To mitigate the impact of OCR errors on the final score, we also utilize TEDS-S to assess the accuracy of the table structure without the table content. 
+
+5.2 Implementation Details 
+
+In this paper, the experimental settings are as follows: the table images are resized to 480 × 480 , and the flattened image sequence length is 3600. The di-mension of the features d is 512. The multi-head number is 8. The maximum HTML sequence length is 500. We used Ranger [27] as the optimizer, the mini-batch size is set to 8. For TabRecSet, PubTabNet, FinTabNet and SynthTabNet, we trained 25 epochs, the initial learning rate is established at 1e-3, and divided BGTR 11 
+
+by 10 at 17 and 22 epochs. For iFLYTAB, we trained 120 epochs, the initial learning rate is established at 1e-3, and divided by 10 at 75 and 105 epochs. For the foundation training stage on SNSTab, we trained 3 epochs, the initial learning rate is established at 1e-3. Experiments are conducted using 2 NVIDIA GeForce RTX 3090 GPUs with 24GB of RAM memory. We use the ResNet-50 [10] combined with the Multi-Aspect GCA [18] module and 2D positional encoding to form the Image Encoder. To enhance the model’s understanding of the 2D topology of table images, we employ 2D positional encoding to encode image features. The Shared Decoder comprises two identical stacked transformer [25,12,11] decoding layers. The Bbox Decoder comprises a single transformer [25] decoding layer. The Bbox-Guided Structure Decoder comprises two identical stacked transformer [25] decoding layers. 
+
+5.3 Comparison with Previous State-of-the-arts 
+
+As shown in Table 1, our method not only outperforms non-image-to-sequence methods, but also outperforms the best image-to-sequence method. 
+
+Results on natural scene tables. We evaluate the performance of our model on two natural scene table datasets: TabRecSet [28] and iFLYTAB [30]. Given the absence of a baseline method in TabRecSet, TableMaster [29] is adopted as the baseline. We divide the dataset into two categories: simple (S) and complex (C). A table is considered complex if it contains spanning cells, other-wise, it is classified as a simple table. On TabRecSet, a TEDS-S score of 98.65% for simple tables and 92.47% for complex tables is achieved. Compared with baseline TableMaster, our method demonstrates improvements of 1.45% on sim-ple tables, 8.36% on complex tables, and 3.07% overall. On iFLYTAB, a TEDS-S accuracy of 92.00% is achieved by our method, comparable to SEMv2 [30] and outperforms other methods. 
+
+Results on digital document tables. The performance of our model is also evaluated on three digital document table datasets: PubTabNet [33], FinTabNet [32] and SynthTabNet [20]. For PubTabNet, similar to previous meth-ods [13,19,9], the OCR results are from the text detection method PSENet [26] and text recognition method MASTER [18], and we match the text bboxes to the cell bboxes as described in [29]. A TEDS-S score of 97.63% and a TEDS score of 96.57% are achieved on PubTabNet which outperforms other methods. For FinTabNet and SynthTabNet, TEDS-S scores of 98.89% and 99.11% are achieved, respectively. Compared with TableFormer [20], our method exhibits improvements of 2.09% and 2.41% on FinTabNet and SynthTabNet, respectively. In addition, we evaluate the performance of cell bbox detection on PubTab-Net [33] using the PASCAL VOC mAP metric. As shown in Table 2, our method outperforms TableFormer [20] by 5.1% even without using post-processing. The results on five datasets validate the effectiveness of using bbox to guide the generation of HTML sequences. 12 L. Hu et al. 
+
+Table 3: Ablation studies of module design. BG signifies bbox-guided HTML generation. PT signifies the progressive training method.               
+
+> Methods TEDS-S BG PT Simple Complex All 98.30 86.50 95.54
+> ✓98.35 89.27 96.23
+> ✓✓98.65 92.47 97.21
+
+Table 4: Ablation studies of advancement training stage training method. SD 
+
+indicates Share Decoder. BD indicates Bbox Decoder. BGD indicates Bbox-Guided Structure Decoder.                       
+
+> Methods TEDS-S SD BD BGD Simple Complex All
+> ✓98.60 92.21 97.11
+> ✓✓98.56 91.96 97.02
+> ✓✓98.65 92.47 97.21
+> ✓✓✓98.60 92.18 97.10
+
+5.4 Visualization 
+
+We illustrate some visualization of BGTR in PubTabNet [33], FinTabNet [32], SynthTabNet [20], TabRecSet [28] and iFLYTAB [30]. As shown in Fig. 6, BGTR is adept at handling a wide range of scenarios and complex table structures. This includes tables with row and column spans, those containing multi-line text, as well as instances with empty cells. Moreover, it demonstrates strong robustness in both digital documents and natural scene environments. 
+
+5.5 Ablation Studies 
+
+For simplicity, we conduct ablation experiments on TabRecSet [28]. Several ex-periments were conducted to validate the effectiveness of our methods. 
+
+Effectiveness of module design . As indicated in Table 3, BG signifies bbox-guided HTML generation. PT signifies the progressive training method, we constructed the baseline experiment following the previous methods [20,13,29,3] which overlook the explicit utilization of bbox information when predicting HTML sequences. Utilizing BG significantly improves the TEDS-S score by 2.77% on complex tables, indicating the effectiveness of guiding HTML sequence generation with bbox information in complex table scenes. Meanwhile, PT en-hances the model’s generalization capabilities, particularly in handling complex tables, proving the effectiveness of the progressive training method. As shown in Fig. 7, using the progressive training method can yield better results on spanning cells and deformed tables. BGTR 13 (a) PubTabNet 
+
+> (b) FinTabNet
+> (c) SynthTabNet
+> (d) TabRecSet
+> (e) iFLYTAB
+
+Fig. 6: Visualization effects of BGTR. The predicted cell bounding boxes are depicted using green polygonal frames. From top to bottom, the sequence is PubTabNet [33], FinTabNet [32], SynthTabNet [20], TabRecSet [28] and iFLY-TAB [30]. The first and third columns show the visualization of bounding boxes, while the second and fourth columns display the visualization of HTML se-quences. 14 L. Hu et al. Input image  w/  ground truth  w/o  
+
+Fig. 7: Comparison of HTML visualization w/ and w/o progressive training on TabRecSet [28], the red dotted boxes indicate error results, the blue dotted boxes indicate spanning cells. Table 5: Ablation studies of λ in loss function.             
+
+> λTEDS-S Simple Complex All 0.5 98.49 91.82 96.94 198.65 92.47 97.21
+> 298.57 91.92 97.02
+
+Effectiveness of advancement training stage training method . As indicated in Table 4, placing a check mark ( ✓) signifies that the module continues to the advancement training stage of training, building upon the foundation training stage, while its absence indicates starting the training anew. From the results, we can see that SD (Share Decoder) and BGD (Bbox-Guided Structure Decoder) are very helpful for the training in the advancement training stage. This indicates that training in the foundation training stage with a large amount of data enables the model to learn a wide variety of table structures. However, due to the data differences between two stages, BD (Bbox Decoder) is not much of a help for the training in the advancement training stage. 
+
+Effectiveness of λ in loss function. As indicated in Table 5, the table indicates that deep supervision positively impacts performance. However, the numerical results demonstrate a notable consistency across various trade-off pa-rameter settings. For simplicity in model training, we recommend using λ = 1 
+
+in practical applications. 
+
+## 6 Conclusion 
+
+In this paper, we introduced BGTR, a novel framework that explicitly use bbox information to guide the generation of HTML sequences. Besides, to alleviate BGTR 15 
+
+the problem of insufficient data leading to inadequate training of bbox-guided HTML generation in natural scenes, we adopted a progressive training method for natural scene tables and introduced SNSTab, a large synthetic table dataset in natural scenes. Experimental results on five benchmark datasets demonstrate that the proposed method achieves state-of-the-art performance. 
+
+Acknowledgements The research is partially supported by National Key R&D Program of China (2023YFC3502900), National Natural Science Foundation of China (No. 62176093, 61673182), Key Realm R&D Program of Guangzhou (No. 202206030001), Guangdong Provincial Science and Technology Plan (No. 2023A0505030016). 
+
+## References 
+
+1. Agarwal, M., Mondal, A., Jawahar, C.: Cdec-net: Composite deformable cascade network for table detection in document images. In: 2020 25th international con-ference on pattern recognition (ICPR). pp. 9491–9498. IEEE (2021) 2. Bookstein, F.L.: Principal warps: Thin-plate splines and the decomposition of de-formations. IEEE Transactions on pattern analysis and machine intelligence 11 (6), 567–585 (1989) 3. Chen, B., Peng, D., Zhang, J., Ren, Y., Jin, L.: Complex table structure recog-nition in the wild using transformer and identity matrix-based augmentation. In: International Conference on Frontiers in Handwriting Recognition. pp. 545–561. Springer (2022) 4. Chi, Z., et al.: Complicated table structure recognition. arXiv preprint arXiv:1908.04729 (2019) 5. Contributors, T.: Tal_ocr_table: A scene table structure recognition benchmark (2021), https://ai.100tal.com/dataset 6. Dai, G., Zhang, Y., Ke, Q., Guo, Q., Huang, S.: One-shot diffusion mimicker for handwritten text generation. In: European Conference on Computer Vision (2024) 7. Dai, G., Zhang, Y., Wang, Q., Du, Q., Yu, Z., Liu, Z., Huang, S.: Disentangling writer and character styles for handwriting generation. In: Proceedings of the IEEE/CVF conference on computer vision and pattern recognition. pp. 5977–5986 (2023) 8. Gemelli, A., Vivoli, E., Marinai, S.: Graph neural networks and representation embedding for table extraction in pdf documents. In: 2022 26th International Con-ference on Pattern Recognition (ICPR). pp. 1719–1726. IEEE (2022) 9. Guo, Z., et al.: Trust: An accurate and end-to-end table structure recognizer using splitting-based transformers. arXiv preprint arXiv:2208.14687 (2022) 10. He, K., Zhang, X., Ren, S., Sun, J.: Deep residual learning for image recognition. In: Proceedings of the IEEE conference on computer vision and pattern recognition. pp. 770–778 (2016) 11. Hu, L.: Immoe: Incomplete multi-view anomaly detection via mixture of view ex-perts fusion. arXiv preprint arXiv:2607.19032 (2026) 12. Hu, L., Gan, Z., Deng, L., Liang, J., Liang, L., Huang, S., Chen, T.: Replaycad: Generative diffusion replay for continual anomaly detection. In: Kwok, J. (ed.) Proceedings of the Thirty-Fourth International Joint Conference on Artificial In-telligence, IJCAI-25. pp. 2946–2954. International Joint Conferences on Artificial 16 L. Hu et al. Intelligence Organization (8 2025). https://doi.org/10.24963/ijcai.2025/328 ,
+
+https://doi.org/10.24963/ijcai.2025/328 , main Track 13. Huang, Y., Lu, N., Chen, D., Li, Y., Xie, Z., Zhu, S., Gao, L., Peng, W.: Improving table structure recognition with visual-alignment sequential coordinate modeling. In: Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition. pp. 11134–11143 (2023) 14. Li, Y., et al.: Gfte: graph-based financial table extraction. In: Pattern Recognition. ICPR International Workshops and Challenges: Virtual Event, January 10–15, 2021, Proceedings, Part II. pp. 644–658. Springer (2021) 15. Lin, W., et al.: Tsrformer: Table structure recognition with transformers. In: Pro-ceedings of the 30th ACM International Conference on Multimedia. pp. 6473–6482 (2022) 16. Liu, H., Li, X., Liu, B., Jiang, D., Liu, Y., Ren, B.: Neural collaborative graph machines for table structure recognition. In: Proceedings of the IEEE/CVF Con-ference on Computer Vision and Pattern Recognition. pp. 4533–4542 (2022) 17. Long, R., et al.: Parsing table structures in the wild. In: ICCV. pp. 944–952 (2021) 18. Lu, N., et al.: Master: Multi-aspect non-local network for scene text recognition. Pattern Recognition 117 , 107980 (2021) 19. Lyu, P., et al.: Gridformer: Towards accurate table structure recognition via grid prediction. In: Proceedings of the 31st ACM International Conference on Multi-media. pp. 7747–7757 (2023) 20. Nassar, A., Livathinos, N., Lysak, M., Staar, P.: Tableformer: Table structure un-derstanding with transformers. In: Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition. pp. 4614–4623 (2022) 21. Raja, S., Mondal, A., Jawahar, C.: Table structure recognition using top-down and bottom-up cues. In: Computer Vision–ECCV 2020: 16th European Confer-ence, Glasgow, UK, August 23–28, 2020, Proceedings, Part XXVIII 16. pp. 70–86. Springer (2020) 22. Shehzadi, T., et al.: Towards end-to-end semi-supervised table detection with de-formable transformer. In: International Conference on Document Analysis and Recognition. pp. 51–76. Springer (2023) 23. Smock, B., Pesala, R., Abraham, R.: Pubtables-1m: Towards comprehensive ta-ble extraction from unstructured documents. In: Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition. pp. 4634–4642 (2022) 24. Tensmeyer, C., Morariu, V.I., Price, B., Cohen, S., Martinez, T.: Deep splitting and merging for table structure decomposition. In: 2019 International Conference on Document Analysis and Recognition (ICDAR). pp. 114–121. IEEE (2019) 25. Vaswani, A.: Attention is all you need. arXiv preprint arXiv:1706.03762 (2017) 26. Wang, W., et al.: Shape robust text detection with progressive scale expansion network. In: CVPR (2019) 27. Wright, L., Demeure, N.: Ranger21: a synergistic deep learning optimizer. arXiv preprint arXiv:2106.13731 (2021) 28. Yang, F., Hu, L., Liu, X., Huang, S., Gu, Z.: A large-scale dataset for end-to-end table recognition in the wild. Scientific Data 10 (1), 110 (2023) 29. Ye, J., Qi, X., He, Y., Chen, Y., Gu, D., Gao, P., Xiao, R.: Pingan-vcgroup’s solution for icdar 2021 competition on scientific literature parsing task b: table recognition to html. arXiv preprint arXiv:2105.01848 (2021) 30. Zhang, Z., Hu, P., Ma, J., Du, J., Zhang, J., Yin, B., Yin, B., Liu, C.: Semv2: Table separation line detection based on instance segmentation. Pattern Recognition 149 ,110279 (2024) BGTR 17 31. Zhang, Z., Zhang, J., Du, J., Wang, F.: Split, embed and merge: An accurate table structure recognizer. Pattern Recognition 126 , 108565 (2022) 32. Zheng, X., Burdick, D., Popa, L., Zhong, X., Wang, N.X.R.: Global table extractor (gte): A framework for joint table identification and cell structure recognition using visual context. In: Proceedings of the IEEE/CVF winter conference on applications of computer vision. pp. 697–706 (2021) 33. Zhong, X., ShafieiBavani, E., Jimeno Yepes, A.: Image-based table recognition: data, model, and evaluation. In: European conference on computer vision. pp. 564–580. Springer (2020) 18 L. Hu et al. 
+
+## A SNSTab 
+
+A.1 Dataset creation 
+
+The creation of the SNSTab dataset is divided into three phases: table gener-ation, table transformation, and background synthesis. In this section we will cover the details of each step. 
+
+Table generation. When generating digital document tables, we set the maximum number of rows in the table to 20, the maximum number of columns to 15, the minimum number of rows to 2, and the minimum number of columns to 2. In addition, in order to get spanning cells, we will randomly merge the rows and columns of the cells, which will not exceed 40% of the total number of cells. The text in the cells is mainly from some common words and phrases in Chinese and English, and the length of the text will not exceed 10. Since table image generation using browser rendering is time consuming, it takes about 20 hours on average to generate 10,000 table images. 
+
+Table transformation. After the source points are selected, the source points move randomly to form the target points. The movement of the source points do not exceed 10% of the width of the image horizontally and 10% of the height of the image vertically. In fact, not all tables in the natural scene are inclined and rotated, and in order to better simulate this situation, 20% of the tables are not transformed. 
+
+Background synthesis. As shown in Fig. 8, in order to reduce the impact of the background image on the table text, we did not select a background with text when obtaining the background image. In the background synthesis, we will first obtain the mask region of the table image, then replace the mask region in the background image with the table image, and finally get the final sample. 
+
+A.2 Samples 
+
+SNSTab comprises a diverse range of tables within the dataset, including wired tables, Wireless tables, Provincial line tables, inclined tables, curved tables and large tables. Partial sample data is illustrated in Fig. 9 for reference. 
+
+A.3 Statistics 
+
+To give a more complete picture of SNSTab, we have listed the following statis-tics: 
+
+Cell number : this represents the number of cells contained in each table, as shown in Fig. 10 
+
+Row number : this represents the number of rows in each table, as shown in Fig. 11 
+
+Column number : this represents the number of columns in each table, as shown in Fig. 12 
+
+Length of cell content : this represents the text length of each cell, as shown in Fig. 13 BGTR 19 
+
+Rowspan number : this represents the number of rows that each cell spans, as shown in Fig. 14 
+
+Colspan number : this represents the number of columns that each cell spans, as shown in Fig. 15 
+
+Fig. 8: Samples in the background images. Including paper, walls and daily-life items. 20 L. Hu et al. (a) wired tables 
+
+> (b) wireless tables
+> (c) provincial line tables
+> (d) inclined tables
+> (e) curved tables
+> (f) large tables
+
+Fig. 9: Samples in the SNSTab dataset. Including wired tables, wireless tables, provincial line tables, inclined tables, curved tables and large tables. BGTR 21 
+
+Fig. 10: Statistics of cell number. 
+
+Fig. 11: Statistics of row number. 22 L. Hu et al. 
+
+Fig. 12: Statistics of column number. 
+
+Fig. 13: Statistics of length of cell content. BGTR 23 
+
+Fig. 14: Statistics of rowspan number. 
+
+Fig. 15: Statistics of colspan number.

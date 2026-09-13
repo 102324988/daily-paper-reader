@@ -1,0 +1,185 @@
+{
+  "date": "20260913",
+  "date_label": "",
+  "generated_at": "2026-09-13 21:58:37 UTC",
+  "recommend_exists": true,
+  "run_count": 1,
+  "papers": [
+    {
+      "paper_id": "2609.07072v1",
+      "route": "202609/13/2609.07072v1-detect-anything-in-graphic-design-element-level-rewards-for-autoregressive-detection",
+      "title": "Detect Anything in Graphic Design: Element-Level Rewards for Autoregressive Detection",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "将平面设计元素检测建模为目标检测任务",
+      "first_seen_at": "2026-09-13 21:58:37 UTC",
+      "updated_at": "2026-09-13 21:58:37 UTC"
+    },
+    {
+      "paper_id": "2609.05959v1",
+      "route": "202609/13/2609.05959v1-finehoi-part-aware-dense-representations-for-zero-shot-human-object-interaction-detection",
+      "title": "FineHOI: Part-Aware Dense Representations for Zero-Shot Human-Object Interaction Detection",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "人-物交互检测，属目标检测任务",
+      "first_seen_at": "2026-09-13 21:58:37 UTC",
+      "updated_at": "2026-09-13 21:58:37 UTC"
+    },
+    {
+      "paper_id": "2609.07738v1",
+      "route": "202609/13/2609.07738v1-tftrack-a-template-free-framework-for-efficient-3d-point-cloud-tracking",
+      "title": "TFTrack: A Template-Free Framework for Efficient 3D Point Cloud Tracking",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "无模板的三维点云单目标跟踪",
+      "first_seen_at": "2026-09-13 21:58:37 UTC",
+      "updated_at": "2026-09-13 21:58:37 UTC"
+    },
+    {
+      "paper_id": "2609.10855v1",
+      "route": "202609/13/2609.10855v1-evaluation-of-vision-language-models-across-diverse-coastal-environments",
+      "title": "Evaluation of Vision-Language Models Across Diverse Coastal Environments",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "评估视觉语言模型的视觉识别与分割",
+      "first_seen_at": "2026-09-13 21:58:37 UTC",
+      "updated_at": "2026-09-13 21:58:37 UTC"
+    },
+    {
+      "paper_id": "2609.06490v1",
+      "route": "202609/13/2609.06490v1-oraclezoom-on-policy-self-distillation-inspired-reference-constrained-recursive-image-super-resolution",
+      "title": "OracleZoom: On-Policy Self-Distillation Inspired Reference-Constrained Recursive Image Super Resolution",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "递归图像超分辨率框架",
+      "first_seen_at": "2026-09-13 21:58:37 UTC",
+      "updated_at": "2026-09-13 21:58:37 UTC"
+    },
+    {
+      "paper_id": "2609.08013v1",
+      "route": "202609/13/2609.08013v1-a-black-box-adversarial-attack-on-human-pose-estimation-and-keypoint-based-action-recognition-models",
+      "title": "A Black-Box Adversarial Attack on Human Pose Estimation and Keypoint-Based Action Recognition Models",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "针对人体姿态估计与动作识别的黑盒对抗攻击",
+      "first_seen_at": "2026-09-13 21:58:37 UTC",
+      "updated_at": "2026-09-13 21:58:37 UTC"
+    },
+    {
+      "paper_id": "2609.08607v1",
+      "route": "202609/13/2609.08607v1-golf-global-observation-with-local-focus-for-calibration-aware-stereo-interaction-field-estimation",
+      "title": "GOLF: Global Observation with Local Focus for Calibration-Aware Stereo Interaction Field Estimation",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "立体三维位姿与交互场估计",
+      "first_seen_at": "2026-09-13 21:58:37 UTC",
+      "updated_at": "2026-09-13 21:58:37 UTC"
+    },
+    {
+      "paper_id": "2609.08705v1",
+      "route": "202609/13/2609.08705v1-enhancing-table-structure-recognition-via-bounding-box-guidance",
+      "title": "Enhancing Table Structure Recognition via Bounding Box Guidance",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "预测单元格边界框的表格结构识别",
+      "first_seen_at": "2026-09-13 21:58:37 UTC",
+      "updated_at": "2026-09-13 21:58:37 UTC"
+    },
+    {
+      "paper_id": "2609.11081v1",
+      "route": "202609/13/2609.11081v1-tailprop-content-adaptive-light--and-heavy-tailed-propagation-for-vision",
+      "title": "TailProp: content-adaptive light- and heavy-tailed propagation for vision",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "面向视觉表示的内容自适应传播骨干网络",
+      "first_seen_at": "2026-09-13 21:58:37 UTC",
+      "updated_at": "2026-09-13 21:58:37 UTC"
+    },
+    {
+      "paper_id": "2609.11236v1",
+      "route": "202609/13/2609.11236v1-haldetect-at-imageeval-2026-shared-tasks-answer-first-contrastive-grounding-with-qlora",
+      "title": "HALDETECT at ImageEval 2026 Shared Tasks: Answer-First Contrastive Grounding with QLoRA",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "细粒度视觉理解的视觉定位与对比式微调",
+      "first_seen_at": "2026-09-13 21:58:37 UTC",
+      "updated_at": "2026-09-13 21:58:37 UTC"
+    },
+    {
+      "paper_id": "2609.11516v1",
+      "route": "202609/13/2609.11516v1-loopvae-recurrent-depth-across-scales-for-visual-tokenization",
+      "title": "LoopVAE: Recurrent Depth Across Scales for Visual Tokenization",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "参数复用的分层视觉标记化",
+      "first_seen_at": "2026-09-13 21:58:37 UTC",
+      "updated_at": "2026-09-13 21:58:37 UTC"
+    }
+  ]
+}

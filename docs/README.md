@@ -41,17 +41,17 @@
 <section class="dpr-home-dashboard-card dpr-home-report-card">
   <div class="dpr-home-dashboard-header">
     <div>
-      <span class="dpr-home-dashboard-kicker">2026-09-12</span>
+      <span class="dpr-home-dashboard-kicker">2026-09-13</span>
       <h3 class="dpr-home-dashboard-title">今日汇总</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">共 6 篇</strong>
+    <strong class="dpr-home-dashboard-count">共 11 篇</strong>
   </div>
   <dl class="dpr-home-dashboard-stats">
     <div class="dpr-home-dashboard-stat"><dt>累计更新</dt><dd>1 次</dd></div>
     <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>3</dd></div>
-    <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>3</dd></div>
+    <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>8</dd></div>
   </dl>
-  <p class="dpr-home-dashboard-body">最近更新：2026-09-12 21:19:08 UTC<br>状态：成功</p>
+  <p class="dpr-home-dashboard-body">最近更新：2026-09-13 21:58:37 UTC<br>状态：成功</p>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-brief-card">
   <div class="dpr-home-dashboard-header">
@@ -62,7 +62,7 @@
     <strong class="dpr-home-dashboard-count">AI</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<p>2026-09-12 日报精选 6 篇，精读医学语义对齐与车牌实时检测两项高分工作。最值得关注：结构化监督让视觉证据对齐医学语义，以及 YOLO Tiny+Haar 的云端实时车牌识别方案。普通读者可优先了解医学 AI 如何减少误判，并留意隐私友好的情绪识别新基准。</p>
+<p>今日筛选11篇论文，精读3篇、速读8篇，重点覆盖图形设计元素检测与零样本人-物交互检测。最值得看的是《Detect Anything in Graphic Design》提出的元素级奖励自回归检测（9.0分），以及《FineHOI》的部位感知密集表示用于零样本HOI检测（8.0分）。普通读者可先关注图形设计自动化检测的落地潜力，再按需跟进零样本交互检测的应用场景。</p>
   </div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-deep-card">
@@ -74,7 +74,7 @@
     <strong class="dpr-home-dashboard-count">3 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Beyond Classification: Structured Supervision Aligns Visual Evidence with Medical Semantics">Beyond Classification: Structured Supervision Aligns Visual Evidence with Medical Semantics</span></li><li><span class="dpr-home-dashboard-paper-title" title="A Cloud-Based Hybrid Model for Real-Time Detection of BRTA-Approved Licence Plates Using YOLO Tiny and Haar Cascade">A Cloud-Based Hybrid Model for Real-Time Detection of BRTA-Approved Licence Plates Using YOLO Tiny and Haar Cascade</span></li><li><span class="dpr-home-dashboard-paper-title" title="BruNet: A Cross-Domain Transfer Framework for Bruise Segmentation">BruNet: A Cross-Domain Transfer Framework for Bruise Segmentation</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Detect Anything in Graphic Design: Element-Level Rewards for Autoregressive Detection">Detect Anything in Graphic Design: Element-Level Rewards for Autoregressive Detection</span></li><li><span class="dpr-home-dashboard-paper-title" title="FineHOI: Part-Aware Dense Representations for Zero-Shot Human-Object Interaction Detection">FineHOI: Part-Aware Dense Representations for Zero-Shot Human-Object Interaction Detection</span></li><li><span class="dpr-home-dashboard-paper-title" title="TFTrack: A Template-Free Framework for Efficient 3D Point Cloud Tracking">TFTrack: A Template-Free Framework for Efficient 3D Point Cloud Tracking</span></li></ul>
   </div>
   <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">cv <strong>3</strong></span></div>
 </section>
@@ -84,12 +84,12 @@
       <span class="dpr-home-dashboard-kicker">今日累计</span>
       <h3 class="dpr-home-dashboard-title">速读推荐</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">3 篇</strong>
+    <strong class="dpr-home-dashboard-count">8 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Emo-DVS: A Multimodal Benchmark for Privacy-Aware Emotion Recognition with Event Cameras">Emo-DVS: A Multimodal Benchmark for Privacy-Aware Emotion Recognition with Event Cameras</span></li><li><span class="dpr-home-dashboard-paper-title" title="Marker-free eye-gaze estimation using a single image and depth from defocus">Marker-free eye-gaze estimation using a single image and depth from defocus</span></li><li><span class="dpr-home-dashboard-paper-title" title="Beyond Benchmarks: Using VLMs to Reveal Systematic Classification Failures Under Real World Conditions">Beyond Benchmarks: Using VLMs to Reveal Systematic Classification Failures Under Real World Conditions</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Evaluation of Vision-Language Models Across Diverse Coastal Environments">Evaluation of Vision-Language Models Across Diverse Coastal Environments</span></li><li><span class="dpr-home-dashboard-paper-title" title="OracleZoom: On-Policy Self-Distillation Inspired Reference-Constrained Recursive Image Super Resolution">OracleZoom: On-Policy Self-Distillation Inspired Reference-Constrained Recursive Image Super Resolution</span></li><li><span class="dpr-home-dashboard-paper-title" title="A Black-Box Adversarial Attack on Human Pose Estimation and Keypoint-Based Action Recognition Models">A Black-Box Adversarial Attack on Human Pose Estimation and Keypoint-Based Action Recognition Models</span></li></ul>
   </div>
-  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">cv <strong>3</strong></span></div>
+  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">cv <strong>8</strong></span></div>
 </section>
 </div>
 
