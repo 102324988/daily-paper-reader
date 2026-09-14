@@ -1,0 +1,200 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-09-14T22:05:58.861031+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 3,
+    "deep_cap": 6,
+    "deep_selected": 3,
+    "quick_candidates": 2,
+    "quick_skim_target": 11,
+    "quick_selected": 2
+  },
+  "deep_dive": [
+    {
+      "id": "2609.12892v1",
+      "source": "arxiv",
+      "title": "Beyond Accuracy: Uncertainty-Guided Boundary Refinement for Reliable Biomedical Image Segmentation",
+      "abstract": "Accurate biomedical image segmentation requires not only high global overlap but also reliable delineation of clinically meaningful boundaries. In blood-smear microscopy, cytoplasm and nucleus contours provide the structural basis for downstream morphology analysis; however, deep segmentation models may remain uncertain or overconfident near ambiguous boundary regions even when achieving strong Dice scores. This work proposes a Reliability-Aware Boundary Refinement Network (RABR-Net), a two-stage framework for trustworthy image segmentation. A strong UNet++ EfficientNet-B4 base segmenter first produces initial class probabilities and logits. Predictive entropy, test-time augmentation variance, margin uncertainty, probability gradients, and soft boundary cues are then combined into a boundary-aware reliability representation. This representation guides a gated residual refiner that selectively corrects uncertain boundary pixels while preserving confident regions of the base prediction. The framework is evaluated using overlap accuracy, class-wise Dice, Boundary Dice, HD95/ASSD, calibration, risk--coverage analysis, robustness under image perturbations, qualitative correction maps, and paired statistical testing. On the held-out test set, the proposed method improves Dice from 0.9602 to 0.9614, Boundary Dice from 0.3448 to 0.3611, and HD95 from 3.0354 to 2.8274 compared with the cached base prediction. Statistical analysis confirms significant improvements in Dice, Boundary Dice, and HD95. Qualitative results show that the learned gate concentrates around uncertain cytoplasm and nucleus boundaries, and correction maps confirm localized boundary refinement. Although calibration does not automatically improve after refinement, the proposed framework provides an interpretable and reliability-focused strategy for boundary-sensitive biomedical image segmentation.",
+      "authors": [
+        "Anima Kujur"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.LG"
+      ],
+      "published": "2026-09-11T14:21:02+00:00",
+      "link": "https://arxiv.org/pdf/2609.12892v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "biomedical image segmentation with boundary refinement",
+      "llm_evidence_cn": "生物医学图像分割与边界细化",
+      "llm_evidence": "生物医学图像分割与边界细化",
+      "canonical_evidence": "生物医学图像分割与边界细化",
+      "llm_tldr_en": "RABR-Net, a two-stage reliability-aware framework, refines ambiguous biomedical segmentation boundaries using predictive entropy, TTA variance and margin uncertainty to improve trustworthy contour delineation.",
+      "llm_tldr_cn": "该文针对生物医学图像分割中边界区域不确定性高、模型易过度自信的问题，提出可靠性感知边界细化网络RABR-Net。方法以UNet++与EfficientNet-B4为基础分割器生成初始类别概率与logits，再结合预测熵、测试时增强方差与边界不确定性进行两阶段边界细化。实验表明该方法在保持较高Dice的同时提升了临床边界的描绘可靠性，为可信医学图像分割提供了新思路。",
+      "llm_tldr": "该文针对生物医学图像分割中边界区域不确定性高、模型易过度自信的问题，提出可靠性感知边界细化网络RABR-Net。方法以UNet++与EfficientNet-B4为基础分割器生成初始类别概率与logits，再结合预测熵、测试时增强方差与边界不确定性进行两阶段边界细化。实验表明该方法在保持较高Dice的同时提升了临床边界的描绘可靠性，为可信医学图像分割提供了新思路。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "image segmentation techniques",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2609.12798v1",
+      "source": "arxiv",
+      "title": "LGFN: Lightweight Gated RGB-Polarization Fusion with Modality-Availability Conditioning for Camouflaged Object Detection",
+      "abstract": "Camouflaged object detection (COD) is an important engineering task in intelligent optical perception, but it remains challenging when targets closely resemble their surroundings. Polarization imaging provides complementary physical cues, whereas existing methods typically assume fixed multimodal input configurations and entangle intra-polarization coordination with interaction between red-green-blue (RGB) and polarization representations. We propose LGFN, a lightweight gated RGB-polarization fusion framework supporting separately optimized RGB-only and polarization-assisted configurations. A deterministic Modality Router selects the appropriate configuration according to polarization availability. In the multimodal configuration, an availability-conditioned Modality Gate calibrates the available polarization branches; the Gated Polarization Hub coordinates learned degree of linear polarization (DoLP) and angle of polarization (AoP) representations with explicit polarization cues; and RGB-Polarization Cross Fusion introduces the coordinated representation into the RGB hierarchy through controlled residual interaction. The multimodal configuration requires neither sample-dependent statistics nor handcrafted quality descriptors during inference. On the complete 230-image PCOD_1200 test set, the RGB-only configuration achieves a mean absolute error of 0.0090, a Dice score of 0.8806, and an intersection over union of 0.8144, obtaining the best results on all six metrics among the evaluated RGB-based methods. Under a common local reevaluation protocol, the multimodal configuration outperforms PolarNet and IPNet on all six metrics. Relative to IPNet, it reduces the parameter count, floating-point operations, and latency by 53.1%, 73.6%, and 63.0%, respectively.",
+      "authors": [
+        "Zhuangfan Huang",
+        "Xiaosong Li",
+        "Yang Liu",
+        "Tao Ye",
+        "Haishu Tan"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-11T12:57:37+00:00",
+      "link": "https://arxiv.org/pdf/2609.12798v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "lightweight gated RGB-polarization fusion for camouflaged object detection",
+      "llm_evidence_cn": "用于伪装目标检测的轻量门控RGB-偏振融合",
+      "llm_evidence": "用于伪装目标检测的轻量门控RGB-偏振融合",
+      "canonical_evidence": "用于伪装目标检测的轻量门控RGB-偏振融合",
+      "llm_tldr_en": "LGFN tackles camouflaged object detection where targets resemble surroundings, proposing a lightweight gated RGB-polarization fusion with a modality router that selects RGB-only or polarization-assisted configurations for robust detection.",
+      "llm_tldr_cn": "伪装目标检测中目标与背景高度相似，偏振成像可提供互补物理线索，但现有方法假设固定多模态输入并纠缠模态交互。本文提出 LGFN 轻量门控融合框架，支持RGB单独与偏振辅助两种配置，并由确定性模态路由器按偏振可用性选择。方法在伪装目标检测任务上提升了鲁棒性与灵活性。",
+      "llm_tldr": "伪装目标检测中目标与背景高度相似，偏振成像可提供互补物理线索，但现有方法假设固定多模态输入并纠缠模态交互。本文提出 LGFN 轻量门控融合框架，支持RGB单独与偏振辅助两种配置，并由确定性模态路由器按偏振可用性选择。方法在伪装目标检测任务上提升了鲁棒性与灵活性。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "object detection methods",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2609.12920v1",
+      "source": "arxiv",
+      "title": "Input Resolution Matters: Real-Time Object Detection Latency",
+      "abstract": "We model total latency as the convolution of preprocessing, inference, and postprocessing distributions under a simplifying independence approximation, with selected stage parameters expressed as functions of source-image resolution. Under this assumption, the probability density of the total latency is the convolution of the stage-wise densities, and its cumulative distribution function (CDF) provides the distribution of end-to-end detection time. Each stage is modeled by a parametric distribution (e.g., Exponential, Erlang, Normal, Gamma), with parameters expressed as functions of the source-image resolution. Experiments with YOLOv11n on NVIDIA Jetson Orin NX using COCO2017 images across multiple resolutions assess the proposed models against fixed-parameter baselines using Kolmogorov Smirnov, Anderson Darling, and Cramér von Mises statistics. The results indicate that resolution-aware parameterization can improve distributional approximation in the measured setting, particularly for the more flexible Normal and Gamma models, while the quality of fit remains distribution dependent. Our contribution is a theoretically grounded and lightweight formulation for studying resolution-dependent latency distributions in a measured object detection pipeline.",
+      "authors": [
+        "Qingyang Zhang",
+        "Fumio Machida",
+        "Laura Carnevali"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.PF"
+      ],
+      "published": "2026-09-11T14:45:12+00:00",
+      "link": "https://arxiv.org/pdf/2609.12920v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Real-time object detection latency modeling",
+      "llm_evidence_cn": "实时目标检测延迟建模",
+      "llm_evidence": "实时目标检测延迟建模",
+      "canonical_evidence": "实时目标检测延迟建模",
+      "llm_tldr_en": "This paper models real-time object detection latency as the convolution of preprocessing, inference and postprocessing distributions parameterized by input resolution, validated with YOLOv11n on Jetson Orin NX, offering an analytical tool for resolution-latency tradeoffs.",
+      "llm_tldr_cn": "实时目标检测的端到端延迟受输入分辨率影响显著，但缺乏可解析的建模方法。本文将总延迟建模为预处理、推理与后处理三个阶段的卷积分布，各阶段参数表示为源图像分辨率的函数。在NVIDIA Jetson Orin NX上用YOLOv11n和COCO2017多分辨率图像验证，所提模型优于固定参数基线。该工作为实时检测系统的分辨率与延迟权衡提供了理论工具。",
+      "llm_tldr": "实时目标检测的端到端延迟受输入分辨率影响显著，但缺乏可解析的建模方法。本文将总延迟建模为预处理、推理与后处理三个阶段的卷积分布，各阶段参数表示为源图像分辨率的函数。在NVIDIA Jetson Orin NX上用YOLOv11n和COCO2017多分辨率图像验证，所提模型优于固定参数基线。该工作为实时检测系统的分辨率与延迟权衡提供了理论工具。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "object detection methods",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2609.12261v1",
+      "source": "arxiv",
+      "title": "Revisiting Multi-Object Tracking Baselines: Hyperparameter Optimization with Multi-Fidelity Greedy Coordinate Search",
+      "abstract": "Multi-object tracking (MOT) is dominated by the tracking-by-detection paradigm, whose methods typically rely on a small set of hyperparameters that are conventionally chosen by hand. Tuning them requires repeated expert-guided experimentation, while the procedures used to select reported values are often not systematically evaluated or fully documented. Hyperparameter optimization (HPO) automates this process, yet it remains rarely used in MOT, and existing studies applying HPO to MOT predate modern deep-detector-based trackers and HOTA evaluation. We systematically apply HPO across two datasets and four tracking-by-detection methods. We also propose Multi-Fidelity Greedy Coordinate Search (MFGCS), which optimizes one hyperparameter at a time by first evaluating candidate values on a small subset of scenes and re-evaluating only promising candidates on the full dataset. Across all eight tracker-dataset combinations, the Tree-structured Parzen Estimator (TPE) and MFGCS outperform both our hand-tuned configurations and the corresponding published results, with improvements of up to 4.38 and 16.05 HOTA points, respectively. MFGCS also reaches a predefined HOTA target faster than TPE in seven of the eight combinations. Within each tracker-dataset pair, all optimizers share the same search space and evaluation pipeline, isolating the effect of the search strategy. We release the code and tuned configurations to enable future work to compare against systematically optimized rather than default or manually tuned baselines.",
+      "authors": [
+        "Momir Adžemović"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-10T22:36:08+00:00",
+      "link": "https://arxiv.org/pdf/2609.12261v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "multi-object tracking hyperparameter optimization",
+      "llm_evidence_cn": "多目标跟踪超参数优化",
+      "llm_evidence": "多目标跟踪超参数优化",
+      "canonical_evidence": "多目标跟踪超参数优化",
+      "llm_tldr_en": "This paper systematically applies hyperparameter optimization to modern tracking-by-detection MOT baselines and proposes Multi-Fidelity Greedy Coordinate Search, improving performance and reproducibility.",
+      "llm_tldr_cn": "多目标跟踪普遍依赖人工选择的少量超参数，已有HPO研究又早于深度检测器与HOTA评测时代，缺乏系统验证。本文在两种数据集与四种跟踪-检测方法上系统开展超参数优化，并提出多保真贪心坐标搜索MFGCS。实验显示自动化调参能改善现代跟踪器性能并提升可复现性，为MOT社区提供了规范的调参范式。",
+      "llm_tldr": "多目标跟踪普遍依赖人工选择的少量超参数，已有HPO研究又早于深度检测器与HOTA评测时代，缺乏系统验证。本文在两种数据集与四种跟踪-检测方法上系统开展超参数优化，并提出多保真贪心坐标搜索MFGCS。实验显示自动化调参能改善现代跟踪器性能并提升可复现性，为MOT社区提供了规范的调参范式。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "visual tracking surveys",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2609.12557v1",
+      "source": "arxiv",
+      "title": "DRS-VPT: Directly Relocalizing in a Scan with Vision Point Transformers",
+      "abstract": "We present DRS-VPT, a feed-forward transformer architecture for foundational image-to-scan registration. Given query images and a reference 3D point cloud, the model predicts the scan pose and point map alongside the poses and point maps of each camera, all expressed in the first camera's frame. It additionally predicts a coarse-to- fine pyramid of per-point and per-pixel features for direct reprojective alignment of the scan to the first image. This formulation unifies downstream tasks such as camera-LiDAR calibration in autonomous driving and indoor camera-to-map relocalization. A single DRS-VPT model achieves state-of-the-art performance for image-to-LiDAR registration in autonomous driving, competitive indoor relocalization without training map-specific weights, and strong zero-shot transfer to unseen environments. We also show qualitatively that the model learns complex scan-to-image projection properties such as occlusion of back-facing points.",
+      "authors": [
+        "Lanke Frank Tarimo Fu",
+        "Maurice Fallon"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.RO"
+      ],
+      "published": "2026-09-11T08:02:11+00:00",
+      "link": "https://arxiv.org/pdf/2609.12557v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "vision transformer for image-to-scan registration and feature pyramids",
+      "llm_evidence_cn": "视觉点变换器用于图像到扫描配准与特征金字塔",
+      "llm_evidence": "视觉点变换器用于图像到扫描配准与特征金字塔",
+      "canonical_evidence": "视觉点变换器用于图像到扫描配准与特征金字塔",
+      "llm_tldr_en": "DRS-VPT is a feed-forward transformer for image-to-scan registration that predicts scan pose, point maps and coarse-to-fine per-point and per-pixel features for direct reprojective alignment.",
+      "llm_tldr_cn": "该文针对图像与三维扫描之间的基础配准问题，提出前馈式视觉点变换器DRS-VPT。模型以查询图像和参考点云为输入，预测扫描位姿、点图以及各相机位姿与点图，并输出由粗到细的逐点与逐像素特征金字塔以实现直接重投影对齐。实验在自动驾驶图像到LiDAR配准上达到最优性能，在室内重定位上亦具竞争力，统一了相机-LiDAR标定等下游任务。",
+      "llm_tldr": "该文针对图像与三维扫描之间的基础配准问题，提出前馈式视觉点变换器DRS-VPT。模型以查询图像和参考点云为输入，预测扫描位姿、点图以及各相机位姿与点图，并输出由粗到细的逐点与逐像素特征金字塔以实现直接重投影对齐。实验在自动驾驶图像到LiDAR配准上达到最优性能，在室内重定位上亦具竞争力，统一了相机-LiDAR标定等下游任务。",
+      "llm_tags": [
+        "query:cv:composite"
+      ],
+      "matched_query_tag": "query:cv:composite",
+      "matched_query_text": "Papers central to 计算机视觉相关论文, especially work that connects or combines: computer vision research papers; object detection methods; image segmentation techniques; visual recognition algorithms; feature extraction in computer vision; visual tracking surveys; Find papers on computer vision; Retrieve computer vision research articles; Search for state of the art in computer vision.",
+      "matched_requirement_id": "req-composite-cv",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

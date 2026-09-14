@@ -1,0 +1,321 @@
+Title: Input Resolution Matters: Real-Time Object Detection Latency
+
+URL Source: https://arxiv.org/pdf/2609.12920v1
+
+Published Time: Mon, 14 Sep 2026 01:10:14 GMT
+
+Number of Pages: 8
+
+Markdown Content:
+# Input Resolution Matters: Real-Time Object Detection Latency 
+
+Qingyang Zhang 
+
+Department of Computer Science University of Tsukuba 
+
+Tsukuba, Japan zhang.qingyang@sd.cs.tsukuba.ac.jp 
+
+Fumio Machida 
+
+Department of Computer Science University of Tsukuba 
+
+Tsukuba, Japan machida@cs.tsukuba.ac.jp 
+
+Laura Carnevali 
+
+Department of Information Engineering University of Florence 
+
+Florence, Italy laura.carnevali@unifi.it 
+
+Abstract —We present an input-resolution dependent distribu-tion model for latency in real-time object detection. We model total latency as the convolution of preprocessing, inference, and postprocessing distributions under a simplifying independence approximation, with selected stage parameters expressed as functions of source-image resolution. Under this assumption, the probability density of the total latency is the convolution of the stage-wise densities, and its cumulative distribution function (CDF) provides the distribution of end-to-end detection time. Each stage is modeled by a parametric distribution (e.g., Ex-ponential, Erlang, Normal, Gamma), with parameters expressed as functions of the source-image resolution. Experiments with YOLOv11n on NVIDIA Jetson Orin NX using COCO2017 images across multiple resolutions assess the proposed models against fixed-parameter baselines using Kolmogorov Smirnov, Anderson Darling, and Cram´ er von Mises statistics. The results indicate that resolution-aware parameterization can improve distribu-tional approximation in the measured setting, particularly for the more flexible Normal and Gamma models, while the quality of fit remains distribution dependent. Our contribution is atheoretically grounded and lightweight formulation for studying resolution-dependent latency distributions in a measured object detection pipeline. 
+
+Index Terms —real-time object detection, latency modeling, distribution fitting, edge AI 
+
+I. I NTRODUCTION 
+
+Object detection systems have seen rapid development in recent years, driven by advancements in deep learning models such as YOLO series [1]–[3], Faster R-CNN [4], and SSD [5]. These systems are widely deployed in applications with strict real-time constraints, including autonomous vehicles, UAVs, and industrial inspection [6], [7]. While much of the literature has focused on detection accuracy, latency performance, espe-cially its variability and predictability, remains underexplored in both research and practice [8], [9]. Object detection latency is often reported by scalar metrics such as the mean inference time or the average FPS, occasion-ally supplemented with quantiles or standard deviation [10], [11]. However, these metrics are only representative statistics and provide limited insight into the performance dynamics of real-time object detection processes. The inference latency of modern single-stage object detec-tors typically comprises three processing stages: preprocessing (e.g., image resizing and normalization), neural network infer-ence, and postprocessing (e.g., non-maximum suppression). Although most end-to-end benchmarks treat the pipeline as a black box, our observation, which is based on the inter-nal structure of YOLOv11n, suggests that the preprocessing latency varies significantly with the size of input image. The inference and postprocessing stages run on the fixed-size inter-nal representations, and thus the latency is largely independent of the input image size. Therefore, the precise latency model needs to consider the performance characteristics of internal stages that may depend on the input image size. In this study, we propose a distribution function for real-time object detection latency that combines three stage-wise distributions under a simplifying independence approximation. The proposed distribution function is parameterized by the input resolution performance characteristics are captured in the model. In particular, we consider resolution-dependent distribution parameters that can be estimated from the mean and variance of empirical data. To evaluate the proposed performance model, we conduct empirical experiments on the NVIDIA Jetson Orin NX using the YOLOv11n model [12], with input images from the COCO2017 dataset across multiple resolutions. Our results provide an empirical assessment of the proposed formula-tion in this measured setting and show where resolution-dependent parameterization improves the approximation over fixed-parameter baselines. The novelty and contributions of this work are threefold:  
+
+> •
+
+Theoretical latency model: We formalize the total la-tency of real-time object detection as a composition of stage-wise probability distributions (preprocessing, infer-ence, and postprocessing), providing a principled foun-dation for distribution-level analysis.  
+
+> •
+
+Resolution-aware parameterization: We introduce resolution-dependent distribution functions by explicitly linking statistical parameters to input image size, allowing intermediate resolutions to be approximated from anchor-resolution measurements in the studied setting.  
+
+> •
+
+Empirical assessment and practical insights: Through experiments with multiple resolutions, we compare the proposed model with fixed-parameter baselines under CDF-based goodness-of-fit statistics and identify both improvements and remaining limitations in stage-wise arXiv:2609.12920v1 [cs.CV] 11 Sep 2026 latency approximation. The remainder of this paper is organized as follows. Sec-tion II motivates the problem, Section III presents the pro-posed latency model, Section IV describes the experimental setup, Section V reports the evaluation, Section VI discusses implications and limitations, Section VII summarizes related work, and Section VIII concludes the paper. II. B ACKGROUND 
+
+In real-time object detection systems, the total detection latency can be decomposed into three sequential stages: pre-processing, inference, and postprocessing. From a modeling perspective, the overall latency and the stage-wise latencies are of interest. For instance, besides the total latency, the per-formance of a specific stage (i.e., preprocessing) is crucial for bottleneck analysis [13]. The stage-wise performance models are also necessary for fine-grained performance analysis [14]. A common way to report detection latency is through av-erage runtime or frames per second. However, such aggregate metrics cannot capture the stochastic behavior of runtime, which is especially important for resource-constrained edge platforms. Since input image size affects operations such as resizing, normalization, and memory movement, we first examine whether the total latency distribution changes with input resolution. As a motivating example, Figure 1 shows the empirical CDFs and PDFs of total detection latency at two anchor resolutions, 320 × 320 and 1024 × 1024 . The curves indicate that input resolution affects both completion-time quantiles and the overall distribution shape. However, total-latency ob-servations alone do not reveal which pipeline stage causes these differences.  
+
+> Fig. 1. Empirical CDF and PDF comparisons of total latency at the two anchor input resolutions on the Jetson platform.
+
+Figure 2 further compares empirical total-latency CDFs with directly fitted Exponential and Normal CDFs at 512 ×512 and 
+
+960 × 960 . The comparison suggests that distribution choice matters: the Normal distribution follows the empirical CDF more closely, while the Exponential distribution provides a simpler but less accurate reference. To interpret these observations, we consider the structure of YOLO-like detectors. After preprocessing, inference and postprocessing operate on fixed-size tensors due to model design and deployment optimizations, making their latency largely insensitive to the original image size [15], [16]. By  
+
+> Fig. 2. Empirical total-latency CDFs and directly fitted Exponential and Normal CDFs at two intermediate input resolutions.
+
+contrast, framework preprocessing transforms the supplied source image into the fixed model tensor through spatial trans-formation, normalization, and channel permutation. The cost can therefore depend on the source-image dimensions [17], [18]. Therefore, preprocessing latency is expected to be both stochastic and resolution-dependent. This motivates our modeling approach: instead of treating total latency as a black-box distribution, we decompose it into stage-wise components and introduce resolution-dependent parameters where appropriate. In the next section, we formally define the proposed performance model, including candidate distributions and parameterization strategies. III. R ESOLUTION -DEPENDENT LATENCY DISTRIBUTION 
+
+To accurately capture the variability of real-time object detection latency, we formulate the distribution function of the latency distribution with an input resolution parameter. 
+
+A. Object detection latency 
+
+Let T denote the total end-to-end latency of an object detection pipeline under an input image of resolution r. We are interested in its distribution function: 
+
+F (t, r ) = Pr( T ≤ t | r), (1) which represents the probability that the detection process finishes within t milliseconds for resolution r.We assume that the total latency T can be decomposed into three stage-wise random variables: 
+
+T = Tpre + Tinfer + Tpost ,
+
+corresponding to preprocessing, inference, and postprocessing stages, respectively. Let their probability density functions (pdfs) be denoted as fpre (x, r ), finfer (y, r ), and fpost (z, r ).We adopt mutual independence among the three stage-wise latencies as a simplifying assumption for the convolution-based model. This assumption is evaluated through pairwise correlations and two distribution-level impact metrics in Sec-tion V-A. Under this assumption, for Exponential, Erlang, and Gamma, which have positive support, the total-latency pdf for 
+
+t ≥ 0 is given by: 
+
+fT (t, r ) = 
+
+Z t
+
+> 0
+
+Z t−x
+
+> 0
+
+fpre (x, r ) finfer (y, r ) fpost (t−x−y, r ) dy dx. 
+
+(2) The corresponding CDF is obtained by integration: 
+
+F (t, r ) = 
+
+Z t
+
+> 0
+
+fT (u, r ) du. (3) This formulation explicitly defines the total latency distri-bution as the three-fold convolution of stage-specific distribu-tions. Conceptually, preprocessing handles raw input images, inference executes the neural network model, and postpro-cessing applies output transformations such as non-maximum suppression. The convolutional framework thus provides a tractable way, under the stated independence approximation, to capture their combined impact on end-to-end latency while retaining stage-wise interpretability. 
+
+B. Resolution-Dependent Parameters 
+
+We model each stage distribution Fs(t, r ) (s ∈
+
+pre, inf, post ) using one distribution. Importantly, we gen-eralize the parameters of these distributions to be functions of input resolution r. Formally, 
+
+Fs(t, r ; θ(r)) , (4) where θ(r) denotes the parameter set associated with the latency distribution of stage s. If no correlation exists between resolution and a parameter, the function reduces to a constant, i.e., θ(r) = θ.This formulation is based on three modeling assumptions: 1) Stage-wise latencies are independent random variables. 2) Each stage latency follows a chosen parametric distri-bution family. 3) Distribution parameters may depend on resolution r; if no dependency is observed, they are treated as constants. These assumptions provide flexibility and interpretability. The convolutional framework gives a tractable way to combine stage-wise behaviors, while the parameterization θ(r) repre-sents how input resolution may influence measured latency. The following sections empirically assess this approximation in the studied pipeline. 
+
+C. Candidate Distribution Families 
+
+Four popular distribution families are considered for the stage-wise latency distributions. The Exponential distribution is the Gamma special case with unit shape, whereas Erlang restricts the Gamma shape to a positive integer. We retain the separate names to emphasize these parameter constraints. Exponential, Erlang, and Gamma have positive support. The untruncated Normal candidate is defined on R, although all measured latency samples are non-negative.  
+
+> •
+
+Exponential: 
+
+Fs(t, r ) = 1 − e−λ(r)t. 
+
+> •
+
+Erlang: 
+
+Fs(t, r ) = 1 −
+
+> k−1
+
+X
+
+> i=0
+
+(λ(r)t)i
+
+i! e−λ(r)t. 
+
+> •
+
+Normal: 
+
+Fs(t, r ) = Φ 
+
+ t − μ(r)
+
+σ(r)
+
+
+
+,
+
+where Φ( ·) is the standard Gaussian CDF.  
+
+> •
+
+Gamma: 
+
+Fs(t, r ) = 1Γ( α(r)) γ(α(r), β (r)t) ,
+
+where α(r) is the shape parameter, β(r) is the rate parameter, Γ( ·) is the Gamma function, and γ(·, ·) is the lower incomplete Gamma function. Here, λ(r), μ(r), σ(r), α(r), and β(r) denote resolution-dependent parameters. For example, if empirical evidence shows that λ or β scales approximately linearly with res-olution r, they can be expressed as λ(r) = aλr + bλ or 
+
+β(r) = aβ r + bβ .The convolution of stage-wise latency distributions yields composite forms depending on the selected family. For the Normal distribution, the closure property of Gaussian variables ensures that the sum of three stage-wise Normal distributions remains Normal, with the mean and variance given by the sums of the respective stage parameters. IV. E XPERIMENT DESIGN 
+
+In this section, we will provide our experiment design and configuration, also evaluation metrics we plan to use, since the validity of this formulation cannot be established purely at the theoretical level. In particular, it is necessary to evaluate (i) whether the preprocessing/inference/postprocessing stage indeed exhibits resolution-dependent behavior, (ii) whether the assumed distribution families adequately describe stage-wise latencies, and (iii) whether parameterizations such as linear resolution–parameter mappings generalize across unseen configurations. 
+
+A. Hardware and Software Configuration 
+
+All experiments are conducted on an NVIDIA Jetson Orin NX 16GB embedded AI platform, a representative edge-computing device widely used in real-time vision applications. The software environment consists of Ubuntu 22.04.5 LTS, PyTorch 2.5.0, and torchvision 0.20.0. As the target detector, we employ the YOLOv11n model trained on the COCO2017 dataset [19] for 100 epochs. The test dataset consists of 560 images selected from the COCO2017 validation set. This subset is then uniformly resized before the detector API call to a range of square resolutions: 320 × 320 , 416 × 416 , 512 × 512 , 640 × 640 ,
+
+704 × 704 , 960 × 960 , and 1024 × 1024 for cross-resolution evaluation. For each resolution, the latency of the object detector is measured per image. In this paper, we use the term resolution to refer to the externally prepared source-image size supplied to the detec-tor. Since all experiments are conducted on square images (w = h), we denote the resolution simply by the image width r≡ rs, which uniquely determines both dimensions and the total pixel count ( r2). This choice avoids ambiguity and simplifies parameterization in subsequent analysis. The detector retains its default internal model size rm = 640 , so the experiment varies rs while holding the 640 × 640 neural-network tensor fixed. Among these resolutions, r = 320 and 
+
+r = 1024 serve as anchor points for parameter estimation and baseline comparisons, while intermediate resolutions ( r =416 , 512 , 704 , and 960 ) are used to assess how the proposed resolution-dependent model approximates latency distributions away from the anchor points. The native 640 × 640 case is reported separately and excluded from the linear parameter estimation. 
+
+B. Latency Measurement Methodology 
+
+The stage-wise latency of the YOLO detector was obtained directly from the official Ultralytics YOLO framework. For each input image, the framework internally records execu-tion time for three distinct phases: pre-processing , inference 
+
+(neural network forward pass), and post-processing (e.g., non-maximum suppression). These values are automatically re-ported through the results.speed attribute of the YOLO API, which ensures a standardized and framework-consistent measurement of computational cost [20]. External image load-ing and resizing to rs × rs occur before the detector call and are excluded from the reported timings. Internal preprocessing timing begins after the prepared source image enters the framework. The latency values from YOLO’s internal profiler were then collected for each image and exported into CSV files. This allowed us to compute both per-image statistics and aggregated results across different resolutions, which were subsequently used for statistical fitting and distribution analysis. We deliberately adopted YOLO’s internal profiler rather than relying on external timers (e.g., Python’s time 
+
+or CUDA event wrappers) [21]. 
+
+C. Distribution Fitting Methodology 
+
+To analyze the distributional characteristics of stage-wise latency, we adopt a parametric modeling approach using stan-dard probability distributions: Exponential, Erlang, Normal and Gamma. The core fitting process utilizes the latency data obtained at each resolution. For modeling and parameter estimation, we employ the scipy.stats package and apply the maximum likelihood estimation (MLE) method to obtain distribution parameters. To construct an estimation model, we focus on two anchor resolutions and collect the fitted parameters at these two points. A linear regression is then performed over the observed values to approximate the trend across resolutions. This regression-based model provides latency-distribution approximations for intermediate resolutions, which are then used for empirical assessment. 
+
+D. Baseline vs. Proposed model 
+
+To assess the proposed resolution-dependent distribution model, we compare it against three fixed-parameter baseline configurations:  
+
+> •
+
+Model 1: A distribution fitted at r = 320 and reused across all resolutions.  
+
+> •
+
+Model 2: The distribution fitted at r = 1024 and reused across all resolutions.  
+
+> •
+
+Model 3: A fixed, resolution-agnostic baseline estimated only from pooled stage-wise latency observations at the two anchor resolutions, r = 320 and r = 1024 . For each stage, 1,500 samples are drawn with replacement from the 1,120 anchor observations. Maximum-likelihood parameters are computed for each draw and averaged over 30 bootstrap repetitions. The four intermediate resolutions are excluded from parameter estimation and used only for held-out evaluation.  
+
+> •
+
+Proposed Model: A hybrid model that uses resolution-dependent parameter functions for resolution-sensitive stages and fixed two-anchor Model 3 parameters for the remaining stages. None of the three baselines uses observations from the four held-out resolutions. Model 1 and Model 2 reuse parameters from one endpoint anchor. Model 3 pools observations from both anchors but discards their resolution labels, thereby providing a resolution-agnostic comparator with the same calibration resolutions as the proposed model. When modeling total latency, all three stages use the same distribution family to retain a tractable convolution. The pro-posed hybrid mapping is distribution-specific. For the Expo-nential and Erlang families, preprocessing uses a resolution-dependent function, whereas inference and postprocessing use fixed Model 3 parameters. For the Normal and Gamma families, preprocessing and inference use resolution-dependent functions, whereas postprocessing uses fixed Model 3 param-eters. In the following sections, we compare the baselines and pro-posed function against empirical latency data across multiple resolutions using goodness-of-fit metrics. 
+
+E. Evaluation Metrics 
+
+We assess the goodness-of-fit between the empirical latency distribution and the estimated (or directly fitted) distributions using standard statistical tests based on the CDF:  
+
+> •
+
+Kolmogorov–Smirnov (KS) statistic: The KS test quan-tifies the maximum absolute distance between the empir-ical CDF and the fitted CDF. It is highly interpretable: a smaller KS value means that the fitted distribution never deviates far from the empirical one at any point. However, it only captures the single worst-case difference and may overlook more subtle discrepancies distributed across the domain. Its value lies in the interval [0 , 1] ,where 0 indicates a perfect fit.  
+
+> •
+
+Anderson–Darling (AD) statistic: The AD test is a refinement of CDF-based goodness-of-fit measures that assigns greater weight to the distribution tails. This prop-erty makes it particularly relevant in latency modeling, where rare but large delays (tail events) can critically affect real-time system performance. A lower AD value indicates that the fitted distribution better captures such extreme behaviors. AD takes values in [0 , ∞), with 0
+
+representing a perfect fit and larger values reflecting poorer agreement, especially in the tails.  
+
+> •
+
+Cram´ er–von Mises (CvM) statistic: The CvM test evaluates the integrated squared difference between the empirical CDF and the fitted CDF across the entire range. Unlike KS (which focuses on the maximum deviation) or AD (which emphasizes the tails), CvM balances global accuracy by considering discrepancies throughout the dis-tribution. This makes it a useful complement for assessing overall fidelity of the fitted model. Its range is [0 , ∞),where smaller values indicate a better global fit. Taken together, these three metrics provide a comprehensive evaluation: KS captures worst-case deviation, AD emphasizes tail accuracy, and CvM reflects overall fit quality. This multi-perspective assessment is essential for latency-sensitive ap-plications, where both average-case accuracy and rare tail behaviors must be reliably modeled. Notably, we do not employ probability density function (PDF)-based metrics (e.g., KL divergence) in the core eval-uation, due to their sensitivity to histogram binning and instability across small sample sizes. V. R ESULTS 
+
+We first show the stage-wise latency trends and assess the stage-dependence approximation used in the total latency model. We then construct resolution-dependent parametric functions and evaluate the goodness-of-fit of the proposed model at both the stage level and the end-to-end total-latency level. 
+
+A. Latency Trends Across Processing Stages 
+
+We begin our analysis by measuring the average latency of YOLOv11n for each input image across the three stages. The results are summarized in Table I, with all values reported in milliseconds. As the measurement results show, the inference stage dominates the absolute latency in all cases. The mean inference latency is nearly constant across resolutions (about 20.3–20.8 ms), which is caused by YOLOv11n processing fixed-size internal tensors. In contrast, preprocessing latency generally increases with input resolution, except for the native 
+
+640 × 640 case, where the internal spatial transformation is reduced; the preprocessing stage itself is not skipped. 
+
+TABLE I STAGE -WISE LATENCY SUMMARIES UNDER DIFFERENT INPUT RESOLUTIONS . E ACH ENTRY REPORTS MEAN (STD) IN MS .                        
+
+> Resolution Preprocessing Inference Postprocessing 320x320 4.4341 (0.3734) 20.2631 (0.9487) 3.1556 (1.0049) 416x416 4.8196 (0.3853) 20.6361 (1.1370) 3.0920 (1.0164) 512x512 5.2795 (0.4742) 20.5289 (1.2256) 3.0445 (0.9226) 640x640 2.0464 (0.4623) 20.7755 (1.4314) 3.1548 (1.0670) 704x704 5.8610 (0.4335) 20.2786 (1.3780) 2.9083 (0.8159) 960x960 6.6876 (0.5383) 20.3547 (1.6689) 2.9399 (0.8296) 1024x1024 6.9465 (0.5728) 20.3402 (1.5901) 3.0282 (0.9639)
+
+Table II further quantifies these trends using correlation analysis, excluding the native 640 × 640 case. The mean preprocessing latency has a strong positive correlation with source-image resolution ( r = 0 .9981 , R2 = 0 .9963 ), while the mean inference latency shows no statistically significant res-olution dependence. When we look at the standard deviations (STDs), the preprocessing latency increases with resolution (r = 0 .9275 ), and the inference latency also grows despite its stable mean ( r = 0 .9783 ). However, the postprocessing latency does not show a statistically significant trend. There-fore, we apply resolution-dependent fitting primarily to the preprocessing stage and additionally model inference variance for the Normal and Gamma distributions. 
+
+TABLE II RESOLUTION CORRELATIONS OF MEAN LATENCY AND LATENCY STD BY STAGE (EXCLUDING THE 640 WIDTH ).                                     
+
+> Statistic Stage Pearson rp-value R2Relationship Mean Preprocessing 0.9981 0.0000 0.9963 Strong positive Mean Inference -0.3267 0.5274 0.1067 Weak negative Mean Postprocessing -0.6933 0.1266 0.4807 Moderate negative STD Preprocessing 0.9275 0.0077 0.8602 Strong positive STD Inference 0.9783 0.0007 0.9570 Strong positive STD Postprocessing -0.5455 0.2629 0.2976 Moderate negative
+
+Table III assesses the independence approximation using 560 image-level observations per resolution. It reports pairwise Pearson correlations, the variance missed by ignoring cross-stage covariance, and the KS distance from totals obtained after independently shuffling the stage samples 500 times. 
+
+TABLE III PAIRWISE STAGE CORRELATIONS AND THE IMPACT OF THE INDEPENDENCE APPROXIMATION . V ARIANCE INFLATION MEASURES OMITTED COVARIANCE , AND KS DISTANCE COMPARES OBSERVED AND INDEPENDENTLY RECOMBINED TOTAL -LATENCY CDF S.                                                     
+
+> Resolution Pre–Inf Pre–Post Inf–Post Variance inflation (%) KS distance
+> 320 ×320 0.088 -0.074 0.144 13.7 0.074
+> 416 ×416 0.151 -0.040 0.077 11.3 0.039
+> 512 ×512 0.197 0.069 0.095 19.5 0.061
+> 640 ×640 0.083 -0.037 0.090 10.2 0.046
+> 704 ×704 0.205 0.120 0.251 32.5 0.137
+> 960 ×960 0.241 0.178 0.264 35.2 0.137
+> 1024 ×1024 0.368 0.030 0.142 30.0 0.121
+
+Pairwise correlations are weak to moderate, but ignoring covariance underestimates total-latency variance by 10.2%– 35.2%; the KS distance ranges from 0.039 to 0.137. Spearman and permutation checks reject strict independence, so we retain it only as a tractable approximation with quantified error. The 
+
+640 × 640 case is used only for this diagnostic and remains excluded from linear parameter fitting. 
+
+B. Fitted Parametric Functions 
+
+Based on the latency data collected at the lowest ( r = 320 )and highest ( r = 1024 ) input sizes, we derive analytical ex-pressions that model the distribution parameters as functions of the image width r. Direct fits across the measured resolutions show clear resolution trends for several preprocessing param-eters and for selected inference-variance parameters, so we use linear parameter functions as a lightweight approximation rather than as a universal assumption. We construct three types of distributions to capture the latency characteristics of the preprocessing stage:  
+
+> •
+
+Exponential Distribution :
+
+λ(r) = −0.0001 · r + 0 .2625  
+
+> •
+
+Erlang Distribution :
+
+λ(r) = −0.0012 · r + 2 .6258  
+
+> •
+
+Normal Distribution :Preprocessing: 
+
+μ(r) = 0 .0036 · r + 3 .2920 , σ(r) = 0 .0003 · r + 0 .3016 
+
+Inference: 
+
+μ(r) = 0 .0001 ·r +20 .2280 , σ(r) = 0 .0009 ·r +0 .6564  
+
+> •
+
+Gamma Distribution :Preprocessing: 
+
+α(r) = −0.0016 ·r+172 .01 , β(r) = −0.0202 ·r+45 .165 
+
+Inference: 
+
+α(r) = −0.4067 ·r+599 .44 , β(r) = −0.0201 ·r+29 .597 
+
+The resolution-dependent functions are estimated from stage-level fits at the two anchor resolutions. Fixed Model 3 components are estimated separately by bootstrapping pooled observations from those same anchors, as defined in Sec-tion IV. For the Erlang distribution, we fix the shape at k = 10 .Each function reflects the expected behavior of preprocessing latency as image size increases. For example, in both the Exponential and Erlang models, the rate parameter λ decreases with increasing resolution, reflecting longer processing times due to greater image size. Similarly, in the Normal distri-bution, both the mean μ and standard deviation σ exhibit a positive correlation with resolution, indicating not only a rise in average latency but also growing variance. The Gamma preprocessing model analogously varies both its shape α and rate β.These parametric functions are then used to generate es-timated latency distributions, which are evaluated in the following subsection through goodness-of-fit metrics against empirical distributions at intermediate resolutions. 
+
+C. Goodness-of-Fit Evaluation 1) Stage-Level Goodness-of-Fit: First, we evaluate the goodness-of-fit for individual stage latency functions. Table IV summarizes representative KS statistics from the stage-level fitting results. We report KS because it directly measures the maximum CDF deviation. Table V additionally reports KS, CvM, and AD statistics for end-to-end latency. The proposed Model 3 entries are recomputed against the same held-out stage traces. The proposed model uses resolution-dependent stage functions, whereas Model 3 uses fixed parameters esti-mated from the two anchors. 
+
+a) Preprocessing Stage: As shown in Table IV, the preprocessing stage shows the clearest benefit from resolution-aware parameterization because its mean and variance both change with input size. The one-parameter Exponential dis-tribution is useful mainly as a simple reference: the proposed function is comparable to fixed baselines but is not uniformly better, and Model 2 has lower KS values across the sum-marized range. The Erlang model improves over Model 1 in the summarized range, but Model 2 and Model 3 remain competitive under 704 × 704 .The strongest evidence appears for the more flexible Normal and Gamma distributions. Table IV shows that preprocessing latency fitted by the Normal distribution has substantially lower KS values under the proposed model than under fixed endpoint baselines at representative intermediate and high resolutions. Preprocessing latency fitted by the Gamma distri-bution is also competitive, although the two-anchor Model 3 can be better at 512 ×512 , indicating that pooled sampling can occasionally approximate intermediate settings well. Overall, the preprocessing results in Table IV support the use of resolution-dependent parameters, especially for distribution families with enough flexibility to represent shifts in both scale and shape. 
+
+b) Inference Stage: Inference-stage gains are smaller and less consistent because the inference mean latency is nearly resolution-invariant, as shown in Table I and Table II. The fitted parameter trends therefore mainly affect dispersion or distribution shape rather than the central location of the latency distribution. As a result, a fixed-parameter model fitted at one endpoint can already be close to the empirical inference distribution at some intermediate resolutions, and resolution-dependent parameterization does not always reduce the maximum CDF deviation. In Table IV, inference latency fitted by the Normal distribution at 512 ×512 is better captured by Model 1 than by the proposed model, while inference latency fitted by the Gamma distribution at 960 × 960 shows a moderate improvement over Model 1 and remains close to Model 2. Thus, inference-stage parameterization should be interpreted as a secondary adjustment to variance and distribution shape rather than the main source of improvement. 
+
+2) End-to-End Total Latency Goodness-of-Fit: We obtain the total latency distribution of the object detection pipeline as the convolution of the stage-wise latency distributions. Table V summarizes the end-to-end total-latency comparison using the mean KS, CvM, and AD statistics over the four interme-diate resolutions. For the proposed model, Exponential and Erlang use a resolution-dependent preprocessing component with fixed two-anchor Model 3 inference and postprocessing components. Normal and Gamma use resolution-dependent preprocessing and inference components with a fixed two-anchor Model 3 postprocessing component. By contrast, each baseline uses fixed parameters for all three stages. Model 3 estimates those fixed parameters using only the two anchors. The proposed resolution-aware distribution function is most beneficial when the selected distributions can express the observed shift and spread of the total latency. Under the TABLE IV REPRESENTATIVE STAGE -LEVEL KS STATISTICS FOR PROPOSED AND BASELINE MODELS . L OWER VALUES INDICATE BETTER CDF AGREEMENT .RANGES ARE OVER THE FOUR INTERMEDIATE RESOLUTIONS 416 , 512 , 704 , AND 960 . T HE LOWEST VALUE IN EACH SCALAR ROW IS BOLD ; FOR RANGE ROWS , BOLD IDENTIFIES THE LOWEST MEAN KS OVER THESE RESOLUTIONS .
+
+Latency stage Fitted distribution Resolution(s) Proposed Model 1 Model 2 Model 3 Preprocessing Exponential range 0.632–0.654 0.639–0.759 0.478–0.597 0.548–0.670 Preprocessing Erlang range 0.452–0.526 0.568–0.901 0.424–0.694 0.356–0.668 Preprocessing Normal 512 × 512 0.298 0.876 0.877 0.396 Preprocessing Normal 960 × 960 0.365 1.000 0.513 0.678 Preprocessing Gamma 512 × 512 0.491 0.905 0.890 0.366 
+
+Preprocessing Gamma 960 × 960 0.301 1.000 0.521 0.700 Inference Normal 512 × 512 0.158 0.122 0.228 0.193 Inference Normal 960 × 960 0.208 0.257 0.215 0.216 Inference Gamma 512 × 512 0.138 0.117 0.218 0.153 Inference Gamma 960 × 960 0.205 0.256 0.207 0.258  
+
+> TABLE V COMPACT TOTAL -LATENCY GOODNESS -OF -FIT SUMMARY . V ALUES ARE MEANS OVER THE FOUR INTERMEDIATE RESOLUTIONS ;LOWER VALUES ARE BETTER . T HE LOWEST VALUE FOR EACH DISTRIBUTION AND METRIC IS BOLD .
+
+Fitted distribution Proposed Model 1 Model 2 Model 3 KS CvM AD KS CvM AD KS CvM AD KS CvM AD Exponential 0.573 46.82 215.47 0.585 49.48 226.26 0.532 41.96 196.22 0.560 45.00 208.17 Erlang 0.415 24.29 122.20 0.478 30.59 145.22 0.353 23.87 121.27 0.404 24.03 121.20 
+
+Normal 0.166 5.57 34.42 0.338 26.59 183.50 0.430 37.41 179.06 0.228 7.97 44.19 Gamma 0.158 4.92 35.28 0.348 30.13 195.63 0.385 37.69 209.99 0.225 8.63 45.61 
+
+Normal and Gamma families, the proposed model improves all three mean statistics relative to Model 1, Model 2, and the two-anchor Model 3. On the other hand, Exponential and Erlang distributions are less favorable because their limited parameterization cannot fully represent the measured total-latency shape. Under Expo-nential and Erlang, Model 2 and Model 3 give slightly lower mean statistics than the proposed model. Nevertheless, the proposed model remains useful because it provides a single resolution-aware analytical construction that improves the end-to-end fit for the more expressive distributions and avoids choosing a fixed endpoint model whose accuracy depends strongly on the target resolution. VI. D ISCUSSION 
+
+The results indicate that the value of resolution-aware modeling depends on where resolution affects the pipeline and how much flexibility the selected distribution family provides. At the stage level, the clearest gains appear for preprocessing latency, whose mean and variance both change with input size. By contrast, the inference latency has a nearly resolution-invariant mean. As a result, the resolution parameterization mainly adjusts the variance and shape of the fitted distribution. At the end-to-end level, the proposed model is most effective for the Normal and Gamma distributions, where resolution-dependent stage parameters can capture both shift and spread in the total-latency distribution. The proposed model outperforms all three fixed baselines under Normal and Gamma, whereas Model 2 and Model 3 are slightly better under Exponential and Erlang. Although the Exponential and Erlang distributions are useful references, the resolution parameterization limits the achievable improvement and can make endpoint baselines competitive in some settings. The main advantage of the proposed latency model is the analytically tractable white-box model that better fits the measured data with the resolution parameter. The total latency is represented as a convolution of stage-wise distributions, and each resolution effect is exposed through explicit parameter functions such as λ(r), μ(r), σ(r), α(r), and β(r). This makes the model inspectable: users can check which stage contributes to the resolution sensitivity, which distributional parameter changes, and how the end-to-end distribution is assembled. The proposed model can effectively connect empirical latency measurements with interpretable system structure. The current study is limited to one detector, one embedded platform, and square input resolutions. Extending the approach to non-square inputs may require parameterizing resolution by total pixels or by separate width and height terms, and different detector architectures may require different stage-wise dependency assumptions. These issues are left for future work. VII. R ELATED WORK 
+
+Object detection systems are commonly evaluated by ac-curacy and aggregate speed metrics such as mAP, FPS, or mean inference time. Prior benchmarking studies compare detector families, embedded platforms, and resolution set-tings, showing that deployment performance depends on both model architecture and hardware configuration [11], [12], [22]. Other work has examined resolution-dependent trade-offs and preprocessing overheads in computer vision pipelines [17], [23], [24]. These studies motivate resolution-aware evaluation, but they usually report scalar latency summaries rather than modeling the full latency distribution. Latency modeling for ML systems has also been studied through profiling, queueing, simulation, and system-level op-timization [25], [26]. Such approaches are useful for capacity planning and scheduling, but they typically do not express object-detection latency as a resolution-dependent, stage-wise probability distribution. Our work complements this litera-ture by modeling preprocessing, inference, and postprocessing latencies as parametric distributions whose parameters may depend on input resolution. VIII. C ONCLUSION AND FUTURE WORK 
+
+In this study, we proposed a resolution dependent latency model that links input resolution to the statistical properties of preprocessing latency. The model leverages parametric distributions and provides a lightweight and interpretable way to approximate latency distributions at intermediate resolu-tions from anchor-resolution measurements. Our experiments based on real-world measurements by YOLOv11 show that resolution-aware parameterization can improve over fixed-parameter baselines in several settings. In particular, the pro-posed model gives clear improvements for preprocessing la-tency fitted by the Normal distribution and for end-to-end total latency fitted by the Normal and Gamma distributions, where all three CDF-based metrics are reduced against endpoint baselines. The end-to-end improvement also holds against the two-anchor Model 3 under Normal and Gamma, but no consistent advantage is observed under Exponential or Erlang. For future work, we plan to extend the framework to other architectures and tasks, incorporate additional system-level variables (e.g., batch size, GPU utilization), and explore tail-sensitive modeling for better handling of latency spikes. Ul-timately, integrating this model into runtime decision engines could enable adaptive resolution or processing strategies under dynamic constraints. ACKNOWLEDGMENT 
+
+This work was supported by JST BOOST Grant Number JPMJBS2414, and partly supported by a grant from the Telecommunications Advancement Foundation. REFERENCES [1] J. Redmon and A. Farhadi, “Yolov3: An incremental improvement,” 
+
+arXiv preprint arXiv:1804.02767 , 2018. [2] G. Jocher, “Ultralytics yolov5,” 2020. [Online]. Available: https: //github.com/ultralytics/yolov5 [3] G. Jocher, A. Chaurasia, and J. Qiu, “Ultralytics yolov8,” 2023. [Online]. Available: https://github.com/ultralytics/ultralytics [4] S. Ren, K. He, R. Girshick, and J. Sun, “Faster r-cnn: Towards real-time object detection with region proposal networks,” 2016. [Online]. Available: https://arxiv.org/abs/1506.01497 [5] W. Liu, D. Anguelov, D. Erhan, C. Szegedy, S. Reed, C.-Y. Fu, and A. C. Berg, “Ssd: Single shot multibox detector,” in European conference on computer vision . Springer, 2016, pp. 21–37. [6] J. Mao, S. Shi, X. Wang, and H. Li, “3d object detection for autonomous driving: A comprehensive survey,” International Journal of Computer Vision , vol. 131, no. 8, pp. 1909–1963, 2023. [7] A. Guleria, K. Varshney, S. Jindal et al. , “A systematic review: Object detection,” AI & SOCIETY , pp. 1–18, 2025. [8] W. Shin, D. Kang, B. Park, B. B. Kang, J. Lee, and H. Baek, “Cf-detr: Coarse-to-fine transformer for real-time object detection,” arXiv preprint arXiv:2505.23317 , 2025. [9] E.-C. Chen, P.-Y. Chen, I. Chung, C.-R. Lee et al. , “Latency attack resilience in object detectors: Insights from computing architecture,” in 
+
+Proceedings of the Asian Conference on Computer Vision , 2024, pp. 3206–3222. [10] R. Padilla, W. L. Passos, T. L. B. Dias, S. L. Netto, and E. A. B. da Silva, “A comparative analysis of object detection metrics with a companion open-source toolkit,” Electronics , vol. 10, no. 3, 2021. [Online]. Available: https://www.mdpi.com/2079-9292/10/3/279 [11] I. Lazarevich, M. Grimaldi, R. Kumar, S. Mitra, S. Khan, and S. Sah, “Yolobench: benchmarking efficient object detectors on embedded sys-tems,” in Proceedings of the IEEE/CVF International Conference on Computer Vision , 2023, pp. 1169–1178. [12] G. Jocher and J. Qiu, “Ultralytics yolo11,” 2024. [Online]. Available: https://github.com/ultralytics/ultralytics [13] S. Oh, Y. Kwon, and J. Lee, “Optimizing real-time object detection in a multi-neural processing unit system,” Sensors , vol. 25, no. 5, p. 1376, 2025. [14] Q. Zhang, F. Machida, and E. Andrade, “Performability modeling and analysis for real-time object detection on uav systems,” in 2024 IEEE 48th Annual Computers, Software, and Applications Conference (COMPSAC) . IEEE, 2024, pp. 1398–1405. [15] NVIDIA Corporation, “Object detection inference using TensorRT (CV-CUDA),” https://cvcuda.github.io/CV-CUDA/samples/python samples/ object detection/object detection tensorrt.html, 2024. [16] N. Developer, “Reducing inference latency on nvidia orin nano,” https: //forums.developer.nvidia.com/. [17] M. T. Shahriar and H. Li, “A study of image pre-processing for faster object recognition,” arXiv preprint arXiv:2011.06928 , 2020. [18] K. Liu, Z. Fu, S. Jin, Z. Chen, F. Zhou, R. Jiang, Y. Chen, and J. Ye, “Esod: efficient small object detection on high-resolution images,” IEEE Transactions on Image Processing , 2024. [19] T.-Y. Lin, M. Maire, S. Belongie, L. Bourdev, R. Girshick, J. Hays, P. Perona, D. Ramanan, C. L. Zitnick, and P. Doll´ ar, “Microsoft coco: Common objects in context,” 2015. [20] Ultralytics, “Yolo performance metrics guide,” https: //github.com/ultralytics/ultralytics/blob/main/docs/en/guides/ yolo-performance-metrics.md. [21] U. G. Community, “Total inference time console output from yolov8 vs python time profiling,” https://github.com/ultralytics/ultralytics/issues/ 3700, 2023. [22] D. Cantero, I. Esnaola-Gonzalez, J. Miguel-Alonso, and E. Jauregi, “Benchmarking object detection deep learning models in embedded devices,” Sensors , vol. 22, no. 11, p. 4205, 2022. [23] A. Tse, L. Oliveira, and J. Vinagre, “Measuring latency-accuracy trade-offs in convolutional neural networks,” in EPIA Conference on Artificial Intelligence . Springer, 2023, pp. 323–334. [24] M. Halpern, B. Boroujerdian, T. Mummert, E. Duesterwald, and V. J. Reddi, “One size does not fit all: Quantifying and exposing the accuracy-latency trade-off in machine learning cloud service apis via tolerance tiers,” arXiv preprint arXiv:1906.11307 , 2019. [25] D. Crankshaw, G.-E. Sela, C. Zumar, X. Mo, J. E. Gonzalez, I. Sto-ica, and A. Tumanov, “Inferline: Ml prediction pipeline provision-ing and management for tight latency objectives,” arXiv preprint arXiv:1812.01776 , 2018. [26] F. Hohman, M. B. Kery, D. Ren, and D. Moritz, “Model compression in practice: Lessons learned from practitioners creating on-device machine learning experiences,” in Proceedings of the 2024 CHI conference on human factors in computing systems , 2024, pp. 1–18.
