@@ -41,17 +41,17 @@
 <section class="dpr-home-dashboard-card dpr-home-report-card">
   <div class="dpr-home-dashboard-header">
     <div>
-      <span class="dpr-home-dashboard-kicker">2026-09-14</span>
+      <span class="dpr-home-dashboard-kicker">2026-09-15</span>
       <h3 class="dpr-home-dashboard-title">今日汇总</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">共 5 篇</strong>
+    <strong class="dpr-home-dashboard-count">共 14 篇</strong>
   </div>
   <dl class="dpr-home-dashboard-stats">
     <div class="dpr-home-dashboard-stat"><dt>累计更新</dt><dd>1 次</dd></div>
-    <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>3</dd></div>
-    <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>2</dd></div>
+    <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>6</dd></div>
+    <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>8</dd></div>
   </dl>
-  <p class="dpr-home-dashboard-body">最近更新：2026-09-14 22:10:07 UTC<br>状态：成功</p>
+  <p class="dpr-home-dashboard-body">最近更新：2026-09-15 22:23:46 UTC<br>状态：成功</p>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-brief-card">
   <div class="dpr-home-dashboard-header">
@@ -62,9 +62,7 @@
     <strong class="dpr-home-dashboard-count">AI</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<p>今日日报共筛出 5 篇（精读 3 篇、速读 2 篇），重点落在生物医学图像分割的&quot;不确定性引导边界精修&quot;与伪装目标检测的轻量 RGB-偏振融合，另附多目标跟踪调参和视觉点变换重定位两篇速读。</p>
-<p>最值得看的是 9.0 分的《Beyond Accuracy》——用不确定性引导边界精修提升分割可靠性，以及 8.0 分的 LGFN——以模态可用性条件实现轻量 RGB-偏振融合，两篇都指向&quot;更可靠、更轻量&quot;这一方向。</p>
-<p>普通读者可先读这两篇精读的摘要与方法思路，速读两篇留到需要调参技巧或重定位方案时再按需查阅。</p>
+<p>今天筛完14篇论文（精读6、速读8），重点锁定实时航拍小目标检测与高效目标检测两个方向。最值得看的是两篇9分工作：HGSQ用热图引导稀疏查询做实时航拍小目标检测，YOLO12-MambaScan结合高频增强与状态空间建模提升检测效率。普通读者可先读这两篇的摘要和实验，再按需跟进多摄像头行人重识别、物体中心学习等速读内容。</p>
   </div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-deep-card">
@@ -73,12 +71,12 @@
       <span class="dpr-home-dashboard-kicker">今日累计</span>
       <h3 class="dpr-home-dashboard-title">精读推荐</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">3 篇</strong>
+    <strong class="dpr-home-dashboard-count">6 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Beyond Accuracy: Uncertainty-Guided Boundary Refinement for Reliable Biomedical Image Segmentation">Beyond Accuracy: Uncertainty-Guided Boundary Refinement for Reliable Biomedical Image Segmentation</span></li><li><span class="dpr-home-dashboard-paper-title" title="LGFN: Lightweight Gated RGB-Polarization Fusion with Modality-Availability Conditioning for Camouflaged Object Detection">LGFN: Lightweight Gated RGB-Polarization Fusion with Modality-Availability Conditioning for Camouflaged Object Detection</span></li><li><span class="dpr-home-dashboard-paper-title" title="Input Resolution Matters: Real-Time Object Detection Latency">Input Resolution Matters: Real-Time Object Detection Latency</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="HGSQ: Heatmap-Guided Sparse Query Detector for Real-Time Aerial Small Object Detection">HGSQ: Heatmap-Guided Sparse Query Detector for Real-Time Aerial Small Object Detection</span></li><li><span class="dpr-home-dashboard-paper-title" title="YOLO12-MambaScan: An Efficient Object Detector with High-Frequency Enhancement and State-Space Modeling">YOLO12-MambaScan: An Efficient Object Detector with High-Frequency Enhancement and State-Space Modeling</span></li><li><span class="dpr-home-dashboard-paper-title" title="Contour-Guided Spectral Routing for Robust Real-Time Pedestrian Detection">Contour-Guided Spectral Routing for Robust Real-Time Pedestrian Detection</span></li></ul>
   </div>
-  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">cv <strong>3</strong></span></div>
+  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">cv <strong>6</strong></span></div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-skim-card">
   <div class="dpr-home-dashboard-header">
@@ -86,12 +84,12 @@
       <span class="dpr-home-dashboard-kicker">今日累计</span>
       <h3 class="dpr-home-dashboard-title">速读推荐</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">2 篇</strong>
+    <strong class="dpr-home-dashboard-count">8 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Revisiting Multi-Object Tracking Baselines: Hyperparameter Optimization with Multi-Fidelity Greedy Coordinate Search">Revisiting Multi-Object Tracking Baselines: Hyperparameter Optimization with Multi-Fidelity Greedy Coordinate Search</span></li><li><span class="dpr-home-dashboard-paper-title" title="DRS-VPT: Directly Relocalizing in a Scan with Vision Point Transformers">DRS-VPT: Directly Relocalizing in a Scan with Vision Point Transformers</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="A Generative AI Integrated Multimodal Framework for Low-Latency Multi-Camera Person Re-Identification">A Generative AI Integrated Multimodal Framework for Low-Latency Multi-Camera Person Re-Identification</span></li><li><span class="dpr-home-dashboard-paper-title" title="Does Attention-Guided Masking Really Help Object Discovery in Object-Centric Learning?">Does Attention-Guided Masking Really Help Object Discovery in Object-Centric Learning?</span></li><li><span class="dpr-home-dashboard-paper-title" title="Closed-form Bayesian homography estimation from noisy point correspondences">Closed-form Bayesian homography estimation from noisy point correspondences</span></li></ul>
   </div>
-  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">cv <strong>2</strong></span></div>
+  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">cv <strong>8</strong></span></div>
 </section>
 </div>
 

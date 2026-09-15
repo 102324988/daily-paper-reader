@@ -1,0 +1,233 @@
+{
+  "date": "20260915",
+  "date_label": "",
+  "generated_at": "2026-09-15 22:23:46 UTC",
+  "recommend_exists": true,
+  "run_count": 1,
+  "papers": [
+    {
+      "paper_id": "2609.13306v1",
+      "route": "202609/15/2609.13306v1-hgsq-heatmap-guided-sparse-query-detector-for-real-time-aerial-small-object-detection",
+      "title": "HGSQ: Heatmap-Guided Sparse Query Detector for Real-Time Aerial Small Object Detection",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "面向实时小目标检测的稀疏查询检测器",
+      "first_seen_at": "2026-09-15 22:23:46 UTC",
+      "updated_at": "2026-09-15 22:23:46 UTC"
+    },
+    {
+      "paper_id": "2609.13647v1",
+      "route": "202609/15/2609.13647v1-yolo12-mambascan-an-efficient-object-detector-with-high-frequency-enhancement-and-state-space-modeling",
+      "title": "YOLO12-MambaScan: An Efficient Object Detector with High-Frequency Enhancement and State-Space Modeling",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "提出基于YOLO12的航拍小目标检测器",
+      "first_seen_at": "2026-09-15 22:23:46 UTC",
+      "updated_at": "2026-09-15 22:23:46 UTC"
+    },
+    {
+      "paper_id": "2609.14383v1",
+      "route": "202609/15/2609.14383v1-contour-guided-spectral-routing-for-robust-real-time-pedestrian-detection",
+      "title": "Contour-Guided Spectral Routing for Robust Real-Time Pedestrian Detection",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "基于轮廓引导频谱路由的实时行人检测",
+      "first_seen_at": "2026-09-15 22:23:46 UTC",
+      "updated_at": "2026-09-15 22:23:46 UTC"
+    },
+    {
+      "paper_id": "2609.14560v1",
+      "route": "202609/15/2609.14560v1-small-object-detection-in-drone-aerial-imagery-with-laf-yolov10",
+      "title": "Small Object Detection in Drone Aerial Imagery with LAF-YOLOv10",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "无人机航拍图像中的小目标检测",
+      "first_seen_at": "2026-09-15 22:23:46 UTC",
+      "updated_at": "2026-09-15 22:23:46 UTC"
+    },
+    {
+      "paper_id": "2609.12557v1",
+      "route": "202609/15/2609.12557v1-drs-vpt-directly-relocalizing-in-a-scan-with-vision-point-transformers",
+      "title": "DRS-VPT: Directly Relocalizing in a Scan with Vision Point Transformers",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "前馈Transformer实现图像到扫描配准，属核心计算机视觉任务",
+      "first_seen_at": "2026-09-15 22:23:46 UTC",
+      "updated_at": "2026-09-15 22:23:46 UTC"
+    },
+    {
+      "paper_id": "2609.13706v1",
+      "route": "202609/15/2609.13706v1-rank-consistent-set-reasoning-for-co-salient-object-detection",
+      "title": "Rank-Consistent Set Reasoning for Co-Salient Object Detection",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "共显著目标检测与集合推理",
+      "first_seen_at": "2026-09-15 22:23:46 UTC",
+      "updated_at": "2026-09-15 22:23:46 UTC"
+    },
+    {
+      "paper_id": "2609.14419v1",
+      "route": "202609/15/2609.14419v1-a-generative-ai-integrated-multimodal-framework-for-low-latency-multi-camera-person-re-identification",
+      "title": "A Generative AI Integrated Multimodal Framework for Low-Latency Multi-Camera Person Re-Identification",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "面向监控与跟踪的多模态行人重识别框架",
+      "first_seen_at": "2026-09-15 22:23:46 UTC",
+      "updated_at": "2026-09-15 22:23:46 UTC"
+    },
+    {
+      "paper_id": "2609.15187v1",
+      "route": "202609/15/2609.15187v1-does-attention-guided-masking-really-help-object-discovery-in-object-centric-learning",
+      "title": "Does Attention-Guided Masking Really Help Object Discovery in Object-Centric Learning?",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "面向无监督图像对象发现的对象中心学习",
+      "first_seen_at": "2026-09-15 22:23:46 UTC",
+      "updated_at": "2026-09-15 22:23:46 UTC"
+    },
+    {
+      "paper_id": "2609.15227v1",
+      "route": "202609/15/2609.15227v1-closed-form-bayesian-homography-estimation-from-noisy-point-correspondences",
+      "title": "Closed-form Bayesian homography estimation from noisy point correspondences",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "贝叶斯单应性估计，核心计算机视觉任务",
+      "first_seen_at": "2026-09-15 22:23:46 UTC",
+      "updated_at": "2026-09-15 22:23:46 UTC"
+    },
+    {
+      "paper_id": "2609.15348v1",
+      "route": "202609/15/2609.15348v1-robust-multi-model-fitting-through-learning-neighbor-regions",
+      "title": "Robust Multi-Model Fitting through Learning Neighbor Regions",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "多模型拟合，场景重建等计算机视觉任务的基础",
+      "first_seen_at": "2026-09-15 22:23:46 UTC",
+      "updated_at": "2026-09-15 22:23:46 UTC"
+    },
+    {
+      "paper_id": "2609.13298v1",
+      "route": "202609/15/2609.13298v1-variational-template-matching-with-statistical-fusion-for-anomaly-detection-in-patterned-structures",
+      "title": "Variational Template Matching with Statistical Fusion for Anomaly Detection in Patterned Structures",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "基于模板匹配与统计融合的结构化图像异常检测",
+      "first_seen_at": "2026-09-15 22:23:46 UTC",
+      "updated_at": "2026-09-15 22:23:46 UTC"
+    },
+    {
+      "paper_id": "2609.13815v1",
+      "route": "202609/15/2609.13815v1-beyond-ocr-accuracy-text-centric-vqa-under-image-degradation-with-modular-and-end-to-end",
+      "title": "Beyond OCR Accuracy: Text-Centric VQA Under Image Degradation with Modular and End-to-End",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "退化图像下的文本视觉问答",
+      "first_seen_at": "2026-09-15 22:23:46 UTC",
+      "updated_at": "2026-09-15 22:23:46 UTC"
+    },
+    {
+      "paper_id": "2609.15098v1",
+      "route": "202609/15/2609.15098v1-lg-vln-a-zero-shot-vision-and-language-navigation-framework-with-langgraph-state-orchestration",
+      "title": "LG-VLN: A Zero-Shot Vision-and-Language Navigation Framework with LangGraph State Orchestration",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "视觉语言导航，计算机视觉与多模态任务",
+      "first_seen_at": "2026-09-15 22:23:46 UTC",
+      "updated_at": "2026-09-15 22:23:46 UTC"
+    },
+    {
+      "paper_id": "2609.15640v1",
+      "route": "202609/15/2609.15640v1-human-grounded-calibration-for-long-text-image-text-congruence-in-vision-language-models",
+      "title": "Human-Grounded Calibration for Long-Text Image-Text Congruence in Vision-Language Models",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "视觉语言模型图像-文本一致性校准，属计算机视觉研究主题",
+      "first_seen_at": "2026-09-15 22:23:46 UTC",
+      "updated_at": "2026-09-15 22:23:46 UTC"
+    }
+  ]
+}

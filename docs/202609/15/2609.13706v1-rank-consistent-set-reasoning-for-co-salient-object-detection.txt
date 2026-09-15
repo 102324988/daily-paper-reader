@@ -1,0 +1,245 @@
+Title: Rank-Consistent Set Reasoning for Co-Salient Object Detection
+
+URL Source: https://arxiv.org/pdf/2609.13706v1
+
+Published Time: Tue, 15 Sep 2026 00:30:26 GMT
+
+Number of Pages: 11
+
+Markdown Content:
+# Rank-Consistent Set Reasoning for Co-Salient Object Detection 
+
+# Yuan Xiang University of California, Los Angeles (UCLA) USA yuan xiang@ucla.edu Matteo Rossi Polytechnic University of Turin Italy matteorossi@put.edu Yingzhou Chen Polytechnic University of Turin Italy yingzhouchen@put.edu 
+
+# Abstract 
+
+Co-salient object detection (Co-SOD) requires a model to find foreground regions that are salient in individual images and supported by the image group. We present 
+
+Rank-Consistent Set Reasoning (RCSR), a supervised dense-prediction framework that models a group as an unordered set rather than as a sequence of images or a semantic la-bel. The core idea is to rank how strongly each spatial region agrees with a small collection of learned group slots at every image scale, and to aggregate these ranks with a robust trimmed statistic. This suppresses accidental pair-wise matches and prevents one atypical group member from dominating the shared representation. A set encoder builds group slots directly from multi-scale visual features, while a rank-consistency gate measures whether the ordering of candidate regions is stable across group members. The gated slots are decoded jointly with per-image features to produce co-saliency maps. The model contains no natural-language branch, no open-vocabulary detector, and no external seg-mentation model. We further introduce a group permutation objective and hard-distractor augmentation so that the model learns the properties of a set-level target rather than memo-rizing image order or isolated visual saliency. We formulate an evaluation protocol for CoCA, CoSal2015, and CoSOD3k, together with tests of group-size robustness, distractor rejec-tion, order invariance, and cross-dataset transfer. 
+
+# 1. Introduction 
+
+Co-salient object detection (Co-SOD) identifies objects that are both visually salient within individual images and repeat-edly supported by a group of related images. The group con-straint makes the task fundamentally different from single-image salient object detection: a visually dominant region may be irrelevant to the common target, while a modest re-gion can become important when similar evidence appears throughout the group. This emphasis on representative rather than exhaustive evidence also echoes feature-selection and evidence-selection ideas in visual recognition, where a com-pact set of informative cues can reduce background inter-ference and computation [13, 49, 50]. CoSOD3k and later analyses demonstrate that changes in appearance, viewpoint, scale, and background make this distinction particularly chal-lenging [10, 11]. Most modern Co-SOD approaches learn cross-image rela-tions and use them to refine dense features. Graph reasoning, group collaborative learning, feature mining, background mining, association learning, and prompt adaptation have all been successful [12, 30, 31, 43, 57, 64, 69, 76]. Despite their diversity, many methods implicitly aggregate group evidence with mean- or attention-like operations. Such operations can be sensitive to an atypical image, repeated background pat-terns, or accidental local matches. We revisit group interaction from a set-statistical per-spective. Rather than asking which semantic category best describes an image group, we ask whether the relative or-dering of candidate regions is stable across the group. If a region is truly shared, its affinity to a group representation should rank highly in several images. If a salient distractor is unique to one image, its rank tends to fluctuate or collapse in other members. Ranking is therefore a useful abstraction because it is less sensitive to absolute feature scale and more resistant to one extreme observation. This observation motivates Rank-Consistent Set Reason-ing (RCSR). A PVT-v2 backbone extracts multi-scale dense features [60]. A permutation-invariant set encoder com-presses the group into a small number of latent group slots. For every image, a rank-consistency module measures the ordering of local regions with respect to these slots. We ag-arXiv:2609.13706v1 [cs.CV] 12 Sep 2026 gregate scores using a trimmed statistic and suppress regions with unstable rankings. The resulting group representation is then decoded with high-resolution image features to produce pixel-level predictions. The formulation differs from semantic-guided open-vocabulary pipelines. Classical Co-SOD methods already highlighted the importance of inter-image consistency, graph structure, and consensus aggregation [6, 11, 47, 70, 72]. In particular, Chen et al. first derive an image-group semantic category and subsequently use that category to drive open-vocabulary localization and segmentation [4]. RCSR never generates a category and never converts a group represen-tation into a text query. It is also distinct from parameter-efficient visual prompt methods such as VCP [57]: RCSR learns a set-level dense representation and rank statistic inside a supervised Co-SOD network, rather than tuning prompts of a frozen foundation model. 
+
+Contributions. 
+
+• We formulate Co-SOD as rank-consistent set reasoning ,emphasizing relative evidence stability across group mem-bers rather than group-level semantic label prediction. • We introduce a permutation-invariant group slot encoder and a trimmed rank-consistency operator that jointly model common regions while reducing sensitivity to out-lier images and repeated distractors. • We design a set-aware decoder that fuses the group rep-resentation with multi-scale features and preserves high-resolution boundaries without an external detector or seg-mentation model. • We propose diagnostic experiments for order invariance, group-size degradation, distractor rejection, rank stability, and cross-dataset transfer in addition to standard Co-SOD metrics. 
+
+# 2. Related Work 
+
+## 2.1. Co-Salient Object Detection 
+
+Early Co-SOD systems explored deep-and-wide inter-image cues, self-paced multiple-instance learning, graphical opti-mization, and mask-guided refinement [23, 66–68]. GCAGC introduced graph convolution and attention-based graph clustering for Co-SOD [69], while the subsequent CoEG-Net line revisited the task formulation and baseline eval-uation in a large-scale benchmark setting [11]. GCoNet developed group collaborative learning, while DCFM and DMT studied comprehensive feature mining and discrim-inative background suppression [12, 30, 64]. GCoNet+ further improved group collaborative representation learn-ing [76]. CONDA explicitly models inter-image associa-tion with correspondence-aware condensation [31], while related lines include CoRP, memory-aided consensus learn-ing, transformer-CNN interaction, semantic-level consen-sus dispersion, and consensus-aware dynamic convolu-tion [19, 61, 70, 71, 77, 80]. LDRNet develops discrim-inative representation learning with pixel-to-group con-trastive objectives [43]. More recent work broadens the problem toward adversarial robustness, semi-supervised learning, purification, and parameter-efficient prompting [3, 18, 20, 21, 57, 79]. RCSR instead treats the group as an unordered set and learns robust ranking statistics over dense candidates. This set-oriented view is also compatible with evidence-selection strategies explored in partial/global visual reasoning and multimodal cognition [46, 54]. 
+
+## 2.2. Set and Transformer Representations 
+
+Classical SOD studies established region-based learning and benchmark protocols, while later work emphasized deep su-pervision, boundary refinement, and multi-scale interaction [1, 22, 26, 33, 38, 42, 44, 58]. PVT is a pyramid trans-former backbone designed for high-resolution dense pre-diction [59], with PVT-v2 improving efficiency and repre-sentation through linear-complexity attention, overlapping patch embeddings, and convolutional feed-forward layers [60]. Our use of PVT-v2 is conventional; the contribution lies in the group representation and rank-consistency op-erator. More broadly, representative-feature grouping has proved useful when irrelevant background competes with target evidence [50], while bounding-box refinement, unified multimodal perception, concept synergy, and multimodal in-context adaptation illustrate how structured evidence can be stabilized under variation [13, 14, 49, 51, 73–75]. The pro-posed set encoder is permutation invariant by construction, so changing the order of group members does not alter the group memory. 
+
+## 2.3. Foundation Vision Models and Open-Vocabulary Detection 
+
+Self-supervised visual representations such as DINO and DI-NOv2 show the value of transferable visual features [2, 41]. DINOv2 shows the value of self-supervised visual features for transfer across domains [41]. OWL-ViT and Ground-ing DINO demonstrate open-vocabulary localization with language-conditioned detectors [34, 39]. These technolo-gies are relevant alternatives for building open-vocabulary systems, but they are not used by RCSR. Removing the language-conditioned detection stage is deliberate: it allows us to study group inference itself without confounding the evaluation with prompt construction or detector vocabulary. Tang et al.’s broader multimodal line shows several alterna-tives to monolithic recognition, including unified text-centric modeling, frequency-domain processing, and concept-level table understanding [13, 14, 51, 73, 75]. Those works mo-tivate modular representation choices here, but do not form components of RCSR. Figure 1. Illustrative examples of individual saliency and group-level co-saliency. The examples highlight the distinction between salient regions in individual images and objects that recur across an image group. 
+
+## 2.4. Structured Visual Evidence and Multimodal Robustness 
+
+Recent multimodal studies likewise emphasize explicit ev-idence selection and stability as the observation space be-comes more heterogeneous. Representative work covers selective feature grouping [50], unified multimodal mod-eling [13], document-frequency representations [14, 16], text-centric instruction tuning [51], and benchmark construc-tion for multimodal cognition [46]. Later work extends these ideas toward heterogeneous anchors, multilingual vi-sual question answering, fine-grained layout-text interaction, and computer-use-oriented visual agents [15, 36, 40, 52]. More recent work studies prompt-efficient vision adapta-tion, adaptive reasoning routes, and visual result prediction [24, 37, 56]. RCSR draws only the methodological lesson that useful evidence should be explicitly selected and stress-tested; it does not import these task-specific models. 
+
+## 2.5. Segmentation and Foundation Vision Models 
+
+Universal segmentation has increasingly moved toward query-based transformer decoders and foundation models. Mask2Former provides a unified masked-attention formu-lation for semantic, instance, and panoptic segmentation [5]; Segment Anything establishes a general promptable seg-mentation model [27]. Vision-language pretraining such as CLIP and self-supervised visual learning such as DINO pro-vide complementary routes to semantic transfer [2, 41, 45]. RCSR deliberately does not depend on these foundation-model inference branches, but they form important reference points for understanding the design space of modern dense prediction. 
+
+## 2.6. Recent Co-SOD Generalization and Training-Free Work 
+
+CoMCS, published at CVPR 2026, studies unseen-domain generalization using mixed content-style modulation and se-mantic contrast [20]. TF-SSD, also published at CVPR 2026, explores a training-free pipeline built around SAM propos-als and DINO-derived saliency with cross-image prototype selection [21]. RCSR follows neither direction: it is a super-vised set model with learned group slots and a rank statistic, and its mask decoder is trained end-to-end. The broader literature also suggests that robustness should be evaluated under natural distribution shifts and distracting evidence rather than only clean benchmark averages [36, 52, 55]. 
+
+## 2.7. Relation to Automatic Semantic Discovery 
+
+The automatic semantic-discovery work of Chen et al. is a semantic-guided open-vocabulary pipeline that explicitly produces a group category and feeds that semantic infor-mation to OWLv2 and SAM [4]. RCSR is intentionally orthogonal to that design: its shared state is a set of learned latent slots, its evidence test is rank consistency, and its train-ing signal is dense supervision. The distinction is consistent with a broader trend toward structured anchors, explicit ev-idence units, and adaptive routing in multimodal systems [15, 32, 37, 56]. RCSR removes all three dependencies from its central formulation. Its latent variables are group slots, region ranks, and dense co-saliency probabilities. The only shared element is the underlying Co-SOD problem and its standard image-group benchmarks. Figure 2. Semantic-guided open-vocabulary co-saliency framework. The illustration summarizes a representative pipeline that combines image-group semantics, open-vocabulary localization, and promptable segmentation. 
+
+# 3. Problem Formulation 
+
+Given an unordered group G = {I1, . . . , I M } and masks 
+
+{Ym}Mm=1 , the network predicts Pm ∈ [0 , 1] Hm×Wm . Since 
+
+G is a set, the prediction function should satisfy permutation invariance: 
+
+f (Iπ(1) , . . . , I π(M )) = f (I1, . . . , I M ) (1) for any permutation π. The challenge is to learn a group representation that is sensitive to recurring foreground evi-dence but insensitive to outlier saliency and image ordering. This formulation follows a general design principle visible in structured visual reasoning systems: retain a compact set of useful evidence while discarding redundant or distracting observations [46, 50, 54]. 
+
+# 4. Rank-Consistent Set Reasoning 
+
+## 4.1. Architecture Overview 
+
+The model follows the sequence 
+
+multi-scale features → set slots → rank consistency →
+
+group-aware decoding. 
+
+No textual category or external detector is generated at infer-ence time. 
+
+## 4.2. Multi-Scale Feature Extraction 
+
+A PVT-v2 backbone produces feature maps F lm at levels l =1, . . . , L [60]. Each level is projected to a common channel dimension and flattened into tokens. Let Xlm = {xlm,n }Nl
+
+> n=1
+
+denote the tokens at level l.
+
+## 4.3. Permutation-Invariant Group Slots 
+
+We maintain K learnable group slots Sl = {slk}Kk=1 for every scale. For each image, slots attend to dense tokens: 
+
+Alm,k,n = softmax n
+
+(Wq slk)⊤(Wkxlm,n )
+
+√d
+
+!
+
+. (2) Group slots are then aggregated across images with a nor-malized symmetric operator 
+
+¯slk = 1
+
+M
+
+> M
+
+X
+
+> m=1
+> Nl
+
+X
+
+> n=1
+
+Alm,k,n Wv xlm,n . (3) Because the group aggregation is a sum over the set di-mension, it is invariant to image ordering. This construc-tion follows the general permutation-invariant principle for-malized by Deep Sets and Set Transformer, while using transformer-style token interaction for dense visual features [7, 28, 35, 53, 65]. A lightweight slot update block refines 
+
+¯slk before it is used by the rank module. 
+
+## 4.4. Rank-Consistency Operator 
+
+For each image token, we compute affinity to all group slots: 
+
+zlm,n,k = ϕ(xlm,n )⊤ψ(¯ slk)
+
+∥ϕ(xlm,n )∥ ∥ ψ(¯ slk)∥ . (4) Rather than averaging affinities directly, we convert them to within-image ranks ρlm,n,k . The group support for to-ken (m, n ) is obtained from a trimmed mean across group members: 
+
+rlm,n = TrimMean γ
+
+ {zlj,n ′,k ∗ }j̸ =m
+
+ , (5) where k∗ and n′ are the best slot and spatial token for the current candidate under reciprocal matching. The trimming fraction γ removes a small number of extreme group mem-bers before aggregation. We additionally measure rank dispersion 
+
+dlm,n = MAD  {ρlj,n ′,k ∗ }j̸ =m
+
+ , (6) where MAD is median absolute deviation. The final rank gate is 
+
+glm,n = σ(αr lm,n − βd lm,n ). (7) This gate rewards candidates whose group support is both strong and consistently ranked. A visually salient region that appears only in one image tends to exhibit weak support or unstable ranks and is suppressed. 
+
+## 4.5. Group-Aware Decoder 
+
+The gated group slots and image features are fused using cross-attention: 
+
+Hlm = Attn( F lm, G l, G l), Gl = {glk ¯slk}Kk=1 . (8) We concatenate Hlm with the local feature map and pass it through a top-down feature pyramid. The decoder uses skip connections from the first two PVT-v2 levels to preserve thin structures and object boundaries. Such explicit separation between global context and local evidence is also compat-ible with structured layout representations, heterogeneous anchors, and low-overhead visual adaptation [15, 16, 36, 56]. 
+
+## 4.6. Set-Permutation Training 
+
+During training, two independent permutations of the same image group are processed. The segmentation loss is applied to both outputs and a permutation consistency loss is added: 
+
+Lperm = 1
+
+M
+
+X
+
+> m
+
+∥Pm − ePm∥1. (9) This objective does not change the ground truth; it simply penalizes implementation details that leak the arbitrary or-dering of images into the prediction. 
+
+## 4.7. Hard-Distractor Augmentation 
+
+To increase group selectivity, training groups are augmented by inserting visually salient but non-recurring regions into a subset of images. The inserted region is never labeled as co-salient. A distractor suppression term penalizes predicted activation inside the inserted region: 
+
+Ldis = 1
+
+|D|
+
+X
+
+> x∈D
+
+P (x), (10) where D denotes the pasted distractor area. This augmenta-tion directly targets false agreement without requiring cat-egory labels. Evidence-focused benchmarks and adaptive-routing studies show that heterogeneous or distracting con-text can expose failure modes that average-case evaluation misses [17, 37, 55]. 
+
+## 4.8. Objective 
+
+The overall objective is 
+
+L = Lseg + λpLperm + λdLdis + λeLedge . (11) Here Lseg is the standard BCE plus IoU-style dense loss, 
+
+Ledge supervises the boundary head, and the remaining terms enforce set properties. 
+
+# 5. Evaluation Protocol 
+
+## 5.1. Datasets 
+
+We use CoCA, CoSal2015, and CoSOD3k, following their public train/test organization [10, 11]. The model is trained only on the training split. No category names are supplied to the network. 
+
+## 5.2. Metrics 
+
+We report S-measure, max Fβ , max Eϕ, and MAE using standard foreground-map definitions [8, 9]. In addition, we report: • Rank Stability (RS): inverse normalized dispersion of the candidate rankings across group members. • Distractor Suppression (DS): reduction in false-positive area under hard-distractor insertion. • Permutation Gap (PG): output difference between multi-ple group orderings. • Group Robustness (GR): area under the performance curve as group size decreases. 
+
+## 5.3. Baselines 
+
+We compare with representative supervised Co-SOD meth-ods: GCAGC, GCoNet, DCFM, DMT, GCoNet+, CONDA, LDRNet, and VCP [12, 30, 31, 43, 57, 64, 69, 76]. Pub-lished results from prior methods provide the comparison protocol and reference point for reproducible evaluation. 
+
+## 5.4. Ablation Matrix 
+
+We evaluate: (1) mean aggregation instead of trimmed rank aggregation; (2) no rank-dispersion gate; (3) no set slots and direct feature pooling; (4) no permutation loss; (5) no distractor augmentation; (6) single-scale reasoning; and (7) full RCSR. The aim is to identify which component changes group selectivity rather than simply increasing parameter count. This decomposition mirrors the diagnostic spirit of recent multimodal benchmarks and adaptive systems, where localization, reasoning, and robustness are evaluated sepa-rately [17, 46, 52, 55]. 
+
+## 5.5. Group-Size and Order Tests 
+
+At inference time, we evaluate each test group at 25%, 50%, 75%, and 100% of its available images. For each group, we also run five random permutations. Since the proposed repre-sentation is symmetric, the permutation gap should be near zero. Performance as group size changes reveals whether the model requires a large context window to succeed. Partial-context evaluation is especially relevant for models expected to infer structure from incomplete evidence and selective context [32, 37, 46, 52, 54, 55, 63]. 
+
+## 5.6. Distractor Test 
+
+For a fixed target image, we paste one or more salient objects sampled from unrelated groups into the background. We measure both the change in standard metrics and distractor suppression. A robust model should maintain the common target while limiting activation on inserted objects. Related work on object removal, distracting-token pruning, proactive focused perception, diffusion-quality probing, and structural error detection likewise emphasizes explicitly controlling irrelevant evidence [24, 29, 48, 62, 78]. 
+
+## 5.7. Cross-Dataset Transfer 
+
+We train on one benchmark and evaluate directly on another without fine-tuning. This test is particularly important be-cause the architecture does not depend on a dataset-specific vocabulary or external category list. We report both absolute performance and relative cross-domain drop. Cross-domain evaluation is motivated by the broader document and multi-modal literature, where robustness to layout, language, and visual-domain variation is often a decisive test of learned representations [13, 51, 63]. 
+
+# 6. Discussion and Limitations 
+
+The rank-consistency view changes the role of group infor-mation. Instead of constructing one semantic label for the complete group, the model evaluates whether the ordering of candidate regions is stable across images. This makes the representation less dependent on absolute feature mag-nitudes and provides a direct diagnostic quantity for group agreement. The main limitation is that rank-based aggregation can fail when every group member exhibits substantially differ-ent views of the target or when the target is extremely small. The method also requires supervised Co-SOD training and therefore does not address zero-shot inference. The broader literature on multimodal evidence selection and adaptive routing suggests several directions for reducing this super-vision requirement [25, 29, 37, 54, 56]. Hard-distractor augmentation can improve selectivity but may still intro-duce synthetic artifacts that are not representative of natural backgrounds. These limitations should be quantified by the proposed stress tests rather than hidden in a single average benchmark score. Recent CoSOD work emphasizes both generalization and strong training-free systems. CoMCS studies unseen-domain robustness with explicit style perturbation and semantic contrast, while TF-SSD explores a different training-free foundation-model pipeline [20, 21]. RCSR occupies a sep-arate point in the design space: supervised, permutation-invariant, and centered on robust rank statistics instead of semantic prompting, proposal filtering, or counterfactual dataset synthesis. 
+
+# 7. Reproducibility 
+
+The implementation records the PVT-v2 checkpoint, input resolution, number of group slots K, projection dimension 
+
+d, trimming fraction γ, rank-gate weights (α, β ), feature-pyramid depth, optimizer, learning rate, training epochs, augmentation policy, and random seed. We instantiate the network with a PVT-v2-B2 backbone, 
+
+K = 8 group slots, γ = 0 .2, and (α, β ) = (2 .0, 1.0) ; the training schedule uses 80 epochs. Group-size evaluation uses four context fractions and repeated random permuta-tions, while distractor evaluation inserts salient objects from unrelated groups under controlled appearance perturbations. 
+
+# 8. Conclusion 
+
+We presented Rank-Consistent Set Reasoning, a supervised Co-SOD framework that represents an image group as an Figure 3. Qualitative examples illustrating the visual diversity of co-salient objects across different image groups. The examples emphasize common-object appearance changes and background variation. 
+
+unordered set and uses robust ranking statistics to separate recurrent foreground evidence from unstable salient regions. The method avoids category prediction, language prompting, open-vocabulary detection, and external segmentation. A permutation-invariant set encoder, rank-dispersion gate, and group-aware dense decoder form the central model. The proposed evaluation extends standard Co-SOD benchmarks with tests of order invariance, group-size robustness, distrac-tor rejection, and cross-dataset transfer. The evaluation is intended to quantify the standard detection quality and the proposed set-level robustness properties. 
+
+# References 
+
+[1] Ali Borji, Ming-Ming Cheng, Huaizu Jiang, and Jia Li. Salient object detection: A benchmark. IEEE Transactions on Image Processing , 24(12):5706–5722, 2015. [2] Mathilde Caron, Hugo Touvron, Ishan Misra, Herve Jegou, Julien Mairal, Piotr Bojanowski, and Armand Joulin. Emerg-ing properties in self-supervised vision transformers. In Pro-ceedings of the IEEE/CVF International Conference on Com-puter Vision (ICCV) , pages 9650–9660, 2021. [3] Souradeep Chakraborty, Shujon Naha, Muhammet Bastan, Amit Kumar K. C., and Dimitris Samaras. Unsupervised and semi-supervised co-salient object detection via segmentation frequency statistics. In Proceedings of the IEEE/CVF Win-ter Conference on Applications of Computer Vision (WACV) ,pages 332–342, 2024. [4] Huachao Chen, Yingzhou Chen, Bin Wang, Feng Wang, and Jia Zhao. Co-salient object detection with automatic semantic discovery. Journal of Image and Graphics , 31(7):2645–2659, 2026. [5] Bowen Cheng, Ishan Misra, Alexander G. Schwing, Alexan-der Kirillov, and Rohit Girdhar. Masked-attention mask trans-former for universal image segmentation. In Proceedings of Figure 4. Illustration of evidence selectability across an image group. Informative regions exhibit stronger recurrence and struc-tural agreement, whereas distracting salient regions are less consis-tent across group members. 
+
+the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) , pages 1290–1299, 2022. [6] Runmin Cong, Ning Yang, Chongyi Li, Huazhu Fu, Yao Zhao, Qingming Huang, and Sam Kwong. Global-and-local collaborative learning for co-salient object detection. IEEE Transactions on Cybernetics , 53(3):1920–1931, 2023. [7] Alexey Dosovitskiy, Lucas Beyer, Alexander Kolesnikov, Dirk Weissenborn, Xiaohua Zhai, Thomas Unterthiner, Mostafa Dehghani, Matthias Minderer, Georg Heigold, Syl-vain Gelly, Jakob Uszkoreit, and Neil Houlsby. An image is worth 16x16 words: Transformers for image recognition at scale. In International Conference on Learning Representa-tions , 2021. [8] Deng-Ping Fan, Ming-Ming Cheng, Yun Liu, Tao Li, and Ali Borji. Structure-measure: A new way to evaluate foreground maps. In Proceedings of the IEEE International Conference on Computer Vision , pages 4548–4557, 2017. [9] Deng-Ping Fan, Cheng Gong, Yang Cao, Bo Ren, Ming-Ming Cheng, and Ali Borji. Enhanced-alignment measure for binary foreground map evaluation. In Proceedings of the Twenty-Seventh International Joint Conference on Artificial Intelligence , pages 698–704, 2018. [10] Deng-Ping Fan, Zheng Lin, Ge-Peng Ji, Dingwen Zhang, Huazhu Fu, and Ming-Ming Cheng. Taking a deeper look at co-salient object detection. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition ,pages 2919–2929, 2020. [11] Deng-Ping Fan, Tengpeng Li, Zheng Lin, Ge-Peng Ji, Ding-wen Zhang, Ming-Ming Cheng, Huazhu Fu, and Jianbing Shen. Re-thinking co-salient object detection. IEEE Trans-actions on Pattern Analysis and Machine Intelligence , 44(8): 4339–4354, 2022. [12] Qi Fan, Deng-Ping Fan, Huazhu Fu, Chi-Keung Tang, Ling Shao, and Yu-Wing Tai. Group collaborative learning for co-salient object detection. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition ,pages 12288–12298, 2021. [13] Hao Feng, Zijian Wang, Jingqun Tang, Jinghui Lu, Wen-gang Zhou, Houqiang Li, and Can Huang. Unidoc: A uni-versal large multimodal model for simultaneous text detec-tion, recognition, spotting and understanding. arXiv preprint arXiv:2308.11592 , 2023. [14] Hao Feng, Qi Liu, Hao Liu, Jingqun Tang, Wengang Zhou, Houqiang Li, and Can Huang. Docpedia: Unleashing the power of large multimodal model in the frequency domain for versatile document understanding. Science China Information Sciences , 67(2):220106, 2024. [15] Hao Feng, Shu Wei, Xiang Fei, Wei Shi, Yingdong Han, Lei Liao, Jinghui Lu, Binghong Wu, Qi Liu, Chunhui Lin, Jingqun Tang, Hao Liu, and Can Huang. Dolphin: Document image parsing via heterogeneous anchor prompting. In Find-ings of the Association for Computational Linguistics: ACL 2025 , pages 21919–21936, 2025. [16] Hao Feng, Wei Shi, Ke Zhang, Xiang Fei, Lei Liao, Dingkang Yang, Yongkun Du, Xuecheng Wu, Jingqun Tang, Yang Liu, Hong Chen, and Can Huang. Dolphin-v2: Universal docu-ment parsing via scalable anchor prompting. arXiv preprint arXiv:2602.05384 , 2026. [17] Ling Fu, Yuliang Liu, Jingqun Tang, et al. Ocrbench v2: An improved benchmark for evaluating large multimodal models on visual text localization and reasoning. In Advances in Neural Information Processing Systems, Datasets and Bench-marks Track , 2025. [18] Ruijun Gao, Qing Guo, Felix Juefei-Xu, Hongkai Yu, Huazhu Fu, Wei Feng, Yang Liu, and Song Wang. Can you spot the chameleon? adversarially camouflaging images from co-salient object detection. In Proceedings of the IEEE/CVF Con-ference on Computer Vision and Pattern Recognition (CVPR) ,pages 2150–2159, 2022. [19] Yanliang Ge, Qiao Zhang, Tian-Zhu Xiang, Cong Zhang, Jing Zhang, and Hongbo Bi. Tcnet: Co-salient object detection via parallel interaction of transformers and cnns. IEEE Trans-actions on Circuits and Systems for Video Technology , 33(6): 2600–2615, 2023. [20] Guanting Guo, Shenglong Hu, Kaihua Zhang, Guangcan Liu, and Min Xia. Generalizable co-salient object detec-tion via mixed content-style modulation. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , pages 32173–32183, 2026. [21] Zhijin He, Shuo Jin, Siyue Yu, Shuwei Wu, Bingfeng Zhang, Li Yu, and Jimin Xiao. Tf-ssd: A strong pipeline via syn-ergic mask filter for training-free co-salient object detection. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , pages 32216–32225, 2026. [22] Qibin Hou, Ming-Ming Cheng, Xue-Dong Hu, Ali Borji, Zhou Tu, and Philip H. S. Torr. Deeply supervised salient object detection with short connections. In Proceedings of the IEEE International Conference on Computer Vision (ICCV) ,pages 3203–3212, 2017. [23] Kuang-Jui Hsu, Chung-Chi Tsai, Yen-Yu Lin, Xiaoning Qian, and Yung-Yu Chuang. Unsupervised cnn-based co-saliency detection with graphical optimization. In Proceedings of the European Conference on Computer Vision (ECCV) , pages 502–518, 2018. [24] Bukun Huang, Benlei Cui, Zhizeng Ye, Xuemei Dong, Tuo Chen, Hui Xue, Dingkang Yang, Longtao Huang, Haiwen Hong, and Jingqun Tang. Diffusion probe: Generated im-age result prediction using cnn probes. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) , pages 35926–35935, 2026. [25] Weitao Jia, Jinghui Lu, Haiyang Yu, Siqi Wang, Guozhi Tang, An-Lan Wang, Weijie Yin, Dingkang Yang, Yuxiang Nie, Bin Shan, Hao Feng, Irene Li, Kun Yang, Han Wang, Jingqun Tang, Teng Fu, Changhong Jin, Chao Feng, Xiaohui Lv, and Can Huang. Meml-grpo: Heterogeneous multi-expert mutual learning for rlvr advancement. In Proceedings of the AAAI Conference on Artificial Intelligence , pages 31283–31291, 2026. [26] Huaizu Jiang, Jingdong Wang, Zejian Yuan, Yang Wu, Nan-ning Zheng, and Shipeng Li. Salient object detection: A discriminative regional feature integration approach. In Pro-ceedings of the IEEE Conference on Computer Vision and Pattern Recognition (CVPR) , pages 2083–2090, 2013. [27] Alexander Kirillov, Eric Mintun, Nikhila Ravi, Hanzi Mao, Chloe Rolland, Laura Gustafson, Tete Xiao, Spencer White-head, Alexander C. Berg, Wan-Yen Lo, Piotr Doll´ ar, and Ross Girshick. Segment anything. In Proceedings of the IEEE/CVF International Conference on Computer Vision (ICCV) , pages 4015–4026, 2023. [28] Juho Lee, Yoonho Lee, Jungtaek Kim, Adam Kosiorek, Se-ungjin Choi, and Yee Whye Teh. Set transformer: A frame-work for attention-based permutation-invariant neural net-works. In Proceedings of the 36th International Conference on Machine Learning , pages 3744–3753, 2019. [29] Chenyang Li, Jieyuan Liu, Bin Li, Bo Gao, Yilin Yuan, Yang-fan He, Yuchen Li, and Jingqun Tang. Dtp: A simple yet effec-tive distracting token pruning framework for vision-language action models. arXiv preprint arXiv:2601.16065 , 2026. [30] Long Li, Junwei Han, Ni Zhang, Nian Liu, Salman Khan, Hisham Cholakkal, Rao Muhammad Anwer, and Fahad Shah-baz Khan. Discriminative co-saliency and background mining transformer for co-salient object detection. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , pages 7247–7256, 2023. [31] Long Li, Nian Liu, Dingwen Zhang, Zhongyu Li, Salman Khan, Rao Anwer, Hisham Cholakkal, Junwei Han, and Fa-had Shahbaz Khan. Conda: Condensed deep association learning for co-salient object detection. In Computer Vision – ECCV 2024 , pages 287–303, 2024. [32] Keliang Liu, Zizhi Chen, Mingcheng Li, Jingqun Tang, Dingkang Yang, and Lihua Zhang. Resolving evidence spar-sity: Agentic context engineering for long-document under-standing. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) , pages 19452–19462, 2026. [33] Nian Liu, Ni Zhang, Kaiyuan Wan, Ling Shao, and Jun-wei Han. Visual saliency transformer. In Proceedings of the IEEE/CVF International Conference on Computer Vision (ICCV) , pages 4722–4732, 2021. [34] Shilong Liu, Zhaoyang Zeng, Tianhe Ren, Feng Li, Hao Zhang, Jie Yang, Qing Jiang, Chunyuan Li, Jianwei Yang, Hang Su, Jun Zhu, and Lei Zhang. Grounding dino: Marrying dino with grounded pre-training for open-set object detection. In Computer Vision – ECCV 2024 , pages 38–55, 2024. [35] Ze Liu, Yutong Lin, Yue Cao, Han Hu, Yixuan Wei, Zheng Zhang, Stephen Lin, and Baining Guo. Swin transformer: Hierarchical vision transformer using shifted windows. In 
+
+Proceedings of the IEEE/CVF International Conference on Computer Vision (ICCV) , pages 10012–10022, 2021. [36] Jinghui Lu, Haiyang Yu, Yanjie Wang, Yongjie Ye, Jingqun Tang, Ziwei Yang, Binghong Wu, Qi Liu, Hao Feng, Han Wang, Hao Liu, and Can Huang. A bounding box is worth one token: Interleaving layout and text in a large language model for document understanding. In Findings of the Association for Computational Linguistics: ACL 2025 , pages 7252–7273, 2025. [37] Jinghui Lu, Haiyang Yu, Siliang Xu, Shiwei Ran, Guozhi Tang, Siqi Wang, Bin Shan, Teng Fu, Hao Feng, Jingqun Tang, Han Wang, and Can Huang. Prolonged reasoning is not all you need: Certainty-based adaptive routing for efficient llm/mllm reasoning. arXiv preprint arXiv:2505.15154 , 2025. [38] Zhiming Luo, Akshaya Mishra, Andrew Achkar, Justin Eichel, Shaozi Li, and Pierre-Marc Jodoin. Non-local deep features for salient object detection. In Proceedings of the IEEE Conference on Computer Vision and Pattern Recogni-tion (CVPR) , pages 6609–6617, 2017. [39] Matthias Minderer, Alexey Gritsenko, Austin Stone, Maxim Neumann, Dirk Weissenborn, Alexey Dosovitskiy, Aravindh Mahendran, Anurag Arnab, Mostafa Dehghani, Zhuoran Shen, Xiao Wang, Xiaohua Zhai, Thomas Kipf, and Neil Houlsby. Simple open-vocabulary object detection with vi-sion transformers. In Computer Vision – ECCV 2022 , pages 728–755, 2022. [40] Ke Niu, Haiyang Yu, Zhuofan Chen, Zhengtao Yao, Weitao Jia, Xiaodong Ge, Jingqun Tang, Benlei Cui, Bin Li, and Xi-angyang Xue. Cme-cad: Heterogeneous collaborative multi-expert reinforcement learning for cad code generation. In 
+
+Proceedings of the IEEE/CVF Conference on Computer Vi-sion and Pattern Recognition (CVPR) , pages 39272–39281, 2026. [41] Maxime Oquab, Timoth´ ee Darcet, Th´ eo Moutakanni, Huy V. Vo, Marc Szafraniec, Vasil Khalidov, Pierre Fernandez, Daniel Haziza, Francisco Massa, Alaaeldin El-Nouby, Mido Assran, Nicolas Ballas, Wojciech Galuba, Russell Howes, Po-Yao Huang, Shang-Wen Li, Ishan Misra, Michael Rab-bat, Vasu Sharma, Gabriel Synnaeve, Hu Xu, Herve Jegou, Julien Mairal, Patrick Labatut, Armand Joulin, and Piotr Bo-janowski. Dinov2: Learning robust visual features without supervision. Transactions on Machine Learning Research ,2024. [42] Youwei Pang, Xiaoqi Zhao, Lihe Zhang, and Huchuan Lu. Multi-scale interactive network for salient object detection. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) , pages 9413–9422, 2020. [43] Yongri Piao, Zhi Wang, Tingwei Liu, Jihao Yin, Miao Zhang, and Huchuan Lu. Learning discriminative representation for co-salient object detection. IEEE Transactions on Neural Networks and Learning Systems , 36(9):16721–16732, 2025. [44] Xuebin Qin, Zichen Zhang, Chenyang Huang, Chao Gao, Masood Dehghan, and Martin Jagersand. Basnet: Boundary-aware salient object detection. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) , pages 7479–7489, 2019. [45] Alec Radford, Jong Wook Kim, Chris Hallacy, Aditya Ramesh, Gabriel Goh, Sandhini Agarwal, Girish Sastry, Amanda Askell, Pamela Mishkin, Jack Clark, Gretchen Krueger, and Ilya Sutskever. Learning transferable visual models from natural language supervision. In Proceedings of the 38th International Conference on Machine Learning ,pages 8748–8763, 2021. [46] Bin Shan, Xiang Fei, Wei Shi, An-Lan Wang, Guozhi Tang, Lei Liao, Jingqun Tang, Xiang Bai, and Can Huang. Mct-bench: Multimodal cognition towards text-rich visual scenes benchmark. arXiv preprint arXiv:2410.11538 , 2024. [47] Yukun Su, Jingliang Deng, Ruizhou Sun, Guosheng Lin, and Qingyao Wu. A unified transformer framework for group-based segmentation: Co-segmentation, co-saliency detection and video salient object detection. IEEE Transactions on Multimedia , 26:313–325, 2023. [48] Wenhao Sun, Xue-Mei Dong, Benlei Cui, and Jingqun Tang. Attentive eraser: Unleashing diffusion model’s object removal potential via self-attention redirection guidance. In Proceed-ings of the AAAI Conference on Artificial Intelligence , pages 20734–20742, 2025. [49] Jingqun Tang, Wenming Qian, Luchuan Song, Xiena Dong, Lan Li, and Xiang Bai. Optimal boxes: Boosting end-to-end scene text recognition by adjusting annotated bounding boxes via reinforcement learning. In Computer Vision – ECCV 2022 ,pages 233–248, 2022. [50] Jingqun Tang, Wenqing Zhang, Hongye Liu, MingKun Yang, Bo Jiang, Guanglong Hu, and Xiang Bai. Few could be better than all: Feature sampling and grouping for scene text detection. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) , pages 4563–4572, 2022. [51] Jingqun Tang, Chunhui Lin, Zhen Zhao, Shu Wei, Binghong Wu, Qi Liu, Hao Feng, Yang Li, Siqi Wang, Lei Liao, Wei Shi, Yuliang Liu, Hao Liu, Yuan Xie, Xiang Bai, and Can Huang. Textsquare: Scaling up text-centric visual instruction tuning. arXiv preprint arXiv:2404.12803 , 2024. [52] Jingqun Tang, Qi Liu, Yongjie Ye, Jinghui Lu, Shu Wei, An-Lan Wang, Chunhui Lin, Hao Feng, Zhen Zhao, Yanjie Wang, Yuliang Liu, Hao Liu, Xiang Bai, and Can Huang. Mtvqa: Benchmarking multilingual text-centric visual question an-swering. In Findings of the Association for Computational Linguistics: ACL 2025 , pages 7748–7763, 2025. [53] Ashish Vaswani, Noam Shazeer, Niki Parmar, Jakob Uszkor-eit, Llion Jones, Aidan N. Gomez, Lukasz Kaiser, and Illia Polosukhin. Attention is all you need. In Advances in Neural Information Processing Systems , 2017. [54] An-Lan Wang, Bin Shan, Wei Shi, Kun-Yu Lin, Xiang Fei, Guozhi Tang, Lei Liao, Jingqun Tang, Can Huang, and Wei-Shi Zheng. Pargo: Bridging vision-language with partial and global views. In Proceedings of the AAAI Conference on Artificial Intelligence , pages 7491–7499, 2025. [55] An-Lan Wang, Jingqun Tang, Lei Liao, Hao Feng, Qi Liu, Xiang Fei, Jinghui Lu, Han Wang, Hao Liu, Yuliang Liu, Xiang Bai, and Can Huang. Wilddoc: How far are we from achieving comprehensive and robust document understanding in the wild? In Proceedings of the 2025 Conference on Em-pirical Methods in Natural Language Processing (EMNLP) ,pages 22991–23001, 2025. [56] Han Wang, Yongjie Ye, Bingru Li, Yuxiang Nie, Jinghui Lu, Jingqun Tang, Yanjie Wang, and Can Huang. Vision as lora. 
+
+arXiv preprint arXiv:2503.20680 , 2025. [57] Jie Wang, Nana Yu, Zihao Zhang, and Yahong Han. Visual consensus prompting for co-salient object detection. In Pro-ceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , pages 9591–9600, 2025. [58] Wenguan Wang, Jianbing Shen, Ming-Ming Cheng, and Ling Shao. An iterative and cooperative top-down and bottom-up inference network for salient object detection. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) , pages 5968–5977, 2019. [59] Wenhai Wang, Enze Xie, Xiang Li, Deng-Ping Fan, Kaitao Song, Ding Liang, Tong Lu, Ping Luo, and Ling Shao. Pyra-mid vision transformer: A versatile backbone for dense predic-tion without convolutions. In Proceedings of the IEEE/CVF International Conference on Computer Vision , pages 568– 578, 2021. [60] Wenhai Wang, Enze Xie, Xiang Li, Deng-Ping Fan, Kaitao Song, Ding Liang, Tong Lu, Ping Luo, and Ling Shao. Pvt v2: Improved baselines with pyramid vision transformer. Compu-tational Visual Media , 8(3):415–424, 2022. [61] Peiran Xu and Yadong Mu. Co-salient object detection with semantic-level consensus extraction and dispersion. In Pro-ceedings of the 31st ACM International Conference on Multi-media , 2023. [62] Wei Xue, Mingcheng Li, Xuecheng Wu, Jingqun Tang, Dingkang Yang, and Lihua Zhang. Profocus: Proactive per-ception and focused reasoning in vision-and-language nav-igation. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) , pages 18129–18139, 2026. [63] Haiyang Yu, Yuchuan Wu, Fan Shi, Jinghui Lu, Ke Niu, Xiaodong Ge, Minghan Zhuo, Jingqun Tang, and Bin Li. Benchmarking vision-language models on chinese ancient documents: From ocr to knowledge reasoning. In Findings of the Association for Computational Linguistics: ACL 2026 ,pages 28793–28812, 2026. [64] Siyue Yu, Jimin Xiao, Bingfeng Zhang, and Eng Gee Lim. Democracy does matter: Comprehensive feature mining for co-salient object detection. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition ,pages 979–988, 2022. [65] Manzil Zaheer, Shantanu Kottur, Siamak Ravanbakhsh, Barn-abas Poczos, Ruslan Salakhutdinov, and Alexander J. Smola. Deep sets. In Advances in Neural Information Processing Systems , 2017. [66] Dingwen Zhang, Junwei Han, Chao Li, and Jingdong Wang. Co-saliency detection via looking deep and wide. In Proceed-ings of the IEEE Conference on Computer Vision and Pattern Recognition (CVPR) , 2015. [67] Dingwen Zhang, Deyu Meng, Chao Li, Lu Jiang, Qian Zhao, and Junwei Han. A self-paced multiple-instance learning framework for co-saliency detection. In Proceedings of the IEEE International Conference on Computer Vision (ICCV) ,pages 594–602, 2015. [68] Kaihua Zhang, Tengpeng Li, Bo Liu, and Qingshan Liu. Co-saliency detection via mask-guided fully convolutional net-works with multi-scale label smoothing. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) , pages 3095–3104, 2019. [69] Kaihua Zhang, Tengpeng Li, Shiwen Shen, Bo Liu, Jin Chen, and Qingshan Liu. Adaptive graph convolutional network with attention graph clustering for co-saliency detection. In 
+
+Proceedings of the IEEE/CVF Conference on Computer Vi-sion and Pattern Recognition , pages 9047–9056, 2020. [70] Ni Zhang, Junwei Han, Nian Liu, and Ling Shao. Summarize and search: Learning consensus-aware dynamic convolution for co-saliency detection. In Proceedings of the IEEE/CVF International Conference on Computer Vision (ICCV) , pages 4167–4176, 2021. [71] Ni Zhang, Nian Liu, Fang Nan, and Junwei Han. Cadc++: Ad-vanced consensus-aware dynamic convolution for co-salient object detection. IEEE Transactions on Pattern Analysis and Machine Intelligence , 46(5):2741–2757, 2024. [72] Zhao Zhang, Wenda Jin, Jun Xu, and Ming-Ming Cheng. Gradient-induced co-saliency detection. In Proceedings of the European Conference on Computer Vision (ECCV) , pages 455–472, 2020. [73] Weichao Zhao, Hao Feng, Qi Liu, Jingqun Tang, Binghong Wu, Lei Liao, Shu Wei, Yongjie Ye, Hao Liu, Wengang Zhou, Houqiang Li, and Can Huang. Tabpedia: Towards compre-hensive visual table understanding with concept synergy. In 
+
+Advances in Neural Information Processing Systems , 2024. [74] Zhen Zhao, Jingqun Tang, Chunhui Lin, Binghong Wu, Can Huang, Hao Liu, Xin Tan, Zhizhong Zhang, and Yuan Xie. Multi-modal in-context learning makes an ego-evolving scene text recognizer. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) , pages 15567–15576, 2024. [75] Zhen Zhao, Jingqun Tang, Binghong Wu, Chunhui Lin, Shu Wei, Hao Liu, Xin Tan, Zhizhong Zhang, Can Huang, and Yuan Xie. Harmonizing visual text comprehension and gener-ation. In Advances in Neural Information Processing Systems ,2024. [76] Peng Zheng, Huazhu Fu, Deng-Ping Fan, Qi Fan, Jie Qin, Yu-Wing Tai, Chi-Keung Tang, and Luc Van Gool. Gconet+: A stronger group collaborative co-salient object detector. IEEE Transactions on Pattern Analysis and Machine Intelligence ,45(9):10929–10946, 2023. [77] Peng Zheng, Jie Qin, Shuo Wang, Tian-Zhu Xiang, and Huan Xiong. Memory-aided contrastive consensus learning for co-salient object detection. In Proceedings of the AAAI Con-ference on Artificial Intelligence , pages 3687–3695, 2023. [78] Hanshen Zhu, Yuliang Liu, Xuecheng Wu, An-Lan Wang, Hao Feng, Dingkang Yang, Chao Feng, Can Huang, Jingqun Tang, and Xiang Bai. Textpecker: Rewarding structural anomaly quantification for enhancing visual text rendering. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) , pages 22059–22069, 2026. [79] Jiayi Zhu, Qing Guo, Felix Juefei-Xu, Yihao Huang, Yang Liu, and Geguang Pu. Cosalpure: Learning concept from group images for robust co-saliency detection. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) , pages 3669–3678, 2024. [80] Ziyue Zhu, Zhao Zhang, Zheng Lin, Xing Sun, and Ming-Ming Cheng. Co-salient object detection with co-representation purification. IEEE Transactions on Pattern Analysis and Machine Intelligence , 45(7):8193–8205, 2023.

@@ -1,0 +1,386 @@
+Title: Variational Template Matching with Statistical Fusion for Anomaly Detection in Patterned Structures
+
+URL Source: https://arxiv.org/pdf/2609.13298v1
+
+Published Time: Tue, 15 Sep 2026 00:10:04 GMT
+
+Number of Pages: 15
+
+Markdown Content:
+# Variational Template Matching with Statistical Fusion for Anomaly Detection in Patterned Structures 
+
+## Qinwu Xu, Yifan Jiang 
+
+Abstract 
+
+Anomaly detection in structured images is challenging in small-data settings where deep learning approaches are costly or impractical. Classical template matching is simple and interpretable but lacks robustness to geometric variations such as scale, rotation, and perspective. We propose a variational template matching framework that represents anomaly templates as a family of transformed instances and performs detection via normalized cross-correlation over this transformation space. To further improve robustness, we introduce a density-based statistical anomaly score derived from local intensity distributions using kernel density estimation (KDE). This produces a smooth represen-tation that captures distributional concentration and tail behavior more robustly than histogram-based methods. The structural and statistical signals are integrated through a unified fusion formulation, enabling complementary modeling of geometric similarity and distributional deviation. Experiments on biological cell images demonstrate that the proposed method outperforms classical baselines and achieves competi-tive performance with ResNet-50 under a fully training-free setting, while providing explicit localization. The approach offers an efficient, interpretable, and practical solution for anomaly detection in structured image domains. 
+
+# 1 Introduction 
+
+Anomaly detection in images is a fundamental problem in computer vision, with applications spanning indus-trial inspection, biomedical imaging, and surveillance. In many real-world scenarios, particularly in biological and materials imaging, anomalies manifest as local deviations from structured or repetitive patterns, such as defects, debris, or structural discontinuities. Detecting such anomalies reliably is challenging, especially under variations in scale, orientation, and imaging conditions. Deep learning approaches, particularly convolutional neural networks (CNNs), have demonstrated strong performance in visual recognition tasks by learning hierarchical feature representations from data. However, these methods typically require large annotated datasets, substantial computational resources, and careful model training. In domains where labeled data are limited or expensive to obtain, such as biological imaging, these requirements can significantly restrict their applicability. Classical computer vision approaches, such as template matching, offer an attractive alternative due to their simplicity, interpretability, and training-free nature. Template matching detects anomalies by compar-ing image regions against predefined patterns using similarity measures such as cross-correlation. However, standard template matching is inherently limited by its reliance on a fixed template, making it sensitive to geometric variations such as scaling, rotation, and perspective distortion. This lack of robustness often leads to degraded performance in practical settings. To address these limitations, we propose a variational template matching framework that extends classical template matching by representing anomaly templates as a family of transformed instances. By incorporat-ing multi-scale representations and geometric transformations, the proposed method significantly improves robustness to variations in anomaly appearance. In addition to structural matching, anomalies often exhibit distinct statistical characteristics, such as deviations in local intensity distributions. To exploit this complementary signal, we introduce a statistical anomaly score based on kernel density and cumulative frequency analysis, and integrate it with the template matching score through a unified fusion mechanism. This combination enables the model to capture both 1arXiv:2609.13298v1 [cs.CV] 10 Sep 2026 geometric similarity and statistical irregularity, thereby improving detection performance under challenging conditions. We evaluate the proposed method on a dataset of biological cell images with various defect types. The results demonstrate that the proposed approach achieves a favorable balance between detection accuracy and computational efficiency, outperforming classical baselines and approaching the performance of deep learning models without requiring training data. 
+
+# 2 Related Work 
+
+## 2.1 Classical Template Matching 
+
+Template matching is a fundamental technique in computer vision for detecting objects or patterns by comparing a predefined template with local image regions. Classical formulations are typically based on cross-correlation and normalized cross-correlation (NCC), which remain widely used due to their simplicity and interpretability [4, 10]. In particular, NCC provides robustness to linear intensity changes and has been extensively used in practical systems [7, 3]. Despite these advantages, classical template matching relies on a fixed template and is therefore sensitive to geometric variations such as scale, rotation, and perspective distortion. This limitation becomes especially restrictive in anomaly detection tasks where defect shapes and orientations can vary significantly. 
+
+## 2.2 Deformation-Robust Template Matching 
+
+To improve robustness, several extensions to template matching have been proposed, including multi-scale representations, image pyramids, and geometric transformations such as rotation and affine mapping [10]. These approaches allow matching across different resolutions and orientations, partially addressing the lim-itations of fixed-template methods. Fast implementations of normalized cross-correlation have also been developed to improve computational efficiency in large-scale matching problems [7, 3]. However, most prior work focuses on object detection and image registration rather than anomaly detection in structured or repetitive patterns. Moreover, trans-formation handling is often implemented heuristically rather than formulated within a unified optimization framework. 
+
+## 2.3 Statistical Anomaly Detection 
+
+Statistical approaches detect anomalies by identifying deviations from expected data distributions. In image analysis, this often involves modeling local pixel intensity distributions using histograms, kernel density esti-mation, or related statistical descriptors. Such methods are particularly attractive in unsupervised settings, as they do not require labeled anomaly data [11]. However, purely statistical approaches typically lack explicit spatial and structural awareness. As a result, they may be sensitive to threshold selection and can produce high false positive rates when normal background patterns exhibit natural variability. This motivates combining statistical signals with structural methods. 
+
+## 2.4 Deep Learning for Anomaly Detection 
+
+Deep learning approaches, particularly convolutional neural networks (CNNs), have achieved strong perfor-mance in image classification and anomaly detection He2016. The MVTec AD dataset has become a standard benchmark for industrial anomaly detection and has driven significant progress in this area Bergmann2019. Recent methods model feature distributions extracted from pretrained networks for anomaly detection and localization. For example, PaDiM models patch-wise feature distributions Defard2021, while PatchCore leverages memory banks for improved recall in industrial inspection tasks [9]. Other approaches, such as CutPaste, employ self-supervised learning to improve anomaly sensitivity [8]. 2While these methods achieve strong performance, they typically require pretrained models, feature ex-traction pipelines, or training procedures, and may lack interpretability. In addition, many approaches focus primarily on image-level classification unless specifically designed for localization. 
+
+# 3 Contributions 
+
+## 3.1 Position of This Work 
+
+The proposed method lies between classical template matching and deep learning approaches. It retains the advantages of template-based methods—namely interpretability, efficiency, and training-free opera-tion—while addressing their primary limitation through a variational formulation over geometric trans-formations. In addition, by integrating a statistical anomaly score based on local intensity distributions, the proposed method combines structural similarity with distributional deviation within a unified framework. This enables robust anomaly detection in patterned structures under limited data conditions, where purely statistical or purely learned approaches may be insufficient. 
+
+## 3.2 Main Contributions 
+
+This paper makes the following contributions: 
+
+• Variational Template Matching Framework. We propose a formulation of template matching in which a single template is extended to a family of geometrically transformed templates, enabling robust detection under scale, rotation, and perspective variations. 
+
+## 3.3 Density-Based Statistical Anomaly Score 
+
+In addition to structural matching, we introduce a statistical anomaly score derived from local intensity distributions. For each image patch Ix, we estimate a smooth probability density function using kernel density estimation (KDE). Let {Ii}ni=1 denote pixel intensities within patch Ix. The density is estimated as: ˆpx(I) = 1
+
+nh 
+
+> n
+
+X
+
+> i=1
+
+K
+
+ I − Ii
+
+h
+
+
+
+, (1) where K(·) is a Gaussian kernel and h is the bandwidth parameter. Compared to histogram-based representations, KDE provides a continuous and noise-robust estimate of the underlying intensity distribution. The corresponding cumulative distribution function (CDF) is: ˆFx(I) = 
+
+Z I
+
+> −∞
+
+ˆpx(t) dt. (2) 
+
+Interpretation. The KDE-based representation enables stable characterization of distributional properties: 
+
+– Normal regions exhibit concentrated distributions with sharp density peaks 
+
+– Anomalous regions produce broader or irregular distributions with longer tails 3Anomaly Score. We define a statistical score based on distributional concentration: 
+
+s(x) = ∆F · C
+
+∆I , (3) where ∆ F is the cumulative density change over a specified percentile interval, and ∆ I is the corre-sponding intensity range. Since: 
+
+ddI ˆFx(I) = ˆ px(I),
+
+the quantity s(x) can be interpreted as a proxy for local density concentration. Lower values correspond to flatter distributions and higher anomaly likelihood. The final anomaly score is: 
+
+Sstat (x) = 11 + es(x) . (4) 
+
+Practical Note. In practice, KDE can be efficiently approximated on discretized intensity grids, providing a computationally efficient and stable alternative to histogram-based methods. 
+
+## 3.4 Fusion of Structural and Statistical Scores 
+
+We define a unified detection score: 
+
+S(x) = αS tmpl (x) + (1 − α)Sstat (x)This formulation can be interpreted as combining structural matching and distributional consistency within a unified scoring framework. 
+
+• Statistical–Structural Fusion for Anomaly Detection. We introduce a statistical anomaly score based on local intensity distributions and integrate it with template matching through a unified fusion mechanism, combining structural similarity with statistical deviation. 
+
+• Training-Free and Efficient Detection. The proposed method operates without any training data and provides localized anomaly detection with significantly lower computational cost compared to deep learning approaches. We evaluate the proposed method on biological cell images and demonstrate improved performance over classical baselines, achieving competitive results relative to a ResNet-50 model while maintaining efficiency and interpretability. 
+
+# 4 Method 
+
+## 4.1 Problem Formulation 
+
+Let I ∈ RH×W denote an input image, and let x ∈ Ω ⊂ R2 represent a spatial location. For each location x,a local image patch Ix is extracted using a sliding window. The goal is to determine whether a local region contains an anomaly: ˆy(x) = 
+
+(
+
+1, if an anomaly is detected at location x
+
+0, otherwise 4Classical template matching uses a fixed template T and computes a similarity score between T and Ix.However, it is sensitive to geometric variations. To address this limitation, we propose a variational template matching framework, in which the template is extended to a family of transformed instances. Figure 1 illustrates the problem domain and a standard template matching example, where anomalies such as cell debris and breakage are detected in biological images. The template represents a local defect pattern and is convolved over the entire image to generate detection scores. 
+
+Figure 1: Template matching example: (i) cell debris; (ii) cell breakage. The anomaly template slides across the entire image (e.g., top-to-bottom and left-to-right) to identify matched patterns for anomaly detection. 
+
+## 4.2 Variational Template Matching Framework 
+
+Let T denote a template representing an anomaly pattern. We define a transformation family G that includes scaling, rotation, and perspective transformations. Each transformation g ∈ G generates a transformed template: 
+
+Tg = g(T )The template matching score at location x is defined as: 
+
+Stmpl (x) = max g∈G NCC( Ix, T g ) + 1 2 (5) where NCC denotes normalized cross-correlation with values in [ −1, 1], Ix is the image patch at location x,and Tg is the transformed template. This formulation enables the model to search over a structured space of transformations, improving robustness to geometric variability. Figure 2 illustrates the overall implementation pipeline. The method consists of: 1) Image preprocess-ing (denoising), 2) Template generation with variational forms, 3) Sliding-window matching using cross-correlation, 4) Threshold-based detection and localization. 5Figure 2: Flow chart of the variational template matching method: the image and template are first denoised using Gaussian blur. Template matching is performed by sliding a window across the image (with stride 
+
+≥ 1 pixel) and computing cross-correlation between the window and the template. If the correlation exceeds a threshold, an anomaly is detected and a bounding box is generated. If no match is found, the image is classified as negative. 
+
+Image Preprocessing 
+
+To reduce noise in biological images, a 2D Gaussian blur is applied as a preprocessing step. The Gaussian kernel is defined as (Szeliski, 2022): 
+
+G(x, y ) = 12πσ 2 exp 
+
+
+
+− (x − μx)2 + ( y − μy )2
+
+2σ2
+
+
+
+(1) The kernel is applied to the image via convolution: 
+
+I′(x, y ) = X
+
+> i,j
+
+G(i, j ) I(x − i, y − j) (2) Gaussian blur acts as a low-pass filter to remove noise and improve detection stability, as illustrated in Figure 3. 
+
+Figure 3: Original image (left) and Gaussian-blurred output (middle), demonstrating noise reduction. 6Correlation-Based Matching 
+
+Template matching is performed using cross-correlation. The cross-correlation coefficient is defined as (Tah-masebi et al., 2012): 
+
+C(Ix, T ) = X
+
+> i,j
+
+Ix(i, j ) T (i, j ) (4) To improve robustness, normalized cross-correlation (NCC) is used: NCC( Ix, T ) = 
+
+P 
+
+> i,j
+
+(Ix(i, j ) − μIx )( T (i, j ) − μT )
+
+qP 
+
+> i,j
+
+(Ix(i, j ) − μIx )2 P 
+
+> i,j
+
+(T (i, j ) − μT )2
+
+(5) where μIx and μT denote mean intensities. As shown in Figure 4, NCC significantly improves detection performance compared to standard correlation. 
+
+Variational Template Forms Pyramid Scaling Three scales are used: 
+
+S = {1.0, 0.5, 0.25 }
+
+This enables detection of anomalies at different sizes (Figure 4). 
+
+Rotation The template is rotated using: 
+
+x′
+
+y′
+
+
+
+=
+
+cos θ − sin θ
+
+sin θ cos θ
+
+  xy
+
+
+
+(6) where θ ∈ { 0◦, 45 ◦, 90 ◦}.
+
+Translation 
+
+x′ = x + tx, y′ = y + ty (7) Translation is implicitly handled by the sliding window and is not explicitly applied. 
+
+Perspective Transformation 
+
+x′
+
+y′
+
+w
+
+ =
+
+
+
+cos θ − sin θ c
+
+sin θ cos θ fP1 P2 1
+
+
+
+xy
+
+1
+
+ (8) The final coordinates are: 
+
+x′ = x′
+
+w , y′ = y′
+
+w
+
+This transformation accounts for rotation, scaling, and projection effects. It is implemented using OpenCV: 
+
+M = cv2.getPerspectiveTransform(src, dst) 
+
+I′ = cv2.warpPerspective (I, M )7Figure 4: Template variations: (1) pyramid scaling at 100%, 50%, and 25%; (2) four-point mapping used to compute the perspective transformation matrix. Translation is not explicitly applied in this implementation. The transformation matrix M is obtained from four pairs of corresponding points, and the transformed image is generated accordingly. 
+
+## 4.3 Kernel-Density Anomaly Score 
+
+In addition to structural matching, we propose a kernel-density-based statistical anomaly score derived from local intensity distributions. For each image patch Ix, a histogram of pixel intensities and its cumulative frequency (CF) are computed. Based on these statistics, a normalized anomaly score is defined as: 
+
+Sstat (x) ∈ [0 , 1] which measures the deviation from typical intensity distributions. Intuitively: 
+
+• Normal regions exhibit relatively stable intensity distributions 
+
+• Anomalous regions tend to produce irregular or long-tail distributions The score is computed using normalized measures derived from: 
+
+• The slope of the cumulative frequency (CF) 
+
+• The intensity range corresponding to a given percentile threshold 
+
+Implementation Details with Examples 
+
+A kernel-density-based algorithm is developed for anomaly detection. For each sliding window, the histogram of pixel intensities (kernel density) and its cumulative frequency (CF) are computed. A defect detection index d is defined as follows: 
+
+s(x) = ∆CF · C
+
+∆I , (9) where ∆ CF is the cumulative-frequency difference, ∆ I is the corresponding intensity range, and C is a normalization constant. Since smaller values of s indicate a stronger anomaly tendency, we define the statistical anomaly score as 
+
+Sstat (x) = 11 + es(x) . (10) 8where: 
+
+• s is the slope (gradient) of the CF with respect to intensity 
+
+• The factor 2 .55 (i.e., 0 .01 × 255) normalizes the slope when the CF threshold is set to 0 .1
+
+• ∆I is the intensity range between the starting point of the CF curve and the point corresponding to the CF threshold (0.1) 
+
+• ∆CF is the difference between the upper CF threshold (0.1) and the starting point of the CF curve The value d falls within (0 , 1). A region is classified as anomalous when: 
+
+d ≤ τd
+
+where τd = 0 .15 is a predefined threshold. Figures 5 and 6 illustrate the kernel density (intensity histograms) for normal and anomalous image patches, respectively. It can be observed that anomalous regions exhibit different distribution patterns compared to normal regions. Figure 7 shows the cumulative frequency (CF) curves and the corresponding detection index. Anomalous regions typically produce smaller d values due to steeper CF slopes and reduced intensity ranges. 
+
+Figure 5: Kernel densities (histograms of pixel intensities) for a normal image patch. A sliding window is applied across the image, and the histogram and cumulative frequency (CF) are computed for each window. 9Figure 6: Kernel densities for an anomalous image patch (e.g., breakage), showing distinct distribution patterns compared to normal regions. 
+
+Figure 7: Cumulative frequency (CF) curves and detection index. Anomalous regions typically yield smaller values of d (e.g., d ≤ 0.15). 
+
+## 4.4 Fusion of Structural and Statistical Scores 
+
+To combine geometric and statistical information, we define a unified detection score: 10 S(x) = α S tmpl (x) + (1 − α) Sstat (x)where α ∈ [0 , 1] controls the trade-off between structural similarity and statistical deviation. This fusion enables the model to: 
+
+• Detect anomalies that match known geometric patterns (via template matching) 
+
+• Detect anomalies with irregular intensity distributions (via statistical modeling) 
+
+Detection Rule 
+
+An anomaly is detected if: ˆy(x) = 1[S(x) > τ ]where τ is a threshold. Bounding boxes are generated for detected regions based on the sliding window locations. 
+
+Computational Considerations 
+
+The proposed method is computationally efficient because: 
+
+• It does not require any training process 
+
+• Template matching is implemented using convolution-like operations 
+
+• The transformation space is discretized and limited Compared to deep neural networks, the proposed method achieves significantly lower computational cost while maintaining competitive detection performance. 
+
+# 5 Experiments and Results 
+
+## 5.1 Dataset and Experimental Setup 
+
+The proposed method is evaluated on a dataset of biological cell images containing structural anomalies such as debris and breakage. The dataset consists of: 
+
+• 245 positive images (with anomalies) 
+
+• 204 negative images (without anomalies) All template-based and statistical methods are evaluated in a fully unsupervised setting, where no training data are used. In contrast, the deep learning baseline (ResNet-50) is trained using a 70%/30% train–test split, following standard supervised learning practice. For template-based methods, anomaly detection is performed using a sliding-window approach, where each local region is assigned a detection score. The final decision is obtained by thresholding this score. The proposed method uses the fused score defined in Section 4, combining variational template matching and statistical anomaly detection. 
+
+## 5.2 Qualitative Results 
+
+The proposed method successfully detects anomalies across a range of geometric variations, including: 
+
+• Small debris within cells 
+
+• Elongated or irregular breakage structures 
+
+• Anomalies with varying orientations and scales 11 The use of normalized cross-correlation improves stability compared to standard correlation, reducing missed detections and improving robustness under varying illumination conditions. Figure 8 illustrates detection results using variational template matching. It shows that the method can detect anomalies at multiple scales and shapes. Matching based on normalized correlation achieves improved performance compared to standard cross-correlation. 
+
+Figure 8: Template matching results: (a) fixed template matching fails to detect defects with large aspect ratio variations, while variational template matching succeeds; (b) the proposed method detects anomalies with diverse shapes (e.g., square, round, irregular); (c) multiple anomalies in the same image are detected. 
+
+## 5.3 Comparison Studies 
+
+We compare the proposed method against the following baselines: 
+
+• Fixed template matching: classical template matching using a single template without geometric trans-formations 
+
+• Variational template matching (without fusion) 
+
+• Fused method (proposed) 
+
+• ResNet-50: a convolutional neural network trained for binary anomaly classification Performance is evaluated using: 
+
+• True Positive Rate (TP / Recall) 
+
+• False Positive Rate (FP) Table 1: Detection performance comparison Method Training Required Localization Recall FP Rate F1 Fixed Template Matching No Yes 68.0% 15.2% 75.5% Variational Template Matching No Yes 82.0% 4.9% 88.1% Fused Method (Proposed) No Yes 88.2% 3.8% 92.0% ResNet-50 Yes No 86.0% 3.7% 90.9% 12 Comparison with Fixed Template Matching 
+
+Compared to fixed template matching, the proposed variational formulation significantly improves detection performance. Recall increases from 68.0% to 82.0%, while the false positive rate is reduced from 15.2% to 4.9%. This improvement demonstrates that incorporating geometric transformations (scale, rotation, and per-spective) effectively addresses the sensitivity of classical template matching to variations in anomaly appear-ance. The integration of the statistical anomaly score further improves performance. As shown in Table 1, the fused method increases recall to 88.2% while maintaining a low false positive rate of 3.8%. This improvement can be attributed to the complementary nature of the two components: 
+
+• Variational template matching captures structural similarity and geometric variability 
+
+• Statistical modeling captures deviations in local intensity distributions 
+
+Comparison with Deep Learning Baseline 
+
+ResNet-50 achieves strong performance with a recall of 86.0% and a false positive rate of 3.7%, benefiting from supervised training and learned feature representations. The proposed fused method achieves higher recall (88.2%) at a comparable false positive rate (3.8%), demonstrating competitive—and in this dataset, competitive performance under a training-free setting. It is important to note that ResNet-50 is evaluated as an image-level classifier, whereas the proposed method performs region-level detection, providing explicit localization of anomaly regions. In addition, the proposed method operates in a fully unsupervised setting, making it particularly suitable for small-data scenarios. 
+
+## 5.4 Discussion 
+
+Failure Analysis 
+
+Despite its effectiveness, the proposed method has several limitations: 
+
+• Anomalies that significantly deviate from the template family may not be detected 
+
+• Strong illumination or contrast variations can affect both correlation and statistical measures 
+
+• The method relies on the quality and representativeness of the template set These limitations suggest that further improvements could be achieved by expanding the transformation space or incorporating adaptive template generation. 
+
+Trade-offs 
+
+The experimental results highlight several important trade-offs: 
+
+Training vs. Performance. Deep learning models achieve strong performance but require labeled data and training. The proposed method achieves comparable or better performance without training. 
+
+Structural vs. Statistical Modeling. Template matching captures geometric structure, while statis-tical methods capture distributional deviations. Their combination improves robustness. 
+
+Interpretability and Localization. The proposed method provides explicit localization and inter-pretability, which are often lacking in classification-based deep learning approaches. Overall, the proposed method offers a practical and effective solution for anomaly detection in structured images under limited data conditions. 13 6 Conclusion 
+
+This paper presents a variational template matching framework with statistical fusion for anomaly detection in structured images. By extending classical template matching to a family of geometrically transformed templates, the proposed method significantly improves robustness to variations in scale, rotation, and per-spective. The integration of a statistical anomaly score based on local intensity distributions enables the model to capture complementary signals beyond structural similarity. Experimental results demonstrate that the proposed method outperforms classical baselines and achieves competitive—and in this dataset, supe-rior—performance compared to a ResNet-50 model, while requiring no training data and providing explicit localization. The proposed method offers several practical advantages, including training-free operation, computational efficiency, interpretability, and localization capability, making it particularly suitable for real-time and data-limited applications. Future work will focus on extending the transformation space, developing adaptive or learned template representations, and exploring more principled fusion strategies. These findings suggest that carefully designed classical methods, when enhanced with variational mod-eling and statistical reasoning, can remain highly competitive with modern deep learning approaches in anomaly detection tasks involving structured and patterned image domains. 
+
+# References 
+
+[1] Aksoy, M. S., Torkul, O., and Cedimoglu, I. H. (2004). An industrial visual inspection system using inductive learning. Journal of Intelligent Manufacturing , 15(4), 569–574. [2] Bergmann, P., Fauser, M., Sattlegger, D., and Steger, C. (2019). MVTec AD: A comprehensive real-world dataset for unsupervised anomaly detection. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) , 9592–9600. [3] Briechle, K., and Hanebeck, U. D. (2001). Template matching using fast normalized cross correlation. In Proceedings of SPIE , 4387, 95–102. [4] Brunelli, R. (2009). Template Matching Techniques in Computer Vision: Theory and Practice . Wiley. [5] Defard, T., Setkov, A., Loesch, A., and Audigier, R. (2021). PaDiM: A patch distribution modeling framework for anomaly detection and localization. In Proceedings of the International Conference on Pattern Recognition (ICPR) , 475–489. [6] He, K., Zhang, X., Ren, S., and Sun, J. (2016). Deep residual learning for image recognition. In Pro-ceedings of the IEEE Conference on Computer Vision and Pattern Recognition (CVPR) , 770–778. [7] Lewis, J. P. (1995). Fast normalized cross-correlation. In Vision Interface , 120–123. [8] Li, C.-L., Sohn, K., Yoon, J., and Pfister, T. (2021). CutPaste: Self-supervised learning for anomaly de-tection and localization. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) , 9664–9674. [9] Roth, K., Pemula, L., Zepeda, J., Sch¨ olkopf, B., Brox, T., and Gehler, P. (2022). Towards total recall in industrial anomaly detection. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) , 14318–14328. [10] Szeliski, R. (2022). Computer Vision: Algorithms and Applications , 2nd ed. Springer. [11] Tahmasebi, P., Hezarkhani, A., and Sahimi, M. (2012). Multiple-point geostatistical modeling based on cross-correlation functions. Computational Geosciences , 16(3), 779–797. Brunelli, R. (2009). Template Matching Techniques in Computer Vision . Wiley. Szeliski, R. (2022). Computer Vision: Algorithms and Applications . Springer. 14 He, K., Zhang, X., Ren, S., Sun, J. (2016). Deep Residual Learning for Image Recognition. CVPR. Tahmasebi, P., Hezarkhani, A., Sahimi, M. (2012). Multiple-point geostatistical modeling based on cross-correlation functions. Computational Geosciences , 16(3), 779–797. OpenCV (2023). Template Matching Tutorial. https://docs.opencv.org/3.4/de/da9/tutorial_ template_matching.html 
+
+Aksoy, M. S., Torkul, O., Cedimoglu, I. H. (2004). An industrial visual inspection system using inductive learning. Journal of Intelligent Manufacturing , 15(4), 569–574. Duta, I. C., Liu, L., Zhu, F., Shao, L. (2020). Improved Residual Networks for Image and Video Recognition. arXiv:2004.04989. [12] Parzen, E. (1962). On estimation of a probability density function. Annals of Mathematical Statistics .[13] Silverman, B. (1986). Density Estimation for Statistics and Data Analysis . Chapman and Hall. 15

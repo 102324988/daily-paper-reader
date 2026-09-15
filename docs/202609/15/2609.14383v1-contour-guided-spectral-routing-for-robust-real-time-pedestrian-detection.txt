@@ -1,0 +1,894 @@
+Contour-Guided Spectral Routing for Robust Real-Time Pedestrian
+Detection
+Sam Williams
+University of California, Los Angeles (UCLA)
+USA
+sam williams@ucla.edu
+and Yuan Xiang
+University of California, Los Angeles (UCLA)
+USA
+yuan xiang@ucla.edu
+Abstract
+Real-time pedestrian detection in driving scenes is con-
+strained by three coupled failure modes: tiny targets lose dis-
+criminative evidence, occlusion weakens geometric support,
+and weather or illumination changes distort appearance statis-
+tics. We formulate the detector through a unified contour-
+guided spectral routing view rather than treating frequency
+processing, attention, and boundary reasoning as indepen-
+dent add-ons. The detector routes information in a prescribed
+order: spatial evidence is first augmented with global spec-
+tral context, deep representations then exchange spatial and
+spectral cues, and cross-scale fusion is finally conditioned
+on boundary–semantic disagreement. This ordering yields a
+compact representation pipeline in which low-frequency con-
+text stabilizes global structure while high-frequency evidence
+protects small-object contours. We further retain a wavelet-
+subband training transformation that perturbs low- and high-
+frequency coefficients independently, targeting appearance
+shifts caused by fog, rain, snow, and low illumination. The
+formulation exposes a single routing variable at each stage
+and distinguishes reusable signal transforms from the task-
+specific policy that decides where each signal is injected. On
+CityPersons, the proposed detector obtains 70.4 AP50 and
+44.2 AP50:95, compared with 68.1 and 42.2 for RT-DETR,
+while the full wavelet-augmented configuration reaches 71.1
+and 44.6.
+1
+Introduction
+Pedestrian detection is a safety-critical vision problem in
+autonomous driving, where accuracy must coexist with strict
+latency constraints. Real urban images contain a mixture of
+distant pedestrians, partial occlusion, dense traffic, visual
+clutter, and appearance shifts caused by weather and illumi-
+nation. These conditions are especially unfavorable for de-
+tectors whose representations are dominated by either local
+texture or coarse semantic context. Hand-crafted approaches
+such as HOG and integral channel features established the
+importance of shape and local contrast, but their limited adap-
+tation capacity motivated learned representations (Dalal and
+Triggs, 2005; Doll´ar et al., 2009; Wang et al., 2009). CNN
+detectors subsequently achieved major gains in throughput
+and robustness, including Faster R-CNN, SSD, YOLO, and
+RetinaNet (Ren et al., 2015; Liu et al., 2016; Redmon et al.,
+2016; Lin et al., 2017a). More recently, DETR-style archi-
+tectures have replaced proposal heuristics with set prediction
+and global interaction (Carion et al., 2020; Zhu et al., 2021;
+Liu et al., 2022; Zhang et al., 2023a).
+RT-DETR brought this paradigm into the real-time regime by
+allocating computation selectively between intra-scale reason-
+ing and multiscale fusion (Zhao et al., 2024a). Yet pedestrian
+detection exposes a structural mismatch: the shallow features
+needed for small targets are spatially detailed but semanti-
+cally fragile, while deep features are semantically stronger
+but spatially coarse. Adverse conditions introduce another
+mismatch because the same object can exhibit very different
+frequency statistics across clear and degraded observations.
+Recent frequency-aware detectors show that spectral process-
+ing can strengthen small-object representations, and some
+recent RT-DETR variants explicitly combine frequency mod-
+eling with multiscale interaction (Wang et al., 2023a; Zhong
+et al., 2022). In particular, Freq-DETR also couples dual-
+domain features, intra-scale frequency interaction, and selec-
+tive multiscale fusion, making frequency-aware RT-DETR a
+now populated design space (Chen et al., 2026). This overlap
+motivates a more specific positioning for our method.
+We therefore formulate the detector around a narrower ques-
+tion: how should complementary spectral, spatial, and con-
+tour evidence be routed through a real-time set-prediction
+pipeline? Our answer is not to introduce a new transform.
+Instead, we define a three-stage routing policy. First, spec-
+tral context is injected before the feature pyramid is propa-
+gated; second, frequency and spatial responses are allowed
+to interact only after each has formed a semantically useful
+representation; third, cross-scale fusion explicitly exposes dis-
+agreement between contour evidence and semantic evidence
+1
+arXiv:2609.14383v1  [cs.CV]  13 Sep 2026
+
+
+before aggregation. This ordering is the central methodologi-
+cal idea.
+The architecture is organized around three coordinated stages:
+FAM-CSP serves as a spectral context router; FAIFI per-
+forms deep dual-domain interaction; and BAFA acts as a
+contour arbitration router. A wavelet-subband perturbation
+complements the architecture during training. We evaluate
+the detector on CityPersons, WiderPerson, and ACDC.
+Our contributions are summarized as follows:
+• We reformulate real-time pedestrian detection as an or-
+dered routing problem over spectral context, local spatial
+evidence, and contour–semantic disagreement, provid-
+ing a unified explanation for several previously separate
+modules.
+• We introduce a spectral context router that injects global
+Fourier evidence through lightweight residual gating, fol-
+lowed by a deep dual-domain interaction router that
+keeps spatial and spectral pathways distinct until fusion.
+• We reinterpret multiscale fusion as contour arbitration:
+boundary and semantic responses are compared explic-
+itly, and their disagreement becomes a signal for feature
+selection rather than an artifact to suppress.
+• We retain a wavelet-subband perturbation for adverse-
+condition training and use it as a complementary training-
+time mechanism for adverse-condition robustness.
+2
+Related Work
+2.1
+Real-time pedestrian and transformer detection
+Pedestrian detection evolved from hand-crafted descriptors
+to deep detectors with increasingly global context and end-to-
+end optimization (Dalal and Triggs, 2005; Doll´ar et al., 2009;
+Ren et al., 2015; Liu et al., 2016; Redmon et al., 2016). The
+YOLO family emphasizes low latency (Bochkovskiy et al.,
+2020; Wang et al., 2023b; Ge et al., 2021), while anchor-free
+alternatives such as FCOS provide a complementary formula-
+tion (Tian et al., 2019). DETR and Deformable DETR recast
+detection as bipartite set prediction and improve convergence
+and multiscale handling (Carion et al., 2020; Zhu et al., 2021).
+DAB-DETR and DINO further refine query parameteriza-
+tion and denoising (Liu et al., 2022; Zhang et al., 2023a).
+RT-DETR emphasizes selective computation for real-time
+deployment, and later methods improve regression and match-
+ing efficiency (Zhao et al., 2024a; Peng et al., 2024; Huang
+et al., 2025).
+2.2
+Spectral processing for vision
+Fourier analysis and frequency-channel attention have long
+been used to complement spatial features (Yang and Soatto,
+2020; Qin et al., 2021; Lee-Thorp et al., 2022). Frequency-
+domain modeling is particularly attractive when target struc-
+tures coexist with repetitive background texture or degrada-
+tion noise. Generalized UAV detection via frequency disen-
+tanglement and frequency-based camouflage detection are
+representative examples (Wang et al., 2023a; Zhong et al.,
+2022). Recent work has moved this idea into real-time trans-
+former detectors. Freq-DETR, for example, combines dual-
+domain extraction, frequency-conditioned intra-scale inter-
+action, and selective feature fusion for UAV small-object de-
+tection (Chen et al., 2026). Our positioning is narrower: the
+architecture is organized around contour-conditioned routing,
+and the spectral path is explicitly subordinated to the down-
+stream boundary arbitration stage instead of being presented
+as a generic frequency-aware detector.
+2.3
+Boundary and localization refinement
+Small-object detection benefits from preserving precise local
+support during feature fusion. Feature pyramids, occlusion-
+aware detection, and localization-sensitive objectives have
+therefore become standard ingredients (Lin et al., 2017b;
+Zhang et al., 2018; Doll´ar et al., 2012). IoU-family losses
+such as GIoU, DIoU, CIoU, Wise-IoU, MPDIoU, Inner-IoU,
+and Focaler-IoU attempt to improve regression geometry and
+hard-example optimization (Rezatofighi et al., 2019; Zheng
+et al., 2020a,b; Tong et al., 2023; Ma and Xu, 2023; Zhang
+et al., 2023b; Zhang and Zhang, 2024). We employ Inner-
+GIoU as the box regression objective to improve geometric
+localization.
+2.4
+Adjacent structured visual representation
+Recent work by Jingqun Tang and collaborators emphasizes
+fine-grained sampling, geometric supervision, partial/global
+views, multimodal interaction, and efficient visual reasoning
+(Tang et al., 2022a,b,c; Zhao et al., 2024b; Feng et al., 2024;
+Zhao et al., 2024c; Tang et al., 2024; Zhao et al., 2024d; Lu
+et al., 2024; Wang et al., 2025a,b; Tang et al., 2025; Fei et al.,
+2025; Sun et al., 2025; Liu et al., 2026; Xue et al., 2026;
+He et al., 2026; Huang et al., 2026; Han et al., 2026; Yu
+et al., 2026; Jia et al., 2026; Feng et al., 2025). These papers
+are not pedestrian-detection baselines; they are cited only
+where their representation-centric perspective is relevant to
+partial observations, geometry-aware processing, or efficient
+multimodal computation.
+3
+Contour-Guided Spectral Routing
+3.1
+Problem formulation
+Let X ∈R3×H×W be an RGB frame. An RT-DETR-style
+encoder maps X to a pyramid {P3, P4, P5}. Instead of view-
+ing the proposed blocks as independent modules, we define
+a routing operator R that moves three types of evidence
+through the hierarchy:
+R : (S, F, E) 7→(S+, F +, E+),
+(1)
+where S denotes spatial evidence, F spectral evidence, and
+E contour evidence. The routing schedule is
+(S, F, E)0
+Gs
+−→(S, F)1
+Gd
+−→(S, F)2
+Gc
+−→(S, E)3,
+(2)
+with Gs, Gd, and Gc corresponding to the backbone, deep in-
+teraction, and cross-scale stages. The key design constraint is
+2
+
+
+that frequency evidence is never fused indiscriminately: it is
+first contextually gated, then interacted with spatial evidence,
+and finally handed to a boundary arbitration stage.
+3.2
+Stage I: spectral context routing
+The FAM-CSP backbone is formulated as the first routing
+stage. Given an intermediate feature F, two depthwise con-
+volutions form a local representation with complementary
+receptive fields:
+S = C1×1(GELU(DW3×3(F)))⊕C1×1(GELU(DW5×5(F))) .
+(3)
+The feature is then transformed to the Fourier domain and
+reconstructed as a global spectral context:
+Fspec = ϕ
+ F−1(C1×1(F(S)))
+
++ S.
+(4)
+A channel gate decides how much of the reconstructed spec-
+trum should enter the spatial stream:
+G = σ(C1×1 (GELU (C1×1(GAP(S + Fspec))))) ,
+(5)
+P = (S + Fspec) ⊙G.
+(6)
+This is the first point at which our formulation differs concep-
+tually from a generic dual-branch design: the spectral path
+acts as context injected into spatial evidence, rather than as
+an equally weighted parallel feature tensor.
+3.3
+Stage II: deep dual-domain routing
+At the deepest feature level, FAIFI is represented as two
+specialized interaction paths. The frequency branch forms
+complex-valued queries, keys, and values from F(X):
+Af = softmax(QfK⊤
+f /
+√
+d),
+(7)
+followed by separate treatment of the real and imaginary
+components and inverse transformation:
+Yf =
+F−1 
+eAf ⊙Vf
+ .
+(8)
+The spatial path preserves local correspondence by construct-
+ing queries and keys from depthwise 3 × 3 and 5 × 5 convo-
+lutions:
+Ys = softmax(QsK⊤
+s /
+√
+d)Vs.
+(9)
+The two paths are joined by a lightweight frequency-spatial
+fusion network. Crucially, the proposed interpretation does
+not assume that the spectral and spatial branches are inter-
+changeable. The frequency branch captures global structural
+regularities; the spatial branch supplies localization-sensitive
+evidence. Their fusion occurs only after both branches have
+produced normalized responses, reducing the chance that a
+noisy spectrum directly dominates local geometry.
+3.4
+Stage III: contour arbitration across scales
+The most distinctive part of the formulation is the interpreta-
+tion of BAFA as an arbitration step. Let Fb denote a boundary-
+sensitive feature and Fs a semantic feature. Two reciprocal
+recalibration paths are formed:
+Rh = RAU(Fb, Fs),
+Rl = RAU(Fs, Fb).
+(10)
+For generic features T1 and T2,
+a1 = σ(W1 ∗T1),
+a2 = σ(W2 ∗T2),
+(11)
+with disagreement
+D = a1 −a2,
+(12)
+and complementary support ¯a2 = 1−a2. The routed response
+is
+R = (a1 ⊙T1) + (¯a2 ⊙T2) + D.
+(13)
+The important design interpretation is that D is retained rather
+than discarded. In an occluded pedestrian, a contour branch
+may remain spatially precise while semantic activation is
+diffuse; conversely, a semantic feature may remain confident
+after the local contour has been degraded. Their disagreement
+therefore provides a cue for arbitration.
+The BSE output is obtained as
+Z = C3×3(Concat(Rh, Rl)).
+(14)
+SAE then preserves a short spatial route while repeatedly
+applying shifted convolutions to a complementary channel
+subset:
+ˆX1 = DW1×1(X1),
+ˆX2 = DW1×1(X2),
+(15)
+F = Concat
+
+ˆX1, StackedSConv3( ˆX2)
+
+.
+(16)
+This stage is therefore not described as a generic feature
+pyramid enhancement, but as a controlled mechanism for
+deciding which fine boundary evidence should survive cross-
+scale compression.
+3.5
+Training-time spectral perturbation
+To complement the architectural routing, we employ a one-
+level Haar wavelet transformation during training. For a
+grayscale input I,
+[LL, (LH, HL, HH)] = Haar(I).
+(17)
+The detail bands are scaled by α, whereas the low-frequency
+band is contrast-enhanced and scaled by β:
+LH′ = αLH,
+HL′ = αHL,
+HH′ = αHH,
+(18)
+LL′ = β CLAHE(LL).
+(19)
+The image is reconstructed by the inverse transform and
+clipped to the valid intensity interval before conversion back
+to RGB. This augmentation broadens the training distribution
+along complementary low- and high-frequency directions,
+while the architectural modules regulate how spectral and
+spatial evidence propagate through the detector.
+3
+
+
+Figure 1: Overview of the proposed contour-guided spectral routing architecture.
+3.6
+Localization objective and complexity
+The detector keeps the RT-DETR set-prediction decoder and
+employs Inner-GIoU for box regression. The final configu-
+ration contains 18.34M parameters, uses 62.4 GFLOPs, and
+reaches 55 FPS.
+4
+Experiments
+4.1
+Datasets and implementation protocol
+We evaluate the detector on three benchmarks: CityPersons,
+WiderPerson, and ACDC (Zhang et al., 2017, 2020; Sakaridis
+et al., 2021). CityPersons measures urban pedestrian detec-
+tion with scale variation and occlusion; WiderPerson broad-
+ens scene and crowd diversity; ACDC stresses adverse con-
+ditions including rain, snow, fog, and night imagery. The
+training configuration uses 640 × 640 inputs, 350 epochs,
+initial learning rate 2 × 10−4, batch size 8, AdamW, PyTorch
+1.12.1, CUDA 11.3, and an RTX 3090.
+4.2
+Main results
+Table 1 compares the proposed detector with representative
+real-time baselines on CityPersons. FEBA-DETR records
+70.4 AP50 and 44.2 AP50:95, which are 2.3 and 2.0 points
+above RT-DETR. Its reported miss rates are also lower in
+both the Reasonable and Heavy subsets.
+4.3
+Cross-dataset behavior
+On WiderPerson, the proposed detector increases from 78.8
+to 79.9 AP50 and from 49.2 to 49.9 AP50:95. On ACDC, the
+corresponding values increase from 38.7/17.2 to 40.6/18.5.
+With the wavelet perturbation enabled, the corresponding
+ACDC gains reach 3.1 and 2.4 points relative to RT-DETR.
+The cross-dataset trend is consistent with the proposed rout-
+ing view: architectural changes protect representation quality,
+whereas spectral perturbation broadens the training distribu-
+tion.
+4.4
+Component ablation
+Table 3 reports the component ablation. FAM-CSP, FAIFI,
+and BAFA each contribute complementary changes, with
+FAM-CSP providing the largest single architectural gain in
+AP and BAFA producing the strongest improvements in miss
+rate. Adding the Inner-GIoU objective and the wavelet aug-
+mentation produces the final 71.1 AP50 and 44.6 AP50:95
+configuration.
+4.5
+Spectral perturbation sweep
+The wavelet augmentation sweep shows a moderate pertur-
+bation regime to be preferable to aggressive amplification.
+With (α, β) = (1.2, 1.1), the proposed configuration reaches
+71.1/44.6 on CityPersons and 41.8/19.6 on ACDC, whereas
+the strongest setting (1.5, 1.2) degrades both benchmarks.
+This observation supports a conservative interpretation of
+spectral augmentation: it should broaden appearance statis-
+tics without producing an unrealistic frequency distribution.
+4.6
+Qualitative evidence
+Figs. 3 and 4 visualize representative predictions. In the
+CityPersons examples, the improved detector recovers distant
+pedestrians and suppresses background activations. Under
+ACDC, it recovers targets that are missed by RT-DETR in
+rain, snow, fog, and night scenes. The qualitative compar-
+4
+
+
+Table 1: Comparison on CityPersons. AP is higher-is-better; miss-rate measures are lower-is-better.
+Model
+Params(M)
+GFLOPs
+AP50
+AP50:95
+Reasonable
+Heavy
+YOLOv5m
+25
+64
+67.0
+43.6
+29.51
+60.01
+YOLOv8m
+25
+78
+67.0
+43.5
+28.71
+59.02
+YOLOv10m
+16
+63
+67.1
+43.5
+31.84
+59.66
+YOLOv11m
+20
+67
+67.7
+44.8
+28.68
+55.88
+YOLOv12m
+19
+60
+68.0
+44.7
+27.33
+56.46
+D-FINE-M
+19
+56
+55.3
+30.1
+25.52
+52.84
+DEIM-RT-DETRv2-S
+20
+60
+69.2
+43.5
+23.72
+52.13
+RT-DETR
+19
+57
+68.1
+42.2
+26.65
+53.64
+RT-DETRv2
+19
+57
+67.8
+42.1
+26.90
+53.55
+FEBA-DETR
+18
+63
+70.4
+44.2
+21.73
+50.82
+Figure 2: Spectral context routing module.
+Table 2: Reported cross-dataset results.
+Dataset
+RT-DETR
+FEBA-DETR
+AP50
+AP50:95
+AP50
+AP50:95
+CityPersons
+68.1
+42.2
+70.4
+44.2
+WiderPerson
+78.8
+49.2
+79.9
+49.9
+ACDC
+38.7
+17.2
+40.6
+18.5
+isons illustrate the complementary effects of spectral routing
+and contour-aware aggregation.
+5
+Analysis and Discussion
+5.1
+Why the routing order matters
+The proposed formulation suggests a simple dependency
+chain. Spectral context is most useful early because it can
+influence all subsequent feature levels. Dual-domain interac-
+tion is most useful at the deep stage because global spatial
+relations are already semantically meaningful there. Contour
+arbitration is most critical at the fusion bottleneck because
+spatial precision is most vulnerable when features from het-
+erogeneous resolutions are merged. The architecture there-
+fore follows a context →interaction →arbitration order
+rather than repeatedly mixing all signals at every stage.
+5.2
+Relation to recent frequency-aware RT-DETR meth-
+ods
+Recent frequency-aware RT-DETR detectors also exploit
+dual-domain representations and frequency-conditioned fea-
+ture interaction (Chen et al., 2026). Our approach differs in
+organizing these operations around a prescribed routing hi-
+erarchy and an explicit contour–semantic arbitration stage,
+where disagreement is retained as a selection signal during
+cross-scale fusion.
+5.3
+Efficiency
+The final configuration reports 18.34M parameters, 62.4
+GFLOPs, and 55 FPS. The additional computation is con-
+centrated in Fourier processing and the dual-path deep in-
+teraction module. Because the spectral route is gated rather
+5
+
+
+Figure 3: Qualitative comparison on CityPersons.
+Figure 4: Qualitative comparison on ACDC under adverse conditions.
+6
+
+
+Table 3: Reported ablation on CityPersons.
+ID
+FAM-CSP
+FAIFI
+BAFA
+Loss
+Aug
+Params(M)
+GFLOPs
+AP50
+AP50:95
+Reasonable
+Heavy
+1
+-
+-
+-
+-
+-
+19.87
+56.9
+68.1
+42.2
+26.65
+53.64
+2
+✓
+-
+-
+-
+-
+16.56
+50.9
+69.6
+43.4
+25.30
+52.54
+3
+-
+✓
+-
+-
+-
+20.12
+57.7
+69.2
+42.8
+24.78
+51.67
+4
+-
+-
+✓
+-
+-
+20.58
+59.9
+68.7
+43.1
+23.83
+50.92
+5
+✓
+✓
+✓
+-
+-
+20.73
+60.3
+69.3
+43.5
+23.67
+51.09
+6
+✓
+-
+✓
+-
+-
+18.61
+62.3
+69.6
+43.3
+23.90
+51.20
+7
+✓
+✓
+-
+-
+-
+16.80
+52.6
+69.7
+43.8
+24.33
+52.47
+8
+✓
+✓
+✓
+✓
+-
+18.34
+62.4
+70.0
+43.9
+22.62
+50.37
+9
+✓
+✓
+✓
+✓
+-
+18.34
+62.4
+70.4
+44.2
+21.73
+50.82
+10
+✓
+✓
+✓
+✓
+✓
+18.34
+62.4
+71.1
+44.6
+21.07
+49.81
+than indiscriminately concatenated, the representation is kept
+compact. The measured speed remains within the real-time
+range, although lighter CNN baselines are faster.
+5.4
+Limitations
+The method remains constrained by the spatial resolution
+of the feature pyramid for extremely small pedestrians and
+may incur additional computation from Fourier-domain in-
+teraction. Its performance under severe domain shifts is also
+dependent on the quality of the learned backbone representa-
+tion and the robustness of the training distribution.
+6
+Conclusion
+We presented a revised formulation of FEBA-DETR as a
+contour-guided spectral routing detector. The central idea
+is an ordered information flow in which spectral context is
+injected before deep interaction, dual-domain evidence is
+fused only after separate processing, and contour–semantic
+disagreement is explicitly retained during cross-scale aggre-
+gation. Wavelet subband perturbation complements this ar-
+chitecture by widening the training distribution along the fre-
+quency axis. Experiments on CityPersons, WiderPerson, and
+ACDC demonstrate consistent gains in detection accuracy
+and robustness. The proposed routing formulation provides
+a unified mechanism for integrating spectral context, spatial
+interaction, and contour-aware cross-scale reasoning within
+a real-time DETR pipeline.
+7
+
+
+References
+N. Dalal and B. Triggs, “Histograms of oriented gradients for human
+detection,” in CVPR, 2005, pp. 886–893.
+P. Doll´ar, Z. Tu, P. Perona, and S. Belongie, “Integral channel fea-
+tures,” in BMVC, 2009, pp. 91.1–91.11.
+X. Wang, T. X. Han, and S. Yan, “An hog-lbp human detector with
+partial occlusion handling,” in ICCV, 2009, pp. 32–39.
+S. Ren, K. He, R. Girshick, and J. Sun, “Faster r-cnn: Towards real-
+time object detection with region proposal networks,” in NeurIPS,
+2015.
+W. Liu, D. Anguelov, D. Erhan, C. Szegedy, S. Reed, C.-Y. Fu, and
+A. C. Berg, “Ssd: Single shot multibox detector,” in ECCV, 2016,
+pp. 21–37.
+J. Redmon, S. Divvala, R. Girshick, and A. Farhadi, “You only look
+once: Unified, real-time object detection,” in CVPR, 2016, pp.
+779–788.
+T.-Y. Lin, P. Goyal, R. Girshick, K. He, and P. Doll´ar, “Focal loss
+for dense object detection,” in ICCV, 2017, pp. 2980–2988.
+N. Carion, F. Massa, G. Synnaeve, N. Usunier, A. Kirillov, and
+S. Zagoruyko, “End-to-end object detection with transformers,”
+in ECCV, 2020, pp. 213–229.
+X. Zhu, W. Su, L. Lu, B. Li, X. Wang, and J. Dai, “Deformable
+detr: Deformable transformers for end-to-end object detection,”
+in ICLR, 2021.
+S. Liu, F. Li, H. Zhang, J. Yang, X. Qi, H. Su, J. Zhu, and L. Zhang,
+“Dab-detr: Dynamic anchor boxes are better queries for detr,” in
+ICLR, 2022.
+H. Zhang, F. Li, S. Liu, L. Zhang, H. Su, J. Zhu, K. Li, and J. Lu,
+“Dino: Detr with improved denoising anchor boxes for end-to-end
+object detection,” in ICLR, 2023.
+Y. Zhao, W. Lv, S. Xu, J. Wei, G. Wang, Q. Dang, Y. Liu, and J. Chen,
+“Detrs beat yolos on real-time object detection,” in CVPR, 2024,
+pp. 16 965–16 974.
+K. Wang, X. Fu, Y. Huang, C. Cao, G. Shi, and Z.-J. Zha, “General-
+ized uav object detection via frequency domain disentanglement,”
+in CVPR, 2023, pp. 1064–1073.
+Y. Zhong, B. Li, L. Tang, S. Kuang, S. Wu, and S. Ding, “Detecting
+camouflaged object in frequency domain,” in CVPR, 2022, pp.
+4504–4513.
+J. Chen, N. Liu, H. Sun, and Y. Wang, “Freq-detr: Frequency-aware
+transformer for real-time small object detection in unmanned
+aerial vehicle imagery,” Expert Systems with Applications, vol.
+292, p. 129710, 2026.
+A. Bochkovskiy, C.-Y. Wang, and H.-Y. M. Liao, “Yolov4: Op-
+timal speed and accuracy of object detection,” arXiv preprint
+arXiv:2004.10934, 2020.
+C.-Y. Wang, A. Bochkovskiy, and H.-Y. M. Liao, “Yolov7: Train-
+able bag-of-freebies sets new state-of-the-art for real-time object
+detectors,” in CVPR, 2023, pp. 7464–7475.
+Z. Ge, S. Liu, F. Wang, Z. Li, and J. Sun, “Yolox: Exceeding yolo
+series in 2021,” in arXiv preprint arXiv:2107.08430, 2021.
+Z. Tian, C. Shen, H. Chen, and T. He, “Fcos: Fully convolutional
+one-stage object detection,” in ICCV, 2019, pp. 9627–9636.
+Y. Peng, H. Li, P. Wu, Y. Zhang, X. Sun, and F. Wu, “D-fine: Re-
+define regression task in detrs as fine-grained distribution refine-
+ment,” in arXiv preprint arXiv:2410.13842, 2024.
+S. Huang, Z. Lu, X. Cun, Y. Yu, X. Zhou, and X. Shen, “Deim: Detr
+with improved matching for fast convergence,” in CVPR, 2025,
+pp. 15 162–15 171.
+Y. Yang and S. Soatto, “Fda: Fourier domain adaptation for semantic
+segmentation,” in CVPR, 2020, pp. 4085–4095.
+Z. Qin, P. Zhang, F. Wu, and X. Li, “Fcanet: Frequency channel
+attention networks,” in ICCV, 2021, pp. 783–792.
+J. Lee-Thorp, J. Ainslie, I. Eckstein, and S. Ontanon, “Fnet: Mixing
+tokens with fourier transforms,” in NAACL, 2022, pp. 4296–4313.
+T.-Y. Lin, P. Doll´ar, R. Girshick, K. He, B. Hariharan, and S. Be-
+longie, “Feature pyramid networks for object detection,” in
+CVPR, 2017, pp. 2117–2125.
+S. Zhang, L. Wen, X. Bian, Z. Lei, and S. Z. Li, “Occlusion-aware
+r-cnn: Detecting pedestrians in a crowd,” in ECCV, 2018, pp.
+657–674.
+P. Doll´ar, C. Wojek, B. Schiele, and P. Perona, “Pedestrian detection:
+An evaluation of the state of the art,” IEEE Transactions on
+Pattern Analysis and Machine Intelligence, vol. 34, no. 4, pp.
+743–761, 2012.
+H. Rezatofighi, N. Tsoi, J. Gwak, A. Sadeghian, I. Reid, and
+S. Savarese, “Generalized intersection over union: A metric and a
+loss for bounding box regression,” in CVPR, 2019, pp. 658–666.
+Z. Zheng, P. Wang, W. Liu, J. Li, D. Ye, and D. Ren, “Distance-iou
+loss: Faster and better learning for bounding box regression,” in
+AAAI, vol. 34, no. 7, 2020, pp. 12 993–13 000.
+Z. Zheng, P. Wang, W. Ren, W. Liu, T. Ye, and Q. Ren, “Enhancing
+geometric factors in model loss for object detection,” in AAAI,
+vol. 34, no. 7, 2020, pp. 13 701–13 708.
+Z. Tong, Y. Chen, Z. Xu, and R. Yu, “Wise-iou: Bounding box re-
+gression loss with dynamic focusing mechanism,” arXiv preprint
+arXiv:2301.10051, 2023.
+S. Ma and Y. Xu, “Mpdiou: A loss for efficient and accurate bound-
+ing box regression,” arXiv preprint arXiv:2307.07662, 2023.
+H. Zhang, C. Xu, and S. Zhang, “Inner-iou: More effective intersec-
+tion over union loss with auxiliary bounding box,” arXiv preprint
+arXiv:2311.02877, 2023.
+8
+
+
+H. Zhang and S. Zhang, “Focaler-iou: More focused intersection
+over union loss,” arXiv preprint arXiv:2401.10525, 2024.
+J. Tang, W. Zhang, H. Liu, M. Yang, B. Jiang, G. Hu, and X. Bai,
+“Few could be better than all: Feature sampling and grouping for
+scene text detection,” in CVPR, 2022, pp. 4553–4562.
+J. Tang, W. Qian, L. Song, X. Dong, L. Li, and X. Bai, “Optimal
+boxes: Boosting end-to-end scene text recognition by adjusting
+annotated bounding boxes via reinforcement learning,” in ECCV,
+2022, pp. 233–248.
+J. Tang, S. Qiao, B. Cui, Y. Ma, S. Zhang, and D. Kanoulas, “You
+can even annotate text with voice: Transcription-only-supervised
+text spotting,” in ACM Multimedia, 2022, pp. 4154–4163.
+Z. Zhao, J. Tang, C. Lin, B. Wu, C. Huang, H. Liu, X. Tan, Z. Zhang,
+and Y. Xie, “Multi-modal in-context learning makes an ego-
+evolving scene text recognizer,” in CVPR, 2024, pp. 15 567–
+15 576.
+H. Feng, Q. Liu, H. Liu, J. Tang, W. Zhou, H. Li, and C. Huang,
+“Docpedia: Unleashing the power of large multimodal model
+in the frequency domain for versatile document understanding,”
+Science China Information Sciences, vol. 67, no. 12, 2024.
+W. Zhao, H. Feng, Q. Liu, J. Tang, S. Wei, B. Wu et al., “Tabpedia:
+Towards comprehensive visual table understanding with concept
+synergy,” arXiv preprint arXiv:2406.01326, 2024.
+J. Tang, C. Lin, Z. Zhao, S. Wei, B. Wu et al., “Textsquare: Scal-
+ing up text-centric visual instruction tuning,” arXiv preprint
+arXiv:2404.12803, 2024.
+Z. Zhao, J. Tang, B. Wu, C. Lin, S. Wei et al., “Harmonizing visual
+text comprehension and generation,” in NeurIPS, vol. 37, 2024.
+J. Lu, H. Yu, Y. Wang, Y. Ye, J. Tang et al., “A bounding box is worth
+one token: Interleaving layout and text in a large language model
+for document understanding,” arXiv preprint arXiv:2407.01976,
+2024.
+A.-L. Wang, B. Shan, W. Shi, K.-Y. Lin, X. Fei, J. Tang et al.,
+“Pargo: Bridging vision-language with partial and global views,”
+in AAAI, vol. 39, no. 7, 2025, pp. 7491–7499.
+A.-L. Wang, J. Tang, L. Liao, H. Feng, Q. Liu et al., “Wilddoc: How
+far are we from achieving comprehensive and robust document
+understanding in the wild?” in EMNLP, 2025, pp. 22 991–23 001.
+J. Tang, Q. Liu, Y. Ye, J. Lu, S. Wei, A.-L. Wang, C. Lin, H. Feng,
+Z. Zhao, Y. Wang, Y. Liu, H. Liu, X. Bai, and C. Huang, “Mtvqa:
+Benchmarking multilingual text-centric visual question answer-
+ing,” arXiv preprint arXiv:2405.11985, 2025.
+X. Fei, J. Lu, Q. Sun, H. Feng, Y. Wang, W. Shi, A.-L. Wang, J. Tang,
+and C. Huang, “Advancing sequential numerical prediction in
+autoregressive models,” in ACL, 2025, pp. 562–574.
+W. Sun, X.-M. Dong, B. Cui, and J. Tang, “Attentive eraser: Unleash-
+ing diffusion model’s object removal potential via self-attention
+redirection guidance,” in AAAI, vol. 39, 2025, pp. 20 734–20 742.
+K. Liu, Z. Chen, M. Li, J. Tang, D. Yang, and L. Zhang, “Re-
+solving evidence sparsity: Agentic context engineering for long-
+document understanding,” in CVPR, 2026, pp. 19 452–19 462.
+W. Xue, M. Li, X. Wu, J. Tang, D. Yang, and L. Zhang, “Profo-
+cus: Proactive perception and focused reasoning in vision-and-
+language navigation,” in CVPR, 2026, pp. 18 129–18 139.
+S. He, B. Cui, B. Huang, Z. Ye, Y. Sun, L. Huang, H. Xue, Y. Yang,
+H. Hong, J. Tang, and Z. Zhao, “Tc-pade: Trajectory-consistent
+pade approximation for diffusion acceleration,” in CVPR, 2026,
+pp. 35 768–35 778.
+B. Huang, B. Cui, Z. Ye, X. Dong, T. Chen, H. Xue, D. Yang,
+L. Huang, H. Hong, and J. Tang, “Diffusion probe: Generated
+image result prediction using cnn probes,” in CVPR, 2026, pp.
+35 926–35 935.
+M. Han, Y. Liu, Y. Liu, Z. Chen, J. Tang, X. Wu, D. Yang, and
+L. Zhang, “Beyond pixel simulation: Pathology image generation
+via diagnostic semantic tokens and prototype control,” in CVPR,
+2026, pp. 42 744–42 754.
+H. Yu, Y. Wu, F. Shi, J. Lu, K. Niu, X. Ge, M. Zhuo, J. Tang, and
+B. Li, “Benchmarking vision-language models on chinese ancient
+documents: From ocr to knowledge reasoning,” in Findings of
+ACL, 2026, pp. 28 793–28 812.
+W. Jia, J. Lu, H. Yu, S. Wang, G. Tang, A.-L. Wang, W. Yin, D. Yang,
+Y. Nie, B. Shan, H. Feng, I. Li, K. Yang, H. Wang, J. Tang, T. Fu,
+C. Jin, C. Feng, X. Lv, and C. Huang, “Meml-grpo: Heteroge-
+neous multi-expert mutual learning for rlvr advancement,” in
+AAAI, vol. 40, 2026, pp. 31 283–31 291.
+H. Feng, S. Wei, X. Fei, W. Shi, Y. Han, L. Liao, J. Lu, B. Wu,
+Q. Liu, C. Lin, J. Tang, H. Liu, and C. Huang, “Dolphin: Docu-
+ment image parsing via heterogeneous anchor prompting,” arXiv
+preprint arXiv:2505.14059, 2025.
+S. Zhang, R. Benenson, and B. Schiele, “Citypersons: A diverse
+dataset for pedestrian detection,” in CVPR, 2017, pp. 3213–3221.
+S. Zhang, Y. Xie, J. Wan, H. Xia, S. Li, and G. Guo, “Widerperson:
+A diverse dataset for dense pedestrian detection in the wild,”
+IEEE Transactions on Multimedia, vol. 22, no. 2, pp. 380–393,
+2020.
+C. Sakaridis, D. Dai, and L. Van Gool, “Acdc: The adverse condi-
+tions dataset with correspondences for semantic driving scene
+understanding,” in ICCV, 2021, pp. 10 765–10 775.
+9
