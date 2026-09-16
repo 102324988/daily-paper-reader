@@ -41,17 +41,17 @@
 <section class="dpr-home-dashboard-card dpr-home-report-card">
   <div class="dpr-home-dashboard-header">
     <div>
-      <span class="dpr-home-dashboard-kicker">2026-09-15</span>
+      <span class="dpr-home-dashboard-kicker">2026-09-16</span>
       <h3 class="dpr-home-dashboard-title">今日汇总</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">共 14 篇</strong>
+    <strong class="dpr-home-dashboard-count">共 6 篇</strong>
   </div>
   <dl class="dpr-home-dashboard-stats">
     <div class="dpr-home-dashboard-stat"><dt>累计更新</dt><dd>1 次</dd></div>
-    <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>6</dd></div>
-    <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>8</dd></div>
+    <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>2</dd></div>
+    <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>4</dd></div>
   </dl>
-  <p class="dpr-home-dashboard-body">最近更新：2026-09-15 22:23:46 UTC<br>状态：成功</p>
+  <p class="dpr-home-dashboard-body">最近更新：2026-09-16 22:17:13 UTC<br>状态：成功</p>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-brief-card">
   <div class="dpr-home-dashboard-header">
@@ -62,7 +62,7 @@
     <strong class="dpr-home-dashboard-count">AI</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<p>今天筛完14篇论文（精读6、速读8），重点锁定实时航拍小目标检测与高效目标检测两个方向。最值得看的是两篇9分工作：HGSQ用热图引导稀疏查询做实时航拍小目标检测，YOLO12-MambaScan结合高频增强与状态空间建模提升检测效率。普通读者可先读这两篇的摘要和实验，再按需跟进多摄像头行人重识别、物体中心学习等速读内容。</p>
+<p>今日精读2篇、速读4篇，聚焦开放词汇伪装目标分割与零样本学习偏差。最值得看的是9.0分的ViCo-SAM3视觉条件对齐方法，以及8.0分用统计视角剖析手写识别中零样本偏差的研究。普通读者可优先读这两篇精读，再按兴趣浏览手写识别与传感器视觉压缩方向的速读。</p>
   </div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-deep-card">
@@ -71,12 +71,12 @@
       <span class="dpr-home-dashboard-kicker">今日累计</span>
       <h3 class="dpr-home-dashboard-title">精读推荐</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">6 篇</strong>
+    <strong class="dpr-home-dashboard-count">2 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="HGSQ: Heatmap-Guided Sparse Query Detector for Real-Time Aerial Small Object Detection">HGSQ: Heatmap-Guided Sparse Query Detector for Real-Time Aerial Small Object Detection</span></li><li><span class="dpr-home-dashboard-paper-title" title="YOLO12-MambaScan: An Efficient Object Detector with High-Frequency Enhancement and State-Space Modeling">YOLO12-MambaScan: An Efficient Object Detector with High-Frequency Enhancement and State-Space Modeling</span></li><li><span class="dpr-home-dashboard-paper-title" title="Contour-Guided Spectral Routing for Robust Real-Time Pedestrian Detection">Contour-Guided Spectral Routing for Robust Real-Time Pedestrian Detection</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="ViCo-SAM3: Vision-Conditioned Alignment for Open-Vocabulary Camouflaged Object Segmentation">ViCo-SAM3: Vision-Conditioned Alignment for Open-Vocabulary Camouflaged Object Segmentation</span></li><li><span class="dpr-home-dashboard-paper-title" title="A statistical approach to bias in zero-shot learning: the lens of handwriting recognition">A statistical approach to bias in zero-shot learning: the lens of handwriting recognition</span></li></ul>
   </div>
-  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">cv <strong>6</strong></span></div>
+  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">cv <strong>2</strong></span></div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-skim-card">
   <div class="dpr-home-dashboard-header">
@@ -84,12 +84,12 @@
       <span class="dpr-home-dashboard-kicker">今日累计</span>
       <h3 class="dpr-home-dashboard-title">速读推荐</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">8 篇</strong>
+    <strong class="dpr-home-dashboard-count">4 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="A Generative AI Integrated Multimodal Framework for Low-Latency Multi-Camera Person Re-Identification">A Generative AI Integrated Multimodal Framework for Low-Latency Multi-Camera Person Re-Identification</span></li><li><span class="dpr-home-dashboard-paper-title" title="Does Attention-Guided Masking Really Help Object Discovery in Object-Centric Learning?">Does Attention-Guided Masking Really Help Object Discovery in Object-Centric Learning?</span></li><li><span class="dpr-home-dashboard-paper-title" title="Closed-form Bayesian homography estimation from noisy point correspondences">Closed-form Bayesian homography estimation from noisy point correspondences</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Perceive, Refine, Reason: A Calibrated Pipeline for Measuring Indicators in Strategic Visual Communication on Social Media">Perceive, Refine, Reason: A Calibrated Pipeline for Measuring Indicators in Strategic Visual Communication on Social Media</span></li><li><span class="dpr-home-dashboard-paper-title" title="ExpertHTR: Unified Handwritten Text Recognition with Multi-Task Learning and Sparse Mixture-of-Experts">ExpertHTR: Unified Handwritten Text Recognition with Multi-Task Learning and Sparse Mixture-of-Experts</span></li><li><span class="dpr-home-dashboard-paper-title" title="Hardware-Aware Learned Representation Compression for Distributed In-Sensor Vision">Hardware-Aware Learned Representation Compression for Distributed In-Sensor Vision</span></li></ul>
   </div>
-  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">cv <strong>8</strong></span></div>
+  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">cv <strong>4</strong></span></div>
 </section>
 </div>
 

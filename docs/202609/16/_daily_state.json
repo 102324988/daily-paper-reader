@@ -1,0 +1,105 @@
+{
+  "date": "20260916",
+  "date_label": "",
+  "generated_at": "2026-09-16 22:17:13 UTC",
+  "recommend_exists": true,
+  "run_count": 1,
+  "papers": [
+    {
+      "paper_id": "2609.15418v1",
+      "route": "202609/16/2609.15418v1-vico-sam3-vision-conditioned-alignment-for-open-vocabulary-camouflaged-object-segmentation",
+      "title": "ViCo-SAM3: Vision-Conditioned Alignment for Open-Vocabulary Camouflaged Object Segmentation",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "开放词汇伪装目标分割",
+      "first_seen_at": "2026-09-16 22:17:13 UTC",
+      "updated_at": "2026-09-16 22:17:13 UTC"
+    },
+    {
+      "paper_id": "2609.10084v1",
+      "route": "202609/16/2609.10084v1-a-statistical-approach-to-bias-in-zero-shot-learning-the-lens-of-handwriting-recognition",
+      "title": "A statistical approach to bias in zero-shot learning: the lens of handwriting recognition",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "面向视觉识别系统的广义零样本学习",
+      "first_seen_at": "2026-09-16 22:17:13 UTC",
+      "updated_at": "2026-09-16 22:17:13 UTC"
+    },
+    {
+      "paper_id": "2609.14699v1",
+      "route": "202609/16/2609.14699v1-perceive-refine-reason-a-calibrated-pipeline-for-measuring-indicators-in-strategic-visual-communication-on-social-media",
+      "title": "Perceive, Refine, Reason: A Calibrated Pipeline for Measuring Indicators in Strategic Visual Communication on Social Media",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "视觉语言检测器与像素级精炼用于图像目标测量",
+      "first_seen_at": "2026-09-16 22:17:13 UTC",
+      "updated_at": "2026-09-16 22:17:13 UTC"
+    },
+    {
+      "paper_id": "2609.12705v1",
+      "route": "202609/16/2609.12705v1-experthtr-unified-handwritten-text-recognition-with-multi-task-learning-and-sparse-mixture-of-experts",
+      "title": "ExpertHTR: Unified Handwritten Text Recognition with Multi-Task Learning and Sparse Mixture-of-Experts",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "基于视觉语言框架的统一手写文本识别",
+      "first_seen_at": "2026-09-16 22:17:13 UTC",
+      "updated_at": "2026-09-16 22:17:13 UTC"
+    },
+    {
+      "paper_id": "2609.13947v1",
+      "route": "202609/16/2609.13947v1-hardware-aware-learned-representation-compression-for-distributed-in-sensor-vision",
+      "title": "Hardware-Aware Learned Representation Compression for Distributed In-Sensor Vision",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "轻量编码器生成紧凑任务相关视觉表示",
+      "first_seen_at": "2026-09-16 22:17:13 UTC",
+      "updated_at": "2026-09-16 22:17:13 UTC"
+    },
+    {
+      "paper_id": "2609.14352v1",
+      "route": "202609/16/2609.14352v1-beyond-natural-images-rethinking-ai-generated-image-detection-in-documents",
+      "title": "Beyond Natural Images: Rethinking AI-Generated Image Detection in Documents",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "面向文档图像的AI生成图像检测基准",
+      "first_seen_at": "2026-09-16 22:17:13 UTC",
+      "updated_at": "2026-09-16 22:17:13 UTC"
+    }
+  ]
+}

@@ -1,0 +1,261 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-09-16T22:12:02.129189+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 2,
+    "deep_cap": 6,
+    "deep_selected": 2,
+    "quick_candidates": 4,
+    "quick_skim_target": 11,
+    "quick_selected": 4
+  },
+  "deep_dive": [
+    {
+      "id": "2609.15418v1",
+      "source": "arxiv",
+      "title": "ViCo-SAM3: Vision-Conditioned Alignment for Open-Vocabulary Camouflaged Object Segmentation",
+      "abstract": "Open-vocabulary camouflaged object segmentation (OVCOS) aims to segment unseen camouflaged objects under text guidance. We observe that SAM3 still suffers from a pronounced semantic gap between global textual semantics and fine-grained pixel-level visual cues in OVCOS. Meanwhile, fully fine-tuning the text encoder introduces heavy parameter overhead and risks overfitting to training categories, which compromises open-vocabulary representation flexibility. To address these issues, we propose ViCo-SAM3, a Vision-Conditioned alignment framework designed for OVCOS. Specifically, we introduce vision-conditioned (ViCo) module, which dynamically modulates text embeddings with global visual context, enabling textual representations to adapt to the current image content and thereby effectively bridging the semantic gap between vision and text. Building on this, we further design a vision-conditioned cross-modal binding (ViCoBind) module to enhance cross-modal interaction and semantic alignment between visual and textual representations. Without bells and whistles, ViCo-SAM3 achieves state-of-the-art performance on the OVCamo benchmark and demonstrates strong generalization.",
+      "authors": [
+        "Qiangqiang Zhou",
+        "Wenjun Tang",
+        "Yong Chen",
+        "Dandan Zhu",
+        "Jiawei Xu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-14T11:44:31+00:00",
+      "link": "https://arxiv.org/pdf/2609.15418v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "open-vocabulary camouflaged object segmentation",
+      "llm_evidence_cn": "开放词汇伪装目标分割",
+      "llm_evidence": "开放词汇伪装目标分割",
+      "canonical_evidence": "开放词汇伪装目标分割",
+      "llm_tldr_en": "Open-vocabulary camouflaged object segmentation suffers a semantic gap in SAM3; ViCo-SAM3 modulates text embeddings with visual context for alignment.",
+      "llm_tldr_cn": "开放词汇伪装目标分割需在文本引导下分割未见伪装目标，但SAM3存在全局文本语义与像素级视觉线索间的语义鸿沟，微调文本编码器又带来参数开销与过拟合。本文提出ViCo-SAM3，用视觉条件模块以全局视觉上下文动态调制文本嵌入。该框架在保持开放词汇表示灵活性的同时实现细粒度对齐，提升伪装目标分割性能。",
+      "llm_tldr": "开放词汇伪装目标分割需在文本引导下分割未见伪装目标，但SAM3存在全局文本语义与像素级视觉线索间的语义鸿沟，微调文本编码器又带来参数开销与过拟合。本文提出ViCo-SAM3，用视觉条件模块以全局视觉上下文动态调制文本嵌入。该框架在保持开放词汇表示灵活性的同时实现细粒度对齐，提升伪装目标分割性能。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "image segmentation techniques",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2609.10084v1",
+      "source": "arxiv",
+      "title": "A statistical approach to bias in zero-shot learning: the lens of handwriting recognition",
+      "abstract": "Generalized zero-shot learning (GZSL) has emerged as an important paradigm for visual recognition systems that must generalize to classes that were not observed during training. Traditional GZSL techniques are limited by their applicability to a relatively small number of such unseen classes, scalability beyond which is challenging due to its well-known misclassification bias towards classes observed during training. In this work, we investigate the GZSL paradigm through the lens of zero-shot handwritten word recognition over extremely large vocabularies. We propose a statistical approach to rectifying this bias, which views any classical GZSL feature learner as a black box mechanism whose intrinsic bias in identifying the training status (seen vs. unseen) of a typical data point we aim to correct, similar to an out of distribution inferential problem. Our method leverages a simple two-stage hierarchical architecture, combining a classical GZSL blackbox in the first stage and an ensemble of lightweight Monte Carlo bias-correctors in the second. Once debiased, the classification of test data is undertaken only restricted to its predicted training status via well-founded statistical methods (eg nearest neighbour, logistic regression and random forests). We achieve relative accuracy improvements of over 20% in the classification of unseen words compared to established techniques. A key outcome is that word recognition over large scale vocabularies is amenable to a much lower dimensional representation (~15 dimensions). Our approach is underpinned by mathematical analysis that captures the essence of the statistical approach to bias correction. Our approach to bias rectification can be combined in a turn-key fashion with any classical GZSL learner as a blackbox, thereby suggesting a wide scope of applicability of this method for a wide variety of GZSL implementations in different domains.",
+      "authors": [
+        "Clarence Chew",
+        "Gim Siang Chia",
+        "Sukalpa Chanda",
+        "Subhroshekhar Ghosh",
+        "Soumendu Sundar Mukherjee"
+      ],
+      "primary_category": "stat.ML",
+      "categories": [
+        "stat.ML",
+        "cs.AI",
+        "cs.CV",
+        "cs.LG"
+      ],
+      "published": "2026-09-09T12:06:49+00:00",
+      "link": "https://arxiv.org/pdf/2609.10084v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "generalized zero-shot learning for visual recognition systems",
+      "llm_evidence_cn": "面向视觉识别系统的广义零样本学习",
+      "llm_evidence": "面向视觉识别系统的广义零样本学习",
+      "canonical_evidence": "面向视觉识别系统的广义零样本学习",
+      "llm_tldr_en": "This work studies generalized zero-shot learning through large-vocabulary handwritten word recognition and proposes a statistical method that treats feature learners as black boxes to correct misclassification bias toward seen classes.",
+      "llm_tldr_cn": "广义零样本学习是视觉识别系统泛化到未见类别的重要范式，但传统方法受限于类别数较少，且存在偏向已见类别的误分类偏差。本文以超大规模词汇的零样本手写词识别为视角研究该问题，提出一种统计方法，将经典零样本特征学习器视为黑箱，从统计上校正其内在偏差。研究揭示了偏差来源并提升了大规模未见类别的识别可扩展性。",
+      "llm_tldr": "广义零样本学习是视觉识别系统泛化到未见类别的重要范式，但传统方法受限于类别数较少，且存在偏向已见类别的误分类偏差。本文以超大规模词汇的零样本手写词识别为视角研究该问题，提出一种统计方法，将经典零样本特征学习器视为黑箱，从统计上校正其内在偏差。研究揭示了偏差来源并提升了大规模未见类别的识别可扩展性。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "visual recognition algorithms",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2609.14699v1",
+      "source": "arxiv",
+      "title": "Perceive, Refine, Reason: A Calibrated Pipeline for Measuring Indicators in Strategic Visual Communication on Social Media",
+      "abstract": "Visual content shapes audience perception and opinion on social media, and computational social science increasingly relies on automated tools to analyze images at scale. Yet a measurement gap persists: existing tools rely on predefined categories or produce only coarse image-level labels, while measuring which specific objects appear in an image, how prominently, and where in the frame remains difficult at scale. We introduce Perceive, Refine, Reason (PRR), a calibrated pipeline that turns flexible vision-language detectors into auditable measurement instruments for social-scientific research. PRR combines natural-language category prompts with pixel-level spatial refinement via the Segment Anything Model (SAM) and a multimodal LLM arbitration layer whose reasoning chains externalize domain knowledge and lower the expertise threshold for human-in-the-loop validation. A complementary three-tier auditability framework applies quantification learning to profile per-category reliability, support task-aligned configuration, and statistically correct prevalence estimates. Across four vision-language detectors and nine sociological categories, the pipeline yields substantial precision gains over zero-shot baselines, including a 43.3-point improvement for the strongest backbone. Applying PRR to 103,920 Facebook images from U.S. legislators during the 2024 election cycle and linking detections to DW-NOMINATE ideology scores, we find that more conservative legislators display U.S. flags as larger visual elements, with a weaker tendency toward peripheral placement, a spatial pattern invisible to binary detection. PRR provides computational social scientists with a model-agnostic toolkit for accessible, spatially-grounded, and correctable visual measurement.",
+      "authors": [
+        "Weihong Qi",
+        "Chen Ling"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.CY"
+      ],
+      "published": "2026-09-13T17:54:01+00:00",
+      "link": "https://arxiv.org/pdf/2609.14699v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "vision-language detectors with pixel-level refinement for object measurement",
+      "llm_evidence_cn": "视觉语言检测器与像素级精炼用于图像目标测量",
+      "llm_evidence": "视觉语言检测器与像素级精炼用于图像目标测量",
+      "canonical_evidence": "视觉语言检测器与像素级精炼用于图像目标测量",
+      "llm_tldr_en": "PRR turns vision-language detectors into auditable measurement instruments by combining natural-language category prompts with Segment Anything pixel-level spatial refinement, quantifying which objects appear and where.",
+      "llm_tldr_cn": "针对社交媒体大规模图像分析中现有工具只能给出预定义类别或粗粒度图像标签、难以测量具体物体及其位置与显著度的测量鸿沟，作者提出感知—精炼—推理校准流水线，将视觉语言检测器与自然语言类别提示及 Segment Anything 像素级空间精炼结合，转化为可审计的测量工具。该流水线使计算社会科学研究能够规模化且可复核地量化图像中的对象构成。",
+      "llm_tldr": "针对社交媒体大规模图像分析中现有工具只能给出预定义类别或粗粒度图像标签、难以测量具体物体及其位置与显著度的测量鸿沟，作者提出感知—精炼—推理校准流水线，将视觉语言检测器与自然语言类别提示及 Segment Anything 像素级空间精炼结合，转化为可审计的测量工具。该流水线使计算社会科学研究能够规模化且可复核地量化图像中的对象构成。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "object detection methods",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2609.12705v1",
+      "source": "arxiv",
+      "title": "ExpertHTR: Unified Handwritten Text Recognition with Multi-Task Learning and Sparse Mixture-of-Experts",
+      "abstract": "Handwritten text recognition resources are often small and distributed across collections that differ in language, script, document structure, and annotation format, making joint page-level training difficult. We propose ExpertHTR, a unified vision-language framework that addresses this problem through complementary supervision and conditional model capacity. Structural annotations from heterogeneous datasets are first organized through a common Page-Region-Line representation and used to construct four related training tasks for complete transcription, physical-line coverage, text localization, and localized recognition, without requiring additional manual labels. Building on a jointly trained dense model, ExpertHTR introduces a sparse Mixture-of-Experts architecture with an always-active shared branch and conditionally routed full-MLP experts. Sparsegen allows the number of active routed experts to vary with the hidden representation, while routing regularization reduces persistent concentration on a small subset of experts. Experiments on seven heterogeneous handwriting benchmarks show that complementary supervision consistently improves training with page transcription alone, while joint multi-source training provides further gains on most datasets. The proposed sparse expert model further improves the dense baseline on six of the seven sources. The final unified model also substantially outperforms the evaluated general-purpose OCR and vision-language systems on most benchmarks and achieves state-of-the-art performance on the IAM paragraph-level benchmark, while specialized HTR systems remain stronger on several challenging collections.",
+      "authors": [
+        "Dang Hoai Nam",
+        "Nguyen Duy Hieu",
+        "Quang Huu Hieu",
+        "Vo Nguyen Le Duy"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.LG"
+      ],
+      "published": "2026-09-11T10:59:32+00:00",
+      "link": "https://arxiv.org/pdf/2609.12705v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "unified handwritten text recognition with vision-language framework",
+      "llm_evidence_cn": "基于视觉语言框架的统一手写文本识别",
+      "llm_evidence": "基于视觉语言框架的统一手写文本识别",
+      "canonical_evidence": "基于视觉语言框架的统一手写文本识别",
+      "llm_tldr_en": "ExpertHTR is a unified vision-language framework that organizes heterogeneous structural annotations into a Page-Region-Line representation and uses multi-task learning with sparse mixture-of-experts for joint handwritten text recognition.",
+      "llm_tldr_cn": "手写文本识别资源往往规模小且分散于语言、文字、文档结构与标注格式各异的集合中，联合页面级训练困难。本文提出统一视觉语言框架ExpertHTR，先将异构数据集的结构标注组织为统一的页面-区域-行表示，构造完整转写、物理行覆盖、文本定位与局部识别四项互补任务，无需额外人工标注。框架基于联合训练的稠密模型引入稀疏专家混合以增强条件建模能力。",
+      "llm_tldr": "手写文本识别资源往往规模小且分散于语言、文字、文档结构与标注格式各异的集合中，联合页面级训练困难。本文提出统一视觉语言框架ExpertHTR，先将异构数据集的结构标注组织为统一的页面-区域-行表示，构造完整转写、物理行覆盖、文本定位与局部识别四项互补任务，无需额外人工标注。框架基于联合训练的稠密模型引入稀疏专家混合以增强条件建模能力。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "computer vision research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.13947v1",
+      "source": "arxiv",
+      "title": "Hardware-Aware Learned Representation Compression for Distributed In-Sensor Vision",
+      "abstract": "In-sensor computing reduces the cost of transmitting high-resolution image data by performing early-stage processing near the sensor. However, the logic chip integrated with a CMOS image sensor (CIS) is tightly constrained in compute and memory, limiting conventional deep neural network partitioning. We present OASIS, a distributed in-sensor vision framework that uses a lightweight encoder to generate compact, task-relevant representations before off-chip transmission. The encoder is trained end-to-end using task, entropy, and reconstruction objectives, while the decoder is used only during training. OASIS supports two complementary deployment paths. The first applies 4-bit quantization and Huffman coding while preserving the spatial structure required by classification and dense-prediction tasks. The second uses Sobol-based hyperdimensional computing (HDC) to transform the encoder latent into a fixed-dimensional binary hypervector for associative-memory classification. For the SwinViT-based VWW model, mapping a $3\\times3\\times8$ latent to a 64-dimensional hypervector provides an additional $1.77\\times$ communication reduction with less than one percentage point of accuracy loss relative to the 128-dimensional configuration, yielding an overall $18{,}816\\times$ reduction compared with raw 8-bit image transmission. We implement the digital near-sensor pipeline on an AMD Xilinx Zynq UltraScale+ FPGA and characterize it using direct board-level power measurements and Vivado post-implementation analysis, together with circuit-simulated CIS models and a 7-nm ASIC projection. Across visual wake-word classification, hand tracking, and eye tracking, OASIS reduces total system energy by approximately $2\\times$-$4.5\\times$ while maintaining competitive accuracy, demonstrating a practical hardware-algorithm co-design path for communication-efficient in-sensor vision.",
+      "authors": [
+        "Chengwei Zhou",
+        "Abu Masum",
+        "Xuming Chen",
+        "Mehran Moghadam",
+        "Sreetama Sarkar",
+        "Arnab Sanyal",
+        "Md Abdullah-Al Kaiser",
+        "M. Hassan Najafi",
+        "Sercan Aygun",
+        "Gourav Datta"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI",
+        "cs.AR"
+      ],
+      "published": "2026-09-12T13:45:08+00:00",
+      "link": "https://arxiv.org/pdf/2609.13947v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "lightweight encoder producing compact task-relevant visual representations",
+      "llm_evidence_cn": "轻量编码器生成紧凑任务相关视觉表示",
+      "llm_evidence": "轻量编码器生成紧凑任务相关视觉表示",
+      "canonical_evidence": "轻量编码器生成紧凑任务相关视觉表示",
+      "llm_tldr_en": "OASIS is a distributed in-sensor vision framework where a lightweight encoder produces compact task-relevant representations before off-chip transmission, trained end-to-end with task, entropy and reconstruction objectives.",
+      "llm_tldr_cn": "针对在传感器计算中逻辑芯片算力与存储受限、难以直接部署常规深度网络分区的难题，作者提出 OASIS 分布式在传感器视觉框架，用轻量编码器在离片传输前生成紧凑且任务相关的表示，并以任务、熵和重建目标端到端训练，解码器仅训练时使用。框架支持四比特量化与霍夫曼编码等路径，在压缩传输的同时保留空间结构，为资源受限的传感器端视觉提供了可行方案。",
+      "llm_tldr": "针对在传感器计算中逻辑芯片算力与存储受限、难以直接部署常规深度网络分区的难题，作者提出 OASIS 分布式在传感器视觉框架，用轻量编码器在离片传输前生成紧凑且任务相关的表示，并以任务、熵和重建目标端到端训练，解码器仅训练时使用。框架支持四比特量化与霍夫曼编码等路径，在压缩传输的同时保留空间结构，为资源受限的传感器端视觉提供了可行方案。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "feature extraction in computer vision",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.14352v1",
+      "source": "arxiv",
+      "title": "Beyond Natural Images: Rethinking AI-Generated Image Detection in Documents",
+      "abstract": "AI-generated image detection has attracted increasing attention, but existing evaluations mainly focus on natural images, leaving AI-generated document images largely underexplored. This omission is concerning because documents often appear in sensitive real-world scenarios, such as invoices, expense reports, certificates, and medical records. In this paper, we first construct a controlled diagnostic benchmark, AIGDoc-Pilot, and reveal that existing detectors suffer substantial performance degradation on AI-generated document images, with the mean AUC dropping by more than 7%. Based on this, we further reveal two document-specific properties behind this gap: generation artifacts exhibit strong spatial inconsistency across local regions, and text density significantly affects real-synthetic separability, where text-dense regions offer stronger discriminative evidence. Motivated by these findings, we construct AIGDoc, a larger document-centric dataset containing diverse real-world documents and AI-generated counterparts produced by multiple advanced generation and editing models. Extensive experiments on AIGDoc demonstrate that existing detectors still struggle to reliably identify AI-generated documents, while document-based training partially narrows the gap. Together, these results offer valuable insights for developing dependable and generalizable detectors in document-centric scenarios. The code and datasets will be made publicly available upon acceptance of the paper.",
+      "authors": [
+        "Zhangjie Fu",
+        "Jiazhen Yan",
+        "Yuanwen Chen",
+        "Xinquan Yu",
+        "Yanzhe Li",
+        "Hui Jiang",
+        "Lei Gao",
+        "Chenfu Bao"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-13T07:26:45+00:00",
+      "link": "https://arxiv.org/pdf/2609.14352v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "AI-generated image detection benchmark for document images",
+      "llm_evidence_cn": "面向文档图像的AI生成图像检测基准",
+      "llm_evidence": "面向文档图像的AI生成图像检测基准",
+      "canonical_evidence": "面向文档图像的AI生成图像检测基准",
+      "llm_tldr_en": "This paper builds the AIGDoc-Pilot benchmark and shows existing AI-generated image detectors degrade sharply on document images, analyzing document-specific properties like spatial inconsistency of artifacts.",
+      "llm_tldr_cn": "AI生成图像检测日益受到关注，但现有评测主要集中于自然图像，文档图像中的检测研究不足，而文档常出现在发票、证书、医疗记录等敏感场景。本文构建受控诊断基准AIGDoc-Pilot，发现现有检测器在AI生成文档图像上性能显著下降，平均AUC下降超过7%。研究进一步揭示伪影空间不一致与文本相关等文档特有属性，为文档图像检测指明改进方向。",
+      "llm_tldr": "AI生成图像检测日益受到关注，但现有评测主要集中于自然图像，文档图像中的检测研究不足，而文档常出现在发票、证书、医疗记录等敏感场景。本文构建受控诊断基准AIGDoc-Pilot，发现现有检测器在AI生成文档图像上性能显著下降，平均AUC下降超过7%。研究进一步揭示伪影空间不一致与文本相关等文档特有属性，为文档图像检测指明改进方向。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "computer vision research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

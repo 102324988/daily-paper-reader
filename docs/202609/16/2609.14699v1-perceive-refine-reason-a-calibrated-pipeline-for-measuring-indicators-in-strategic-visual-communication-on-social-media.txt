@@ -1,0 +1,381 @@
+Title: Perceive, Refine, Reason: A Calibrated Pipeline for Measuring Indicators in Strategic Visual Communication on Social Media
+
+URL Source: https://arxiv.org/pdf/2609.14699v1
+
+Published Time: Tue, 15 Sep 2026 01:55:42 GMT
+
+Number of Pages: 11
+
+Markdown Content:
+# Perceive, Refine, Reason: A Calibrated Pipeline for Measuring Indicators in Strategic Visual Communication on Social Media 
+
+## Weihong Qi )
+
+wq3@iu.edu Indiana University Bloomington Bloomington, IN, USA 
+
+## Chen Ling 
+
+ccling@iu.edu Indiana University Bloomington Bloomington, IN, USA 
+
+Abstract 
+
+Visual content shapes audience perception and opinion on so-cial media, and computational social science increasingly relies on automated tools to analyze images at scale. Yet a measure-ment gap persists: existing tools rely on predefined categories or produce only coarse image-level labels, while measuring which specific objects appear in an image, how prominently, and where in the frame remains difficult at scale. We introduce Perceive, Re-fine, Reason (PRR), a calibrated pipeline that turns flexible vision-language detectors into auditable measurement instruments for social-scientific research. PRR combines natural-language cat-egory prompts with pixel-level spatial refinement via the Seg-ment Anything Model (SAM) and a multimodal LLM arbitra-tion layer whose reasoning chains externalize domain knowledge and lower the expertise threshold for human-in-the-loop valida-tion. A complementary three-tier auditability framework applies quantification learning to profile per-category reliability, support task-aligned configuration, and statistically correct prevalence estimates. Across four vision-language detectors and nine socio-logical categories, the pipeline yields substantial precision gains over zero-shot baselines, including a 43.3-point improvement for the strongest backbone. Applying PRR to 103,920 Facebook im-ages from U.S. legislators during the 2024 election cycle and link-ing detections to DW-NOMINATE ideology scores, we find that more conservative legislators display U.S. flags as larger visual elements, with a weaker tendency toward peripheral placement, a spatial pattern invisible to binary detection. PRR provides compu-tational social scientists with a model-agnostic toolkit for accessi-ble, spatially-grounded, and correctable visual measurement. 
+
+CCS Concepts 
+
+• Information systems → Data mining ; • Computing method-ologies → Object detection ; • Applied computing → Law, social and behavioral sciences ; • Human-centered computing → Col-laborative and social computing. 
+
+Keywords 
+
+computational social science, visual measurement, quantification learning, multimodal large language models, political communica-tion 
+
+1 Introduction 
+
+Visual content on social media often carries communicative intent: the objects that appear in an image, their relative size, and their spatial arrangement can function as rhetorical cues that shape au-dience perception [9, 29]. To analyze such cues at scale, computa-tional social scientists have developed a growing set of automated tools for visual analysis, including facial recognition and demo-graphic inference [11, 13], protest detection [31], ideology infer-ence [32], and image clustering [12, 27, 34]. These tools have en-abled researchers to study large-scale visual communication, but they typically rely on predefined category sets or task-specific la-beled data and primarily produce categorical annotations, such as image-level labels or detected face and object categories. As a re-sult, many fine-grained and localized visual signals, including ob-ject presence, spatial prominence, and co-occurrence patterns, re-main difficult to measure at scale without extensive manual coding [26, 30]. Open-vocabulary object detection (OVD) models [3, 18, 21] offer a promising alternative, accepting natural-language prompts and returning localized detections without task-specific training. This flexibility is attractive for computational social science, where re-searchers seek to operationalize open-ended, theory-driven visual indicators. Yet OVD cannot serve as a social-scientific measure-ment instrument out of the box. Because these models are trained on natural-image corpora, their predictions misalign with context-dependent sociological constructs: a visually plausible detection may not match the concept a researcher intends to measure. More-over, bounding-box outputs provide only coarse position and scale, leaving continuous spatial properties such as object area, promi-nence, and placement within the frame unmeasured. To address these limitations, we propose Perceive, Refine, Rea-son (PRR), a three-stage calibration pipeline for open-ended visual measurement. The Perceive stage uses OVD to generate high-recall candidate detections from natural-language prompts. The Refine 
+
+stage applies the Segment Anything Model (SAM) [15] to convert bounding boxes into pixel-level masks, enabling continuous mea-surements of object area, prominence, and location. The Reason 
+
+stage uses a multimodal LLM as an arbitration layer [2] to deter-mine whether each candidate detection matches the intended so-ciological construct, producing auditable reasoning chains for se-mantic validation. This staged decomposition is motivated by two considerations regarding end-to-end multimodal LLM inference in our setting. First, the spatial coordinates produced by current mul-timodal LLMs are typically less precise than those of specialized detectors [1, 33], which limits their suitability for the pixel-level measurements our pipeline depends on. Second, end-to-end LLM detection requires complex multi-object reasoning per call, esca-lating cost and latency at corpus scale. Beyond instance-level val-idation, we further introduce a three-tier auditability framework, grounded in quantification learning [7] and statistically principled arXiv:2609.14699v1 [cs.CV] 13 Sep 2026 Qi and Ling. 
+
+measurement from web data [16], that enables researchers to pro-file category-specific reliability, select task-appropriate configura-tions, and correct aggregate frequency estimates. This work contributes to computational social science by refram-ing open-vocabulary vision models as auditable measurement in-struments for social media imagery. Specifically, we make three contributions: (1) A calibrated pipeline for open-ended visual measure-ment . We introduce PRR, a model-agnostic pipeline that com-bines off-the-shelf OVD, SAM-based pixel-level spatial quan-tification, and LLM-based semantic arbitration. The pipeline enables researchers to move beyond image-level labels and bounding boxes toward construct-aware and spatially grounded visual measurements. (2) An auditability framework for measurement reliability .We develop a three-tier protocol that profiles category-specific reliability, supports task-aligned model configuration, and sta-tistically corrects aggregate prevalence estimates. This frame-work makes detection errors explicit and correctable rather than allowing them to silently propagate into downstream social-scientific findings. (3) A systematic evaluation and political communication case study . We evaluate four OVD architectures across nine sociological categories and apply PRR to 103,920 Facebook im-ages posted by U.S. legislators during the 2024 election cycle. The case study shows that ideological differences in visual communication appear not only in whether legislators display U.S. flags, but also in how prominently and where in the frame those flags are placed, patterns that categorical detection alone cannot capture. Together, PRR and the auditability framework provide a prac-tical toolkit for defining visual indicators in natural language, ex-tracting spatially grounded measurements from large image collec-tions, auditing reliability boundaries, and conducting downstream analyses with documented and statistically correctable measure-ment error. 
+
+2 Related Work 2.1 Visual Analysis in Computational Social Science 
+
+A growing body of research applies computer vision to social media imagery for substantive social-scientific questions. Stud-ies have classified protest activity [31], inferred political ideology from legislators’ visual self-presentation [32], examined state-sponsored image coordination [24], identified ideologically corre-lated imagery in political communication [12], and clustered pho-tographs to track cultural and thematic patterns over time [27, 34]. Adjacent methodological work supports these efforts through fa-cial recognition and demographic inference [11, 13], scene classifi-cation [35], and tutorials on adapting convolutional architectures for social-science research [30]. However, two methodological constraints recur across this literature. First, existing tools oper-ate on predefined category sets or require labeled training data, restricting their flexibility whenever a new sociological indicator becomes of interest. Second, they primarily produce categorical annotations: a single label assigned to a whole image or to de-tected faces and objects, leaving fine-grained spatial properties such as object size, centrality, and co-occurrence unmeasurable at scale [9, 26, 29]. 
+
+2.2 Open-Vocabulary Object Detection 
+
+Open-vocabulary object detection (OVD) directly addresses the closed-category limitation of conventional vision-based tools. OVD models accept natural-language prompts as category defi-nitions and return localized detections without task-specific train-ing. Representative architectures include GroundingDINO [18], which combines DINO with grounded language pre-training, the OWL-ViT family [21, 22], which adapts CLIP-pretrained Vision Transformers for detection, and YOLO-World [3], which augments a CNN backbone with offline vocabulary encoding for real-time inference. These OVD architectures lift the closed-vocabulary re-striction and recover spatial localization, but two challenges limit their direct application to social-scientific measurement. First, OVD models are pre-trained on natural-object corpora, produc-ing systematic mismatches with sociological constructs that are context-dependent and visually ambiguous. Second, bounding-box outputs encode only coarse position and scale rather than pixel-level extent, restricting the granularity of downstream spatial measurements. 
+
+2.3 Bridging Vision Models and Social Science Measurement 
+
+Addressing the limitations of OVD requires combining ideas from several adjacent literatures. Quantification learning [7] establishes that biased classifiers yield unbiased prevalence estimates under documented Precision and Recall profiles, an insight extended to text-based estimation [10] and echoed in web mining’s turn toward statistically principled measurement and deployment-realistic evaluation [14, 16], but rarely applied to visual analy-sis. LLM-based annotation matches or exceeds human annotators on social media labeling tasks while producing natural-language justifications that support verification [8, 36], and multimodal LLMs (MLLMs) have been explored as standalone analyzers of social-media images [19, 20]. Yet MLLMs alone exhibit persistent hallucinations, inconsistent judgments, and spatial coordinates less precise than specialized detectors [1, 2, 33], motivating de-signs that combine MLLM semantic reasoning with detector-based spatial grounding; the Segment Anything Model [15] adds pixel-level measurement to box-based detectors. Our work brings these lines together: the pipeline is model-agnostic and paired with a three-tier audit protocol that documents and statistically corrects detection error. 
+
+3 Method 3.1 Pipeline Overview 
+
+We propose a model-agnostic calibration pipeline that transforms raw open-vocabulary detections into research-quality annotations through three sequential stages: Perceive , Refine , and Reason . It ac-cepts any off-the-shelf OVD detector as its perception front-end Perceive, Refine, Reason: Calibrated Visual Measurement Perceive, Refine,  Reason (PRR): A Three-stage Calibration Pipeline     
+
+> Stage1: Open Vocabulary Detection ( Perceive )
+> Stage 2: Geometric Refinement ( Refine )
+> Stage 3: LLM-as-Judge Semantic Arbitration ( Reason )
+> Images
+> Post processing: class-aware nested suppression
+> Scene understanding & Context drift correction
+> Binary verdict
+> Optional correct label
+> Natural language justification
+> Audit Framework: Three-Tier Protocol
+> Tier 1: Empirical Error Profiling
+> Usable
+> Cautious
+> Unreliable
+> Tier 2: Task-Oriented Model and
+> Category Selection
+> OVD Model Selection
+> High F1 Categories
+> High Recall Categories
+> High Precision Categories
+> Tier 3: Statistically Adjusted
+> Estimation
+> Calibrated Measurement
+> Known, bounded error
+> Continuous spatial metrics
+> Auditable reasoning chains
+> Labeled
+> Test Set
+> Unlabeled
+> Corpus
+> Reliablility
+> Per-category Metrics
+> Precision, Recall, F1, ...
+> Corrected Estimate:
+> Feature Extraction
+> (mask area ratio,
+> normalized center distance)
+> Greedy NMS
+> (I0U >= 0.5 for redundant
+> removals)
+> Optional Bounding
+> Box Scaling
+> (small objects)
+> Segment Anything Model
+> (SAM)
+> box prompts → masks
+> Refined candidate detections
+> Structured Metadata
+> Prompt
+> Verified
+> Detections
+> (bounding boxes,
+> corrected labels,
+> justifications)
+> Multimodal LLM
+> Target
+> Category
+> Names
+> Corpus of
+> Unlabeled
+> Images
+> Labeled
+> Test Set
+> Off-shelf OVD detector (zero shot)
+> Text prompts (categories)
+> Recall-oriented configuration (low confidence threshold)
+> Researcher Inputs
+> Candidate bounding boxes
+> (with labels & confidence)
+
+Figure 1: Overview of the PRR pipeline (left) and the three-tier audit framework (right). The pipeline transforms raw open-vocabulary detections into verified detections with spatial measurements and auditable reasoning. The audit framework pro-files per-category reliability on a labeled test set (Tier 1), guides task-aligned configuration (Tier 2), and applies statistical correction to prevalence estimates on the full corpus (Tier 3), yielding calibrated measurements with known, bounded error. The human icon marks stages requiring researcher input or decisions; other stages are automated. 
+
+and applies a shared SAM and LLM calibration backbone, bridg-ing the semantic gap without architecture-specific modifications. To deploy the pipeline, researchers provide (1) a set of target cate-gory names, (2) a corpus of unlabeled images, and (3) a labeled test set for auditing. The pipeline returns, for each image, a set of veri-fied detections that include bounding boxes, pixel-level masks, cor-rected labels, and natural-language justifications, supporting both transparent measurement and qualitative auditability of the auto-mated annotation process. Figure 1 summarizes the pipeline with the three-tier audit framework. 
+
+3.2 Stage 1: Open-Vocabulary Detection (Perceive) 
+
+The Perceive stage deploys an off-the-shelf OVD detector in a zero-shot setting. Target categories provided by the researcher are passed as text prompts to the model, which returns candidate bounding boxes, associated labels, and confidence scores without task-specific fine-tuning. We adopt low confidence thresholds to maximize recall, ensuring broad capture of potential visual indi-cators and delegating false-positive filtering to the downstream stages. The stage is agnostic to the choice of detector: any vision-language model that processes text-conditioned queries and out-puts labeled bounding boxes can serve as the perception front-end. 
+
+3.3 Stage 2: Geometric Refinement (Refine) 
+
+Raw OVD outputs are axis-aligned rectangles that carry no infor-mation about object shape. To obtain finer-grained geometry, can-didate boxes are passed to the Segment Anything Model (SAM; ViT-H) [15] as box prompts, producing pixel-level masks. For small-object categories, bounding boxes are optionally scaled prior to SAM processing to prevent mask over-expansion. A greedy non-maximum suppression (NMS) step [6, 23] then removes redundant detections (IoU ≥ 0.5 ). NMS is applied after SAM refinement rather than directly after OVD inference: SAM-refined boxes yield tighter IoU computations, supporting more precise deduplication and re-ducing the candidate set before the more costly LLM evaluation. The resulting pixel-level masks support extraction of continuous spatial features such as mask area ratio and normalized center dis-tance, which serve as quantitative measures of object prominence and inform downstream analyses, for example by distinguishing a small background flag from one that dominates the frame. 
+
+3.4 Stage 3: Semantic Arbitration via LLM-as-Judge (Reason) 
+
+OVD detectors handle objects with stable visual prototypes well but struggle with context-dependent sociological constructs, pro-ducing three failure modes: near-zero recall for abstract concepts that lack a fixed visual prototype; context drift , where detectors lo-calize valid objects but assign semantically adjacent yet incorrect Qi and Ling. 
+
+Figure 2: Overview of the PRR pipeline applied to a single image posted on Facebook by U.S. senator Eric Schmitt. (a) Perceive: An Open-Vocabulary Detector (OVD) generates 8 raw candidate boxes with noisy labels and redundancies. (b) Refine: The Segment Anything Model (SAM) extracts pixel-level masks (orange) for spatial grounding, and Non-Maximum Suppression (NMS) reduces the candidate set to 5. (c) Reason: An LLM evaluates this refined set to accept (green), reject (red), or re-classify (blue) each candidate. 
+
+labels; and semantic false positives produced by the recall-oriented thresholds of the Perceive stage. The Reason stage addresses these failures with a multimodal LLM arbitration layer. Refined candi-date regions, overlaid with numeric ID labels, are submitted to the LLM alongside structured metadata describing each candidate; the prompt embeds domain-specific heuristics and a strict cate-gory whitelist, and instructs the LLM to re-classify visually valid but mislabeled detections. For each candidate, the model returns a binary accept/reject verdict, a corrected label when applicable, and a natural-language reasoning chain. Figure 2 illustrates the three stages on a single example: an OVD pass yields 8 candidate boxes, SAM and NMS reduce them to 5 refined detections, and the LLM accepts 4 and rejects 1. A class-aware nested suppression step then removes redundant same-class detections (intersection-over-minimum area > 70% ), while cross-class nesting is preserved to re-tain sociologically meaningful co-occurrences such as a tie within a suit .
+
+4 Auditability Framework 
+
+No automated vision pipeline achieves perfect accuracy. For valid scientific inference, what matters is whether the residual errors are known , quantifiable , and correctable . Drawing on quantification learning [7], which formalizes how aggregate class prevalence can be estimated from imperfect classifiers, we introduce a three-tier audit protocol that is applied to a labeled test set before the pipeline is deployed on an unlabeled corpus, transforming an imperfect de-tector into a calibrated measurement instrument with documented bias bounds. This shifts the methodological standard for vision-based social-science measurement from detector accuracy to infer-ence validity [14]: a pipeline need not be uniformly accurate to support valid claims, provided its errors are characterized and the analyses are scoped to what those errors permit. 
+
+Tier 1: Empirical Error Profiling. The pipeline is first evaluated on a labeled test set drawn from the target domain, yielding per-category Precision ( 𝑃 ) and Recall ( 𝑅 ). The acceptability of these metrics is determined not by universal computer vision bench-marks but by the requirements of the downstream analytical task. A category with 𝐹 1 = 55% and 𝑃 = 93% , for instance, may be adequate for comparative group analyses that prioritize low mea-surement noise, yet inadequate for absolute frequency estimation. This empirical profile grounds the methodological decisions that follow. 
+
+Tier 2: Task-Aligned Configuration. The empirical profile from Tier 1 informs configuration choices that depend on the analyti-cal task. For instance, hypothesis testing and regression analyses are sensitive to false positives, which introduce systematic mea-surement noise; these tasks call for high-precision configurations. Exploratory content analysis and frequency estimation are sensi-tive to false negatives, which undercount symbol prevalence; these tasks favor high-recall configurations. Tier 2 selects, for each cat-egory, the model and threshold that best align the empirical 𝑃 –𝑅 
+
+profile with the inferential goals of the study. 
+
+Tier 3: Statistical Prevalence Calibration. Once a configuration is fixed, Tier 3 corrects aggregate prevalence estimates for the full corpus. Let 𝐷 denote the raw detection count for a given category. The corrected prevalence estimate ̂ 𝑁 is computed as: ̂𝑁 = 𝐷 ⋅ 𝑃 𝑅 (1) Multiplying by 𝑃 discounts expected false positives, while divid-ing by 𝑅 compensates for undetected true instances. Under the standard supervised-learning assumption that test-set error rates generalize to the target corpus, this estimator corrects for the doc-umented measurement bias profiled in Tier 1. Confidence intervals are obtained by bootstrap resampling of the test-set predictions. Perceive, Refine, Reason: Calibrated Visual Measurement 
+
+5 Case Study: Visual Indicators in U.S. Legislative Communication 
+
+We apply the pipeline and auditability framework to a large-scale corpus of social media imagery published by U.S. legislators. Lo-calized visual indicators in this domain, including national flags, formal attire, and public speaking arrangements, carry deliberate rhetorical weight, yet have eluded reliable quantification at scale under existing computer vision tools. 
+
+5.1 Data 
+
+We identified the official Facebook accounts of all 540 mem-bers of the 118th U.S. Congress, locating 472 active profiles (232 Democrats, 237 Republicans, 3 Independents). From these accounts we collected 103,920 images posted between June 15 and Novem-ber 15, 2024, a window spanning the final five months of the 2024 election cycle. Posting activity is balanced across both party af-filiation and chamber, with comparable mean and median image counts per legislator across groups (Table 1). We merged the image corpus with DW-NOMINATE scores [28] from the Voteview project for both chambers of the 118th Congress. A multi-stage name-matching procedure that handles nicknames, title variations, and special characters linked 458 of 472 accounts (97.0%) to their dimension 1 and dimension 2 scores. Unmatched accounts, primarily non-voting delegates and staff-managed pages, are retained in the corpus but excluded from ideology-based anal-yses. For evaluation, we drew a random sample of 105 images and obtained exhaustive bounding-box annotations from two trained coders across nine target categories. Disagreements were resolved through qualitative reconciliation to produce a consensus ground truth.                   
+
+> Group Members Mean Images Median Images
+> Democrats (D) 232 216.49 200.0 Independents (I) 3170.00 143.5 Republicans (R) 237 214.40 179.0 House of Representatives 379 220.59 189.0 Senate 93 192.95 187.0
+
+Table 1: Summary statistics of collected images by party af-filiation and congressional chamber. 
+
+5.2 Target Categories 
+
+We define nine target categories drawn from the visual politi-cal communication literature [9, 29]: U.S. flag , tie , suit , podium ,
+
+solo speaker , official symbol , military , organization symbol , and 
+
+politician symbol . The set is constructed to span a spectrum of semantic and visual abstraction. At the concrete end, U.S. flag , tie ,and podium have stable visual prototypes that conventional OVD models recognize reliably. Suit and solo speaker introduce con-textual ambiguity that requires relational reasoning rather than pixel matching: distinguishing a formal blazer from casual wear, or determining whether a person is anchored to an audience and a podium. At the abstract end, official symbol , organization sym-bol , and politician symbol lack any fixed morphological form. This gradient lets us diagnose the boundary conditions of zero-shot OVD and quantify the marginal value of LLM-driven semantic calibration across levels of abstraction. 
+
+5.3 Human Annotation and Ground Truth 
+
+We constructed the ground truth in three steps. First, we devel-oped an annotation codebook with operational rules covering tight enclosure, single-instance correspondence, complete visible extent, exclusion of ambiguous shapes, and separate guidelines for bounding-box and polygon-mask annotation. Second, two anno-tators trained on the codebook independently labeled all 105 sam-pled images with both bounding boxes and pixel-level polygon masks. Third, the annotators reconciled disagreements through targeted discussion to produce the final consensus annotations. Inter-coder reliability prior to reconciliation was high: the macro-average Intersection over Union (IoU) was 0.82 for bound-ing boxes and 0.85 for polygon masks, substantially above the IoU 
+
+≥ 0.5 threshold used in object detection benchmarks [5, 17] and comparable to Cityscapes [4]. The 105 images yield 220 annotated object instances across the nine categories. Because the test set is used to estimate error rates rather than to train models, its size enters the analysis as quantified uncertainty: bootstrap confidence intervals are reported for all audit-derived quantities, and analyses are scoped to what those intervals support. 
+
+5.4 Experimental Setup 
+
+OVD Baselines. To demonstrate the model-agnostic nature of our calibration pipeline, we evaluate it across four off-the-shelf OVD detectors spanning distinct architectural paradigms. 
+
+Grounding DINO [18] represents state-of-the-art deep cross-modal fusion. OWL-ViT v1 [22] applies contrastive alignment to a CLIP-pretrained Vision Transformer, and its self-trained succes-sor OWL-v2 [21] allows us to assess generational architectural improvements. YOLO-World [3] augments a CNN-based archi-tecture with offline vocabulary encoding, offering a real-time, efficiency-oriented paradigm. All models are deployed in a strict zero-shot setting using only the nine target category names as prompts, without task-specific fine-tuning or domain adaptation. 
+
+Implementation Details. At the Perceive stage, confidence thresh-olds are set conservatively low to maximize initial recall, delegat-ing precision filtering to downstream stages. Specific thresholds vary across models to accommodate differences in internal score calibration: 𝜏 = 0.2 for OWL-v2 and OWL-ViT v1, 𝜏 = 0.05 for YOLO-World, and 𝜏 box = 0.35 with 𝜏 text = 0.25 for Grounding DINO. The Refine stage uses the default Segment Anything Model (SAM, ViT-H checkpoint) [15] for mask generation, followed by non-maximum suppression with an IoU threshold of 0.5 . The Rea-son stage employs gpt-4.1-mini [25] as the multimodal arbitrator, with generation temperature fixed at 0.0 to ensure deterministic outputs. Class-aware nested suppression uses an intersection-over-minimum area threshold of 0.7 . All local inference, including OVD and SAM operations, was executed on a single NVIDIA A100 80GB PCIe GPU. Qi and Ling. us flag tie suit podium solo spk. off. sym. military org. sym. pol. sym. 050 100                                                  
+
+> Score (%)
+> GroundingDINO
+> 61.1 88.0 56.7 58.3 36.8 25.0 18.8 7.7 56.4 34.9 16.0 50.0 38.9 16.7 15.8 2.2 58.7 50.0 25.0 53.8 37.8 20.0 17.1 3.5
+> us flag tie suit podium solo spk. off. sym. military org. sym. pol. sym. 050 100
+> Score (%)
+> OWL-ViT v1
+> 80.0 100.0 92.9 100.0 100.0 30.8 25.4 36.8 5.6 5.3 44.4 40.5 52.7 10.5 10.0
+> us flag tie suit podium solo spk. off. sym. military org. sym. pol. sym. 050 100
+> Score (%)
+> OWL-v2
+> 78.6 76.4 93.5 80.0 66.7 100.0 100.0 84.6 66.7 40.6 57.1 11.1 5.3 1.1 81.5 71.2 56.6 66.7 19.0 10.0 2.2
+> us flag tie suit podium solo spk. off. sym. military org. sym. pol. sym. 050 100
+> Score (%)
+> YOLO-World
+> 67.7 67.7 71.4 100.0 53.8 66.7 35.7 4.5 60.0 67.2 47.6 8.6
+> Precision Recall F1
+
+Figure 3: Performance breakdown across the nine target categories for each evaluated baseline model. Bar heights represent Precision, Recall, and F1 score. The red dashed line marks the 80% precision threshold. The results illustrate a clear performance gradient, where models achieve high precision on concrete visual indicators but fail to reliably detect abstract sociological symbols. 
+
+Model Variant Precision Recall F1 ↑
+
+GroundingDINO Zero-shot 16.6 25.1 20.0 Calibrated 45.1 21.2 28.9 
+
+(+28.5) (-3.9) (+8.9) OWL-ViT v1 Zero-shot 66.3 30.7 42.0 
+
+Calibrated 92.0 17.6 29.6 (+25.7) (-13.1) (-12.4) OWL-v2 Zero-shot 36.9 50.1 42.5 Calibrated 80.2 33.2 47.0 
+
+(+43.3) (-16.9) (+4.5) YOLO-World Zero-shot 36.9 21.0 26.8 Calibrated 65.5 18.4 28.7 
+
+(+28.6) (-2.6) (+1.9) 
+
+Table 2: Overall micro-averaged performance of zero-shot and calibrated variants. Best results for each model are high-lighted in bold. Numbers in color indicate absolute changes of the calibrated variant over the zero-shot baseline. 
+
+6 Experimental Results 6.1 Model Performance Evaluation and Calibration Impact 
+
+Table 2 presents the micro-averaged performance of the four mod-els before and after semantic calibration. Our pipeline substantially improves precision across all architectures. The calibrated OWL-v2 reaches 80.2% precision, a 43.3 percentage point gain over its zero-shot baseline. While stricter LLM filtering inevitably reduces recall, this conservative trade-off is desirable for computational so-cial science applications, where measurement noise can propagate into downstream substantive findings. Overall F1 still improves for three of the four models, indicating that semantic false positives are removed without severely compromising detection capacity. Figure 3 breaks performance down by category, revealing a clear gradient aligned with the theoretical spectrum of visual abstrac-tion. Concrete indicators with stable morphological structures, in-cluding U.S. flag , tie , and suit , consistently approach or exceed the 80% precision threshold under the OWL family. In contrast, ab-stract categories such as organization symbol and politician symbol 
+
+yield near-zero recall and poor precision across all four detectors. This divergence empirically delineates the operating boundary of current vision-language models. They reliably ground distinct vi-sual geometries but struggle to recognize abstract sociological con-cepts in the absence of explicit contextual supervision. 
+
+6.2 Applying the Audit Framework 
+
+Prior to full-corpus deployment, we apply the three-tier audit pro-tocol to determine the analytical viability of each target category. 
+
+Tier 1: Empirical Profile. We evaluate the calibrated pipeline across all four detectors on the nine target categories, yielding the per-category precision and recall reported in Figure 3. The profile traces the concrete-to-abstract gradient defined in previous sec-tion: concrete categories with stable visual prototypes, such as U.S. flag , podium , and suit , attain precision above 75% together with Perceive, Refine, Reason: Calibrated Visual Measurement 
+
+Category 𝑛 P (%) R (%) F1 (%) Supported Analysis 
+
+U.S. flag 39 78.6 84.6 81.5 Absolute frequency, relative comparisons 
+
+Podium 14 80.0 57.1 66.7 Relative comparisons only 
+
+Suit 106 93.5 40.6 56.6 Relative comparisons only 
+
+Table 3: Tier 1 empirical profile for the three categories se-lected for full-corpus analysis. Metrics are derived from the calibrated OWL-v2 pipeline (IoU ≥ 0.5 ); 𝑛 is the number of annotated instances. The “Supported Analysis” column re-flects the task-oriented assessment dictated by each cate-gory’s specific error profile. 
+
+non-trivial recall under at least one detector; categories that re-quire relational or contextual reasoning, such as solo speaker and 
+
+military , retain reasonable precision but collapse to single-digit recall; and abstract categories without fixed morphological form, including organization symbol and politician symbol , fail on both axes. Among the categories that remain analytically viable, error profiles further differentiate the permissible analyses. Under the best-performing configuration, U.S. flag achieves both high preci-sion (78.6%) and high recall (84.6%), capturing most true instances while avoiding false detections and supporting absolute frequency estimation. Podium and suit maintain high precision ( ≥ 80% )but substantially lower recall (57.1% and 40.6%). This asymmetry makes them suitable for relative comparisons across groups, where systematic undercounting cancels out, but unsuitable for absolute prevalence claims. Table 3 reports the detailed metrics with boot-strap 95% confidence intervals over images. The interval for U.S. flag is the narrowest (P [67.6, 90.0] , R [72.2, 94.6] ), which matters because it is the only category used for absolute frequency correc-tion; podium and suit carry wider intervals, but their error profiles enter only the decision to restrict them to relative comparisons, not any reported estimate. 
+
+Tier 2: Model Selection and Category Inclusion. Our downstream analyses compare symbol prevalence across political subgroups and over time, requiring strict precision together with adequate re-call to maintain statistical power. Among the four detectors, OWL-v2 is the only one that satisfies both requirements on the three can-didate categories identified in Tier 1. We therefore retain U.S. flag ,
+
+podium , and suit under OWL-v2 for full-corpus deployment and exclude the remaining six categories. 
+
+Tier 3: Prevalence Calibration. The performance asymmetry across the retained categories bounds the claims we can support. For U.S. flag , high recall ensures that raw detection counts closely approximate true prevalence, and the Tier 3 correction (Equation 1) is applied to obtain absolute frequency estimates; we therefore re-port both raw and adjusted prevalence. For suit and podium , the low-recall regime introduces a distinct problem: although the Tier 3 estimator can in principle correct for undercounting, the large 1/𝑅 multiplier severely amplifies sampling uncertainty. We therefore report only relative comparisons for these indicators, Dem. Rep. 0% 10% 20% 30% 40% 50%      
+
+> Prevalence  34.6 42.7 38.3 47.3
+> U.S. Flag
+> Dem. Rep. 0% 20% 40% 60% 80% 78.4 77.6
+> Suit
+> Dem. Rep. 0.0% 5.0% 10.0% 15.0% 20.0% 25.0% 30.0%
+> 24.9 17.7
+> Podium
+> Raw Adjusted
+
+Figure 4: Detection prevalence across parties. For U.S. flag, bars show both raw rates and Tier 3 adjusted prevalence (Eq. 1), using image-level Precision and Recall estimated on the annotated sample; adjustment is not applied to suit and 
+
+podium due to low recall (Table 3). Error bars show standard errors across legislators.                 
+
+> Party Total Flag Rate Adj. Cnt Adj. Rate
+> Democrat 20,735 7,101 0.342 7,859.24 0.379 Republican 23,462 9,763 0.416 10,805.48 0.461
+> Association test
+> 𝜒 2(1) = 252.75, 𝑝 = 6.54 × 10 −57 , 𝑉 = 0.0756
+> Odds ratio (R vs. D) : 1.368
+
+Table 4: Party differences in U.S. flag display. Republicans are 1.37 times as likely to display a U.S. flag. 
+
+specifically odds ratios and proportion differences between sub-groups. This strategy assumes a uniform miss rate across political affiliations, which is defensible because the vision model evaluates purely visual properties such as occlusion or image quality, with-out access to partisan metadata. The ratio of detection frequencies between groups therefore approximates the true frequency ratio despite absolute undercounting. 
+
+6.3 Case Study Results 
+
+6.3.1 Party Differences in Symbol Prevalence. Figure 4 reports the prevalence of the three visual indicators across Democratic and Re-publican legislators. Republicans display the U.S. flag substantially more often than Democrats (42.7% vs. 34.6% of images). After Tier 3 correction (Eq. 1), the adjusted prevalence remains clearly higher for Republicans (47.3% vs. 38.3%), confirming that the gap is not an artifact of detection error. The image-level correction factor is 
+
+𝑃/𝑅 = 1.11 (bootstrap 95% CI [0.96, 1.32] ); the party comparison does not depend on it, since both groups share the same factor. For suit and podium we report only raw rates, since low recall (Ta-ble 3) precludes reliable absolute-frequency estimation. The raw rates already indicate near-identical suit usage across parties and substantially more podium appearances among Democrats. Table 4 formalizes the flag comparison through a 𝜒 2 test of inde-pendence. The association between party and flag display is highly significant ( 𝜒 2(1) = 252.75 , 𝑝 < 10 −56 ), with an odds ratio of 1.37. Partisan differences in patriotic symbol display, long hypothesized in political communication research [29], thus manifest at measur-able scale in legislators’ self-curated visual output. Qi and Ling.                      
+
+> Comparison Category OR 95% CI Panel A: Republican vs. Democrat
+> Suit 0.934 ∗[0.892, 0.979] Podium 0.686 ∗∗∗ [0.655, 0.718] U.S. Flag 1.368 ∗∗∗ [1.316, 1.422]
+> Panel B: Senate vs. House
+> Suit 1.330 ∗∗∗ [1.248, 1.418] Podium 1.020 [0.960, 1.082] U.S. Flag 0.737 ∗∗∗ [0.700, 0.776]
+> Notes: Odds ratios (OR) with 95% CIs; OR > 1 indicates the first group is more likely to display the category. Significance: ∗𝑝 < 0.05 ,∗∗ 𝑝 < 0.01 ,∗∗∗ 𝑝 < 0.001 .
+
+Table 5: Relative comparisons in visual category display by party and chamber (RQ2). Republicans are less likely than Democrats to display suits and podiums but more likely to display U.S. flags. Senators are more likely than House mem-bers to display suits and less likely to display U.S. flags, with no significant chamber difference for podiums. −0.8 −0.4 0.0 0.4 0.8 
+
+> DW-NOMINATE Dim. 1
+> 0% 20% 40% 60% 80% 100%
+> Flag rate
+> Democrat Republican House fit Senate fit
+
+Figure 5: Ideology and U.S. flag display at the legislator level. DW-NOMINATE dimension 1 captures liberal–conservative positioning; separate OLS fits are shown for House and Sen-ate. More conservative legislators display flags more fre-quently, with a consistent effect across chambers. 
+
+Party affiliation, however, is a coarse proxy for ideological po-sition. Figure 5 examines whether the effect is driven by the party boundary itself or by continuous ideological variation. Each point represents one legislator, plotted against DW-NOMINATE dimen-sion 1. Separate OLS fits for House and Senate members reveal a consistent positive slope: more conservative legislators display U.S. flags more frequently, regardless of chamber. The effect is not a party step-function but a graded association with ideology. Table 5 extends these comparisons to suit and podium through odds ratios with 95% confidence intervals. Panel A shows that Re-publicans are significantly less likely than Democrats to display suits (OR = 0.93 ) and podiums (OR = 0.69 ) while more likely to dis-play flags (OR = 1.37 ), suggesting that Democrats more frequently appear in formal indoor speaking settings whereas Republicans foreground patriotic symbols. Panel B compares chambers: sena-tors are more likely to wear suits (OR = 1.33 ) and less likely to display flags (OR = 0.74 ), consistent with the Senate’s more for-mal institutional culture and more heterogeneous state-level con-stituencies. 
+
+6.3.2 Spatial Prominence of National Symbols. Beyond presence and absence, the pipeline enables fine-grained measurement of how visual symbols are displayed. Table 6 analyzes two contin-uous properties of detected U.S. flags: the area ratio (fraction of image occupied by the flag mask) and the normalized center dis-tance (distance from the flag centroid to the image center, scaled to [0, 1] ). Because detections are nested within legislators, compar-isons are conducted at the legislator level and regression standard errors are clustered by legislator. The upper panel reports distributional comparisons across par-ties. Republican flags occupy a larger image area on average (mean 
+
+0.0489 vs. 0.0392 ; Welch’s 𝑡 = −3.50 , 𝑝 < 10 −3 ), while Democratic flags are slightly more centered (mean center distance 0.4689 vs. 
+
+0.4582 ; 𝑝 = 0.067 ). Both effects replicate under the non-parametric Mann–Whitney test ( 𝑝 < 10 −5 and 𝑝 = 0.017 ). The lower panels link these spatial properties to continuous ide-ology through OLS regression. Conservative ideology is associated with larger flag area ( 𝛽 = 0.0122 , 𝑝 < 10 −5 ) and, more tentatively, with less central flag placement ( 𝛽 = −0.0100 , 𝑝 = 0.053 ). Conser-vative legislators thus do not merely display flags more frequently; their flags are visually larger, with a weaker tendency toward pe-ripheral placement. One plausible interpretation is that conserva-tive legislators more often use flags as backdrop elements behind speakers or stages, whereas liberal legislators more often feature them as discrete central objects. This pattern is invisible to binary detection and demonstrates the analytical value of pixel-level spa-tial quantification. 
+
+6.4 Qualitative Analysis of LLM Reasoning 
+
+Beyond quantitative patterns, the natural-language reasoning chains produced by the LLM reveal a qualitative benefit relevant to practical deployment. Figure 6 shows three representative cases. In Case (a), an OVD detector confidently labels a flag as “us flag” (confidence 0.47 ); the LLM rejects the detection, identifying the object as a Dominican Republic flag. In Case (b), a detection orig-inally labeled “suit” is re-classified as “military” once the LLM recognizes the characteristic badges and ribbons of a military uni-form. In Case (c), the LLM accepts a U.S. flag detection and grounds the decision in contextual evidence, identifying the Capitol behind the subjects. These cases share a common property: the LLM externalizes do-main knowledge that would otherwise reside with trained annota-tors. Distinguishing foreign flags from U.S. flags, identifying mili-tary insignia, and recognizing U.S. government landmarks are non-trivial visual competencies. By producing reasoning chains that state this knowledge explicitly, the pipeline shifts human-in-the-loop validation from a task requiring visual expertise to one requir-ing only logical evaluation of the stated rationale. A non-expert reviewer can assess whether “this is a Dominican Republic flag” is a well-reasoned decision without being able to identify every na-tional flag on sight. This property lowers the expertise threshold for quality control, a practical benefit for research teams without specialized visual-communication expertise. Perceive, Refine, Reason: Calibrated Visual Measurement 
+
+Metric Dem. Mean Dem. Median Rep. Mean Rep. Median Welch’s 𝑡 (𝑝 ) Mann–Whitney 𝑝 
+
+Flag area ratio 0.0392 0.0323 0.0489 0.0423 −3.495 (5.20 × 10 −4 ) 8.55 × 10 −6 
+
+Flag center distance 0.4689 0.4686 0.4582 0.4558 1.833 (6.74 × 10 −2 ) 1.74 × 10 −2 
+
+Variable Coef. Std. Err. 𝑡 -statistic 𝑝 -value CI Low CI High Panel A: OLS for flag area ratio 
+
+Intercept 0.0367 ∗∗∗ 0.0013 28.850 < 10 −16 0.0342 0.0392 nominate_dim1 0.0122 ∗∗∗ 0.0026 4.700 2.61 × 10 −6 0.0071 0.0173 is_senate -0.0028 0.0029 -0.940 0.347 -0.0086 0.0030 
+
+Panel B: OLS for flag center distance 
+
+Intercept 0.4623 ∗∗∗ 0.0028 163.200 < 10 −16 0.4568 0.4679 nominate_dim1 -0.0100 † 0.0052 -1.935 0.053 -0.0202 0.0001 is_senate 0.0011 0.0064 0.177 0.860 -0.0114 0.0136 
+
+Notes: Upper panel: distribution comparison by party at the legislator level ( 𝑁 = 470 legislators; 239 Democrat, 231 Republican), where each legislator contributes the mean over their own flag detections. Lower panels: OLS models estimated on 𝑁 = 29,178 flag detections (12,174 Democrat, 17,004 Republican) nested within 470 legislators, with nominate_dim1 (DW-NOMINATE dim. 1; higher = more conservative) and is_senate (Senate indicator). Standard errors are clustered within legislators. Significance: †𝑝 < 0.10 , ∗𝑝 < 0.05 , ∗∗ 𝑝 < 0.01 , ∗∗∗ 𝑝 < 0.001 .
+
+Table 6: Spatial prominence of U.S. flags by party. Republicans’ flags occupy a larger share of the image area; Democratic flags are slightly more centered but not statistically significant. Standard errors are clustered at the legislator level. (a) Informative Rejection 
+
+> REJECTED
+> OVD: 'us flag' → Rejected
+> LLM Reasoning:
+> This is a Dominican Republic flag, not a U.S. flag, so the label is inaccurate and not in allowed categories.
+> (b) Re-classification
+> RE-CLASSIFIED
+> OVD: 'suit' → Corrected: 'military'
+> LLM Reasoning:
+> The detected clothing is a military uniform with visible badges and ribbons, not a suit jacket or blazer.
+> (c) Domain Knowledge
+> ACCEPTED
+> OVD: 'us flag' → Accepted
+> LLM Reasoning:
+> The detected object is clearly the U.S. flag on the Capitol building, which is a valid political symbol.
+
+Figure 6: Qualitative examples of LLM-as-Judge decisions. (a) A Dominican Republic flag is rejected as non-U.S.; (b) a military uniform is re-classified from ‘suit’ (OWL-ViT v1 example); (c) a U.S. flag on the Capitol is accepted. The natural-language reasoning externalizes domain knowl-edge, flag origin, uniform insignia, landmark identifica-tion, that would otherwise require trained annotators. Or-ange: SAM mask; box color: red=rejected, blue=re-classified, green=accepted. 
+
+7 Discussion and Conclusion 
+
+We presented Perceive, Refine, Reason (PRR), a calibrated pipeline that augments off-the-shelf open-vocabulary detection with SAM-based spatial quantification and LLM-based semantic arbitration. The accompanying three-tier audit framework turns imperfect detections into measurements with documented bias bounds. Ap-plied to 103,920 Facebook images posted by U.S. legislators dur-ing the 2024 election cycle, the framework supported party-level prevalence comparisons, regression of visual indicators on con-tinuous DW-NOMINATE ideology scores, and pixel-level analysis of spatial prominence. Beyond confirming known partisan asym-metries in flag display, the spatial analysis revealed a pattern invisible to binary detection: more conservative legislators dis-play U.S. flags as larger elements, with a weaker tendency toward peripheral placement. 
+
+Implications for computational social science. The framework of-fers a ready-to-use toolkit for measuring fine-grained visual indi-cators at scale. Categories are defined in natural language, mea-surements are spatially grounded, and the audit framework makes the boundaries of reliable inference explicit. The design is model-agnostic: the SAM and LLM calibration backbone can be paired with any OVD front-end as new detectors emerge. The natural-language reasoning chains further externalize domain knowledge that would otherwise reside with trained annotators, lowering the expertise threshold for human-in-the-loop validation. 
+
+Limitations. Several limitations bound our conclusions. The gold-standard test set comprises 105 images (220 annotated in-stances); because the audit protocol is modular, a larger test set tightens the reported intervals without re-running detection, mak-ing annotation budget an explicit parameter of the framework. The case study covers one platform, one country, and one election cycle, and generalization requires re-profiling on representative test sets. The LLM arbitration layer inherits biases from its training data, and the audit framework documents aggregate error rates but not differential errors across demographic subgroups. Finally, the ideology-imagery associations are correlational, and we can-not identify whether individual image decisions reflect legislators, communications staff, or platform curation. Qi and Ling. 
+
+Future work. A richer audit framework could profile differen-tial error rates across demographic subgroups to detect repre-sentational biases. Empirically, the pipeline extends naturally to other platforms such as Instagram and TikTok, other substantive domains such as public health and protest mobilization, and lon-gitudinal corpora that capture how visual rhetoric evolves over time. 
+
+8 Ethical Considerations 
+
+This work analyzes publicly posted images from the official Face-book accounts of elected federal officials acting in their profes-sional capacity, obtained through documented public APIs. Be-cause legislators’ official social media output is a form of public political communication, the privacy expectation differs from that of ordinary user content. We nonetheless restrict our analyses to visual indicators directly relevant to the stated research questions. The pipeline carries potential dual-use risks: the same compo-nents that enable aggregate measurement could be repurposed to surveil non-public actors or profile individuals in harmful ways. We mitigate these concerns by framing the methodology around aggregate measurement rather than individual classification, ty-ing every analytical claim to the calibrated reliability of each cat-egory, and releasing only the pipeline, gold-standard annotations, and aggregate statistics rather than the image corpus itself. A fur-ther concern is that the LLM arbitration layer may produce differ-ential reliability across demographic groups underrepresented in pre-training data. Researchers deploying this pipeline in fairness-consequential domains should profile per-subgroup error rates as part of Tier 1 calibration. 
+
+References 
+
+[1] Sakshi Agarwal, Aishik Konwer, and Ankit Parag Shah. 2026. Reasoning-Guided Grounding: Elevating Video Anomaly Detection through Multimodal Large Lan-guage Models. arXiv preprint arXiv:2605.02912 (2026). [2] Dongping Chen, Ruoxi Chen, Shilin Zhang, Yaochen Wang, Yinuo Liu, Huichi Zhou, Qihui Zhang, Yao Wan, Pan Zhou, and Lichao Sun. 2024. MLLM-as-a-Judge: Assessing Multimodal LLM-as-a-Judge with Vision-Language Bench-mark. In Proceedings of the 41st International Conference on Machine Learning (ICML) . Oral presentation. [3] Tianheng Cheng, Lin Song, Yixiao Ge, Wenyu Liu, Xinggang Wang, and Ying Shan. 2024. YOLO-World: Real-Time Open-Vocabulary Object Detection. In 
+
+IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) .[4] Marius Cordts, Mohamed Omran, Sebastian Ramos, Timo Rehfeld, Markus En-zweiler, Rodrigo Benenson, Uwe Franke, Stefan Roth, and Bernt Schiele. 2016. The Cityscapes Dataset for Semantic Urban Scene Understanding. In IEEE Con-ference on Computer Vision and Pattern Recognition (CVPR) .[5] Mark Everingham, Luc Van Gool, Christopher KI Williams, John Winn, and An-drew Zisserman. 2010. The PASCAL Visual Object Classes (VOC) Challenge. 
+
+International Journal of Computer Vision 88, 2 (2010), 303–338. [6] Pedro F Felzenszwalb, Ross B Girshick, David McAllester, and Deva Ramanan. 2010. Object Detection with Discriminatively Trained Part-Based Models. IEEE Transactions on Pattern Analysis and Machine Intelligence 32, 9 (2010), 1627– 1645. [7] George Forman. 2008. Quantifying counts and costs via classification. Data Mining and Knowledge Discovery 17, 2 (2008), 164–206. [8] Fabio Gilardi, Meysam Alizadeh, and Maël Kubli. 2023. ChatGPT outperforms crowd workers for text-annotation tasks. Proceedings of the National Academy of Sciences 120, 30 (2023), e2305016120. [9] Maria Elizabeth Grabe and Erik Page Bucy. 2009. Image bite politics: News and the visual framing of elections . Oxford University Press. [10] Daniel J Hopkins and Gary King. 2010. A Method of Automated Nonparametric Content Analysis for Social Science. American Journal of Political Science 54, 1 (2010), 229–247. [11] Jungseock Joo and Zachary C Steinert-Threlkeld. 2022. Image as Data: Auto-mated Content Analysis for Visual Presentations of Political Actors and Events. 
+
+Computational Communication Research 4, 1 (2022), 11–67. [12] Amogh Joshi and Cody Buntain. 2024. Examining Similar and Ideologically Correlated Imagery in Online Political Communication. In Proceedings of the International AAAI Conference on Web and Social Media (ICWSM) .[13] Kimmo Kärkkäinen and Jungseock Joo. 2021. FairFace: Face Attribute Dataset for Balanced Race, Gender, and Age for Bias Measurement and Mitigation. In 
+
+WACV .[14] Junghoon Kim, Junmo Lee, Yeonjun In, Kanghoon Yoon, and Chanyoung Park. 2025. Revisiting Fake News Detection: Towards Temporality-aware Evalu-ation by Leveraging Engagement Earliness. In Proceedings of the 18th ACM International Conference on Web Search and Data Mining (WSDM) . 559–567. doi:10.1145/3701551.3703508 [15] Alexander Kirillov, Eric Mintun, Nikhila Ravi, Hanzi Mao, Chloe Rolland, Laura Gustafson, Tete Xiao, Spencer Whitehead, Alexander C Berg, Wan-Yen Lo, Piotr Dollár, and Ross Girshick. 2023. Segment Anything. In IEEE/CVF International Conference on Computer Vision (ICCV) .[16] Jacopo Lenti, Corrado Monti, and Gianmarco De Francisci Morales. 2024. Likelihood-Based Methods Improve Parameter Estimation in Opinion Dynamics Models. In Proceedings of the 17th ACM International Conference on Web Search and Data Mining (WSDM) . 350–359. doi:10.1145/3616855.3635785 [17] Tsung-Yi Lin, Michael Maire, Serge Belongie, James Hays, Pietro Perona, Deva Ramanan, Piotr Dollár, and C Lawrence Zitnick. 2014. Microsoft COCO: Com-mon Objects in Context. In European Conference on Computer Vision (ECCV) .[18] Shilong Liu, Zhaoyang Zeng, Tianhe Ren, Feng Li, Hao Zhang, Jie Yang, Chun-yuan Li, Jianwei Yang, Hang Su, Jun Zhu, and Lei Zhang. 2024. Grounding DINO: Marrying DINO with Grounded Pre-Training for Open-Set Object Detection. In 
+
+European Conference on Computer Vision (ECCV) .[19] Feihong Lu, Tao Yang, Ziqin Zhu, Yudi Huang, Shiqi Gao, Yangyifei Luo, Zengxu Wang, Qian Li, Qingyun Sun, and Jianxin Li. 2026. MINA: Multimodal intention analysis of social media posts via LLM-guided audio-visual-text reasoning. Pat-tern Recognition (2026). doi:10.1016/j.patcog.2026.S0031320326006655 [20] Hanjia Lyu, Jinfa Huang, Daoan Zhang, Yongsheng Yu, Xinyi Mou, Jinsheng Pan, Zhengyuan Yang, Zhongyu Wei, and Jiebo Luo. 2023. GPT-4V(ision) as A Social Media Analysis Engine. arXiv preprint arXiv:2311.07547 (2023). [21] Matthias Minderer, Alexey Gritsenko, and Neil Houlsby. 2023. Scaling Open-Vocabulary Object Detection. Advances in Neural Information Processing Systems (NeurIPS) (2023). [22] Matthias Minderer, Alexey Gritsenko, Austin Stone, Maxim Neumann, Dirk Weissenborn, Alexey Dosovitskiy, Aravindh Mahendran, Anurag Arnab, Mostafa Dehghani, Zhuoran Shen, Xiao Wang, Xiaohua Zhai, Thomas Kipf, and Neil Houlsby. 2022. Simple Open-Vocabulary Object Detection. In European Conference on Computer Vision (ECCV) . Springer, 728–755. doi:10.1007/978-3-031-20080-9_42 [23] Alexander Neubeck and Luc Van Gool. 2006. Efficient Non-Maximum Suppres-sion. In International Conference on Pattern Recognition (ICPR) , Vol. 3. 850–855. [24] Lynnette Hui Xian Ng, J.D. Moffitt, and Kathleen M. Carley. 2022. Coordinated through a Web of Images: Analysis of Image-based Influence Operations from China, Iran, Russia, and Venezuela. In Workshop Proceedings of the 16th Interna-tional AAAI Conference on Web and Social Media (ICWSM Workshops) . PhoMe-mes 2022 Workshop. [25] OpenAI. 2025. Introducing GPT-4.1 in the API. https://openai.com/index/gpt-4-1/. Accessed: 2026-05-04. [26] Yilang Peng, Irina Lock, and Albert Ali Salah. 2023. Automated Visual Analy-sis for the Study of Social Media Effects: Opportunities, Approaches, and Chal-lenges. Communication Methods and Measures 18, 2 (2023), 1–23. [27] Yilang Peng and Yingdan Lu. 2023. Computational Visual Analysis in Politi-cal Communication. In Research Handbook on Visual Politics , Anastasia Veneti and Darren G. Lilleker (Eds.). Edward Elgar Publishing, Cheltenham, UK, 42–54. doi:10.4337/9781800376939.00010 [28] Keith T Poole and Howard Rosenthal. 1985. A spatial model for legislative roll call analysis. American Journal of Political Science (1985), 357–384. [29] Dan Schill. 2012. The visual image and the political image: A review of visual communication research in the field of political communication. Review of com-munication 12, 2 (2012), 118–142. [30] Michelle Torres and Francisco Cantú. 2022. Learning to See: Convolutional Neu-ral Networks for the Analysis of Social Science Data. Political Analysis 30, 1 (2022), 113–131. [31] Donghyeon Won, Zachary C Steinert-Threlkeld, and Jungseock Joo. 2017. Protest Activity Detection and Perceived Violence Estimation from Social Media Images. In Proceedings of the ACM International Conference on Multimedia .[32] Nan Xi, Di Ma, Marcus Liou, Zachary C Steinert-Threlkeld, Jason Anastasopou-los, and Jungseock Joo. 2020. Understanding the Political Ideology of Legislators from Social Media Images. In Proceedings of the International AAAI Conference on Web and Social Media (ICWSM) .[33] Linhui Xiao, Xiaoshan Yang, Xiangyuan Lan, Yaowei Wang, and Changsheng Xu. 2026. Toward Visual Grounding: A Survey. IEEE Transactions on Pattern Analysis and Machine Intelligence 48, 3 (2026), 2749–2771. doi:10.1109/TPAMI. 2025.3630635 Perceive, Refine, Reason: Calibrated Visual Measurement 
+
+[34] Quanzeng You, Darío García-García, Manohar Paluri, Jiebo Luo, and Jungseock Joo. 2017. Cultural Diffusion and Trends in Facebook Photographs. In Proceed-ings of the International AAAI Conference on Web and Social Media (ICWSM) .[35] Bolei Zhou, Agata Lapedriza, Aditya Khosla, Aude Oliva, and Antonio Torralba. 2018. Places: A 10 Million Image Database for Scene Recognition. IEEE TPAMI 
+
+40, 6 (2018), 1452–1464. [36] Caleb Ziems, William Held, Omar Shaikh, et al. 2024. Can Large Language Mod-els Transform Computational Social Science? Computational Linguistics 50, 1 (2024), 237–291.
