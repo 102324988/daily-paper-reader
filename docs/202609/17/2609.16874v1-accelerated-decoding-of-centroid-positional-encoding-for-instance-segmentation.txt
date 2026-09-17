@@ -1,0 +1,290 @@
+Title: Accelerated Decoding of Centroid Positional Encoding for Instance Segmentation
+
+URL Source: https://arxiv.org/pdf/2609.16874v1
+
+Published Time: Wed, 16 Sep 2026 01:09:26 GMT
+
+Number of Pages: 12
+
+Markdown Content:
+# Accelerated Decoding of Centroid Positional Encoding for Instance Segmentation 
+
+Carmelo Scribano 1, Filippo Muzzini 1, Nedyalko Prisadnikov 2 Mohammad Mahdi 2, Yuqian Fu 2, Giorgia Franchini 1, Danda Pani Paudel 2, Marko Bertogna 1, and Luc Van Gool 2 
+
+> 1
+
+University of Modena and Reggio Emilia, Italy 
+
+{name}.{surname}@unimore.it  
+
+> 2
+
+INSAIT, Sofia University “St. Kliment Ohridski”, Bulgaria 
+
+{name}.{surname}@insait.ai 
+
+Abstract. Beyond model inference, the decoding stage, which converts raw network outputs into task-level representations, constitutes a sig-nificant portion of the execution cost. Despite its practical impact, pre-diction decoding has received comparatively little attention and is of-ten implemented using generic CPU routines or inefficient GPU kernels, limiting the benefits of advances in model efficiency. In this work, we investigate the decoding overhead associated with a recent sinusoidal centroid encoding for Instance Segmentation, in which each pixel re-gresses a positional embedding of its instance centroid. This approach allows flexible segmentation without predefined proposals, but extract-ing instance masks from dense embeddings incurs a high computational cost. We present an optimized CUDA-based implementation of the de-coding algorithm tailored to this encoding, explicitly addressing chal-lenges related to parallelization, synchronization, and memory access on modern GPUs. Our solution significantly reduces decoding overhead and improves End-to-End inference latency, outperforming both CPU-based approaches and naive GPU implementations. The results demonstrate that efficient decoding is essential to fully exploit the advantages of ad-vanced output representations and highlight the importance of jointly designing encoding schemes and their decoding algorithms for real-time computer vision systems. 
+
+Keywords: Edge AI · Efficient Post-Processing · CUDA Acceleration 
+
+## 1 Introduction 
+
+The computational cost of modern computer vision systems has been steadily increasing, along with the performance achieved on a broad set of tasks. While significant effort has been devoted to designing more efficient model architectures and advanced model compression strategies, the computational cost of prediction decoding (the transformation from raw network outputs to task-level represen-tations) has received significantly less interest. In practice, the decoding stage can incur significant overhead and, in some cases, dominate end-to-end inference arXiv:2609.16874v1 [cs.CV] 15 Sep 2026 2 C. Scribano et al. 
+
+time. This issue is particularly relevant in edge deployments, where computa-tional resources are limited and real-time processing is often required. For ex-ample, smart-city applications frequently execute vision models directly on edge devices [13], making low-latency inference essential for timely decision-making. Common instances of decoding operations include non-maximum suppression in object detection [3], clustering-based grouping in instance segmentation [4], and parts grouping in human pose estimation [14]. These decoding steps are often implemented using generic CPU routines or suboptimal GPU kernels, leading to memory-bound operations, excessive synchronization, and poor utilization of modern accelerators. As a result, improvements in model efficiency or backbone speed do not necessarily translate into proportional gains in overall system per-formance. This study explores the computational efficiency of sinusoidal centroid en-codings for instance segmentation [9]. Although this representation enables the modeling of an arbitrary number of instances without complex proposal logic, recovering the final masks remains a bottleneck due to the multi-stage nature of the decoding algorithm. We present a high-performance CUDA implementation specifically designed to overcome these parallelization and memory access chal-lenges. Our optimized decoder enables the model to achieve its full potential in real-time scenarios, effectively bridging the gap between theoretical representa-tion and practical deployment. Our findings highlight that the practical value of novel output representations is closely linked to the efficiency of their associated decoding algorithms. 
+
+## 2 Background and Related Work 
+
+2.1 Instance Segmentation 
+
+Formally, the goal of the instance segmentation (IS) task is to assign each pixel in an image to a unique object instance. This task is strictly related to Semantic Segmentation (SS), which instead assigns each pixel to a semantic class. The two tasks can be combined as Panoptic Segmentation, which assigns pixels to instance masks with a semantic label. This paper focuses on the class-agnostic IS task. Instance Segmentation (IS) is challenging because the number of object in-stances is not known in advance. As a result, the model must simultaneously localize objects and assign pixels to the correct instance, producing a variable number of output masks. Top-Down methods (e.g., Mask R-CNN [2]) simplify this by detecting bounding boxes and then segmenting each box independently. While effective, this sequential processing of proposals scales poorly with ob-ject density. Bottom-Up methods instead predict dense pixel-level embeddings that are aggregated post-inference. This family of approaches avoids the proposal bottleneck, offering a theoretically superior path toward parallelized, real-time decoding. Accelerated Decoding of Centroid Positional Encoding 3    
+
+> (a) Source (b) Votes Histogram (c) LocalMax Indi-cator
+> (d) Instance Masks
+
+Fig. 1: Overview of the decoding process for the proposed encoding. 
+
+2.2 Background 
+
+The instance segmentation approach discussed in this paper is introduced in [9], where, in conjunction with a strong DINOv2 backbone [8] and a carefully de-signed loss function [9], it achieves state-of-the-art results on the COCO dataset [6]. DINOv2 has already been successfully applied to segmentation [10] and ob-ject detection [7, 11], making it a strong backbone model for a variety of tasks. This work extends the paradigm adopted in Painter [16] and is conceptually related to DCME [17]. Painter encodes instances via dense RGB embeddings regressed per pixel, while DCME predicts per-pixel displacement vectors to in-stance centroids; sinusoidal positional encodings provide a more robust alter-native to both approaches. In [12], a basic CUDA-based decoder is presented to leverage GPU acceleration. However, this approach suffers from atomic con-tention and poor memory reuse, leading to sub-optimal performance. 
+
+2.3 CUDA and GPU programming 
+
+Modern GPUs leverage the SIMD (Single Instruction Multiple Data) paradigm to provide massive parallel processing capabilities. Under the GPGPU frame-work, tasks are executed by transferring data to the device, launching a special-ized kernel, and copying results back to the host. Using the CUDA programming model, developers can explicitly manage this parallelism by configuring threads into a grid of three-dimensional blocks. This hierarchy allows for fine-grained control over resources: threads within the same block utilize high-speed, on-chip shared memory and barriers for synchronization. By leveraging shared memory as a low-latency cache for frequently accessed data, the overhead of global mem-ory access is mitigated, significantly enhancing the overall performance of the implementation. 
+
+## 3 Methodology 
+
+We adopt the encoding formulation proposed in [9]. Let M = {Mk}Nk=1 be the set of ground-truth instance masks. For each instance k, let (xkc , y kc ) ∈ R2 denote 4 C. Scribano et al. 
+
+the image-space coordinates of its centroid, normalized in [−1, 1] , and let Ωk ⊂{1, . . . , H O } × { 1, . . . , W O } denote the set of normalized pixel locations belong-ing to mask Mk. We define the instance-segmentation target T ∈ RHO ×WO ×4L
+
+such that each spatial location encodes the sinusoidal positional encoding of the centroid of the instance it belongs to, or a void encoding for background pixels. Formally, for each location (i, j ):
+
+T (i, j ) = 
+
+(
+
+concat (γ(xkc ), γ (ykc )) if (i, j ) ∈ Ωk
+
+0 ∈ R4L otherwise. (1) where the positional encoding γ(p) : R → R2L, derived from [15], is defined as: 
+
+γ(p) = ( sin (2 lπp ), cos (2 lπp )) L−1 
+
+> l=0
+
+(2) 
+
+L defines the number of used harmonics; L = 4 is used. 
+
+3.1 Decoding Algorithm 
+
+The algorithm to recover the predicted instance masks ˆM from a noisy estimate 
+
+ˆT requires several steps. Let the network prediction at location (i, j ) be: 
+
+ˆT (i, j ) = concat (ˆ x(i, j ), ˆy(i, j )) ˆx(i, j ), ˆy(i, j ) ∈ R2L (3) First, a coarse voting histogram H ∈ R(Bw +1) ×(Bh+1) is computed, with 
+
+B = [1 , ..., B w + 1] × [1 , ..., B h + 1] denoting the set of bins locations (each representing a candidate instance centroid). Each output location (i, j ) casts soft votes for all histogram bins (a, b ) ∈ B by comparing its predicted encodings to the positional encodings of the bin coordinates. The separable distance between output location (i, j ) and histogram bin (a, b ) in the encoded space is defined as 
+
+dij (a, b ) = dx(i, j, a ) + dy (i, j, b ), with: 
+
+dx(i, j, a ) = || ˆx(i, j ) − γ(a)|| 
+
+dy (i, j, b ) = || ˆy(i, j ) − γ(b)|| (4) The corresponding vote weight is given by the negative exponential of the dis-tance: 
+
+wij (a, b ) = e−dij (a,b ) (5) The coarse voting histogram H is then obtained by aggregating votes over the set of participating output locations S = [1 , ..., H O ] × [1 , ..., W O ]:
+
+H(a, b ) = X
+
+> (i,j )∈S
+
+wij (a, b ) (6) Local-maxima search is used to retrieve a set of ˆK candidate mask centroids 
+
+C = {(ak, b k)} ˆKk=1 , while simultaneously suppressing weak centroid candidates caused by prediction noise. Each element of C represents a hypothesized instance Accelerated Decoding of Centroid Positional Encoding 5
+
+centroid in the discretized output coordinate space. Each output location (i, j )
+
+contributes to the m-th mask, Mm, associated with the closest candidate centroid bin in the encoding space: 
+
+m = arg min  
+
+> k
+
+dij (ak, b k) (7) 
+
+ˆMm(i, j ) = 
+
+(
+
+1 if dij (am, b m) < τ 
+
+0 otherwise (8) 
+
+3.2 Decoding Implementation 
+
+In this section, we describe our implementation of the decoding phase. We ex-ploit the CUDA ecosystem to offload the computation on the GPU. First, we precompute the palettes for the encoded bin coordinates in x and y directions, denoted as Pw and Ph respectively. Where: 
+
+Pn =
+
+(
+
+γ
+
+
+
+−1 + 2in + 1 
+
+
+
+i = 1 , 2, . . . , n 
+
+)
+
+(9) denotes the vector of precomputed γ(·) evaluated at evenly spaced candidate centroid locations corresponding to histogram bins. Unlike the original imple-mentation, we do not use an explicit void encoding for background pixels; pixels not associated with any valid instance are implicitly treated as background, and the centroid voting histogram therefore consists of Bw × Bh bins. Ph and Pw are stored as model parameters preloaded in memory and can be accessed without recomputing or memory copying. 
+
+Histogram accumulation. First, we compute H from Equation 6. The naive im-plementation [12] assigns one (( i, j ), (a, b )) tuple to each thread. The thread explicitly computes wij (a, b ) for the assigned pixel-bin pair and adds the result to the global histogram bin H(a, b ). Since many threads vote for the same his-togram bin concurrently, this accumulation requires atomicAdd operations on global memory. As a result, updates to popular bins become serialized, creating severe contention, limiting memory throughput, and reducing parallel efficiency. To overcome this limitation, we approach the problem by relying on a decompo-sition of H and on the use of the optimized cuBLAS 3 library. The sum over S in Equation (6) admits the following decomposition by factorizing the exponential of the sum in wi,j (a, b ) as product of exponentials wi,j (a, b ) = Ex(i, j, a )Ey (i, j, b )
+
+where: 
+
+Ex(i, j, a ) = e−|| ˆx(i,j )−Pw (a)|| 
+
+Ey (i, j, b ) = e−|| ˆy(i,j )−Ph(b)|| (10)   
+
+> 3https://developer.nvidia.com/cublas 6C. Scribano et al.
+
+Therefore, Equation (6) decomposes as: 
+
+H(a, b ) = E⊤ 
+
+> x
+
+Ey (11) Delegating the computation of Ex and Ey to specialized kernels, this formula-tion eliminates the need for an accumulator and atomic operations. The two kernels are launched with HO ∗ WO ∗ a threads ( HO ∗ WO ∗ b for Ey matrix), so each thread computes a single element of the corresponding matrix. Once Ex
+
+and Ey are computed, H is obtained using the optimized cuCBLAS function 
+
+cublasSgemmStrided to implementing Equation 11. 
+
+Local Maxima Search. The computed H is a noisy estimate of candidate mask centroids (Figure 1b). The Local Maxima Search stage produces a sparse binary indicator map H marking which bins are selected as candidate centroids (Fig-ure 1c). Conceptually, the kernel assigns one CUDA thread to each histogram cell (x, y ). Each thread loads the center value H(x, y ) and tests whether it is a strict local maximum within its 8-connected neighborhood. If this condition is satisfied and the value exceeds a predefined threshold, a binary peak indicator is written to H(x, y ).
+
+Mask Aggregation. The final stage assigns each output pixel to an instance mask according to Equation 8. The kernel is launched with one thread per output pixel 
+
+(i, j ). Given the binary centroid map H and the affinity matrices Ex and Ey ,each thread scans all active centroid bins (a, b ) such that H(a, b ) = 1 . For each candidate, it computes the combined affinity Ex(i, j, a ) ∗ Ey (i, j, b ) and selects the centroid with the highest value among the candidates that satisfy the affinity threshold e−τ . Before scanning the centroids, each thread loads the affinity values associated with its pixel into shared memory. This avoids repeatedly reading the same Ex and Ey entries from global memory while evaluating multiple candidate centroids. The output memory is preallocated for all Bw × Bh possible masks, one per histogram bin. Once the best centroid (am, b m) is selected, the thread sets ˆMm(i, j ) = 1 in the corresponding output mask. The kernel also maintains a counter vector C, where Cm stores the number of pixels assigned to mask 
+
+m. Since multiple threads may assign pixels to the same mask, updating this counter requires an atomicAdd . In practice, this atomic operation is limited to one update per assigned pixel, while the main centroid search is performed locally by each thread. Compared with a naive implementation [12] that launches one thread per tuple 
+
+(i, j, m ), this design reduces memory traffic by evaluating all candidate masks for a pixel within a single thread and reusing the pixel-specific affinity values from shared memory. This avoids repeatedly loading the same affinity vectors for each candidate mask and improves the efficiency of the aggregation stage. Accelerated Decoding of Centroid Positional Encoding 7
+
+## 4 Results and Discussion 
+
+In this experimental section, we discuss the performance of our CUDA-accelerated implementation of the decoding algorithm. We are interested in both system and task metrics. In particular, we measure the inference time of the decoder (Infer-ence Time), the End-to-End inference time of the model (End-to-End Inference Time), the memory footprint, and the Panoptic Quality (PQ) [5]. First, we iden-tify a latency/performance tradeoff varying the number of histogram bins, while also validating the task performances against the PyTorch reference implemen-tation [9]. Then we assess the latency and memory footprint at different input resolutions. Finally, we break down the End-to-End inference performance, in-cluding model inference time, to showcase the significant impact of the decoding stage. 
+
+4.1 Experimental setup 1×352×352×16 1×1024×352×352 1×1024 data ISDecodePlugin 
+
+> 1〈32×8 〉
+> 2〈32×8 〉
+> conf_th = 100 dist_th = 1.5 masks keep
+
+Fig. 2: Dummy ONNX model used to profile TensorRT execution. Latency and memory consumption are profiled on an NVIDIA Jetson Orin Nano, using TensorRT for inference acceleration. The decoder is implemented as a TensorRT plugin via the IPluginV3 interface. To evaluate the decoder in isolation from the rest of the model, we designed a minimal ONNX graph (Figure 2) which is compiled into a TensorRT engine. We leverage the trtexec 
+
+utility to measure execution time, omitting data transfer latencies 4.The memory footprint is assessed by implementing a custom CUDA allo-cator within the TensorRT environment to track peak memory usage during inference. Task performance (Table 1) is quantified using the Panoptic Qual-ity (PQ) metric, following the protocol established in [9]. To isolate the impact of our optimizations, we evaluate PQ across different decoder implementations while keeping the rest of the model architecture constant. 
+
+4.2 Impact of the number of bins 
+
+Decoder efficiency and task accuracy are primarily influenced by the histogram bin resolution. We assess this trade-off by comparing our CUDA implementation  
+
+> 4
+
+trtexec –loadEngine=instseg.trt –noDataTransfers –useSpinWait –iterations=100 – avgRuns=100 –warmUp=10 –staticPlugins=ISDecodeIPluginV3.so 8 C. Scribano et al. 
+
+Table 1: Comparison of execution time and memory footprint of different decoder implementations.                                                            
+
+> Bins PQ Infer time (ms) Infer time st.dev Memory (MB )
+> Torch TRT Torch TRT Torch TRT Torch TRT
+> (8 ×8) 26.68 22.57 56.44 2.13 0.16 0.001 64.55 47.58
+> (16 ×16) 43.72 34.91 74.91 6.13 0.20 0.003 77.54 150.67
+> (32 ×32 )51.32 50.78 196.18 30.66 0.54 0.01 121.92 547.18
+> (64 ×64) 52.26 52.08 493.76 101.37 27.01 0.017 218.25 2101.47
+> (80 ×80) 52.34 52.14 687.99 144.00 42.18 0.026 272.25 3259.25
+
+against the original PyTorch reference [9]. Results in Table 1 demonstrate that our decoder is consistently faster and exhibits superior timing stability, which is essential for predictable real-time performance in safety-critical applications. This stability stems from our use of static memory pre-allocation during the initialization phase. Our analysis reveals that PQ gains follow a trend of di-minishing returns, plateauing at a resolution of 32 × 32 bins. Given that higher resolutions increase latency without significant quality improvements, we adopt the 32 × 32 configuration for all subsequent evaluations. 
+
+4.3 Impact of the feature resolution 
+
+We further evaluate the scalability of our decoder with respect to the encoding space resolution ˆT ∈ RHO ×WO ×4L. Since the spatial dimensions HO , W O scale with the model input resolution, we measure inference time for different feature-map sizes using a fixed 32 × 32 bin configuration (Figure 3b). The proposed im-plementation consistently outperforms the PyTorch reference and exhibits better scaling behavior as the feature-map resolution increases. These results indicate that the optimized kernels effectively limit the additional computational cost associated with higher-resolution inputs. 
+
+4.4 End-to-End Latency Breakdown 
+
+To evaluate system-level performance, we integrate the proposed decoder into the model from [9]. The network uses a DINOv2 [8] (ViT-L [1]) backbone and four transposed convolutions for feature upsampling. After export to ONNX, the model is optimized with TensorRT and benchmarked at different precision levels. This configuration enables a realistic assessment of the decoder’s contribution to end-to-end inference performance. We report the End-to-End latency at different combinations of input resolution ( 280 × 280 , 336 × 336 , 448 × 448 and 616 × 616 )and numerical precision (FP32, FP16, and INT8). The end-to-end performance comparison is reported in Table 2. To isolate the impact of the decoder, both pipelines use the same TensorRT-optimized back-bone and intermediate model components; the only difference is the decoding Accelerated Decoding of Centroid Positional Encoding 9
+
+Table 2: Inference time and PQ performance as a function of bin resolution for baseline and optimized decoders.                                               
+
+> Input Res. Precision End-to-end Infer - Torch (ms) End-to-end Infer - Our (ms) speedup %
+> 280 ×280
+> FP32 225.61 154.56 31.49
+> FP16 138.40 67.35 51.34
+> INT8 129.12 58.07 55.03
+> 336 ×336
+> FP32 319.17 227.09 28.85
+> FP16 183.27 91.19 50.24
+> INT8 171.15 79.07 53.80
+> 448 ×448
+> FP32 595.24 482.33 18.97
+> FP16 284.85 171.94 39.64
+> INT8 260.71 147.80 43.31
+> 616 ×616
+> FP32 1332.53 1167.01 12.42
+> FP16 507.73 342.21 32.60
+> INT8 465.52 300.00 35.56
+
+stage, which is implemented either using the original PyTorch decoder or the proposed CUDA implementation. Under these conditions, the proposed decoder consistently reduces end-to-end latency, achieving speedups of up to 55% in INT8 mode at a resolution of 280 × 280 . The comparison in Figure 3a highlights that decoding is a non-trivial bottleneck and can dominate the End-to-End execution time when relying on a suboptimal implementation. 
+
+4.5 Kernel Execution Profiling 
+
+We further break down the performance profile of our implementation by analyz-ing individual kernel latencies (Table 3). The Histogram accumulation (HistAcc) kernel is the most significant contributor to total latency, followed by Mask Ag-gregation (Mask Agg), while cublasSgemmStrided and Local Maxima Search 
+
+(LMS) have a marginal impact. The implementation demonstrates high tim-ing stability, which is vital for safety-critical applications. The minor execution variance in the Mask Aggregation and cublasSgemmStrided kernels stems from atomic-induced memory contention. Our design choices in the Optimized imple-mentation have significantly curtailed raw GPU compute time with respect to the Naive implementation, shifting the performance bottleneck toward memory operations, which now account for 33% of the total decoder inference time. A comparison with the naive implementation [12] highlights that the decom-position of H and the use of cuBLAS are the primary contributors to the im-10 C. Scribano et al. 0100 200 300 400 500 280x280x3 336x336x3 448x448x3 616x616x3 Model Only w/ Torch Decoder w/ Our Decoder 
+
+> End to End inference Time
+
+(a) End-to-End inference latency compar-ison across varying resolutions at INT8 precision. Encoding Dimension Inferece time (ms)     
+
+> 050 100 150 200 (160x160x16) (192x192x16) (256x256x16) (352x352x16)
+> Our Implementation Pytorch
+
+(b) Impact of encoding resolution on la-tency: PyTorch baseline vs. optimized CUDA implementation (fixed 32 ×32 bins, 
+
+L = 4 ). 
+
+Fig. 3: Latency analysis across implementations and resolutions. Table 3: Execution time of each kernel 
+
+Operation Kernel Exec (ms) Exec std (ms) time % Optim. 
+
+HistAcc 
+
+compute ex kernel 6.47 0.001 21.09 
+
+compute ey kernel 6.47 0.001 21.09 
+
+cublasSgemmStrided 0.75 0.002 2.44 
+
+total 13.68 44.62 LMS local_maxima 0.010 0.000 0.03 MaskAgg mask_aggregation 6.88 0.007 22.44 
+
+Naive 
+
+HistAcc fused_vote_kernel 77.99 0.003 73.41 LMS local_maxima_nai 0.008 0.000 0.01 MaskAgg mask_aggregation_nai 21.26 0.003 20.02 
+
+provement in decoder execution time. Additionally, the optimization of the Mask Aggregation kernel provides a substantial benefit, achieving an approximately 6-fold speedup. The naive and optimized kernels are mutually incompatible due to differing data encoding schemes in their respective preceding pipeline stages. In summary, our optimizations drastically reduce the decoder execution time, which in turn lowers the End-to-End latency of the entire model, as the decoder represents a significant portion of the overall pipeline. 
+
+## 5 Conclusion 
+
+In this work, we introduced a high-performance GPU-accelerated decoder for instance segmentation that achieves substantial speedups over existing imple-mentations. Our results demonstrate that optimizing traditionally CPU-bound auxiliary stages is as critical to reducing End-to-End latency as refining the core Accelerated Decoding of Centroid Positional Encoding 11 
+
+model architecture. By outperforming baseline GPU implementations, our design validates the necessity of hardware-aware decoding. Future research will focus on optimizing memory management—which currently accounts for 33% of the remaining latency—by transitioning from framework-level handling to custom, low-level memory orchestration. 
+
+Acknowledgments. This research was partially funded by the dAIedge project (HORIZON-CL4-2022-HUMAN-02-02, Grant Agreement Number: 101120726) and the Ministry of Education and Science of Bulgaria (support for INSAIT, part of the Bulgarian National Roadmap for Research Infrastructure). 
+
+Disclosure of Interests. The authors have no competing interests to declare that are relevant to the content of this article. 
+
+## References 
+
+1. Dosovitskiy, A.: An image is worth 16x16 words: Transformers for image recogni-tion at scale. arXiv preprint arXiv:2010.11929 (2020) 2. He, K., Gkioxari, G., Dollár, P., Girshick, R.: Mask r-cnn. In: Proceedings of the IEEE international conference on computer vision. pp. 2961–2969 (2017) 3. Hosang, J., Benenson, R., Schiele, B.: Learning non-maximum suppression. In: Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition (CVPR) (July 2017) 4. Jiang, L., Zhao, H., Shi, S., Liu, S., Fu, C.W., Jia, J.: Pointgroup: Dual-set point grouping for 3d instance segmentation. In: Proceedings of the IEEE/CVF Confer-ence on Computer Vision and Pattern Recognition (CVPR) (June 2020) 5. Kirillov, A., He, K., Girshick, R., Rother, C., Dollár, P.: Panoptic segmentation. In: Proceedings of the IEEE/CVF conference on computer vision and pattern recog-nition. pp. 9404–9413 (2019) 6. Lin, T.Y., Maire, M., Belongie, S., Hays, J., Perona, P., Ramanan, D., Dollár, P., Zitnick, C.L.: Microsoft coco: Common objects in context. In: European conference on computer vision. pp. 740–755. Springer (2014) 7. Liu, S., Zeng, Z., Ren, T., Li, F., Zhang, H., Yang, J., Jiang, Q., Li, C., Yang, J., Su, H., et al.: Grounding dino: Marrying dino with grounded pre-training for open-set object detection. In: European conference on computer vision. pp. 38–55. Springer (2024) 8. Oquab, M., Darcet, T., Moutakanni, T., Vo, H., Szafraniec, M., Khalidov, V., Fernandez, P., Haziza, D., Massa, F., El-Nouby, A., et al.: Dinov2: Learning robust visual features without supervision. arXiv preprint arXiv:2304.07193 (2023) 9. Prisadnikov, N., Van Gansbeke, W., Paudel, D.P., Van Gool, L.: A simple and generalist approach for panoptic segmentation. arXiv preprint arXiv:2408.16504 (2024) 10. Ren, T., Chen, Y., Jiang, Q., Zeng, Z., Xiong, Y., Liu, W., Ma, Z., Shen, J., Gao, Y., Jiang, X., et al.: Dino-x: A unified vision model for open-world object detection and understanding. arXiv preprint arXiv:2411.14347 (2024) 11. Ren, T., Jiang, Q., Liu, S., Zeng, Z., Liu, W., Gao, H., Huang, H., Ma, Z., Jiang, X., Chen, Y., et al.: Grounding dino 1.5: Advance the" edge" of open-set object detection. arXiv preprint arXiv:2405.10300 (2024) 12 C. Scribano et al. 12. Scribano, C., Mahdi, M., Muzzini, F., Prisadnikov, N., Fu, Y., Verucchi, M., Sanudo Olmedo, I., Paudel, D.P., Van Gool, L.: Edge Deployment of Multi-Task Vision Models for Smart City Infrastructures. In: EEAI 2025 - European Con-ference on EDGE AI Technologies and Applications. Naples, Italy (Oct 2025), to appear 13. Scribano, C., Sanudo Olmedo, I., Verucchi, M., Bertogna, M., et al.: On-the-edge inference enabled vision system for smart cities. In: SMART 2025, The Fourteenth International Conference on Smart Cities, Systems, Devices and Technologies. pp. 24–48 (2025) 14. Tang, W., Wu, Y.: Does learning specific features for related parts help human pose estimation? In: Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) (June 2019) 15. Vaswani, A., Shazeer, N., Parmar, N., Uszkoreit, J., Jones, L., Gomez, A.N., Kaiser, Ł., Polosukhin, I.: Attention is all you need. Advances in neural information pro-cessing systems 30 (2017) 16. Wang, X., Wang, W., Cao, Y., Shen, C., Huang, T.: Images speak in images: A generalist painter for in-context visual learning. In: Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition. pp. 6830–6839 (2023) 17. Watanabe, T., Wolf, D.: Distance to center of mass encoding for instance segmen-tation. In: 2018 21st International conference on intelligent transportation systems (ITSC). pp. 3825–3831. IEEE (2018)

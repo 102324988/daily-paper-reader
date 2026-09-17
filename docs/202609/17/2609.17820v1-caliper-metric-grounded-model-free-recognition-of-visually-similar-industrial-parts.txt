@@ -1,0 +1,268 @@
+Title: CALIPER: Metric-Grounded Model-Free Recognition of Visually Similar Industrial Parts
+
+URL Source: https://arxiv.org/pdf/2609.17820v1
+
+Published Time: Thu, 17 Sep 2026 00:15:11 GMT
+
+Number of Pages: 12
+
+Markdown Content:
+# CALIPER: M ETRIC -G ROUNDED MODEL -F REE RECOGNITION OF VISUALLY SIMILAR INDUSTRIAL PARTS 
+
+Alankrit Gupta, Chenxi Tao, Seung-Kyum Choi 
+
+George W. Woodruff School of Mechanical Engineering Georgia Institute of Technology Atlanta, GA, U.S.A. 
+
+{agupta3129@, ctao40@, schoi@me.}gatech.edu 
+
+# ABSTRACT 
+
+Fine-grained recognition of visually similar industrial parts is challenging when classes differ primar-ily in physical dimensions. Normalizing detected object crops to a fixed input size suppresses absolute scale, while CAD models and large class-specific datasets may be unavailable in evolving industrial inventories. We present CALIPER, a model-free RGB-D framework that couples support-based appearance matching with metric size evidence. Each training class is onboarded from a single turntable RGB-D video and one to two labeled real images; 3D reconstruction provides novel-view appearance support, while aligned depth yields a class-specific metric size profile. At inference, a coarse YOLOv8n-seg model localizes parts, and a frozen DINOv2 backbone with an episodically trained embedding head performs fine-grained support matching. Margin-conditioned metric fu-sion activates probabilistic size evidence only for appearance-ambiguous decisions. New classes are enrolled from a small RGB-D support set without updating network parameters. We evaluate CALIPER on 18 visually similar industrial parts: 16 classes are used for training, while two screws are reserved for training-free enrollment. CALIPER achieves 88.2% closed-set accuracy with 99.8% localization recall and 85.7% overall accuracy after 10-shot enrollment of the two unseen screws. Metric fusion improves unseen-class accuracy by up to 37.4 percentage points without statistically significant degradation of the original inventory. Robot-arm deployment identifies 17/18 parts without deployment-specific retraining. 
+
+Keywords Computer Vision for Automation · RGB-D Perception 
+
+# 1 Introduction 
+
+Reliable object identification is fundamental to robotic manipulation, whether a humanoid sorts industrial components or an arm retrieves the correct instrument during robot-assisted surgery. Localization alone is insufficient if visually similar parts can still be confused. Modern detectors and fine-grained classifiers perform well when classes have distinct visual cues [1, 2], but industrial inventories often contain screws, nuts, gears, and other variants that deliberately share geometry, material, texture, and color. Distinguishing such parts can therefore depend on physical dimensions rather than appearance alone. This setting introduces three practical challenges. First, standard detection pipelines crop and resize objects to a common input size, suppressing absolute scale and making dimensionally different parts appear similar in the visual feature space. Second, CAD models required by many model-based recognition pipelines may be unavailable or costly to maintain. Third, collecting extensive class-specific training data is expensive, particularly when an inventory evolves and new variants must be introduced after deployment. A practical recognizer should therefore operate from limited onboarding data, exploit metric information when appearance is ambiguous, and admit new classes without retraining the deployed recognition model. Recent advances have reduced some of these requirements. Foundation-model features enable support- or template-based recognition with little task-specific training [3, 4], while model-free onboarding can replace CAD models with arXiv:2609.17820v1 [cs.CV] 15 Sep 2026 Gupta et al. 
+
+Figure 1: Overview of CALIPER. (A) Training classes are onboarded to build appearance support banks, a coarse detector, and class-specific metric size profiles; limited real data provide sim-to-real supervision and calibrate the fusion parameters. (B) An unseen class is enrolled from SI10 RGB-D images by forming a new support bank and live size profile, without retraining. (C) At inference, the coarse detector provides object crops and masks for appearance matching and metric measurement, respectively. Existing and newly enrolled banks/profiles are combined, and margin-conditioned fusion produces the final fine-grained identity. Here, E and N denote existing and newly enrolled class sets; TV1, RLI12, BV2, SI10 are different data tiers explained in Sec. 3. short reference videos [5]. However, these approaches primarily exploit appearance and geometry for recognition, localization, or pose estimation, and are not designed for fine-grained variants whose normalized visual appearance is nearly identical. Prior work has also shown that real-world object size can aid recognition [6, 7, 8], but size evidence is typically treated independently of support-based class enrollment. This leaves an important gap for evolving industrial inventories: a new class should be enrollable from a small RGB-D support set without retraining, while carrying both an appearance representation and a metric identity profile. Moreover, metric evidence should complement rather than indiscriminately perturb appearance-based decisions, and the effect of adding new classes on the already deployed ones should be measured and bounded. We propose CALIPER, a model-free RGB-D recognition framework that couples support-based appearance matching with metric size evidence (Fig. 1). Each training class is onboarded from a single turntable RGB-D video and one to two labeled real images, with 3D reconstruction providing dense novel-view appearance support and aligned depth a class-specific metric size profile. At inference, a coarse YOLOv8n-seg model localizes candidate parts, and a frozen DINOv2 backbone with a lightweight episodically trained embedding head performs fine-grained support matching. CALIPER then applies margin-conditioned metric fusion : depth-derived size likelihoods influence the prediction only when the pre-fusion appearance margin is small, allowing metric evidence to resolve ambiguous variants while preserving confident appearance decisions. The same representation enables training-free enrollment. A new fine-grained class within an existing coarse category is added from a small RGB-D image set by forming its appearance support pool and live size profile, without updating network parameters. Because enrollment expands the competing label set, CALIPER also explicitly measures its interference with previously deployed classes. We evaluate CALIPER on a controlled RGB-D benchmark of 18 uniformly colored 3D-printed parts spanning gears, nuts, and screws. 16 classes are used for training, while two visually similar screws are held out entirely as enrollment probes; crop normalization makes their appearance nearly identical, while their physical dimensions remain distinct. Our contributions are: • a low-data, CAD-free onboarding pipeline that derives both appearance support and metric size profiles from RGB-D captures; 2CALIPER: Metric-Grounded Model-Free Recognition of Visually Similar Industrial Parts 
+
+Figure 2: The benchmark includes 18 classes across three coarse categories – two gears, seven nuts, and nine screws. 
+
+screw_h (M14) and screw_i (M20) are the two unseen enrollment probes; they appear nearly identical in the visual feature space but carry distinct sizes. • margin-conditioned probabilistic fusion of appearance and metric evidence, allowing physical size to influence only appearance-ambiguous decisions; • training-free enrollment of unseen fine-grained classes, with explicit measurement and a bound on appearance-channel interference with the deployed inventory; • a controlled RGB-D benchmark for visually similar industrial parts, complemented by robot-arm deployment. CALIPER reaches 88 .2% closed-set accuracy with 99 .8% localization recall. After enrolling the two unseen screws, it achieves 85 .7% overall accuracy with 10-shot support, with metric fusion improving the accuracy of unseen screws by up to 37 .4 percentage points (pp) without statistically significant degradation of the original inventory. In robot-arm deployment, the frozen system correctly identifies 17 /18 parts across three scenes with no retraining. 
+
+# 2 Related Work 
+
+Foundation models and low-data recognition. Conventional supervised detectors and fine-grained classifiers require class-specific annotated data [1, 2]. Although foundation models are pretrained at substantial data and compute scale, their representations can be reused without retraining the backbone. CLIP [9] has enabled open-vocabulary detectors such as OWL-ViT [10] and Grounding DINO [11], while DINOv2 [3] provides transferable embeddings and SAM2 [12] class-agnostic masks. Therefore, these models are attractive in industrial settings when labeled data are scarce and task-specific adaptation must remain lightweight. 
+
+Few-shot classification and extensibility. Few-shot methods classify novel classes from limited support data. Matching Networks [13] and ProtoNet [14] operate on support representations, whereas MAML [15] learns parameters for rapid adaptation; strong embeddings with simple classifiers can also be competitive [16, 17]. Support-based classifiers can therefore add classes without modifying the feature extractor. By contrast, few-shot and incremental object detectors must also localize new classes and typically adapt detector parameters as the class set changes [18, 19, 20]. These works mainly study visually distinct classes rather than fine-grained identities within a coarse category, and rarely quantify interference with an existing inventory. 
+
+Model-based and model-free object onboarding. CAD-based novel-object methods render templates and match them using pretrained features, as in CNOS, SAM-6D, GigaPose, and FoundPose [4, 21, 22, 23]. The BOP Challenge more recently introduced model-free tasks that register unseen objects from short reference videos [5]. OnePose [24] and Gen6D [25] use reference images without target CAD models, while 3D reconstruction with COLMAP [26], NeRF [27], and 3D Gaussian Splatting [28] builds dense object representations from limited captures. These methods largely target localization and pose estimation; concurrent CAD-free recognition instead fuses scale-normalized 3D shape prototypes with DINOv2 using fixed-weight fusion [29] but does not preserve metric scale for fine-grained identification. 
+
+Metric size as identity evidence. RGB-D recognition has long used depth as a visual or geometric representation [30, 31], usually without treating measured dimensions as explicit class evidence. Prior size-aware approaches use real-world size as semantic information [32], class-specific RGB-D size distributions for filtering and rescoring [6], size-based class exclusion [7], qualitative reasoning for uncertain predictions [33], or probabilistic combination of size distributions with visual scores [8]. However, they neither tie metric profiles to training-free support enrollment nor condition class-specific probabilistic size evidence on the appearance decision margin. CALIPER builds on these directions through model-free video onboarding and sim-to-real support adaptation, while introducing support-derived metric profiles and margin-conditioned fusion. Metric evidence accompanies class enrollment and is invoked only for appearance-ambiguous decisions. CALIPER supports training-free enrollment and evaluates its interference with deployed classes. 3Gupta et al. 
+
+Figure 3: Directional separability among fine-grained classes within three coarse categories – gears, nuts, and screws. Each cell (A, B ) reports S(A→B), measuring how well class A is separated from class B in the head-embedding space using onboarding ( 16 training classes) and enrollment ( 2 unseen screws) data. Lower values indicate greater visual similarity and higher confusion potential; diagonal cells are empty because self-separability is undefined. 
+
+# 3 Dataset & Problem Setting 
+
+We introduce a controlled benchmark of 18 3D-printed industrial parts. The 16-class training inventory contains two gears, seven nuts, and seven screws; two additional screws are reserved as unseen enrollment probes . The M14- and M20-style screws differ in dimensions by approximately a factor of 1.4, yet crop normalization makes their appearance nearly identical in the visual feature space. They therefore form a controlled scale-degenerate pair for testing whether metric evidence can recover identity when appearance is ambiguous. Fig. 2 shows the complete inventory. 
+
+3.1 Separability Analysis 
+
+We quantify appearance difficulty using inference-time support data only, without accessing the T EST set. Because CALIPER scores each class by maximum cosine similarity to its support pool, we define a directional separability index on the same decision variable. For a support crop r of class A, let sown (r) be its maximum similarity to the remaining crops of A under leave-one-out evaluation, and sother (r) its maximum similarity to class B. We define 
+
+m(r) = sown (r) − sother (r), S(A→B) = μm/σ m,
+
+where μm and σm are the mean and standard deviation of m(r) over class A. Thus, lower S(A→B) indicates greater appearance ambiguity between A and B.Fig. 3 reports S separately for each coarse category. Most pairs are well separated, whereas the enrollment probes form the extreme case, with S(screw_h → screw_i ) ≈ 0. A probe view is about as similar to the competing probe as to its own class. S provides an a priori appearance-difficulty order rather than a direct Test-set confusion estimate, because deployment introduces competition among all deployed classes as well as changes in pose, illumination, and occlusion. 
+
+3.2 Data Tiers 
+
+All data are captured with an Intel RealSense D455 camera at 1280 × 720 , 30 fps, with depth aligned to color. There are four data tiers and a disjoint evaluation set in the benchmark. 
+
+TV1 . One turntable RGB-D video per training class ( ≈ 60 s, two revolutions), acquired with a static camera and a rotating object, providing appearance reconstruction and metric size profiles. 
+
+RLI12 . 1–2 polygon-annotated real images per training class ( 22 total). These are the only manually labeled real images used in training, serving detector fine-tuning, sim-to-real learning, fusion calibration, and optional real support. 4CALIPER: Metric-Grounded Model-Free Recognition of Visually Similar Industrial Parts 
+
+BV2 . Two empty-workcell videos providing backgrounds for copy-paste augmentation; no annotation is required. 
+
+SI10 . Ten casually captured RGB-D images per probe across varied viewpoints, distances, and illumination, each with one polygon annotation. They provide appearance support and live size profiles for enrollment. 
+
+TEST . 186 RGB-D workcell images containing 558 annotated instances across all 18 classes, including 30 instances per probe. Scenes range from isolated objects to cluttered mixtures. The set is disjoint from all onboarding, training, calibration, and enrollment data. 
+
+3.3 Task 
+
+Given a T EST RGB-D image, the system must localize every visible part and assign its fine-grained class from the deployed inventory. We evaluate 16-class closed-set recognition and 18-class recognition after training-free enrollment of the two probes. 
+
+# 4 Method 
+
+CALIPER targets fine-grained recognition of visually similar industrial parts within coarse categories such as screws, nuts, and gears, where physical dimensions provide complementary evidence to appearance. Each deployed class is therefore represented by both appearance support and a metric size profile derived from its onboarding or enrollment data. This representation also allows new classes to be added without retraining the fine-grained recognizer. Inference proceeds in two stages: a coarse instance segmenter localizes candidate objects (Sec. 4.2), after which each detection is identified by combining appearance matching (Sec. 4.3) and depth-derived metric evidence (Sec. 4.4) through margin-conditioned fusion (Sec. 4.5). 
+
+4.1 Model-Free Onboarding of Training Classes 
+
+Each training class is onboarded from one TV1 RGB-D video, from which we extract 300 frames with aligned depth and camera intrinsics. SAM2 [12], prompted by a temporal-variance prior over the turntable region, provides object masks for reconstruction. Camera poses are estimated using COLMAP [26], with feature extraction restricted to the rotating platform, and a 3D Gaussian Splatting model [28] is optimized from the masked sequence. We render 360 novel views spanning three elevation bands and 120 azimuths per band. Rendered views and real images undergo the same preprocessing (masking, background normalization, cropping, and resizing) before feature extraction. The appearance bank for class c
+
+is Bc = {gϕ(f (v)) : v ∈ V c}, where Vc denotes its rendered and real views, f is the frozen DINOv2 backbone and gϕ
+
+is the learned embedding head. The same RGB-D sequence also provides physical-size measurements. For each frame, detector-masked depth pixels are back-projected using the camera intrinsics under the pinhole camera geometry, and principal component analysis of the resulting planar point set yields major and minor extents (ai, b i). The extents are modeled in log space, giving the class size profile as πc = ( μca, σ ca, μ cb, σ cb ), where each μ and σ is the sample mean and standard deviation of the corresponding log-extent. In addition to TV1, RLI12 provides limited real-domain supervision. 
+
+4.2 Coarse Object Localization 
+
+CALIPER separates object localization from fine-grained identification. A lightweight YOLOv8n-seg model [34] is fine-tuned only for coarse categories screw, nut, and gear, allowing an unseen fine-grained class to be localized under an existing coarse category without retraining the detector. We extract about 130 background frames from BV2 and use copy-paste augmentation [35] to place segmented TV1 and RLI12 objects onto these real backgrounds. Each detection 
+
+d provides a crop xd for appearance matching and a segmentation mask Md for metric measurement. 
+
+4.3 Head Training and Appearance Scoring 
+
+Each object crop is encoded by the CLS token of a frozen DINOv2 ViT-B/14 backbone. A lightweight two-layer MLP head gϕ : R768 → R512 → R256 maps the backbone feature to an L2-normalized embedding. It is the only trainable component of the fine-grained recognition stage. The head is trained episodically in a few-shot meta-learning framework to bridge the domain gap between reconstructed views and real workcell images. In each episode, support samples are drawn from rendered views, while queries are drawn from RLI12 and 25 real frames sampled per class from TV1. A soft nearest-neighbor objective pulls real queries 5Gupta et al. toward same-class rendered supports while separating competing classes. These sim-to-real episodes reproduce the deployment setting in which rendered class supports are matched against real detections. The trained head is used at the same support budget K as used in training. At inference, class c is represented by a support pool Pc drawn from its onboarding or enrollment data according to the support budget. Its appearance score for a detection d is 
+
+sc(d) = max 
+
+> p∈P c
+
+⟨gϕ(f (xd)) , p ⟩ .
+
+All embeddings are L2-normalized, so the inner product is cosine similarity. Let md denote the appearance margin as the absolute difference between the two largest class scores; smaller values indicate greater appearance ambiguity. 
+
+4.4 Metric Measurement and Size Likelihood 
+
+For each detection, mask Md is back-projected through the aligned depth using the same geometric measurement procedure used to construct the size profiles, yielding major and minor extents (ˆ ad, ˆbd). Using a consistent segmentation and measurement convention for profiles and queries prevents systematic mask or depth biases from being interpreted as class-size differences. Under class profile πc, the metric log-likelihood is 
+
+ℓc(d) = − 12
+
+ log ˆ ad − μca
+
+σca
+
+2
+
+− log σca − 12
+
+log ˆbd − μcb
+
+σcb
+
+!2
+
+− log σcb
+
+The two extents are modeled independently in log space, so uncertainty reflects relative size variation rather than absolute deviations, while ensuring positive physical dimensions. Each standard deviation is lower-bounded by 0.06 to avoid unrealistically sharp class distributions. Normalizing across the deployed class set C gives 
+
+Lc(d) = ℓc(d) − log X
+
+> c′∈C
+
+exp ( ℓc′ (d)) ,
+
+which is the class log-posterior under a uniform prior. If metric measurement is unreliable, Lc(d) is made constant across classes and therefore does not affect the prediction. 
+
+4.5 Margin-Conditioned Metric Fusion 
+
+Metric evidence is activated only when the pre-fusion appearance margin md falls below θ. The final score is 
+
+score c(d) = sc(d) + λ (⊮[md < θ ]) Lc(d),
+
+Thus, metric fusion can resolve visually ambiguous classes with distinct sizes, while confident appearance predictions are left unchanged. The fusion weight λ and ambiguity threshold θ are calibrated once using the real labeled images from RLI12 and then frozen for all test evaluations. We use θ = 0 .12 and λ = 0 .0173 throughout. 
+
+4.6 Training-Free Enrollment of Unseen Classes 
+
+CALIPER enrolls an unseen fine-grained class without retraining, provided it belongs to a coarse category already covered by the detector. A small set of annotated crops from SI10 spanning multiple viewpoints is identically preprocessed and embedded by the frozen backbone and trained head to form the new support pool. The same enrollment images also define a live size profile . Their detector masks and aligned depth are processed using the inference-time metric measurement pipeline, and the resulting physical extents are used to estimate πc. The new class then participates directly in the same |C| -way appearance scoring and margin-conditioned fusion as the existing inventory, with no class-specific optimization. 
+
+# 5 Experiments And Discussion 
+
+5.1 Experimental Setup and Baselines 
+
+We evaluate CALIPER and competing methods on the reserved T EST set. CALIPER first localizes objects using the coarse YOLOv8n-seg model of Sec. 4.2, followed by fine-grained recognition. Detections are greedily matched in 6CALIPER: Metric-Grounded Model-Free Recognition of Visually Similar Industrial Parts decreasing confidence order to at most one unmatched ground-truth instance by class-agnostic matching at IoU ≥ 0.5.The detector localizes 557 /558 instances, yielding 99 .8% localization recall. Fine-grained accuracy is computed only over matched detections, separating identification from localization. In the 18-class setting, we also report accuracy on the 16 original classes ( Training16 ) and the two enrolled unseen classes (Unseen2 ). Support-dependent results are averaged over 100 random draws for K ∈ { 1, 5, 10 }.For selected pairwise comparisons, we use McNemar’s exact test [36, 37] on the same matched detections and support draw. Let b count detections correctly classified by CALIPER but not the compared method, and c the reverse. Under the null hypothesis that neither method is more likely to be correct on their disagreements, the test returns a two-sided 
+
+p-value. Smaller p provides stronger evidence of a systematic accuracy difference; p < 0.05 is treated as statistically significant. Reported b, c, and p use the first support draw, and the same qualitative conclusions hold over the first ten draws. We compare against four baselines. One-stage YOLO fine-tunes a pretrained YOLOv8n-seg model directly on fine-grained identities and must be retrained after new-class enrollment. The remaining baselines share CALIPER’s coarse detector and frozen DINOv2 backbone. Raw DINOv2 performs CNOS-style [4] max-over-support matching in the frozen feature space. Linear classifier trains multinomial logistic regression on frozen DINOv2 features and requires retraining after new class enrollment. It is evaluated over five random K = 1 draws and two K = 5 partitions, while 
+
+K = 10 uses all enrollment images. ProtoNet uses episodic training with mean-prototype classification as a standard few-shot alternative to CALIPER’s max-over-support scoring. Unless stated otherwise, the baselines do not use metric fusion. 
+
+5.2 Closed-Set Recognition 
+
+Table 1 evaluates recognition on the 16 training classes. One-stage YOLO reaches only 63 .4% , showing that limited data are insufficient for directly fine-tuning the detector to fine-grained identities. Raw DINOv2 improves with additional support but remains substantially weaker, reaching 75 .8% at K = 10 . The Linear classifier performs considerably better, reaching 85 .3% . CALIPER significantly outperforms the Linear classifier at all three support budgets (McNemar, 
+
+p < 0.05 for each) and performs comparably to ProtoNet . Across CALIPER variants, rendered-only, real-only, and mixed support differ by at most 0.5 pp, showing that the sim-to-real head makes rendered onboarding views effective support for real detections. 
+
+5.3 Enrollment of Unseen Classes 
+
+We next enroll screw_h and screw_i , which are absent from both detector and embedding-head training. Their appearance support and live size profiles are obtained solely from SI10, while the Training16 support pools remain unchanged. The results are reported in Table 2. CALIPER achieves the highest overall accuracy at every support budget, reaching 85 .7% at K = 10 compared with 
+
+81 .1% for ProtoNet . The advantage is concentrated on Unseen2: CALIPER reaches 72 .5% and 75 .3% on Unseen2 at K = 5 and 10 , while ProtoNet reaches 29 .8% and 38 .0% , respectively. Their overall difference is statistically significant at every K, as is the Unseen2 difference for K ≥ 5, consistent with the small p-values in Table 3. The higher Training16 p-values provide no evidence of a difference. Table 1: Closed-set accuracy (%) on the 16 training classes. Support-based results are averaged over 100 random draws. The default CALIPER configuration is marked in bold font.                               
+
+> Method K= 1 K= 5 K= 10
+> One-stage YOLO *63.4 63.4 63.4 Raw DINOv2 39.7 71.9 75.8 Linear classifier *85.3 85.3 85.3 ProtoNet 87.3 88.3 87.6 CALIPER, rendered support 87.9 87.9 88.2 CALIPER, real support 88.2 87.4 88.2
+> CALIPER, rendered+real 88.1 87.8 88.2
+> *Trained once on all available training data; these methods do not use a K-shot support pool, so their accuracy does not depend on K.
+
+7Gupta et al. Table 2: Accuracy (%) after enrolling two unseen classes. Support-based results are averaged over 100 random support draws. For methods sharing CALIPER’s coarse detector, Overall , Training16 , and Unseen2 contain 557 , 497 , and 60 
+
+matched detections, respectively. One-stage YOLO is evaluated on detections from its retrained fine-grained detector, trained once per K.                                                                 
+
+> Overall Training16 Unseen2 Method K= 1 K= 5 K= 10 K= 1 K= 5 K= 10 K= 1 K= 5 K= 10
+> One-stage YOLO 61.4 53.8 55.1 63.6 53.4 53.4 42.9 56.9 68.4 Raw DINOv2 37.2 64.1 67.5 36.3 66.2 69.7 44.2 47.4 49.4 Linear classifier 71.5 78.6 78.8 77.6 83.0 81.1 20.3 41.7 60.0 ProtoNet 79.1 80.8 81.1 85.3 87.0 86.3 27.7 29.8 38.0
+> CALIPER 83.3 85.1 85.7 87.3 86.6 86.9 50.0 72.5 75.3
+
+CALIPER also substantially outperforms Raw DINOv2 across Overall, Training16, and Unseen2. Against the Linear classifier , CALIPER is significantly better overall at every K (p < 0.001 ) and on Unseen2 at K = 1 and K = 5 
+
+(p ≤ 0.003 ). Retraining is less stable. At K = 10 , One-stage YOLO reaches 68 .4% on Unseen2 but only 53 .4% on Training16, and 
+
+94 .1% localization recall. CALIPER instead adds the unseen classes without retraining any network parameters. We next quantify the cost of expanding the deployed inventory. We score the same 497 detections before (16-way, Table 1) and after enrolling the two probes (18-way, Table 2), so the only change is competition from the new classes. As shown in Fig. 4, Training16 accuracy decreases by only 0.8, 1.2, and 1.3 pp at K = 1 , 5, and 10 , while Unseen2 accuracy increases from 50 .0% at K = 1 to 75 .3% at K = 10 .The decrease arises due to interference , the number of Training16 detections for which a newly enrolled class outscores every existing class in the appearance-channel. This occurs for an average of 13 .9, 10 .6, and 13 .1 of the 497 Training16 detections at K ∈ { 1, 5, 10 }, respectively. Margin-conditioned fusion returns part of these to their true class, leaving only 5.5, 7.8, and 9.3 detections assigned to a probe. Because some of these detections were already misclassified before enrollment, the resulting accuracy loss is smaller than the capture count. For a fixed embedding head and existing-class support pools, the complete enrollment banks provide an upper bound on this interference, as formalized below. Let E and N denote the existing and newly enrolled class sets, respectively, and let DE contain detections belonging to 
+
+E. Writing sc(d; Pc) for the appearance score of Sec. 4.3 using support pool Pc, define the capture set 
+
+C(PN ) = 
+
+n
+
+d ∈ D E : max  
+
+> n∈N
+
+sn(d; Pn) > max  
+
+> e∈E
+
+se(d; Pe)
+
+o
+
+,
+
+with appearance-channel interference I(PN ) = |C(PN )|.
+
+Proposition 1 (Bounded interference) . Fix the embedding and the existing-class support pools. If Pn ⊆ B n, ∀n ∈ N ,then C(PN ) ⊆ C(BN ) and I(PN ) ≤ I(BN ), where Bn is class n’s complete enrollment bank and BN = {B n}n∈N .Proof. For d ∈ C(PN ), there is an n such that sn(d; Pn) > max e∈E se(d; Pe). Since Pn ⊆ B n, sn(d; Pn) ≤
+
+sn(d; Bn) for all n ∈ N , so d ∈ C(BN ). Thus, C(PN ) ⊆ C(BN ). Taking cardinalities gives I(PN ) ≤ I(BN ); with equality when Pn = Bn for all n ∈ N .Table 3: McNemar’s exact test ( b, c, p) for CALIPER against ProtoNet and the Linear classifier in the 18-class setting of Table 2.                                                                              
+
+> K= 1 K= 5 K= 10
+> Comparison bcpbcpbcp
+> CALIPER vs Linear classifier Overall 94 24 <0.001 64 23 <0.001 62 22 <0.001
+> Training16 73 19 <0.001 40 16 0.002 45 14 <0.001
+> Unseen2 21 50.002 24 70.003 17 80.108
+> CALIPER vs ProtoNet Overall 22 80.016 47 13 <0.001 42 14 <0.001
+> Training16 13 50.096 12 11 1.00 15 10 0.424
+> Unseen2 930.146 35 2<0.001 27 4<0.001
+
+8CALIPER: Metric-Grounded Model-Free Recognition of Visually Similar Industrial Parts Table 4: Ablation of margin-conditioned metric fusion. Accuracy (%) is reported with and without metric fusion for the 16-class closed-set and 18-class enrollment settings, averaged over 100 random support draws; ∆ denotes the change due to fusion.                                                                
+
+> 16-class Training16 18-class Overall 18-class Training16 18-class Unseen2 Method K= 1 K= 5 K= 10 K= 1 K= 5 K= 10 K= 1 K= 5 K= 10 K= 1 K= 5 K= 10
+> No metric fusion 87.1 87.3 88.3 78.5 80.4 81.2 84.8 85.5 86.5 26.8 38.3 37.9 With metric fusion 88.1 87.8 88.2 83.3 85.1 85.7 87.3 86.6 86.9 50.0 72.5 75.3
+> ∆+1.0 +0.5 −0.1+4.8 +4.7 +4.5 +2.5 +1.1 +0.4 +23.2 +34.2 +37.4
+
+With the complete SI10 banks, I(BN ) is 32 .7, 14 .0, and 13 .1 captures at K ∈ { 1, 5, 10 }, against the observed 13 .9,
+
+10 .6, and 13 .1, with the bound attained at K = 10 .
+
+5.4 Effect of Metric Fusion 
+
+Table 4 isolates the effect of margin-conditioned metric fusion. In the 16-class closed set, fusion changes accuracy by only −0.1 to +1 .0 pp. After enrollment, it improves Training16 by +0 .4 to +2 .5 pp, while producing much larger gains of +23 .2 to +37 .4 pp on Unseen2 and +4 .5 to +4 .8 pp overall. The overall gain is statistically significant at every K (McNemar p ≤ 0.004 ), and the Unseen2 gain is significant for K ≥ 5 (McNemar p < 0.001 ); no statistically significant degradation is observed on the original 16 classes. Thus, margin-conditioned fusion concentrates its benefit on the size-distinct ambiguous probes while preserving performance on the original inventory. Table 5 shows the mechanism at K = 10 . Without metric fusion, the two probes are confused with one another almost as often as they are correctly identified. Fusion eliminates the screw_h →screw_i confusion and substantially reduces the reverse confusion. This confirms that metric size can recover identity information suppressed by crop normalization. The observed confusions also agree with the separability analysis of Sec. 3.1, which uses no T EST data. Among the 
+
+116 ordered within-category class pairs, all 18 directions with at least 5% confusion have S < 20 , whereas pairs with 
+
+S ≥ 20 account for only 3% of the total off-diagonal confusion. Fusion resolves the probe-pair ambiguity because their metric sizes are distinct; residual errors occur mainly where both appearance and measured-size distributions overlap. 
+
+5.5 Deployment on a Robot Arm 
+
+We deploy CALIPER on a 6-DoF robot arm with a wrist-mounted RealSense D455 camera in a closed perception-motion loop. At each cycle, the arm returns to a home pose, CALIPER classifies the scene, and a selected detection is back-projected into the arm frame. The arm then moves above the target and to a predefined drop pose before returning 
+
+Figure 4: Effect of training-free enrollment on existing and unseen classes. Accuracies are averaged over 100 random support draws for each K. Training16 (blue) is evaluated before enrollment (16-way, dashed) and after adding the two probes (18-way, solid). Unseen2 (red) reports enrolled-class accuracy in the 18-way setting. 9Gupta et al. 
+
+Figure 5: Robot-arm deployment. (a,b) A seven-part scene and classification. (c,d) Motion above nut_b and to the predefined drop pose; no gripper is used. (e,f) Reclassification after one object is removed. (g,h) Additional scenes; (h) shows the only error (orange bounding box), screw_h →screw_c . All panels use frozen K = 10 with no deployment-specific retraining or recalibration. home. No gripper is used; the experiment therefore evaluates recognition and perception-to-motion integration rather than grasping performance. Deployment uses the same frozen K = 10 configuration as Table 2, with both probes enrolled solely from SI10, and the fusion parameters of Sec. 4.5. No model parameters, thresholds, or size profiles are recalibrated for the robot. Fig. 5 (b, g, h) shows three scene compositions with seven, six, and five parts, so that each of the 18 inventory classes appears exactly once; CALIPER correctly identifies 17 /18 . All seven parts in the initial scene, including both enrollment probes, are correctly recognized, and the remaining six are again correct after one object is removed. The only error is screw_h →screw_c in Fig. 5 (h), consistent with the residual confusion in Table 5, where the two classes remain ambiguous in both appearance and size. Table 5: Row-normalized confusion (%) for the two enrolled classes at K = 10 in the 18-class setting, with and without fusion.                     
+
+> True class screw_h screw_i screw_c Other
+> screw_h , no fusion 42.5 31.3 22.9 3.3
+> screw_i , no fusion 39.9 33.3 10.9 15.9
+> screw_h , fused 82.0 0.0 14.7 3.3
+> screw_i , fused 16.7 68.7 0.0 14.6
+
+# 6 Conclusion And Future Work 
+
+CALIPER addresses evolving inventories where visually similar parts must be distinguished from limited data without CAD models. By coupling appearance support with metric size profiles, new classes can be enrolled without retraining while physical size is used only when appearance is ambiguous. This is relevant to industrial sorting, assembly, and retrieval where similar variants are not interchangeable. The current formulation requires new classes to belong to coarse categories already covered by the detector and remains limited when classes overlap in both appearance and size. Future work will target new coarse categories, richer geometric cues, and larger real industrial inventories. 
+
+# References 
+
+[1] Shaoqing Ren, Kaiming He, Ross Girshick, and Jian Sun. Faster R-CNN: Towards Real-Time Object Detection with Region Proposal Networks. In Advances in Neural Information Processing Systems , volume 28, 2015. [2] Xiu-Shen Wei, Yi-Zhe Song, Oisin Mac Aodha, Jianxin Wu, Yuxin Peng, Jinhui Tang, Jian Yang, and Serge Belongie. Fine-Grained Image Analysis With Deep Learning: A Survey . IEEE Transactions on Pattern Analysis & Machine Intelligence , 44(12):8927–8948, December 2022. 10 CALIPER: Metric-Grounded Model-Free Recognition of Visually Similar Industrial Parts [3] Maxime Oquab, Timothée Darcet, Théo Moutakanni, Huy V. Vo, Marc Szafraniec, Vasil Khalidov, Pierre Fernandez, Daniel HAZIZA, Francisco Massa, Alaaeldin El-Nouby, Mido Assran, Nicolas Ballas, Wojciech Galuba, Russell Howes, Po-Yao Huang, Shang-Wen Li, Ishan Misra, Michael Rabbat, Vasu Sharma, Gabriel Synnaeve, Hu Xu, Herve Jegou, Julien Mairal, Patrick Labatut, Armand Joulin, and Piotr Bojanowski. DINOv2: Learning Robust Visual Features without Supervision. Transactions on Machine Learning Research , 2024. Featured Certification. [4] Van Nguyen Nguyen, Thibault Groueix, Georgy Ponimatkin, Vincent Lepetit, and Tomas Hodan. CNOS: A Strong Baseline for CAD-based Novel Object Segmentation. In Proceedings of the IEEE/CVF ICCV , pages 2134–2140, 2023. [5] Van Nguyen Nguyen, Stephen Tyree, Andrew Guo, Mederic Fourmy, Anas Gouda, Taeyeop Lee, Sungphill Moon, Hyeontae Son, Lukas Ranftl, Jonathan Tremblay, Eric Brachmann, Bertram Drost, Vincent Lepetit, Carsten Rother, Stan Birchfield, Jiri Matas, Yann Labbe, Martin Sundermeyer, and Tomas Hodan. BOP Challenge 2024 on Model-Based and Model-Free 6D Object Pose Estimation, 2025. [6] Allison Janoch, Sergey Karayev, Yangqing Jia, Jonathan T. Barron, Mario Fritz, Kate Saenko, and Trevor Darrell. A category-level 3-D object dataset: Putting the Kinect to work. In 2011 IEEE International Conference on Computer Vision Workshops (ICCV Workshops) , pages 1168–1174, 2011. [7] Xiaofei Li and Zhong Dong. SizeNet: Object Recognition via Object Real Size-based Convolutional Networks, 2021. [8] Melika Baghooee and Quentin Geissmann. Insect size matters: Using image and dimensions together improves image classification. Ecological Informatics , 94:103664, 2026. [9] Alec Radford, Jong Wook Kim, Chris Hallacy, Aditya Ramesh, Gabriel Goh, Sandhini Agarwal, Girish Sastry, Amanda Askell, Pamela Mishkin, Jack Clark, Gretchen Krueger, and Ilya Sutskever. Learning Transferable Visual Models From Natural Language Supervision. ArXiv , abs/2103.00020, 2021. [10] Matthias Minderer, Alexey Gritsenko, Austin Stone, Maxim Neumann, Dirk Weissenborn, Alexey Dosovitskiy, Aravindh Mahendran, Anurag Arnab, Mostafa Dehghani, Zhuoran Shen, Xiao Wang, Xiaohua Zhai, Thomas Kipf, and Neil Houlsby. Simple Open-Vocabulary Object Detection. In Computer Vision – ECCV 2022 , 2022. [11] Shilong Liu, Zhaoyang Zeng, Tianhe Ren, Feng Li, Hao Zhang, Jie Yang, Qing Jiang, Chunyuan Li, Jianwei Yang, Hang Su, Jun Zhu, and Lei Zhang. Grounding DINO: Marrying DINO with Grounded Pre-training for Open-Set Object Detection. In Computer Vision – ECCV 2024 , 2025. [12] Nikhila Ravi, Valentin Gabeur, Yuan-Ting Hu, Ronghang Hu, Chaitanya Ryali, Tengyu Ma, Haitham Khedr, Roman Rädle, Chloe Rolland, Laura Gustafson, Eric Mintun, Junting Pan, Kalyan Vasudev Alwala, Nicolas Carion, Chao-Yuan Wu, Ross Girshick, Piotr Dollar, and Christoph Feichtenhofer. SAM 2: Segment Anything in Images and Videos. In The Thirteenth International Conference on Learning Representations , 2025. [13] Oriol Vinyals, Charles Blundell, Timothy Lillicrap, koray kavukcuoglu, and Daan Wierstra. Matching Networks for One Shot Learning. In Advances in Neural Information Processing Systems . Curran Associates, Inc., 2016. [14] Jake Snell, Kevin Swersky, and Richard Zemel. Prototypical Networks for Few-shot Learning. In Advances in Neural Information Processing Systems , volume 30. Curran Associates, Inc., 2017. [15] Chelsea Finn, Pieter Abbeel, and Sergey Levine. Model-agnostic meta-learning for fast adaptation of deep networks. In Proceedings of the 34th International Conference on Machine Learning - Volume 70 , 2017. [16] Wei-Yu Chen, Yen-Cheng Liu, Zsolt Kira, Yu-Chiang Frank Wang, and Jia-Bin Huang. A Closer Look at Few-shot Classification. In International Conference on Learning Representations , 2019. [17] Yonglong Tian, Yue Wang, Joshua B Tenenbaum, and Phillip John Isola. Rethinking few-shot image classification: a good embedding is all you need?, 2020. [18] Xin Wang, Thomas Huang, Joseph Gonzalez, Trevor Darrell, and Fisher Yu. Frustratingly Simple Few-Shot Object Detection. In Proceedings of the 37th International Conference on Machine Learning . PMLR, 2020. [19] Limeng Qiao, Yuxuan Zhao, Zhiyuan Li, Xi Qiu, Jianan Wu, and Chi Zhang. DeFRCN: Decoupled Faster R-CNN for Few-Shot Object Detection. In 2021 IEEE/CVF International Conference on Computer Vision (ICCV) .[20] Juan-Manuel Perez-Rua, Xiatian Zhu, Timothy Hospedales, and Tao Xiang. Incremental Few-Shot Object Detection. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) ,2020. [21] Jiehong Lin, Lihua Liu, Dekun Lu, and Kui Jia. SAM-6D: Segment Anything Model Meets Zero-Shot 6D Object Pose Estimation. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) , pages 27906–27916, June 2024. 11 Gupta et al. [22] Van Nguyen Nguyen, Thibault Groueix, Mathieu Salzmann, and Vincent Lepetit. GigaPose: Fast and Robust Novel Object Pose Estimation via One Correspondence. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) , pages 9903–9913, June 2024. [23] Evin Pınar Örnek, Yann Labbé, Bugra Tekin, Lingni Ma, Cem Keskin, Christian Forster, and Tomas Hodan. FoundPose: Unseen Object Pose Estimation with Foundation Features. In Computer Vision – ECCV 2024 , 2025. [24] Jiaming Sun, Zihao Wang, Siyu Zhang, Xingyi He, Hongcheng Zhao, Guofeng Zhang, and Xiaowei Zhou. Onepose: One-shot object pose estimation without cad models, 2022. [25] Yuan Liu, Yilin Wen, Sida Peng, Cheng Lin, Xiaoxiao Long, Taku Komura, and Wenping Wang. Gen6D: Generalizable Model-Free 6-DoF Object Pose Estimation from RGB Images. In ECCV , 2022. [26] Johannes Lutz Schönberger and Jan-Michael Frahm. Structure-from-Motion Revisited. In Conference on Computer Vision and Pattern Recognition2016 .[27] Ben Mildenhall, Pratul P. Srinivasan, Matthew Tancik, Jonathan T. Barron, Ravi Ramamoorthi, and Ren Ng. NeRF: Representing Scenes as Neural Radiance Fields for View Synthesis. In Proceedings of the European Conference on Computer Vision (ECCV) , 2020. [28] Bernhard Kerbl, Georgios Kopanas, Thomas Leimkühler, and George Drettakis. 3d gaussian splatting for real-time radiance field rendering. ACM Transactions on Graphics (SIGGRAPH Conference Proceedings) , 42, July 2023. [29] Chenxi Tao and Seung-Kyum Choi. Where Appearance Fails, Geometry Recognizes: A CAD-Free 3D Shape Prior That Complements Vision Foundation Models, 2026. [30] Saurabh Gupta, Ross Girshick, Pablo Arbeláez, and Jitendra Malik. Learning Rich Features from RGB-D Images for Object Detection and Segmentation. In ECCV 2014 .[31] Andreas Eitel, Jost Tobias Springenberg, Luciano Spinello, Martin Riedmiller, and Wolfram Burgard. Multimodal Deep Learning for Robust RGB-D Object Recognition. In IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS) , Hamburg, Germany, 2015. [32] Hessam Bagherinezhad, Hannaneh Hajishirzi, Yejin Choi, and Ali Farhadi. Are Elephants Bigger than Butterflies? Reasoning about Sizes of Objects. 2016. [33] Agnese Chiatti, Enrico Motta, Enrico Daga, and Gianluca Bardaro. Fit to Measure: Reasoning about Sizes for Robust Object Recognition. In Andreas Martin, Knut Hinkelmann, Hans-Georg Fill, Aurona Gerber, Doug Lenat, Reinhard Stolle, and Frank van Harmelen, editors, Proceedings of the AAAI 2021 , 2021. [34] Glenn Jocher, Ayush Chaurasia, and Jing Qiu. Ultralytics YOLOv8. https://github.com/ultralytics/ ultralytics , 2023. Accessed: Sep. 2, 2026. [35] Golnaz Ghiasi, Yin Cui, Aravind Srinivas, Rui Qian, Tsung-Yi Lin, Ekin D. Cubuk, Quoc V. Le, and Barret Zoph. Simple Copy-Paste Is a Strong Data Augmentation Method for Instance Segmentation. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , 2021. [36] Quinn McNemar. Note on the Sampling Error of the Difference Between Correlated Proportions or Percentages. 
+
+Psychometrika , 1947. [37] Thomas G. Dietterich. Approximate statistical tests for comparing supervised classification learning algorithms. 
+
+Neural Comput. , October 1998. 12

@@ -41,17 +41,17 @@
 <section class="dpr-home-dashboard-card dpr-home-report-card">
   <div class="dpr-home-dashboard-header">
     <div>
-      <span class="dpr-home-dashboard-kicker">2026-09-16</span>
+      <span class="dpr-home-dashboard-kicker">2026-09-17</span>
       <h3 class="dpr-home-dashboard-title">今日汇总</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">共 6 篇</strong>
+    <strong class="dpr-home-dashboard-count">共 18 篇</strong>
   </div>
   <dl class="dpr-home-dashboard-stats">
     <div class="dpr-home-dashboard-stat"><dt>累计更新</dt><dd>1 次</dd></div>
-    <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>2</dd></div>
-    <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>4</dd></div>
+    <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>7</dd></div>
+    <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>11</dd></div>
   </dl>
-  <p class="dpr-home-dashboard-body">最近更新：2026-09-16 22:17:13 UTC<br>状态：成功</p>
+  <p class="dpr-home-dashboard-body">最近更新：2026-09-17 22:06:27 UTC<br>状态：成功</p>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-brief-card">
   <div class="dpr-home-dashboard-header">
@@ -62,7 +62,7 @@
     <strong class="dpr-home-dashboard-count">AI</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<p>今日精读2篇、速读4篇，聚焦开放词汇伪装目标分割与零样本学习偏差。最值得看的是9.0分的ViCo-SAM3视觉条件对齐方法，以及8.0分用统计视角剖析手写识别中零样本偏差的研究。普通读者可优先读这两篇精读，再按兴趣浏览手写识别与传感器视觉压缩方向的速读。</p>
+<p>今日精选18篇视觉AI论文，精读7篇，聚焦多模态退化下的RGB-T显著目标检测与自动驾驶多视角BEV 3D检测两大高分方向。最值得看的是RA-SOD在模态退化下的可靠性建模，以及Bi-Level Routing结合稀疏空间注意力的BEV 3D检测。建议普通读者先读这两篇精读，再按兴趣浏览速读中的位姿估计与工业零件识别。</p>
   </div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-deep-card">
@@ -71,12 +71,12 @@
       <span class="dpr-home-dashboard-kicker">今日累计</span>
       <h3 class="dpr-home-dashboard-title">精读推荐</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">2 篇</strong>
+    <strong class="dpr-home-dashboard-count">7 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="ViCo-SAM3: Vision-Conditioned Alignment for Open-Vocabulary Camouflaged Object Segmentation">ViCo-SAM3: Vision-Conditioned Alignment for Open-Vocabulary Camouflaged Object Segmentation</span></li><li><span class="dpr-home-dashboard-paper-title" title="A statistical approach to bias in zero-shot learning: the lens of handwriting recognition">A statistical approach to bias in zero-shot learning: the lens of handwriting recognition</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="RA-SOD: Reliability-Aware RGB-T Salient Object Detection under Modality Degradation">RA-SOD: Reliability-Aware RGB-T Salient Object Detection under Modality Degradation</span></li><li><span class="dpr-home-dashboard-paper-title" title="Bi-Level Routing and Sparse Spatial Attention based Multi-View BEV 3D Object Detection for Autonomous Driving">Bi-Level Routing and Sparse Spatial Attention based Multi-View BEV 3D Object Detection for Autonomous Driving</span></li><li><span class="dpr-home-dashboard-paper-title" title="VPRef: A Cross-Domain Benchmark for Referring Remote Sensing Image Segmentation">VPRef: A Cross-Domain Benchmark for Referring Remote Sensing Image Segmentation</span></li></ul>
   </div>
-  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">cv <strong>2</strong></span></div>
+  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">cv <strong>7</strong></span></div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-skim-card">
   <div class="dpr-home-dashboard-header">
@@ -84,12 +84,12 @@
       <span class="dpr-home-dashboard-kicker">今日累计</span>
       <h3 class="dpr-home-dashboard-title">速读推荐</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">4 篇</strong>
+    <strong class="dpr-home-dashboard-count">11 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Perceive, Refine, Reason: A Calibrated Pipeline for Measuring Indicators in Strategic Visual Communication on Social Media">Perceive, Refine, Reason: A Calibrated Pipeline for Measuring Indicators in Strategic Visual Communication on Social Media</span></li><li><span class="dpr-home-dashboard-paper-title" title="ExpertHTR: Unified Handwritten Text Recognition with Multi-Task Learning and Sparse Mixture-of-Experts">ExpertHTR: Unified Handwritten Text Recognition with Multi-Task Learning and Sparse Mixture-of-Experts</span></li><li><span class="dpr-home-dashboard-paper-title" title="Hardware-Aware Learned Representation Compression for Distributed In-Sensor Vision">Hardware-Aware Learned Representation Compression for Distributed In-Sensor Vision</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="PriorPose: Reference-Guided Joint Deformation and Alignment for Category-Level Object Pose Estimation">PriorPose: Reference-Guided Joint Deformation and Alignment for Category-Level Object Pose Estimation</span></li><li><span class="dpr-home-dashboard-paper-title" title="BRAVE-6D: Benchmark for Robotic Active Vision in 6DOF Pose Estimation">BRAVE-6D: Benchmark for Robotic Active Vision in 6DOF Pose Estimation</span></li><li><span class="dpr-home-dashboard-paper-title" title="CALIPER: Metric-Grounded Model-Free Recognition of Visually Similar Industrial Parts">CALIPER: Metric-Grounded Model-Free Recognition of Visually Similar Industrial Parts</span></li></ul>
   </div>
-  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">cv <strong>4</strong></span></div>
+  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">cv <strong>11</strong></span></div>
 </section>
 </div>
 

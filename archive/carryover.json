@@ -1,12 +1,54 @@
 {
-  "generated_at": "2026-09-16T22:12:02.130096+00:00",
-  "updated_date": "20260916",
+  "generated_at": "2026-09-17T21:59:35.246468+00:00",
+  "updated_date": "20260917",
   "carryover_days": 9,
   "tag_states": {
     "cv": {
-      "updated_date": "20260916",
+      "updated_date": "20260917",
       "carryover_days": 9,
-      "items": []
+      "items": [
+        {
+          "id": "2609.19143v1",
+          "source": "arxiv",
+          "title": "PANORAMA: Panoptic Grounded Captioning via Mask Proposal Selection",
+          "abstract": "Intelligent systems that act in the world require image understanding that is both comprehensive and spatially grounded. Current vision-language models (VLMs) can generate fluent and detailed image captions, but reliably associating them with image pixels remains challenging. Existing methods that combine dense captioning with pixel-level grounding often produce either incomplete descriptions or inaccurate segmentation masks. We study this problem through panoptic grounded captioning, a task that requires a VLM to describe both foreground objects and background regions while grounding each referring phrase with pixel-level masks. We make three contributions. First, we introduce PanoCaps, a human-annotated benchmark constructed from panoptic segmentation datasets. It provides dense captions with near-complete pixel coverage and image-text alignments at the entity level, supporting both training and evaluation. We further propose a phrase-mask matching protocol and a generalized Panoptic Quality (gPQ) metric that jointly evaluates textual and mask agreement. Second, we formulate phrase grounding as selection from a phrase-conditioned pool of mask proposals and introduce PANORAMA, a VLM that conditions a pretrained segmenter on contextualized phrase representations to obtain candidate masks and learns to select those corresponding to each phrase. Training this interface jointly with caption generation enables PANORAMA to produce high-quality masks while allowing each phrase to refer to a single region or multiple instances. Third, PANORAMA achieves the best overall grounding on PanoCaps and matches or exceeds specialized models across several pixel-level grounding tasks. Experiments show that our method produces precise entity-level segmentations while maintaining detailed, mask-consistent captions. Code, data and models are available at https://www.di.ens.fr/willow/research/panorama/.",
+          "authors": [
+            "Sara Pieri",
+            "Evangelos Kazakos",
+            "Shizhe Chen",
+            "Josef Sivic",
+            "Cordelia Schmid"
+          ],
+          "primary_category": "cs.CV",
+          "categories": [
+            "cs.CV",
+            "cs.CL"
+          ],
+          "published": "2026-09-16T17:59:30+00:00",
+          "link": "https://arxiv.org/pdf/2609.19143v1",
+          "tags": [
+            "keyword:cv",
+            "query:cv"
+          ],
+          "llm_score": 8.0,
+          "llm_evidence_en": "Panoptic grounded captioning with pixel-level segmentation masks",
+          "llm_evidence_cn": "结合像素级掩码的全景接地图像描述",
+          "llm_evidence": "结合像素级掩码的全景接地图像描述",
+          "canonical_evidence": "结合像素级掩码的全景接地图像描述",
+          "llm_tldr_en": "PANORAMA tackles panoptic grounded captioning, where a VLM must describe foreground objects and background regions while grounding each phrase with pixel-level masks, introducing the PanoCaps benchmark and a mask proposal selection method.",
+          "llm_tldr_cn": "现有视觉语言模型能生成流畅描述，却难以将描述可靠地关联到像素，密集描述与像素接地结合时常出现描述不完整或分割掩码不准。本文研究全景接地描述任务，要求模型同时描述前景物体与背景区域并为每个指称短语给出像素级掩码。作者构建PanoCaps人工标注基准并提出基于掩码候选选择的方法，提升了描述与分割的一致性。",
+          "llm_tldr": "现有视觉语言模型能生成流畅描述，却难以将描述可靠地关联到像素，密集描述与像素接地结合时常出现描述不完整或分割掩码不准。本文研究全景接地描述任务，要求模型同时描述前景物体与背景区域并为每个指称短语给出像素级掩码。作者构建PanoCaps人工标注基准并提出基于掩码候选选择的方法，提升了描述与分割的一致性。",
+          "llm_tags": [
+            "query:cv"
+          ],
+          "matched_query_tag": "query:cv",
+          "matched_query_text": "image segmentation techniques",
+          "matched_requirement_id": "req-3",
+          "selection_source": "carryover_cache",
+          "paper_id": "2609.19143v1",
+          "carry_days": 1
+        }
+      ]
     }
   }
 }

@@ -1,0 +1,75 @@
+Title: BRAVE-6D: Benchmark for Robotic Active Vision in 6DOF Pose Estimation
+
+URL Source: https://arxiv.org/pdf/2609.17106v1
+
+Published Time: Wed, 16 Sep 2026 01:12:19 GMT
+
+Number of Pages: 3
+
+Markdown Content:
+# BRAVE-6D: Benchmark for Robotic Active Vision in 6DOF Pose Estimation 
+
+Philipp Ausserlechner 1,∗, Bernhard Neuberger 1,∗,Alessandro Scherl 2, Michael Schebek 2, Stefan Thalhammer 2, Markus Vincze 1
+
+Abstract — Detecting and grasping small objects remains a significant challenge in robotics. Active vision, where the robot moves closer to the object, is an intuitive solution, yet comparing approaches on common ground is difficult since identical physi-cal scene setups are required. Hence, we introduce BRAVE-6D, a benchmark designed to evaluate robotic active vision systems for object pose estimation, a crucial first step in grasping objects. BRAVE-6D leverages view synthesis based on Gaussian Splats (3DGS) to provide scenes and tools for benchmarking active vision systems. We show baseline solutions performing visual servoing within the scene and accurately estimating the poses of small objects. 
+
+I. INTRODUCTION A significant challenge in robotic object manipulation is handling small objects, defined by [1] as less than 32x32 pixels. Positioning the sensor closer to the object is the logical solution, feasible in scenarios where agents actively select their viewpoint. However, state-of-the-art 6D pose estimation benchmarks provide static images [2], therefore not reflecting realistic scenarios. Active perception approaches [3], [4], [5] that adjust the camera pose based on the observation show improved detection and pose estimation. This results in higher success rates for object grasping [6], [7]. However, due to the dependency of the scene setup, benchmarking such systems is cumbersome and often infeasible. Previous active vision datasets like Ammirato et al. [8], [9] capture image data with a mobile robot navigating indoor scenes and positioning the camera on a grid, offering a dis-crete action space. The Robotic Vision Scene Understanding Challenge (RVSU) uses NVIDIA Omniverse and Isaac Sim for simulation [10], providing a continuous action space but limiting realism and requiring high computational resources. To overcome these limitations, we propose BRAVE-6D -a novel type of benchmark where the agent is free to move continuously and actively select viewpoints to achieve the task, e.g., finding an object and going closer to a small item. The idea of BRAVE-6D is to offer a continuous, realistic, and              
+
+> 1Automation and Control Institute, TU Wien, 1040 Vienna, Austria.
+> {ausserlechner, neuberger, vincze }@acin.tuwien.ac.at
+> 2Department of Industrial Engineering, UAS Technikum 1200 Vienna, Austria {alessandro.scherl, michael.schebek, stefan.thalhammer }@technikum-wien.at
+> ∗These authors contributed equally to this work. This work was supported by the EU-program EC Horizon 2020 for Research and Innovation under grant agreement No. 101017089, project TraceBot and grant agreement No. 101120823, project MANiBOT.
+> Fig. 1. BRAVE-6D Active vision benchmark for 6D pose estimation.
+
+lightweight scene representation, enabled by 3D Gaussian Splatting (3DGS) [11], with annotated 6D object poses from four categories: industry, toys, medical lab equipment, and office supplies. We collected the data with a robotic setup to provide uniform view coverage through all scenes. To evaluate the quality of 3DGS, 10% of the views are used as a holdout set. A ROS interface is provided, enabling agents to navigate the 3DGS scene and change its viewpoint. Additionally, we present two baseline agents for BRAVE-6D . A zero-shot one, based on CNOS [12] detections and ZS6D [13] pose estimations. A supervised one, based on YOLO [14] detection and the state-of-the-art pose estimation method GDR-Net [15]. The dataset includes a comprehensive training set with synthetic rendered images and ground truth annotations. Our contributions to active vision, robotics, and 6D object pose estimation are as follows:  
+
+> •
+
+BRAVE-6D , an interactive object pose estimation dataset consisting of 3DGS scenes and annotated small objects from four industry-relevant categories.  
+
+> •
+
+A ROS interface for real-time visual servoing and corresponding view generation.  
+
+> •
+
+An empirical evaluation of the influence of sensor distance on object pose estimation accuracy.  
+
+> •
+
+Two baseline solutions, a supervised trained and a zero-shot agent, capable of visual servoing within the scenes and estimating object poses. In summary, BRAVE-6D enables commanding an interac-tive agent/camera and offers a realistic and reproducible benchmark for difficult robotic tasks such as handling small objects. arXiv:2609.17106v1 [cs.RO] 15 Sep 2026 Fig. 2. Overview of BRAVE-6D. The diagram illustrates the two main contributions of our paper: (1) the active vision dataset and (2) the active agent for evaluation. The left side visualizes the active vision dataset, which includes a 3DGS (3D Gaussian Splatting) scene with an interface for positioning the agent and a view renderer that returns the view and the object pose in camera coordinates based on the agent’s position. The right side depicts the proposed active agent logic for determining an optimal agent position and estimating the 6D object pose in camera coordinates. 
+
+II. BRAVE-6D Figure 2 gives an overview of BRAVE-6D and illustrates the feedback loop between the agent and the interactive dataset. We utilize 3D Gaussian Splatting (3DGS) for scene representation due to its capability for real-time view syn-thesis. The agent interacts with the scene through the ROS interface, deciding whether to move to a new position or to estimate the 6D object pose in camera coordinates. 
+
+A. Data Collection 
+
+The 3DGS scenes were collected using a camera mounted on a robotic arm, ensuring precise knowledge of the camera poses. A 3DGS scene consists of ellipsoids, characterized by a 3D position, opacity, anisotropic covariance, and spherical harmonic coefficients to capture view-dependent color varia-tions. These parameters are optimized during the training of the 3DGS model, with the number of ellipsoids determined by an adaptive control algorithm. The loss function used for training, shown in Equation 1, combines a pixel-wise L1
+
+norm and the structural similarity index loss term LD−SSIM 
+
+to measure holistic image similarity. 
+
+L = (1 − λ)L1 + λLD−SSIM (1) We capture images at four levels: 20 cm, 30 cm, 40 cm and 50 cm, with approximately 90 images per distance. This approach facilitates accurate view synthesis from both close and far perspectives. Object poses are annotated on a scene level with 3D-DAT [16]. The dataset includes four objects per category (industry, household, laboratory, and toys). 
+
+B. Agent Interface and Evaluation 
+
+The ROS interface allows the agent to move within the 3DGS scene, simulating the behavior of a robot interacting with its environment. Retrieving and setting the camera pose and velocity, is possible, constrained only by annotated col-lision boxes. The agent detects objects and decides whether to change position or estimate the pose. If the view is insufficient, it sends the desired camera position to the ROS interface. BRAVE-6D returns the corresponding synthesized view and ground truth 6D object pose in the current frame. Once a satisfactory position is reached, as determined by the convergence criterion, the agent estimates the 6D object pose. 
+
+C. Evaluation Metrics 
+
+The evaluation will consist of two metrics: the typical Average Recall (AR) score from the BOP challenge [2] for pose estimation accuracy, and the number of agent position adjustments. The latter metric directly correlates with the visual servoing effort in a real-world scenario. 
+
+D. Zero-Shot Active Vision Pipeline 
+
+To establish a baseline for BRAVE-6D, we provide a zero-shot active vision pipeline that includes CNOS as a detector and ZS6D as a subsequent pose estimation module. This demonstrates that no training is necessary to estimate the 6D pose of challenging objects if an optimal viewpoint is selected. III. C ONCLUSION 
+
+BRAVE-6D is not merely a dataset; it represents a new strategy for dataset creation and benchmarking for active perception, enables comparing methods, and aims to foster the development of new approaches that outperform the presented baseline solutions. Future work can build on our strategy to create bench-marks for scenarios like object searching and extend the 3DGS toward physics properties to enable a comparison of mobile robotic algorithms. REFERENCES [1] C. Peng, M. Zhu, H. Ren, and M. Emam, “Small object detection method based on weighted feature fusion and csma attention module,”       
+
+> Electronics , vol. 11, no. 16, p. 2546, 2022. [2] T. Hodaˇ n, M. Sundermeyer, B. Drost, Y. Labb´ e, E. Brachmann, F. Michel, C. Rother, and J. Matas, “Bop challenge 2020 on 6d object localization,” in Computer Vision–ECCV 2020 Workshops: Glasgow, UK, August 23–28, 2020, Proceedings, Part II 16 .Springer, 2020, pp. 577–594. [3] R. Bajcsy, “Active perception,” Proceedings of the IEEE , vol. 76, no. 8, pp. 966–1005, 1988. [4] J. Aloimonos, I. Weiss, and A. Bandyopadhyay, “Active vision,”
+> International journal of computer vision , vol. 1, pp. 333–356, 1988.
+
+[5] M. Ilyas, H. Y. Khaw, N. M. Selvaraj, Y. Jin, X. Zhao, and C. C. Cheah, “Robot-assisted object detection for construction automation: Data and information-driven approach,” IEEE/Asme Transactions on Mechatronics , vol. 26, no. 6, pp. 2845–2856, 2021. [6] N. Liu, C. Guo, R. Liang, and D. Li, “Collaborative viewpoint adjusting and grasping via deep reinforcement learning in clutter scenes,” Machines , vol. 10, no. 12, p. 1135, 2022. [7] S. Natarajan, G. Brown, and B. Calli, “Aiding grasp synthesis for novel objects using heuristic-based and data-driven active vision methods,” 
+
+Frontiers in Robotics and AI , vol. 8, p. 696587, 2021. [8] P. Ammirato, P. Poirson, E. Park, J. Koˇ seck´ a, and A. C. Berg, “A dataset for developing and benchmarking active vision,” in 2017 IEEE International Conference on Robotics and Automation (ICRA) . IEEE, 2017, pp. 1378–1385. [9] P. Ammirato, A. C. Berg, and J. Kosecka, “Active vision dataset benchmark,” in Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition Workshops , 2018, pp. 2046–2049. [10] D. Hall, B. Talbot, S. R. Bista, H. Zhang, R. Smith, F. Dayoub, and N. S¨ underhauf, “Benchbot environments for active robotics (bear): Simulated data for active scene understanding research,” The Inter-national Journal of Robotics Research , vol. 41, no. 3, pp. 259–269, 2022. [11] B. Kerbl, G. Kopanas, T. Leimk¨ uhler, and G. Drettakis, “3d gaussian splatting for real-time radiance field rendering,” ACM Transactions on Graphics , vol. 42, no. 4, pp. 1–14, 2023. [12] V. N. Nguyen, T. Groueix, G. Ponimatkin, V. Lepetit, and T. Hodan, “Cnos: A strong baseline for cad-based novel object segmentation,” in 
+
+Proceedings of the IEEE/CVF International Conference on Computer Vision , 2023, pp. 2134–2140. [13] P. Ausserlechner, D. Haberger, S. Thalhammer, J.-B. Weibel, and M. Vincze, “Zs6d: Zero-shot 6d object pose estimation using vision transformers,” arXiv preprint arXiv:2309.11986 , 2023. [14] J. Redmon, S. Divvala, R. Girshick, and A. Farhadi, “You only look once: Unified, real-time object detection,” in Proceedings of the IEEE conference on computer vision and pattern recognition , 2016, pp. 779– 788. [15] G. Wang, F. Manhardt, F. Tombari, and X. Ji, “Gdr-net: Geometry-guided direct regression network for monocular 6d object pose esti-mation,” in Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , 2021, pp. 16 611–16 621. [16] M. Suchi, B. Neuberger, A. Salykov, J.-B. Weibel, T. Patten, and M. Vincze, “3d-dat: 3d-dataset annotation toolkit for robotic vision,” in 2023 IEEE International Conference on Robotics and Automation (ICRA) . IEEE, 2023, pp. 9162–9168.
