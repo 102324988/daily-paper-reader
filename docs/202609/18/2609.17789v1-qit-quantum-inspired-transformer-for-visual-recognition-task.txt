@@ -1,0 +1,476 @@
+Title: QiT: Quantum-Inspired Transformer for Visual Recognition Task
+
+URL Source: https://arxiv.org/pdf/2609.17789v1
+
+Published Time: Thu, 17 Sep 2026 00:19:16 GMT
+
+Number of Pages: 12
+
+Markdown Content:
+# QiT: Quantum-Inspired Transformer for Visual Recognition Task 
+
+## Badri N. Patro Microsoft Vijay S. Agneeswaran Microsoft 
+
+## Abstract 
+
+Quantum machine learning offers a compelling represen-tational perspective: angle-encoded states inhabit Hilbert spaces in which periodic similarities and interactions can be expressed naturally. Realizing this perspective for visual recognition remains difficult, however, because present quan-tum neural networks are constrained by limited qubit counts, costly circuit simulation and measurement, noise, and un-stable optimization on noisy intermediate-scale quantum devices. We investigate whether useful structural ideas from quantum models can instead be realized as scalable classi-cal Transformer operations. We introduce QiT, a Quantum-inspired Transformer for vision tasks with three compo-nents: (i) angle-inspired encoding that maps image tokens to learned trigonometric Hilbert-space features analogous to quantum rotation-based state encoding; (ii) self-attention over these periodic features, inducing a classical cosine ker-nel approximated to quantum fidelity kernels; and (iii) gated multiplicative emulation, a trainable classical surrogate for interaction terms found in variational circuits. All compo-nents are differentiable tensor operations, so QiT claims neither quantum computation nor quantum speedup and re-tains the O(N 2D) attention complexity of a standard Vision Transformer. Across image-classification benchmarks, QiT is competitive with a matched classical Transformer while avoiding the severe runtime cost observed for a small simu-lated quantum Transformer. QiT-B reaches 78.3% ImageNet-1K top-1 accuracy with 45.7M parameters and 11.5 GFLOPs. These results position QiT as a scalable baseline for isolat-ing and evaluating quantum-motivated inductive biases in visual recognition. 
+
+## 1. Introduction 
+
+Self-attention gives vision models a direct mechanism for relating distant image patches [10, 47]. Its query and key projections are linear, however, so nonlinear pairwise struc-ture must emerge through depth and the surrounding feed-forward blocks. Quantum machine learning suggests a com-plementary design vocabulary: periodic angle encodings, feature-space inner products, and multiplicative interactions produced by parameterized quantum circuits (PQCs) [4, 37]. Whether these ingredients are useful in a scalable classi-cal vision model remains insufficiently separated from the question of whether a model runs on quantum hardware. Current quantum neural networks face three obstacles to vision-scale evaluation. First, recurrent designs such as QRNNs [2] and QLSTMs [8] process tokens sequentially, limiting parallelism and making direct long-range interac-tion less efficient than self-attention. Second, fully quantum and hybrid Transformers remain difficult to scale on noisy intermediate-scale quantum (NISQ) hardware [32]: available qubit counts, feasible circuit depths, measurement noise, and repeated sampling constrain both model size and evaluation throughput [9, 19, 52]. Third, some parameterized circuit families develop barren plateaus, in which gradient concen-tration impedes optimization as the system grows [24]. Exist-ing hybrid approaches face a dilemma: light hybrids delegate only a few layers to quantum circuits and gain little expres-sivity, while heavy hybrids attempt full quantum attention but cannot train at realistic sequence lengths. Consequently, quantum-attention studies are generally evaluated at substan-tially smaller scales than modern vision Transformers, and controlled large-scale comparisons remain scarce. This work asks whether structural motifs associated with quantum models in Hilbert spaces can provide useful induc-tive biases in a Transformer that retains the scalability of classical deep learning. More precisely, can periodic angle features and multiplicative interactions be integrated into parallel visual attention without circuits, measurements, or assumptions of quantum computational advantage? We need an architecture that integrates quantum principles without quantum hardware. Figure 1 provides an overview of the resulting QiT encoder. We propose QiT (Quantum-inspired Transformer), a clas-sical vision architecture that translates three motifs from parameterized quantum models into differentiable tensor op-erations. First, angle-inspired encoding maps each token h to bounded angles θ(h) = π tanh( hW θ + b) and trigonometric periodic features ϕ(h) = [sin( θ(h)) , cos( θ(h))] , analogous in form to quantum rotation-based data encoding. Second, arXiv:2609.17789v1 [quant-ph] 15 Sep 2026 Figure 1. QiT encoder block: Tokens are mapped to a quantum-inspired Hilbert space via angle encoding and Fourier features. Kernel attention approximates quantum fidelity, while local quantum mixers and a circuit surrogate layer emulate bounded-depth PQCs within a Transformer architecture. 
+
+periodic-feature self-attention forms queries, keys, and val-ues from learned projections of ϕ(h) in Hilbert-inspired feature space, allowing tokens to interact after a nonlinear periodic lift. Before projection, the inner product of these features is an explicit cosine kernel; after learned query and key projections, the attention score is a trainable bilinear sim-ilarity rather than a quantum fidelity kernel. Third, a gated multiplicative mixer , (GELU( ZW 1) ⊙ σ(ZW g )) W2, intro-duces input-dependent channel interactions motivated by multiplicative terms in a variational quantum circuit (VQC). It does not instantiate or simulate physical entanglement. For image tokens X ∈ RB×N ×D and labels y, QiT solves standard supervised classification by minimizing cross-entropy for fΘ(X). The design reverses the usual hybrid construction: rather than executing classical atten-tion through quantum circuits, it isolates selected quantum-motivated functional forms and evaluates them with conven-tional GPU kernels. QiT consequently preserves parallel to-ken processing, standard backpropagation, and the O(N 2D)
+
+attention complexity of a Vision Transformer while avoid-ing circuit simulation, repeated measurement, and quantum-hardware constraints. The resulting model enables these inductive biases to be evaluated on vision benchmarks at a scale that is currently impractical for circuit-based attention. 
+
+Contributions. 
+
+1. We introduce QiT, a vision Transformer that integrates learned angle-inspired features, self-attention over their quantum-inspired Hilbert-space embeddings, and a gated multiplicative channel mixer. QiT requires no quantum hardware and retains the parallel execution and O(N 2D)
+
+attention complexity of a standard Vision Transformer. 2. We characterize the trigonometric feature map as an ex-plicit positive-semidefinite cosine kernel, connecting QiT to periodic feature methods and rotation-based quantum data encoding. We state the boundary of this connection explicitly: learned query–key scores are bilinear simi-larities, not general quantum fidelity kernels, and gated mixing does not realize physical entanglement. 3. We evaluate QiT across image-classification benchmarks and compare it with both classical vision models and a four-qubit PennyLane Transformer. In the controlled one-epoch simulator study, QiT reduces runtime by nearly three orders of magnitude; at scale, QiT-B reaches 78.3% ImageNet-1K top-1 accuracy with 45.7M parameters and 11.5 GFLOPs. 
+
+## 2. Related Work 
+
+Transformers and Long-Range Sequence Modeling. 
+
+Transformers enable parallel, content-dependent token in-teraction across language and vision [10, 13, 47]. Vision alternatives include spectral token mixers [26, 30, 35] and state-space models [12, 23, 27–29, 49]. QiT retains softmax self-attention and changes the feature map supplied to its projections and the subsequent channel mixer. 
+
+Quantum Machine Learning. Quantum machine learning (QML) encodes classical data into quantum states, applies parameterized quantum circuits (PQCs), and measures ob-servables to produce classical outputs [4, 14, 37]. A register of Q qubits represents states in a 2Q-dimensional Hilbert space, but this dimensionality alone does not imply an ef-ficiently accessible learning advantage. Quantum feature maps can induce kernels through state overlaps and generate input-dependent interactions whose utility depends on the en-coding, circuit, measurement, and data [11, 14]. Variational quantum algorithms combine parameterized circuits with classical optimization, often favoring shallow circuits for near-term devices [6, 7, 25]. Their practical scale remains constrained by qubit availability, gate errors, decoherence, and finite-shot estimation on noisy intermediate-scale quan-tum hardware [32]. Moreover, barren plateaus can cause gradients to concentrate near zero for particular circuit fami-lies, objectives, and initialization regimes [24]. 
+
+Quantum Deep Learning for Sequential Data. Quan-tum deep learning develops trainable quantum analogues of neural layers and studies their expressivity and optimiza-tion [1, 3, 17, 25, 33]. For sequential data, QRNNs and related recurrent models update quantum registers step by step [2, 20, 21, 43]; QLSTMs similarly incorporate PQCs into recurrent gating structures [8, 39]. Linear-layer variants and other hybrid modifications seek more stable or efficient training [5]. Data re-uploading and unitary or variational constructions provide additional routes to expressive circuit functions [31, 36, 38, 41]. These models demonstrate that PQCs can process ordered data, but recurrent execution re-mains sequential and does not provide Transformer-style all-pairs token interaction. QiT instead studies parallel in-teractions among image patches and executes all operations classically. 
+
+Quantum Attention and Quantum Transformers. Quan-tum attention methods differ in which Transformer opera-tions are assigned to circuits. Light hybrid models such as QSANN [19] and QSAM [51] use circuits for selected projections while retaining classical attention operations. More circuit-intensive approaches, including QViT [9] and QKSAN [52], incorporate quantum subroutines or kernels into visual attention, increasing circuit-evaluation and mea-surement demands. QSAN [40] and F-QSANN [53] pursue fully quantum formulations, whereas HQViT [50] and quan-tum self-attention for molecular generation [42] investigate other hybrid allocations. Their encodings, circuit access assumptions, sampling budgets, and output readouts differ, so asymptotic quantities are not uniformly comparable and do not by themselves establish end-to-end speedups. QiT occupies a distinct point in this landscape: it assigns no operation to quantum hardware. Instead, it translates angle-inspired periodic encoding and circuit-motivated mul-tiplicative interactions into classical tensor operations, then applies standard softmax attention. This design enables con-ventional GPU training at vision scale, but its efficiency is classical and should not be interpreted as quantum computa-tional advantage. 
+
+Positioning of QiT. QiT is neither a quantum Transformer nor a simulator of a general PQC. It isolates three design components—learned periodic token features, attention over their projections, and gated multiplicative channel mixing— within a classical Transformer. The unprojected feature in-ner product is an explicit cosine kernel, whereas the learned query–key score is generally neither a positive-semidefinite kernel nor quantum-state fidelity. Likewise, multiplicative gating supplies trainable feature interactions but does not cre-ate physical entanglement. This positioning makes the quan-tum connection precise enough to test while permitting direct GPU evaluation. Unlike fully quantum architectures, QiT does not require quantum hardware, avoids barren plateaus and measurement noise, and scales to long sequences and large datasets. Unlike prior hybrid models that use PQCs as black-box nonlinear layers or rely on quantum kernel estima-tion. The small PennyLane experiment compares practical execution costs in a controlled setting; the large-scale vision results evaluate QiT as a classical architecture rather than evidence of quantum advantage. 
+
+## 3. Quantum-Inspired Transformer Architec-ture (QiT) 
+
+QiT is a classical Transformer that uses periodic token fea-tures and gated multiplicative channel mixing. These choices are motivated by angle encoding and interaction terms in parameterized quantum circuits (PQCs), but QiT neither ex-ecutes nor generally simulates a PQC. We first define the implemented operations and then state the limited sense in which they relate to quantum models. 
+
+3.1. Background: Classical Multi-Head Self-Attention 
+
+Given token embeddings H ∈ RB×L×d (batch size B, se-quence length L, embedding dimension d), classical multi-head self-attention computes: 
+
+Q = HW Q, K = HW K , V = HW V , (1) 
+
+A = softmax 
+
+ QK ⊤
+
+√dh
+
+
+
+, Attn( H) = AV, (2) where WQ, W K , W V ∈ Rd×dh project to queries, keys, and values, and dh is the per-head dimension. Multi-head attention parallelizes this across nh heads with in-dependent parameters, concatenating outputs for expres-sivity. This mechanism enables direct pairwise token in-teractions i ↔ j without sequential processing, parallel computation via batched matrix operations, and flexible multivariate integration through embeddings—advantages over MLPs (no temporal bias without engineered features), CNNs/TCNs (indirect long-range modeling requiring depth), and RNNs/LSTMs (sequential bottlenecks, gradient degra-dation). However, attention incurs O(L2) cost and standard linear projections lack the high-dimensional feature space expressivity promised by quantum approaches. Table 1. Reported or asymptotic resource characteristics of quantum-attention designs. Values follow different circuit, oracle, sampling, and readout assumptions and are therefore descriptive rather than directly comparable. N denotes the number of tokens, D the embedding dimension, and Q the number of qubits. PQG denotes parameterized quantum gates.                                                                                                              
+
+> Model #Qubits #PQG #Distinct Circuits #Total Measurements Quantum Outputs Reported Classical Cost Execution Setting
+> CViT (Classical) 0000–O(N2D)Classical GPU QSANN [19] O(D)O(D)O(N)O(N D ){qi}Ni=1 ,{ki}Ni=1 ,{vi}Ni=1 O(N D 2)Hybrid/simulated QSAM [51] O(D)O(D)O(N)O(N D ){qi}Ni=1 ,{ki}Ni=1 ,{vi}Ni=1 O(N D 2)Hybrid/simulated HQViT [50] O(log N D )O(log D)O(1) O(N2log D)∗{Aij }Ni,j =1 ,{vi}Ni=1 O(N2D)Hybrid proposal QViT [9] O(N+D)O(Dlog D)O(N)O(N D )∗{yi}Ni=1 O(N2D)Hybrid/simulated QKSAN [52] O(D)O(D)O(N2)O(N2D)∗{vi}Ni=1 O(N2D)Hybrid/simulated QSAN [40] O(Nlog D+N2)O(Nlog D)O(1) O(log D)yO(N2D)Fully quantum proposal F-QSANN [53] O(Nlog D)O(N2log D)O(1) O(1) Class probability O(N2D)Fully quantum proposal QiT (Ours) 0000Classical features None Classical GPU
+
+3.2. Token Embedding (Classical Preprocessing) 
+
+Given an input sequence X ∈ RB×L×D with batch size B,sequence length L, and input dimension D, we construct token embeddings H ∈ RB×L×d using standard embedding layers that combine value embeddings, positional encod-ings, and optional temporal covariates. This preprocessing step follows conventional Transformer practice and costs 
+
+O(BLD ) operations. The quantum-inspired components begin after embeddings are formed. 
+
+3.3. Quantum Angle Encoding 
+
+In quantum computing, angle encoding prepares quantum states by rotating qubits according to input features. We emulate this classically by mapping each token embedding 
+
+h ∈ Rd to rotation angles: 
+
+θ(h) = π tanh( W h + b), θ(h) ∈ RQ, (3) where Q is the number of learned angles (virtual qubits) and W ∈ RQ×d and b ∈ RQ are trainable parameters. We use Q to retain the connection to a Q-qubit angle encoding, although no qubits are instantiated. The tanh nonlinearity bounds the angles to [−π, π ] matching the periodicity of quantum rotation gates. We then construct a trigonometric feature map in Hilbert space: 
+
+ϕ(h) = 1
+
+√Q [sin( θ(h)) , cos( θ(h))] ∈ R2Q. (4) This embedding corresponds to a Fourier feature representa-tion and induces an implicit positive-semidefinite kernel: 
+
+k(h, h′) = ⟨ϕ(h), ϕ (h′)⟩ = 1
+
+Q
+
+> Q
+
+X
+
+> q=1
+
+cos( θq (h) − θq (h′)) .
+
+(5) Positive semidefiniteness follows directly because k is an inner product. The map is computed with classical trigono-metric functions at cost O(BLdQ ). For restricted product-state angle encodings, related trigonometric terms occur in state overlaps; this observation does not make k equal to the fidelity kernel of a general entangling circuit. 
+
+Connection to quantum feature maps. Angle-encoded quantum models also produce periodic functions of their in-puts. QiT retains this periodic structure in a 2Q-dimensional real feature space, rather than representing a 2Q-dimensional state vector. Its connection to quantum feature maps is there-fore architectural and spectral, not an equivalence between the represented state spaces. 
+
+3.4. Hilbert-Space Self-Attention 
+
+Standard Transformer attention computes query-key similar-ities in the original embedding space. QiT instead performs attention in the quantum-inspired feature space defined by angle encoding. For each token hi ∈ Rd, we first apply the trigonometric mapping: 
+
+θi = π tanh( W h i + b) ∈ RQ, (6) 
+
+ϕ(hi) = [sin θi, cos θi] ∈ R2Q. (7) We then form queries, keys, and values by projecting these features: 
+
+qi = ϕ(hi)WQ, ki = ϕ(hi)WK , vi = ϕ(hi)WV , (8) where WQ, W K , W V ∈ R2Q×dh are learnable projection matrices and dh is the per-head dimension. Attention weights follow the standard scaled dot-product formula: 
+
+Aij = exp  q⊤ 
+
+> i
+
+kj /√dh
+
+P 
+
+> j′
+
+exp  q⊤ 
+
+> i
+
+kj′ /√dh
+
+ , (9) and the attention output is: 
+
+Attn( Q, K, V ) = AV. (10) Before projection, ϕ(hi)⊤ϕ(hj ) is the cosine kernel above. After applying independently learned query and key projections, q⊤ 
+
+> i
+
+kj is a learned bilinear similarity in that feature space; it need not be symmetric or positive semidefi-nite and should not be interpreted as quantum-state fidelity. Figure 2 contrasts these two kernel constructions. For all heads, feature projection costs O(BLQd ) and attention costs 
+
+O(BL 2d).x ∈ Rd |ψ(x)⟩ = UE (x)|0⟩      
+
+> ϕ(x) = [sin θ(x),cos θ(x)]
+> KQ(x, x ′) = |⟨ ψ(x)|ψ(x′)⟩| 2
+> Km(x, x ′) = ⟨ϕ(x), ϕ (x′)⟩
+> Angle Encoding Classical Surrogate Fidelity Kernel Fourier Kernel
+> m→ ∞
+
+Figure 2. Two distinct routes from angle-encoded inputs. QiT uses the explicit cosine feature kernel at the bottom; it does not generally approximate the circuit-dependent fidelity kernel at the top. 
+
+Scope of the circuit interpretation. A circuit-based at-tention mechanism could encode a token as a normalized state 
+
+|ψ(h)⟩ = UE (h)|0⟩, ⟨ψ(h)|ψ(h)⟩ = 1 , (11) and to form query and key states |ψQ(hi)⟩ = UQ|ψ(hi)⟩
+
+and |ψK (hj )⟩ = UK |ψ(hj )⟩, where UQ(θQ) and UK (θK )
+
+be unitary families. Their fidelity score and normalized attention weight would be 
+
+sij = ⟨ψQ(hi) | ψK (hj )⟩ 2 ∈ [0 , 1] . (12) Then for any temperature τ > 0, the attention weights 
+
+Aij = exp( sij /τ )
+
+P 
+
+> j′
+
+exp( sij ′ /τ ) (13) form a valid probability distribution over j and induce an attention operator 
+
+Attn( hi) = 
+
+> L
+
+X
+
+> j=1
+
+Aij vj . (14) Moreover, sij defines a positive-definite kernel over to-ken embeddings. Unitarity of UE , UQ, and UK ensures all states are normalized. Unitarity guarantees normalized states,Hence sij ∈ [0 , 1] and exp( sij /τ ) > 0, and soft-max guarantees Aij > 0 and so P 
+
+> j
+
+Aij = 1 . When the same state map is used on both arguments, fidelity is a positive-semidefinite kernel because |⟨ ψi|ψj ⟩| 2 = tr( ρiρj )
+
+for ρi = |ψi⟩⟨ ψi|. With distinct query and key maps, how-ever, sij need not be symmetric and therefore is not generally a kernel. QiT neither estimates these fidelities nor approximates them through an overlap routine such as a swap test. It uses the finite real feature map ϕ and learns task-dependent query and key projections before softmax attention. The shared periodic dependence on encoded angles motivates the design, while the learned projections allow the visual recog-nition objective to determine the similarity. QiT attention costs O(BL 2dh) per head, as in scaled dot-product attention. Its empirical behavior is therefore evidence about periodic classical features, not quantum-state fidelity or quantum ad-vantage.             
+
+> RX( θ1)RZ( θ2)CNOT Measurement Linear W1Nonlinearity Gated Mix Linear W2
+> Angle encoding Entangle ↔Gating Readout
+
+Figure 3. Design analogy between a parameterized circuit and the QiT channel mixer. The correspondence motivates the sequence of operations but does not imply equivalent states or functions. 
+
+3.5. Quantum-Inspired Gated Channel Mixer 
+
+3.5.1. Design rationale 
+
+Parameterized quantum circuits use two types of operations: single-qubit rotation gates that depend on learnable parame-ters, and multi-qubit entangling gates like CNOT that create non-separable correlations between qubits. A quantum cir-cuit with parameters Θ = {θ1, . . . , θ p} computes: 
+
+fΘ(x) = ⟨0|U †
+
+> Θ
+
+(x) O U Θ(x)|0⟩, (15) where x is the classical input, UΘ(x) applies encoding and variational gates, and O is a measurement observable. Entan-gling gates can produce states and measurement correlations that cannot be factored into independent single-qubit contri-butions. Motivated by this sequence of rotation, interaction, and readout, we use a classical gated block. It introduces multiplicative feature interactions without representing a quantum state. 
+
+3.5.2. Gated multiplicative mixing 
+
+Given a token representation X, the channel mixer applies 
+
+H1 = GELU( XW 1), (16) 
+
+G = σ(XW g ), (17) 
+
+Mix( X) = ( H1 ⊙ G)W2, (18) where ⊙ denotes elementwise multiplication, W1 and Wg
+
+map to hidden width r, and W2 projects back to width d. The Hadamard product creates input-dependent, non-additive fea-ture interactions. Such products are qualitatively reminiscent of interaction terms in circuit expectation values, but no one-to-one correspondence to an entangling gate is assumed. The computational cost is O(BLdr ), matching a gated Trans-former feed-forward block of hidden width r.
+
+3.5.3. Architectural interpretation 
+
+Figure 3 illustrates the mapping between quantum circuit elements and QiT components. Angle encoding emulates single-qubit rotations ( RX , RZ ), gated mixing emulates two-qubit gates (CNOT), and multi-head attention corresponds to parallel measurements. Residual connections act as classical analogs of quantum error mitigation by providing gradient highways that stabilize training. Angle encoding motivates Table 2. One-epoch CIFAR simulator diagnostic with patch size 4, one block, and batch size 2. Q=4 denotes learned angles for QiT and simulated qubits for FQT-P. FLOPs are recorded for CViT and QiT; FQT-P is listed symbolically because its cost depends on circuit and simulator details. Accuracy values are single-run, non-converged measurements.FQT-P = Full Quantum Transformer in PennyLane.                                                                                    
+
+> Model Classes Angles/Qubits Params FLOPs Energy (J) Acc. (%) Latency (s) Wall-clock (s)
+> CViT 20147,458 8,996,352 9.60 50.00 0.0010 63.72 QiT 24 angles 324,690 20,756,672 10.76 86.35 0.0016 102.91 FQT-P 24 qubits 16,394 O(N22Q)23,904.70 81.20 2.4987 90,745.75 CViT 40147,716 8,996,608 9.40 25.00 0.0008 127.97 QiT 44 angles 324,948 20,756,928 10.64 71.98 0.0015 202.02 FQT-P 44 qubits 16,652 O(N22Q)13,697.42 62.42 2.3363 178,606.09 CViT 10 0147,490 8,997,376 5.60 10.00 0.0007 253.50 QiT 10 4 angles 325,722 20,757,696 6.89 50.39 0.0013 447.23 FQT-P 10 4 qubits 17,426 O(N22Q)13,641.24 32.33 2.3174 445,765.80
+
+Table 3. Unified asymptotic comparison of Transformer variants. N = tokens, D = embedding dim, Q = qubits, L = circuit depth. Runtime slowdown is relative to CViT. 
+
+Model Token mixing (attn.) Channel mixer Total complexity Slowdown Feasibility (CIFAR) Acc 
+
+CViT O(N 2D) O(N D 2) O(N 2D) 1× Fully trainable 0.50 QiT (surrogate) O(N 2D) O(QL ) O(N 2D) 1.1× Fully trainable 0.86 FQT-P (PennyLane) O(N2 · 2Q) O(QL ) O(N2 · 2Q) ∼ 100 × Slow but feasible 0.81 FQT-Q (Qiskit) O(N2 · 2Q) O(QL ) O(N2 · 2Q) ∼ 1000 × Infeasible at CIFAR scale –periodic features, multiplicative gating supplies feature in-teractions, and a linear layer provides readout. Residual connections and normalization follow standard Transformer practice. Because QiT uses a finite classical feature map, it does not inherit the exponential state dimension or the full function class of a quantum circuit. 
+
+## 4. Experiments 
+
+We organize the evaluation around three questions. (Q1) Simulator cost: under one controlled CIFAR protocol, how does a four-qubit PennyLane implementation compare with classical execution? (Q2) Portability: can one QiT config-uration train across datasets with different resolutions and class counts? (Q3) ImageNet scale: can larger QiT variants be trained on ImageNet-1K, and where do their accuracy and computational cost lie relative to published vision architec-tures? These experiments evaluate a classical model and do not test quantum advantage. 
+
+4.1. Experimental Setup 
+
+Datasets. The portability study comprises eight datasets. CIFAR-10, SVHN, and CIFAR-100 use 32 × 32 images; STL-10 uses 96 × 96 images; Oxford-IIIT Pets, Food-101, Flowers-102, and Caltech-256 use 224 × 224 images. They span 10 to 257 classes and 3,680 to 75,750 training images, as detailed in Table 5. ImageNet-1K is evaluated separately with 1.2M training images, 1,000 classes, and 224 × 224 
+
+inputs. The simulator diagnostic uses reduced 2-, 4-, and 10-class CIFAR tasks; these are distinct from the 300-epoch CIFAR-10 result in the portability study. 
+
+Protocols. The three studies use separate settings. For Q1, CViT, QiT, and FQT-P use patch size 4, one block, batch size 2, and one training epoch; QiT and FQT-P use Q = 4 , where 
+
+Q denotes learned angles for QiT and qubits for FQT-P. For Q2, a fixed QiT architecture uses patch size 4, depth 12, width 256, four attention heads, and Q = 16 learned angles. It is trained for 300 epochs with AdamW, cosine learning-rate decay, random cropping, horizontal flipping, and color jitter on four Tesla T4 GPUs; per-GPU batch sizes appear in Table 5. For Q3, the QiT-XS/S/B variants use the parameter and FLOP budgets reported in Table 4. Results must be interpreted within each protocol rather than compared across protocols. 
+
+Reporting scope. All tables report point estimates from the available runs. The current records do not include re-peated seeds, uncertainty intervals, complete optimizer hy-perparameters, reduced-class CIFAR split definitions, or the energy-measurement procedure. We therefore use the results to document observed accuracy, runtime, and scalability, not statistical superiority. A final reproducible submission should provide these missing details and repeated-run confi-dence intervals. 
+
+4.2. Comparison with Simulated Quantum Trans-formers 
+
+Table 2 compares a classical Vision Transformer (CViT), QiT, and a four-qubit Full Quantum Transformer simulated in PennyLane (FQT-P) under the Q1 protocol. In this table, “angles/qubits” distinguishes QiT’s four learned angles from FQT-P’s four simulated qubits. Table 4. ImageNet-1K top-1 accuracy, GFLOPs, and Parameters are reported for representative architectures. Results are drawn from their respective papers and use different training recipes; the table provides scale and accuracy context rather than controlled pairwise comparisons. QiT rows are highlighted. 
+
+Network Size Params FLOPs Top-1 CNN ResNet-50 [15] 224 2 25.5M 4.1G 78.3 ResNeXt101 [48] 224 2 83.5M 15.6G 81.5 EfficientNet-B5 [44] 456 2 30M 9.9G 83.6 Transformer-MLP Mixer gMLP-Ti [22] 224 2 6M 1.4G 72.0 gMLP-S [22] 224 2 20M 4.5G 79.4 gMLP-B [22] 224 2 73M 15.8G 81.6 ResMLP-12 [46] 224 2 15M 3.0G 76.6 ResMLP-36 [46] 224 2 45M 8.9G 79.7 Transformer-Spectral Fnet-S [18] 224 2 15M 2.9G 71.2 GFNet-Ti [34] 224 2 7M 1.3G 74.6 GFNet-XS [34] 224 2 16M 2.9G 78.6 GFNet-S [34] 224 2 25M 4.5G 80.0 SpectFormer-XS [30] 224 2 20M 4.0G 80.2 SpectFormer-S [30] 224 2 32M 6.6G 81.7 SpectFormer-B [30] 224 2 57M 11.5G 82.1 Transformer-State-Space Vim-Ti [54] 224 2 7M 1.5G 76.0 Vim-S [54] 224 2 26M 5.1G 80.4 LocalVMamba-T [16] 224 2 26.0M 5.7G 82.7 LocalVMamba-S [16] 224 2 50.0M 11.4G 83.7 SiMBA-S [27] 224 2 15.3M 2.4G 81.7 SiMBA-B [27] 224 2 22.8M 4.2G 83.5 VMamba-T [23] 224 2 31.0M 4.9G 82.5 VMamba-S [23] 224 2 50.0M 8.7G 83.6 Transformer-Attention ViT-B/16 [10] 384 2 86M 55.5G 77.9 DeiT-Ti [45] 224 2 5M 1.2G 72.2 DeiT-S [45] 224 2 22M 4.6G 79.8 DeiT-B [45] 224 2 86M 17.5G 81.8 Transformer-Quantum-Inspired (ours) QiT-XS 224 2 18.1M 3.8G 75.0 QiT-S 224 2 31.0M 5.6G 77.4 QiT-B 224 2 45.7M 11.5G 78.3 
+
+Runtime and latency. Across 2, 4, and 10 classes, FQT-P requires 90,745.75, 178,606.09, and 445,765.80 seconds, respectively, versus 102.91, 202.02, and 447.23 seconds for QiT. The corresponding FQT-P/QiT wall-clock ratios are 
+
+881 .8×, 884 .1×, and 996 .7×. Reported inference latency shows a similarly large gap of 1557 .5–1782 .6×. QiT is not cost-free relative to CViT: it uses about 2.30 × as many recorded FLOPs and 2.20 × as many parameters in this setup, yielding a 1.58 –1.76 × wall-clock increase. Thus the pilot demonstrates a large implementation-cost gap between clas-sical tensor execution and this PennyLane simulation, while also quantifying QiT’s overhead over the small CViT. 
+
+Accuracy and interpretation. After one epoch, QiT records 86.35%, 71.98%, and 50.39% accuracy for 2, 4, and 10 classes; FQT-P records 81.20%, 62.42%, and 32.33%. CViT remains exactly at chance (50%, 25%, and 10%), in-dicating that this short protocol is unsuitable for assessing its converged performance. The observed QiT–FQT-P dif-ferences are therefore optimization snapshots, not evidence of architectural superiority. Parameter counts are also un-matched: QiT has roughly 325K parameters, CViT 147K, and FQT-P 16–17K. The defensible conclusion is computa-tional: the tested simulator does not provide a practical route to the longer and larger studies below. 
+
+Energy measurements. FQT-P’s recorded energy is three orders of magnitude above the classical runs, but the mea-surement procedure, simulator implementation, and device utilization are undocumented. We report these values for completeness and draw no hardware-independent energy-efficiency conclusion from them. 
+
+Asymptotic complexity analysis. Table 3 separates asymptotic complexity from measured runtime. QiT’s peri-odic feature projection costs O(N QD ) per layer, attention costs O(N 2D), and a gated mixer of hidden width r costs 
+
+O(N Dr ). Its total layer cost is therefore O(N 2D +N QD +
+
+N Dr ), retaining quadratic dependence on token count. CViT additionally incurs its channel-MLP cost O(N D 2).FQT-P complexity is circuit- and simulator-dependent; a dense state-vector simulator stores 2Q amplitudes, but the measured slowdown cannot be generalized to other simula-tion methods or quantum hardware. We omit the proposed Qiskit row because no Qiskit experiment is recorded in the available results. 
+
+4.3. Context from Quantum Attention Models 
+
+Table 1 summarizes reported resource characteristics for QSANN [19], QSAM [51], HQViT [50], QViT [9], QK-SAN [52], QSAN [40], and F-QSANN [53]. Circuit archi-tecture, encoding, measurements, and hardware assumptions differ across these works, so the entries provide qualitative context rather than a normalized runtime ranking. QiT has zero quantum-resource requirements by construction. Table 5. Single-run QiT results across eight image datasets. All runs use four Tesla T4 GPUs, patch size 4, depth 12, width 256, four heads,                                                                                            
+
+> Q=16 learned angles, and 300 epochs. Batch is per GPU; latency is reported per image.
+> Dataset Classes Image Size Train Batch/GPU Epochs Params (M) GFLOPs Acc (%) Wall clock Inference (ms)
+> CIFAR-10 10 32 ×32 50,000 128 300 5.48 0.355 78.84 ∼1.74h 14.50 SVHN 10 32 ×32 73,257 128 300 5.48 0.355 95.94 ∼2.55h 14.66 STL-10 10 96 ×96 5,000 32 300 5.61 3.386 63.50 ∼2.07h 14.65 Pets 37 224 ×224 3,680 4300 6.27 24.58 71.23 ∼20.93h 77.18 CIFAR-100 100 32 ×32 50,000 128 300 5.50 0.355 51.52 ∼1.75h 14.39 Food-101 101 224 ×224 75,750 4300 6.29 24.58 72.00 ∼78.34h 80.12 Flowers-102 102 224 ×224 6,149 4300 6.29 24.65 65.00 ∼6.77h 79.31 Caltech-256 257 224 ×224 24,000 4300 6.33 24.58 68.23 ∼23.74h 79.98
+
+4.4. Scalability to ImageNet 
+
+Table 4 places QiT-XS/S/B alongside published ImageNet-1K results. Within the QiT family, increasing from XS to S raises top-1 accuracy from 75.0% to 77.4% while increasing compute from 3.8 to 5.6 GFLOPs. Scaling from S to B adds 14.7M parameters and 5.9 GFLOPs for a further 0.9 percentage-point gain, reaching 78.3%. This monotonic but diminishing gain indicates that the architecture remains trainable as capacity grows, although it does not establish optimal scaling. Across published models, QiT-B matches the listed ResNet-50 accuracy and exceeds the listed ViT-B/16 re-sult by 0.4 points with fewer reported FLOPs, but these are not controlled comparisons because input resolution, augmentation, optimization, and pretraining may differ. QiT trails DeiT-B by 3.5 points and the strongest spectral and state-space entries by 3.8–5.4 points. Accordingly, Table 4 supports ImageNet-scale feasibility and locates the current accuracy–cost trade-off; it does not support a state-of-the-art claim. 
+
+4.5. Results Across Multiple Benchmarks 
+
+Table 5 evaluates one QiT configuration without dataset-specific changes to depth, width, head count, or angle count. For 32 × 32 inputs, the model uses 5.48–5.50M parame-ters and 0.355 GFLOPs, obtaining 78.84% on CIFAR-10, 95.94% on SVHN, and 51.52% on CIFAR-100. The spread across these values reflects different tasks and class struc-tures, so it should not be interpreted as a direct ranking of dataset difficulty. Reported latency is consistent within this resolution group at 14.39–14.66 ms per image. Increasing resolution changes the resource profile more than the classifier size. STL-10 at 96 × 96 requires 3.386 GFLOPs and reaches 63.50%. At 224 × 224 , the four datasets require 24.58–24.65 GFLOPs and 6.27–6.33M pa-rameters, with accuracy ranging from 65.00% on Flowers-102 to 72.00% on Food-101. Their reported latency lies between 77.18 and 80.12 ms per image. Relative to the 
+
+32 × 32 runs, the 224 × 224 configuration uses about 69 ×
+
+more FLOPs but approximately 5.4× the measured latency, consistent with different levels of GPU utilization across input sizes rather than proportional latency scaling. Wall-clock time varies with both image resolution and training-set size: Food-101 is the longest run at approxi-mately 78.34 hours, while the smaller 32 × 32 datasets finish in under 2.6 hours. Taken together, the table establishes that the same QiT block can be optimized across substantial changes in resolution, sample count, and class count. Be-cause no matched baseline or component ablation is reported under this 300-epoch protocol, the table cannot attribute accuracy gains to periodic encoding or gated mixing. 
+
+Experimental findings. The experiments answer the three evaluation questions as follows. For Q1, the tested four-qubit PennyLane implementation is 882 –997 × slower in wall-clock time than QiT, while QiT is 1.58 –1.76 × slower than the small CViT. For Q2, one QiT configuration trains across eight datasets spanning 32 ×32 to 224 ×224 inputs and 10 to 257 classes. For Q3, QiT scales to ImageNet-1K and reaches 78.3% top-1 accuracy, but remains below stronger contemporary backbones in the contextual table. The current evidence establishes execution feasibility and measured cost; it does not establish that the quantum-motivated components outperform a converged, parameter-matched Transformer. That question requires controlled ablations, repeated seeds, and a complete shared training protocol. 
+
+## 5. Conclusion 
+
+We presented QiT, a classical vision Transformer that forms attention projections from learned periodic token features and uses gated multiplicative channel mixing. The construc-tion is motivated by angle-encoded quantum models but does not simulate a general quantum circuit or claim quantum ad-vantage. QiT scales across eight image datasets and reaches 78.3% ImageNet-1K top-1 accuracy with 45.7M parameters. A controlled four-qubit pilot further shows the high cost of the tested PennyLane simulator relative to ordinary tensor operations. The current evidence establishes scalability and motivates a focused study of periodic feature maps in at-tention; controlled component ablations and repeated runs remain necessary to determine their advantage over matched classical alternatives. References 
+
+[1] Amira Abbas, David Sutter, Christa Zoufal, Aurélien Lucchi, Alessio Figalli, and Stefan Woerner. The power of quantum neural networks. Nature Computational Science , 1(6):403– 409, 2021. 3 [2] Johannes Bausch. Recurrent quantum neural networks. Ad-vances in Neural Information Processing Systems (NeurIPS) ,33:1368–1379, 2020. 1, 3 [3] Kerstin Beer, Dmytro Bondarenko, Terry Farrelly, Tobias J Osborne, Robert Salzmann, Daniel Scheiermann, and Ra-mona Wolf. Training deep quantum neural networks. Nature communications , 11(1):808, 2020. 3 [4] Jacob Biamonte, Peter Wittek, Nicola Pancotti, Patrick Reben-trost, Nathan Wiebe, and Seth Lloyd. Quantum machine learning. Nature , 549(7671):195–202, 2017. 1, 2 [5] Yuji Cao, Xiyuan Zhou, Xiang Fei, Huan Zhao, Wenxuan Liu, and Junhua Zhao. Linear-layer-enhanced quantum long short-term memory for carbon price forecasting. Quantum Machine Intelligence , 5(2):26, 2023. 3 [6] M. Cerezo, Andrew Arrasmith, Ryan Babbush, Simon C. Benjamin, Suguru Endo, Keisuke Fujii, Jarrod R. McClean, Kosuke Mitarai, Xiao Yuan, Lukasz Cincio, and Patrick J. Coles. Variational quantum algorithms. Nature Reviews Physics , 3(9):625–644, 2021. 3 [7] Marco Cerezo, Andrew Arrasmith, Ryan Babbush, Simon C. Benjamin, Suguru Endo, Keisuke Fujii, Jarrod R. McClean, Kosuke Mitarai, Xiao Yuan, Lukasz Cincio, and Patrick J. Coles. Variational quantum algorithms. Nature Reviews Physics , 3(9):625–644, 2021. 3 [8] Samuel Yen-Chi Chen, Shinjae Yoo, and Yao-Lung L. Fang. Quantum long short-term memory. IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP) , pages 8622–8626, 2022. 1, 3 [9] El Amine Cherrat, Iordanis Kerenidis, Natansh Mathur, Jonas Landman, Martin Strahm, and Yun Yvonna Li. Quantum vision transformers. Quantum , 8:1265, 2024. 1, 3, 4, 7 [10] Alexey Dosovitskiy, Lucas Beyer, Alexander Kolesnikov, Dirk Weissenborn, Xiaohua Zhai, Thomas Unterthiner, Mostafa Dehghani, Matthias Minderer, Georg Heigold, Syl-vain Gelly, et al. An image is worth 16x16 words: Transform-ers for image recognition at scale. In International Conference on Learning Representations , 2020. 1, 2, 7 [11] Tobias Fellner, David A Kreplin, Samuel James Tovey, and Christian Holm. Quantum vs. classical: A comprehensive benchmark study for predicting time series with variational quantum machine learning. Machine Learning: Science and Technology , 2025. 3 [12] Albert Gu and Tri Dao. Mamba: Linear-time sequence modeling with selective state spaces. arXiv preprint arXiv:2312.00752 , 2023. 2 [13] Jianyuan Guo, Kai Han, Han Wu, Yehui Tang, Xinghao Chen, Yunhe Wang, and Chang Xu. Cmt: Convolutional neural networks meet vision transformers. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , pages 12175–12185, 2022. 2 [14] Vojtˇ ech Havlíˇ cek, Antonio D. Córcoles, Kristan Temme, Aram Wettroth Harrow, Abhinav Kandala, Jerry M. Chow, and Jay M. Gambetta. Supervised learning with quantum-enhanced feature spaces. Nature , 567:209 – 212, 2018. 2, 3[15] Kaiming He, Xiangyu Zhang, Shaoqing Ren, and Jian Sun. Deep residual learning for image recognition. In 2016 IEEE Conference on Computer Vision and Pattern Recognition (CVPR) , pages 770–778, 2016. 7 [16] Tao Huang, Xiaohuan Pei, Shan You, Fei Wang, Chen Qian, and Chang Xu. Localmamba: Visual state space model with windowed selective scan. arXiv preprint arXiv:2403.09338 ,2024. 7 [17] Yunseok Kwak, Won Joon Yun, Soyi Jung, and Joongheon Kim. Quantum neural networks: Concepts, applications, and challenges. In 2021 Twelfth International Conference on Ubiquitous and Future Networks (ICUFN) , pages 413–416. IEEE, 2021. 3 [18] James Lee-Thorp, Joshua Ainslie, Ilya Eckstein, and Santiago Ontanon. Fnet: Mixing tokens with fourier transforms. arXiv preprint arXiv:2105.03824 , 2021. 7 [19] Guangxi Li, Xuanqiang Zhao, and Xin Wang. Quantum self-attention neural networks for text classification, 2023. 1, 3, 4, 7[20] Yanan Li, Zhimin Wang, Rongbing Han, Shangshang Shi, Jiaxin Li, Ruimin Shang, Haiyong Zheng, Guoqiang Zhong, and Yongjian Gu. Quantum recurrent neural networks for sequential learning. Neural Networks , 166:148–161, 2023. 3 [21] Yanan Li, Zhimin Wang, Ruipeng Xing, Changheng Shao, Shangshang Shi, Jiaxin Li, Guoqiang Zhong, and Yongjian Gu. Quantum gated recurrent neural networks. IEEE Trans-actions on Pattern Analysis and Machine Intelligence , 2024. 3[22] Hanxiao Liu, Zihang Dai, David So, and Quoc V Le. Pay attention to mlps. In Advances in Neural Information Pro-cessing Systems , pages 9204–9215. Curran Associates, Inc., 2021. 7 [23] Yue Liu, Yunjie Tian, Yuzhong Zhao, Hongtian Yu, Lingxi Xie, Yaowei Wang, Qixiang Ye, and Yunfan Liu. Vmamba: Visual state space model. arXiv preprint arXiv:2401.10166 ,2024. 2, 7 [24] Jarrod R McClean, Sergio Boixo, Vadim N Smelyanskiy, Ryan Babbush, and Hartmut Neven. Barren plateaus in quan-tum neural network training landscapes. Nature communica-tions , 9(1):4812, 2018. 1, 3 [25] Kosuke Mitarai, Makoto Negoro, Masahiro Kitagawa, and Keisuke Fujii. Quantum circuit learning. Physical Review A ,98(3):032309, 2018. 3 [26] Badri Patro and Vijay Agneeswaran. Scattering vision trans-former: Spectral mixing matters. Advances in Neural Infor-mation Processing Systems , 36:54152–54166, 2023. 2 [27] Badri N Patro and Vijay S Agneeswaran. Simba: Simplified mamba-based architecture for vision and multivariate time series. arXiv preprint arXiv:2403.15360 , 2024. 2, 7 [28] Badri N Patro and Vijay S Agneeswaran. Hamsa: Scanning-free vision state space models via spectralpulsenet. In Pro-ceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) Findings , pages 2408–2418, 2026. [29] Badri N Patro and Vijay S Agneeswaran. Nakul-med: Spectral-graph state space models with dynamics kernels for medical signals. In Proceedings of the IEEE/CVF Confer-ence on Computer Vision and Pattern Recognition (CVPR) Findings , pages 5399–5408, 2026. 2 [30] Badri N Patro, Vinay P Namboodiri, and Vijay S Ag-neeswaran. Spectformer: Frequency and attention is what you need in a vision transformer. In 2025 IEEE/CVF Win-ter Conference on Applications of Computer Vision (WACV) ,pages 9543–9554. IEEE, 2025. 2, 7 [31] Adrián Pérez-Salinas, Alba Cervera-Lierta, Elies Gil-Fuster, and José I. Latorre. Data re-uploading for a universal quantum classifier. Quantum , 4:226, 2020. 3 [32] John Preskill. Quantum computing in the nisq era and beyond. 
+
+Quantum , 2:79, 2018. 1, 3 [33] Yang Qian, Xinbiao Wang, Yuxuan Du, Xingyao Wu, and Dacheng Tao. The dilemma of quantum neural networks. 
+
+IEEE Transactions on Neural Networks and Learning Sys-tems , 35(4):5603–5615, 2022. 3 [34] Yongming Rao, Wenliang Zhao, Zheng Zhu, Jiwen Lu, and Jie Zhou. Global filter networks for image classification. In 
+
+Advances in Neural Information Processing Systems , pages 980–993, 2021. 7 [35] Yongming Rao, Wenliang Zhao, Zheng Zhu, Jie Zhou, and Jiwen Lu. Gfnet: Global filter networks for visual recogni-tion. IEEE Transactions on Pattern Analysis and Machine Intelligence , 2023. 2 [36] Mayra Alejandra Rivera-Ruiz, Andres Mendez-Vazquez, and José Mauricio López-Romero. Time series forecasting with quantum machine learning architectures. In Mexican inter-national conference on artificial intelligence , pages 66–82. Springer, 2022. 3 [37] Maria Schuld and Nathan Killoran. Quantum machine learn-ing in feature hilbert spaces. Phys. Rev. Lett. , 122:040504, 2019. 1, 2 [38] Maria Schuld, Ryan Sweke, and Johannes Jakob Meyer. Ef-fect of data encoding on the expressive power of variational quantum-machine-learning models. Physical Review A , 103 (3):032430, 2021. 3 [39] Rigui Shen, Jun Wang, Huian Jiang, Xiongjun Zhang, and Xingke Hu. Quantum implementation of the classical neural networks. arXiv preprint arXiv:1707.03400 , 2017. 3 [40] Jinjing Shi, Ren-Xin Zhao, Wenxuan Wang, Shichao Zhang, and Xuelong Li. Qsan: A near-term achievable quantum self-attention network. IEEE Xplore, 2024. 3, 4, 7 [41] Seongwook Shin, Yong-Siah Teo, and Hyunseok Jeong. Ex-ponential data encoding for quantum supervised learning. 
+
+Physical Review A , 107(1):012422, 2023. 3 [42] Anthony M. Smaldone, Yu Shee, Gregory W. Kyro, Marwa H. Farag, Zohim Chandani, Elica Kyoseva, and Victor S. Batista. A hybrid transformer architecture with a quantized self-attention mechanism applied to molecular generation, 2025. 3[43] Yuto Takaki, Kosuke Mitarai, Makoto Negoro, Keisuke Fujii, and Masahiro Kitagawa. Learning temporal data with a varia-tional quantum recurrent neural network. Physical Review A ,103(5):052414, 2021. 3 [44] Mingxing Tan and Quoc Le. Efficientnet: Rethinking model scaling for convolutional neural networks. In International conference on machine learning , pages 6105–6114. PMLR, 2019. 7 [45] Hugo Touvron, Matthieu Cord, Matthijs Douze, Francisco Massa, Alexandre Sablayrolles, and Hervé Jégou. Training data-efficient image transformers & distillation through at-tention. In International Conference on Machine Learning ,pages 10347–10357. PMLR, 2021. 7 [46] Hugo Touvron, Piotr Bojanowski, Mathilde Caron, Matthieu Cord, Alaaeldin El-Nouby, Edouard Grave, Gautier Izac-ard, Armand Joulin, Gabriel Synnaeve, Jakob Verbeek, et al. Resmlp: Feedforward networks for image classification with data-efficient training. IEEE Transactions on Pattern Analysis and Machine Intelligence , 2022. 7 [47] Ashish Vaswani, Noam Shazeer, Niki Parmar, Jakob Uszkor-eit, Llion Jones, Aidan N Gomez, Ł ukasz Kaiser, and Illia Polosukhin. Attention is all you need. In Advances in Neu-ral Information Processing Systems . Curran Associates, Inc., 2017. 1, 2 [48] Saining Xie, Ross Girshick, Piotr Dollár, Zhuowen Tu, and Kaiming He. Aggregated residual transformations for deep neural networks. In Proceedings of the IEEE conference on computer vision and pattern recognition , pages 1492–1500, 2017. 7 [49] Chenhongyi Yang, Zehui Chen, Miguel Espinosa, Linus Er-icsson, Zhenyu Wang, Jiaming Liu, and Elliot J Crowley. Plainmamba: Improving non-hierarchical mamba in visual recognition. arXiv preprint arXiv:2403.17695 , 2024. 2 [50] Hui Zhang, Qinglin Zhao, Mengchu Zhou, and Li Feng. Hqvit: Hybrid quantum vision transformer for image classifi-cation, 2025. 3, 4, 7 [51] Yuxuan Zhang and Qiang Ni. Quantum self-attention model (qsam), 2023. 3, 4, 7 [52] Ren-Xin Zhao, Jinjing Shi, and Xuelong Li. Qksan: A quan-tum kernel self-attention network. IEEE Trans. Pattern Anal. Mach. Intell. , 46(12):10184–10195, 2024. 1, 3, 4, 7 [53] Hanqi Zheng et al. Fully quantum self-attention neural net-work (f-qsann), 2023. 3, 4, 7 [54] Lianghui Zhu, Bencheng Liao, Qian Zhang, Xinlong Wang, Wenyu Liu, and Xinggang Wang. Vision mamba: Efficient visual representation learning with bidirectional state space model. arXiv preprint arXiv:2401.09417 , 2024. 7 
+
+## A. Supplementary Material 
+
+This supplement provides implementation details and deriva-tions for the model in the main paper. QiT is implemented entirely with classical tensor operations. The terms “angle,” “Hilbert space,” and “circuit-inspired” describe the motiva-tion for its parameterization; they do not imply execution on quantum hardware, simulation of a general quantum circuit, or quantum computational advantage. 
+
+A.1. QiT Encoder Block 
+
+Algorithm 1 gives the operations in one encoder block. The input H contains patch and positional embeddings. The Algorithm 1 One QiT encoder block 
+
+Require: Token representations H ∈ RB×N ×d; number of learned angles Q
+
+Ensure: Updated representations Hout ∈ RB×N ×d 
+
+> 1:
+
+Θ ← π tanh( HW θ + bθ ) 
+
+> 2:
+
+Φ ← Q−1/2[sin(Θ) , cos(Θ)]  
+
+> 3:
+
+for each attention head a do  
+
+> 4:
+
+Qa ← ΦW (a) 
+
+> Q
+
+, Ka ← ΦW (a) 
+
+> K
+
+, Va ← ΦW (a) 
+
+> V
+> 5:
+
+Aa ← softmax( QaK⊤ 
+
+> a
+
+/√dh) 
+
+> 6:
+
+Za ← AaVa 
+
+> 7:
+
+end for  
+
+> 8:
+
+Z ← Concat( Z1, . . . , Z nh )WO 
+
+> 9:
+
+H′ ← LayerNorm( H + Z) 
+
+> 10:
+
+U ← GELU( H′W1) 
+
+> 11:
+
+G ← σ(H′Wg ) 
+
+> 12:
+
+M ← (U ⊙ G)W2 
+
+> 13:
+
+Hout ← LayerNorm( H′ + M ) 
+
+> 14:
+
+return Hout 
+
+periodic feature map is shared by the query, key, and value projections, while each attention head has separate learned projection matrices. Standard dropout operations are omitted from the notation. The block differs from a standard Transformer encoder in two places. First, query, key, and value projections op-erate on Φ rather than directly on H. Second, the usual channel MLP is replaced by the gated multiplicative map 
+
+(U ⊙ G)W2. Residual connections, normalization, multi-head composition, and softmax attention remain standard Transformer operations. 
+
+A.2. Exact Property of the Periodic Feature Map 
+
+For a token representation h, let 
+
+θ(h) = π tanh( hW θ +bθ ), ϕ(h) = 1
+
+√Q [sin θ(h), cos θ(h)] .
+
+(19) The feature vector has unit norm because 
+
+∥ϕ(h)∥22 = 1
+
+Q
+
+> Q
+
+X
+
+> q=1
+
+ sin 2 θq (h) + cos 2 θq (h) = 1 . (20) Its inner product is the finite cosine kernel 
+
+k(h, h ′) = ϕ(h)⊤ϕ(h′) (21) 
+
+= 1
+
+Q
+
+> Q
+
+X
+
+> q=1
+
+cos( θq (h) − θq (h′)) . (22) For arbitrary inputs {hi}mi=1 and coefficients {ci}mi=1 ,
+
+> m
+
+X
+
+> i,j =1
+
+cicj k(hi, h j ) = 
+
+> m
+
+X
+
+> i=1
+
+ciϕ(hi)
+
+> 22
+
+≥ 0. (23) Thus, k is positive semidefinite. This statement applies to the unprojected feature map. QiT uses 
+
+q⊤ 
+
+> i
+
+kj = ϕ(hi)⊤WQW ⊤ 
+
+> K
+
+ϕ(hj ) (24) inside attention. Since WQ and WK are learned indepen-dently, this score is generally asymmetric and is not, in general, a positive-semidefinite kernel. For comparison, independent single-qubit RY encodings give the product-state fidelity 
+
+Kprod (h, h ′) = 
+
+> Q
+
+Y
+
+> q=1
+
+cos 2
+
+ θq (h) − θq (h′)2
+
+
+
+. (25) This product is different from QiT’s average cosine kernel. Entangling circuits introduce additional circuit-dependent terms. The shared periodic dependence on encoded angles motivates QiT’s feature map, but it does not establish equiv-alence to a quantum fidelity kernel. 
+
+A.3. Computational Cost 
+
+For batch size B, N tokens, embedding width d, Q learned angles, and gated-mixer width r, angle projection and fea-ture construction require O(BN dQ ) operations and store 
+
+2Q features per token. Projection to the attention heads re-quires O(BN Qd ) operations. Scaled dot-product attention requires O(BN 2d) operations, and the gated channel mixer requires O(BN dr ). The resulting per-block cost is 
+
+O BN 2d + BN Qd + BN dr  . (26) QiT therefore retains the quadratic dependence on token count of standard softmax attention. These are classical operation counts; they are not quantum runtime bounds. 
+
+A.4. Experimental Protocol and Interpretation 
+
+The reported results come from three separate protocols and should be interpreted within their respective settings. 
+
+Simulator diagnostic. CViT, QiT, and the PennyLane model use patch size 4, one encoder block, batch size 2, and one training epoch on reduced 2-, 4-, and 10-class CIFAR tasks. QiT uses four learned angles, whereas the Penny-Lane model uses four simulated qubits. The models are not parameter matched, and one epoch does not measure con-verged accuracy. This experiment supports only the reported implementation-cost comparison for the tested configura-tions. 
+
+Multi-dataset study. The eight-dataset study uses one QiT configuration with patch size 4, depth 12, width 256, four attention heads, and 16 learned angles. Each model is trained for 300 epochs with AdamW, cosine learning-rate decay, random cropping, horizontal flipping, and color jitter on four Tesla T4 GPUs. Batch size varies with image resolution as reported in the main paper. ImageNet-1K study. QiT-XS, QiT-S, and QiT-B are eval-uated at 224 × 224 resolution with the parameter counts and FLOPs reported in the main paper. Comparisons with pub-lished architectures provide accuracy–cost context rather than controlled pairwise evidence because their training recipes can differ. All experimental values are point estimates from the avail-able runs. Repeated seeds, uncertainty intervals, complete optimizer settings, reduced-class split definitions, and the energy-measurement procedure are not available in the cur-rent records. Accordingly, the evidence establishes that QiT can be trained at image-classification scale and documents the measured cost of the tested implementations. It does not establish statistical superiority over a converged, parameter-matched Transformer or any quantum advantage.

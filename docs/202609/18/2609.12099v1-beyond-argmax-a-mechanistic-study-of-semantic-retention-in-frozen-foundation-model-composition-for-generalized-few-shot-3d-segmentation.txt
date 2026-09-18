@@ -1,0 +1,378 @@
+Title: Beyond Argmax: A Mechanistic Study of Semantic Retention in Frozen Foundation-Model Composition for Generalized Few-Shot 3D Segmentation
+
+URL Source: https://arxiv.org/pdf/2609.12099v1
+
+Published Time: Mon, 14 Sep 2026 00:14:30 GMT
+
+Number of Pages: 19
+
+Markdown Content:
+Preprint. Under review. 
+
+# BEYOND ARGMAX : A M ECHANISTIC STUDY OF SE-
+
+# MANTIC RETENTION IN 
+
+# FROZEN FOUNDATION -M ODEL COMPOSITION FOR 
+
+# GENERALIZED FEW -S HOT 3D S EGMENTATION 
+
+Silas Kwabla Gah 
+
+Department of Computer Science University of Ghana, Legon 
+
+skgah001@st.ug.edu.gh 
+
+Ebenezer Owusu 
+
+Department of Computer Science University of Ghana, Legon 
+
+ebeowusu@ug.edu.gh 
+
+## ABSTRACT 
+
+Classical classifier-combination work has long distinguished score-level fusion from hard decision-level voting. We revisit this distinction in a modern regime where independently pretrained, frozen foundation models are composed at in-ference time for generalized few-shot 3D segmentation. Rather than presenting probability averaging as a new fusion rule, we ask a narrower mechanistic question: 
+
+how much useful semantic information is lost when heterogeneous sources are collapsed to a single class before they can interact? 
+
+We answer this question with a same-input semantic-retention intervention. Dense RegionPLC evidence, sparse cross-view SAM3 evidence, model weights, masks, geometry, class vocabularies, scene lists, and fusion rules are frozen; only the number of semantic alternatives retained before interaction is varied through a matched top-k ladder. On the held-out 156-scene ScanNet200 partition, the frozen top-1 control reaches 28.47 harmonic-mean (HM) IoU, while full distribution fusion reaches 34.87 HM, a gain of 6.40 points with a 95% paired scene-bootstrap confidence interval of [+5 .24 , +7 .64] . The largest single gain occurs immediately from top-1 to top-2. The pattern independently replicates on all 50 ScanNet++ validation scenes: 23.02 HM at top-1 versus 26.50 HM under full retention ( +3 .48 ,95% CI [+1 .64 , +5 .93] ). The conclusion is robust to implementation choices that could otherwise confound the comparison. Full-distribution HM remains between 34.17 and 34.87 as the sparse-source weight varies from 0.3 to 0.7; changing the exact tie policy for equal-weight one-hot disagreement does not reduce the full-retention advantage; and alternative distribution-level operators (max and geometric/log pooling) also outperform a common hard Top-1 control. A controlled GroundingDINO–SAM2.1 source-replacement diagnostic further increases HM monotonically from 14.77 at top-1 to 18.75 with full sparse semantic retention. Calibration diagnostics reveal severe but opposite raw miscalibration of the dense and sparse sources, yet correcting confidence calibration does not eliminate the semantic-retention advantage. Across datasets and source stacks, most useful information is recovered by retaining a compact set of plausible alternatives, while unrestricted low-probability tails can introduce noise. The resulting contribution is therefore not a new sum rule, but a controlled diagnosis of premature semantic collapse as a repeatable information bottleneck in heterogeneous frozen-model composition .
+
+## 1 INTRODUCTION 
+
+Modern perception systems increasingly compose independently pretrained foundation models rather than train a single end-to-end predictor. In 3D scene understanding, a practical system may combine a language-aligned point-cloud model, one or more promptable image models, camera geometry, and 1arXiv:2609.12099v1 [cs.CV] 10 Sep 2026 Preprint. Under review. lightweight inference-time logic while leaving the constituent networks frozen. Such composition is attractive under limited supervision because it reuses broad pretrained knowledge without requiring additional task-specific optimization. It also raises a basic systems question: at what point should semantic uncertainty be collapsed into a discrete class decision? 
+
+This question is not new in the abstract. Classical classifier-combination literature distinguishes decision-level voting from score- or probability-level combination, and the sum rule is a well-established baseline for combining classifier outputs Kittler et al. (1998). Our goal is therefore not to claim that averaging class distributions is itself novel. Instead, we study the practical consequences of early semantic collapse in a different regime: heterogeneous, independently pretrained, frozen foundation-model sources with partial spatial overlap, different confidence behavior, cross-view lifting, and generalized few-shot base–novel evaluation. The central distinction is an ordering choice. A common hard pipeline first reduces each source to its most likely class and then decides which source to trust: source distributions → arg max → source selection or voting . (1) The alternative keeps semantic alternatives available until after sources have interacted: source distributions → cross-source interaction → arg max . (2) The final prediction still uses argmax. What changes is when the irreversible many-to-one collapse occurs. This distinction matters in frozen foundation-model composition because the sources are heteroge-neous. A dense 3D vision–language model can assign substantial mass to several semantically related classes. A sparse 2D concept segmenter, lifted through posed views, can provide complementary object-level evidence only for a subset of points. If both are independently collapsed to top-1 before interaction, secondary support that might have agreed across sources is permanently unavailable to any later selector, calibrator, or reliability model. We study this mechanism using RegionPLC Yang et al. (2024) as the frozen dense source and a frozen SAM3 concept-mask stack as the primary sparse source. The study is deliberately same-input. Dense probabilities, sparse masks, geometry, scene identities, class vocabulary, and fusion weights remain fixed. We then progressively restrict the semantic information available before fusion using top-k truncation. This creates a direct intervention on information retention rather than a comparison between unrelated architectures. The resulting top-k curves reveal a consistent pattern. On both ScanNet200 Rozenberszki et al. (2022) and ScanNet++ Yeshwanth et al. (2023), the largest improvement appears immediately after relaxing top-1 collapse. Additional alternatives continue to help before the curve saturates. On ScanNet200, top-20 slightly exceeds full retention; on ScanNet++, top-10/top-20 slightly exceed the unrestricted tail. The evidence therefore supports a narrower principle than “full probabilities are always better”: 
+
+preserve a small set of plausible alternatives long enough for heterogeneous sources to interact .We further test whether this effect depends on the primary sparse source. In a controlled source-replacement diagnostic, GroundingDINO Liu et al. (2024) plus SAM2.1 Ravi et al. (2024) replaces the SAM3 stack. The same spatial detections and masks are reused for every retention condition, and the hard representation is verified to be the exact argmax collapse of the soft representation. The same qualitative retention effect remains. 
+
+Contributions. Our contribution is an empirical and methodological study of information retention, not a new classifier-combination rule. 1. A mechanistic formulation of premature semantic collapse in frozen-model composition. 
+
+We connect the modern 3D setting explicitly to classical score- versus decision-level fusion and isolate the ordering of semantic collapse as the object of study. 2Preprint. Under review. 2. A matched semantic-information intervention. We introduce a same-input top-k retention ladder that fixes upstream sources, masks, geometry, scene sets, class vocabularies, and the fusion operator while varying only how much semantic support survives before interaction. 3. Large-scale cross-dataset evidence. Full retention improves HM over matched top-1 by 6.40 points on 156 held-out ScanNet200 scenes and by 3.48 points on all 50 ScanNet++ validation scenes, with paired scene-bootstrap confidence intervals excluding zero. 4. Source-independence and failure analysis. A controlled GroundingDINO–SAM2.1 source-replacement diagnostic reproduces the retention effect, while qualitative and scene-level analyses show both where secondary hypotheses correct errors and where tail mass can harm strong dense predictions. 
+
+## 2 RELATED WORK 
+
+2.1 DECISION -L EVEL AND SCORE -L EVEL CLASSIFIER COMBINATION 
+
+The distinction between combining hard decisions and combining continuous classifier scores is classical. Kittler et al. Kittler et al. (1998) developed a common framework for classifier combination and compared rules including product, sum, max, min, median, and majority voting. This literature establishes that score-level combination can preserve information that is unavailable after hard decisions are taken. Our paper does not claim otherwise. The open question we investigate is whether the same information restriction is a material failure mode in modern frozen foundation-model composition, where sources are heterogeneous, only partially overlapping in coverage, and connected through geometric lifting rather than trained as a conventional ensemble. The same broad principle has recently reappeared outside vision. DeePEn Huang et al. (2024), for example, performs training-free distribution fusion for heterogeneous large language models after mapping model-specific probability spaces into a shared relative space. Such work reinforces that internal distributions can be more informative than final discrete outputs. Our setting differs in task, representation, spatial structure, and partial source availability; our focus is a controlled intervention that measures how much semantic support must survive before 3D cross-source interaction. 2.2 GENERALIZED FEW -S HOT 3D S EGMENTATION 
+
+Generalized few-shot 3D point-cloud segmentation requires adaptation to novel classes while retaining base-class performance. GFS-VL An et al. (2025) combines few-shot samples with pseudo-label knowledge from 3D vision–language models through pseudo-label selection, adaptive infilling, and novel–base mixing. HOP3D Zhao et al. (2026) further addresses base–novel interference with hierarchical orthogonal prototypes and entropy-based regularization. These trained adaptation methods provide important contextual performance references, but they are not matched causal baselines for our study because they update task-specific representations using few-shot supervision. Our primary comparisons instead hold the frozen upstream evidence fixed and intervene only on semantic retention. Recent few-shot work also increasingly emphasizes the importance of where and how heterogeneous experts interact. DA-FSS, for example, studies decoupled multimodal experts and arbitration in few-shot 3D segmentation. Our setting is complementary: rather than train an arbitration architecture, we ask what information must remain available to any arbitration rule in the first place. 2.3 FROZEN AND TRAINING -F REE 2D-TO -3D C OMPOSITION 
+
+Open-vocabulary and training-free 3D pipelines commonly transfer semantic information from 2D foundation models into 3D. RegionPLC Yang et al. (2024) learns language-aligned regional point representations and serves as our frozen dense source. OV-SAM3D Tai et al. (2024) uses SAM-derived masks and open-vocabulary recognition for training-free 3D understanding. MaskClustering Yan et al. (2024) aggregates multi-view 2D masks through a global view-consensus graph for training-free open-vocabulary 3D instance segmentation. These works demonstrate the value of heterogeneous 2D/3D evidence, but their primary objective is producing stronger 3D predictions or instances. We 3Preprint. Under review. begin after frozen semantic evidence has been produced and isolate the information state at which cross-source combination occurs. Cross-modal distribution alignment is also central in domain-adaptive 3D segmentation. FtD++ Wu et al. (2025), for example, uses cross-modal fusion and positive distillation to preserve comple-mentary 2D/3D information during adaptation. Our method differs by requiring no target-domain training or distillation; nevertheless, the broader motivation that heterogeneous modalities contain complementary information is closely related. 2.4 CALIBRATION AND RELIABILITY WEIGHTING 
+
+Independently pretrained sources need not share a calibrated confidence scale. Calibration, global reliability weighting, and local/contextual weighting are therefore natural components of multimodel composition. We evaluate these variants on ScanNet200, but use them diagnostically rather than as the principal contribution. Their role is to test whether additional weighting complexity can compensate for information destroyed by early semantic collapse. As the results show, it generally cannot. 
+
+## 3 PROBLEM FORMULATION 
+
+Let a 3D scene contain points u ∈ U and let C denote the runtime semantic vocabulary. We consider two frozen sources S = {d, s}, where d is dense 3D semantic evidence and s is sparse cross-view evidence. When available, source s produces a nonnegative semantic vector 
+
+πs(u) = [ πs, 1(u), . . . , π s, |C| (u)] , πs,c (u) ≥ 0, (3) normalized to unit mass. Let as(u) ∈ { 0, 1} denote source availability. A distribution-level fusion rule forms 
+
+πfuse (u) = 
+
+P 
+
+> s∈S
+
+as(u)βs(u)πs(u)
+
+P 
+
+> s∈S
+
+as(u)βs(u) , βs(u) ≥ 0, (4) and predicts 
+
+by(u) = arg max  
+
+> c∈C
+
+πfuse ,c (u). (5) If sparse evidence is unavailable, the dense distribution is retained unchanged. 3.1 ARGMAX AS AN INFORMATION RESTRICTION 
+
+The map π 7 → arg max c πc is many-to-one: infinitely many distinct semantic distributions collapse to the same class label. The following elementary proposition formalizes why a downstream rule that receives only hard labels cannot, in general, reconstruct a score-level combination. We emphasize that this is a motivation for the intervention, not a new classifier-fusion theorem. 
+
+Proposition 1. No rule that observes only the per-source argmax labels can reproduce equal probability fusion for all possible source distributions. Proof. Consider two two-class source pairs: 
+
+π(A) 
+
+> d
+
+= [0 .90 , 0.10] , π(A) 
+
+> s
+
+= [0 .49 , 0.51] , (6) 
+
+π(B) 
+
+> d
+
+= [0 .51 , 0.49] , π(B) 
+
+> s
+
+= [0 .10 , 0.90] . (7) Both pairs expose the same hard tuple: the dense source predicts class 1 and the sparse source predicts class 2. Equal score averaging predicts class 1 for pair A and class 2 for pair B. Any rule receiving only the hard tuple (1 , 2) must return the same decision for both and therefore cannot reproduce equal probability fusion in general. 4Preprint. Under review. The proposition says nothing about accuracy. It only establishes irrecoverable information loss. Whether the discarded alternatives are useful is the empirical question studied below. 3.2 TOP -k SEMANTIC RETENTION 
+
+Let Tk(π) retain the k largest entries of π, set all other entries to zero, and renormalize: 
+
+Tk(π)c = πc I[c ∈ TopK( π, k )] 
+
+P 
+
+> j
+
+πj I[j ∈ TopK( π, k )] . (8) The case k = 1 is an argmax-equivalent one-hot restriction. The case k = |C| retains the complete semantic distribution. Intermediate values directly control how much secondary semantic support survives before fusion. 
+
+## 4 STUDY DESIGN : C ONTROLLED SEMANTIC RETENTION 
+
+4.1 FROZEN DENSE SOURCE : R EGION PLC For each valid 3D point, RegionPLC Yang et al. (2024) produces class logits over the evaluation vocabulary. We apply softmax before any argmax operation and cache the resulting dense probability matrix. For ScanNet200 the source space contains 200 semantic classes; the generalized few-shot metric is computed on the protocol’s 12 base and 45 novel classes. For ScanNet++ the matched evaluation space contains 30 classes (12 base and 18 novel). Dense probabilities are stored as float16 arrays to control memory. At evaluation they are converted to float32 in streaming chunks. Cache validation checks row probability mass and verifies that the cached distribution argmax reproduces the frozen RegionPLC hard prediction up to expected float16 storage tolerance. 4.2 PRIMARY SPARSE SOURCE : SAM3 C ROSS -V IEW CONCEPT EVIDENCE 
+
+The primary sparse source is frozen SAM3 promptable concept segmentation Carion et al. (2026). For ScanNet200, each canonical class name from the exact GFS-VL 200-class vocabulary is prompted independently and verbatim: no synonyms, templates, composite prompts, or learned prompt parame-ters are used. SAM3 is frozen throughout. We use a mask-confidence threshold of 0.3 and uniformly subsample every 20th captured frame. Multiple returned instances of the same concept are unioned into one per-concept binary mask for that frame; absent concepts are not stored. The mask score is retained as metadata, but the Stage-2 cross-view lift uses the binary concept masks and concept IDs rather than the score. The 3D lift follows the frozen ScanNet projection used by the upstream RCASA pipeline. For a world-space point Xu, camera coordinates for view v are 
+
+eXuv = T −1
+
+> v
+
+Xu
+
+1
+
+
+
+, (9) where Tv is the camera pose. Positive-depth points are projected using the color-camera intrinsics. The principal experiment uses in-frustum visibility only; no depth-based z-buffer is introduced into the matched retention study. For concept c, let mv,c (u) ∈ { 0, 1} indicate whether the projected point falls inside the union mask of concept c in view v, and let νv (u) ∈ { 0, 1} indicate a valid in-frustum projection. With uniform view weighting, the lifted cross-view support is 
+
+qu(c) = 
+
+P 
+
+> v
+
+mv,c (u)max(1 , P 
+
+> v
+
+νv (u)) . (10) Only non-zero qu(c) values are stored, using sparse coordinate arrays (u, c, q u(c)) . At evaluation, the sparse semantic distribution is reconstructed and normalized across all supported concepts, 
+
+πs,c (u) = qu(c)
+
+P 
+
+> j
+
+qu(j) , (11) 5Preprint. Under review. whenever non-zero sparse evidence exists. Because masks are stored separately per concept rather than collapsed into a per-pixel label map, cross-view support for one concept is not altered by which other concepts are present in the vocabulary. On ScanNet++ the sparse source supports the 18 novel evaluation categories. These entries are embedded into the common 30-class space, with zero sparse mass assigned to the 12 base classes. This structural asymmetry is reported explicitly in the base–novel analysis. 4.3 MATCHED FUSION AND THE RETENTION INTERVENTION 
+
+The primary parameter-free combination is uniform averaging. Where sparse evidence exists, 
+
+πavg (u) = 12 πd(u) + 12 πs(u), (12) and dense prediction is retained elsewhere. For the main ScanNet200 and ScanNet++ retention ladders, the same top-k operator is applied to both source distributions before Eq. equation 12: 
+
+π(k)fuse (u) = 12 Tk(πd(u)) + 12 Tk(πs(u)) . (13) Thus the only manipulated variable is the semantic support retained before interaction. The fusion weight, upstream evidence, and geometry are unchanged. For k = 1 , equal-weight one-hot disagreement produces an exact tie between the dense and sparse winning classes. The frozen primary ladder uses the deterministic array-argmax behavior of the origi-nal evaluator, which returns the lowest-index maximizer. Because this convention is not semantically meaningful, we separately evaluate dense-favouring and sparse-favouring tie policies. The frozen convention is retained for the headline ladder to avoid changing a completed primary experiment after observing outcomes; the robustness study tests whether its tie behavior explains the result. We additionally test whether the finding is specific to linear averaging. Using the same full source distributions, we evaluate the classical class-wise max rule and an equal-weight geometric/log pool, 
+
+ℓc(u) = 12 log max( πd,c (u), ϵ ) + 12 log max( πs,c (u), ϵ ), (14) with dense fallback when sparse evidence is absent. These operators are diagnostic robustness checks rather than post-hoc replacements for the frozen primary linear rule. 4.4 RELIABILITY -W EIGHTED VARIANTS 
+
+On ScanNet200 we additionally evaluate three weighting variants using the same cached distribu-tions: source-specific calibrated probability fusion, global reliability scaling, and candidate-specific contextual reliability. The scene order is frozen once and split by parity into 156 fit and 156 evalu-ation scenes. Calibration and reliability quantities are estimated only from the fit half. The frozen hard-selector anchor uses histogram calibration, while global and contextual variants use source confidence/reliability estimates from the same fit partition. These variants are not proposed as the main method; they test whether additional weighting complexity can recover information already destroyed by early semantic collapse. 4.5 ALTERNATIVE SPARSE SOURCE : G ROUNDING DINO–SAM2.1 To test source dependence, we construct a separate diagnostic with GroundingDINO Liu et al. (2024) and SAM2.1 Ravi et al. (2024). The experiment uses five deterministically preselected ScanNet200 scenes and ten deterministic posed frames per scene (50 frames total). GroundingDINO class prompts are processed in three chunks covering the 200-class source vocabulary. We use proposal threshold 0.35 and merge near-identical proposals using box IoU ≥ 0.90 . A SAM2.1 Hiera-L model produces one spatial mask per merged proposal cluster. 6Preprint. Under review. Each spatial cluster stores a 200-dimensional nonnegative semantic support vector from Ground-ingDINO. Because these scores are not probability-normalized, the retained support is normalized within each cluster before lifting. The hard control is constructed from the exact same clusters by replacing each semantic vector with a one-hot vector at its argmax. Across the 50 diagnostic frames, this construction contains 511 spatial clusters. We verify zero mismatches between soft argmax IDs and hard IDs, zero hard-concept mismatches, and zero hard-mask union mismatches. For this source-independence diagnostic only, the dense RegionPLC distribution remains full in every condition and top-k retention is applied to the GroundingDINO semantic vector. This isolates semantic collapse in the replacement sparse stack. If multiple clusters cover a point in one frame, per-class support uses the maximum within that frame before cross-view accumulation. All conditions reuse the same masks, frames, camera projection, dense probabilities, and 0.5/0.5 fusion rule. 
+
+## 5 EXPERIMENTAL PROTOCOL 
+
+5.1 SCAN NET 200 ScanNet200 Rozenberszki et al. (2022) is the principal experiment. The complete 312-scene validation protocol is processed in a 200-class source space. Scenes are ordered once and split deterministically by parity: 
+
+0, 2, 4, . . . → fit , 1, 3, 5, . . . → evaluation . (15) This yields 156 fit and 156 evaluation scenes. Calibration and learned reliability components use labels only from the fit partition. Every reported ScanNet200 comparison uses the same untouched 156 evaluation scenes. The parameter-free uniform-retention ladder contains no fitted quantities, but it is evaluated on the same held-out half for paired comparison with the frozen hard selector. We report base mIoU, novel mIoU, and harmonic mean 
+
+HM = 2 mIoU base mIoU novel 
+
+mIoU base + mIoU novel 
+
+. (16) 5.2 SCAN NET ++ C ROSS -D ATASET REPLICATION 
+
+We independently repeat the parameter-free retention experiment on all 50 ScanNet++ validation scenes Yeshwanth et al. (2023). The evaluation vocabulary contains 30 classes: 12 base and 18 novel. ScanNet++ changes the sensing and projection regime through aligned high-fidelity geometry, undistorted DSLR imagery, and corresponding posed camera transforms. Because the matched retention ladder has no learned parameter or selected threshold, all 50 ScanNet++ scenes are evaluated directly without a fit split. Historical hard-selector results that require calibration are kept separate from this parameter-free replication. 5.3 MATCHED CONTROLS 
+
+Within each primary dataset, we hold fixed source model weights, point clouds, class vocabularies, 2D masks, camera geometry, scene lists, dense outputs, sparse evidence, and the 0.5/0.5 fusion rule. The retention ladder is 
+
+k ∈ { 1, 2, 5, 10 , 20 , all }. (17) Thus k = 1 is the matched pre-collapse control and k = all is full semantic retention. 5.4 CACHE INTEGRITY , S TORAGE , AND STREAMING EVALUATION 
+
+The ScanNet200 probability cache contains 312/312 valid scene files and 49.54 million points. Dense probabilities are stored as float16, requiring exactly 400 bytes per point for a 200-class distribution 7Preprint. Under review. before container overhead. Across all 312 scenes, the raw dense-probability arrays occupy 18.46 GiB, while sparse COO evidence contains 315.06 million non-zero entries (2.93 GiB at 10 bytes per entry). The compressed NPZ footprint of the complete cache is 13.31 GiB. The held-out 156 scenes contain 25.02 million points and occupy 6.69 GiB compressed. Evaluation is streamed in chunks of 5,000 points. One 5000 × 200 float32 matrix occupies 3.81 MiB; three simultaneously materialized chunk matrices require approximately 11.44 MiB. Measured end-to-end process peak resident memory is 719.52 MiB, including scene loading and Python/NumPy overhead. On CPU, full probability fusion over the 25.02 million held-out points takes 12.00 s after loading, corresponding to 0.077 s per scene and approximately 2.08 million points/s. Scene loading from compressed NPZ files takes 130.58 s and therefore dominates total evaluation wall-clock time. The independent ScanNet++ cache contains 50/50 valid scenes with zero integrity failures, dense probability mass in the range 0.999588 –1.000416 , and dense argmax agreement between 99.968% and 99.998% after float16 storage. Its sparse cache contains 25.67 million non-zero class-evidence entries. 5.5 STATISTICAL ANALYSIS 
+
+Headline comparisons are paired at scene level. We report 95% paired scene-bootstrap confidence intervals for HM differences relative to the matched top-1 control. On ScanNet200 we additionally report the paired difference between full distribution fusion and the frozen hard selector. The GroundingDINO–SAM2.1 source-replacement experiment contains only five scenes; its paired scene-bootstrap interval is therefore labeled diagnostic and is not treated as a substitute for the large-scale ScanNet200/ScanNet++ evidence. Tie-policy and alternative-operator comparisons use 5,000 paired scene-bootstrap replicates on the same held-out 156 ScanNet200 scenes. The fusion-weight and PoE-ϵ sweeps are robustness diagnostics over fixed, predeclared grids and are not used to select the frozen headline method. 
+
+## 6 RESULTS 
+
+6.1 MAIN SCAN NET 200 R ESULT : I NFORMATION RETENTION DOMINATES WEIGHTING 
+
+COMPLEXITY 
+
+Table 1 reports the frozen ScanNet200 evaluation. Dense RegionPLC reaches 26.53 HM. The frozen hard selector reaches 27.51 HM, and the matched top-1 one-hot fusion control reaches 28.47 HM. In contrast, uniform full-distribution averaging reaches 34.87 HM. Relative to the frozen hard selector, the gain is 7.37 HM with 95% CI [+6 .29 , +8 .44] .More elaborate weighting does not outperform the simple score-level rule. Calibrated probability fusion reaches 34.51 HM and global reliability weighting reaches 34.38 HM, both close to uniform averaging. Candidate-specific contextual probability weighting falls to 27.80 HM. We interpret this as a negative but informative result: selector complexity cannot recover semantic alternatives once they have been discarded . The representation available to arbitration matters more here than the sophistication of the weighting rule. 6.2 SCAN NET 200 R ETENTION CURVE 
+
+Table 2 isolates the mechanism. Matched top-1 collapse reaches 28.47 HM. Retaining one additional class hypothesis raises HM to 31.83, a gain of 3.36 points with CI [+2 .46 , +4 .37] . Performance continues to increase through top-20, which reaches 35.49 HM. Full retention reaches 34.87 HM, still 6.40 points above top-1 with CI [+5 .24 , +7 .64] .The curve is not strictly monotonic: top-20 exceeds the unrestricted distribution by 0.62 HM. This observation is central to the revised interpretation. The useful principle is not “retain every tail entry,” but “do not collapse to a single class before heterogeneous evidence has interacted.” A compact candidate set recovers most of the benefit while suppressing some low-probability noise. 8Preprint. Under review. Table 1: Frozen ScanNet200 evaluation on the 156-scene held-out partition. All rows use the same frozen upstream sources; only the arbitration representation or weighting rule changes.                            
+
+> Method Base Novel HM Dense RegionPLC 43.60 19.06 26.53 Frozen hard selector 41.84 20.49 27.51 Matched top-1 fusion 45.13 20.80 28.47 Uniform full-distribution averaging 44.43 28.70 34.87 Calibrated probability fusion 45.44 27.82 34.51 Global reliability fusion 45.70 27.56 34.38 Contextual probability fusion 44.06 20.31 27.80 Oracle source selector 51.94 36.27 42.71
+
+Table 2: Matched ScanNet200 semantic-retention intervention. ∆HM and confidence intervals are relative to top-1.                                       
+
+> Retention Base Novel HM ∆HM [95% CI] Top-1 45.13 20.80 28.47 0.00 Top-2 45.48 24.49 31.83 +3.36 [+2 .46 ,+4 .37]
+> Top-5 47.42 27.08 34.48 +6.00 [+4 .98 ,+7 .13]
+> Top-10 47.33 28.02 35.20 +6.73 [+5 .62 ,+8 .00]
+> Top-20 46.95 28.53 35.49 +7.02 [+5 .89 ,+8 .31]
+> Full 44.43 28.70 34.87 +6.40 [+5 .24 ,+7 .64]
+
+6.3 CROSS -D ATASET REPLICATION ON SCAN NET ++ The same information-retention effect appears on ScanNet++. Table 3 reports all 50 validation scenes. Top-1 fusion reaches 23.02 HM. Top-2 immediately increases HM to 26.66, and top-5 through top-20 saturate near 26.9 HM. Full retention reaches 26.50 HM, improving over top-1 by 3.48 points with 95% CI [+1 .64 , +5 .93] .The replication changes dataset, image capture, pose/projection regime, scene geometry, and class-space size. The same top-1-to-top-2 jump therefore cannot be attributed only to the long 200-class source space used for ScanNet200. The base–novel split also exposes an important asymmetry. Full fusion raises novel mIoU from 17.94 to 25.83 but reduces base mIoU from 32.12 to 27.21 because the ScanNet++ sparse source carries evidence only for novel classes. We therefore make no claim of Pareto improvement on every metric component. 6.4 SOURCE -I NDEPENDENT SPARSE -S TACK DIAGNOSTIC 
+
+Table 4 evaluates whether the semantic-retention effect is specific to the primary SAM3 sparse source. The experiment replaces that sparse stack with GroundingDINO–SAM2.1 while keeping RegionPLC dense probabilities fixed. The same 511 spatial clusters and masks are used for every condition; only the number of GroundingDINO semantic alternatives retained per cluster changes. The retention curve is monotonic in this diagnostic: HM increases from 14.77 at top-1 to 15.61, 16.52, 17.14, 18.08, and finally 18.75 with full retention. The full-versus-top-1 difference is +3 .98 HM with a diagnostic five-scene bootstrap interval [+1 .11 , +6 .54] . Both base and novel performance improve from top-1 to full retention (base +6 .42 , novel +2 .86 ). Absolute performance remains below the dense-only RegionPLC anchor of 20.70 HM. We therefore do not interpret this experiment as evidence that GroundingDINO–SAM2.1 is a stronger sparse predictor. Its purpose is narrower: after changing the sparse foundation-model stack, preserving its secondary semantic hypotheses remains substantially better than collapsing that same evidence to top-1. 9Preprint. Under review. Table 3: Matched ScanNet++ semantic-retention intervention over all 50 validation scenes. ∆HM and confidence intervals are relative to top-1. 
+
+Retention Base Novel HM ∆HM [95% CI] Dense only 32.12 16.16 21.51 −1.51 [ −2.82 , −0.45] 
+
+Top-1 32.12 17.94 23.02 0.00 Top-2 27.52 25.85 26.66 +3.64 [+1 .83 , +6 .10] 
+
+Top-5 27.37 26.39 26.87 +3.85 [+1 .98 , +6 .36] 
+
+Top-10 27.31 26.54 26.92 +3.90 [+2 .03 , +6 .45] 
+
+Top-20 27.27 26.57 26.92 +3.89 [+2 .03 , +6 .46] 
+
+Full 27.21 25.83 26.50 +3.48 [+1 .64 , +5 .93] Top-1 Top-2 Top-5 Top-10 Top-20 Full Semantic support retained before fusion 24 26 28 30 32 34 36 Harmonic Mean (HM)     
+
+> 28.47 31.83 34.48 35.20 35.49 34.87 23.02 26.66 26.87 26.92 26.92 26.50
+
+Cross-dataset semantic-retention ablation 
+
+> ScanNet200 ScanNet++
+
+Figure 1: Cross-dataset semantic-retention pattern. Both datasets show a large improvement immedi-ately after preserving more than one semantic hypothesis, followed by saturation. Moderate top-k
+
+truncation slightly exceeds the unrestricted tail. 6.5 DISTRIBUTION -L EVEL OPERATOR ROBUSTNESS 
+
+The central claim should not depend on arithmetic averaging alone. Table 5 therefore combines the same full dense and sparse distributions with three classical operators: linear/sum pooling, class-wise max pooling, and equal-weight geometric/log pooling. To avoid the arbitrary class-index tie rule of the frozen top-1 ladder, all three are compared against a common dense-favouring one-hot control. Linear pooling reproduces the frozen full-distribution implementation exactly on all 156 scenes. Every distribution-level operator exceeds the hard control. Linear pooling reaches 34.87 HM, max pooling reaches 30.41 HM, and geometric pooling reaches 36.16 HM, compared with 26.53 HM for the dense-favouring Top-1 reference. The geometric operator is the strongest exploratory result, but we do not promote it to the headline method because it was evaluated after the primary experiment was frozen. Its role is to show that the semantic-retention result is not unique to the sum rule. Appendix E further shows that geometric pooling is numerically stable to the zero-probability floor over eight orders of magnitude. 6.6 CALIBRATION , T IE , W EIGHT , AND EFFICIENCY DIAGNOSTICS 
+
+The supplementary diagnostics close four implementation concerns without changing the primary method. First, equal-weight one-hot disagreement is frequent: 13.86 million held-out valid points 10 Preprint. Under review. Table 4: Controlled five-scene sparse-source replacement using GroundingDINO–SAM2.1. Region-PLC remains full-distribution in every row; only sparse semantic retention changes. The confidence interval is diagnostic because n = 5 scenes.                                   
+
+> Retention Base Novel HM ∆HM vs. Top-1 Dense only 32.49 15.19 20.70 –Top-1 21.14 11.35 14.77 0.00 Top-2 22.62 11.91 15.61 +0.84 Top-5 24.20 12.54 16.52 +1.75 Top-10 25.39 12.94 17.14 +2.37 Top-20 26.22 13.80 18.08 +3.31 Full 27.56 14.21 18.75 +3.98 [+1 .11 ,+6 .54]
+
+Table 5: Alternative full-distribution fusion operators on the held-out 156 ScanNet200 scenes. All use identical frozen evidence. The common Top-1 reference resolves dense–sparse one-hot disagreement in favour of the dense source.                           
+
+> Operator Base Novel HM ∆HM [95% CI] Top-1 / dense tie 43.60 19.06 26.53 0.00 Linear / sum 44.43 28.70 34.87 +8.35 [+7 .15 ,+9 .57]
+> Max rule 37.59 25.53 30.41 +3.88 [+2 .44 ,+5 .35]
+> Geometric / PoE 47.07 29.35 36.16 +9.63 [+8 .69 ,+10 .66]
+
+are exact dense–sparse Top-1 conflicts, corresponding to 67.93% of sparse-covered valid points. Nevertheless, the full-retention advantage is +6 .40 HM under the frozen lowest-index tie convention, 
+
++8 .35 HM under dense-favouring ties, and +14 .86 HM under sparse-favouring ties (Appendix A). The frozen convention is therefore the strongest tested Top-1 baseline and yields the smallest full-retention gap. Second, full-distribution performance is insensitive to moderate source reweighting: for sparse weights ws ∈ { 0.3, 0.4, 0.5, 0.6, 0.7}, HM remains in the narrow 34.17–34.87 range. In contrast, Top-1 semantics turn continuous weighting into an almost binary switch: dense wins every disagreement below 0.5 and sparse wins above 0.5 (Appendix B). Third, the two sources are severely but oppositely miscalibrated before histogram calibration. Dense RegionPLC is under-confident (61.80% empirical accuracy vs. 40.88% mean confidence; ECE 29.20%), while sparse SAM3 is over-confident (38.02% accuracy vs. 81.31% confidence; ECE 43.29%). Fit-partition histogram calibration reduces ECE to 1.54% and 0.69%, respectively, and substantially lowers binary correctness Brier scores. Yet calibrated probability fusion (34.51 HM) remains slightly below uniform full-distribution averaging (34.87 HM), indicating that confidence calibration and semantic retention address distinct failure modes (Appendix C). Finally, the measured CPU fusion cost is small relative to cache I/O: 12.00 s for 25.02 million held-out points at 2.08 million points/s, with 719.52 MiB process peak RSS (Appendix D). 6.7 CONTEXTUAL POSITIONING AGAINST TRAINED GFS-PCS S YSTEMS 
+
+The retention study is designed as a causal same-input experiment, so trained few-shot systems are not methodologically matched baselines. Nevertheless, readers need an absolute reference point. Table 6 therefore reports published 1-shot HM for GFS-VL and HOP3D alongside our frozen inference-time result. The trained systems use few-shot supervision to adapt representations, whereas our row performs no task-specific parameter update and is not intended as a replacement for such training. The table clarifies the scope of the contribution. Our frozen system does not match the absolute performance of trained 1-shot adaptation on ScanNet200, although the ScanNet++ gap is smaller. The contribution is instead the controlled diagnosis of an information bottleneck within frozen composition. 11 Preprint. Under review. Table 6: Contextual, not causal , comparison with published 1-shot GFS-PCS results. Values are reported by the respective papers and are provided only to locate the scale of the frozen result; the training/adaptation protocols are not matched to our intervention. 
+
+System Adaptation ScanNet200 HM ScanNet++ HM GFS-VL An et al. (2025) trained 1-shot 40.92 29.47 HOP3D Zhao et al. (2026) trained 1-shot 43.42 29.32 Frozen full retention (ours) no parameter update 34.87 26.50 
+
+6.8 WHAT THE THREE RETENTION CURVES SHOW 
+
+The most consistent empirical pattern is not simply “sum rule beats vote rule.” The retention curves reveal where information becomes useful. On ScanNet200, the first relaxation from top-1 to top-2 yields +3 .36 HM. On ScanNet++, the same transition yields +3 .64 HM. In the GroundingDINO– SAM2.1 diagnostic, every successive retention level improves HM. This supports a more specific mechanism: semantic information that is ranked just below top-1 frequently contains complementary evidence needed by another source. Once a compact set of plausible alternatives survives, gains saturate; very low-probability tails can become noise. The relevant design axis is therefore not “hard versus full” alone, but the amount of semantic uncertainty preserved until interaction .
+
+## 7 MECHANISTIC AND QUALITATIVE ANALYSIS 
+
+7.1 EVALUATION -S CENE SELECTION PROTOCOL 
+
+Qualitative examples are selected only from the untouched ScanNet200 evaluation partition and only after the quantitative experiment is frozen. Positive cases satisfy three deterministic conditions before visualization: HM improves under full probability fusion, novel mIoU improves, and corrected points outnumber newly harmed points. This prevents manual image inspection from determining which success cases are shown. The selected positive scenes are scene0356 01 , scene0574 02 ,and scene0164 01 .Their HM improvements are +15 .49 , +13 .60 , and +12 .48 , respectively. Novel-mIoU improves by 
+
++14 .70 , +14 .81 , and +16 .40 , with net point-level correction counts of +2434 , +1717 , and +2953 .7.2 WHERE CORRECTIONS OCCUR 
+
+Figure 3 compares matched top-1 and full-retention predictions at point level. Green points are corrections introduced after preserving semantic alternatives, red points are newly harmed, light grey denotes points correct under both rules, and dark grey denotes points wrong under both. Improvements are spatially localized rather than a uniform relabeling of the scene. 7.3 FAILURE CASE : W HEN THE TAIL HURTS 
+
+Distribution retention is not uniformly beneficial. Figure 4 shows scene0490 00 , an intentionally retained failure case. The frozen hard selector, matched top-1 fusion, and full-retention fusion obtain 18.37, 31.66, and 19.41 HM, respectively. Full retention is therefore 12.25 HM below matched top-1 and produces a net correction count of −12 ,015 .This case illustrates the complementary side of the mechanism. Secondary hypotheses can preserve useful ambiguity, but they can also spread error when sparse evidence is diffuse and conflicts with a strong dense prediction. This is consistent with the aggregate finding that moderate top-k retention can outperform the unrestricted tail. 12 Preprint. Under review. scene0356_01 HM +15.49 |  Novel +14.70   
+
+> RGB Ground truth
+> Dense RegionPLC Hard RCASA
+> Argmax-only average
+> Full-distribution average
+> scene0574_02 HM +13.60 |  Novel +14.81
+> scene0164_01 HM +12.48 |  Novel +16.40
+
+Figure 2: Representative ScanNet200 evaluation scenes in which distribution-level interaction improves both HM and novel recognition. Cases are selected before visualization using ∆HM > 0,
+
+∆Novel > 0, and positive net point-level corrections. scene0164_01 HM +12.48 |  Novel +16.40 
+
+> Ground truth
+> Sparse SAM3
+> Argmax-only average
+> Full-distribution average
+> Full vs
+> Argmax-only
+> scene0490_00 HM -12.25 |  Novel -13.47
+
+Figure 3: Point-level mechanism visualization for the matched retention comparison. Green marks beneficial changes relative to top-1 collapse, red marks harmful changes, light grey marks points correct under both, and dark grey marks points wrong under both. 
+
+## 8 DISCUSSION 
+
+8.1 THE NOVELTY IS THE MECHANISTIC DIAGNOSIS , N OT THE SUM RULE 
+
+The principal conceptual revision of this paper is explicit: score-level combination is classical Kittler et al. (1998). The contribution here is to treat semantic retention itself as an experimental variable in heterogeneous frozen foundation-model composition. This distinction matters because a modern 3D pipeline introduces partial source coverage, geometric lifting, open-vocabulary semantics, base–novel evaluation, and independently pretrained representations that were not designed as members of a conventional ensemble. The empirical question is therefore not “can probabilities be averaged?” but “how much useful semantic information is destroyed by collapsing these heterogeneous sources before interaction?” The matched top-k ladder answers that question directly. 13 Preprint. Under review. scene0490_00 HM -12.25 |  Novel -13.47   
+
+> RGB Ground truth
+> Dense RegionPLC Hard RCASA
+> Argmax-only average
+> Full-distribution average
+
+Figure 4: Failure case on ScanNet200 ( scene0490 00 ). Full retention substantially underperforms matched top-1, showing that preserved secondary hypotheses are not automatically beneficial. 8.2 INFORMATION REPRESENTATION MATTERS MORE THAN SELECTOR COMPLEXITY 
+
+The ScanNet200 weighting results provide a useful negative finding. Calibrated and globally weighted probability fusion remain close to uniform averaging, while contextual probability weighting falls near the hard-selector regime. Better confidence calibration is clearly achievable: held-out ECE falls from 29.20% to 1.54% for RegionPLC and from 43.29% to 0.69% for SAM3. Nevertheless, improved confidence reliability does not surpass simple full-distribution averaging. Calibration determines how much a source should be trusted ; it cannot reconstruct semantic alternatives that were already deleted by argmax. The alternative-operator experiment strengthens this distinction. Distribution-level max, sum, and geometric pooling all exceed a common hard Top-1 control. Thus the central empirical result is not that one sophisticated arbitration function is best. It is that an arbitration rule should operate on an information-rich semantic representation. Once the distributions are retained, classical operators already provide strong performance; once they are collapsed, changing source weights largely degenerates into choosing which one-hot source wins a disagreement. 8.3 A S MALL CANDIDATE SET IS OFTEN ENOUGH 
+
+ScanNet200 and ScanNet++ exhibit similar retention geometry: the largest gain occurs at the first relaxation beyond top-1, and later gains saturate. This suggests that useful uncertainty is concentrated in a relatively small set of plausible semantic alternatives. The result is compatible with memory-efficient implementations that retain short candidate lists rather than complete dense distributions at every point. The GroundingDINO–SAM2.1 diagnostic strengthens this interpretation by reproducing the trend after replacing the sparse source stack. Although the diagnostic is too small to establish a new benchmark result, it reduces the likelihood that the primary observation is peculiar to one concept segmenter. 8.4 BASE –N OVEL TRADE -OFF 
+
+The generalized few-shot setting requires separate reporting of base and novel behavior. ScanNet200 top-k retention strongly improves novel performance while preserving or improving base performance for several truncated conditions. ScanNet++ exhibits a clearer trade-off because its sparse source supports only novel classes. This structural asymmetry explains why novel mIoU increases while base mIoU falls under stronger sparse influence. HM is therefore used as the protocol-level balance metric, not as evidence that both groups always improve simultaneously. 8.5 RELATION TO TRAINED GFS-PCS S YSTEMS 
+
+Trained methods such as GFS-VL An et al. (2025) and HOP3D Zhao et al. (2026) remain stronger in absolute ScanNet200 HM because they adapt task-specific representations using labeled few-shot data. Our study asks a different question and deliberately avoids parameter updates so that the information-retention intervention is not confounded by representation learning. The contextual table should therefore be read as a scale reference, not as evidence of state-of-the-art absolute accuracy. 14 Preprint. Under review. 8.6 IMPLICATIONS BEYOND 3D The observed failure mode is potentially relevant whenever heterogeneous frozen systems exchange only their final discrete decisions. Modern examples include 2D–3D perception, multimodal rout-ing, and LLM ensembling. DeePEn Huang et al. (2024) independently demonstrates the value of distribution-level interaction for heterogeneous language models. We do not claim universal transfer of our numerical findings, but the common principle is clear: if cross-source complementarity lives in non-maximal alternatives, an early hard decision can erase it before composition has a chance to exploit it. 
+
+## 9 SCOPE AND LIMITATIONS 
+
+This study does not claim that full probability averaging is a novel classifier-combination rule or that it is universally optimal. Classical score-level fusion predates this work by decades Kittler et al. (1998). Our supported contribution is the controlled diagnosis of premature semantic collapse in the tested frozen 3D foundation-model regime. Moderate top-k retention slightly outperforms unrestricted tails on both principal datasets. The optimal amount of retained support can therefore depend on the source pair, class space, and local ambiguity. Adaptive k, entropy-aware retention, or agreement-conditioned gating are natural future directions, but are outside the present causal study. The ScanNet++ sparse source supports the 18 novel categories but not the 12 base classes. This structural asymmetry contributes to the observed base–novel trade-off and limits any claim of symmetric benefit across class groups. Injecting base priors or learning class-conditional sparse calibration would change the sparse evidence itself and is therefore intentionally excluded from the matched intervention. The primary sparse branch depends on posed imagery, camera calibration, deterministic frame sampling, and the upstream SAM3 concept-mask generator. The main projection uses in-frustum visibility without a depth-based occlusion filter. These choices affect evidence quality and coverage, but are held fixed within every retention comparison. A separate GroundingDINO–SAM2.1 diagnostic reduces, but does not eliminate, dependence on sparse-source design. The GroundingDINO–SAM2.1 experiment contains only five scenes and is therefore a mechanism diagnostic, not a third benchmark. Its full-retention result also remains below the dense-only anchor, showing that retaining information cannot compensate for a weak sparse source in absolute terms. Full distributions incur non-trivial storage cost. The 200-class float16 dense cache requires 400 bytes per point and occupies 18.46 GiB raw over the 49.54 million points in the complete ScanNet200 cache. Compression reduces the total NPZ footprint to 13.31 GiB, and streaming evaluation keeps measured peak process memory below 0.72 GiB, but on-device or memory-constrained deployment would favor short top-k candidate lists. The empirical saturation of the retention curve therefore has practical importance beyond accuracy. The alternative operator study is deliberately diagnostic. Geometric/log pooling produces the strongest held-out HM, and its result is numerically stable to ϵ, but this operator was tested after the linear primary experiment was frozen. We therefore retain linear averaging as the headline method and avoid post-hoc redefinition of the main contribution. A future study could pre-register a broader fusion family and compare operators under fully matched top-k interventions. Finally, this paper studies inference-time composition rather than training. It does not argue that few-shot support, finetuning, prototype adaptation, or learned cross-modal alignment are unnecessary. It shows that when heterogeneous frozen semantic evidence is already available, the order in which that evidence is collapsed materially affects what any downstream combiner can use. 
+
+## 10 CONCLUSION 
+
+We investigated semantic collapse as an information bottleneck in frozen foundation-model composi-tion for generalized few-shot 3D segmentation. The underlying distinction between score-level and 15 Preprint. Under review. decision-level classifier combination is classical; our contribution is a controlled modern study of its consequences under heterogeneous 3D/2D foundation-model composition. Across ScanNet200 and ScanNet++, matched top-k interventions show that top-1 collapse removes useful semantic alternatives before cross-source interaction. Full retention improves HM over top-1 by 6.40 points on ScanNet200 and 3.48 points on ScanNet++, with paired scene-bootstrap confidence intervals excluding zero. The largest gain on both datasets appears immediately after preserving more than one hypothesis, and moderate top-k retention slightly exceeds the unrestricted tail. A controlled GroundingDINO–SAM2.1 replacement further reproduces the effect on the same spatial evidence, increasing HM from 14.77 at top-1 to 18.75 with full sparse retention. The conclusion is robust to several implementation alternatives. Full-distribution performance changes by less than one HM point across sparse-source weights from 0.3 to 0.7; the advantage survives dense-, sparse-, and lowest-index tie policies; and full distributions remain superior to the hard control under linear, max, and geometric pooling. Source calibration can be repaired almost completely without eliminating the retention advantage, reinforcing that calibration error and semantic information loss are distinct problems. The resulting message is deliberately narrower than “probability averaging is better.” The repeatable failure mode is premature semantic collapse . In heterogeneous frozen-model systems, retaining a compact set of plausible alternatives until after sources interact can matter more than adding complexity to the downstream selector. This reframing turns a classical fusion principle into a concrete diagnostic for modern foundation-model composition. 
+
+## A TIE -P OLICY ROBUSTNESS 
+
+Equal-weight one-hot fusion is intrinsically ambiguous whenever the two sources predict different classes. On the held-out ScanNet200 partition, 20,402,026 valid points have sparse evidence; dense and sparse Top-1 agree on 6,542,080 of them and disagree on 13,859,946. Thus 67.934% of sparse-covered valid points form exact two-class ties under 0.5/0.5 one-hot fusion. The frozen implementation resolves ties by the lowest class index. We compare it with two semantically interpretable deterministic alternatives in Table 7. Table 7: Top-1 tie-policy robustness on the same 156 held-out ScanNet200 scenes. Full distribution fusion is fixed at 34.87 HM.                         
+
+> Top-1 policy Base Novel HM Full −Top-1 [95% CI] Frozen lowest-index 45.13 20.80 28.47 +6.40 [+5 .25 ,+7 .65]
+> Dense-favouring 43.60 19.06 26.53 +8.35 [+7 .15 ,+9 .57]
+> Sparse-favouring 23.98 17.18 20.02 +14.86 [+13 .41 ,+16 .03]
+
+The dense-favouring rule exactly reduces to the dense prediction: when sources agree, their class is unchanged; when they disagree, dense is chosen. Sparse-favouring analogously exposes the lower quality of the sparse Top-1 source. Crucially, the frozen lowest-index policy is the strongest of the three Top-1 variants, so the primary +6 .40 HM retention gain is the smallest observed gap rather than an artifact of a weak tie rule. 
+
+## B FUSION -W EIGHT SENSITIVITY 
+
+We vary the sparse weight ws while setting wd = 1 − ws. For the Top-1 control, the exact ws = 0 .5
+
+tie is resolved in favor of dense to avoid class-index dependence. Full-distribution fusion is stable across the entire grid (Table 8). With one-hot sources, ws < 0.5 makes dense win every disagreement and ws > 0.5 makes sparse win every disagreement, so continuous source reweighting degenerates into a hard switch. Retained distributions preserve graded within-class evidence and therefore support genuinely graded weighting. 16 Preprint. Under review. Table 8: ScanNet200 sensitivity to the sparse-source weight.                               
+
+> wsTop-1 HM Full HM ∆HM Full Base Full Novel 0.3 26.53 34.33 +7.80 46.07 27.36 0.4 26.53 34.74 +8.22 45.39 28.14 0.5 26.53 34.87 +8.35 44.43 28.70 0.6 20.02 34.64 +14.62 43.14 28.94 0.7 20.02 34.17 +14.15 41.60 28.99
+
+## C HELD -O UT CALIBRATION DIAGNOSTICS 
+
+Histogram calibrators with 15 equal-width bins are fitted only on the 156-scene fit partition and evaluated on the disjoint 156-scene ScanNet200 evaluation partition. Table 9 reports empirical source correctness, mean confidence, expected calibration error (ECE), and binary correctness Brier score. The dense source is strongly under-confident before calibration, while the sparse source is strongly over-confident. Table 9: Held-out source calibration. Accuracy, confidence, and ECE are percentages. Brier is the binary correctness Brier score.                                 
+
+> Source State NAcc. Mean conf. ECE ↓Brier ↓
+> Dense RegionPLC raw 21,496,033 61.80 40.88 29.20 0.3117 Dense RegionPLC calibrated 21,496,033 61.80 62.50 1.54 0.2146
+> Sparse SAM3 raw 20,402,026 38.02 81.31 43.29 0.4187 Sparse SAM3 calibrated 20,402,026 38.02 37.74 0.69 0.2190
+
+Calibration changes confidence reliability without changing source accuracy. The strong ECE reduc-tions demonstrate that the fitted calibration machinery is effective, while the main ScanNet200 table shows that calibrated probability fusion (34.51 HM) still does not exceed uniform full-distribution averaging (34.87 HM). This separates two failure modes: confidence miscalibration and irreversible loss of semantic alternatives. 
+
+## D COMPUTE AND MEMORY ACCOUNTING 
+
+Table 10 reports measured cache and CPU evaluation costs. The raw dense float16 representation is large, but chunked fusion is inexpensive compared with compressed-cache loading. The largest ScanNet200 scene in the cache contains 438,565 points; materializing its complete 
+
+N × 200 distribution as float32 would require 334.60 MiB, which motivates the streaming evaluator. The observed retention saturation around moderate k also suggests a practical route to reduce storage further by keeping only short candidate lists. 
+
+## E POE N UMERICAL -F LOOR SENSITIVITY 
+
+Geometric pooling requires a numerical floor because the sparse distribution contains exact zeros. Table 11 varies ϵ from 10 −4 to 10 −12 while keeping all source evidence and weights fixed. HM changes by only 0.16 points over the entire range and is effectively identical for ϵ ≤ 10 −8.
+
+## REFERENCES 
+
+Zhaochong An, Guolei Sun, Yun Liu, Runjia Li, Junlin Han, Ender Konukoglu, and Serge Belongie. Generalized few-shot 3D point cloud segmentation with vision-language model. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) , pp. 16997–17007, 2025. 17 Preprint. Under review. Table 10: ScanNet200 storage and CPU evaluation accounting. GiB and MiB use powers of 1024.                       
+
+> Quantity Measured value Full cache scenes / points 312 / 49,540,568 Compressed full-cache footprint 13.31 GiB Raw dense float16 probabilities 18.46 GiB Raw sparse COO evidence 2.93 GiB Sparse COO entries 315,063,992 Dense representation cost 400 bytes / point Sparse COO representation cost 10 bytes / entry Held-out scenes / points 156 / 25,020,281 Held-out compressed footprint 6.69 GiB Chunk size 5,000 points One 5000 ×200 float32 matrix 3.81 MiB Approx. three-matrix chunk scratch 11.44 MiB Measured process peak RSS 719.52 MiB Held-out cache loading 130.58 s Held-out probability fusion 12.00 s Mean fusion time / scene 0.077 s Fusion throughput 2,084,610 points/s
+
+Table 11: Geometric/log-pooling sensitivity to the numerical floor ϵ.                         
+
+> ϵBase Novel HM ∆HM vs. 10 −8
+> 10 −446.98 29.18 36.00 −0.15 10 −647.03 29.31 36.12 −0.04 10 −847.07 29.35 36.16 0.00
+> 10 −10 47.07 29.35 36.16 −0.00 10 −12 47.07 29.35 36.16 −0.00
+
+Nicolas Carion, Laura Gustafson, Yuan-Ting Hu, Somnath Debnath, Ronghang Hu, Didac Suris, Chaitanya Ryali, Kalyan Vasudev Alwala, Haitham Khedr, Andrew Huang, et al. SAM 3: Segment anything with concepts. In International Conference on Learning Representations (ICLR) , 2026. Yuxian Huang, Xidong Feng, Bo Li, Yuchuan Xiang, Haowei Wang, Ting Liu, and Bing Qin. Ensemble learning for heterogeneous large language models with deep parallel collaboration. In 
+
+Advances in Neural Information Processing Systems (NeurIPS) , volume 37, pp. 119838–119860, 2024. Josef Kittler, Mohamad Hatef, Robert P. W. Duin, and Jiri Matas. On combining classifiers. IEEE Transactions on Pattern Analysis and Machine Intelligence , 20(3):226–239, 1998. Shilong Liu, Zhaoyang Zeng, Tianhe Ren, Feng Li, Hao Zhang, Jie Yang, Qing Jiang, Chunyuan Li, Jianwei Yang, Hang Su, Jun Zhu, and Lei Zhang. Grounding DINO: Marrying DINO with grounded pre-training for open-set object detection. In European Conference on Computer Vision (ECCV) , pp. 38–55, 2024. Nikhila Ravi, Valentin Gabeur, Yuan-Ting Hu, Ronghang Hu, Chaitanya Ryali, Tengyu Ma, Haitham Khedr, Roman R¨ adle, Chloe Rolland, Laura Gustafson, Eric Mintun, Junting Pan, Kalyan Vasudev Alwala, Nicolas Carion, Chao-Yuan Wu, Ross Girshick, Piotr Doll´ ar, and Christoph Feichtenhofer. SAM 2: Segment anything in images and videos. arXiv preprint arXiv:2408.00714 , 2024. David Rozenberszki, Or Litany, and Angela Dai. Language-grounded indoor 3D semantic segmenta-tion in the wild. In European Conference on Computer Vision (ECCV) , pp. 125–141, 2022. Hao Tai, Qianyu He, Jing Zhang, Yiming Qian, Zhen Zhang, Xiaowei Hu, Xiang Li, Yaowei Wang, and Yong Liu. Open-vocabulary SAM3D: Towards training-free open-vocabulary 3D scene understanding. arXiv preprint arXiv:2405.15580 , 2024. 18 Preprint. Under review. Yan Wu, Ming Xing, Yong Zhang, Yuan Xie, and Yanyun Qu. Fusion-then-distillation: Toward cross-modal positive distillation for domain adaptive 3D semantic segmentation. IEEE Transactions on Circuits and Systems for Video Technology , 35(9):9030–9045, 2025. Meng Yan, Jiaming Zhang, Yunkang Zhu, and Haifeng Wang. MaskClustering: View consensus based mask graph clustering for open-vocabulary 3D instance segmentation. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) , pp. 28274–28284, 2024. Jihan Yang, Runyu Ding, Weipeng Deng, Zhe Wang, and Xiaojuan Qi. RegionPLC: Regional point-language contrastive learning for open-world 3D scene understanding. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) , pp. 19823–19832, 2024. Chandan Yeshwanth, Yueh-Cheng Liu, Matthias Nießner, and Angela Dai. ScanNet++: A high-fidelity dataset of 3D indoor scenes. In Proceedings of the IEEE/CVF International Conference on Computer Vision (ICCV) , pp. 12–22, 2023. Yifan Zhao, Feng Zhao, Zhaoxiang Zhang, Shuang Wu, Yating Lin, and Yong Li. Learning hierarchi-cal orthogonal prototypes for generalized few-shot 3D point cloud segmentation. arXiv preprint arXiv:2603.19788 , 2026. 19

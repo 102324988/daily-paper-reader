@@ -1,0 +1,423 @@
+Title: DualCount: Structurally Consistent Density and Point Modeling for Zero-Shot Object Counting
+
+URL Source: https://arxiv.org/pdf/2609.17613v1
+
+Published Time: Thu, 17 Sep 2026 00:06:39 GMT
+
+Number of Pages: 17
+
+Markdown Content:
+# DualCount: Structurally Consistent Density and Point Modeling for Zero-Shot Object Counting 
+
+Xuan Cuong Ngo 
+
+University of Arkansas, USA 
+
+cngo@uark.edu 
+
+Abstract. Zero-shot object counting aims to estimate the number of objects specified by a text query without category-specific training. Re-cent approaches primarily rely on density regression or detection-style instance prediction. While effective, density-based models often suffer from spatial ambiguity and background leakage due to weakly regulated mass allocation, leading to fragmented or part-biased representations that increase counting error in complex scenes. In this work, we propose an instance-aware dual-decoder framework that structurally couples den-sity and point representations for zero-shot object counting. Instead of treating density estimation as independent pixel-wise regression, we in-terpret it as a structured mass allocation problem over a latent set of object instances. Predicted instance centers induce a soft instance-wise decomposition of the density map, upon which we enforce two geometric constraints: (1) per-instance mass conservation, ensuring each object con-tributes approximately one unit of density mass, and (2) center-of-mass alignment, encouraging each density component to concentrate around its corresponding predicted center. These constraints introduce instance-level geometric consistency and lead to more accurate mass allocation, thereby reducing counting error. Extensive experiments on FSC-147, PUCPR+, and CARPK show that our approach consistently reduces counting error and establishes new state-of-the-art performance in zero-shot object counting. 
+
+Keywords: Object Counting · Point Prediction · Zero-shot Learning 
+
+## 1 Introduction 
+
+Object counting traditionally focuses on estimating the number of instances belonging to a predefined class within an image, such as crowd counting [24], vehicle counting [5], or animal counting [18]. These approaches rely on category-specific supervision and struggle to generalize beyond trained object categories. To improve generalization, class-agnostic few-shot counting has been introduced, where the target object is specified at inference time using visual exemplars, typically user-provided bounding boxes highlighting a few instances. Although such methods enable open-world counting, they require manual intervention at test time, limiting full automation and scalability. arXiv:2609.17613v1 [cs.CV] 14 Sep 2026 2 Ngo Ground-truth: 8.0  Ours: 8.33 CLIP-Count: 13.68 VLCounter: 12.36 
+
+> Flamingos
+
+Fig. 1: Density map visualizations. CLIP-Count [8] and VLCounter [9] are prone to false positive predictions, while our model mitigates this issue by leveraging spatial constraints from the point prediction branch, resulting in more controlled density esti-mates. 
+
+To address this limitation, recent work explores zero-shot object counting, where the object of interest is specified using a textual description instead of vi-sual exemplars [3,4,28]. By leveraging vision–language models, these approaches allow arbitrary object categories to be queried at inference time using class names. Most existing zero-shot counting methods adopt density regression, esti-mating object count by integrating a predicted density map conditioned on text prompts. While effective, this formulation has a key limitation: density supervi-sion provides limited guidance on instance-level spatial structure. Although the predicted density map is encouraged to match the target density at each loca-tion, it does not explicitly regulate how the density mass should be distributed across individual object instances. This limited instance-level guidance leads to spatial ambiguity. In practice, density mass may accumulate on correlated background regions or concentrate on highly discriminative object parts rather than stable instance centers. For objects with complex shapes, heavy occlusion, or cluttered surroundings, such ambiguous mass allocation results in fragmented instance representations and increased counting error. This failure case can be observed in Fig. 1. Importantly, this issue arises not from weak semantic alignment alone, but from the absence of instance-level structural constraints within the density formulation itself. Our key insight is that density maps implicitly represent a mixture of object-level components, yet existing approaches treat them as unconstrained continu-ous fields. If each object contributes approximately one unit of mass, then density estimation can be reformulated as a structured mass allocation problem over a latent set of object instances. Enforcing geometric consistency at the instance level can therefore directly improve counting reliability. Based on this insight, we propose DualCount , an instance-aware dual-decoder framework for zero-shot object counting. Our model jointly predicts a density map and a set of instance centers from shared visual–text features. Rather than treating these predictions independently, we interpret them as com-plementary views of a shared latent object set. The predicted centers induce a soft instance-wise decomposition of the density map, allowing each object to be represented as an individual density component. On top of this decomposition, we introduce two geometric constraints. First, a per-instance mass conservation constraint ensures that each object contributes DualCount 3
+
+approximately one unit of density mass, directly aligning spatial allocation with the counting objective. Second, a center-of-mass alignment constraint encourages each density component to concentrate around its corresponding predicted cen-ter, promoting coherent and compact instance representations. Together, these constraints transform density estimation from pure pixel-wise regression into a structured instance-level modeling problem. By reducing ambiguous mass al-location and preventing part-biased density drift, our approach leads to more accurate mass distribution and consequently reduces counting error. Extensive experiments on FSC-147, PUCPR+, and CARPK demonstrate that our method consistently reduces counting error and establishes new state-of-the-art performance in zero-shot object counting. The improvements are partic-ularly pronounced in crowded and geometrically complex scenes, where standard density regression tends to produce unstable spatial representations. The contributions of this paper are threefold: 
+
+– Instance-aware formulation for zero-shot counting. We reinterpret density estimation as a structured mass allocation problem over a latent set of object instances, revealing the importance of instance-level geometric constraints. 
+
+– Geometric consistency through dual decoders. We propose an instance-aware dual-decoder framework that couples density and point representa-tions via per-instance mass conservation and center-of-mass alignment con-straints. 
+
+– Improved counting performance. Extensive experiments and ablation studies on FSC-147, PUCPR+, and CARPK demonstrate consistent reduc-tions in counting error and new state-of-the-art results in zero-shot object counting. 
+
+## 2 Related Work 
+
+Class-Specific Object Counting. Object counting has long been studied in computer vision, with early research primarily focusing on specific object cat-egories such as cars, cells, pedestrians, or polyps. Detection-based approaches were widely adopted in this stage, where object detectors are trained to localize and count instances of predefined categories. Modern detection frameworks such as YOLO and Faster R-CNN have been successfully applied in vehicle counting and surveillance systems, while segmentation-based methods are often used in biological cell counting [25] and crowd analysis [27]. However, detection-based counting typically struggles in highly crowded scenes due to severe occlusions and object overlaps. To alleviate these limitations, density-based methods were introduced, which estimate object counts by regressing a continuous density map whose integral corresponds to the object count. Density-based formulations are more robust to occlusions and scale variations, and have become the dominant paradigm in crowd counting and dense object counting scenarios. Subsequent 4 Ngo 
+
+studies further improved density-based supervision beyond standard Gaussian-map regression. Bayesian Loss [14] models probabilistic pixel-to-point contribu-tions, while DM-Count [27] formulates counting as distribution matching with an optimal transport (OT)-based loss. Our density decoder follows this OT-based formulation, but further introduces instance-level geometric constraints to guide density allocation around individual objects. 
+
+Class-Agnostic Object Counting. To improve generalization beyond pre-defined categories, class-agnostic few-shot counting has recently gained signifi-cant attention. In this setting, the target object is specified at inference time using a small number of visual exemplars, typically provided as bounding boxes. Early methods adopt Siamese matching networks to learn similarity between exemplars and image regions for density estimation. BMNet+ [22] incorporates non-linear similarity metrics for improved matching, while FamNet [21] enhances backbone design for better density prediction. CounTR [12] combines convolu-tional feature extraction with transformer-based modeling and cross-attention to improve feature fusion. SAFECount [29] introduces feature refinement modules to enhance generalization, and LOCA [26] proposes object prototype extraction for iterative adaptation to exemplar appearance and shape. Despite their effec-tiveness, these approaches depend heavily on the quality and representativeness of visual exemplars. Sparse, biased, or noisy exemplars can degrade performance. Moreover, requiring manual exemplar input at inference time limits scalability and full automation in open-world scenarios. 
+
+Text-Specified Object Counting. Text-specified or zero-shot object count-ing eliminates the need for visual exemplars by allowing users to specify the target object using textual descriptions. Leveraging vision–language models, these approaches enable open-world counting across arbitrary object categories. Paiss et al. [15] demonstrated that fine-tuned CLIP models can perform lim-ited counting. Building upon this direction, CLIP-Count [8] and VLCounter [9] condition density regression on text embeddings extracted from CLIP, enabling open-vocabulary density-based counting. TFOC [23] further explores training-free counting by prompting the segmentation model SAM [10] with text, points, or boxes. While these methods demonstrate promising generalization, most exist-ing approaches rely on density regression with limited instance-level spatial guid-ance. As a result, although the predicted density map is encouraged to match the target density, supervision does not explicitly regulate how density mass should be distributed across object instances. This can lead to background leakage, frag-mented instance representations, or part-biased density allocation, particularly in cluttered or geometrically complex scenes. In contrast, our work introduces instance-level geometric consistency into density-based zero-shot counting. By coupling density estimation with predicted instance centers and enforcing per-instance mass conservation and center-of-mass alignment constraints, we trans-form density regression into a structured mass allocation problem, reducing am-biguous spatial distribution and improving counting reliability. DualCount 5         
+
+> Fig. 2: Overview of DualCount. Visual and textual features are extracted by the image encoder Evand text encoder Et, enhanced via cross-modal interaction E, and fused by Fto produce a fused feature map. A dual-decoder head ( Dρand Dc) predicts the density map and instance centers.
+
+## 3 Methodology 
+
+Given an input image I ∈ RH×W ×3 and a text query t specifying the target object category, zero-shot object counting aims to estimate the number of in-stances of the queried category in the image. Let N denote the ground-truth object count and ˆN the predicted count. In this setting, the object category is defined solely by the textual query t, and the model is required to predict the corresponding object count. 
+
+3.1 Architecture Overview. 
+
+Figure 2 presents the proposed DualCount framework. Our framework consists of five components: (1) an image encoder Ev , (2) a text encoder Et, (3) a cross-modal feature enhancement module E, (4) a feature fusion module F, and (5) a dual-decoder head composed of a density decoder Dρ and a point decoder 
+
+Dc. The image and text encoders extract unimodal representations, which are subsequently refined and fused into a text-conditioned spatial feature map. The dual decoders then produce complementary outputs, a density map for count estimation and a set of instance centers for instance-level structural modeling. 
+
+Encoders. We employ a visual encoder Ev and a text encoder Et to extract uni-modal representations from the input image and text query. The image encoder maps I ∈ RH×W ×3 to a spatial feature map Fv = Ev (I) ∈ RC×H′×W ′
+
+, where 
+
+C denotes the feature dimension and (H′, W ′) are the spatial resolutions af-ter downsampling. Each spatial location corresponds to a C-dimensional feature 6 Ngo 
+
+vector encoding local visual information. The text encoder projects the query 
+
+t into a semantic embedding ft = Et(t) ∈ RC . The visual and textual features share the same embedding dimension, enabling effective cross-modal interaction in subsequent modules. 
+
+Feature Enhancement via Cross-Modal Attention. Although the back-bone feature map Fv ∈ RC×H′×W ′
+
+encodes rich visual semantics, it is not explic-itly optimized for fine-grained object counting. Counting requires both precise spatial discrimination and strong semantic alignment with the queried object. To strengthen the representation, we design a cross-modal enhancement module 
+
+E(·) composed of image self-attention and bidirectional cross-attention. We first reshape Fv into a sequence of spatial tokens V ∈ R(H′W ′)×C , where each row corresponds to a spatial location. 
+
+Image Self-Attention. We apply multi-head self-attention to capture long-range spatial dependencies among image features. Given the visual feature se-quence V, the query, key, and value features are computed as Qv = VW vq ,
+
+Kv = VW vk , and Vv = VW vv , where W vq , W vk , W vv ∈ RC×C are learnable pro-jection matrices. The self-attended features are then obtained as 
+
+Vsa = Softmax 
+
+
+
+(Qv K⊤ 
+
+> v
+
+)/√C
+
+
+
+Vv . (1) This operation allows each spatial location to aggregate contextual information from all other regions, producing more robust visual features for counting. 
+
+Image-to-Text Cross-Attention. To incorporate semantic guidance from the queried category, we allow visual tokens to attend to the text embedding ft ∈ RC .The text key and value are computed as kt = ftW tk and vt = ftW tv , while the visual queries are computed as Qvt = Vsa W vt q . The cross-attended visual features are then obtained by 
+
+Vvt = Softmax 
+
+
+
+(Qvt k⊤ 
+
+> t
+
+)/√C
+
+
+
+vt. (2) This step conditions the visual representation on the queried category and high-lights spatial regions that are semantically relevant for counting. 
+
+Text-to-Image Cross-Attention. To further strengthen alignment, the text representation attends back to the visual features. We compute qt = ftW tv q ,
+
+Ktv = Vsa W tv k , and Vtv = Vsa W tv v .The updated text feature is computed as 
+
+f ′ 
+
+> t
+
+= Softmax 
+
+
+
+(qtK⊤ 
+
+> tv
+
+)/√C
+
+
+
+Vtv , (3) which encourages tighter cross-modal correspondence. 
+
+Feed-Forward Refinement. Finally, the enhanced visual tokens and text em-bedding are refined via position-wise feed-forward networks, yielding Venh =
+
+FFN v (Vvt ) and f enh t = FFN t(f ′ 
+
+> t
+
+). The visual tokens are reshaped back to spa-tial form ˜Fv ∈ RC×H′×W ′
+
+.DualCount 7
+
+The enhanced feature map ˜Fv encodes strengthened spatial context and im-proved semantic alignment with the text query, providing a robust foundation for both density estimation and center prediction. 
+
+Feature Fusion. After cross-modal enhancement, we obtain the refined visual feature map ˜Fv ∈ RC×H′×W ′
+
+and the enhanced text embedding f enh t ∈ RC . We fuse these modalities to construct a text-conditioned spatial feature map F that serves as input to the dual decoders. We adopt feature-wise modulation to inject global semantic information from the text embedding into spatial visual features. Specifically, we generate channel-wise modulation parameters from the text feature: 
+
+γ = Wγ f enh t , β = Wβ f enh t , (4) where Wγ , W β ∈ RC×C are learnable projections, and γ, β ∈ RC .The fused feature map is computed as 
+
+F (x) = γ ⊙ ˜Fv (x) + β,  (5) for each spatial location x ∈ Ω, where Ω denotes the set of all spatial coordinates in the image domain and ⊙ denotes channel-wise multiplication. This modulation mechanism allows the text embedding to dynamically reweight and shift visual feature channels, emphasizing dimensions relevant to the queried object category while suppressing irrelevant responses. As a result, the fused fea-ture map F ∈ RC×H′×W ′
+
+encodes spatially grounded representations that are conditioned on the target semantics. This representation is then shared by both the density decoder and the center decoder. 
+
+Dual Decoder Given the fused feature map F ∈ RC×H′×W ′
+
+, we design a dual-decoder architecture that produces (i) a density map for count estimation and (ii) a binary point map for instance-level supervision. 
+
+Shared Upsampling and Refinement. Both decoders share a lightweight refinement head composed of bilinear interpolation layers for progressive up-sampling and 2 × 2 convolutional layers for channel reduction. Let F up denote the upsampled and refined feature map at the original image resolution (H, W ).This shared structure ensures that both density and point predictions are derived from spatially aligned high-resolution features. 
+
+Density Prediction Head. The density prediction head applies a fully con-nected feed-forward network (FFN) on F up to produce a scalar density value at each spatial location: ρ = FFN ρ(F up ) with ρ ∈ RH×W . The predicted count is obtained by integrating the density map: ˆN = P 
+
+> x∈Ω
+
+ρ(x). Instead of pixel-wise regression, following [4] we supervise the density map using an optimal trans-port (OT) loss Lot with the ground-truth point annotations. Let Pgt = {pj }Nj=1 
+
+denote the set of ground-truth object centers. The OT loss aligns the predicted density distribution ρ with the discrete empirical distribution defined by Pgt ,encouraging mass to concentrate around true object locations while preserving 8 Ngo 
+
+global count consistency. This formulation provides spatially meaningful super-vision beyond simple ℓ2 density regression. 
+
+Point Prediction Head. In parallel with density estimation, we predict a sparse set of candidate instance centers using a point prediction branch. Con-cretely, the point head outputs a logit map S = FFN c(F up ) ∈ RH×W , which is converted to a confidence map by a sigmoid, h(x) = σ(S(x)) ∈ (0 , 1) with x ∈ Ω. 
+
+At training and inference time, we extract a set of center proposals ˆP = {ˆpi}Mi=1 
+
+by first applying non-maximum suppression (NMS) to the confidence map h
+
+with a fixed window size, and then selecting all remaining local maxima whose confidence exceeds a threshold τ :
+
+ˆP = {x ∈ Ω | x is a local maximum under NMS and h(x) ≥ τ } . (6) Each proposal ˆpi = ( ui, v i) is associated with a confidence score si = h(ˆ pi),and the number of proposals M = | ˆP| varies per image. To train this, we use Focal loss Lf ocal following [2]. To further establish a one-to-one correspondence between predicted proposals and ground-truth centers Pgt = {pj }Nj=1 , we solve a bipartite matching problem using the Hungarian algorithm. The matching cost is quadric cost and we compute an optimal assignment M ⊂ ˆP × P gt . Unmatched predictions are treated as negatives (false positives), and unmatched ground-truth points are treated as missed detections. For each predicted point ˆpi, we first feed the input image I into a CNN backbone to obtain multi-scale feature maps. We then extract a discriminative point-wise feature for ˆpi by bilinear sampling from these feature maps. Let {F lj }Lj=1 denote features from L selected layers (e.g., intermediate decoder stages). For each scale lj , we sample at location 
+
+ˆpi using bilinear interpolation f lj (ˆ pi) = Bilinear  F lj , ˆpi
+
+ . We then concatenate features across scales to obtain the final point representation: 
+
+f (ˆ pi) = Concat  f l1 (ˆ pi), . . . , f lL (ˆ pi) ∈ Rd. (7) Following [3], we apply a contrastive objective to encourage matched predictions to be similar to their corresponding ground-truth counterparts while pushing away unmatched predictions. Specifically, for each matched pair (ˆ pi, p j ) ∈ M ,we treat f (ˆ pi) and f (pj ) as a positive pair, while features extracted at unmatched predicted points ˆpk (or randomly sampled background locations) serve as nega-tives. We use an InfoNCE-style loss: 
+
+Lcst = − 1
+
+|M| 
+
+X 
+
+> ( ˆ pi,p j)∈M
+
+log exp  sim( f (ˆ pi), f (pj )) /τ P 
+
+> q∈{ pj}∪N i
+
+exp  sim( f (ˆ pi), f (q)) /τ  . (8) where sim( ·, ·) denotes cosine similarity, τ is a temperature hyperparameter, and 
+
+Ni is the negative set (unmatched predictions and/or background samples). This loss improves the discriminability of point features and suppresses false-positive centers by contrasting them against matched instances. 
+
+3.2 Soft Instance Decomposition 
+
+The density map ρ ∈ RH×W provides a continuous representation for counting but does not explicitly encode instance-level structure. To introduce object-wise DualCount 9
+
+modeling, we decompose ρ into soft instance-specific components guided by the predicted point set ˆP = {ˆpi}Mi=1 obtained from the point decoder, where each 
+
+ˆpi = ( ui, v i) denotes a 2D coordinate on the image grid. For each spatial location x ∈ Ω, we define a soft assignment weight with respect to each predicted point using a Gaussian kernel: 
+
+wi(x) = exp 
+
+
+
+− ∥x− ˆpi∥2
+
+> 2σ2
+
+PMj=1 exp 
+
+
+
+− ∥x− ˆpj ∥2
+
+> 2σ2
+
+ , (9) where σ controls the spatial spread of the assignment and PMi=1 wi(x) = 1 for all x ∈ Ω. The global density map is then decomposed as 
+
+ρi(x) = wi(x)ρ(x), (10) which satisfies ρ(x) = PMi=1 ρi(x).
+
+Each component ρi represents the soft density contribution associated with the predicted point ˆpi. This decomposition introduces differentiable instance-level structure into the density representation. 
+
+3.3 Per-Instance Mass Conservation 
+
+Although standard density-based counting supervises the predicted density map with pixel-wise regression, it provides limited explicit control over how much density mass is assigned to each individual instance. To address this limitation, we introduce Per-Instance Mass Conservation, which constrains each object in-stance to receive a consistent unit of density mass. Given the decomposition {ρi}Mi=1 , we compute the total mass assigned to instance i as 
+
+mi = X
+
+> x∈Ω
+
+ρi(x). (11) Ideally, each object contributes approximately one unit of density mass, i.e., 
+
+mi ≈ 1 for valid instances. We therefore introduce a per-instance mass conser-vation loss: 
+
+Lmass = 1
+
+M
+
+> M
+
+X
+
+> i=1
+
+(mi − 1) 2. (12) This regularization encourages balanced mass allocation across predicted in-stances and prevents excessive concentration or dispersion of density mass. 
+
+3.4 Center-of-Mass Alignment 
+
+Beyond mass conservation, we further enforce geometric consistency between density allocation and predicted points. For each density component ρi, we com-pute its centroid as 
+
+¯pi = 1
+
+mi
+
+X
+
+> x∈Ω
+
+x ρ i(x), (13) 10 Ngo 
+
+where x = ( u, v ) denotes spatial coordinates and mi is defined above. We then align the centroid ¯pi with the corresponding predicted point ˆpi using 
+
+Lalign = 1
+
+M
+
+> M
+
+X
+
+> i=1
+
+∥¯pi − ˆpi∥22. (14) This alignment encourages each density component to concentrate around its associated predicted point, reducing fragmented or part-biased mass allocation and promoting instance-level geometric coherence. 
+
+3.5 Overall Loss Function 
+
+In addition to Lot , Lcst , Lf ocal , Lmass , and Lalign introduced in previous sec-tions, we enforce agreement between the two counting mechanisms through a count consistency loss that penalizes discrepancies between the count estimated from the density map and the number of predicted points: 
+
+Lconsistent =
+
+ ˆN − M
+
+2
+
+, (15) where ˆN = P 
+
+> x∈Ω
+
+ρ(x) denotes the total mass of the predicted density map and 
+
+M is the number of predicted points. The final training objective is 
+
+L = λot Lot +λcst Lcst +λfocal Lfocal +λconsistent Lconsistent +λmass Lmass +λalign Lalign ,
+
+(16) where λot , λ cst , λ focal , λ consistent , λ mass , and λalign balance the contributions of the loss terms. 
+
+## 4 Experiments 
+
+4.1 Datasets and Evaluation Metrics 
+
+We conduct experiments on three widely used object counting benchmarks: FSC-147, CARPK, and PUCPR+. 
+
+FSC-147 [21] is a large-scale few-shot counting dataset comprising 6,135 im-ages across diverse object categories. The number of instances per image ranges from 7 to 3,731, with an average of 56. Each image is paired with three exemplar crops, randomly chosen object instances annotated with bounding boxes. The dataset is split into 89 categories for training, and 29 disjoint categories each for validation and testing, making FSC-147 a challenging open-set benchmark. 
+
+CARPK [7] focuses on vehicle counting in aerial imagery, captured by drones over parking lots. It provides 989 images for training and 459 for testing, with annotations for more than 89,000 cars. DualCount 11 
+
+Fig. 3: Qualitative comparison between DualCount and density-based zero-shot count-ing baselines, including VLCounter [9], CLIP-Count [8], and CounTX [1]. 
+
+PUCPR+ [7] is another vehicle counting dataset collected from fixed surveil-lance cameras at the Pontifical Catholic University of Paraná, serving as a com-plementary fixed-camera benchmark to the drone-based CARPK dataset. We assess model performance using two standard evaluation metrics: Mean Ab-solute Error (MAE) and Root Mean Squared Error (RMSE): 
+
+M AE = 1
+
+NINIX
+
+> i=1
+
+|N pred i − N gt i | RM SE =
+
+vuut 1
+
+NINIX
+
+> i=1
+
+(N pred i − N gt i )2
+
+(17) where  NI is the number of test images,  N pred  
+
+> i
+
+is the predicted count for image 
+
+i, and  N gt  
+
+> i
+
+is the corresponding ground-truth count. 12 Ngo 
+
+Table 1: Quantitative comparison on FSC147. We report MAE and RMSE un-der different settings: few-shot, reference-less, and zero-shot. In each setting, the best results are highlighted in bold while the runner-up is highlighted in underline .                                                                                                                                         
+
+> Scheme Method Venue Shot Val Set Test Set
+> MAE RMSE MAE RMSE Few-shot FamNet [21] CVPR’21 324.32 70.94 22.56 101.54 BMNet [22] CVPR’22 315.74 58.53 14.62 91.83 LOCA [26] ICCV’23 310.24 32.56 10.97 56.97
+> SAM [23] WACV’24 3--19.95 132.16 PseCo [11] CVPR’24 315.31 68.34 13.05 112.86 GMN [13] ACCV’19 129.66 89.81 26.52 124.57 FamNet [21] CVPR’21 124.32 70.94 22.56 101.54 BMNet [22] CVPR’22 119.06 67.95 16.71 103.31 Reference-less FamNet [21] CVPR’21 032.15 98.75 32.27 131.46 LOCA [26] ICCV’23 017.43 54.96 16.22 103.96
+> RCC [6] CVPR’23 017.49 58.81 17.12 104.53 Zero-shot Patch-selection [20] CVPR’23 026.93 88.63 22.09 115.17 CLIP-Count [8] ACM MM’23 018.79 61.18 17.78 106.62 CounTX [1] BMVC’23 017.10 65.61 15.88 106.29 VLCounter [9] AAAI’24 018.06 65.13 17.05 106.16 PseCo [11] CVPR’24 023.90 100.33 16.58 129.77 DAVE [17] CVPR’24 015.48 52.57 14.90 103.42 VA-Count [30] ECCV’24 017.87 73.22 17.88 129.31 GeCo [16] NeurIPS’24 014.81 64.95 13.30 108.72 CountGD [2] NeurIPS’24 012.14 47.51 12.98 98.35 T2ICount [19] CVPR’25 013.78 58.78 11.76 97.86
+> DualCount (CLIP) -014.12 54.27 12.33 99.78
+> DualCount (SwinT + BERT) -011.21 42.77 11.32 97.16
+
+4.2 Implementation Details 
+
+We train the model using the Adam optimizer with a learning rate of 6.25 ×10 −6.Point-level representations are extracted from the ResNet-50 backbone using feature activations from layer1 to layer4 . All loss balancing weights in Eq. 16 are selected via grid search. For the encoder, we employ two image–text encoder pairs: CLIP image and text encoders, and a Swin Transformer paired with BERT. More implementation details are provided in the Appendix. 
+
+4.3 Comparison with the State-of-the-Arts 
+
+We compare DualCount with prior counting methods on the FSC147 benchmark, and the results are summarized in Table 1. The baselines span three categories: 
+
+few-shot , reference-less , and zero-shot methods. Our approach belongs to the zero-shot category. In the zero-shot setting, where no exemplar information is provided, existing methods typically suffer from higher errors due to the lack of reference guidance. Among the previous approaches, CountGD [2] achieves the runner-up result on the validation set with 12.14 MAE and 47.51 RMSE, while T2ICount [19] achieves the runner-up result on the test set with 11.76 MAE and 97.86 RMSE. In contrast, DualCount achieves the best performance on both validation and test sets, obtaining 11.21 MAE / 42.77 RMSE on the validation set and 11.32 MAE DualCount 13 
+
+Table 2: Performance comparison between DualCount and zero-shot counting base-lines on CARPK and PUCPR+. Dataset Method Venue MAE ↓ RMSE ↓                              
+
+> CARPK CLIP-Count [8] ACM MM’23 11.96 16.61 CounTX [1] BMVC’23 8.13 10.87 T2ICount [19] CVPR’25 8.61 13.47 CountGD [2] NeurIPS’24 3.83 5.41 DualCount (Ours) –7.95 9.78 PUCPR+ CLIP-Count [8] ACM MM’23 55.82 91.23 CounTX [1] BMVC’23 75.24 113.44 VLCounter [9] AAAI’24 48.94 69.08 CountGD [2] NeurIPS’24 24.31 32.16
+> DualCount (Ours) –24.27 28.91
+
+Table 3: Ablation study on the proposed loss components. ✓ indicates the loss is applied during training, while × indicates it is removed. Test MAE and RMSE are reported for each variant.                                     
+
+> Lot Lcst Lconsistent Lmass Lalign MAE RMSE
+> ✓✓✓✓✓11.32 97.16
+> ✓✓✓✓×12.84 100.45
+> ✓✓✓×✓13.05 100.98
+> ✓✓×✓✓14.25 102.17
+> ✓×✓✓✓14.49 103.11
+
+/ 97.16 RMSE on the test set. These improvements highlight the effectiveness of DualCount in capturing object-level information without exemplars through structural consistency between density and point representations. To evaluate cross-dataset generalization, we further test DualCount on the CARPK and PUCPR+ datasets [7]. The results are summarized in Table 2. Although CountGD reports the lowest error on CARPK, DualCount ranks sec-ond overall and outperforms recent zero-shot counting methods including CLIP-Count [8], CounTX [1], and T2ICount [19]. On the PUCPR+ dataset, DualCount achieves an MAE of 24.27 and RMSE of 28.91, surpassing previous methods such as CountGD [2]. These results demonstrate the strong generalization capability of DualCount across different datasets and confirm its robustness in zero-shot object counting scenarios. 
+
+4.4 Qualitative Results 
+
+Fig. 3 presents qualitative comparisons between DualCount and existing den-sity based zero-shot counting methods, including VLCounter, CLIP-Count, and CounTX. We visualize the predicted density maps to highlight differences in spatial allocation of density mass. Compared with prior approaches, DualCount produces more concentrated and accurate density estimates. This improvement is mainly attributed to the proposed instance-level structural constraints. The Per-Instance Mass Conservation encourages balanced density allocation across predicted instances and prevents excessive concentration or dispersion of mass. 14 Ngo 
+
+Table 4: Ablation study on architectural components of DualCount. We evaluate the impact of the feature enhancer, decoder design, and backbone choice. Enhancer Density Decoder Point Decoder Backbone MAE ↓ RMSE ↓                         
+
+> ✓✓×SwinT+BERT 14.12 103.87
+> ✓×✓SwinT+BERT 14.54 105.29
+> ×✓✓SwinT+BERT 13.11 101.08
+> ✓✓✓CLIP 12.33 99.78
+> ✓✓✓SwinT+BERT 11.32 97.16
+
+In addition, the Center-of-Mass Alignment constraint encourages each density component to align with its corresponding predicted point, reducing fragmented or part-biased density assignments. As a result, DualCount effectively reduces false positives in challenging scenarios, including self-similar objects (e.g., nail polishes), non-convex object layouts (e.g., camels), crowded scenes (e.g., toilet paper rolls), and distracting backgrounds (e.g., polka dots). In contrast, previous methods often spread density mass into irrelevant regions, leading to inaccurate counting predictions. 
+
+4.5 Ablation Study 
+
+We conduct ablation studies to analyze the contribution of the proposed loss functions and architectural components of DualCount. The results are summa-rized in Tables 3 and 4. 
+
+Effect of loss components. Table 3 evaluates the impact of each proposed loss term. The full model achieves the best performance with an MAE of 11.32 
+
+and RMSE of 97.16 . Removing the center-of-mass alignment loss Lalign leads to a noticeable degradation (MAE increases from 11.32 to 12.84), indicating its importance in aligning density components with predicted instance centers. Simi-larly, removing the per-instance mass conservation loss Lmass increases the MAE to 13.05, suggesting that balanced density allocation across predicted instances is critical for accurate counting. Excluding the count consistency loss Lconsistent 
+
+further degrades performance (MAE 14.25), demonstrating the importance of enforcing agreement between density-based and point-based counting estimates. Finally, removing the contrastive loss Lcst leads to the largest performance drop (MAE 14.49), highlighting the role of discriminative point representations in improving localization and counting accuracy. 
+
+Effect of architectural components. Table 4 studies the influence of different architectural choices. Using only a single decoder significantly degrades perfor-mance. Specifically, the density-only model obtains an MAE of 14.12, while the point-only model results in an MAE of 14.54. This demonstrates that the two decoders provide complementary information for counting. Removing the fea-ture enhancer also leads to worse performance (MAE 13.11), indicating that cross-modal feature refinement helps produce more informative spatial repre-sentations. We further compare different backbone configurations and observe DualCount 15 
+
+that replacing the CLIP backbone with the SwinT+BERT encoder improves the MAE from 12.33 to 11.32 . This confirms that the proposed architecture benefits from richer multi-scale visual features and stronger language representations. Overall, these results verify that both the proposed loss functions and archi-tectural components contribute significantly to the final performance of Dual-Count. 
+
+## 5 Conclusion 
+
+In conclusion, we presented DualCount, a zero-shot object counting framework that jointly models density estimation and point-based instance centers. By in-troducing instance-level structural constraints, per-instance mass conservation and center-of-mass alignment, our method enforces balanced density allocation and geometric consistency, reducing fragmented or biased density predictions. Extensive experiments on FSC147, CARPK, and PUCPR+ demonstrate that DualCount achieves state-of-the-art performance in the zero-shot setting while maintaining strong cross-dataset generalization. Ablation studies confirm the contribution of each component, and qualitative results show that DualCount produces more accurate and concentrated density maps with fewer false posi-tives in challenging scenes. These findings highlight the value of incorporating instance-level structure into density-based counting, and suggest a promising di-rection for building more robust and generalizable zero-shot counting systems. More broadly, many computer vision tasks rely on point- or density-map predic-tion, such as human pose estimation and temporal repetition counting in videos. We believe that the proposed instance-level structural modeling may provide a useful direction for improving density-based prediction beyond object counting. 
+
+## References                                         
+
+> 1. Amini-Naieni, N., Amini-Naieni, K., Han, T., Zisserman, A.: Open-world text-specified object counting. In: British Machine Vision Conference (2023) 2. Amini-Naieni, N., Han, T., Zisserman, A.: Countgd: Multi-modal open-world counting. In: Globerson, A., Mackey, L., Belgrave, D., Fan, A., Pa-quet, U., Tomczak, J., Zhang, C. (eds.) Advances in Neural Informa-tion Processing Systems. vol. 37, pp. 48810–48837. Curran Associates, Inc. (2024), https : / / proceedings. neurips.cc/ paper_files/ paper/2024/ file/ 57c56985d9afe89bf78a8264c91071aa-Paper-Conference.pdf
+> 3. Cuong, N.X.: Contrastive point feature matching for open-world object count-ing. In: 36th British Machine Vision Conference 2025, BMVC 2025, Sheffield, UK, November 24-27, 2025. BMVA (2025), https://bmva-archive.org.uk/bmvc/ 2025/assets/papers/Paper_1183/paper.pdf
+> 4. Cuong, N.X., Mai, T.D.: Distribution-guided object counting with optimal trans-port and dino-based density refinement. In: Buntine, W., Fjeld, M., Tran, T., Tran, M.T., Huynh Thi Thanh, B., Miyoshi, T. (eds.) Information and Communication Technology. pp. 182–192. Springer Nature Singapore, Singapore (2025)
+
+16 Ngo 5. Guerrero-Gómez-Olmedo, R., Torre-Jiménez, B., López-Sastre, R., Maldonado-Bascón, S., Onoro-Rubio, D.: Extremely overlapping vehicle counting. In: Iberian conference on pattern recognition and image analysis. pp. 423–431. Springer (2015) 6. Hobley, M., Prisacariu, V.: Learning to count anything: Reference-less class-agnostic counting with weak supervision. arXiv preprint arXiv:2205.10203 (2022) 7. Hsieh, M.R., Lin, Y.L., Hsu, W.H.: Drone-based object counting by spatially reg-ularized regional proposal network. In: Proceedings of the IEEE international con-ference on computer vision. pp. 4145–4153 (2017) 8. Jiang, R., Liu, L., Chen, C.: Clip-count: Towards text-guided zero-shot object counting. In: Proceedings of the 31st ACM International Conference on Multime-dia. pp. 4535–4545 (2023) 9. Kang, S., Moon, W., Kim, E., Heo, J.P.: Vlcounter: Text-aware visual represen-tation for zero-shot object counting. In: Proceedings of the AAAI Conference on Artificial Intelligence. pp. 2714–2722 (2024) 10. Kirillov, A., Mintun, E., Ravi, N., Mao, H., Rolland, C., Gustafson, L., Xiao, T., Whitehead, S., Berg, A.C., Lo, W.Y., Dollár, P., Girshick, R.: Segment anything. arXiv:2304.02643 (2023) 11. Li, G., Li, X., Wang, Y., Wu, Y., Liang, D., Zhang, S.: Pseco: Pseudo labeling and consistency training for semi-supervised object detection. In: European Conference on Computer Vision. pp. 457–472. Springer (2022) 12. Liu, C., Zhong, Y., Zisserman, A., Xie, W.: Countr: Transformer-based generalised visual counting. arXiv preprint arXiv:2208.13721 (2022) 13. Lu, E., Xie, W., Zisserman, A.: Class-agnostic counting. In: Asian conference on computer vision. pp. 669–684. Springer (2018) 14. Ma, Z., Wei, X., Hong, X., Gong, Y.: Bayesian loss for crowd count estimation with point supervision. In: Proceedings of the IEEE/CVF international conference on computer vision. pp. 6142–6151 (2019) 15. Paiss, R., Ephrat, A., Tov, O., Zada, S., Mosseri, I., Irani, M., Dekel, T.: Teaching clip to count to ten. In: Proceedings of the IEEE/CVF International Conference on Computer Vision. pp. 3170–3180 (2023) 16. Pelhan, J., Lukezic, A., Zavrtanik, V., Kristan, M.: A novel unified architecture for low-shot counting by detection and segmentation. Advances in Neural Information Processing Systems 37 , 66260–66282 (2024) 17. Pelhan, J., Zavrtanik, V., Kristan, M., et al.: Dave-a detect-and-verify paradigm for low-shot counting. In: Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition. pp. 23293–23302 (2024) 18. Qian, Y., Humphries, G., Trathan, P., Lowther, A., Donovan, C.: Counting animals in aerial images with a density map estimation model. ecol. evol. 13 (4), e9903 (2023) 19. Qian, Y., Guo, Z., Deng, B., Lei, C.T., Zhao, S., Lau, C.P., Hong, X., Pound, M.P.: T2icount: Enhancing cross-modal understanding for zero-shot counting. In: Pro-ceedings of the Computer Vision and Pattern Recognition Conference. pp. 25336– 25345 (2025) 20. Ranjan, V., Nguyen, M.H.: Exemplar free class agnostic counting. In: Proceedings of the Asian Conference on Computer Vision. pp. 3121–3137 (2022) 21. Ranjan, V., Sharma, U., Nguyen, T., Hoai, M.: Learning to count everything. In: Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition. pp. 3394–3403 (2021) 22. Shi, M., Hao, L., Feng, C., Liu, C., Cao, Z.: Represent, compare, and learn: A similarity-aware framework for class-agnostic counting. In: Proc. IEEE/CVF Con-ference on Computer Vision and Pattern Recognition (CVPR) (2022) DualCount 17 23. Shi, Z., Sun, Y., Zhang, M.: Training-free object counting with prompts. In: Pro-ceedings of the IEEE/CVF Winter Conference on Applications of Computer Vision (WACV). pp. 323–331 (January 2024) 24. Sindagi, V.A., Patel, V.M.: A survey of recent advances in cnn-based single image crowd counting and density estimation. Pattern Recognition Letters 107 , 3–16 (2018) 25. Tyagi, A.K., Mohapatra, C., Das, P., Makharia, G., Mehra, L., AP, P., et al.: Degpr: Deep guided posterior regularization for multi-class cell detection and counting. In: Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition. pp. 23913–23923 (2023) 26. Ðukić, N., Lukežič, A., Zavrtanik, V., Kristan, M.: A low-shot object counting network with iterative prototype adaptation. In: Proceedings of the IEEE/CVF International Conference on Computer Vision. pp. 18872–18881 (2023) 27. Wang, B., Liu, H., Samaras, D., Nguyen, M.H.: Distribution matching for crowd counting. Advances in neural information processing systems 33 , 1595–1607 (2020) 28. Xu, J., Le, H., Nguyen, V., Ranjan, V., Samaras, D.: Zero-shot object counting. In: Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition. pp. 15548–15557 (2023) 29. You, Z., Yang, K., Luo, W., Lu, X., Cui, L., Le, X.: Few-shot object counting with similarity-aware feature enhancement. In: Proceedings of the IEEE/CVF Winter Conference on Applications of Computer Vision. pp. 6315–6324 (2023) 30. Zhu, H., Yuan, J., Yang, Z., Guo, Y., Wang, Z., Zhong, X., He, S.: Zero-shot object counting with good exemplars. In: European Conference on Computer Vision. pp. 368–385. Springer (2024)
