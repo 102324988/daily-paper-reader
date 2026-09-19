@@ -1,0 +1,287 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-09-19T21:15:50.402026+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 2,
+    "deep_cap": 6,
+    "deep_selected": 2,
+    "quick_candidates": 5,
+    "quick_skim_target": 11,
+    "quick_selected": 5
+  },
+  "deep_dive": [
+    {
+      "id": "2609.16909v1",
+      "source": "arxiv",
+      "title": "PiPS: Post-Hoc Prototypical Explanations for Interpretable Semantic Segmentation",
+      "abstract": "With the increasing deployment of deep neural networks in critical systems, such as medical diagnostics and autonomous vehicles, ensuring their interpretability is crucial to building trust in decision-making systems. In the field of explainable artificial intelligence, prototype-based reasoning has gained particular popularity, as it mimics human cognitive processes by explaining model decisions based on visual similarity under the looks like this paradigm. While this paradigm has been thoroughly investigated in the context of global image classification, the interpretability of dense predictions, particularly semantic segmentation, remains largely unexplored despite its immense importance in tasks requiring precise object localization. Existing prototype-based interpretable segmentation models rely on ante-hoc architectures, which entails significant limitations because they require costly training from scratch and modifications to the network structure, ultimately leading to a noticeable drop in predictive performance compared to standard black-box models. To address this issue, we propose PiPS (Post-hoc interpretable Prototypical Segmentation), the first fully post-hoc solution for generating prototypical explanations for semantic segmentation models. Our method enables the extraction of intuitive, spatially localized explanations from any pre-trained network without modification or fine-tuning, thereby preserving 100% of the model's original predictive performance. This approach opens a new avenue for the safe and cost-effective deployment of transparent systems in advanced computer vision tasks. Codebase available at https://github.com/gmum/PIPS.",
+      "authors": [
+        "Miłosz Adamczyk",
+        "Tymoteusz Zapala",
+        "Piotr Borycki",
+        "Przemysław Spurek"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-15T09:40:37+00:00",
+      "link": "https://arxiv.org/pdf/2609.16909v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "post-hoc prototypical explanations for semantic segmentation",
+      "llm_evidence_cn": "面向语义分割的可解释原型方法",
+      "llm_evidence": "面向语义分割的可解释原型方法",
+      "canonical_evidence": "面向语义分割的可解释原型方法",
+      "llm_tldr_en": "PiPS introduces post-hoc prototypical explanations for semantic segmentation, extending prototype-based interpretability from global image classification to dense per-pixel predictions while preserving precise object localization.",
+      "llm_tldr_cn": "语义分割等稠密预测虽在医疗诊断与自动驾驶中至关重要，但其可解释性研究长期滞后于图像分类。本文提出PiPS，一种事后原型解释方法，将基于视觉相似性的原型推理从全局分类推广到逐像素的稠密预测。实验表明该方法能在保持精确目标定位的同时给出可理解的原型解释，填补了分割可解释性的空白，为高风险场景下的模型信任提供了新工具。",
+      "llm_tldr": "语义分割等稠密预测虽在医疗诊断与自动驾驶中至关重要，但其可解释性研究长期滞后于图像分类。本文提出PiPS，一种事后原型解释方法，将基于视觉相似性的原型推理从全局分类推广到逐像素的稠密预测。实验表明该方法能在保持精确目标定位的同时给出可理解的原型解释，填补了分割可解释性的空白，为高风险场景下的模型信任提供了新工具。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "image segmentation techniques",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2609.20475v1",
+      "source": "arxiv",
+      "title": "SenseFuse: Label-Free Fusion of Image and Shape Encoders for Open-Vocabulary 3D Instance Segmentation",
+      "abstract": "Open-vocabulary scene understanding is fundamental for robotics, laying the groundwork for spatial reasoning and object manipulation. While closed-vocabulary 3D instance segmentation heavily leverages 3D shape information, state-of-the-art open-vocabulary methods remain predominantly restricted to 2D image features or image-distilled representations during mask labeling. In this paper, we propose SenseFuse, a label-free fusion method that balances 2D image and 3D shape encoders for robust open-vocabulary 3D instance segmentation, refining only the mask-labeling stage of existing pipelines. We reveal that 2D image and 3D shape encoders exhibit largely disjoint failure patterns and rarely share identical wrong labels, whereas two 2D image encoders frequently repeat the same errors. This distinct behavior makes the 2D and 3D pair inherently complementary. We introduce an adaptive mechanism that selects a scene-level fusion weight to maximize a label-free sensitivity measure, estimated directly from a single scene's unlabeled proposals in milliseconds. SenseFuse improves labeling accuracy in every evaluated setting across ScanNet200, Replica, and ScanNet++, recovering 67-100% (median 93%) of the gain achievable with an oracle weight, and it raises instance AP in 21 of 22 reported settings. Code is available at https://github.com/hanes1207/SenseFuse.",
+      "authors": [
+        "Euiseok Han",
+        "Tri Ton",
+        "Hwanhee Kim",
+        "Seungyeon Ryu",
+        "Chang D. Yoo"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.RO"
+      ],
+      "published": "2026-09-17T14:32:00+00:00",
+      "link": "https://arxiv.org/pdf/2609.20475v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "open-vocabulary 3D instance segmentation fusing image and shape encoders",
+      "llm_evidence_cn": "融合图像与形状编码器的开放词汇三维实例分割",
+      "llm_evidence": "融合图像与形状编码器的开放词汇三维实例分割",
+      "canonical_evidence": "融合图像与形状编码器的开放词汇三维实例分割",
+      "llm_tldr_en": "Open-vocabulary 3D instance segmentation relies mostly on 2D image features. SenseFuse is a label-free fusion of 2D image and 3D shape encoders, refining only mask labeling and exploiting their disjoint failure patterns to improve robustness.",
+      "llm_tldr_cn": "开放词汇场景理解是机器人空间推理与物体操作的基础，但现有开放词汇三维实例分割方法在掩码标注阶段多局限于二维图像特征，未能充分利用三维形状信息。本文提出无标签融合方法SenseFuse，平衡二维图像与三维形状编码器，仅精炼现有流程的掩码标注阶段。研究发现两类编码器的失败模式基本不重叠且很少给出相同错误标签，融合后显著提升分割鲁棒性，为机器人开放词汇三维感知提供新思路。",
+      "llm_tldr": "开放词汇场景理解是机器人空间推理与物体操作的基础，但现有开放词汇三维实例分割方法在掩码标注阶段多局限于二维图像特征，未能充分利用三维形状信息。本文提出无标签融合方法SenseFuse，平衡二维图像与三维形状编码器，仅精炼现有流程的掩码标注阶段。研究发现两类编码器的失败模式基本不重叠且很少给出相同错误标签，融合后显著提升分割鲁棒性，为机器人开放词汇三维感知提供新思路。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "image segmentation techniques",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2609.20323v1",
+      "source": "arxiv",
+      "title": "NeuSOGA3D: A Neuro-Symbolic Framework for Explainable 3D Geometric Reconstruction",
+      "abstract": "Three-dimensional reconstruction from unorganized point clouds remains a challenging problem in computer vision, geometric modeling, and computer-aided design. While neural implicit methods achieve impressive reconstruction accuracy, geometry is typically encoded in latent representations that limit interpretability and reuse within engineering workflows.   We present NeuSOGA3D (Neuro-Symbolic Geometric Abstraction in 3D), a hybrid framework that combines learned perceptual priors inherited from NeuSOGA with explicit symbolic geometric reasoning. The method projects point clouds onto principal orthographic planes, constructs symbolic implicit spline representations from the resulting observations, and fuses them through shape-preserving constructive solid geometry operations to generate a coarse visual hull. Additional geometric detail is recovered through cross-sectional decomposition and volumetric reconstruction using Partial Shape-Preserving Splines.   Unlike conventional neural implicit approaches, NeuSOGA3D progressively transforms observations into explicit symbolic entities, including control polygons, implicit spline fields, cross-sections, and volumetric lofts. Experiments on all forty categories of the ModelNet40 benchmark demonstrate the ability of the framework to recover structurally meaningful and CAD-compatible geometric representations from diverse point-cloud observations. The results highlight the potential of combining learned perception with symbolic geometric reasoning for explainable geometric intelligence.",
+      "authors": [
+        "Qingde Li",
+        "Qingqi Hong",
+        "Zihan Li",
+        "Jie Tian"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-09-17T12:57:24+00:00",
+      "link": "https://arxiv.org/pdf/2609.20323v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "3D reconstruction from point clouds is a computer vision problem",
+      "llm_evidence_cn": "点云三维重建属于计算机视觉问题",
+      "llm_evidence": "点云三维重建属于计算机视觉问题",
+      "canonical_evidence": "点云三维重建属于计算机视觉问题",
+      "llm_tldr_en": "NeuSOGA3D combines learned perceptual priors with symbolic geometric reasoning to produce explainable and reusable 3D reconstructions from point clouds.",
+      "llm_tldr_cn": "针对神经隐式方法重建精度高但几何编码于隐空间、可解释性与复用性差的问题，本文提出NeuSOGA3D神经符号框架，将点云投影到主正交平面，构建符号隐式样条表示并进行保形融合。该方法结合学习到的感知先验与显式符号几何推理，提升了三维重建的可解释性，便于工程设计流程复用。",
+      "llm_tldr": "针对神经隐式方法重建精度高但几何编码于隐空间、可解释性与复用性差的问题，本文提出NeuSOGA3D神经符号框架，将点云投影到主正交平面，构建符号隐式样条表示并进行保形融合。该方法结合学习到的感知先验与显式符号几何推理，提升了三维重建的可解释性，便于工程设计流程复用。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "computer vision research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2609.12843v1",
+      "source": "arxiv",
+      "title": "Pre-Trained Low-Rank Tensor Decomposition for Multi-Dimensional Image Recovery",
+      "abstract": "Recently, tensor decompositions are prevalent for multi-dimensional image representation, which learn the instance-specific structure of each image from scratch. However, tensor decompositions neglect the common structure across different images, leading to limited semantic modeling capability, high computational cost, and a large number of learnable parameters. To address this challenge, we suggest the first pre-trained low-rank tensor decomposition (PLTD) framework, which organically integrates the pre-trained large vision model into the classical tensor decomposition framework. Beyond the shallow and untrained deep tensor decomposition, the suggested PLTD achieves an unprecedented balance among higher recovery fidelity, fewer learnable parameters, and smaller carbon footprint. Specifically, PLTD factorizes the target tensor into a latent tensor and a learnable transform that maps the latent tensor back to the original data domain. The latent tensor consists of two indispensable and complementary terms, i.e., a fixed pre-trained latent tensor and a learnable low-rank latent tensor. The fixed pre-trained latent tensor is distilled from a pre-trained large vision model (i.e., DINOv3) to capture the common structure of the target tensor, while the learnable low-rank latent tensor characterizes the instance-specific structure of the target tensor. To examine the potential of PLTD, we develop the corresponding multi-dimensional image recovery model and theoretically justify the advantages of this framework. Additionally, we discuss the connections between PLTD and classical tensor decomposition frameworks. Extensive experiments on multi-dimensional image recovery demonstrate that PLTD consistently achieves superior performance compared with state-of-the-art methods.",
+      "authors": [
+        "Bing-Zhang Fu",
+        "Zhi-Long Han",
+        "Ting-Zhu Huang",
+        "Xi-Le Zhao",
+        "Deyu Meng"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-11T13:36:36+00:00",
+      "link": "https://arxiv.org/pdf/2609.12843v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "pre-trained low-rank tensor decomposition integrating a large vision model for image recovery",
+      "llm_evidence_cn": "融合大视觉模型预训练低秩张量分解用于图像恢复",
+      "llm_evidence": "融合大视觉模型预训练低秩张量分解用于图像恢复",
+      "canonical_evidence": "融合大视觉模型预训练低秩张量分解用于图像恢复",
+      "llm_tldr_en": "Tensor decompositions learn instance-specific structure from scratch, ignoring cross-image commonality. This paper proposes the first pre-trained low-rank tensor decomposition framework integrating a large vision model, balancing recovery fidelity and fewer parameters.",
+      "llm_tldr_cn": "多维图像恢复常用张量分解进行表示，但现有方法从零学习每张图像的实例结构，忽略了不同图像间的共性结构，导致语义建模能力有限、计算开销大且可学习参数众多。本文提出首个预训练低秩张量分解框架PLTD，将预训练大视觉模型有机融入经典张量分解框架。相比浅层且未训练的张量分解，PLTD在恢复保真度与参数量之间取得更优平衡，为多维图像恢复提供了高效表示方案。",
+      "llm_tldr": "多维图像恢复常用张量分解进行表示，但现有方法从零学习每张图像的实例结构，忽略了不同图像间的共性结构，导致语义建模能力有限、计算开销大且可学习参数众多。本文提出首个预训练低秩张量分解框架PLTD，将预训练大视觉模型有机融入经典张量分解框架。相比浅层且未训练的张量分解，PLTD在恢复保真度与参数量之间取得更优平衡，为多维图像恢复提供了高效表示方案。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "computer vision research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.18920v1",
+      "source": "arxiv",
+      "title": "PhysVGGT: Feed-Forward Dense Physical Property Estimation from A Single Image",
+      "abstract": "Physical properties, such as friction, hardness, stiffness, and density, govern how robots should grasp, manipulate and interact with objects, yet estimating these properties from RGB images remains challenging. Existing methods typically employ per-object reconstruction augmented with physical properties or directly query vision-language models at test time, which results in substantial computational overhead that limits their applicability. In this work, we present PhysVGGT, a feed-forward model that predicts dense maps of friction coefficient, Shore hardness, Young's modulus, and density, together with object-level mass, from a single RGB image in one forward pass. The key idea of PhysVGGT is to formulate physical property estimation as a dense per-pixel prediction problem and employ a visual geometry transformer to extract geometry-aware tokens from the input image followed by a dense prediction branch for estimating local physical properties and a global prediction branch for estimating object-level mass. In addition, we introduce a scalable pseudo-label generation pipeline that enables large-scale weakly supervised training for dense physical property prediction, substantially reducing the need for expensive direct physical measurements. Extensive experiments show that PhysVGGT achieves state-of-the-art performance on the ABO-500 dataset and generalizes effectively to the out-of-distribution NeRF2Physics dataset. Moreover, PhysVGGT eliminates the need for per-object reconstruction and test-time optimization, achieving an inference latency of only 0.13s per image, making it $27\\times$ faster than the previous state of the art.",
+      "authors": [
+        "Sneha Paul",
+        "Guile Wu",
+        "Bingbing Liu",
+        "Dongfeng Bai"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-16T16:58:14+00:00",
+      "link": "https://arxiv.org/pdf/2609.18920v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "dense physical property prediction from a single RGB image",
+      "llm_evidence_cn": "从单张RGB图像进行稠密物理属性预测",
+      "llm_evidence": "从单张RGB图像进行稠密物理属性预测",
+      "canonical_evidence": "从单张RGB图像进行稠密物理属性预测",
+      "llm_tldr_en": "PhysVGGT is a feed-forward model that predicts dense maps of friction, hardness, Young modulus and density plus object mass from a single RGB image in one pass, avoiding costly reconstruction or test-time vision-language queries.",
+      "llm_tldr_cn": "摩擦、硬度、刚度与密度等物理属性决定机器人如何抓取与操作物体，但从RGB图像估计这些属性仍具挑战，现有方法依赖逐物体重建或测试时查询视觉语言模型，计算开销大。本文提出前馈模型PhysVGGT，将物理属性估计建模为稠密预测，一次前向即可从单张RGB图像输出多种属性稠密图与物体质量。该工作为机器人交互提供了高效的单图物理属性估计方案。",
+      "llm_tldr": "摩擦、硬度、刚度与密度等物理属性决定机器人如何抓取与操作物体，但从RGB图像估计这些属性仍具挑战，现有方法依赖逐物体重建或测试时查询视觉语言模型，计算开销大。本文提出前馈模型PhysVGGT，将物理属性估计建模为稠密预测，一次前向即可从单张RGB图像输出多种属性稠密图与物体质量。该工作为机器人交互提供了高效的单图物理属性估计方案。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "computer vision research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.19463v1",
+      "source": "arxiv",
+      "title": "ParticleSplat: Self-supervised Object-centric Latent Particle Splatting",
+      "abstract": "We present ParticleSplat, a self-supervised object-centric learning method that decomposes scenes into a set of latent ''particles'' representing semantic entities through feedforward 3D Gaussian Splatting. Building on the Deep Latent Particles (DLP) framework, which represents images as a set of particles with attributes such as position, scale, and visual appearance, we address a key limitation of DLP: its inherently 2D nature, which prevents explicit 3D spatial and geometric reasoning that are critical for downstream tasks such as robotic manipulation. Leveraging the structural similarity between latent particles and 3D Gaussian primitives, we introduce a 3D latent particle space trained with a novel view synthesis objective. Our model jointly encodes multiple views with camera poses into a shared 3D object-centric latent space, then transforms particles into particle-aligned 3D Gaussians whose composition reconstructs the full scene. On simulated and real-world datasets, we show that this formulation inherently learns object masks without supervision and supports controllable 3D scene editing, such as moving objects by modifying particles in the latent space. We further establish that the learned 3D representation improves downstream performance on robotic manipulation tasks.",
+      "authors": [
+        "Lyuxing He",
+        "Daniel Guo",
+        "Elizabeth Terveen",
+        "Deepak Pathak",
+        "David Held",
+        "Tal Daniel"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.RO"
+      ],
+      "published": "2026-09-16T22:05:05+00:00",
+      "link": "https://arxiv.org/pdf/2609.19463v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "self-supervised object-centric learning with 3D Gaussian splatting latent particles",
+      "llm_evidence_cn": "基于三维高斯泼溅潜在粒子的自监督目标中心学习",
+      "llm_evidence": "基于三维高斯泼溅潜在粒子的自监督目标中心学习",
+      "canonical_evidence": "基于三维高斯泼溅潜在粒子的自监督目标中心学习",
+      "llm_tldr_en": "Deep Latent Particles are inherently 2D, limiting 3D geometric reasoning. ParticleSplat builds a 3D latent particle space using the structural similarity between latent particles and 3D Gaussian primitives, trained with a novel view synthesis objective.",
+      "llm_tldr_cn": "自监督目标中心学习需将场景分解为语义实体，但已有深度潜在粒子框架本质为二维表示，缺乏显式三维空间与几何推理能力，难以支持机器人操作等下游任务。本文提出ParticleSplat，利用潜在粒子与三维高斯基元的结构相似性，构建三维潜在粒子空间并以新视角合成目标进行训练。模型可前馈式完成自监督场景分解，将目标中心学习扩展到三维空间，增强了几何推理能力。",
+      "llm_tldr": "自监督目标中心学习需将场景分解为语义实体，但已有深度潜在粒子框架本质为二维表示，缺乏显式三维空间与几何推理能力，难以支持机器人操作等下游任务。本文提出ParticleSplat，利用潜在粒子与三维高斯基元的结构相似性，构建三维潜在粒子空间并以新视角合成目标进行训练。模型可前馈式完成自监督场景分解，将目标中心学习扩展到三维空间，增强了几何推理能力。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "computer vision research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.19518v1",
+      "source": "arxiv",
+      "title": "AMB3R-SLAM: Kilometer-scale SLAM with Hierarchical Backend",
+      "abstract": "We present AMB3R-SLAM, a real-time monocular SLAM system capable of reconstructing kilometer-scale trajectories over 10k frames on a single consumer-grade GPU. Our model couples a lightweight front-end for low-latency online tracking with a hierarchical backend that progressively enforces local, mid-level, and global consistency. By avoiding bundle adjustment that relies on the static world assumption, our system naturally handles complex dynamic scenes out of the box. Furthermore, we demonstrate that our method can be extended to leverage stereo, RGB-D, and LiDAR as additional inputs. AMB3R-SLAM achieves strong camera tracking performance across 9 datasets, reducing the absolute trajectory error (ATE) of previous state-of-the-art methods on VBR and Oxford Spires by over 70%. With additional LiDAR input, our model further reduces ATE to sub-meter level on KITTI and VBR datasets.",
+      "authors": [
+        "Hengyi Wang",
+        "Lourdes Agapito"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.RO"
+      ],
+      "published": "2026-09-17T00:11:16+00:00",
+      "link": "https://arxiv.org/pdf/2609.19518v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "real-time monocular SLAM with hierarchical backend",
+      "llm_evidence_cn": "分层后端的实时单目SLAM",
+      "llm_evidence": "分层后端的实时单目SLAM",
+      "canonical_evidence": "分层后端的实时单目SLAM",
+      "llm_tldr_en": "AMB3R-SLAM is a real-time monocular SLAM system coupling a lightweight tracking front-end with a hierarchical backend to reconstruct kilometer-scale trajectories and handle dynamic scenes without static-world bundle adjustment.",
+      "llm_tldr_cn": "传统SLAM依赖静态世界假设的捆绑调整，难以应对复杂动态场景，且长轨迹重建算力开销大。本文提出AMB3R-SLAM，将低延迟在线跟踪前端与逐层施加局部、中层和全局一致性的分层后端耦合，并可扩展至双目、RGB-D与LiDAR输入。系统在单块消费级GPU上于万帧规模实现公里级轨迹重建，在九个数据集上降低绝对轨迹误差，为动态场景实时SLAM提供了方案。",
+      "llm_tldr": "传统SLAM依赖静态世界假设的捆绑调整，难以应对复杂动态场景，且长轨迹重建算力开销大。本文提出AMB3R-SLAM，将低延迟在线跟踪前端与逐层施加局部、中层和全局一致性的分层后端耦合，并可扩展至双目、RGB-D与LiDAR输入。系统在单块消费级GPU上于万帧规模实现公里级轨迹重建，在九个数据集上降低绝对轨迹误差，为动态场景实时SLAM提供了方案。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "Find papers on computer vision",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

@@ -1,0 +1,121 @@
+{
+  "date": "20260919",
+  "date_label": "",
+  "generated_at": "2026-09-19 21:21:17 UTC",
+  "recommend_exists": true,
+  "run_count": 1,
+  "papers": [
+    {
+      "paper_id": "2609.16909v1",
+      "route": "202609/19/2609.16909v1-pips-post-hoc-prototypical-explanations-for-interpretable-semantic-segmentation",
+      "title": "PiPS: Post-Hoc Prototypical Explanations for Interpretable Semantic Segmentation",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "面向语义分割的可解释原型方法",
+      "first_seen_at": "2026-09-19 21:21:17 UTC",
+      "updated_at": "2026-09-19 21:21:17 UTC"
+    },
+    {
+      "paper_id": "2609.20475v1",
+      "route": "202609/19/2609.20475v1-sensefuse-label-free-fusion-of-image-and-shape-encoders-for-open-vocabulary-3d-instance-segmentation",
+      "title": "SenseFuse: Label-Free Fusion of Image and Shape Encoders for Open-Vocabulary 3D Instance Segmentation",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "融合图像与形状编码器的开放词汇三维实例分割",
+      "first_seen_at": "2026-09-19 21:21:17 UTC",
+      "updated_at": "2026-09-19 21:21:17 UTC"
+    },
+    {
+      "paper_id": "2609.20323v1",
+      "route": "202609/19/2609.20323v1-neusoga3d-a-neuro-symbolic-framework-for-explainable-3d-geometric-reconstruction",
+      "title": "NeuSOGA3D: A Neuro-Symbolic Framework for Explainable 3D Geometric Reconstruction",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "点云三维重建属于计算机视觉问题",
+      "first_seen_at": "2026-09-19 21:21:17 UTC",
+      "updated_at": "2026-09-19 21:21:17 UTC"
+    },
+    {
+      "paper_id": "2609.12843v1",
+      "route": "202609/19/2609.12843v1-pre-trained-low-rank-tensor-decomposition-for-multi-dimensional-image-recovery",
+      "title": "Pre-Trained Low-Rank Tensor Decomposition for Multi-Dimensional Image Recovery",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "融合大视觉模型预训练低秩张量分解用于图像恢复",
+      "first_seen_at": "2026-09-19 21:21:17 UTC",
+      "updated_at": "2026-09-19 21:21:17 UTC"
+    },
+    {
+      "paper_id": "2609.18920v1",
+      "route": "202609/19/2609.18920v1-physvggt-feed-forward-dense-physical-property-estimation-from-a-single-image",
+      "title": "PhysVGGT: Feed-Forward Dense Physical Property Estimation from A Single Image",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "从单张RGB图像进行稠密物理属性预测",
+      "first_seen_at": "2026-09-19 21:21:17 UTC",
+      "updated_at": "2026-09-19 21:21:17 UTC"
+    },
+    {
+      "paper_id": "2609.19463v1",
+      "route": "202609/19/2609.19463v1-particlesplat-self-supervised-object-centric-latent-particle-splatting",
+      "title": "ParticleSplat: Self-supervised Object-centric Latent Particle Splatting",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "基于三维高斯泼溅潜在粒子的自监督目标中心学习",
+      "first_seen_at": "2026-09-19 21:21:17 UTC",
+      "updated_at": "2026-09-19 21:21:17 UTC"
+    },
+    {
+      "paper_id": "2609.19518v1",
+      "route": "202609/19/2609.19518v1-amb3r-slam-kilometer-scale-slam-with-hierarchical-backend",
+      "title": "AMB3R-SLAM: Kilometer-scale SLAM with Hierarchical Backend",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "分层后端的实时单目SLAM",
+      "first_seen_at": "2026-09-19 21:21:17 UTC",
+      "updated_at": "2026-09-19 21:21:17 UTC"
+    }
+  ]
+}
