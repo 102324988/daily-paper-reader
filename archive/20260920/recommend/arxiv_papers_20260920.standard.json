@@ -1,0 +1,222 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-09-20T21:43:06.098080+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 1,
+    "deep_cap": 6,
+    "deep_selected": 1,
+    "quick_candidates": 4,
+    "quick_skim_target": 11,
+    "quick_selected": 4
+  },
+  "deep_dive": [
+    {
+      "id": "2609.18139v1",
+      "source": "arxiv",
+      "title": "Multi-View Mixture-of-Experts with Vision-Language Reranking for Cross-View Object Geo-Localization",
+      "abstract": "Cross-view object geo-localization (CVOGL) locates a target in satellite imagery using drone or street-view queries. Existing methods train separate detectors for each viewpoint, leading to parameter redundancy and impeding cross-view knowledge sharing. Moreover, top-ranked satellite candidates are often visually similar, so visual appearance and categorical labels alone are insufficient to resolve such ambiguity. To address these, we propose MVLGeo, an efficient framework designed to unify multiple viewpoints and reduce model redundancy. First, we introduce environmental contextual text from the query view as cues to distinguish visually similar candidates via Vision-Language Reranking (VL-Rerank). Second, we design a multi-view Mixture-of-Experts architecture (MV-MoE) with a shared encoder and view-specific experts to reduce redundancy and promote knowledge sharing, while cross-view contrastive learning aligns their representations for consistency. Third, we introduce an adaptive elliptical prior (ESAM-Prior) as auxiliary positional encoding for anisotropic geometric perception. Extensive experiments on the CVOGL benchmarks confirm that MVLGeo, as a unified model for multiple query viewpoints, achieves state-of-the-art performance, demonstrating robustness to input degradation and generalization across viewpoints. Code and models will be available on GitHub to facilitate future work.",
+      "authors": [
+        "Xuyu Fan",
+        "Qi Ming",
+        "Zhu Han",
+        "Liuqian Wang",
+        "Siyuan Cao",
+        "Xiaohan Zhang",
+        "Xudong Zhao",
+        "Mingjing Zhao",
+        "Yuhan Zhang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-16T05:21:54+00:00",
+      "link": "https://arxiv.org/pdf/2609.18139v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "unifies multi-viewpoint object detectors and vision-language reranking for geo-localization",
+      "llm_evidence_cn": "统一多视角目标检测器并结合视觉语言重排序进行地理定位",
+      "llm_evidence": "统一多视角目标检测器并结合视觉语言重排序进行地理定位",
+      "canonical_evidence": "统一多视角目标检测器并结合视觉语言重排序进行地理定位",
+      "llm_tldr_en": "Cross-view object geo-localization trains separate detectors per viewpoint, causing redundancy and ambiguity among similar satellite candidates. MVLGeo unifies viewpoints and adds vision-language reranking with query-view context to disambiguate, improving accuracy while cutting redundancy.",
+      "llm_tldr_cn": "跨视角目标地理定位需要在卫星影像中定位目标，但现有方法为每个视角单独训练检测器，造成参数冗余且难以共享知识，同时视觉相似的候选难以区分。本文提出MVLGeo框架，统一多视角检测并引入查询视角环境文本，通过视觉语言重排序消解歧义。实验显示其在减少冗余的同时提升定位准确率。该工作为跨视角地理定位提供了高效统一的新范式。",
+      "llm_tldr": "跨视角目标地理定位需要在卫星影像中定位目标，但现有方法为每个视角单独训练检测器，造成参数冗余且难以共享知识，同时视觉相似的候选难以区分。本文提出MVLGeo框架，统一多视角检测并引入查询视角环境文本，通过视觉语言重排序消解歧义。实验显示其在减少冗余的同时提升定位准确率。该工作为跨视角地理定位提供了高效统一的新范式。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "object detection methods",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2609.14316v1",
+      "source": "arxiv",
+      "title": "Learning Continuous Source Responses For Generalizable AI-Generated Image Detection",
+      "abstract": "Advances in image generation have made synthetic images increasingly difficult to distinguish from real photographs, raising concerns about the trustworthiness of visual media. Existing AI-generated image detectors often perform well on in-domain data, but their robustness and cross-generator generalization remain limited. These limitations are commonly attributed to overfitting to shortcut cues. Although many methods seek to suppress shortcut learning, most retain binary classification as the training task without reconsidering how the task itself shapes the learned representations. We introduce CuRe, a framework for learning Continuous Source Responses that revisits authenticity detection from the perspective of the training task. CuRe reformulates backbone adaptation as regression of real-generated mixing ratios, providing finer supervision that encourages the model to capture authenticity-related variation beyond binary endpoint separation. We further select a compact source-response subspace to suppress nuisance variation and limit the final classifier's access to potential shortcut cues. Across ten public benchmarks, CuRe achieves an average balanced accuracy of 89.7%, exceeding the second-best method by 5.2 percentage points. Further experiments demonstrate consistent generalization gains across visual backbones and strong robustness to common image degradations. Code is available at https://github.com/manic-cui/CuRe",
+      "authors": [
+        "Manni Cui",
+        "Ruiqi Liu",
+        "Zijian Yu",
+        "Hao Tan",
+        "Zibo Wei",
+        "Zian Wang",
+        "Ziheng Qin",
+        "Huijia Zhu",
+        "Weiqiang Wang",
+        "Jun Lan",
+        "Shu Wu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-13T06:24:59+00:00",
+      "link": "https://arxiv.org/pdf/2609.14316v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "generalizable AI-generated image detection as a recognition task",
+      "llm_evidence_cn": "可泛化的AI生成图像检测识别任务",
+      "llm_evidence": "可泛化的AI生成图像检测识别任务",
+      "canonical_evidence": "可泛化的AI生成图像检测识别任务",
+      "llm_tldr_en": "CuRe addresses limited cross-generator generalization of AI-generated image detectors by reframing authenticity detection as learning Continuous Source Responses instead of binary classification.",
+      "llm_tldr_cn": "图像生成技术使合成图像愈发逼真，现有AI生成图像检测器虽在域内表现良好，但跨生成器泛化能力受限，常被归因于对捷径线索的过拟合。本文提出CuRe框架，从训练任务本身出发，将真实性检测重构为学习连续源响应，而非沿用二分类目标。该方法通过改变任务形式塑造更具泛化性的表征，提升了跨生成器检测的鲁棒性，为视觉真实性识别提供了新的任务视角。",
+      "llm_tldr": "图像生成技术使合成图像愈发逼真，现有AI生成图像检测器虽在域内表现良好，但跨生成器泛化能力受限，常被归因于对捷径线索的过拟合。本文提出CuRe框架，从训练任务本身出发，将真实性检测重构为学习连续源响应，而非沿用二分类目标。该方法通过改变任务形式塑造更具泛化性的表征，提升了跨生成器检测的鲁棒性，为视觉真实性识别提供了新的任务视角。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "visual recognition algorithms",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.17450v1",
+      "source": "arxiv",
+      "title": "ORCA: Occlusion-Aware Refinement and Completion for Novel View Synthesis",
+      "abstract": "Novel-view synthesis from a single image is a fundamentally ambiguous problem. As the camera moves away from the input viewpoint, previously hidden regions become visible, exposing missing geometry and holes in the reconstructed scene. Existing methods often rely on generative models to complete such regions. However, many of these artifacts are small gaps near depth boundaries and do not require generating new scene content.   In order to eliminate expensive process of generating image we introduce ORCA, an occlusion-aware method for reconstructing and completing explorable 3D scenes from a single image. ORCA first introduces 3D structure into a Gaussian-anchor representation using monocular depth while preserving the original camera-ray correspondence. During scene exploration, missing regions are handled based on their size and structure. Small disocclusions are repaired using RGB-D information already available in the reconstruction, while generative inpainting is reserved for larger regions that cannot be reliably recovered from the scene. New Gaussian anchors are added and optimized locally without modifying the existing representation. By reducing unnecessary reliance on generative inpainting, ORCA limits generation-induced hallucinations and better preserves the content and structure of the original scene.   On DIV2K, ORCA improves novel-view quality over VistaDream across all reported metrics, increasing MUSIQ from 61.60 to 68.71 and CLIP-IQA from 0.474 to 0.574. These results show that many novel-view artifacts can be repaired effectively by reusing information already present in the reconstructed scene.",
+      "authors": [
+        "Weronika Jakubowska",
+        "Maciej Zięba",
+        "Przemysław Spurek"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-15T16:53:54+00:00",
+      "link": "https://arxiv.org/pdf/2609.17450v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "computer vision method for novel view synthesis and 3D scene reconstruction",
+      "llm_evidence_cn": "面向新视角合成与三维场景重建的计算机视觉方法",
+      "llm_evidence": "面向新视角合成与三维场景重建的计算机视觉方法",
+      "canonical_evidence": "面向新视角合成与三维场景重建的计算机视觉方法",
+      "llm_tldr_en": "Single-image novel view synthesis exposes holes and missing geometry as the camera moves. ORCA introduces occlusion-aware reconstruction, embedding 3D structure into Gaussian anchors via monocular depth to complete scenes without expensive generative models.",
+      "llm_tldr_cn": "从单张图像合成新视角本质上存在歧义，相机远离输入视角时隐藏区域暴露，出现几何缺失和空洞，而现有方法常依赖昂贵的生成模型补全。本文提出ORCA，一种遮挡感知方法，利用单目深度将3D结构引入高斯锚点表示并保留原始相机射线对应关系。该方法避免了昂贵的图像生成过程，有效重建并补全可探索的3D场景。该工作为单图新视角合成提供了更轻量的解决思路。",
+      "llm_tldr": "从单张图像合成新视角本质上存在歧义，相机远离输入视角时隐藏区域暴露，出现几何缺失和空洞，而现有方法常依赖昂贵的生成模型补全。本文提出ORCA，一种遮挡感知方法，利用单目深度将3D结构引入高斯锚点表示并保留原始相机射线对应关系。该方法避免了昂贵的图像生成过程，有效重建并补全可探索的3D场景。该工作为单图新视角合成提供了更轻量的解决思路。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "computer vision research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.18058v1",
+      "source": "arxiv",
+      "title": "Finder: Agentic Closed-Loop Object Finding for Embodied Grounding",
+      "abstract": "Finding the object referred to by language in a partially observed 3D scene is a core capability for embodied agents. Existing approaches either couple object search with online exploration, which can be costly when relevant observations have already been captured, or query pre-built open-vocabulary maps and scene graphs in a static, one-shot fashion. We present Finder, an agentic closed-loop object-finding primitive for embodied grounding. Instead of treating grounding as passive retrieval from a fixed scene representation, Finder maintains a typed loop state that links query-conditioned planning, scoped evidence gathering, candidate verification, and accept/continue/abort control. When evidence is incomplete or ambiguous, the loop can redirect subsequent perception and comparison rather than simply returning the top retrieved object. On open-vocabulary embodied Object Retrieval in Habitat/HM3D and real-world RGB-D scenes, Finder improves the averaged 1m success rate by 15.75 points over strong baselines. The same primitive also transfers to sequential object grounding and embodied object-centric question answering, improving spatial and temporal localization without changing the inner grounding protocol. Project page: https://finder-vln.github.io.",
+      "authors": [
+        "Shixiong Xu",
+        "Zhiyuan Chen",
+        "Song Ding",
+        "Rui Luo",
+        "Xiaowei Liang",
+        "Dongxu Miao",
+        "Zhiying Du"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-16T03:02:45+00:00",
+      "link": "https://arxiv.org/pdf/2609.18058v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "closed-loop object finding and grounding in 3D scenes",
+      "llm_evidence_cn": "三维场景闭环物体查找与定位",
+      "llm_evidence": "三维场景闭环物体查找与定位",
+      "canonical_evidence": "三维场景闭环物体查找与定位",
+      "llm_tldr_en": "Finder is an agentic closed-loop primitive for embodied object grounding that plans, gathers evidence, verifies candidates and can redirect exploration when evidence is ambiguous.",
+      "llm_tldr_cn": "针对具身智能体在部分观测三维场景中按语言查找物体的问题，现有方法要么与在线探索耦合导致成本高昂，要么静态一次性查询预建地图。作者提出Finder这一智能体闭环物体查找原语，维护带类型的循环状态，联动查询条件规划、范围化证据收集、候选验证与接受/继续/中止控制。当证据不完整或模糊时，循环可重定向后续观察，从而实现更高效、更可控的具身物体定位，为具身定位提供了可闭环控制的查找范式。",
+      "llm_tldr": "针对具身智能体在部分观测三维场景中按语言查找物体的问题，现有方法要么与在线探索耦合导致成本高昂，要么静态一次性查询预建地图。作者提出Finder这一智能体闭环物体查找原语，维护带类型的循环状态，联动查询条件规划、范围化证据收集、候选验证与接受/继续/中止控制。当证据不完整或模糊时，循环可重定向后续观察，从而实现更高效、更可控的具身物体定位，为具身定位提供了可闭环控制的查找范式。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "object detection methods",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.18100v1",
+      "source": "arxiv",
+      "title": "Beyond Pixel Similarity: Task-Aware Evaluation of GAN-Based Synthetic Sonar Data for Robotic Perception",
+      "abstract": "Synthetic data can reduce the cost of collecting and annotating training data for robotic perception, but generating sensor observations that preserve the characteristics relevant to downstream perception remains challenging, particularly for sonar imagery. In this work, we investigate whether conventional image-fidelity metrics adequately reflect the downstream perception performance of GAN-generated synthetic sonar data. We employ a Pix2Pix conditional generative adversarial network with four discriminator configurations characterized by different receptive fields: PixelGAN, PatchGAN-16, PatchGAN-70, and ImageGAN. The models are trained using sonar imagery from two datasets and evaluated using conventional image-fidelity metrics, including Structural Similarity Index (SSIM), Peak Signal-to-Noise Ratio (PSNR), and Mean Squared Error (MSE). To complement these pixel-level measures with task-oriented evaluation, YOLOX-S, YOLOX-L, and Faster R-CNN detectors are trained exclusively on real sonar imagery and subsequently evaluated on the GAN-generated images using identical test samples and annotations across all discriminator configurations. The results reveal a discrepancy between image-fidelity and downstream object-detection performance: the configuration achieving the best SSIM, PSNR, and MSE does not consistently yield the best detection performance. In particular, PatchGAN configurations achieve strong downstream detection results despite not achieving the highest pixel-level similarity scores. These findings suggest, for the datasets and models considered, pixel-level image-fidelity metrics alone may not consistently capture the task-relevant realism of synthetic sonar observations and motivate the use of task-aware evaluation for synthetic sensor data intended for robotic perception.",
+      "authors": [
+        "Hannan Ejaz Keen",
+        "Muhammad Moazam Fraz",
+        "Karsten Berns"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.CV",
+        "cs.LG"
+      ],
+      "published": "2026-09-16T04:08:51+00:00",
+      "link": "https://arxiv.org/pdf/2609.18100v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "GAN-based synthetic image evaluation for perception",
+      "llm_evidence_cn": "面向感知的GAN合成图像评估",
+      "llm_evidence": "面向感知的GAN合成图像评估",
+      "canonical_evidence": "面向感知的GAN合成图像评估",
+      "llm_tldr_en": "This work asks whether pixel-fidelity metrics reflect downstream perception of GAN-generated sonar data. Pix2Pix models with four discriminator receptive fields trained on two sonar datasets show fidelity metrics can mislead task-aware evaluation.",
+      "llm_tldr_cn": "合成数据能降低机器人感知的数据采集与标注成本，但声呐图像生成是否保留下游感知所需特性仍不清楚。本文采用Pix2Pix条件GAN与四种不同感受野判别器，在两组声呐数据上训练并评估生成质量。结果显示，传统图像保真度指标未必反映合成数据的下游感知性能。工作提出任务感知的评估视角，强调应按下游任务表现而非像素相似度评判生成数据。",
+      "llm_tldr": "合成数据能降低机器人感知的数据采集与标注成本，但声呐图像生成是否保留下游感知所需特性仍不清楚。本文采用Pix2Pix条件GAN与四种不同感受野判别器，在两组声呐数据上训练并评估生成质量。结果显示，传统图像保真度指标未必反映合成数据的下游感知性能。工作提出任务感知的评估视角，强调应按下游任务表现而非像素相似度评判生成数据。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "computer vision research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
