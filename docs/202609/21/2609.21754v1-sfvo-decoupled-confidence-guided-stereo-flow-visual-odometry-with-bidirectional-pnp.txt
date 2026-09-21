@@ -1,0 +1,422 @@
+Title: SFVO: Decoupled Confidence-Guided Stereo-Flow Visual Odometry with Bidirectional PnP
+
+URL Source: https://arxiv.org/pdf/2609.21754v1
+
+Published Time: Mon, 21 Sep 2026 00:59:03 GMT
+
+Number of Pages: 8
+
+Markdown Content:
+# SFVO: Decoupled Confidence-Guided Stereo-Flow Visual Odometry with Bidirectional PnP 
+
+Kai Zhang, Guoyang Zhao, and Jun Ma 
+
+Abstract — Deep learning-based visual odometry (VO) has achieved significant progress, yet most existing methods focus on a monocular approach, which suffers from scale ambi-guity. Stereo VO provides real metric by its nature, but remains less studied in deep learning VO due to its high computational cost and modeling complexity. Recent advances in stereo matching and optical flow estimation have made dense visual correspondence increasingly accurate and reliable, but their complementary geometric information has not been fully exploited for VO. In this paper, we present SFVO, a correspondence-driven stereo VO framework that directly builds upon pretrained stereo matching and optical flow models. SFVO exploits pretrained stereo matching and optical flow models to estimate stereo and temporal correspondences. In-stead of learning pose directly from images, SFVO maps learned correspondences into geometric constraints and predicts which points are trustworthy. To improve the reliability of visual correspondence-based geometric constraints, we introduce de-coupled confidence maps for rotation and translation. This design better aligns the characteristics of visual correspondence and 6-DoF transformations. Extensive experiments on outdoor and indoor datasets demonstrate that SFVO achieves robust and accurate pose estimation with strong generalization capability. The code will be released. 
+
+I. INTRODUCTION Visual odometry (VO) estimates camera motion from consecutive visual observations and is fundamental to robotic navigation [1], autonomous driving [2], and aerial robotics. Classical VO typically follows a correspondence-to-geometry paradigm, where visual features are matched across frames and camera motion is recovered from multi-view ge-ometry constraints, which often require intensive engineering efforts. Deep learning has progressively replaced individual components with learned representations and matching mod-els [3], [4], [5], while also enabling direct end-to-end visual pose estimation. Most learning-based VO methods are developed primarily for monocular inputs [6], [7], which usually adopt monocular depth estimation as auxiliary task for geometric and image reconstruction supervision [8], [9], [10]. However, monocular vision intrinsically suffers from scale ambiguity. Visual-inertial odometry (VIO) approaches recover metric motion by incorporating inertial measurements [11], [12], but require                            
+
+> Kai Zhang and Guoyang Zhao are with the Robotics and Au-tonomous Systems Thrust, The Hong Kong University of Science and Technology (Guangzhou), Guangzhou 511453, China (e-mail: kzhang740@connect.hkust-gz.edu.cn; gzhao492@connect.hkust-gz.edu.cn). Jun Ma is with the Robotics and Autonomous Systems Thrust, The Hong Kong University of Science and Technology (Guangzhou), Guangzhou 511453, China, and also with the Cheng Kar-Shun Robotics Institute, The Hong Kong University of Science and Technology, Hong Kong SAR, China (e-mail: jun.ma@ust.hk). (Corresponding Author: Jun Ma.)
+> Fig. 1. Overview of SFVO and its application on an unmanned ground vehicle (UGV). SFVO uses pretrained stereo disparity and optical flow models to establish bidirectional 3D–2D correspondences. Decoupled rotation and translation confidence maps guide a bidirectional PnP solver for frame-to-frame pose estimation. The bottom panel shows the UGV platform and a representative trajectory, demonstrating accurate motion estimation in a real-world environment.
+
+an additional sensing modality and well-established scale initializations. Stereo vision resolves scale ambiguity by recovering metric depth from a known baseline. However, learning-based stereo VO remains relatively underexplored, since stereo inputs increase computation and memory cost, while jointly modeling stereo and temporal relationships complicates end-to-end design. Consequently, stereo VO is still commonly based on conventional feature matching and geometric optimization [13], [14]. Meanwhile, learning-based stereo matching [15], [16] and optical flow [5], [17] have achieved substantial progress, but their geometric infor-mation has not been fully exploited for stereo VO. This moti-vates a simpler perspective: stereo matching and optical flow already provide the essential correspondences for frame-to-frame pose estimation. Disparity recovers metric 3D points, while optical flow associates them with 2D observations in adjacent frames, this can be directly formulated as dense 3D–2D constraints. The remaining challenge is to determine which correspondences are reliable and how they should contribute to pose estimation. Based on this perspective, we present SFVO, a corre-spondence driven deep learning stereo VO framework built upon pretrained stereo matching and optical flow models. As illustrated in Fig. 1, SFVO replaces both heavily engineered correspondence pipelines or black-box pose regression with a arXiv:2609.21754v1 [cs.CV] 18 Sep 2026 modular correspondence-to-geometry formulation. By incor-porating pretrained correspondence models, SFVO focuses learning on VO-specific components, namely confidence es-timation and geometric pose refinement, thereby reducing the training burden. We further introduce rotation–translation de-coupled confidence maps. Based on the observation that dis-tant points generally provide stronger rotational constraints, while nearby points are more informative for translation, a single confidence value cannot fully represent the geometric utility of each correspondence. SFVO therefore predicts separate rotation and translation confidence channels in both temporal directions and integrates them into a differentiable bidirectional perspective n points (PnP) solver. The main contributions of this work are summarized as follows:  
+
+> •
+
+We propose SFVO, a deep learning-based stereo VO framework built upon pretrained stereo matching and optical flow models, enabling efficient metric pose es-timation with reduced training effort.  
+
+> •
+
+We formulate stereo VO as a bidirectional correspondence-to-geometry problem, where disparity and optical flow are converted into forward and backward 3D–2D constraints. We integrate Rotation– translation decoupled confidence weighting into adifferentiable bidirectional PnP solver.  
+
+> •
+
+Experiments on outdoor and indoor benchmarks demon-strate accurate and robust stereo visual odometry per-formance, with strong generalization to unseen datasets. II. R ELATED WORKS 
+
+A. Deep Learning Based Visual Odometry 
+
+Classical VO and visual SLAM systems achieve strong accuracy through carefully engineered modules for feature extraction, data association, outlier rejection, and geometric optimization [18], [11], [19]. Learning-based VO reduces such manual design by learning visual representations or motion estimation directly from data. DeepVO [20] directly regresses camera motion from image sequences, while later methods such as DPV-SLAM [9], DF-VO [21], and D3VO [8] incorporate monocular depth and image reconstruction for geometric supervision. Visual-inertial methods, including UnVIO [22] and BotVIO [23], incorporate learned visual and inertial features. However, these approaches, including learned VIO methods, remain primarily based on monocular vision and therefore depend on estimated depth or additional scale recovery. Stereo vision directly provides metric depth from a known baseline, but learning-based stereo VO remains less explored due to increased modeling complexity and computation cost. SFVO performs frame-to-frame pose estimation by con-verting pretrained stereo and optical-flow correspondences directly into geometric constraints. 
+
+B. Deep Learning Visual Correspondence Estimation 
+
+Recent deep learning correspondence models provide dense alternatives to handcrafted feature matching. For stereo matching, AANet [15] improves efficiency with lightweight cost aggregation, ACVNet [16] introduces attention-based cost volumes, while RAFT-Stereo [24] and CREStereo [25] employ recurrent refinement for accurate and robust disparity estimation. These methods provide metric depth for calibrated stereo systems. For optical flow, RAFT [5], FlowFormer [26], CRAFT [27], and UniMatch [17] achieve strong optical flow estimation through recurrent refinement or attention-based matching. Combined with stereo-derived depth, optical flow naturally establishes dense 3D–2D con-straints for frame-to-frame pose estimation. Despite substantial progress in stereo matching and optical flow, these models are primarily optimized for correspon-dence accuracy rather than pose estimation. Their dense outputs may still contain unreliable matches caused by occlu-sions, dynamic objects, or estimation errors. SFVO therefore focuses on converting correspondences into pose constraints and learning how each correspondence should contribute to pose optimization. III. M ETHODOLOGY 
+
+A. System Overview 
+
+The proposed SFVO framework is illustrated in Fig. 2. Given two consecutive rectified stereo frames at timestamps t
+
+and t+1 , SFVO estimates the relative camera transformation 
+
+Tt→t+1 ∈ SE (3) .Each stereo pair is processed by a pretrained stereo matching network to estimate left to right disparities δt and 
+
+δt+1 . With focal length fx and stereo baseline b, disparity is converted into metric depth as 
+
+Zk(u) = fxbδk(u) , k ∈ { t, t + 1 } (1) Meanwhile, the two left images are processed by apretrained optical flow network to estimate forward and backward temporal correspondences, t → t+1 and t+1 → t.Combined with the stereo-derived 3D points, these flow fields form bidirectional 3D–2D correspondences. Features from the stereo and optical flow networks are passed to a confidence estimation module, which predicts separate rotation and translation confidence weights for both temporal directions. Finally, the bidirectional 3D–2D correspondences and their confidence weights are jointly processed by a weighted bidirectional PnP solver to estimate the relative camera pose. 
+
+B. Correspondence Estimation Model 
+
+For both stereo disparity and optical flow estimation, we adopt the pretrained UniMatch model [17]. Using a unified correspondence backbone simplifies the architecture and allows SFVO to directly reuse pretrained dense matching representations. UniMatch establishes correspondences through global fea-ture matching rather than task-specific regression decoders [5], [26]. It computes pairwise feature similarities, converts them into matching distributions with softmax, and obtains correspondence displacements from the estimated target pixel Fig. 2. SFVO structure. The input consists of two stereo image frames, stereo disparities are estimated by stereo matching model, forward and backward optical flow are estimated by optical flow model. The confidence estimator predicts translation-rotation-decoupled confidence maps from features extracted by optical flow and disparity models, which serve as weighting factors in the differentiable PnP pose solver. 
+
+coordinates. This coordinate-based formulation supports dif-ferent image resolutions and aspect ratios while avoiding heavy task-specific decoding. In SFVO, we retain only the correspondence output at 
+
+1/8 of the original image resolution and remove subsequent upsampling stages. Since our objective is pose estimation rather than high-resolution disparity or flow reconstruction, maintaining low resolution provides sufficiently dense geo-metric constraints while substantially reducing GPU memory consumption during end-to-end training. 
+
+C. Decoupled Confidence Prediction 
+
+Dense correspondences can be corrupted by occlusions, dynamic objects, textureless regions, and matching ambigu-ities, making confidence weighting essential for robust pose estimation. Most existing methods assign a single confidence value to each correspondence, implicitly assuming equal reli-ability for rotation and translation. However, their geometric contributions are inherently different. Consider a 3D point X = [ X, Y, Z ]T projected to nor-malized image coordinates u = [ ux, u y ]T = [ X/Z, Y /Z ]T .Under small translational velocity v and angular velocity ω,the induced image motion is 
+
+˙u = Jtrans (u, Z )v + Jrot (u)ω (2) where 
+
+Jtrans = 1
+
+Z
+
+−1 0 ux
+
+0 −1 uy
+
+
+
+(3) and 
+
+Jrot =
+
+ uxuy −(1 + u2
+
+> x
+
+) uy
+
+1 + u2 
+
+> y
+
+−uxuy −ux
+
+
+
+(4) The translational component decreases with depth Z,whereas the rotational component is depth-independent. Thus, nearby points generally provide stronger translational constraints, while distant points remain the same informa-tiveness for rotation. This distinction is further amplified by stereo depth uncer-tainty. Given disparity δ, a small disparity error ∆δ induces depth error ∆Z as 
+
+∆Z ≈ Z2
+
+fxb ∆δ (5) which shows that absolute depth error grows quadratically with distance. Consequently, distant points may provide uncertain metric constraints for translation while retaining useful rotational information, which cannot be represented effectively by a shared confidence value. SFVO therefore predicts separate confidence maps for rotation and translation. Given fused stereo and optical-flow features Fd, the confidence estimator outputs 
+
+Wr , Wt = Sigmoid ( g(Fd)) (6) where g is the confidence estimator layers consists of 3 trans-former encoder and decoder layers, and Sigmoid constrains the confidence values to (0 , 1) . Applying the estimator in both forward and backward temporal directions yields four maps: Wrf , Wtf , Wrb , and Wtb.This decoupling allows SFVO to retain distant corre-spondences for rotation while assigning stronger translation confidence to nearby points with informative parallax. 
+
+D. Differentiable Bidirectional PnP 
+
+To integrate decoupled confidence weights, we decompose the PnP problem into two differentiable subproblems with closed-form updates. Translation and rotation are estimated alternately; at each iteration, the rotation is updated using the current translation estimate, after which the translation is updated using the newly estimated rotation. 
+
+1) Rotation Estimation: For rotation estimation, we adopt Wahba’s problem [28], whose objective is to find the rotation that best aligns two sets of corresponding unit vectors: 
+
+L =
+
+> N
+
+X
+
+> i=1
+
+wi∥ci − Ra i∥2 (7) where L denotes the weighted sum of squared alignment errors, wi is the confidence weight of correspondence i,
+
+ai and ci are corresponding unit vectors expressed in two reference frames. In our problem setup, ai is in frame t, ciis in frame t + 1 , R represents the rotation from frame t to frame t + 1 .For the forward direction, the inputs consist of a 3D point 
+
+Xt ∈ R3×1 in frame t, its corresponding normalized image coordinate ut+1 = [ux, u y , 1] T in frame t + 1 , and the forward rotation confidence wrf ∈ (0 , 1) .To formulate the forward Wahba constraint, we first define the source direction as af = norm 2(Xt), where norm 2(·)
+
+denotes ℓ2 normalization. The normalized image coordinate is converted into a unit bearing vector bt+1 = ut+1  
+
+> ∥ut+1 ∥
+
+. The bearing vector represents the viewing direction along the transformed 3D point. Using the current pose estimate, the point is transformed from frame t to frame t + 1 as 
+
+ˆXt+1 = RX t + t (8) Its orthogonal projection onto the unit bearing direction bt+1 
+
+is (bTt+1 ˆXt+1 )bt+1 . After removing the current translation estimate, the target direction associated with the rotational component is defined as 
+
+cf = norm 2
+
+
+
+(bTt+1 ˆXt+1 )bt+1 − t
+
+
+
+(9) Thus, cf ∈ R3×1 represents the estimated direction toward which RX t should align. Together with af and the rotation weight wrf , this defines the forward Wahba constraint. For the backward direction, the inputs are the 3D point 
+
+Xt+1 , its corresponding normalized image coordinate ut,and the backward rotation confidence wrb . Since the metric 3D point is already available in frame t + 1 , no explicit projection-depth estimation is required. The corresponding source and target directions are 
+
+ab = bb, cb = norm 2(Xt+1 − t) (10) To jointly estimate the rotation from both forward and backward constraints, we construct the weighted cross co-variance matrix 
+
+H = X
+
+> i
+
+wrf,i cf,i aTf,i + X
+
+> i
+
+wrb,i cb,i bTb,i (11) We then perform singular value decomposition, H =
+
+UΣV T . The weighted least-squares solution to Wahba’s problem is 
+
+R = U diag(1 , 1, det( UV T )) VT (12) where the determinant correction guarantees that R ∈ SO (3) 
+
+and prevents the solution from becoming a reflection. 
+
+2) Translation Estimation: Given the updated rotation, translation is estimated by minimizing the weighted bearing-perpendicular residuals. For a unit bearing vector b, the projection matrix 
+
+P = I3×3 − bb T (13) projects a vector onto the plane perpendicular to b. If a transformed 3D point v is perfectly aligned with its observed position, its perpendicular component satisfies Pv = 0 .For the forward direction, the weighted translation objec-tive is therefore defined as 
+
+min 
+
+> t
+
+X
+
+> i
+
+wti ∥Pf,i (RX t,i + t)∥2 (14) with a geometric constraint for each correspondence 
+
+Pf,i (RX t,i + t) = 0 (15) which can be rearranged as 
+
+Pf,i t = −Pf,i RX t,i (16) Accumulating all weighted constraints yields the forward linear system Af t = rf , where 
+
+Af = X
+
+> i
+
+wtf,i Pf,i 
+
+rf = − X
+
+> i
+
+wtf,i Pf,i RX t,i 
+
+(17) For the backward direction, the inverse-transformed 3D point should align with its bearing vector in frame t. The corresponding geometric constraint is 
+
+Pb,i RT (Xt+1 ,i − t) = 0 (18) Expressing the resulting normal equation in the coordinate frame t + 1 gives 
+
+Ab = R X
+
+> i
+
+wtb,i Pb,i 
+
+!
+
+RT
+
+rb = R X
+
+> i
+
+wtb,i Pb,i RT Xt+1 ,i 
+
+! (19) Combining the forward and backward linear systems, the translation is obtained as 
+
+t = ( Af + Ab + ϵI)−1(rf + rb) (20) where ϵI is a small regularization term that improves numer-ical stability. Algorithm 1 summarizes the alternating rotation and trans-lation updates. During training, rotation and translation are initialized with R = I and t = 0. At test time, it can utilize the relative motion estimated for the previous frame pair as a warm start. The solver is implemented with standard batched linear algebra operations. These operations can be programmed efficiently with PyTorch and support gradient backpropa-gation, allowing pose supervision to jointly optimize the correspondence and confidence prediction modules while retaining efficient computation. 
+
+E. Loss Functions 
+
+The optical flow and stereo networks are initialized with pretrained UniMatch weights. Since VO datasets generally lack ground-truth flow and disparity, correspondence esti-mation is supervised by image reconstruction. The corre-spondence loss Lcorr is computed as the SSIM loss between the reference image and the target image warped using the estimated correspondence. Algorithm 1: Bidirectional Decoupled Weighted PnP Solver 
+
+Input: Forward 3D–2D correspondences (Xt, ut+1 ),backward 3D–2D correspondences 
+
+(Xt+1 , ut), rotation weights (wrf , wrb ),translation weights (wtf , wtb), iterations K
+
+Output: Pose (R, t) from frame t to frame t + 1  
+
+> 1
+
+Normalize 2D points to unit bearing vectors b = u 
+
+> ∥u∥
+> 2
+
+Initialize R ← I, t ← 0; 
+
+> 3
+
+for k = 1 to K do  
+
+> 4
+
+Rotation update ; 
+
+> 5
+
+Forward rotation constraints af , cf 
+
+> 6
+
+Backward rotation constraints ab, cb 
+
+> 7
+
+Construct weighted cross-covariance matrix H 
+
+> 8
+
+Solve H = UΣV T and update R 
+
+> 9
+
+Translation update ; 
+
+> 10
+
+Forward translation constraints Af , rf 
+
+> 11
+
+Backward translation constraints Ab, rb 
+
+> 12
+
+Solve At = r and update t 
+
+> 13
+
+return R, t
+
+Pose estimation is supervised by the ground-truth trans-formation. Translation is optimized using an ℓ1 loss: 
+
+Ltrans = ∥tpred − tgt ∥1 (21) For rotation, we define Rerr = RT
+
+> pred
+
+Rgt and minimize its angular error: 
+
+θ = cos −1
+
+ tr( Rerr ) − 12
+
+
+
+, Lrot = mean( θ) (22) For very small angles, the norm of the skew-symmetric component of Rerr is used to approximate θ for numerical stability. To prevent the confidence maps from collapsing toward uniformly small values, we introduce a regularization loss with reference r = 0 .15 
+
+Lref conf = 1
+
+N
+
+> N
+
+X
+
+> i=1
+
+ReLU( r − wi), r = 0 .15 (23) This one-sided regularization with ReLU penalizes confi-dence values below r, while leaving larger values uncon-strained. For translation confidence, each valid correspondence pro-duces an implicit translation estimate ti using the ground-truth rotation and depth. Their confidence-weighted estimate is compared with the ground truth: 
+
+Lt 
+
+> conf
+
+= log 1 + X
+
+> i
+
+¯wti ∥ti − tgt ∥
+
+!
+
+(24) where ¯wti = wti / P 
+
+> j
+
+wtj is the normalized translation confidence, natural log is applied to regulate large errors. For rotation confidence, we use the same bearing-vector formulation as the Wahba solver: 
+
+Lr 
+
+> conf
+
+= X
+
+> i
+
+¯wri cos −1  (Rgt ai)T ci
+
+ (25) These confidence losses are applied in both forward and backward directions, with 
+
+Lconf = Lref conf + Lt 
+
+> conf
+
++ Lr 
+
+> conf
+
+(26) The overall objective equally weights correspondence, pose, and confidence supervision: 
+
+L = Lcorr + Ltrans + Lrot + Lconf (27) IV. E XPERIMENTS 
+
+A. Experimental Setup 
+
+SFVO is implemented with PyTorch and initialized with publicly released UniMatch weights pretrained on mixed optical flow and stereo disparity datasets. All models are trained end-to-end on 4 NVIDIA GeForce RTX 4090 GPUs with a learning rate of 1 × 10 −4. We evaluate SFVO on KITTI Odometry [29] and EuRoC MAV [30], covering both outdoor driving and indoor aerial scenarios. For EuRoC MAV, we use MH02 (E), MH04 (D), and V103 (D) for evaluation and the remaining sequences for training, with 5 training epochs. For KITTI, following existing VO works [22], [23], se-quences 00–08 are used for training and 09–10 for evalua-tion. The model is trained on KITTI for 5 epochs. To assess cross-dataset generalization, we evaluate our trained model on an sequence collected from a UGV, the platform and trajectory is introduced in Fusion Portable V2 dataset [31], this dataset is not used in any training procedure. 
+
+B. Experimental Results 
+
+We compare SFVO with three representative VO methods. DPVO is a learning-based monocular VO method with bundle-adjustment-based pose refinement, while BotVIO is a monocular visual–inertial method that estimates frame-to-frame motion using visual and inertial measurements with-out backend optimization. ORB-SLAM3 is a conventional feature-based SLAM framework, for a fair comparison, we evaluate with stereo mode and loop closure disabled. We use absolute trajectory error (ATE) and relative pose error (RPE) for evaluation. ATE measures global trajectory discrepancy after alignment, while RPE measures frame-to-frame translation and rotation errors, denoted as RPE t and 
+
+RPE r , respectively. Since DPVO and BotVIO are monocular methods, scale alignment is applied to their trajectories, SFVO and stereo ORB-SLAM3 use rigid alignment only.                                                               
+
+> Fig. 3. Trajectory comparisons on the EuRoC MAV dataset. Results are shown for sequences MH04 (D) (left) and V103 (D) (right). TABLE I QUANTITATIVE COMPARISON ON THE EUROC MAV DATASET .Method Sensor MH02 (E) MH04 (D) V103 (D) ATE (m) RPE t(m) RPE r(deg) ATE (m) RPE t(m) RPE r(deg) ATE (m) RPE t(m) RPE r(deg) DPVO Mono 0.105 0.007 0.586 0.177 0.007 0.685 0.126 0.017 1.312 BotVIO Mono+IMU 0.190 --0.150 --0.200 --ORB-SLAM3 Stereo 0.037 0.024 0.548 0.112 0.054 0.701 0.199 0.040 2.326 SFVO (Ours) Stereo 0.087 0.002 0.033 0.217 0.006 0.044 0.112 0.009 0.160
+
+Qualitative results on EuRoC are shown in Fig. 3, metric comparisons are shown in Table I. BotVIO trajectory is not plotted because pretrained EuRoC weights are unavailable. SFVO achieves the best result in seven of nine metrics and consistently obtains the lowest translational and rota-tional RPE on all three sequences, demonstrating accurate frame-to-frame motion estimation. On V103 (D), SFVO also achieves the lowest ATE. The relatively higher ATE on MH04 (D), despite low RPE, indicates accumulated drift in the absence of backend trajectory optimization.                                    
+
+> Fig. 4. Trajectory comparisons on the KITTI odometry dataset. Results are shown for sequences 09 (left) and 10 (right). TABLE II QUANTITATIVE COMPARISON ON KITTI SEQUENCES 09 AND 10. Method Sequence ATE (m) RPE t(m) RPE r(deg) DPVO 09 74.868 0.531 0.037
+> BotVIO 9.942 0.082 0.407 ORB-SLAM3 2.077 0.017 0.044 SFVO (Ours) 9.830 0.016 0.039 DPVO 10 13.602 0.166 0.044
+> BotVIO 13.417 0.084 0.364 ORB-SLAM3 1.408 0.019 0.050 SFVO (Ours) 2.835 0.017 0.046
+
+Qualitative results on KITTI are presented in Fig. 4, metric comparisons are shown in Table II. SFVO achieves the lowest translational RPE on both sequences and the second-best rotational RPE and ATE, with errors close to the best result. It also substantially outperforms the monocular DPVO and BotVIO baselines in ATE. Despite performing only frame-to-frame estimation, SFVO remains competitive with stereo ORB-SLAM3, which benefits from keyframe management and local window optimization.  
+
+> Fig. 5. UGV platform and sample images from the campus sequence.
+> The data-collection platform is shown on the left, and representative image samples are shown on the right.
+
+We further evaluate cross-dataset generalization on an unseen UGV sequence collected with industrial stereo RGB cameras. Ground truth is provided by RTK-enabled GNSS. The sequence is recorded inside a campus region, starts from parking lot and ends in front of a laboratory. The scene appearance differs from KITTI, while the vehicle motion speed is also slower. The UGV and some image samples are shown in Fig. 5.  
+
+> Fig. 6. Trajectory comparison on the unseen UGV campus sequence.
+> This sequence is used to evaluate generalization to a new platform, motion pattern, and environment.
+
+As shown in Fig. 6 and Table III, SFVO achieves the lowest ATE and translational RPE on this unseen sequence, reducing ATE by approximately 60% relative to the baseline. This demonstrates strong generalization across camera plat-forms, motion patterns, and environments. Although DPVO TABLE III QUANTITATIVE COMPARISON ON THE UNSEEN UGV CAMPUS SEQUENCE .Method Sensor ATE (m) RPE t (m) RPE r (deg) DPVO Mono 12.798 0.052 0.247         
+
+> ORB-SLAM3 Stereo 12.282 0.090 0.784 SFVO (Ours) Stereo 4.906 0.043 0.312
+
+obtains a slightly lower rotational RPE, SFVO provides substantially better global trajectory accuracy. 
+
+C. Ablation Studies 1) Decoupled Confidence: The rotation–translation de-coupled confidence design is a key component of SFVO. As shown in Fig. 7, the appearance of translation and rotation confidence maps presents a clear depth-dependent pattern, while the model is trained without explicit depth-based supervision. Distant regions generally receive higher rotation confidence, while nearby regions receive higher translation confidence. This behavior is consistent with the geometric motivation in Section III-C, indicating that pose supervision can learn different spatial preferences for rotational and translational constraints.   
+
+> Fig. 7. Visualization of rotation–translation decoupled confidence maps. Distant regions tend to receive higher rotation confidence, while nearby regions are assigned higher translation confidence, consistent with their different geometric contributions to pose estimation.
+
+The confidence predictor also learns to suppresses cor-respondences inconsistent with static camera motion from pose supervision. As shown in Fig. 8, dynamic objects such as pedestrians and moving vehicles receive noticeably lower confidence, reducing their influence on pose estimation.   
+
+> Fig. 8. Confidence prediction in dynamic regions. SFVO assigns low confidence to dynamic objects, including pedestrians (top) and moving vehicles (bottom), reducing their influence on pose estimation.
+
+To quantify the benefit of decoupling, we retrain SFVO with a shared confidence, and pose is estimated using weighted least-squares PnP. As reported in Table IV, decou-pled confidence consistently improves all pose metrics, with substantial reductions in both ATE and RPE. Confidence decoupling also improves training efficiency. The decoupled model reaches its best performance within 5 epochs, whereas the coupled baseline requires more than 40 epochs to reach the reported accuracy. This suggests that separating the two confidence channels reduces conflicting weighting requirements between rotation and translation.                              
+
+> TABLE IV ABLATION OF COUPLED AND DECOUPLED CONFIDENCE ON KITTI SEQUENCES 09 AND 10 Confidence Sequence ATE (m) RPE t(m) RPE r(deg) Coupled 09 15.006 0.053 0.111 Decoupled 9.830 0.016 0.039
+> Coupled 10 6.284 0.046 0.105 Decoupled 2.835 0.017 0.046
+> Fig. 9. Visualization of coupled confidence maps. Sharing a single confidence map between rotation and translation produces highly polarized predictions and tends to suppress distant correspondences, despite their usefulness for rotational estimation.
+
+The qualitative difference is further shown in Fig. 9. With coupled confidence, the predicted weights become highly polarized to 0 or 1, and frequently suppress distant regions. Since distant correspondences can be unreliable for translation while remaining informative for rotation, a shared confidence value cannot represent these two roles independently, leading to unnecessary rejection of useful rotational constraints. 
+
+2) PnP Solver Convergence and Computation Cost: 
+
+The presented PnP pose solver alternates between rotation and translation updates due to their geometric coupling. To evaluate convergence efficiency, we initialize the solver with 
+
+R = I and t = 0. As shown in Fig. 10, the pose estimate becomes stable after approximately 12 iterations.   
+
+> Fig. 10. Effect of pose solver iterations on KITTI 09. With identity initialization, the pose estimate progressively converges and becomes stable after approximately 12 iterations.
+
+The solver only involves lightweight batched linear algebra operations. On an NVIDIA RTX 4060 Ti, each iteration requires approximately 1.1 ms . We use 20 iterations during training to ensure stable convergence from identity initial-ization. At inference time, using the previous frame-to-frame motion estimation result as a warm start reduces the convergence iterations to 7. For stereo images of resolution 480 × 640 , the peak GPU memory occupation is 930 MB , the average end-to-end inference time is approximately 45 ms on an NVIDIA RTX 4090 and 130 ms on an RTX 4060 Ti, demonstrating practical computational efficiency across different GPU platforms. V. C ONCLUSION 
+
+In this paper, we present SFVO, a correspondence-driven deep stereo visual odometry framework that builds upon pretrained stereo matching and optical flow models. By directly converting disparity and temporal correspondences into dense 3D–2D geometric constraints, SFVO avoids learn-ing low-level correspondence estimation from scratch and enables a simple and efficient frame-to-frame pose estimation pipeline. We introduce rotation–translation decoupled confi-dence weighting and a differentiable bidirectional PnP solver to improve the robustness of geometric pose estimation. Experiments on indoor and outdoor benchmarks demonstrate competitive accuracy, efficient inference, and strong cross-dataset generalization. REFERENCES [1] H. Jiang, P. Qian, Y. Xie, L. Zheng, X. Li, M. Liu, and J. Ma, “Semantic-LiDAR-inertial-wheel odometry fusion for robust localization in large-scale dynamic environments,” arXiv preprint arXiv:2509.14999 , 2025. [2] G. Zhao, F. Ma, W. Qi, C. Zhang, Y. Liu, M. Liu, and J. Ma, “TSCLIP: Robust CLIP fine-tuning for worldwide cross-regional traffic sign recognition,” in 2025 IEEE International Conference on Robotics and Automation . IEEE, 2025, pp. 3846–3852. [3] D. DeTone, T. Malisiewicz, and A. Rabinovich, “SuperPoint: Self-supervised interest point detection and description,” in Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition workshops , 2018, pp. 224–236. [4] P.-E. Sarlin, D. DeTone, T. Malisiewicz, and A. Rabinovich, “Su-perGlue: Learning feature matching with graph neural networks,” in 
+
+Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , 2020, pp. 4938–4947. [5] Z. Teed and J. Deng, “RAFT: Recurrent all-pairs field transforms for optical flow,” in European Conference on Computer Vision . Springer, 2020, pp. 402–419. [6] K. Zhang, G. Zhao, J. Shi, B. Liu, W. Qi, and J. Ma, “MonoGlass3D: Monocular 3-D glass detection with plane regression and adaptive feature fusion,” IEEE/ASME Transactions on Mechatronics , 2026. [7] F. Ma, X. Yan, G. Zhao, X. Xu, Y. Liu, J. Ma, and M. Liu, “Every dataset counts: Scaling up monocular 3D object detection with joint datasets training,” in 2024 IEEE/RSJ International Conference on Intelligent Robots and Systems . IEEE, 2024, pp. 11 574–11 580. [8] N. Yang, L. v. Stumberg, R. Wang, and D. Cremers, “D3VO: Deep depth, deep pose and deep uncertainty for monocular visual odometry,” in Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , 2020, pp. 1281–1292. [9] L. Lipson, Z. Teed, and J. Deng, “Deep patch visual slam,” in 
+
+European Conference on Computer Vision . Springer, 2024, pp. 424– 440. [10] G. Zhao, Y. Liu, W. Qi, F. Ma, M. Liu, and J. Ma, “FisheyeDepth: A real scale self-supervised depth estimation model for fisheye camera,” in 2025 IEEE International Conference on Robotics and Automation .IEEE, 2025, pp. 3780–3787. [11] T. Qin, P. Li, and S. Shen, “VINS-Mono: A robust and versa-tile monocular visual-inertial state estimator,” IEEE Transactions on Robotics , vol. 34, no. 4, pp. 1004–1020, 2018. [12] M. Bloesch, S. Omari, M. Hutter, and R. Siegwart, “Robust visual iner-tial odometry using a direct EKF-based approach,” in 2015 IEEE/RSJ International Conference on Intelligent Robots and Systems . IEEE, 2015, pp. 298–304. [13] B. Zhang, X. Ma, H.-J. Ma, and C. Luo, “DynPL-SVO: A robust stereo visual odometry for dynamic scenes,” IEEE Transactions on Instrumentation and Measurement , vol. 73, pp. 1–10, 2024. [14] M. Contreras, N. P. Bhatt, and E. Hashemi, “DynaNav-SVO: Dy-namic stereo visual odometry with semantic-aware perception for autonomous navigation,” IEEE Transactions on Intelligent Vehicles ,2024. [15] H. Xu and J. Zhang, “AANet: Adaptive aggregation network for effi-cient stereo matching,” in Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , 2020, pp. 1959–1968. [16] G. Xu, J. Cheng, P. Guo, and X. Yang, “Attention concatenation vol-ume for accurate and efficient stereo matching,” in Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition ,2022, pp. 12 981–12 990. [17] H. Xu, J. Zhang, J. Cai, H. Rezatofighi, F. Yu, D. Tao, and A. Geiger, “Unifying flow, stereo and depth estimation,” IEEE Transactions on Pattern Analysis and Machine Intelligence , vol. 45, no. 11, pp. 13 941– 13 958, 2023. [18] C. Forster, M. Pizzoli, and D. Scaramuzza, “SVO: Fast semi-direct monocular visual odometry,” in 2014 IEEE International Conference on Robotics and Automation . IEEE, 2014, pp. 15–22. [19] C. Campos, R. Elvira, J. J. G. Rodr´ ıguez, J. M. Montiel, and J. D. Tard´ os, “ORB-SLAM3: An accurate open-source library for visual, visual–inertial, and multimap slam,” IEEE Transactions on Robotics ,vol. 37, no. 6, pp. 1874–1890, 2021. [20] S. Wang, R. Clark, H. Wen, and N. Trigoni, “DeepVO: Towards end-to-end visual odometry with deep recurrent convolutional neural networks,” in 2017 IEEE International Conference on Robotics and Automation . IEEE, 2017, pp. 2043–2050. [21] H. Zhan, C. S. Weerasekera, J.-W. Bian, and I. Reid, “Visual odom-etry revisited: What should be learnt?” in 2020 IEEE International Conference on Robotics and Automation (ICRA) . IEEE, 2020, pp. 4203–4210. [22] P. Wei, G. Hua, W. Huang, F. Meng, and H. Liu, “Unsupervised monocular visual-inertial odometry network,” in Proceedings of the Twenty-Ninth International Conference on International Joint Confer-ences on Artificial Intelligence , 2021, pp. 2347–2354. [23] W. Wei, Y. Zhou, Y. Hu, Z. Li, S. Wang, X. Liu, and J. Li, “BotVIO: A lightweight transformer-based visual-inertial odometry for robotics,” 
+
+IEEE Transactions on Robotics , 2025. [24] L. Lipson, Z. Teed, and J. Deng, “RAFT-Stereo: Multilevel recurrent field transforms for stereo matching,” in 2021 International Conference on 3D Vision . IEEE, 2021, pp. 218–227. [25] J. Li, P. Wang, P. Xiong, T. Cai, Z. Yan, L. Yang, J. Liu, H. Fan, and S. Liu, “Practical stereo matching via cascaded recurrent network with adaptive correlation,” in Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , 2022, pp. 16 263–16 272. [26] Z. Huang, X. Shi, C. Zhang, Q. Wang, K. C. Cheung, H. Qin, J. Dai, and H. Li, “FlowFormer: A transformer architecture for optical flow,” in European Conference on Computer Vision . Springer, 2022, pp. 668–685. [27] X. Sui, S. Li, X. Geng, Y. Wu, X. Xu, Y. Liu, R. Goh, and H. Zhu, “CRAFT: Cross-attentional flow transformer for robust optical flow,” in Proceedings of the IEEE/CVF conference on Computer Vision and Pattern Recognition , 2022, pp. 17 602–17 611. [28] G. Wahba, “A least squares estimate of satellite attitude,” SIAM Review , vol. 7, no. 3, pp. 409–409, 1965. [29] A. Geiger, P. Lenz, C. Stiller, and R. Urtasun, “Vision meets robotics: The KITTI dataset,” The international journal of robotics research ,vol. 32, no. 11, pp. 1231–1237, 2013. [30] M. Burri, J. Nikolic, P. Gohl, T. Schneider, J. Rehder, S. Omari, M. W. Achtelik, and R. Siegwart, “The EuRoC micro aerial vehicle datasets,” 
+
+The international journal of robotics research , vol. 35, no. 10, pp. 1157–1163, 2016. [31] H. Wei, J. Jiao, X. Hu, J. Yu, X. Xie, J. Wu, Y. Zhu, Y. Liu, L. Wang, and M. Liu, “FusionPortableV2: A unified multi-sensor dataset for generalized slam across diverse platforms and scalable environments,” 
+
+The International Journal of Robotics Research , vol. 44, no. 7, pp. 1093–1116, 2025.

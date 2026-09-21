@@ -1,0 +1,233 @@
+{
+  "date": "20260921",
+  "date_label": "",
+  "generated_at": "2026-09-21 22:55:48 UTC",
+  "recommend_exists": true,
+  "run_count": 1,
+  "papers": [
+    {
+      "paper_id": "2609.17427v1",
+      "route": "202609/21/2609.17427v1-tracking-the-unseen-an-occlusion-robust-framework-for-target-tracking-under-full-and-long-term-occlusion",
+      "title": "Tracking the Unseen: An Occlusion-Robust Framework for Target Tracking Under Full and Long-Term Occlusion",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "融合检测与重识别的遮挡鲁棒多目标跟踪框架",
+      "first_seen_at": "2026-09-21 22:55:48 UTC",
+      "updated_at": "2026-09-21 22:55:48 UTC"
+    },
+    {
+      "paper_id": "2609.19592v1",
+      "route": "202609/21/2609.19592v1-selective-cotton-boll-localization-for-robotic-harvesting-evaluation-of-deep-learning-vision-models-under-field-conditions",
+      "title": "Selective Cotton Boll Localization for Robotic Harvesting: Evaluation of Deep Learning Vision Models Under Field Conditions",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "评估YOLO系列目标检测与SAM分割模型用于机器人采摘",
+      "first_seen_at": "2026-09-21 22:55:48 UTC",
+      "updated_at": "2026-09-21 22:55:48 UTC"
+    },
+    {
+      "paper_id": "2609.20066v1",
+      "route": "202609/21/2609.20066v1-pointevent-rethinking-event-based-tiny-object-detection-via-serialized-motion-evidence-accumulation",
+      "title": "PointEvent: Rethinking Event-based Tiny Object Detection via Serialized Motion Evidence Accumulation",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "基于序列化运动证据累积的事件相机微小目标检测",
+      "first_seen_at": "2026-09-21 22:55:48 UTC",
+      "updated_at": "2026-09-21 22:55:48 UTC"
+    },
+    {
+      "paper_id": "2609.20869v1",
+      "route": "202609/21/2609.20869v1-tapeml-a-compact-structured-representation-for-multi-task-computer-vision",
+      "title": "TAPe+ML: A Compact Structured Representation for Multi-Task Computer Vision",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "面向检测与分割的紧凑多任务视觉系统",
+      "first_seen_at": "2026-09-21 22:55:48 UTC",
+      "updated_at": "2026-09-21 22:55:48 UTC"
+    },
+    {
+      "paper_id": "2609.21241v1",
+      "route": "202609/21/2609.21241v1-multiclass-semantic-segmentation-of-wildland-fire-images-using-context-aware-centralized-copy-paste-data-augmentation",
+      "title": "Multiclass Semantic Segmentation of Wildland Fire Images Using Context-Aware Centralized Copy-Paste Data Augmentation",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "野火图像的多类语义分割",
+      "first_seen_at": "2026-09-21 22:55:48 UTC",
+      "updated_at": "2026-09-21 22:55:48 UTC"
+    },
+    {
+      "paper_id": "2609.21822v1",
+      "route": "202609/21/2609.21822v1-object-detection-benchmarks-are-incomplete-the-role-of-label-errors-and-annotation-uncertainty",
+      "title": "Object Detection Benchmarks are Incomplete: The Role of Label Errors and Annotation Uncertainty",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "目标检测基准的标签错误与标注质量",
+      "first_seen_at": "2026-09-21 22:55:48 UTC",
+      "updated_at": "2026-09-21 22:55:48 UTC"
+    },
+    {
+      "paper_id": "2609.22060v1",
+      "route": "202609/21/2609.22060v1-traffic-sign-recognition-for-autonomous-driving-using-branched-yolov2-and-geometric-features",
+      "title": "Traffic Sign Recognition for Autonomous Driving Using Branched YOLOv2 and Geometric Features",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "结合分支YOLOv2与几何特征的交通标志检测识别",
+      "first_seen_at": "2026-09-21 22:55:48 UTC",
+      "updated_at": "2026-09-21 22:55:48 UTC"
+    },
+    {
+      "paper_id": "2609.19719v1",
+      "route": "202609/21/2609.19719v1-seetapsych-v10-an-open-source-computer-vision-toolkit-for-behavior-based-psychological-measurement",
+      "title": "SeetaPsych v1.0: An Open-source Computer Vision Toolkit for Behavior-based Psychological Measurement",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "面向行为心理测量的开源计算机视觉工具包",
+      "first_seen_at": "2026-09-21 22:55:48 UTC",
+      "updated_at": "2026-09-21 22:55:48 UTC"
+    },
+    {
+      "paper_id": "2609.21629v1",
+      "route": "202609/21/2609.21629v1-extending-decoupled-attention-to-dense-prediction-and-masked-training-for-multi-channel-images",
+      "title": "Extending Decoupled Attention to Dense Prediction and Masked Training for Multi-Channel Images",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "解耦注意力扩展到密集预测，与图像分割密切相关",
+      "first_seen_at": "2026-09-21 22:55:48 UTC",
+      "updated_at": "2026-09-21 22:55:48 UTC"
+    },
+    {
+      "paper_id": "2609.21770v1",
+      "route": "202609/21/2609.21770v1-xcalib-depth-guided-geometric-optimization-for-dense-thermal-visible-video-registration",
+      "title": "XCalib Depth-Guided Geometric Optimization for Dense Thermal-Visible Video Registration",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "面向多模态感知的计算机视觉图像配准",
+      "first_seen_at": "2026-09-21 22:55:48 UTC",
+      "updated_at": "2026-09-21 22:55:48 UTC"
+    },
+    {
+      "paper_id": "2609.21042v1",
+      "route": "202609/21/2609.21042v1-rtlvit-real-time-lensless-reconstruction-with-a-lightweight-vision-transformer",
+      "title": "RTLViT: real-time lensless reconstruction with a lightweight vision transformer",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "用于实时无透镜图像重建的轻量视觉Transformer",
+      "first_seen_at": "2026-09-21 22:55:48 UTC",
+      "updated_at": "2026-09-21 22:55:48 UTC"
+    },
+    {
+      "paper_id": "2609.21330v1",
+      "route": "202609/21/2609.21330v1-the-eventcv-library-for-event-based-robotic-vision",
+      "title": "The EventCV Library for Event-Based Robotic Vision",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "面向事件相机机器人视觉的开源计算机视觉库",
+      "first_seen_at": "2026-09-21 22:55:48 UTC",
+      "updated_at": "2026-09-21 22:55:48 UTC"
+    },
+    {
+      "paper_id": "2609.21522v1",
+      "route": "202609/21/2609.21522v1-refine-then-fusion-training-free-3d-point-cloud-adaptation-with-priority-refinement-and-multi-modal-knowledge-fusion",
+      "title": "Refine Then Fusion: Training-Free 3D Point Cloud Adaptation with Priority Refinement and Multi-Modal Knowledge Fusion",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "基于特征精炼与多模态融合的免训练三维点云适配",
+      "first_seen_at": "2026-09-21 22:55:48 UTC",
+      "updated_at": "2026-09-21 22:55:48 UTC"
+    },
+    {
+      "paper_id": "2609.21754v1",
+      "route": "202609/21/2609.21754v1-sfvo-decoupled-confidence-guided-stereo-flow-visual-odometry-with-bidirectional-pnp",
+      "title": "SFVO: Decoupled Confidence-Guided Stereo-Flow Visual Odometry with Bidirectional PnP",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "cv"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "融合立体匹配与光流的视觉里程计",
+      "first_seen_at": "2026-09-21 22:55:48 UTC",
+      "updated_at": "2026-09-21 22:55:48 UTC"
+    }
+  ]
+}

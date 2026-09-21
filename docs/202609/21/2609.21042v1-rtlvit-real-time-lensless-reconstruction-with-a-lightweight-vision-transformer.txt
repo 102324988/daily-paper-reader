@@ -1,0 +1,181 @@
+Title: RTLViT: real-time lensless reconstruction with a lightweight vision transformer
+
+URL Source: https://arxiv.org/pdf/2609.21042v1
+
+Published Time: Mon, 21 Sep 2026 00:16:56 GMT
+
+Number of Pages: 9
+
+Markdown Content:
+> Letter 1
+
+# RTLViT: real-time lensless reconstruction with a lightweight vision transformer 
+
+## LEYLA A. K ABULI 1,* , V ASILISA PONOMARENKO 1, AND LAURA WALLER 1
+
+> 1Department of Electrical Engineering and Computer Sciences, University of California, Berkeley, CA 94720
+> *lakabuli@berkeley.edu
+
+Mask-based lensless imagers capture measurements us-ing simple, compact hardware and recover images using a reconstruction algorithm. The reconstruction algo-rithm affects the image quality, inference speed, and computational requirements of the imaging system, of-ten trading off image quality against computational efficiency. Advancing toward integrated lensless im-agers, where encoding and reconstruction occur within a single device (e.g., a mobile phone), requires a fast, high-quality, and practical reconstruction method. We introduce the Real-Time Lensless Vision Transformer (RTLViT), a lightweight, purely data-driven reconstruc-tion architecture for high-quality and real-time lensless reconstruction. With only 1.09 million learnable param-eters, RTLViT provides higher-quality reconstructions than both real-time baselines and substantially larger attention-based architectures, including improvements of up to 3.46 dB in peak signal-to-noise ratio over ar-chitectures with 15 × more learnable parameters. We demonstrate that RTLViT maintains high-quality recon-structions across a wide range of training dataset sizes and two different mask designs (lenslets and a diffuser). Finally, we implement real-time reconstruction with RTLViT on laptops and smartphones, supporting future integrated lensless imagers for real-time applications. 
+
+Mask-based lensless imagers are compact, lightweight imag-ing systems that combine an optical encoder and computational reconstruction algorithm. Rather than producing an image di-rectly, the optical encoder (e.g., a thin phase mask) produces a multiplexed sensor measurement (Fig. 1a), which the recon-struction algorithm decodes into a reconstructed image. This multiplexing allows for higher-dimensional properties, includ-ing depth, to be captured in a single shot [1, 2]. The optical hardware design determines how much informa-tion is encoded into the measurement, and the reconstruction algorithm determines how effectively that information can be used to recover an image [3]. The algorithm choice also controls the inference time for transforming a recorded measurement into a reconstruction, as well as practical requirements including algo-rithmic complexity, training data, memory usage, and necessary computing hardware. Real-time inference [4], defined here as ≤
+
+33.3 ms per reconstruction (30 frames per second (fps)) [5], and lightweight models for integrated (on-device) deployment [6] are of growing interest for practical lensless imaging systems. Reconstruction methods have primarily been designed to trade off inference time and reconstruction quality (Fig. 1c). The simplest approach, direct Wiener deconvolution, is real time and requires no training data, but provides poor-quality recon-structions. Iterative physics-based methods (e.g., alternating direction method of multipliers (ADMM) [7]) require repeated optimization steps and are too slow for real-time inference. Hy-brid approaches combine physics-based reconstruction with data-driven refinement to further improve reconstruction qual-ity [8, 9]. Given sufficient training data, purely data-driven meth-ods offer high reconstruction quality with an entirely learned approach [10, 11]. In addition to inference time and reconstruction quality, prac-tical implementation depends on calibration and computational requirements. Physics-based and hybrid methods require cal-ibrated system point spread functions (PSFs) and explicit for-ward models, with high-quality methods often relying on ad-ditional spatially-varying PSF calibrations and corresponding multi-stage architectures [4, 9]. Hybrid and purely data-driven methods have trended toward large networks with tens of mil-lions of learnable parameters, high memory usage, large training datasets, and specialized computing hardware [8, 10]. Balanc-ing these practical requirements becomes particularly impor-tant in order to support real-time, on-device reconstruction and progress toward integrated lensless imaging systems. Purely data-driven methods are promising for balancing in-ference time, reconstruction quality, and practical requirements. These methods learn a mapping from lensless measurements to ground truth images directly from training datasets with-out requiring calibrated PSFs or system modeling. However, improvements in reconstruction quality, including from convolu-tional [10] and attention-based [11] architectures, have required increasingly large and slow models, along with extensive compu-tational resources. Among real-time data-driven methods, pre-vious lightweight Vision Transformer (ViT) architectures have poor reconstruction quality [10], while baseline architectures such as U-Nets are substantially larger [8, 12]. There remains a need for a high-quality, lightweight data-driven architecture suitable for real-time and on-device deployment. In this work, we introduce the Real-Time Lensless Vision Transformer (RTLViT), a purely data-driven, attention-based re-construction architecture designed to simultaneously achieve high-quality reconstruction, real-time inference, and minimal arXiv:2609.21042v1 [physics.optics] 17 Sep 2026 Letter 2 
+
+> Fig. 1.
+
+Real-Time Lensless Vision Transformer (RTLViT) architecture for lensless reconstruction. a) Lensless imagers produce multiplexed measurements. b) Measurements are decomposed into patch tokens and input to the attention-based reconstruction backbone, which consists of six Vision Transformer 5 (ViT-5) blocks and an upsampling decoder. The intermediate reconstruction is input to the convolutional refinement network, which merges patches and refines features, producing a high-quality reconstruc-tion. c) Data-driven methods that achieve high-quality reconstructions (e.g., ConvNeXt [10]) for random multi-focal lenslet mea-surements are too slow for real-time inference. Fast physics-based methods (e.g., Wiener deconvolution) have low reconstruction quality, as quantified by the peak signal-to-noise ratio (PSNR). RTLViT provides the highest reconstruction quality among real-time data-driven methods. d) RTLViT achieves real-time inference on workstations, consumer laptops, and smartphones. computational requirements. With only 1.09 million learnable parameters, our lightweight RTLViT outperforms existing real-time architectures and rivals substantially larger and slower data-driven architectures in reconstruction quality across train-ing dataset sizes for both lenslet- and diffuser-based systems. We further demonstrate real-time reconstruction on a consumer laptop and a smartphone, establishing RTLViT’s suitability for low-compute, on-device lensless reconstruction. Lensless measurement formation follows the forward model 
+
+y = N (Ax ). The measurement y corresponds to an object x
+
+that is encoded by a multiplexing matrix A, defined by the system PSFs and mapped through measurement noise N (·).Instead of incorporating this forward model or calibrated system PSFs for reconstruction, purely data-driven methods such as RTLViT learn a mapping fθ (·) from measurements to objects directly from a dataset of K paired lensless measurements. This corresponds to optimizing a set of parameters θ such that 
+
+θ∗ = arg min 
+
+> θ
+
+1
+
+K
+
+> K
+
+# ∑
+
+> k=1
+
+|| xk − fθ (yk )|| 22, (1) 
+
+where fθ is a network that takes as input a measurement yk
+
+and outputs an object estimate fθ (yk ). Network parameters are optimized based on reconstruction similarity to each object xk,which we quantify using a mean squared error (MSE) loss. RTLViT combines an attention-based reconstruction back-bone with a convolutional neural network (CNN) refiner (Fig. 1b). Attention is used to process long-range dependencies in lensless measurements, which are introduced by multiplexing PSFs [11]. The attention-based backbone produces an interme-diate reconstruction, which is processed by the CNN to recover fine features and correct blocking artifacts. The backbone is a reconstruction-specific, lightweight adap-tation of a Vision Transformer 5 (ViT-5) [13]. A ViT represents an image as a sequence of patch tokens and processes them us-ing self-attention. The ViT-5 modernizes this architecture with updated components including positional encoding and normal-ization (Supplement Table S1). Our backbone is smaller than a typical ViT-5, using six transformer blocks with 128-dimensional token embeddings, four attention heads, and a feed-forward network with a 256-dimensional hidden layer. Each transformer block follows the ViT-5 structure: inputs are normalized before self-attention and again before the feed-forward network, with residual connections around both operations. We extend the ViT-5 rotary positional embeddings (RoPE) [13] to support rectangu-lar lensless measurements and cache fixed RoPE tables for a 2 ×
+
+speedup (Supplement Sec. 1). For lensless image reconstruction, we find that this ViT-5-style architecture improves reconstruc-tions compared to a parameter-matched ViT [10] (Fig. 2). Each measurement is divided into non-overlapping 15 × 15 pixel patches and five learnable tokens are added during ViT-5 encoding [13]. After passing through the six ViT-5 blocks, the learnable tokens are removed and the patch tokens are reshaped into a low-resolution spatial feature map. Our compact decoder then applies four 2 × 2 transposed convolution layers with stride 2, batch normalization, and ReLU activation, followed by bilin-ear interpolation to produce the intermediate reconstruction. Using non-overlapping measurement patches in our back-bone minimizes architectural complexity, but can introduce dis-continuities at patch boundaries, or blocking artifacts, as shown in the butterfly insets for the ViT and ViT-5 in Fig. 2. Transformer architectures with overlapping patches or sliding windows can mitigate these blocking artifacts, but previous implementations for lensless imaging resulted in substantially larger and slower models without improvements in reconstruction quality [10]. To remove blocking artifacts and further improve reconstruc-tion quality, we instead incorporate a refinement network. We select a Fast AR-CNN [14], a fast and lightweight network de-Letter 3
+
+signed to remove blocking artifacts from image compression, which are qualitatively similar to the blocking artifacts present in our reconstructions. Fast AR-CNN applies a 9 × 9 convolution with stride 2, a 1 × 1 channel reduction, a 7 × 7 convolution, a 1 × 1 channel expansion, and a 9 × 9 transposed convolution with stride 2, with parametric rectified linear unit (PReLU) acti-vations between layers. Within RTLViT, this refinement network suppresses blocking artifacts and faithfully recovers fine image features (Fig. 2), producing the final high-quality reconstruction. RTLViT has 1,091,290 learnable parameters, of which 1,005,715 are from the ViT-5-based backbone and 85,575 are from the Fast AR-CNN. The two components are trained jointly for 70 epochs using learning rates of 5 × 10 −3 and 1 × 10 −3, respec-tively. Model training uses the AdamW optimizer with weight decay 10 −3, linear warmup, cosine annealing, MSE loss (Eq. (1)), a batch size of 6, and one NVIDIA A6000 GPU. For each model, the checkpoint with the lowest validation loss is reported. We evaluate architectures on natural images from the Par-allel Lensless Dataset (PLD) [10], using 45,000 measurements for training, 4,000 for validation, and 1,000 for testing un-less otherwise specified. Measurements are downsampled to 300 × 480 pixels and normalized to [0, 1 ]. Metrics are evaluated on 214 × 214 pixel image regions and averaged over the test set. Among existing purely data-driven methods suitable for real-time reconstruction, we select the ViT [10] with 1,006,867 learn-able parameters as the lightweight baseline and the U-Net [8, 12] with 11,772,307 learnable parameters as a representative stan-dard reconstruction architecture. We follow the same training procedure as RTLViT for the ViT and U-Net with a learning rate of 5 × 10 −4, along with 35 training epochs for the U-Net. We first evaluate these architectures on random multi-focal lenslet (RML) measurements from the PLD, representing a low-multiplexing system (sparse PSF) with relatively high-quality measurements. RTLViT achieves the highest test set peak signal-to-noise ratio (PSNR) and structural similarity index measure (SSIM) among evaluated models (Table 1), despite having 10.8 ×
+
+fewer learnable parameters than the U-Net. Although the U-Net produces smoother reconstructions than the ViT-5 component and achieves lower learned perceptual image patch similarity (LPIPS) than RTLViT, RTLViT faithfully recovers fine details, such as the butterfly antenna, that the U-Net does not (Fig. 2). We then evaluate the same architectures trained on diffuser measurements from the PLD, representing a high-multiplexing system (less sparse PSF) with reduced measurement contrast. RTLViT achieves the highest reconstruction quality across quanti-tative metrics (Table 2), consistent with reconstruction examples shown in Supplement Fig. S1. The ViT-5 alone has higher SSIM than the U-Net, highlighting the benefits of attention for cap-turing the long-range dependencies introduced by multiplexed measurements. Next, we assess reconstruction quality across training dataset  
+
+> Table 1.
+
+Reconstruction quality evaluated on low-multiplexing random multi-focal lenslet measurements. 
+
+Model PSNR ↑ SSIM ↑ LPIPS ↓
+
+ViT 33.732 0.886 0.147 U-Net 34.636 0.915 0.0919 
+
+RTLViT (Ours) 35.630 0.921 0.107  
+
+> Fig. 2.
+
+Random multi-focal lenslet reconstruction examples. 
+
+The Vision Transformer 5 (ViT-5) component improves recon-struction quality over the ViT, as quantified by the structural similarity index measure (SSIM). The complete RTLViT elimi-nates blocking artifacts and better recovers fine features than the U-Net, as highlighted in the butterfly insets. Correspond-ing reconstruction metrics are reported in Table 1. sizes for both RML and diffuser systems. Keeping validation and testing datasets fixed, we train individual ViT, U-Net, and RTLViT models for training dataset sizes ranging from 2,500 to 45,000 measurements. RTLViT maintains the highest PSNR across all dataset sizes and both imaging systems (Fig. 3). For comprehensive reconstruction quality assessment, Fig. 3 includes comparisons with larger data-driven architectures pre-viously evaluated on the PLD: the Lensless Imaging Transformer (LIT) [11], Swin Transformer [10], and ConvNeXt [10]. These architectures are high-quality references and are not suitable for real-time inference (Fig. 1c) or lightweight, on-device deploy-ment. Starting at only 10,000 training measurements for the RML and 25,000 for the diffuser system, RTLViT already has higher PSNR than both the LIT and Swin Transformer, which were each trained using 45,000 measurements. At the full dataset size, RTLViT improves PSNR by 3.46 dB over the LIT for diffuser  
+
+> Table 2.
+
+Reconstruction quality evaluated on high-multiplexing diffuser measurements. 
+
+Model PSNR ↑ SSIM ↑ LPIPS ↓
+
+ViT 27.186 0.733 0.333 U-Net 27.646 0.754 0.299 RTLViT (Ours) 28.712 0.783 0.282 Letter 4
+
+Fig. 3. Reconstruction quality across training dataset sizes for two different lensless imaging systems. RTLViT has higher peak signal-to-noise ratio (PSNR) than the U-Net and the Vision Transformer across all dataset sizes for both the a) random multi-focal lenslet design and b) the diffuser design, and is closest to ConvNeXt. Square markers denote architec-tures that are not suitable for real-time reconstruction. reconstructions while using 15 × fewer learnable parameters. Among the evaluated architectures, only ConvNeXt achieves higher PSNR. RTLViT remains within 1.63 dB PSNR for RML and 1.53 dB for diffuser measurements, despite using 33 × fewer learnable parameters than ConvNeXt. Similar trends are ob-served for SSIM and LPIPS (Supplement Fig. S2). To establish RTLViT as a lightweight architecture, we charac-terize its computational requirements. RTLViT has a model size of 5.36 MB, uses 8.68 giga floating-point operations (GFLOPs) per forward pass, and uses 1.8 GB of GPU memory during train-ing (Supplement Tables S2 and S5). These requirements remain lightweight, significantly lower than those of the U-Net and only modest increases relative to the ViT and ViT-5. Finally, we demonstrate real-time, on-device deployment of RTLViT on a workstation (NVIDIA A6000 GPU), a consumer laptop (MacBook Pro M1), and a smartphone (iPhone 17 Pro). We evaluate the RTLViT model trained on 45,000 RML measure-ments and report average inference time over 100 reconstruc-tions with GPU synchronization following 10 warm-up runs. For smartphone deployment, we convert the trained RTLViT model from PyTorch to Apple Core ML and implement inference in a simple Swift-based iPhone application. RTLViT maintains real-time inference across all three computing platforms (Fig. 1d). Workstation inference time can be reduced to 1.8 ms with Py-Torch compilation (Supplement Table S4). Notably, our 30.3 ms (33 fps) reconstructions on the smartphone exceed the real-time reconstruction threshold of 30 fps. To our knowledge, this is the first demonstration of mask-based lensless image reconstruction on a smartphone, and it operates in real time. In summary, we present a lightweight, purely data-driven re-construction architecture that combines high-quality reconstruc-tion, real-time inference, and low computational requirements. Across both lenslet- and diffuser-based imaging systems, RTLViT achieves the highest reconstruction quality among real-time ar-chitectures and is competitive with much larger architectures for high-quality reconstruction. RTLViT reconstructs measurements in real time on a consumer laptop and a smartphone. These capabilities can be used for applications requiring real-time vi-sualization, including microscopy [4] and compact surgical and endoscopic imaging. RTLViT does not require a forward model or system calibration, but it does require training datasets and retraining following system changes. Our lightweight archi-tecture may inform future real-time hybrid reconstruction ar-chitectures [4, 9], extensions to 3D reconstruction, and general deconvolution problems. 
+
+Funding. U.S.A.F. Office of Scientific Research (FA955-22-1-0521). 
+
+Acknowledgment. The authors thank Mengyue Geng and April Chen for support. The authors used OpenAI Codex only to assist with development of the smartphone application. L.W. is a Chan Zuckerberg Biohub SF investigator. L.W. is on appointment as a Miller Research Professor in the Miller Institute for Basic Research in Science. 
+
+Disclosures. The authors declare no conflicts of interest. 
+
+Data availability. Source code will be made publicly available [15]. 
+
+Supplemental document. See Supplementary Material for support-ing content. 
+
+REFERENCES                                   
+
+> 1. N. Antipa, G. Kuo, R. Heckel, et al. , Optica 5, 1 (2018). 2. V. Boominathan, J. K. Adams, J. T. Robinson, and A. Veeraraghavan, IEEE Trans. on Pattern Anal. Mach. Intell. 42 , 1618 (2020). 3. L. A. Kabuli, H. Pinkard, E. Markley, et al. , Optica 13 , 227 (2026). 4. J. Wu, V. Boominathan, A. Veeraraghavan, and J. T. Robinson, Biomed. Opt. Express 14 , 4037 (2023). 5. V. Boominathan, J. T. Robinson, L. Waller, and A. Veeraraghavan, Optica 9, 1 (2022). 6. Y. Nagahama, Appl. Opt. 63 , 6623 (2024). 7. S. P. Boyd, N. Parikh, E. Chu, et al. , Found. Trends Mach. Learn. 3, 1 (2011). 8. K. Monakhova, J. Yurtsever, G. Kuo, et al. , Opt. Express 27 , 28075 (2019). 9. Y. Li, Z. Li, K. Chen, et al. , Opt. Express 31 , 39088 (2023). 10. L. A. Kabuli, C. S. Hung, V. Ponomarenko, et al. , Opt. Express 34 ,33992 (2026). 11. X. Pan, X. Chen, S. Takeyama, and M. Yamaguchi, Opt. Lett. 47 , 1843 (2022). 12. O. Ronneberger, P. Fischer, and T. Brox, Med. Image Comput. Comput. Interv. pp. 234–241 (2015). 13. F. Wang, S. Ren, T. Zhang, et al. , arXiv (2026). arXiv:2602.08071. 14. K. Yu, C. Dong, C. C. Loy, and X. Tang, arXiv (2016). arXiv:1608.02778. 15. L. A. Kabuli, V. Ponomarenko, and L. Waller, “Code for “RTLViT: real-time lensless reconstruction with a lightweight vision transformer”,” GitHub (2026). https://github.com/lakabuli/RTLViT. Letter 5
+
+FULL REFERENCES 
+
+1. N. Antipa, G. Kuo, R. Heckel, et al. , “DiffuserCam: lensless single-exposure 3d imaging,” Optica 5, 1–9 (2018). 2. V. Boominathan, J. K. Adams, J. T. Robinson, and A. Veeraraghavan, “PhlatCam: Designed phase-mask based thin lensless camera,” IEEE Trans. on Pattern Anal. Mach. Intell. 42 , 1618–1629 (2020). 3. L. A. Kabuli, H. Pinkard, E. Markley, et al. , “Designing lensless imaging systems to maximize information capture,” Optica 13 , 227–235 (2026). 4. J. Wu, V. Boominathan, A. Veeraraghavan, and J. T. Robinson, “Real-time, deep-learning aided lensless microscope,” Biomed. Opt. Express 
+
+14 , 4037–4051 (2023). 5. V. Boominathan, J. T. Robinson, L. Waller, and A. Veeraraghavan, “Recent advances in lensless imaging,” Optica 9, 1–16 (2022). 6. Y. Nagahama, “Interactive zoom display in a smartphone-based digital holographic microscope for 3D imaging,” Appl. Opt. 63 , 6623–6627 (2024). 7. S. P. Boyd, N. Parikh, E. Chu, et al. , “Distributed optimization and statistical learning via the alternating direction method of multipliers,” Found. Trends Mach. Learn. 3, 1–122 (2011). 8. K. Monakhova, J. Yurtsever, G. Kuo, et al. , “Learned reconstructions for practical mask-based lensless imaging,” Opt. Express 27 , 28075– 28090 (2019). 9. Y. Li, Z. Li, K. Chen, et al. , “MWDNs: reconstruction in multi-scale feature spaces for lensless imaging,” Opt. Express 31 , 39088–39101 (2023). 10. L. A. Kabuli, C. S. Hung, V. Ponomarenko, et al. , “ConvRML: high-quality lensless imaging with random multi-focal lenslets,” Opt. Express 
+
+34 , 33992–34005 (2026). 11. X. Pan, X. Chen, S. Takeyama, and M. Yamaguchi, “Image reconstruc-tion with transformer for mask-based lensless imaging,” Opt. Lett. 47 ,1843–1846 (2022). 12. O. Ronneberger, P. Fischer, and T. Brox, “U-Net: Convolutional net-works for biomedical image segmentation,” Med. Image Comput. Com-put. Interv. pp. 234–241 (2015). 13. F. Wang, S. Ren, T. Zhang, et al. , “ViT-5: Vision transformers for the mid-2020s,” arXiv (2026). arXiv:2602.08071. 14. K. Yu, C. Dong, C. C. Loy, and X. Tang, “Deep convolution networks for compression artifacts reduction,” arXiv (2016). arXiv:1608.02778. 15. L. A. Kabuli, V. Ponomarenko, and L. Waller, “Code for “RTLViT: real-time lensless reconstruction with a lightweight vision transformer”,” GitHub (2026). https://github.com/lakabuli/RTLViT. Letter 6
+
+# RTLViT: real-time lensless reconstruction with a lightweight vision transformer Supplementary Material 
+
+Leyla A. Kabuli 1, ∗, Vasilisa Ponomarenko 1, and Laura Waller 1
+
+> 1
+
+Department of Electrical Engineering and Computer Sciences, University of California, Berkeley, CA 94720 
+
+> ∗
+
+Corresponding author. Email: lakabuli@berkeley.edu This supplementary material contains additional results and implementation details. 
+
+S1. VIT-5 ARCHITECTURE 
+
+We summarize the updates to the Vision Transformer (ViT) architecture provided by ViT-5 [13]. ViT-5 replaces LayerNorm with root mean square normalization (RMSNorm), removes biases from query, key, and value representations, and applies RMSNorm to queries and keys within each attention head (QK normalization). Each ViT-5 transformer block includes two learnable LayerScale vectors, which are applied to the outputs of the attention and feed-forward components of the block. ViT-5 uses both absolute positional embeddings and 2D rotary positional embeddings (RoPE) for patch tokens. Five learnable tokens, one global and four register, are included for self-attention to provide a flexible representation space. A separate register RoPE is applied to the four register tokens. We use a theta value of 10,000 for patch RoPE and a theta value of 100 for register RoPE, following the ViT-5 implementation [13]. The theta value controls the frequencies used for rotation, with a smaller theta value corresponding to higher frequencies. The use of separate theta values is intended to reduce positional correlations between patch and register tokens [13]. The original 2D RoPE implementation for ViT-5 assumes a square patch grid. We extend this to rectangular lensless measurements by specifying separate height and width and corresponding frequencies for the rectangular patch grid. We also precompute and cache the RoPE frequency tables instead of rebuilding them in each forward pass. This update reduces ViT-5 inference time by 2 ×, from 11.8 ms without caching to 5.9 ms. We evaluate the effect of each updated ViT-5 component using random multi-focal lenslet (RML) measurements from the Parallel Lensless Dataset (PLD) [10] in Table S1. All evaluations use models trained on 45,000 measurements following the training procedure outlined in the main text. For each evaluation, one component is removed or modified compared to the complete ViT-5 architecture. We test removing LayerScale, QK normalization, patch RoPE, and learnable register tokens, as well as increasing the theta value for register RoPE to 10,000, equal to that of patch RoPE. Each modification to the architecture reduces reconstruction quality, resulting in lower peak signal-to-noise ratio (PSNR) and structural similarity index measure (SSIM), and higher learned perceptual image patch similarity (LPIPS). Removing LayerScale or QK normalization results in the largest decrease in reconstruction quality, while increasing the register RoPE theta value to 10,000 has the least effect on reconstruction quality. The complete ViT-5 architecture results in the best reconstruction quality, indicating that each updated ViT-5 component has at least a modest benefit for lensless image reconstruction. 
+
+Table S1. Effect of Vision Transformer 5 (ViT-5) architecture components on lensless reconstruction 
+
+Model Configuration PSNR ↑ SSIM ↑ LPIPS ↓
+
+Complete ViT-5 35.005 0.910 0.112 
+
+Remove LayerScale 34.358 0.898 0.124 Remove QK normalization 34.503 0.900 0.125 Remove RoPE 34.675 0.904 0.121 Remove register tokens 34.695 0.904 0.116 Equal register and patch theta 34.848 0.907 0.116 
+
+S2. TRAINING DETAILS 
+
+As described in the main text, reported models correspond to the model checkpoint with the best validation loss. This corresponds to epoch 70 for the ViT, epoch 34 for the U-Net, and epoch 68 for the RTLViT trained on 45,000 RML measurements from the PLD. For models trained on 45,000 diffuser measurements from the PLD, this corresponds to epoch 70 for the ViT, epoch 33 for the U-Net, and epoch 69 for the RTLViT. We use pretrained ConvNeXt [10] models for both RML and diffuser baselines. For the Swin Transformer [10] and the Lensless Imaging Transformer [11] in Fig. 3 in the main text, we use pretrained models for RML measurements [10]. As corresponding pretrained models for diffuser measurements are not available, we train new models for diffuser measurements following the same training procedure [10]. Reported reconstruction metrics on diffuser measurements correspond to epoch 35 for the Swin Transformer and step 185,000 ( ≈ epoch 25) for the Lensless Imaging Transformer. Training time, training epochs, and peak GPU memory usage for real-time compatible architectures are reported in Table S2. RTLViT training time is comparable to that of the ViT-5, and all attention-based architectures maintain lower peak GPU memory than the U-Net. For the physics-based reconstructions of RML measurements in Fig. 1c in the main text, we use the RML point spread function (PSF) provided in the PLD [10]. We use CPU implementations of Wiener deconvolution with a regularization parameter of 10 −2 and ADMM with 10 iterations and parameters μ1 = 1 × 10 −4, μ2 = 1 × 10 −4, μ3 = 1 × 10 −4, τ = 2 × 10 −3. Reconstruction metrics are averaged over the test set. Inference times are calculated following the procedure described in the main text. 
+
+S3. ADDITIONAL RECONSTRUCTION RESULTS 
+
+We include reconstructions for high-multiplexing diffuser measurements from the PLD in Fig. S1, complementing the reconstruction quality metrics in Table 2 in the main text. Unlike the RML in Fig. 2 in the main text, ViT-5 alone has higher SSIM than the U-Net for diffuser reconstructions. RTLViT has the highest-quality reconstructions, consistent with quantitative evaluations. Figure S2 reports SSIM and LPIPS for the training dataset size evaluations from Fig. 3 in the main text. RTLViT has higher SSIM than the ViT and the U-Net across all evaluated training dataset sizes for both imaging systems. RTLViT has lower LPIPS than the U-Net for diffuser measurements, whereas the U-Net has slightly lower LPIPS than the RTLViT for RML measurements. Letter 7
+
+Table S2. Training time, epochs, and GPU memory for real-time compatible models using 45,000 training and 4,000 validation measurements from the Parallel Lensless Dataset 
+
+Model Training time (h) Epochs GPU memory (GB) 
+
+ViT 5.5 70 1.0 ViT-5 9 70 1.4 U-Net 5 35 3.0 RTLViT (Ours) 9.5 70 1.8 
+
+We additionally evaluate RTLViT on the DiffuserCam Lensless Mirflickr Dataset (DLMD) [8]. RTLViT achieves the best PSNR, SSIM, and LPIPS among evaluated real-time compatible models (Table S3), consistent with the PLD diffuser results in the main text. For the DLMD, models are trained following the training procedure described in the main text, with 24,000 measurements used for training and 1,000 measurements used for validation and testing. Reported model checkpoints are selected based on the lowest validation loss, corresponding to epoch 67 for the ViT, epoch 69 for the RTLViT, and epoch 30 for the U-Net. With 270 × 480 pixel measurements from the DLMD, the ViT parameter count is reduced to 998,675, while the ViT-5 component and complete RTLViT parameter counts are reduced to 997,523 and 1,083,098, respectively. The U-Net and Fast AR-CNN component parameter counts remain unchanged. 
+
+Table S3. Reconstruction quality evaluated on the DiffuserCam Lensless Mirflickr Dataset 
+
+Model PSNR ↑ SSIM ↑ LPIPS ↓
+
+ViT 21.493 0.635 0.415 U-Net 21.546 0.662 0.414 RTLViT (Ours) 23.168 0.694 0.382 
+
+S4. COMPUTATIONAL REQUIREMENTS 
+
+In Table S4, we extend the inference time comparison in Fig. 1d in the main text to additional reconstruction architectures. We evaluate a workstation with an NVIDIA A6000 GPU, a 16-core CPU, and 128 GB RAM, a MacBook Pro with an Apple M1 Pro chip, a 10-core CPU, and 32 GB RAM, and an iPhone 17 Pro. Inference times are calculated following the procedure described in the main text. A screenshot of the graphical user interface for the smartphone application is shown in Fig. S3. As noted in the main text, RTLViT maintains real-time inference across the three computing platforms. On the workstation, the ViT-5 is slower than the ViT, but adding the Fast AR-CNN refinement network for RTLViT increases inference time by only 0.8 ms, from 5.9 ms to 6.7 ms. RTLViT is slightly faster than the U-Net on the laptop, but slower on the smartphone. ConvNeXt, included as a high-quality reference, requires 61.7 ms on the workstation and 535 ms on the laptop, greatly exceeding the threshold for real-time reconstruction. Therefore, ConvNeXt is not included for smartphone evaluation. We also do not include the ViT-5, as it is evaluated as part of RTLViT. PyTorch model compilation in reduce-overhead mode further accelerates inference on the workstation, reducing RTLViT’s inference time from 6.7 ms to 1.8 ms. The U-Net improves from 3.5 ms to 3.1 ms, making the compiled RTLViT faster than the compiled U-Net. Compilation does not accelerate all architectures, as ConvNeXt’s inference time increases from 61.7 ms to 79.8 ms. We report floating-point operations (GFLOPs) per forward pass, learnable parameter counts, and model sizes in Table S5. The three attention-based architectures compatible with real-time inference use fewer operations, fewer parameters, and less model storage than the U-Net. ViT-5 adds only 0.02 GFLOPs relative to ViT, while RTLViT requires 8.68 GFLOPs, of which the majority of operations are from the Fast AR-CNN refinement network. Compared to RTLViT, the U-Net uses 4.4 × more operations and 10.8 × more parameters. RTLViT has a 5.36 MB model size, which is 8.8 × smaller than the 47.12 MB U-Net. Model sizes are calculated for 32-bit floating-point parameters and account for all parameters and buffers, including the cached RoPE tables in ViT-5 and RTLViT. The iPhone application has a total size of 6.5 MB, which includes the RTLViT model and one measurement for reconstruction. 
+
+Table S4. Model inference times (ms) across computing platforms 
+
+Model Workstation (NVIDIA A6000) Compiled (NVIDIA A6000) Laptop (MacBook Pro M1) Smartphone (iPhone 17 Pro) 
+
+ViT 2.5 1.1 4.3 4.6 ViT-5 5.9 1.3 8.3 N/A U-Net 3.5 3.1 16.2 16.3 RTLViT (Ours) 6.7 1.8 15.6 30.3 ConvNeXt 61.7 79.8 535 N/A Letter 8 
+
+> Table S5.
+
+Floating-point operations (GFLOPs), learnable parameter counts, and model sizes for real-time compatible architectures 
+
+Model GFLOPs Parameters Model size (MB) 
+
+ViT 2.51 1,006,867 4.03 ViT-5 2.53 1,005,715 5.01 U-Net 38.16 11,772,307 47.12 RTLViT (Ours) 8.68 1,091,290 5.36  
+
+> Fig. S1.
+
+Diffuser reconstruction examples. The Vision Transformer 5 (ViT-5) component improves reconstruction quality over the ViT and the U-Net, as quantified by the structural similarity index measure (SSIM). RTLViT eliminates blocking artifacts and achieves the highest-quality reconstructions among evaluated models. Letter 9 
+
+> Fig. S2.
+
+Reconstruction quality across training dataset sizes for two different lensless imaging systems. RTLViT has higher structural similarity index measure (SSIM) than the U-Net and the Vision Transformer (ViT) across all dataset sizes for both the a) random multi-focal lenslet and b) diffuser designs, and is closest to ConvNeXt among evaluated models. RTLViT also has lower learned perceptual image patch similarity (LPIPS) than the U-Net and the ViT for diffuser measurements.  
+
+> Fig. S3.
+
+Smartphone application for lensless reconstruction. The graphical user interface displays a measurement and its recon-struction, and supports evaluating inference time.

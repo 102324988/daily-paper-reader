@@ -1,0 +1,559 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-09-21T22:44:08.988742+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 7,
+    "deep_cap": 6,
+    "deep_selected": 6,
+    "quick_candidates": 8,
+    "quick_skim_target": 11,
+    "quick_selected": 8
+  },
+  "deep_dive": [
+    {
+      "id": "2609.17427v1",
+      "source": "arxiv",
+      "title": "Tracking the Unseen: An Occlusion-Robust Framework for Target Tracking Under Full and Long-Term Occlusion",
+      "abstract": "Real-time multi-object tracking systems remain highly vulnerable to full and long-term occlusion, where targets temporarily or completely disappear from the camera's field of view. Conventional trackers may terminate trajectories prematurely, resulting in identity loss and reduced situational awareness in applications such as defense and surveillance. This work proposes an occlusion-robust target tracking framework that maintains target identity and trajectory continuity through the integration of YOLOv11n object detection, Kalman Filter motion prediction, and occlusion-aware appearance-based re-identification. The framework consists of three stages: object detection, position estimation during occlusion, and identity recovery after target reappearance. Six Re-Identification (Re-ID) architectures were evaluated within the same tracking framework under identical conditions, with the Occlusion-Aware Mask Network (OAMN) achieving the best overall performance and therefore selected for the final pipeline. The framework was benchmarked against OccluTrack on the public OVIS dataset, achieving relative improvements of 18.1 percent in Multiple Object Tracking Accuracy (MOTA) and 25.1 percent in Identity F1 Score (IDF1), while reducing identity switches by 12.8 percent. On a custom military dataset simulating surveillance and battlefield-like environments with long-term occlusion, the framework achieved a MOTA of 0.734 and an IDF1 of 0.729, corresponding to relative improvements of 14.2 percent and 5.8 percent over OccluTrack. The system demonstrated strong tracking continuity, robust identity preservation, and reliable trajectory estimation under challenging occlusion conditions, highlighting its effectiveness for defense-related surveillance applications requiring continuous target tracking during visibility loss.",
+      "authors": [
+        "Mais Mohammed",
+        "Sharifa Mohammed",
+        "Hanan Awadh",
+        "Haneen Bamaas",
+        "Raghad Bawazeer",
+        "Elham Alghamdi"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-09-15T16:41:57+00:00",
+      "link": "https://arxiv.org/pdf/2609.17427v1",
+      "tags": [
+        "keyword:cv"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "occlusion-robust multi-object tracking framework with YOLO detection and re-identification",
+      "llm_evidence_cn": "融合检测与重识别的遮挡鲁棒多目标跟踪框架",
+      "llm_evidence": "融合检测与重识别的遮挡鲁棒多目标跟踪框架",
+      "canonical_evidence": "融合检测与重识别的遮挡鲁棒多目标跟踪框架",
+      "llm_tldr_en": "An occlusion-robust tracking framework integrates YOLOv11n detection, Kalman prediction and appearance re-identification to maintain identity and trajectory continuity under full and long-term occlusion.",
+      "llm_tldr_cn": "针对实时多目标跟踪在完全及长期遮挡下易提前终止轨迹、导致身份丢失的问题，本文提出一种遮挡鲁棒的目标跟踪框架，融合YOLOv11n目标检测、卡尔曼滤波运动预测与遮挡感知的外观重识别，构建检测、遮挡期位置估计与身份保持三阶段流程。该框架在目标暂时或完全离开视野时仍能维持身份与轨迹连续性，为防御与监控等场景提供更可靠的态势感知能力。",
+      "llm_tldr": "针对实时多目标跟踪在完全及长期遮挡下易提前终止轨迹、导致身份丢失的问题，本文提出一种遮挡鲁棒的目标跟踪框架，融合YOLOv11n目标检测、卡尔曼滤波运动预测与遮挡感知的外观重识别，构建检测、遮挡期位置估计与身份保持三阶段流程。该框架在目标暂时或完全离开视野时仍能维持身份与轨迹连续性，为防御与监控等场景提供更可靠的态势感知能力。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "visual tracking surveys",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2609.19592v1",
+      "source": "arxiv",
+      "title": "Selective Cotton Boll Localization for Robotic Harvesting: Evaluation of Deep Learning Vision Models Under Field Conditions",
+      "abstract": "This study developed and evaluated a deep-learning-based perception framework for selective robotic cotton picking. The dataset contained 1,008 annotated field images collected using three cameras under varying natural lighting and weather conditions. Object-detection models from the YOLOv8 through YOLOv13 families were evaluated using their default configurations, while segmentation performance was assessed using YOLOv8-seg, YOLOv11-seg, YOLOv12-seg, the Segment Anything Model (SAM), SAMv2.1, FastSAM, and Grounded-SAM with the Recognize Anything Model (RAM). Among the detection models, GELAN-s achieved the most favorable balance between mean average precision (mAP) and inference speed, obtaining an mAP of 86.1%, precision of 81.6%, recall of 76.6%, and an F1-score of 79.0%, with an average inference time of 42.3 ms per image. Among the direct segmentation models, YOLOv12-m-seg provided the most favorable balance between AP@0.5 and FPS, achieving a segmentation AP@0.5 of 83.7% with an inference time of 20.4 ms per image. In the detection-prompted segmentation approach, bounding-box prompts generated by GELAN-s improved the localization of cotton bolls for SAM and SAMv2.1, while SAMv2.1 Tiny consistently outperformed FastSAM and Grounded-SAM with RAM. In the area-based evaluation against manually annotated segmentation masks, YOLOv12-m-seg achieved an $R^2$ value of 0.966, compared with 0.860 for GELAN-s + SAMv2.1 Tiny. Field experiments conducted using a UR5e robotic manipulator, a custom end-effector, and a ZED2i stereo camera further validated the effectiveness of the YOLOv12-m-seg model for real-time cotton boll detection, segmentation, and selective picking under varying confidence levels. These results demonstrate that YOLOv12-m-seg provides an efficient perception model for robotic cotton harvesting and has strong potential for field deployment.",
+      "authors": [
+        "Thevathayarajh Thayananthan",
+        "Xin Zhang",
+        "Isuru Laddusinghe Badu",
+        "Jonathan Harjono",
+        "Glen C. Rains",
+        "Beiwen Li",
+        "Leonardo M. Bastos",
+        "Nuwan K. Wijewardane",
+        "Vitor S. Martins"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.RO"
+      ],
+      "published": "2026-09-17T02:18:02+00:00",
+      "link": "https://arxiv.org/pdf/2609.19592v1",
+      "tags": [
+        "keyword:cv"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Evaluates YOLOv8-YOLOv13 object detection and SAM-based segmentation for robotic harvesting",
+      "llm_evidence_cn": "评估YOLO系列目标检测与SAM分割模型用于机器人采摘",
+      "llm_evidence": "评估YOLO系列目标检测与SAM分割模型用于机器人采摘",
+      "canonical_evidence": "评估YOLO系列目标检测与SAM分割模型用于机器人采摘",
+      "llm_tldr_en": "This work builds a deep-learning perception framework for selective robotic cotton picking. It benchmarks YOLOv8-YOLOv13 detectors and several segmentation models on 1008 field images, finding GELAN-s best balances accuracy and speed under real field conditions.",
+      "llm_tldr_cn": "针对选择性机器人采摘棉花的需求，本文构建了基于深度学习的视觉感知框架。研究采集1008张田间标注图像，系统评估了YOLOv8至YOLOv13系列目标检测模型以及YOLOv8-seg、SAM、FastSAM等分割模型。结果显示GELAN-s在平均精度与推理速度之间取得最佳平衡。该工作为真实农田环境下的检测与分割模型选型提供了实用参考。",
+      "llm_tldr": "针对选择性机器人采摘棉花的需求，本文构建了基于深度学习的视觉感知框架。研究采集1008张田间标注图像，系统评估了YOLOv8至YOLOv13系列目标检测模型以及YOLOv8-seg、SAM、FastSAM等分割模型。结果显示GELAN-s在平均精度与推理速度之间取得最佳平衡。该工作为真实农田环境下的检测与分割模型选型提供了实用参考。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "object detection methods",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2609.20066v1",
+      "source": "arxiv",
+      "title": "PointEvent: Rethinking Event-based Tiny Object Detection via Serialized Motion Evidence Accumulation",
+      "abstract": "Event cameras offer high temporal resolution and motion sensitivity for tiny UAV detection, yet distant targets generate sparse and fragmented events that are easily overwhelmed by clutter and ego-motion. Existing methods mainly rely on dense event representations or local sparse spatiotemporal modeling, resulting in redundant computation or fragmented modeling of motion continuity across distant asynchronous events. To address this limitation, we introduce serialized motion evidence accumulation, which treats motion continuity as an ordered evidence propagation process. Specifically, the same event stream is organized into locality-preserving spatiotemporal paths and chronology-preserving temporal paths through the latent complementary serializations. Based on this principle, we propose PointEvent, a lightweight event-wise state-space framework that alternates serialized scans across the complementary orders, progressively consolidating fragmented motion evidence beyond fixed local neighborhoods. A high-resolution event branch preserves fine-grained target responses, while compact context modulation suppresses interference. Experiments demonstrate that PointEvent achieves SOTA with the fewest parameters and fastest measured inference among the compared methods. Code: https://github.com/wzz-z/PointEvent",
+      "authors": [
+        "Zongze Wu",
+        "Baofeng Jia",
+        "Weiqi Yan",
+        "Jingyuan Zhang",
+        "Yu Zang",
+        "Xiaoyu Chen",
+        "Jing Han"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-09-17T11:16:59+00:00",
+      "link": "https://arxiv.org/pdf/2609.20066v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Event-based tiny object detection via serialized motion evidence",
+      "llm_evidence_cn": "基于序列化运动证据累积的事件相机微小目标检测",
+      "llm_evidence": "基于序列化运动证据累积的事件相机微小目标检测",
+      "canonical_evidence": "基于序列化运动证据累积的事件相机微小目标检测",
+      "llm_tldr_en": "PointEvent addresses event-based tiny UAV object detection by organizing event streams into locality- and chronology-preserving paths to accumulate serialized motion evidence, avoiding dense representation redundancy.",
+      "llm_tldr_cn": "事件相机具备高时间分辨率与运动敏感性，适合微小无人机目标检测，但远距离目标产生的稀疏破碎事件易被杂波和自运动淹没，现有稠密事件表示或局部稀疏建模存在冗余计算与运动连续性断裂问题。本文提出序列化运动证据累积，将同一事件流组织为保持局部性的时空路径与保持时序的时间路径。方法在保留运动连续性的同时降低冗余，为事件相机微小目标检测提供了新的建模范式。",
+      "llm_tldr": "事件相机具备高时间分辨率与运动敏感性，适合微小无人机目标检测，但远距离目标产生的稀疏破碎事件易被杂波和自运动淹没，现有稠密事件表示或局部稀疏建模存在冗余计算与运动连续性断裂问题。本文提出序列化运动证据累积，将同一事件流组织为保持局部性的时空路径与保持时序的时间路径。方法在保留运动连续性的同时降低冗余，为事件相机微小目标检测提供了新的建模范式。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "object detection methods",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2609.20869v1",
+      "source": "arxiv",
+      "title": "TAPe+ML: A Compact Structured Representation for Multi-Task Computer Vision",
+      "abstract": "We present TAPe+ML v3, a compact computer vision system based on TAPe (Theory of Active Perception), a structured representation that encodes relations among perceptual elements before recognition. Instead of operating directly on pixel tensors, the system uses a shared TAPe representation and a modular recognition architecture for image classification, object detection, and instance segmentation.   TAPe+ML v3 combines background and contour processing, local object localization, prototype-based classification, and a coordinator for specialized submodels. Across the reported experiments, it uses fewer than 100,000 parameters. On COCO object detection, it obtains 84.7 mAP50 and 65.3 mAP50-95. On COCO instance segmentation, it obtains 80.7 mask mAP50 and 58.4 mask mAP50-95. In classification experiments, it reaches 92 percent validation accuracy on Imagenette under an identical-training comparison with a raw-pixel baseline, and 89.9 percent Top-1 accuracy on ImageNet-Real. We also evaluate compactness in video scene detection and adaptation under distribution shift in an industrial pilot. The results suggest that shifting part of the modeling burden from network parameters to a structured input representation can support compact multi-task vision systems with reduced data, memory, and compute requirements.",
+      "authors": [
+        "Sergey Kurinov",
+        "Alexey Upatov"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "eess.IV"
+      ],
+      "published": "2026-09-15T14:08:43+00:00",
+      "link": "https://arxiv.org/pdf/2609.20869v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "compact multi-task vision system for detection and segmentation",
+      "llm_evidence_cn": "面向检测与分割的紧凑多任务视觉系统",
+      "llm_evidence": "面向检测与分割的紧凑多任务视觉系统",
+      "canonical_evidence": "面向检测与分割的紧凑多任务视觉系统",
+      "llm_tldr_en": "Proposes TAPe+ML v3, a compact structured representation for multi-task computer vision covering classification, object detection and instance segmentation with under 100k parameters.",
+      "llm_tldr_cn": "本文针对多任务计算机视觉中模型庞大、表征冗余的问题，提出基于主动感知理论的紧凑结构化表征系统TAPe+ML v3。系统以共享TAPe表征替代像素张量，结合背景轮廓处理、局部定位、原型分类与子模型协调器完成分类、检测与实例分割。在COCO上取得84.7 mAP50检测与80.7 mask mAP分割结果，参数量不足十万。该工作展示了结构化表征在多任务视觉中的高效潜力。",
+      "llm_tldr": "本文针对多任务计算机视觉中模型庞大、表征冗余的问题，提出基于主动感知理论的紧凑结构化表征系统TAPe+ML v3。系统以共享TAPe表征替代像素张量，结合背景轮廓处理、局部定位、原型分类与子模型协调器完成分类、检测与实例分割。在COCO上取得84.7 mAP50检测与80.7 mask mAP分割结果，参数量不足十万。该工作展示了结构化表征在多任务视觉中的高效潜力。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "object detection methods",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2609.21241v1",
+      "source": "arxiv",
+      "title": "Multiclass Semantic Segmentation of Wildland Fire Images Using Context-Aware Centralized Copy-Paste Data Augmentation",
+      "abstract": "Producing accurate annotations for deep learning based image segmentation is both costly and labor intensive. This challenge is especially evident in wildland fire applications, where accurately labeled datasets are scarce due to the difficulty of collecting and annotating dynamic fire scenes. To address this problem, our previous work introduced the Centralized Copy-Paste Data Augmentation (CCPDA) method for semantic segmentation of wildland fire imagery, which generates artificial training samples by randomly pasting fire clusters from source images onto target images. However, random placement can produce contextually unrealistic scenes, such as fire burning on asphalt. In this paper, we present a context-aware strategy designed specifically to improve data quality and realism in small multiclass wildland fire datasets, ensuring that augmented samples remain contextually meaningful. The proposed method restricts fire placement to semantically valid target regions and selects the location whose Ash-Vegetation composition most closely matches the source context. This approach preserves existing fire regions in the target image, prevents unrealistic placements, and maintains contextual accuracy by generating images that resemble real wildland fire scenes. We evaluate the Context-Aware CCPDA strategy through numerical analysis and comparisons with other augmentation methods by a weighted sum-based multi-objective optimization (MOO) approach. The results confirm that the context-aware data augmentation strategy leads to improved segmentation performance and contextual realism, outperforming other augmentation procedures.",
+      "authors": [
+        "Joon Tai Kim",
+        "Nishanth Kunchala",
+        "Vishv Patel",
+        "Tianle Chen",
+        "Ziyu Dong",
+        "Daniel Ospina Acero",
+        "Roger Williams",
+        "Mrinal Kumar"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.LG"
+      ],
+      "published": "2026-09-18T02:34:03+00:00",
+      "link": "https://arxiv.org/pdf/2609.21241v1",
+      "tags": [
+        "keyword:cv"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "multiclass semantic segmentation of wildland fire images",
+      "llm_evidence_cn": "野火图像的多类语义分割",
+      "llm_evidence": "野火图像的多类语义分割",
+      "canonical_evidence": "野火图像的多类语义分割",
+      "llm_tldr_en": "A context-aware centralized copy-paste augmentation generates semantically plausible training samples, improving multiclass semantic segmentation of wildland fire imagery under scarce annotations.",
+      "llm_tldr_cn": "针对深度学习图像分割标注成本高、野火场景标注数据稀缺的问题，本文在前期集中复制粘贴数据增强基础上提出上下文感知的增强方法，通过将火簇从源图像粘贴到语义合理的目标位置，避免随机放置导致火在沥青上燃烧等不真实场景。该方法为野火图像的多类语义分割生成更符合上下文的训练样本，缓解标注不足对分割性能的影响。",
+      "llm_tldr": "针对深度学习图像分割标注成本高、野火场景标注数据稀缺的问题，本文在前期集中复制粘贴数据增强基础上提出上下文感知的增强方法，通过将火簇从源图像粘贴到语义合理的目标位置，避免随机放置导致火在沥青上燃烧等不真实场景。该方法为野火图像的多类语义分割生成更符合上下文的训练样本，缓解标注不足对分割性能的影响。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "image segmentation techniques",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2609.21822v1",
+      "source": "arxiv",
+      "title": "Object Detection Benchmarks are Incomplete: The Role of Label Errors and Annotation Uncertainty",
+      "abstract": "While object detection has advanced through improved architectures and open-vocabulary models, we provide strong evidence that benchmark quality is limited by annotation incompleteness. Across four widely used datasets (COCO, Pascal VOC, Cityscapes, KITTI), re-annotation reveals substantial increases in annotated objects (e.g., up to +60% on KITTI and +40% on COCO), driven primarily by previously unlabeled small, occluded, or densely packed instances. While some differences arise from dataset-specific annotation conventions, we consistently find that missing annotations are the main source of label errors across all datasets. To achieve high data quality, we introduce a scalable annotation pipeline that emphasizes high recall and captures ambiguity through soft labels aggregated from at least 11 annotators per object. The resulting annotations improve coverage and align well with human calibration. We show that benchmark performance is highly sensitive to annotation quality, although model rankings remain largely stable. We introduce two large-scale benchmarks: (i) an uncertainty-aware object detection benchmark, and (ii) a label error detection benchmark grounded in real label errors. We show that current detectors are strongly depended on annotation quality and are misaligned with human perception. Current label error detection methods, which have been shown to perform well on synthetic noise, struggle to achieve high recall and precision on real label errors. Our results highlight the need for future object detection benchmarks to move beyond deterministic annotations toward high-recall, uncertainty-aware evaluation that maximizes valid instances and better reflects real-world ambiguity.",
+      "authors": [
+        "Sarina Penquitt",
+        "Jonathan Klees",
+        "Antonia van Betteray",
+        "Parssa Jashnieh",
+        "Peter Stehr",
+        "Matthias Rottmann",
+        "Lars Schmarje"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-18T14:25:32+00:00",
+      "link": "https://arxiv.org/pdf/2609.21822v1",
+      "tags": [
+        "keyword:cv"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Object detection benchmark label errors and annotation quality",
+      "llm_evidence_cn": "目标检测基准的标签错误与标注质量",
+      "llm_evidence": "目标检测基准的标签错误与标注质量",
+      "canonical_evidence": "目标检测基准的标签错误与标注质量",
+      "llm_tldr_en": "Re-annotation of COCO, Pascal VOC, Cityscapes and KITTI reveals major annotation incompleteness in object detection benchmarks, with missing small and occluded instances driving label errors, motivating a high-recall annotation pipeline.",
+      "llm_tldr_cn": "尽管目标检测架构与开放词汇模型不断进步，但基准数据质量受标注不完整限制。本文对COCO、Pascal VOC、Cityscapes和KITTI四个常用数据集重新标注，发现标注目标数量大幅增加，KITTI最多增加60%、COCO增加40%，主要来自此前未标注的小目标、遮挡与密集实例。研究提出强调高召回的可扩展标注流程，指出缺失标注是各数据集标签错误的主要来源，对检测评测的可靠性提出重要警示。",
+      "llm_tldr": "尽管目标检测架构与开放词汇模型不断进步，但基准数据质量受标注不完整限制。本文对COCO、Pascal VOC、Cityscapes和KITTI四个常用数据集重新标注，发现标注目标数量大幅增加，KITTI最多增加60%、COCO增加40%，主要来自此前未标注的小目标、遮挡与密集实例。研究提出强调高召回的可扩展标注流程，指出缺失标注是各数据集标签错误的主要来源，对检测评测的可靠性提出重要警示。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "object detection methods",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2609.22060v1",
+      "source": "arxiv",
+      "title": "Traffic Sign Recognition for Autonomous Driving Using Branched YOLOv2 and Geometric Features",
+      "abstract": "Traffic sign recognition (TSR) is an important perception task for autonomous driving and advanced driver-assistance systems, where a system must both localize traffic signs and determine their semantic classes efficiently. This work presents a TSR system based on YOLOv2 for simultaneous detection and classification. Two complementary modifications are studied. First, YOLOv2 is extended with intermediate prediction layers, forming a branched architecture that can terminate inference early for easy cases and reduce computation time. Both whole-image and cell-wise branching strategies are investigated. Second, geometric information is introduced to reduce classification errors between visually similar signs. An unsupervised Bayesian image-segmentation method produces binary representations that are compared with class-specific geometric templates inside YOLOv2 bounding boxes. This information is used either during inference or as an additional signal during training. A dedicated dataset is constructed by combining GTSDB and GTSRB samples using seamless cloning and controlled image transformations. Experiments cover ten traffic-sign classes, with 3,000 training and 300 test samples. The selected branched architecture reports 0.647 s runtime and 0.680 mAP, compared with 0.6607 s and 0.680 mAP for baseline YOLOv2. Geometric verification during inference increases mAP to 0.713, while the geometric-feature training variant achieves 0.697 mAP with a reported runtime of 0.6608 s.",
+      "authors": [
+        "Arefeh Rezaei"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-18T17:52:00+00:00",
+      "link": "https://arxiv.org/pdf/2609.22060v1",
+      "tags": [
+        "keyword:cv"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "traffic sign detection and recognition using branched YOLOv2 with geometric features",
+      "llm_evidence_cn": "结合分支YOLOv2与几何特征的交通标志检测识别",
+      "llm_evidence": "结合分支YOLOv2与几何特征的交通标志检测识别",
+      "canonical_evidence": "结合分支YOLOv2与几何特征的交通标志检测识别",
+      "llm_tldr_en": "This paper presents a traffic sign recognition system based on branched YOLOv2 with early-exit intermediate prediction layers and geometric features to reduce computation and misclassification between visually similar signs.",
+      "llm_tldr_cn": "交通标志识别是自动驾驶与高级辅助驾驶的关键感知任务，需同时高效定位标志并判定其语义类别。本文构建基于YOLOv2的检测与分类一体化系统，一方面引入中间预测层形成分支结构，对简单样本提前终止推理以降低计算量，并研究整图与单元级分支策略；另一方面引入几何信息以减少外观相似标志间的误分类。该系统在效率与准确率之间取得了实用平衡。",
+      "llm_tldr": "交通标志识别是自动驾驶与高级辅助驾驶的关键感知任务，需同时高效定位标志并判定其语义类别。本文构建基于YOLOv2的检测与分类一体化系统，一方面引入中间预测层形成分支结构，对简单样本提前终止推理以降低计算量，并研究整图与单元级分支策略；另一方面引入几何信息以减少外观相似标志间的误分类。该系统在效率与准确率之间取得了实用平衡。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "object detection methods",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2609.19719v1",
+      "source": "arxiv",
+      "title": "SeetaPsych v1.0: An Open-source Computer Vision Toolkit for Behavior-based Psychological Measurement",
+      "abstract": "Automated visual analysis opens new avenues for behavior--based psychological measurement. Nevertheless, existing technological modules are typically scattered across task specific systems with heterogeneous interfaces and disparate deployment requirements. In this work, we present SeetaPsych v1.0, an open source, unified and extensible computer vision toolkit designed to extract psychologically relevant signals from facial images and/or face based videos. The current release encompasses four major core modules aiming at behavior--based physiological perception: unified face based emotion analysis (simultaneous facial expression recognition, facial action unit detection, and valence--arousal estimation), camera based heart rate estimation, screen point--of--gaze estimation, and scene gaze following. A suite of auxiliary preprocessing modules for human centric visual analysis is also included, comprising face detection, facial landmark detection, and head detection. These functionalities are encapsulated within a modular Pipeline/Runner architecture that automatically resolves attribute dependencies, constructs computation graphs, and support intermediate result sharing among modules. SeetaPsych provides standardized Python APIs to facilitate reproducible, large scale analyses, alongside an interactive WebUI for rapid, code--free method evaluation. Overall, SeetaPsych offers an integrated and accessible visual measurement platform for research in psychology, behavioral science, human computer interaction, and related fields.",
+      "authors": [
+        "Jiabei Zeng",
+        "Chiqin Li",
+        "Kaizhou Li",
+        "Fei Chang",
+        "Yong Li",
+        "Yuanhao Zhao",
+        "Dan Han",
+        "Wenqiang Yang",
+        "Xilin Chen",
+        "Shiguang Shan"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-17T05:26:10+00:00",
+      "link": "https://arxiv.org/pdf/2609.19719v1",
+      "tags": [
+        "keyword:cv"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Open-source computer vision toolkit for behavior-based psychological measurement",
+      "llm_evidence_cn": "面向行为心理测量的开源计算机视觉工具包",
+      "llm_evidence": "面向行为心理测量的开源计算机视觉工具包",
+      "canonical_evidence": "面向行为心理测量的开源计算机视觉工具包",
+      "llm_tldr_en": "Existing behavioral analysis modules are scattered across task-specific systems. SeetaPsych v1.0 is an open-source, unified and extensible computer vision toolkit that extracts psychologically relevant signals from facial images and videos, covering emotion analysis and camera-based physiology.",
+      "llm_tldr_cn": "行为心理测量所需的视觉分析模块通常分散在不同任务系统中，接口异构且部署要求不一。本文提出SeetaPsych v1.0，一个开源、统一且可扩展的计算机视觉工具包。它从人脸图像与视频中提取心理相关信号，包含面部表情识别、动作单元检测、效价-唤醒估计与摄像头心率感知等模块。该工具包降低了行为心理测量的技术门槛，推动了自动化心理评估的应用。",
+      "llm_tldr": "行为心理测量所需的视觉分析模块通常分散在不同任务系统中，接口异构且部署要求不一。本文提出SeetaPsych v1.0，一个开源、统一且可扩展的计算机视觉工具包。它从人脸图像与视频中提取心理相关信号，包含面部表情识别、动作单元检测、效价-唤醒估计与摄像头心率感知等模块。该工具包降低了行为心理测量的技术门槛，推动了自动化心理评估的应用。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "computer vision research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2609.21042v1",
+      "source": "arxiv",
+      "title": "RTLViT: real-time lensless reconstruction with a lightweight vision transformer",
+      "abstract": "Mask-based lensless imagers capture measurements using simple, compact hardware and recover images using a reconstruction algorithm. The reconstruction algorithm affects the image quality, inference speed, and computational requirements of the imaging system, often trading off image quality against computational efficiency. Advancing toward integrated lensless imagers, where encoding and reconstruction occur within a single device (e.g., a mobile phone), requires a fast, high-quality, and practical reconstruction method. We introduce the Real-Time Lensless Vision Transformer (RTLViT), a lightweight, purely data-driven reconstruction architecture for high-quality and real-time lensless reconstruction. With only 1.09 million learnable parameters, RTLViT provides higher-quality reconstructions than both real-time baselines and substantially larger attention-based architectures, including improvements of up to 3.46 dB in peak signal-to-noise ratio over architectures with $15 \\times$ more learnable parameters. We demonstrate that RTLViT maintains high-quality reconstructions across a wide range of training dataset sizes and two different mask designs (lenslets and a diffuser). Finally, we implement real-time reconstruction with RTLViT on laptops and smartphones, supporting future integrated lensless imagers for real-time applications.",
+      "authors": [
+        "Leyla A. Kabuli",
+        "Vasilisa Ponomarenko",
+        "Laura Waller"
+      ],
+      "primary_category": "physics.optics",
+      "categories": [
+        "physics.optics",
+        "eess.IV"
+      ],
+      "published": "2026-09-17T20:00:35+00:00",
+      "link": "https://arxiv.org/pdf/2609.21042v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "lightweight vision transformer for real-time lensless image reconstruction",
+      "llm_evidence_cn": "用于实时无透镜图像重建的轻量视觉Transformer",
+      "llm_evidence": "用于实时无透镜图像重建的轻量视觉Transformer",
+      "canonical_evidence": "用于实时无透镜图像重建的轻量视觉Transformer",
+      "llm_tldr_en": "RTLViT is a lightweight, purely data-driven vision transformer with only 1.09M parameters that achieves high-quality and real-time lensless image reconstruction, supporting integrated lensless imaging on compact devices.",
+      "llm_tldr_cn": "基于掩膜的无透镜成像用紧凑硬件采集测量值并通过重建算法恢复图像，重建方法在图像质量、推理速度与算力之间往往需要权衡，难以满足移动端集成的需求。本文提出实时无透镜视觉Transformer RTLViT，一种仅约109万参数的纯数据驱动轻量重建架构。该方法在保持高质量重建的同时实现实时推理，推动了编码与重建一体化的集成式无透镜成像。",
+      "llm_tldr": "基于掩膜的无透镜成像用紧凑硬件采集测量值并通过重建算法恢复图像，重建方法在图像质量、推理速度与算力之间往往需要权衡，难以满足移动端集成的需求。本文提出实时无透镜视觉Transformer RTLViT，一种仅约109万参数的纯数据驱动轻量重建架构。该方法在保持高质量重建的同时实现实时推理，推动了编码与重建一体化的集成式无透镜成像。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "computer vision research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.21629v1",
+      "source": "arxiv",
+      "title": "Extending Decoupled Attention to Dense Prediction and Masked Training for Multi-Channel Images",
+      "abstract": "Multi-Channel imaging (MCI) data differs fundamentally from natural images, as each channel records a semantically distinct signal rather than a colour band. To adapt vision encoders to MCI data, Multi-Channel Vision Transformers (MC-ViTs) tokenize each channel independently and concatenate the resulting tokens into one sequence, and the channel count is no longer fixed by the architecture. Self-attention is then computed across all channel-patch tokens with no restriction on which channels attend to which, which dilutes the features of individual channels. The Decoupled Vision Transformer (DC-ViT) regulates this by separating updates computed within a channel from updates computed across channels, and by forming a representation per channel before the channels are combined. Its formulation, however, pairs tokens by spatial position, and thus requires the same visible tokens in every channel. Correspondence under independent per-channel masking is recovered by solving a linear assignment between the retained patches of each channel, which allows decoupled attention to be combined with current masked multi-channel training in its standard configuration rather than a restricted one. Across three classification and three segmentation benchmarks spanning fluorescence microscopy, imaging mass cytometry and satellite imaging, including dense prediction at high channel counts, the resulting formulation outperforms the strongest MC-ViT baseline.",
+      "authors": [
+        "Umar Marikkar",
+        "Sameed Husain",
+        "Muhammad Awais",
+        "Sara Atito"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-18T11:11:57+00:00",
+      "link": "https://arxiv.org/pdf/2609.21629v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "decoupled attention extended to dense prediction, closely related to segmentation",
+      "llm_evidence_cn": "解耦注意力扩展到密集预测，与图像分割密切相关",
+      "llm_evidence": "解耦注意力扩展到密集预测，与图像分割密切相关",
+      "canonical_evidence": "解耦注意力扩展到密集预测，与图像分割密切相关",
+      "llm_tldr_en": "Multi-channel imaging has semantically distinct channels; global self-attention dilutes per-channel features. The paper extends decoupled attention to dense prediction and masked training, separating intra- and cross-channel updates.",
+      "llm_tldr_cn": "多通道成像中各通道记录语义不同的信号，现有多通道视觉Transformer对所有通道-图像块做全局自注意力，导致单通道特征被稀释。论文将解耦视觉Transformer扩展到密集预测与掩码训练，分离通道内与跨通道的更新，形成更具区分度的表征。该工作使视觉编码器能适应通道数可变的多通道数据，为密集预测任务提供通用方案。",
+      "llm_tldr": "多通道成像中各通道记录语义不同的信号，现有多通道视觉Transformer对所有通道-图像块做全局自注意力，导致单通道特征被稀释。论文将解耦视觉Transformer扩展到密集预测与掩码训练，分离通道内与跨通道的更新，形成更具区分度的表征。该工作使视觉编码器能适应通道数可变的多通道数据，为密集预测任务提供通用方案。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "image segmentation techniques",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2609.21330v1",
+      "source": "arxiv",
+      "title": "The EventCV Library for Event-Based Robotic Vision",
+      "abstract": "Event cameras detect per-pixel brightness changes asynchronously on microsecond timescales, with high dynamic range and low power draw. These are desirable properties for robots that move fast or work in difficult lighting conditions. However, integrating an event camera into a real-world robotic pipeline still requires substantial effort: plug-and-play drivers do not exist, event streams are recorded in a variety of incompatible file formats, and most projects rely on custom research-grade code. Here, we present EventCV, an open-source and extensible Rust library with OpenCV-style Python bindings that lowers the entry barrier to working with event cameras. EventCV provides a wide range of features: denoising filters and geometric transforms, augmentations, corner detection and unsupervised feature learning, contrast-maximization motion estimation, a video-to-events simulator, and Open Neural Network Exchange (ONNX) inference for deployment in robotic stacks. EventCV integrates the Neuromorphic Drivers package, allowing an event camera stream to be processed directly in real time. No existing toolkit covers this range of operations in one package, and EventCV builds representations and decodes files 1.1x to 3.7x faster than the currently available libraries. We deploy EventCV on a Jetson Orin AGX and present three robotics case studies spanning object detection, on-device model inference, and localization. Project webpage: https://eventcv.net.",
+      "authors": [
+        "Adam D. Hines",
+        "Michael Milford",
+        "Tobias Fischer"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-09-18T05:30:02+00:00",
+      "link": "https://arxiv.org/pdf/2609.21330v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Open-source computer vision library for event-based robotic vision",
+      "llm_evidence_cn": "面向事件相机机器人视觉的开源计算机视觉库",
+      "llm_evidence": "面向事件相机机器人视觉的开源计算机视觉库",
+      "canonical_evidence": "面向事件相机机器人视觉的开源计算机视觉库",
+      "llm_tldr_en": "Integrating event cameras into robotic pipelines is hard due to missing drivers and incompatible formats. EventCV is an open-source Rust library with OpenCV-style Python bindings offering denoising, geometric transforms, augmentations and corner detection, lowering the barrier to event-based vision.",
+      "llm_tldr_cn": "事件相机具有微秒级响应、高动态范围与低功耗优势，但缺乏即插即用驱动和统一格式，集成到机器人系统成本高。本文提出EventCV，一个开源可扩展的Rust库，提供类OpenCV的Python接口。该库集成了去噪滤波、几何变换、数据增强与角点检测等功能。它降低了事件相机视觉的开发门槛，便于快速构建机器人视觉流程。",
+      "llm_tldr": "事件相机具有微秒级响应、高动态范围与低功耗优势，但缺乏即插即用驱动和统一格式，集成到机器人系统成本高。本文提出EventCV，一个开源可扩展的Rust库，提供类OpenCV的Python接口。该库集成了去噪滤波、几何变换、数据增强与角点检测等功能。它降低了事件相机视觉的开发门槛，便于快速构建机器人视觉流程。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "computer vision research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.21770v1",
+      "source": "arxiv",
+      "title": "XCalib Depth-Guided Geometric Optimization for Dense Thermal-Visible Video Registration",
+      "abstract": "Image registration is a vital preprocessing step in multimodal perception tasks, including image fusion, object detection, and semantic segmentation. In Advanced Driver- Assistance Systems (ADAS), spatial misalignment between visible (RGB) and infrared (IR) cameras -caused by non-coincident optical axes and field-of-view differences- introduces non-uniform parallax and visual ghosting. Classical keypoint-based methods are restricted to global homographies that fail under dynamic depth, while unconstrained dense flow algorithms lack structural regularization and suffer from temporal instability. In this paper, we propose XCalib, an unsupervised dense thermal-visible registration framework that bridges this gap. Rather than serving as an absolute metric calibration tool, XCalib leverages virtual pinhole camera parameterization strictly as a geometric constraint space. By optimizing effective relative pose and intrinsics alongside predicted monocular metric depth, XCalib restricts the search space of spatial displacements to physically valid projection geometries. Our key contributions are: (1) a novel registration paradigm that uses camera parameterization as an implicit regularizer for dense cross-modal warping; (2) Normalized Edges Correlation (NEC), a robust structural similarity metric tailored to cross- spectral alignment; and (3) extensive quantitative and qualitative evaluations across public ADAS datasets, demonstrating superior temporal stability and alignment accuracy over unconstrained dense flow baselines.",
+      "authors": [
+        "Aurelien Godet",
+        "Gabriel Jobert",
+        "Mauro Dalla Mura"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-18T13:39:00+00:00",
+      "link": "https://arxiv.org/pdf/2609.21770v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Computer vision image registration for multimodal perception",
+      "llm_evidence_cn": "面向多模态感知的计算机视觉图像配准",
+      "llm_evidence": "面向多模态感知的计算机视觉图像配准",
+      "canonical_evidence": "面向多模态感知的计算机视觉图像配准",
+      "llm_tldr_en": "XCalib is an unsupervised dense thermal-visible registration framework that tackles non-uniform parallax and temporal instability in ADAS, providing a robust preprocessing step for image fusion, object detection and semantic segmentation.",
+      "llm_tldr_cn": "针对可见光与红外相机因光轴不重合和视场差异导致的非均匀视差与重影问题，传统关键点法受限于全局单应，稠密光流法又缺乏结构正则。本文提出XCalib，一种无监督的稠密热红外-可见光配准框架，在动态深度下实现结构约束与时序稳定的对齐。该方法作为多模态感知的预处理步骤，可提升图像融合、目标检测与语义分割等下游任务性能，为自动驾驶多传感器融合提供可靠基础。",
+      "llm_tldr": "针对可见光与红外相机因光轴不重合和视场差异导致的非均匀视差与重影问题，传统关键点法受限于全局单应，稠密光流法又缺乏结构正则。本文提出XCalib，一种无监督的稠密热红外-可见光配准框架，在动态深度下实现结构约束与时序稳定的对齐。该方法作为多模态感知的预处理步骤，可提升图像融合、目标检测与语义分割等下游任务性能，为自动驾驶多传感器融合提供可靠基础。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "computer vision research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2609.21522v1",
+      "source": "arxiv",
+      "title": "Refine Then Fusion: Training-Free 3D Point Cloud Adaptation with Priority Refinement and Multi-Modal Knowledge Fusion",
+      "abstract": "Recent pre-trained foundation models provide rich multi-modal priors for downstream 3D vision tasks. However, the effectiveness of these representations in few-shot scenarios is limited by two fundamental challenges: High-dimensional features often contain substantial channel redundancy and task-irrelevant noise, while the reliability of different modalities varies across samples. Consequently, direct aggregation of heterogeneous representations overlooks sample-dependent modality reliability and may obscure the discriminative cues essential. To address these limitations, we propose Refine Then Fusion(RTF), a training-free framework for few-shot 3D recognition. RTF first identifies discriminative feature channels by jointly modeling inter-class similarity and intra-class stability, thereby decoupling domain-specific knowledge refinement from the cached representations of pre-trained models. It then introduces a reliability-aware fusion mechanism that estimates sample-wise modality reliability from the distribution shifts induced by feature refinement, enabling adaptive aggregation of multi-modal representations. Furthermore, RTF constructs a memory cache that integrates instance-level support features with class-level prototypes to infer query labels. Extensive experiments on five benchmarks demonstrate that RTF consistently outperforms single-modal baselines, partial-fusion variants, and existing lightweight adaptation methods, achieving state-of-the-art few-shot 3D recognition performance without gradient optimization, additional training data, auxiliary training, or parameter updates.",
+      "authors": [
+        "Hang Cheng",
+        "Yan Chen",
+        "Mingyu Fan",
+        "Long Zeng"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-18T09:11:55+00:00",
+      "link": "https://arxiv.org/pdf/2609.21522v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Training-free 3D point cloud adaptation with feature refinement and multi-modal fusion",
+      "llm_evidence_cn": "基于特征精炼与多模态融合的免训练三维点云适配",
+      "llm_evidence": "基于特征精炼与多模态融合的免训练三维点云适配",
+      "canonical_evidence": "基于特征精炼与多模态融合的免训练三维点云适配",
+      "llm_tldr_en": "Pre-trained foundation models offer multi-modal priors for 3D vision but suffer channel redundancy and unreliable modality aggregation in few-shot settings. RTF is a training-free framework that refines discriminative features and fuses multi-modal knowledge with priority for few-shot 3D recognition.",
+      "llm_tldr_cn": "预训练基础模型为三维视觉提供丰富多模态先验，但少样本场景下高维特征存在通道冗余，且各模态可靠性随样本变化。本文提出Refine Then Fusion（RTF）免训练框架，先识别并精炼判别性特征，再按优先级融合多模态知识。方法面向少样本三维识别任务。该工作提升了异质特征聚合的可靠性，为三维视觉中的特征利用提供了新思路。",
+      "llm_tldr": "预训练基础模型为三维视觉提供丰富多模态先验，但少样本场景下高维特征存在通道冗余，且各模态可靠性随样本变化。本文提出Refine Then Fusion（RTF）免训练框架，先识别并精炼判别性特征，再按优先级融合多模态知识。方法面向少样本三维识别任务。该工作提升了异质特征聚合的可靠性，为三维视觉中的特征利用提供了新思路。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "feature extraction in computer vision",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.21754v1",
+      "source": "arxiv",
+      "title": "SFVO: Decoupled Confidence-Guided Stereo-Flow Visual Odometry with Bidirectional PnP",
+      "abstract": "Deep learning-based visual odometry (VO) has achieved significant progress, yet most existing methods focus on a monocular approach, which suffers from scale ambiguity. Stereo VO provides real metric by its nature, but remains less studied in deep learning VO due to its high computational cost and modeling complexity. Recent advances in stereo matching and optical flow estimation have made dense visual correspondence increasingly accurate and reliable, but their complementary geometric information has not been fully exploited for VO. In this paper, we present SFVO, a correspondence-driven stereo VO framework that directly builds upon pretrained stereo matching and optical flow models. SFVO exploits pretrained stereo matching and optical flow models to estimate stereo and temporal correspondences. Instead of learning pose directly from images, SFVO maps learned correspondences into geometric constraints and predicts which points are trustworthy. To improve the reliability of visual correspondence-based geometric constraints, we introduce decoupled confidence maps for rotation and translation. This design better aligns the characteristics of visual correspondence and 6-DoF transformations. Extensive experiments on outdoor and indoor datasets demonstrate that SFVO achieves robust and accurate pose estimation with strong generalization capability. The code will be released.",
+      "authors": [
+        "Kai Zhang",
+        "Guoyang Zhao",
+        "Jun Ma"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.RO"
+      ],
+      "published": "2026-09-18T13:27:32+00:00",
+      "link": "https://arxiv.org/pdf/2609.21754v1",
+      "tags": [
+        "keyword:cv",
+        "query:cv"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "stereo-flow visual odometry using stereo matching and optical flow",
+      "llm_evidence_cn": "融合立体匹配与光流的视觉里程计",
+      "llm_evidence": "融合立体匹配与光流的视觉里程计",
+      "canonical_evidence": "融合立体匹配与光流的视觉里程计",
+      "llm_tldr_en": "Presents SFVO, a correspondence-driven stereo visual odometry framework leveraging pretrained stereo matching and optical flow with bidirectional PnP to exploit complementary geometry.",
+      "llm_tldr_cn": "深度视觉里程计多集中于单目，存在尺度模糊问题，而立体视觉里程计虽具真实尺度却因计算与建模复杂而研究不足。本文提出SFVO，一种基于预训练立体匹配与光流模型的对应驱动立体视觉里程计框架，并引入双向PnP充分利用互补几何信息。实验表明该框架提升了位姿估计的精度与鲁棒性。该工作为深度学习立体视觉里程计提供了有效方案。",
+      "llm_tldr": "深度视觉里程计多集中于单目，存在尺度模糊问题，而立体视觉里程计虽具真实尺度却因计算与建模复杂而研究不足。本文提出SFVO，一种基于预训练立体匹配与光流模型的对应驱动立体视觉里程计框架，并引入双向PnP充分利用互补几何信息。实验表明该框架提升了位姿估计的精度与鲁棒性。该工作为深度学习立体视觉里程计提供了有效方案。",
+      "llm_tags": [
+        "query:cv"
+      ],
+      "matched_query_tag": "query:cv",
+      "matched_query_text": "computer vision research papers",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

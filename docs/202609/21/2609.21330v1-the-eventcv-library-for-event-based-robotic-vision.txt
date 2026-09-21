@@ -1,0 +1,292 @@
+Title: The EventCV Library for Event-Based Robotic Vision
+
+URL Source: https://arxiv.org/pdf/2609.21330v1
+
+Published Time: Mon, 21 Sep 2026 00:31:27 GMT
+
+Number of Pages: 9
+
+Markdown Content:
+# The EventCV Library for Event-Based Robotic Vision 
+
+Adam D. Hines ∗ Michael Milford Tobias Fischer 
+
+Abstract — Event cameras detect per-pixel brightness changes asynchronously on microsecond timescales, with high dynamic range and low power draw. These are desirable properties for robots that move fast or work in difficult lighting conditions. However, integrating an event camera into a real-world robotic pipeline still requires substantial effort: plug-and-play drivers do not exist, event streams are recorded in a variety of incompatible file formats, and most projects rely on custom research-grade code. Here, we present EventCV , an open-source and extensible Rust library with OpenCV-style Python bindings that lowers the entry barrier to working with event cameras. EventCV provides a wide range of features: denoising filters and geometric transforms, augmentations, corner detection and unsupervised feature learning, contrast-maximization motion estimation, a video-to-events simulator, and Open Neural Net-work Exchange (ONNX) inference for deployment in robotic stacks. EventCV integrates the Neuromorphic Drivers package, allowing an event camera stream to be processed directly in real time. No existing toolkit covers this range of operations in one package, and EventCV builds representations and decodes files 1.1 × to 3.7 × faster than the currently available libraries. We deploy EventCV on a Jetson Orin AGX and present three robotics case studies spanning object detection, on-device model inference, and localization. Project webpage: https: //eventcv.net .
+
+I. I NTRODUCTION 
+
+Visual sensing in robotics is dominated by frame-based RGB cameras, which have decades of accumulated software development. A roboticist who buys a webcam plugs it in, calls cv2.VideoCapture from OpenCV [1], and is a single function call away from using images with popular computing libraries such as NumPy [2], PyTorch [3], or the Machine Vision Toolbox [4]. Swapping cameras rarely alters the workflow: file formats are standardized and conversion into machine learning pipelines is routine. An event camera, by contrast, records independent changes in log intensity at the pixel level and emits an event 
+
+e = ( x, y, t, p ) for each such change, consisting of pixel co-ordinates (x, y ), a timestamp t, and a polarity p that indicates whether there was a brightness increase or decrease [5], [6]. The sensor resolves these events to microseconds, has a dynamic range beyond 120 dB, and produces a data rate that follows scene activity instead of a fixed frame rate. Those properties suit robots that move fast or face abrupt changes                                        
+
+> The authors are with the QUT Centre for Robotics, School of Electrical Engineering and Robotics, Queensland University of Technology, Brisbane, QLD 4000, Australia. ∗Corresponding author:
+> adam.hines@qut.edu.au
+> This work received funding from an ARC Laureate Fellowship FL210100156 to MM and an ARC Discovery Early Career Researcher Award DE240100149 to TF. The authors acknowledge continued support from the Queensland University of Technology (QUT) through the Centre for Robotics. Event camera Recordings Simulator
+> events (x, y, t, p)
+> Open-source event-based vision library
+> Rust core · Python API · NumPy / PyTorch · CPU / GPU
+> pip install eventcv
+> Load Filter Transform Represent Analyse
+> Model inference
+> ONNX · PyTorch
+> Visualise
+> viewer · video
+> Save & stream
+> fi les · UDP
+> Robotics
+> ROS 2
+> Fig. 1. The EventCV ecosystem provides efficient camera and file stream-ing and integrates into modern machine learning and robotics workflows.
+
+in lighting, and the past decade has produced a large body of work including event-based odometry, optical flow, object recognition, and localization [7]. Deploying event cameras on robots does not currently benefit from the same level of accessibility as conventional cameras, with several key challenges limiting the utility of available libraries. Existing event-based vision libraries typically address only part of the processing pipeline. In particular, common robotics operations such as geometric transformations, feature detection, motion estimation, and feature tracking are inconsistently supported, often requiring researchers to combine multiple libraries or custom imple-mentations. There is also a divide between offline experi-mentation and live deployment, where processing pipelines developed for recorded datasets cannot necessarily be trans-ferred directly to a live camera using the same interface. Finally, event cameras are not plug-and-play, as drivers do not self-install over USB, with the two largest vendors providing separate and incompatible software development kits (SDKs) [8], [9]. In this work, we introduce EventCV (Fig. 1), an open-source computer vision library for event cameras. EventCV uses a computationally efficient Rust core with an OpenCV-style Python frontend for use in modern machine learning workflows. Existing libraries (Table I) have laid the ground-work for resolving individual challenges in file format decod-ing, camera driver development, and event stream processing. EventCV unifies many of these features into a single Python package, reducing the dependency on multiple libraries. arXiv:2609.21330v1 [cs.RO] 18 Sep 2026 TABLE I COMPARISON OF EVENT -BASED VISION LIBRARIES AND OPEN -SOURCE PROJECTS . O NE , TWO , AND THREE CHECK MARKS DENOTE BASIC ,
+
+> SUBSTANTIAL
+
+, AND COMPREHENSIVE SUPPORT FOR A CAPABILITY . A CROSS DENOTES THAT IT IS ABSENT .                  
+
+> Capability EventCV AEDat [10] AEStream [11] evlib [12] Event utils [13] Expelliarmus [14] Faery [15] jAER [16] Tonic [17]
+> Read/write
+
+✓✓✓ ✓ ✓✓ ✓ ✓ ✓ ✓✓ ✓✓ ✓          
+
+> Format scope Broad I/O AEDAT4 read Selected formats Selected formats Research formats Prophesee formats Several formats Several formats Dataset parsers
+> Live streaming
+
+✓✓✓ × ✓✓ × × × ✓✓ ✓✓✓ ×          
+
+> Sensor control Bias + ROI Not applicable Driver dependent Not applicable Not applicable Not applicable Driver dependent Bias controls Not applicable
+> Filter/transforms
+
+✓✓✓ × ✓ ✓ ✓✓ ✓ ✓ ✓✓✓ ✓✓           
+
+> Event processing Geometry + filters Not provided Basic transforms Lazy filtering Augment + motion Windowed I/O Stream operations Broad filter stack Augmentation suite
+> Representations
+
+✓✓✓ × ✓ ✓✓✓ ✓✓ × ✓ ✓ ✓✓           
+
+> Representation scope Multiple families Not provided Dense tensors Multiple families Core families Not provided Rendered frames Filter outputs Core families
+> Feature tracking
+
+✓✓✓ × × × ✓ × × ✓✓✓ ×          
+
+> Tracking scope Corners + features Not provided Not provided Not provided Motion segmentation Not provided Not provided Tracking filters Not provided
+> Event simulation
+
+✓✓✓ ✓ × ✓✓ ✓ × ✓ ✓ ✓          
+
+> Simulation scope Sensor model Not provided Not provided ESIM [18] model Noise synthesis Not provided Synthetic input External v2e Noise injection
+> Visualization/analytics
+
+✓✓✓ × ✓✓ ✓ ✓✓ × ✓✓✓ ✓✓✓ ✓✓✓           
+
+> Analysis scope Viewer + analytics External tools Live viewer Figure scripts Plots + video Not provided Rendered video Desktop analysis Plots + animation
+> Compute scale
+
+✓✓✓ × ✓✓✓ ✓✓✓ ✓✓ ✓ ✓✓ ✓✓✓ ✓         
+
+> Compute path Rust + GPU Decoder only C++ + CUDA Rust + GPU NumPy + PyTorch Chunked decoding Streaming pipeline Java real-time Python + NumPy
+
+jAER [16] is the closest related work to EventCV in terms of breadth and scope, with the main architectural distinction be-ing its Java-based implementation compared with EventCV’s Rust backend and Python interface. EventCV couples to the Neuromorphic Drivers package [19], so installing it gives immediate access to a supported camera. EventCV is designed so that simple augmentations, transforms, and representations are a single function call. Specifically, we contribute: 1) The EventCV Python library 1, providing camera in-terfacing, I/O across multiple formats, filtering, trans-forms, representations, feature detection, motion esti-mation, simulation, and model inference. 2) A timing evaluation of EventCV’s representation build-ing and file decoding against existing libraries, with the Rust backend 1.1 × to 3.7 × faster than the next-fastest library. 3) Three robotics case studies that rebuild existing work-flows with EventCV, spanning object detection, real-time model inference, and a standardized localization pipeline. II. R ELATED WORK 
+
+To date, there are several open-source tools that partially cover the breadth of event camera data handling, and we pro-vide an overview of them here. Table I lists the most common libraries available and rates their coverage of capabilities. 
+
+A. Event stream processing 
+
+Commercial SDKs provide comprehensive event camera streaming and processing capabilities, but are limited to their own sensor family. iniVation’s dv-processing [8] offers capture, noise filtering, accumulators, time surfaces, and feature tracking for the DAVIS and DVXplorer lines of cam-eras. Prophesee’s Metavision SDK [9], whose open-source subset was OpenEB until it was archived, does the same for Prophesee sensors and adds a video-to-events simulator. 
+
+> 1
+
+Open-source code at https://github.com/EventLAB-Team/ eventcv 
+
+AEStream [11] is a high-throughput system that moves events from a camera or file to a GPU, file, or network endpoint. A critical component of AEStream is a User Datagram Protocol (UDP) transport that allows connection to SpiNNaker boards. Faery [15] moves events between cameras, files, and network endpoints, and renders represen-tations from them. jAER [16] is the longest-standing open-source library with over two decades of real-time streaming functionality and filters. However, jAER is built on a Java platform that modern Python stacks cannot import, and Java is no longer widely used for scientific computing. At the same time, jAER remains considerably more mature at the hardware level, providing broader sensor support together with extensive bias configuration, device-specific controls, and real-time sensor-processing tools. jAER also provides real-time feature extraction, tracking, optical flow, denois-ing, sensory-motor processing, and robot demonstrators. 
+
+evlib [12] is the most similar to EventCV in construction, i.e., a Rust core with Python bindings for event stream handling. It uses lazy evaluation over the Python Polars package, dense representations, PyTorch datasets, and an ESIM-based [18] simulator. For robotics applications, the event-driven library for the Yet Another Robot Platform (YARP) middleware [20] is the most directly comparable middleware integration. In ROS, 
+
+rpg_dvs_ros [21] supplies the DVS/DAVIS driver and the 
+
+dvs_msgs bag layout. A maintained ROS 2 stack [22] adds a vendor-neutral message format, codecs, and drivers. 
+
+B. Dataset and file handling 
+
+Event recordings are distributed in file formats that can-not be read interchangeably. For example, AEDAT 2.0 and 4.0, Prophesee DAT and EVT2/EVT3 RAW, ROS bags of dvs_msgs , HDF5, and plain text are among the most com-mon file formats encountered for event streams. Some open-source tools handle individual formats: Expelliarmus [14] de-codes Prophesee DAT and RAW, whereas the aedat crate [10] decodes AEDAT 4.0 only. Tonic [17] is a comprehensive library that handles downloading, caching, and versioning for roughly twenty standard datasets, including N-ImageNet dataset [23]. C. Feature detection and tracking 
+
+Several event-based feature extraction methods do not depend on deep-learned models and can be re-implemented in pure Rust. eFAST [24] and Arc [25] detect corners on the surface of active events (SAE). FEAST [26] learns feature prototypes online. Motion is most often recovered by contrast maximization, introduced for angular velocity esti-mation [27] and generalized into a unifying framework [28] whose reward functions are analysed in [13], [29]. Several learned methods estimate flow and egomotion directly [30]. EventCV differs from these tools in combining them: one package that streams from a camera, reads nine file for-mats, and provides filters, representations, features, motion estimation, simulation, and model inference behind a single interface. III. D ESIGN AND ARCHITECTURE 
+
+A. Overview 
+
+EventCV uses a computationally efficient Rust core, 
+
+eventcv-core , that is connected to a thin Python API layer. The Rust core handles the expensive parts of event stream processing and parallelizes them. The components in-clude slice indexing and decoding, camera streaming threads, representation building, and filter and estimator kernels. Event data can easily be converted into conventional array structures through the Python API by calling .numpy() 
+
+on EventCV Rust objects. Inspired by the functionality of libraries such as OpenCV, EventCV offers both functions and bound methods that are chainable by design. For ex-ample, generating a voxel representation from an event stream is callable either as ecv.voxel(stream, bins=5) 
+
+or stream.voxel(bins=5) , which are functionally equiv-alent. To easily access event streams from a physically con-nected event camera, EventCV depends on the Neuromor-phic Drivers package [19], which provides the ability to directly stream and record from cameras such as the Proph-esee EVK3 HD and EVK4, the iniVation DVXplorer and DAVIS346, the SilkyEvCam HD, and the IDS uEye XCP-E. Similarly, ROS 2 transport is enabled via hiroz (Sec. III-C), and deep learning model execution can be achieved via integration with the Open Neural Network Exchange (ONNX) Runtime. EventCV itself implements the decoding, slicing, filtering, representation, feature, and motion code around these libraries. Installing EventCV into a Python environment provides direct access to streaming from an event camera without any additional setup (Code snippet 1). This snippet shows the complete setup required to plug in an event camera via USB and begin streaming. The alternative is vendor SDKs tied to one sensor family, or custom code. Beyond camera streaming, EventCV currently supports nine file formats read through the same function call. These file formats are HDF5, ROS bags of dvs_msgs , iniVation AEDAT 2.0 and 4.0, Prophesee DAT and EVT2/EVT3 RAW, NumPy arrays, and delimited text files. There are two ways                                                          
+
+> 1#Install Pixi
+> 2curl -fsSL https://pixi.sh/install.sh |sh
+> 3#Create anew project and add eventcv as dependency
+> 4pixi init && pixi add eventcv
+> 5pixi run python
+> 6#Run Python, import EventCV, and start streaming
+> 7import eventcv as ecv
+> 8ecv.stream()
+> Code snippet 1. Installing EventCV and streaming from a camera with Pixi [31].
+> 1model =ecv.Model("detector.onnx") #or PyTorch module
+> 2camera =ecv.stream(dt_ms=5, repr="count")
+> 3while running:
+> 4prediction =model(camera.read())
+> Code snippet 2. ONNX model inference with EventCV.
+
+to read these files: ecv.load returns an EventStream ,which loads all events into memory, while ecv.open creates an EventReader , which holds a plan for producing them slice by slice from a file, the more common method given the multi-GB size of event streams. Both support the same downstream operations, and EventCV can write every format it reads. We provide the EventSink class which enables live capture of an event stream while processing it simultaneously (Sec. III-B). EventCV is installable for Linux x86-64 and aarch64, macOS on Apple silicon, and Windows x86-64, with install solutions provided by PyPI 2 and conda-forge 3. aarch64 sup-port matters for robotics, where many platforms use NVIDIA Jetson or Raspberry Pi. Providing binary packages rather than requiring source builds makes event cameras practical for roboticists. 
+
+B. Capture and deployment for real-time robotics 
+
+Capture and decoding each run on a dedicated background thread. Inference loops collect windows of events and decode them for the forward pass. For robotics, PyTorch models are commonly exported to ONNX [32] and run on compute platforms such as the Jetson, where runtime efficiency mat-ters. Streaming from an event camera and running the events through an ONNX model is shown in Code snippet 2. This function takes the last 5 ms of events, builds an event-count representation, and runs a detector model specified in the detector.onnx file. Dense event streams are converted internally to NumPy arrays [2] such that PyTorch [3] or ONNX can consume them without a memory-intensive copy. A model exported to ONNX for deployment loads events from EventCV directly, with batch axes inserted and integer representations cast as needed. For offline analysis, record-ings can also be made alongside processing. Adding the 
+
+record="session.h5" argument to the stream function writes the raw events from the capture thread while the loop works on model inference, resulting in deployments that also generate a replayable dataset at little additional cost. 
+
+> 2https://pypi.org/project/eventcv/
+> 3https://anaconda.org/channels/conda-forge/ packages/eventcv/overview
+
+C. ROS 2 integration 
+
+A library is usually connected to the rest of the robotics stack through ROS 2. As EventCV is written in Rust, we directly interface EventCV’s core Rust library with ROS 2, for which there are two established options. rclrs is the official ROS 2 Rust client library 4. r2r 5 provides simple Rust bindings for ROS 2. EventCV uses hiroz [33], a Zenoh-native [34] ROS 2 stack written in pure Rust. We use hiroz because rclrs and r2r both link the ROS C libraries, which requires a ROS installation at build time and prevents shipping the integration in a wheel. Zenoh on the wire means interoperating requires the modern rmw_zenoh_cpp 
+
+middleware. A standard Data Distribution Service (DDS) deployment needs the zenoh-bridge-ros2dds in between. Messages from an event camera are represented us-ing standardized ROS 2 messages [22]. We provide four nodes: a publisher of event packets, a subscriber that hands back the same EventStream the rest of the li-brary takes, an image publisher that republishes a repre-sentation as a sensor_msgs/msg/Image , and an inference node that runs a model and publishes its output as a
+
+> std_msgs/msg/Float32MultiArray
+
+. Replay and record-ing drive the publisher from a file and the subscriber to one. A voxel grid reaches the RViz2 visualizer without a conversion node. 
+
+D. Inspecting event streams 
+
+Inspecting an event stream during playback is critical for evaluating camera settings, capture quality, and downstream usability. jAER [16], Tonic [17], and Faery [15] provide comprehensive visualization capabilities, with the ability to run filtering and processing directly within the visualization window. EventCV provides a graphical user interface (GUI) to both replay recordings and view a live camera. An example is shown in Fig. 2: there, the left panel accumulates events over a sliding window whose width and refresh rate are adjustable during playback. The right panel reports stream statistics and the number of events retained after background-activity filtering, over a rolling plot of the raw and processed rates. Filters can be applied during playback, giving immediate visual feedback. IV. R EPRESENTATIONS , F ILTERS , AND TRANSFORMS 
+
+A. Representations 
+
+An event camera produces a sparse, ordered stream E
+
+of event tuples e = (x, y, t, p ), where (x, y ) are pixel coordinates, t is a timestamp in microseconds, and p ∈{− 1, +1 } is the sign of the log-intensity change [7]. For most computer vision applications, events are collated over a set time window ∆t or a maximum event count Nmax ,compressing streams into dense arrays. EventCV implements   
+
+> 4https://github.com/ros2-rust/ros2_rust
+> 5https://github.com/sequenceplanner/r2r
+> Fig. 2. Graphical interface for viewing and live filtering event streams using ecv.play .
+
+Polarity histogram Time surface MCTS 11.63ms 8.87ms 14.54ms  
+
+> Fig. 3. Three examples of the representations EventCV builds, from an N-ImageNet [23] stream. The top-left corner of each panel gives the time to generate it from 106,295 events over a 300 ms window on a Jetson Orin AGX.
+
+the representations in common use, such as polarity his-tograms, voxel grids, and time surfaces. Recent represen-tations developed for deep learning methods such as multi-channel time surfaces (MCTS) [35] and tencode [36] are also implemented. Representations can be defined at the time of loading an event stream, or called explicitly on individual slices. Defining the representation at load time is simplest when only one is needed, whereas calling it on individual slices allows several to be mixed. Fig. 3 shows a selection of the representations EventCV builds and the time taken to generate them from an example event stream with 106,295 events captured over 300 ms. 
+
+B. Filters and geometric transforms 
+
+Event streams are inherently noisy. EventCV provides three common filters and a range of geometric transforms. A hot pixel filter removes all events at pixels whose count exceeds μ + nσ over the active pixels, where μ is the mean, 
+
+σ is the standard deviation, and n is the threshold in standard deviations ( n = 3 by default). The mask can be estimated once across a whole recording and then applied to any slice. Hot pixel coordinates can also be supplied by providing a file of pixel coordinates for individual cameras. On a 3.9 GB test recording from a DAVIS346, the filter identified 22 hot pixels 1 stream = ecv.open("events.h5")            
+
+> 2corners =stream.efast()
+> 3feast =ecv.FEAST(n_features=25, patch=11, tau_ms=30.0)
+> 4feast.fit(stream, epochs=3)
+> Code snippet 3. eFAST corner detection and FEAST feature learning in EventCV.
+
+accounting for 15.4 % of all events in the file. Applying the resulting mask cut a representative 33 ms slice from 26,677 to 24,584 events. A background activity filter [37] removes isolated events by requiring recent activity in neighboring pixels. In EventCV, this neighborhood can be defined using either the eight surrounding pixels or only the four edge-adjacent pixels. A refractory filter instead suppresses events that occur within a user-specified dead time of the previous event at the same pixel. In EventCV, the dead time is given in microseconds and can be measured from either the last emitted event, matching the behavior of the hardware, or from every arriving event, as Tonic [17] and evlib [12] do. Filters compose and stay lazy on a reader, so 
+
+ecv.open("events.h5", hot_pixel_filter=True) .background_activity_filter(1000) , where the argument is a 1 ms correlation window, reads nothing until a slice is requested. In addition to these filters, EventCV provides access to basic geometric transforms including crop, flip, rotate, and translate, which are applied directly to the event stream rather than to the derived representations. The same transforms are also available as seeded augmentations for training: each draws its randomness from the seed and the slice index rather than a thread-local generator, so a DataLoader reproduces the same stream whatever the worker count or access order. V. F EATURES , M OTION , AND SIMULATION 
+
+A. Corner detection and feature learning 
+
+EventCV implements the eFAST [24] and Harris [38], [39] corner detection algorithms. eFAST keeps an event when recent neighboring events form a continuous arc around it, indicating a corner-like feature. Harris keeps points where the accumulated event frame changes strongly in two directions, identified from large eigenvalues of the local second-moment matrix. EventCV also implements FEAST [26], an unsupervised feature learner that acts similarly to a visual-word dictionary built with OpenCV's features2d [1]. For each event pro-cessed by FEAST, the local time-surface patch is normalized and matched to the nearest prototype within an adaptive threshold. A match moves the matched prototype towards the input and tightens its threshold, while a miss loosens all of the thresholds. The prototype bank converges on the recording’s most common local patterns without any labels. These algorithms are callable with a small set of functions (Code snippet 3). Fig. 4 demonstrates an example of an event frame with eFAST corner detections and learned FEAST features. Event frame eFAST corners FEAST  
+
+> Fig. 4. Corner and feature detection on an event slice. Left to right: raw event frame, eFAST [24] corners, the learned FEAST [26] prototype bank, and FEAST feature assignments.
+
+No motion Motion compensation vx (px/s) 0200 400 600 -200 -400 -600 vy (px/s) 200 0-200 -400 -600 -800 -1000 Image variance 0.24 0.22 0.20 0.18 0.16 0.14 No motion Nelder-Mead optimum  
+
+> Fig. 5. Contrast-maximization motion compensation in EventCV. Top: an event slice before and after compensation, boxed regions magnified. Bottom: image variance over the translational velocity search, marking the uncompensated point (circle) and the Nelder-Mead optimum (star).
+
+B. Motion estimation and tracking 
+
+Contrast maximization recovers motion by searching for the warp that produces the sharpest Image of Warped Events (IWE) [28] (Fig. 5). EventCV implements translational and rotational warp models and the three standard objectives: the IWE variance [27], the sum of squares, and the sum of exponentials [13]. The warp parameters are found by Nelder-Mead simplex search. 
+
+C. Simulation and reconstruction 
+
+Synthetic events provide a practical way to explore event data without a physical camera. EventCV can convert stan-dard video files to event streams using a sensor model following video-to-events (v2e) [40], with per-pixel threshold mismatch, an intensity-dependent photoreceptor low-pass filter, and leak and shot noise. A simulation is a single call, ecv.simulate("video.mp4") , requiring no model download or external repository. VI. E VALUATION 
+
+This section tests three claims: that EventCV builds repre-sentations faster than existing libraries, that it decodes every format it supports at competitive throughput (both Sec. VI-B), and that it scales to modern sensor event rates without exhausting memory (Sec. VI-C). TABLE II REPRESENTATION BUILDING TIME (MS , LOWER IS BETTER ) FROM A                      
+
+> 1.22 M-EVENT SLICE OF THE EVT3 RECORDING . S PEED -UP IS
+> EVENT CV AGAINST THE NEXT -FASTEST LIBRARY .CH .: CHANNELS .Representation EventCV Tonic [17] evlib [12] Speed-up Polarity frame (2 ch.) 23.78 136.36 67.22 2.8 ×
+> Voxel grid (5 bins) 26.50 124.44 97.23 3.7 ×
+> Time surface 21.33 59.16 80.76 2.8 ×
+
+A. Experimental setup 
+
+All measurements were run on a Jetson Orin AGX, an embedded platform representative of robotics deployments. The exception is the Event-LAB case study (Sec. VII-C), which ran entirely on an x86 desktop with an Intel i7-9700K and an NVIDIA RTX 2080. The inputs are a 3.0 s, 1280 ×720 EVT3 recording of 116.3 M events (341 MB on disk) and a 651 s, 346 ×260 HDF5 recording of 707.6 M events (5.45 GB on disk). Times are the median of nine runs after two warm-ups, with the file in the page cache. Baselines are Tonic 1.6.0 [17], event_utils [13], dv-processing 2.0.4 [8], evlib 0.13.2 [12], and Expelliarmus 1.1.7 [14]; each experiment uses those baselines that implement the operation under test. All base-lines were run on the same machine, each under its own in-terpreter on identical input. All timings are CPU. EventCV’s GPU path is limited to handing representations to PyTorch or ONNX Runtime on the device, and the Rust + GPU entry in Table I refers to that path rather than to GPU-accelerated event processing. 
+
+B. Representation and decoding throughput 
+
+Event streams are often converted into frame-based rep-resentations for downstream processing and compatibility with models. When streaming from event cameras for real-time inference at or above 30 Hz, efficient decoding and frame building are critical for edge deployment. We compare EventCV to the baseline methods in Table II, measuring the time to build each representation from a 1.22 M-event slice of the EVT3 recording and the rate at which each format is decoded. Over the representations more than one library provides, EventCV is 3.4 × faster than evlib in geometric mean and 4.2 × faster than Tonic, with per-representation speed-ups against the next-fastest library ranging from 2.8 ×
+
+to 3.7 ×. The remaining representations, which neither Tonic nor evlib provide, build in 8.56–74.85 ms. Offline playback from recorded files is a common way of running event-processing pipelines, and decoding cost varies with the file format. We next compared the time taken to decode various file formats against every reader on the platform able to open each one (Table III). EventCV is the fastest reader on all three formats: EVT3 at 53.8 Mev/s against Expelliarmus’s 33.5 Mev/s, AEDAT 4.0 at 85.4 Mev/s against dv-processing’s 77.0 Mev/s on a file written by dv-processing’s own LZ4 writer, and HDF5 at 16.3 Mev/s against evlib’s 5.1 Mev/s. These results, however, only consider single-threaded op-erations. EventCV has the capacity to scale across cores for                     
+
+> TABLE III DECODE THROUGHPUT (M EV /S,HIGHER IS BETTER ),
+> SINGLE -THREADED ,FOR EVERY READER ABLE TO OPEN EACH FORMAT .ADASH MARKS A FORMAT THE READER CANNOT OPEN . F OR
+> EVENT CV, THE SPEED -UP OVER THE NEXT -FASTEST READER FOR EACH FORMAT IS SHOWN IN PARENTHESES .Library EVT3 raw AEDAT 4.0 HDF5
+> 116.3 Mev 10.0 Mev 183.9 Mev
+> EventCV 53.8
+> (1.6 ×)
+> 85.4
+> (1.1 ×)
+> 16.3
+> (3.2 ×)
+> Expelliarmus [14] 33.5 ——dv-processing [8] —77.0 —evlib [12] 5.4 —5.1
+
+10 4 10 5 10 6 10 7
+
+Number of events per slice 10 0
+
+10 1
+
+10 2
+
+10 3
+
+> Latency (ms)
+
+EventCV Tonic event_utils evlib  
+
+> Fig. 6. Latency of event counting against slice size, comparing EventCV with Tonic [17], event_utils [13], and evlib [12] on a Jetson Orin AGX. Both axes are logarithmic.
+
+AEDAT 4.0 decoding, reaching 631.6 Mev/s processing on twelve cores. evlib [12], whose core is also Rust, decodes EVT3 an order of magnitude slower, and while it is the only baseline besides EventCV reading more than one container format, it does not support the AEDAT 4.0 file. 
+
+C. Scaling and memory 
+
+Different event cameras produce varying amounts of events per second, with larger sensors such as the Sony IMX636 capable of over 20 Mev/s. To compare how different libraries scale to increasing event rates, we measured the latency to perform event counts across increasing event slice sizes (Fig. 6). All libraries scale similarly with increasing event counts, and EventCV is the fastest at every slice size tested. Every decode and representation timing above is measured through the same lazy reader. Its value shows on long recordings: on the 707.6 M-event HDF5 recording, reading eagerly peaks at 8.87 GB of resident memory, 13.5 bytes per event, because the packed on-disk record expands into four in-memory columns. Opening the same file lazily takes 0.11 s, exposes it as 19,737 windows of 33 ms, and peaks at 273 MB while serving 200 windows drawn at random: a 33 × reduction, with a random window retrieved in 8.6 ms (16.0 ms at the 99th percentile). VII. C ASE STUDIES 
+
+In this section, we present three case studies using EventCV. All evaluations were performed on a Jetson Orin AGX, except the Event-LAB study (Sec. VII-C), which ran OpenEB EventCV Processing time per window (ms) 0 10 20 30 Decode Normalize Inference Representation Tensor + transfer Fig. 7. The ev-ultralytics YOLO26 [41], [42] pipeline on an EVK4 recording, run on a Jetson Orin AGX. Top: per-window processing time by stage, OpenEB against EventCV. Bottom: example detections from the EventCV pipeline. 
+
+entirely on the x86 desktop described in Sec. VI-A: both the EventCV CPU path and the CUDA path. 
+
+A. Edge inference with an event-based YOLO detector 
+
+ev-ultralytics [41], [42] is Prophesee’s adaptation of YOLO26 to event cameras for object detection. Briefly, a polarity histogram of events is accumulated over 50 ms, quantized to uint8 , converted to a tensor format, and passed to the object detector’s inference model. To measure the latency of the official open-source SDK from conversion of an event stream to model prediction, we implemented the same pipeline and replaced the OpenEB backend with EventCV. Fig. 7 compares the per-window processing time by stage. Both pipelines reach the network tensor in about 10.5 ms per window and complete in about 28 ms, of which roughly 17.5 ms is the shared YOLO26 inference: EventCV matches the OpenEB EventsIterator pipeline stage for stage rather than beating it. The difference is in what it costs to build and deploy. The EventCV pipeline is seven lines of user code and a single library call, compared to the OpenEB pipeline that requires a custom-written accumu-lator. The installation pathway differs sharply. EventCV is a pip/conda/pixi install eventcv . OpenEB’s Python bindings come from a third-party apt repository including 44 packages tied to the system-level Python without prebuilt ARM packages, limiting Jetson deployment. We note that OpenEB is Prophesee’s archived open-source SDK that has been replaced with the newer proprietary Metavision. 
+
+B. Live keypoint detection with SuperEvent 
+
+EventCV can run ONNX-compiled models directly on a live event camera stream. We evaluated the ability to run live keypoint detection using SuperEvent [35] streaming directly from a Prophesee EVK4 (Fig. 8). Each inference used a 50 ms accumulation window and the pre-trained SuperEvent weights. A recording of an outdoor walking environment was  
+
+> Fig. 8. Capture rig for the SuperEvent [35] case study. A Prophesee EVK4 views an outdoor walking sequence replayed on a laptop screen. Events stream through EventCV into SuperEvent on a Jetson Orin AGX. Mev/s
+
+20 15 10 50EventCV (CPU) EventLAB (CUDA) Indoor DAVIS346 Outdoor DAVIS346 Outdoor DVXplorer  
+
+> Fig. 9. Comparison of EventCV deployed on CPU with custom CUDA data formatting in Event-LAB [43]. Throughput in Mev/s, higher is better.
+
+captured on a laptop screen, yielding up to 170 keypoints per window. End-to-end processing took 44.9–71.7 ms per inference, corresponding to 14–22 Hz. This covers building the multi-channel time surface, resizing it to the input dimensions, and running the model. EventCV runs any exported ONNX model directly on a camera stream (Code snippet 2). 
+
+C. Event-LAB localization pipeline 
+
+Event-LAB [43] is a framework for standardized evalua-tion of event-based localization. To implement it, more than 2,700 lines of custom code were developed to standardize file formats to .h5 , build event representations for the various lo-calization methods, and run event-to-video generation [44]. A large part of the dataset formatting code consisted of custom implementations of CUDA-accelerated event representation building to improve runtimes. Fig. 9 compares the frame generation runtime for EventCV against the custom CUDA implementation. EventCV on the CPU delivers throughput comparable to the custom CUDA implementation across all three recordings, so a GPU is not required for this stage of the pipeline. Re-implementing Event-LAB with EventCV removes this overhead. Another difference is that the original Event-LAB dataset formatting code treated representation generation sequen-tially. As a result, starting a localization run at an offset forced the code to iterate through the file manually until it reached a user-specified timestamp. With EventCV, this is now resolved by using the lazy slicer ecv.open() to identify the exact slice to begin from. VIII. D ISCUSSION AND CONCLUSIONS 
+
+In this work, we presented EventCV, an open-source, ex-tensible, and efficient computer vision package for working with event cameras. Through three case studies, we showed that EventCV can be used for a variety of robotic vision applications without custom decoding or representation code, and without relying on multiple external packages. EventCV was designed specifically for computer vision tasks on event data, covering camera streaming, file I/O, filtering, representations, features, motion estimation, and inference in one package. It is tailored to lower the barrier to working with event cameras, inspired by open-source tools for conventional images such as OpenCV [1] and Pillow [45]. Many other open-source event camera libraries exist (Ta-ble I). EventCV provides a more comprehensive and ef-ficient system for use in modern machine learning and robotics workflows. EventCV is intended to support open collaboration through the integration of existing workflows, community outreach, and education. This includes high-quality tutorial content and proposals for workshop tutorials at major robotics and computer vision conferences. EventCV has limitations. GPU acceleration is currently limited to handing representations to PyTorch or ONNX Runtime, so event processing itself remains CPU-bound. The ROS 2 integration goes over Zenoh, so a standard DDS deployment needs a bridge in between. Feature learning and motion estimation are re-implementations of established methods, and we have not evaluated them against their reference implementations. EventCV is an open-source and extensible Python package for event-based computer vision applications with an efficient Rust core and thin Python API. We have shown its utility in streaming from event cameras, processing recorded files, and simplifying existing workflows. REFERENCES [1] G. Bradski, “The OpenCV library,” Dr. Dobb’s J. Softw. Tools , vol. 25, no. 11, pp. 120, 122–125, 2000. [2] C. R. Harris et al. , “Array programming with NumPy,” Nature , vol. 585, pp. 357–362, 2020. [3] A. Paszke et al. , “PyTorch: An imperative style, high-performance deep learning library,” in Adv. Neural Inf. Process. Syst. (NeurIPS) ,2019. [4] P. I. Corke, “The machine vision toolbox,” IEEE Robotics & Automa-tion Magazine , vol. 12, no. 4, pp. 16–25, 2005. [5] P. Lichtsteiner, C. Posch, and T. Delbruck, “A 128 ×128 120 dB 15 
+
+μs latency asynchronous temporal contrast vision sensor,” IEEE J. Solid-State Circuits , vol. 43, no. 2, pp. 566–576, 2008. [6] C. Brandli et al. , “A 240 ×180 130 dB 3 μs latency global shutter spatiotemporal vision sensor,” IEEE J. Solid-State Circuits , vol. 49, no. 10, pp. 2333–2341, 2014. [7] G. Gallego et al. , “Event-based vision: A survey,” IEEE Trans. Pattern Anal. Mach. Intell. , vol. 44, no. 1, pp. 154–180, 2022. [8] iniVation AG, “dv-processing: Generic processing algorithms for event cameras,” gitlab.com/inivation/dv/dv-processing, 2023. [9] Prophesee, “Metavision SDK,” docs.prophesee.ai, 2024. [10] International Centre for Neuromorphic Systems and A. Marcireau, “ae-dat: A fast AEDAT4 decoder with an underlying Rust implementation,” github.com/neuromorphicsystems/aedat, 2025. [11] J. E. Pedersen and J. Conradt, “Aestream: Accelerated event-based pro-cessing with coroutines,” in Neuro-Inspired Computational Elements Conf. (NICE) , 2023, p. 86–91. [12] T. Allam Jr., “evlib: Event camera data processing library,” github. com/tallamjr/evlib, 2026. [13] T. Stoffregen and L. Kleeman, “Event cameras, contrast maximization and reward functions: An analysis,” in IEEE/CVF Conf. Comput. Vis. Pattern Recognit. (CVPR) , 2019, pp. 12 292–12 300. [14] F. Ottati and G. Lenz, “expelliarmus: A Python package for decoding prophesee RAW and DAT event files,” github.com/ open-neuromorphic/expelliarmus, 2023, archived September 2024. [15] A. Marcireau et al. , “Faery: A stream processing library for neuro-morphic event-based data,” github.com/aestream/faery, 2025. [16] T. Delbruck, “Frame-free dynamic digital vision,” in Int. Symp. Secure-Life Electron. , 2008, pp. 21–26. [17] G. Lenz et al. , “Tonic: event-based datasets and transformations.” Jul. 2021, Documentation available under https://tonic.readthedocs.io. [Online]. Available: https://doi.org/10.5281/zenodo.5079802 [18] H. Rebecq, D. Gehrig, and D. Scaramuzza, “ESIM: an open event camera simulator,” in Conf. Robot Learning (CoRL) , ser. Proc. Mach. Learn. Res., vol. 87, 2018, pp. 969–982. [19] International Centre for Neuromorphic Systems and A. Marcireau, “Neuromorphic Drivers: Python and Rust libraries to interact with event cameras in real-time,” github.com/neuromorphicsystems/ neuromorphic-drivers, 2023. [20] A. Glover et al. , “The event-driven software library for YARP—with algorithms and iCub applications,” Front. Robot. AI , vol. 4, 2018. [21] E. Mueggler et al. , “rpg_dvs_ros : ROS driver packages for DVS/DAVIS event cameras,” github.com/uzh-rpg/rpg_dvs_ros, 2020. [22] B. Pfrommer, “ROS 2 event camera stack: Messages, codecs and drivers for Prophesee, CenturyArks and iniVation sensors,” github. com/ros-event-camera, 2026. [23] J. Kim et al. , “N-ImageNet: Towards robust, fine-grained object recognition with event cameras,” in IEEE/CVF Int. Conf. Comput. Vis. (ICCV) , 2021, pp. 2146–2156. [24] E. Mueggler, C. Bartolozzi, and D. Scaramuzza, “Fast event-based corner detection,” in British Mach. Vis. Conf. (BMVC) , 2017, pp. 33.1– 33.11. [25] I. Alzugaray and M. Chli, “Asynchronous corner detection and track-ing for event cameras in real time,” IEEE Robot. Autom. Lett. , vol. 3, no. 4, pp. 3177–3184, 2018. [26] S. Afshar et al. , “Event-based feature extraction using adaptive selec-tion thresholds,” Sensors , vol. 20, no. 6, p. 1600, 2020. [27] G. Gallego and D. Scaramuzza, “Accurate angular velocity estimation with an event camera,” IEEE Robot. Autom. Lett. , vol. 2, no. 2, pp. 632–639, 2017. [28] G. Gallego, H. Rebecq, and D. Scaramuzza, “A unifying contrast max-imization framework for event cameras, with applications to motion, depth, and optical flow estimation,” in IEEE/CVF Conf. Comput. Vis. Pattern Recognit. (CVPR) , 2018, pp. 3867–3876. [29] T. Stoffregen, “Motion estimation by focus optimisation: Optic flow and motion segmentation with event cameras,” Ph.D. dissertation, Department of Electrical and Computer Systems Engineering, Monash University, 2021. [30] A. Z. Zhu et al. , “Unsupervised event-based learning of optical flow, depth, and egomotion,” in IEEE/CVF Conf. Comput. Vis. Pattern Recognit. (CVPR) Workshops , 2019, pp. 1694–1694. [31] T. Fischer et al. , “Pixi: Unified software development and distribution for robotics and ai,” 2025. [Online]. Available: https: //arxiv.org/abs/2511.04827 [32] O. R. developers, “ONNX Runtime,” https://onnxruntime.ai/, 2021. [33] ZettaScale Technology, “ hiroz : A Zenoh-native ROS 2 stack in pure Rust,” github.com/ZettaScaleLabs/hiroz, 2026. [34] A. Corsaro et al. , “Zenoh: Unifying communication, storage and computation from the cloud to the microcontroller,” in Euromicro Conf. Digital System Design (DSD) , 2023, pp. 422–428. [35] Y. Burkhardt, S. Schaefer, and S. Leutenegger, “SuperEvent: Cross-modal learning of event-based keypoint detection for SLAM,” in 
+
+Proceedings of the IEEE/CVF International Conference on Computer Vision (ICCV) , 2025, pp. 8918–8928. [36] Z. Huang et al. , “EventPoint: Self-supervised interest point detection and description for event-based camera,” in IEEE/CVF Winter Conf. Appl. Comput. Vis. (WACV) , 2023, pp. 5396–5405. [37] H. Liu et al. , “Design of a spatiotemporal correlation filter for event-based sensors,” in 2015 IEEE International Symposium on Circuits and Systems (ISCAS) , 2015, pp. 722–725. [38] C. Harris and M. Stephens, “A combined corner and edge detector,” in Proc. Alvey Vis. Conf. , 1988, pp. 147–151. [39] A. Glover et al. , “luvHarris: A practical corner detector for event-cameras,” IEEE Trans. Pattern Anal. Mach. Intell. , vol. 44, no. 12, pp. 10 087–10 098, 2022. [40] Y. Hu, S.-C. Liu, and T. Delbruck, “v2e: From video frames to realistic DVS events,” in IEEE/CVF Conf. Comput. Vis. Pattern Recognit. (CVPR) Workshops , 2021, pp. 1312–1321. [41] G. Jocher, A. Chaurasia, and J. Qiu, “Ultralytics YOLO,” 2025. [Online]. Available: https://github.com/ultralytics/ultralytics [42] Prophesee, “Ev-ultralytics: Ultralytics yolo adapted for event-based object detection,” https://github.com/prophesee-ai/ev-ultralytics, 2024, accessed: 2026-09-06. [43] A. D. Hines et al. , “Event-LAB: Towards standardized evaluation of neuromorphic localization methods,” in IEEE Int. Conf. Robot. Autom. (ICRA) , 2026. [44] H. Rebecq et al. , “High speed and high dynamic range video with an event camera,” IEEE Trans. Pattern Anal. Mach. Intell. , vol. 43, pp. 1964–1980, 2021. [45] A. Clark and contributors, “Pillow (python imaging library).” [Online]. Available: https://python-pillow.org

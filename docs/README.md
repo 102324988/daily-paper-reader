@@ -41,17 +41,17 @@
 <section class="dpr-home-dashboard-card dpr-home-report-card">
   <div class="dpr-home-dashboard-header">
     <div>
-      <span class="dpr-home-dashboard-kicker">2026-09-20</span>
+      <span class="dpr-home-dashboard-kicker">2026-09-21</span>
       <h3 class="dpr-home-dashboard-title">今日汇总</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">共 5 篇</strong>
+    <strong class="dpr-home-dashboard-count">共 14 篇</strong>
   </div>
   <dl class="dpr-home-dashboard-stats">
     <div class="dpr-home-dashboard-stat"><dt>累计更新</dt><dd>1 次</dd></div>
-    <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>1</dd></div>
-    <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>4</dd></div>
+    <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>6</dd></div>
+    <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>8</dd></div>
   </dl>
-  <p class="dpr-home-dashboard-body">最近更新：2026-09-20 21:47:06 UTC<br>状态：成功</p>
+  <p class="dpr-home-dashboard-body">最近更新：2026-09-21 22:55:48 UTC<br>状态：成功</p>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-brief-card">
   <div class="dpr-home-dashboard-header">
@@ -62,9 +62,9 @@
     <strong class="dpr-home-dashboard-count">AI</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<p>今日共生成 5 篇推荐（精读 1 篇，速读 4 篇）</p>
-<p>精读：《Multi-View Mixture-of-Experts with Vision-Language Reranking for Cross-View Object Geo-Localization》（8.0/10）</p>
-<p>速读：《Learning Continuous Source Responses For Generalizable AI-Generated Image Detection》（6.0/10）, 《ORCA: Occlusion-Aware Refinement and Completion for Novel View Synthesis》（6.0/10）, 《Finder: Agentic Closed-Loop Object Finding for Embodied Grounding》（6.0/10）</p>
+<p>今日共生成 14 篇推荐（精读 6 篇，速读 8 篇）</p>
+<p>精读：《Tracking the Unseen: An Occlusion-Robust Framework for Target Tracking Under Full and Long-Term Occlusion》（9.0/10）, 《Selective Cotton Boll Localization for Robotic Harvesting: Evaluation of Deep Learning Vision Models Under Field Conditions》（9.0/10）</p>
+<p>速读：《Traffic Sign Recognition for Autonomous Driving Using Branched YOLOv2 and Geometric Features》（8.0/10）, 《SeetaPsych v1.0: An Open-source Computer Vision Toolkit for Behavior-based Psychological Measurement》（7.0/10）, 《Extending Decoupled Attention to Dense Prediction and Masked Training for Multi-Channel Images》（7.0/10）</p>
 <p>这些结果覆盖了当下较热的方向，建议先看精读区论文的关键问题与方法。</p>
   </div>
 </section>
@@ -74,12 +74,12 @@
       <span class="dpr-home-dashboard-kicker">今日累计</span>
       <h3 class="dpr-home-dashboard-title">精读推荐</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">1 篇</strong>
+    <strong class="dpr-home-dashboard-count">6 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Multi-View Mixture-of-Experts with Vision-Language Reranking for Cross-View Object Geo-Localization">Multi-View Mixture-of-Experts with Vision-Language Reranking for Cross-View Object Geo-Localization</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Tracking the Unseen: An Occlusion-Robust Framework for Target Tracking Under Full and Long-Term Occlusion">Tracking the Unseen: An Occlusion-Robust Framework for Target Tracking Under Full and Long-Term Occlusion</span></li><li><span class="dpr-home-dashboard-paper-title" title="Selective Cotton Boll Localization for Robotic Harvesting: Evaluation of Deep Learning Vision Models Under Field Conditions">Selective Cotton Boll Localization for Robotic Harvesting: Evaluation of Deep Learning Vision Models Under Field Conditions</span></li><li><span class="dpr-home-dashboard-paper-title" title="PointEvent: Rethinking Event-based Tiny Object Detection via Serialized Motion Evidence Accumulation">PointEvent: Rethinking Event-based Tiny Object Detection via Serialized Motion Evidence Accumulation</span></li></ul>
   </div>
-  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">cv <strong>1</strong></span></div>
+  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">cv <strong>6</strong></span></div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-skim-card">
   <div class="dpr-home-dashboard-header">
@@ -87,12 +87,12 @@
       <span class="dpr-home-dashboard-kicker">今日累计</span>
       <h3 class="dpr-home-dashboard-title">速读推荐</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">4 篇</strong>
+    <strong class="dpr-home-dashboard-count">8 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Learning Continuous Source Responses For Generalizable AI-Generated Image Detection">Learning Continuous Source Responses For Generalizable AI-Generated Image Detection</span></li><li><span class="dpr-home-dashboard-paper-title" title="ORCA: Occlusion-Aware Refinement and Completion for Novel View Synthesis">ORCA: Occlusion-Aware Refinement and Completion for Novel View Synthesis</span></li><li><span class="dpr-home-dashboard-paper-title" title="Finder: Agentic Closed-Loop Object Finding for Embodied Grounding">Finder: Agentic Closed-Loop Object Finding for Embodied Grounding</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Traffic Sign Recognition for Autonomous Driving Using Branched YOLOv2 and Geometric Features">Traffic Sign Recognition for Autonomous Driving Using Branched YOLOv2 and Geometric Features</span></li><li><span class="dpr-home-dashboard-paper-title" title="SeetaPsych v1.0: An Open-source Computer Vision Toolkit for Behavior-based Psychological Measurement">SeetaPsych v1.0: An Open-source Computer Vision Toolkit for Behavior-based Psychological Measurement</span></li><li><span class="dpr-home-dashboard-paper-title" title="Extending Decoupled Attention to Dense Prediction and Masked Training for Multi-Channel Images">Extending Decoupled Attention to Dense Prediction and Masked Training for Multi-Channel Images</span></li></ul>
   </div>
-  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">cv <strong>4</strong></span></div>
+  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">cv <strong>8</strong></span></div>
 </section>
 </div>
 
